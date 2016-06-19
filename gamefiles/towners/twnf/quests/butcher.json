@@ -1,0 +1,14 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "smithText",
+    "25",
+    "towners/twnf/quests/butcher.txt"
+  ],
+  "audio": {
+    "id": "tavown08",
+    "file": "sfx/Towners/tavown08.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

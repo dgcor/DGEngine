@@ -1,0 +1,9 @@
+{
+  "action": {
+    "name": "variable.save",
+    "file": "settings.json",
+    "vars": [
+      "skipIntro"
+    ]
+  }
+}

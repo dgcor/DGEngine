@@ -1,0 +1,27 @@
+{
+  "level": {
+    "id": "level",
+    "name": "Town Center",
+    "palette": "town",
+    "cel": "levels/towndata/town.cel",
+    "mapSize": [96, 96],
+    "dun": [
+      { "file": "levels/towndata/sector1s.dun", "position": [46, 46] },
+      { "file": "levels/towndata/sector2s.dun", "position": [46, 0] },
+      { "file": "levels/towndata/sector3s.dun", "position": [0, 46] },
+      { "file": "levels/towndata/sector4s.dun", "position": [0, 0] }
+    ],
+    "til": "levels/towndata/town.til",
+    "min": "levels/towndata/town.min",
+    "minBlocks": 16,
+    "sol": "levels/towndata/town.sol",
+    "options": "clearPlayers",
+    "onLeftClick": [
+      { "name": "level.moveToClick", "id": "level" }
+    ],
+    "onRightClick": [
+      { "name": "load", "file": "level/l1/load.json" }
+    ]
+  },
+  "load": "level/town/players.json"
+}

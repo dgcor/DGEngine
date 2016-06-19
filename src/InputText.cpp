@@ -1,0 +1,77 @@
+#include "InputText.h"
+#include "Game.h"
+#include "GameUtils.h"
+#include "Utils.h"
+
+using Utils::str2int;
+
+void InputText::click(Game& game)
+{
+	auto txt = text->getText();
+	if (txt.size() < minSize && actionMinSize != nullptr)
+	{
+		game.Events().addBack(actionMinSize);
+	}
+	else if (actionEnter != nullptr)
+	{
+		game.Events().addBack(actionEnter);
+	}
+}
+
+void InputText::update(Game& game)
+{
+	while (true)
+	{
+		auto ch = game.getKeyboardChar();
+		if (ch != 0)
+		{
+			auto txt = text->getText();
+
+			if (ch == 8 && txt.size() > 0) // backspace
+			{
+				txt.pop_back();
+				text->setText(txt);
+			}
+			else if (ch < 0 || ch >= 32)
+			{
+				if (maxSize > 0 && txt.size() >= maxSize)
+				{
+					break;
+				}
+
+				txt.push_back(ch);
+				if (hasRegex == true && std::regex_match(txt, regex) == false)
+				{
+					break;
+				}
+				text->setText(txt);
+			}
+			if (actionChange != nullptr)
+			{
+				game.Events().addBack(actionChange);
+			}
+		}
+		break;
+	}
+	text->update(game);
+}
+
+Variable InputText::getProperty(const std::string& prop) const
+{
+	if (prop.size() > 1)
+	{
+		auto props = Utils::splitString(prop, '.');
+		if (props.size() > 0)
+		{
+			auto propHash = str2int(props[0].c_str());
+			switch (propHash)
+			{
+			case str2int("text"):
+				return Variable(this->getText());
+			default:
+				return GameUtils::getProperty(*this, propHash, props);
+			}
+		}
+	}
+	return Variable();
+}

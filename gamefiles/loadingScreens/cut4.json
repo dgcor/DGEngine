@@ -1,0 +1,27 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "palette": {
+    "id": "cut4",
+    "file":"gendata/cut4.pal"
+  },
+  "texture": {
+    "id": "cut4",
+    "file":"gendata/cut4.cel",
+    "palette": "cut4"
+  },
+  "loadingScreen": {
+    "texture": "cut4",
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0x633939",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

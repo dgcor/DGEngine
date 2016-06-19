@@ -1,0 +1,29 @@
+{
+  "bitmapFont": [
+    {
+      "id": "smaltext",
+      "textureId": "smaltext",
+      "palette": "town",
+      "file": "ctrlpan/smaltext.cel",
+      "charMapFile": "res/level/smaltextMap.bin",
+      "charMapIgnore": 255
+    },
+    {
+      "id": "medtexts",
+      "textureId": "medtexts",
+      "palette": "town",
+      "file": "data/medtexts.cel",
+      "charMapFile": "res/level/medBigCharMap.bin",
+      "charMapIgnore": 255
+    },
+    {
+      "id": "bigtgold",
+      "textureId": "bigtgold",
+      "palette": "town",
+      "file": "data/bigtgold.cel",
+      "charMapFile": "res/level/medBigCharMap.bin",
+      "charMapIgnore": 255,
+      "charSizeFile": "res/level/bigtgoldSize.bin"
+    }
+  ]
+}

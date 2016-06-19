@@ -1,0 +1,12 @@
+{
+  "sound": [
+    {
+      "id": "titlslct",
+      "file": "sfx/items/titlslct.wav"
+    },
+    {
+      "id": "titlemov",
+      "file": "sfx/items/titlemov.wav"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "{1}",
+      "ignorePrevious": true
+    },
+    {
+      "name": "audio.pauseAll"
+    }
+  ],
+  "cursor": {},
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "background" }
+  },
+  "button": {
+    "id": "background",
+    "texture": "background",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": [
+      {
+        "name": "resource.pop",
+        "ignorePrevious": false
+      },
+      {
+        "name": "cursor.pop"
+      },
+      {
+        "name": "audio.resumeAll",
+        "restart": true
+      },
+      {
+        "name": "load",
+        "file": "{3}"
+      }
+    ]
+  },
+  "movie": {
+    "id": "movie",
+    "file": "{2}",
+    "size": [640, 480],
+    "anchor": "all",
+    "onComplete": [
+      {
+        "name": "resource.pop",
+        "ignorePrevious": false
+      },
+      {
+        "name": "cursor.pop"
+      },
+      {
+        "name": "audio.resumeAll",
+        "restart": true
+      },
+      {
+        "name": "load",
+        "file": "{3}"
+      }
+    ]
+  }
+}

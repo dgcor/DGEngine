@@ -1,0 +1,7 @@
+{
+  "action": {
+    "name": "file.copy",
+    "file": ["ui/level/gameSettings.json", "|game|musicVolume|", "|game|soundVolume|"],
+    "writeFile": "gameSettings.json"
+  }
+}

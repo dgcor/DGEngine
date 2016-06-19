@@ -1,0 +1,155 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "userPanelMain"
+  },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 46],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Welcome to the"
+    },
+    {
+      "id": "panelTitle2",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 70],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Blacksmith's Shop"
+    },
+    {
+      "id": "panelText",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 118],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Would you like to:"
+    }
+  ],
+  "button": [
+    {
+      "id": "talk",
+      "bitmapFont": "smaltext",
+      "color": "0x9DA2BC",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 153],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Talk to Griswold",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "towners/smith/panelTalk.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "buyBasic",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 178],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Buy Basic Items",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "buyPremium",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 202],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Buy Premium Items",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "sell",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 228],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Sell Items",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "repair",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 251],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Repair Items",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "back",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 275],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Leave the Shop",
+      "onClick": { "name": "resource.popAll", "id": "userPanel" },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

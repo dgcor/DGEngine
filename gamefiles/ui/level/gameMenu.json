@@ -1,0 +1,103 @@
+{
+  "action": { "name": "resource.add", "id": "gameMenu" },
+  "button": [
+    {
+      "id": "saveGame",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Save Game",
+      "position": [319, 116],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "options",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Options",
+      "position": [319, 161],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/level/gameMenu2.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "newGame",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "New Game",
+      "position": [319, 206],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": [
+        { "name": "resource.popAll" },
+        { "name": "game.setProperty", "property": "musicVolume", "value": 100 },
+        { "name": "game.setProperty", "property": "soundVolume", "value": 100 },
+        { "name": "load", "file": "ui/mainMenu.json" },
+        { "name": "load", "file": "ui/singlePlayer/main.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "loadGame",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Load Game",
+      "position": [319, 251],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "quitDiablo",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Quit Diablo",
+      "position": [319, 296],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": [
+        {
+          "name": "game.fadeOut",
+          "action": {
+            "name": "game.close"
+          }
+        }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

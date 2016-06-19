@@ -1,0 +1,119 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "userPanelMain"
+  },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 58],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Wirt the Peg-Legged Boy"
+    },
+    {
+      "id": "panelText1",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 178],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "I have something for sale,"
+    },
+    {
+      "id": "panelText2",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 202],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "but it will cost you 50 gold"
+    },
+    {
+      "id": "panelText3",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 228],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "just to take a look."
+    }
+  ],
+  "button": [
+    {
+      "id": "talk",
+      "bitmapFont": "smaltext",
+      "color": "0x9DA2BC",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 128],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Talk to Wirt",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "towners/townboy/panelTalk.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "ShowItem",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 251],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "What Have you Got?",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "back",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [484, 275],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Say Goodbye",
+      "onClick": { "name": "resource.popAll", "id": "userPanel" },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

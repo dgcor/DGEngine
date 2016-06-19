@@ -1,0 +1,13 @@
+{
+  "palette": [
+    {
+      "id": "town",
+      "file":"levels/towndata/town.pal"
+    },
+    {
+      "id": "townInfra",
+      "palette": "town",
+      "trnFile":"plrgfx/infra.trn"
+    }
+  ]
+}

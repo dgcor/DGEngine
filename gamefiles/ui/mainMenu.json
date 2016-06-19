@@ -1,0 +1,186 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "mainMenu"
+  },
+  "audio": {
+    "id": "main",
+    "file": "music/dintro.wav",
+    "loop": true,
+    "play": true
+  },
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": "up",
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "menu.click", "id": "menu", "index": 5 }
+    }
+  ],
+  "texture": {
+    "id": "mainmenu",
+    "file": "ui_art/mainmenu.pcx"
+  },
+  "texture": {
+    "id": "smlogo",
+    "file": "ui_art/smlogo.pcx",
+    "mask": "0x00FF00"
+  },
+  "texture": {
+    "id": "focus42",
+    "file": "ui_art/focus42.pcx",
+    "mask": "0x00FF00"
+  },
+  "cursor": {
+    "texture": "cursor"
+  },
+  "image": {
+    "id": "mainmenu",
+    "texture": "mainmenu",
+    "anchor": "none"
+  },
+  "animation": {
+    "id": "smlogo",
+    "texture": "smlogo",
+    "frames": 15,
+    "position": [125, 0],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "animation": {
+    "texture": "focus42",
+    "id": "pent1",
+    "frames": 8,
+    "position": [67, 192],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "animation": {
+    "texture": "focus42",
+    "id": "pent2",
+    "frames": 8,
+    "position": [537, 192],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "menu": {
+    "id": "menu",
+    "bitmapFont": "font42g",
+    "position": [319, 192],
+    "sound": "titlslct",
+    "focus": true,
+    "focusSound": "titlemov",
+    "anchor": "none",
+    "verticalPad": 1,
+    "items": [
+      {
+        "text": "Single Player",
+        "position": [170, 192],
+        "onClick": [
+          {
+            "name": "load",
+            "file": "ui/singlePlayer/main.json"
+          }
+        ],
+        "onFocus": [
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        ]
+      },
+      {
+        "text": "Multi Player",
+        "position": [172, 235],
+        "enable": false,
+        "onFocus": [
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        ]
+      },
+      {
+        "text": "Replay Intro",
+        "position": [174, 277],
+        "onClick": [
+          {
+            "name": "load",
+            "file": ["ui/playVideo.json",
+              "introVideo",
+              "gendata/diablo1.smk",
+              "ui/fadeIn.json"]
+          }
+        ],
+        "onFocus": [
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        ]
+      },
+      {
+        "text": "Show Credits",
+        "position": [173, 320],
+        "onClick": [
+          {
+            "name": "game.fadeOut",
+            "action": {
+              "name": "load",
+              "file": "ui/credits.json"
+            }
+          }
+        ],
+        "onFocus": [
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        ]
+      },
+      {
+        "text": "Exit Diablo",
+        "position": [192, 363],
+        "onClick": [
+          {
+            "name": "game.fadeOut",
+            "action": {
+              "name": "game.close"
+            }
+          }
+        ],
+        "onFocus": [
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        ]
+      }
+    ]
+  },
+  "button": {
+    "id": "versionInfo",
+    "bitmapFont": "font16s",
+    "position": [17, 444],
+    "anchor": "none",
+    "binding": ["|game|title|", "|game|version|"],
+    "format": "[1] v[2]",
+    "onClick": [
+      {
+        "name": "game.fadeOut",
+        "action": {
+          "name": "load",
+          "file": "ui/settings.json"
+        }
+      }
+    ]
+  },
+  "action": { "name": "menu.setBitmapFont", "id": "menu", "index": 2, "idFont": "font42y" }
+}

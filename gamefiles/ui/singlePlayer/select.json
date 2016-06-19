@@ -1,0 +1,258 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayerSelect" },
+    { "name": "text.setText", "id": "label1", "text": "Single Player Characters" },
+    { "name": "text.setText", "id": "label2", "text": "Select Hero" },
+    { "name": "image.setTextureRect", "id": "heros", "rect": [0, 228, 180, 76] },
+    { "name": "text.setText", "id": "txtLevel", "text": "--" },
+    { "name": "text.setText", "id": "txtStrength", "text": "--" },
+    { "name": "text.setText", "id": "txtMagic", "text": "--" },
+    { "name": "text.setText", "id": "txtDexterity", "text": "--" },
+    { "name": "text.setText", "id": "txtVitality", "text": "--" },
+    {
+      "name": "action.set",
+      "id": "saveMenu.moveScrollbar",
+      "action": { "name": "menu.moveScrollbar", "idMenu": "menuLoadGame", "idScrollbar": "sb_thumb", "idAnchorTo": "btnDrag", "range": 133 }
+    }
+  ],
+  "keyboard": {
+    "key": "delete",
+    "action": { "name": "button.click", "id": "delete" }
+  },
+  "animation": {
+    "texture": "focus16",
+    "id": "pent1",
+    "frames": 8,
+    "position": [263, 258],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "animation": {
+    "texture": "focus16",
+    "id": "pent2",
+    "frames": 8,
+    "position": [566, 258],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "image": {
+    "id": "sb_bg",
+    "position": [586, 245],
+    "anchor": "none",
+    "texture": "sb_bg",
+    "textureRect": [24, 176],
+    "visible": false
+  },
+  "image": {
+    "id": "sb_arrowTop",
+    "position": [586, 245],
+    "anchor": "none",
+    "texture": "sb_arrow",
+    "textureRect": [0, 22, 24, 22],
+    "visible": false
+  },
+  "image": {
+    "id": "sb_arrowBottom",
+    "position": [586, 400],
+    "anchor": "none",
+    "texture": "sb_arrow",
+    "textureRect": [0, 66, 24, 22],
+    "visible": false
+  },
+  "image": {
+    "id": "sb_thumb",
+    "position": [589, 267],
+    "anchor": "none",
+    "texture": "sb_thumb",
+    "visible": false
+  },
+  "menu": {
+    "id": "menuLoadGame",
+    "bitmapFont": "font24g",
+    "position": [423, 260],
+    "horizontalAlign": "center",
+    "anchor": "none",
+    "sound": "titlemov",
+    "focus": true,
+    "focusOnClick": false,
+    "focusSound": "titlemov",
+    "visibleItems": 6,
+    "size": [270, 164],
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": [
+      {
+        "%SAVEGAMES%": null,
+        "onClick": [
+          { "name": "load", "file": ["ui/loadCharInfo.json", "|focus|text|"] },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
+          { "name": "button.enable", "id": "delete" },
+          { "name": "button.setBitmapFont", "id": "delete", "idFont": "font30g" },
+          "saveMenu.moveScrollbar"
+        ],
+        "onDoubleClick": { "name": "button.click", "id": "ok" },
+        "onFocus": "focus.clickNoSound"
+      },
+      {
+        "text": "New Hero",
+        "onClick": [
+          { "name": "load", "file": "ui/charInfoDefault.json" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
+          { "name": "button.enable", "id": "delete", "enable": false },
+          { "name": "button.setBitmapFont", "id": "delete", "idFont": "font30s" },
+          "saveMenu.moveScrollbar"
+        ],
+        "onDoubleClick": { "name": "button.click", "id": "ok" },
+        "onFocus": "focus.clickNoSound"
+      }
+    ]
+  },
+  "button": [
+    {
+      "id": "ok",
+      "bitmapFont": "font30g",
+      "position": [279, 429],
+      "anchor": "none",
+      "onClick": {
+        "name": "if.equal",
+        "param1": "|focus|text|",
+        "param2": "New Hero",
+        "then": [
+          { "name": "resource.pop" },
+          { "name": "load", "file": "ui/singlePlayer/new.json" }
+        ],
+        "else": { "name": "load", "file": ["level/loadGame.json", "|focus|text|"] }
+      },
+      "sound": "titlslct",
+      "text": "OK"
+    },
+    {
+      "id": "delete",
+      "bitmapFont": "font30g",
+      "position": [378, 429],
+      "anchor": "none",
+      "onClick": [
+        { "name": "load", "file": ["ui/singlePlayer/delete.json", "|focus|text|"] }
+      ],
+      "sound": "titlslct",
+      "text": "Delete"
+    },
+    {
+      "id": "cancel",
+      "bitmapFont": "font30g",
+      "position": [501, 429],
+      "anchor": "none",
+      "onClick": {
+        "name": "game.fadeOut",
+        "action": [
+          { "name": "resource.pop" },
+          { "name": "resource.pop", "ignorePrevious": false },
+          { "name": "game.fadeIn" }
+        ]
+      },
+      "sound": "titlslct",
+      "text": "Cancel"
+    },
+    {
+      "id": "btnUp",
+      "texture": "empty",
+      "position": [586, 245],
+      "anchor": "none",
+      "textureRect": [24, 22],
+      "onClick": [
+        "focus.moveUp",
+        "saveMenu.moveScrollbar"
+      ],
+      "onClickIn": { "name": "image.setTextureRect", "id": "sb_arrowTop", "rect": [0, 0, 24, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "sb_arrowTop", "rect": [0, 22, 24, 22] },
+      "enable": false
+    },
+    {
+      "id": "btnDrag",
+      "texture": "empty",
+      "position": [589, 267],
+      "anchor": "none",
+      "textureRect": [18, 133],
+      "onClick": [
+        {
+          "name": "drawable.centerOnMouseY",
+          "id": "sb_thumb",
+          "idAnchorTo": "btnDrag",
+          "range": 133,
+          "steps": "|menuLoadGame|itemCount|"
+        },
+        {
+          "name": "menu.moveScrollbar",
+          "idMenu": "menuLoadGame",
+          "idScrollbar": "sb_thumb",
+          "idAnchorTo": "btnDrag",
+          "range": 133,
+          "focus": true
+        }
+      ],
+      "onClickDrag": { "name": "button.click", "id": "btnDrag" },
+      "enable": false
+    },
+    {
+      "id": "btnDown",
+      "texture": "empty",
+      "position": [586, 400],
+      "anchor": "none",
+      "textureRect": [24, 22],
+      "onClick": [
+        "focus.moveDown",
+        "saveMenu.moveScrollbar"
+      ],
+      "onClickIn": { "name": "image.setTextureRect", "id": "sb_arrowBottom", "rect": [0, 44, 24, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "sb_arrowBottom", "rect": [0, 66, 24, 22] },
+      "enable": false
+    }
+  ],
+  "action": [
+    "focus.clickNoSound",
+    {
+      "name": "if.greater",
+      "param1": "|menuLoadGame|itemCount|",
+      "param2": 6,
+      "then": [
+        { "name": "drawable.visible", "id": "sb_bg", "visible": true },
+        { "name": "drawable.visible", "id": "sb_arrowTop", "visible": true },
+        { "name": "drawable.visible", "id": "sb_arrowBottom", "visible": true },
+        { "name": "drawable.visible", "id": "sb_thumb", "visible": true },
+        { "name": "button.enable", "id": "btnUp" },
+        { "name": "button.enable", "id": "btnDrag" },
+        { "name": "button.enable", "id": "btnDown" },
+        { "name": "loadJson",
+          "json": {
+            "keyboard": [
+              {
+                "key": "up",
+                "action": [
+                  "focus.moveUp",
+                  "saveMenu.moveScrollbar"
+                ]
+              },
+              {
+                "key": "tab",
+                "shift": true,
+                "action": [
+                  "focus.moveUp",
+                  "saveMenu.moveScrollbar"
+                ]
+              },
+              {
+                "key": ["down", "tab"],
+                "action": [
+                  "focus.moveDown",
+                  "saveMenu.moveScrollbar"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

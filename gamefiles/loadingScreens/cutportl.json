@@ -1,0 +1,27 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "palette": {
+    "id": "cutportl",
+    "file":"gendata/cutportl.pal"
+  },
+  "texture": {
+    "id": "cutportl",
+    "file":"gendata/Cutportl.cel",
+    "palette": "cutportl"
+  },
+  "loadingScreen": {
+    "texture": "cutportl",
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0xF75251",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

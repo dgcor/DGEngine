@@ -1,0 +1,27 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "palette": {
+    "id": "cutgate",
+    "file":"gendata/cutgate.pal"
+  },
+  "texture": {
+    "id": "cutgate",
+    "file":"gendata/cutgate.cel",
+    "palette": "cutgate"
+  },
+  "loadingScreen": {
+    "texture": "cutgate",
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0x916D52",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

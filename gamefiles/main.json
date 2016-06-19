@@ -1,0 +1,30 @@
+{
+  "title" : "Diablo",
+  "version": "1.09",
+  "refWindowSize": [640, 480],
+  "minWindowSize": [800, 600],
+  "windowSize": [800, 600],
+  "framerate": 60,
+  "keepAR": true,
+  "stretchToFit": true,
+  "smoothScreen": true,
+  "init": true,
+  "mountFile": [
+    { "file": "DIABDAT.zip", "append": true }
+  ],
+  "saveDir": ".diablo",
+  "icon": {
+    "file":"res/icon.png"
+  },
+  "cursor": {
+    "show": false
+  },
+  "load": "settings.json",
+  "load": "res/actions.json",
+  "load": "res/fonts.json",
+  "load": "res/music.json",
+  "load": "res/palettes.json",
+  "load": "res/sounds.json",
+  "load": "res/textures.json",
+  "load": "ui/splashScreen.json"
+}

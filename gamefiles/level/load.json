@@ -1,0 +1,21 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "resource.popAll", "id": "currentLevel" },
+      { "name": "load", "file": "loadingScreens/{1}.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "loadingScreen.setProgress", "progress": 35 },
+          { "name": "resource.add", "id": "currentLevel" },
+          { "name": "load", "file": "level/{2}/level.json" },
+          { "name": "loadingScreen.setProgress", "progress": 90 },
+          { "name": "load", "file": "level/{2}/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 100 },
+          { "name": "load", "file": "level/{2}/music.json" },
+          { "name": "load", "file": "level/playOrStopMusic.json" }
+        ]
+      }
+    ]
+  }
+}

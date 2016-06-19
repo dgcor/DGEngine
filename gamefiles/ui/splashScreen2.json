@@ -1,0 +1,75 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "splashScreen"
+  },
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "skip" }
+  },
+  "texture": {
+    "id": "title",
+    "file":"ui_art/title.pcx"
+  },
+  "texture": {
+    "id": "logo",
+    "file": "ui_art/logo.pcx",
+    "mask": "0x00FF00"
+  },
+  "image": {
+    "id": "title",
+    "texture": "title",
+    "anchor": "none"
+  },
+  "button": {
+    "id": "skip",
+    "texture": "empty",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": [
+      { "name": "event.delete", "id": "load" },
+      {
+        "name": "game.fadeOut",
+        "action": [
+          { "name": "resource.pop" },
+          { "name": "load", "file": "ui/mainMenu.json" },
+          { "name": "game.fadeIn" }
+        ]
+      }
+    ]
+  },
+  "animation": {
+    "id": "logo",
+    "texture": "logo",
+    "frames": 15,
+    "position": [45, 182],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "text": {
+    "id": "copyright",
+    "bitmapFont": "font24s",
+    "text": "Copyright © 1996-2001 Blizzard Entertainment",
+    "position": [59, 410],
+    "anchor": "none"
+  },
+  "event": {
+    "id": "load",
+    "action": [
+      { "name": "button.setClickAction", "id": "skip", "action": null },
+      {
+        "name": "game.fadeOut",
+        "action": [
+          { "name": "resource.pop" },
+          { "name": "load", "file": "ui/mainMenu.json" },
+          { "name": "game.fadeIn" }
+        ]
+      }
+    ],
+    "seconds": 6
+  },
+  "action": {
+    "name": "game.fadeIn"
+  }
+}

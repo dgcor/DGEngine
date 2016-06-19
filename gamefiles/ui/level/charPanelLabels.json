@@ -1,0 +1,211 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelLabels" },
+  "text": [
+    {
+      "id": "charName",
+      "bitmapFont": "smaltext",
+      "position": [84, 20],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.name|"
+    },
+    {
+      "id": "charClass",
+      "bitmapFont": "smaltext",
+      "position": [236, 20],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.class|"
+    },
+    {
+      "id": "charLevel",
+      "bitmapFont": "smaltext",
+      "position": [85, 56],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.level|"
+    },
+    {
+      "id": "charExp",
+      "bitmapFont": "smaltext",
+      "position": [256, 56],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.experience|"
+    },
+    {
+      "id": "charExpNext",
+      "bitmapFont": "smaltext",
+      "position": [256, 84],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.expNextLevel|"
+    },
+    {
+      "id": "charGold",
+      "bitmapFont": "smaltext",
+      "position": [256, 134],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.gold|"
+    },
+    {
+      "id": "charStrBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 144],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.strengthBase|"
+    },
+    {
+      "id": "charStr",
+      "bitmapFont": "smaltext",
+      "position": [156, 144],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.strengthNow|"
+    },
+    {
+      "id": "charMagBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 172],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.magicBase|"
+    },
+    {
+      "id": "charMag",
+      "bitmapFont": "smaltext",
+      "position": [156, 172],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.magicNow|"
+    },
+    {
+      "id": "charDexBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 200],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.dexterityBase|"
+    },
+    {
+      "id": "charDex",
+      "bitmapFont": "smaltext",
+      "position": [156, 200],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.dexterityNow|"
+    },
+    {
+      "id": "charVitBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 228],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.vitalityBase|"
+    },
+    {
+      "id": "charVit",
+      "bitmapFont": "smaltext",
+      "position": [156, 228],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.vitalityNow|"
+    },
+    {
+      "id": "charPoints",
+      "bitmapFont": "smaltext",
+      "position": [108, 256],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.points|",
+      "format": ""
+    },
+    {
+      "id": "charLifeBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 292],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.lifeBase|"
+    },
+    {
+      "id": "charLife",
+      "bitmapFont": "smaltext",
+      "position": [156, 292],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.lifeNow|"
+    },
+    {
+      "id": "charManaBase",
+      "bitmapFont": "smaltext",
+      "position": [108, 320],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.manaBase|"
+    },
+    {
+      "id": "charMana",
+      "bitmapFont": "smaltext",
+      "position": [156, 320],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.manaNow|"
+    },
+    {
+      "id": "charArmor",
+      "bitmapFont": "smaltext",
+      "position": [278, 172],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.armorClass|"
+    },
+    {
+      "id": "charToHit",
+      "bitmapFont": "smaltext",
+      "position": [278, 200],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.toHit|",
+      "format": "[1]%"
+    },
+    {
+      "id": "charDamage",
+      "bitmapFont": "smaltext",
+      "position": [278, 228],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": ["|currentLevel|currentPlayer.damageMin|", "|currentLevel|currentPlayer.damageMax|"],
+      "format": "[1]-[2]"
+    },
+    {
+      "id": "charResMagic",
+      "bitmapFont": "smaltext",
+      "position": [278, 266],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.resistMagic|",
+      "format": "[1]%"
+    },
+    {
+      "id": "charResFire",
+      "bitmapFont": "smaltext",
+      "position": [278, 292],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.resistFire|",
+      "format": "[1]%"
+    },
+    {
+      "id": "charResLight",
+      "bitmapFont": "smaltext",
+      "position": [278, 320],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "binding": "|currentLevel|currentPlayer.resistLightning|",
+      "format": "[1]%"
+    }
+  ]
+}

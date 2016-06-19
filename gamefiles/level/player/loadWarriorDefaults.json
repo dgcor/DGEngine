@@ -1,0 +1,32 @@
+{
+  "player": {
+    "id": "hero",
+    "celTexture": "wls",
+    "celIndex": 9,
+    "mapPosition": [64, 73],
+    "frames": 8,
+    "frameIndex": 1,
+    "currentPlayer": true,
+    "mainPlayer": true,
+    "name": "{1}",
+    "class": "Warrior",
+    "level": 1,
+    "experience": 0,
+    "expNextLevel": 2000,
+    "gold": 100,
+    "strengthBase": 30,
+    "magicBase": 10,
+    "dexterityBase": 20,
+    "vitalityBase": 25,
+    "points": 0,
+    "lifeBase": 70,
+    "manaBase": 10,
+    "armor": 7,
+    "toHit": 60,
+    "damageMin": 2,
+    "damageMax": 6,
+    "resistMagic": 0,
+    "resistFire": 0,
+    "resistLightning": 0
+  }
+}

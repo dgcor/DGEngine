@@ -1,0 +1,86 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "gameMenuCommon" },
+    { "name": "resource.ignore", "id": "level", "ignore": "update" },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent1", "anchor": "left" }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right" }
+    }
+  ],
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": "up",
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "menu" }
+    }
+  ],
+  "texture": [
+    {
+      "id": "diabsmal",
+      "file": "data/diabsmal.cel",
+      "palette": "town"
+    },
+    {
+      "id": "PentSpin",
+      "file":"data/PentSpin.cel",
+      "palette": "town"
+    }
+  ],
+  "image": {
+    "id": "diabsmal",
+    "texture":"diabsmal",
+    "position": [172, 3],
+    "anchor": "none"
+  },
+  "animation": [
+    {
+      "texture": "PentSpin",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "PentSpin",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": {
+    "id": "menu2",
+    "texture": "empty",
+    "anchor": "bottom",
+    "position": [9, 453],
+    "textureRect": [0, 57, 71, 19],
+    "clickUp": true,
+    "onClick": { "name": "button.click", "id": "menu", "playSound": false },
+    "onClickIn": { "name": "button.setTexture", "id": "menu2", "texture": "panel8bu" },
+    "onClickOut": { "name": "button.setTexture", "id": "menu2", "texture": "empty" }
+  }
+}

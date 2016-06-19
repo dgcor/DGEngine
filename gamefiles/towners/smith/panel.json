@@ -1,0 +1,27 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "userPanel" },
+    { "name": "game.clearPlayingSounds" }
+  ],
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "back", "playSound": false }
+    },
+    {
+      "key": "enter",
+      "action": "focus.click"
+    },
+    {
+      "key": "up",
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "down",
+      "action": "focus.moveDown"
+    }
+  ],
+  "load": "ui/level/panel.json",
+  "load": "towners/smith/panelMain.json",
+  "action": { "name": "sound.play", "id": "bsmith44" }
+}

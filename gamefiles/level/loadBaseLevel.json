@@ -1,0 +1,9 @@
+{
+  "level": {
+    "id": "level",
+    "anchor": "all",
+    "size": [640, 352]
+  },
+  "load": "ui/level/gamePanel.json",
+  "load": "level/quests.json"
+}
