@@ -1,0 +1,39 @@
+{
+  "texture": [
+    {
+      "id": "panel8",
+      "file": "ctrlpan/panel8.cel",
+      "palette": "town"
+    },
+    {
+      "id": "panel8bu",
+      "file": "ctrlpan/panel8bu.cel",
+      "palette": "town"
+    },
+    {
+      "id": "char",
+      "file": "data/char.cel",
+      "palette": "town"
+    },
+    {
+      "id": "quest",
+      "file": "data/quest.cel",
+      "palette": "town"
+    },
+    {
+      "id": "spellbk",
+      "file": "data/spellbk.cel",
+      "palette": "town"
+    },
+    {
+      "id": "inv",
+      "file": "data/inv/inv.cel",
+      "palette": "town"
+    },
+    {
+      "id": "pentspn2",
+      "file": "data/pentspn2.cel",
+      "palette": "town"
+    }
+  ]
+}

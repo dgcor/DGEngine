@@ -1,0 +1,13 @@
+{
+  "action": {
+    "name": "if.notEqual",
+    "param1": "%skipIntro%",
+    "param2": true,
+    "then": [
+      { "name": "load", "file": ["ui/playVideo.json", "introVideo", "gendata/diablo1.smk", "ui/splashScreen2.json"] },
+      { "name": "variable.set", "key": "skipIntro", "val": true },
+      { "name": "load", "file": "ui/saveSettings.json" }
+    ],
+    "else": { "name": "load", "file": "ui/splashScreen2.json" }
+  }
+}

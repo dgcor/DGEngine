@@ -1,0 +1,27 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "palette": {
+    "id": "cutstart",
+    "file":"gendata/cutstart.pal"
+  },
+  "texture": {
+    "id": "cutstart",
+    "file":"gendata/cutstart.cel",
+    "palette": "cutstart"
+  },
+  "loadingScreen": {
+    "texture": "cutstart",
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0x633121",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

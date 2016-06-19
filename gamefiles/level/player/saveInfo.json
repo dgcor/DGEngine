@@ -1,0 +1,15 @@
+{
+  "action": {
+    "name": "file.copy",
+    "dir": "{1}",
+    "file": [
+      "ui/charInfo.json",
+      "|currentLevel|currentPlayer.level|",
+      "|currentLevel|currentPlayer.strengthNow|",
+      "|currentLevel|currentPlayer.magicNow|",
+      "|currentLevel|currentPlayer.dexterityNow|",
+      "|currentLevel|currentPlayer.vitalityNow|",
+      "|currentLevel|currentPlayer.class|"
+    ]
+  }
+}

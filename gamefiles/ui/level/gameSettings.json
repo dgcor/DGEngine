@@ -1,0 +1,6 @@
+{
+  "action": [
+    { "name": "game.setMusicVolume", "volume": {1} },
+    { "name": "game.setSoundVolume", "volume": {2} }
+  ]
+}

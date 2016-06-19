@@ -1,0 +1,120 @@
+{
+  "celTexture": [
+    {
+      "id": "cow",
+      "file": "towners/animals/cow.cel",
+      "palette": "town"
+    },
+    {
+      "id": "strytell",
+      "file": "towners/strytell/strytell.cel",
+      "palette": "town"
+    },
+    {
+      "id": "healer",
+      "file": "towners/healer/healer.cel",
+      "palette": "town"
+    },
+    {
+      "id": "twnfn",
+      "file": "towners/twnf/twnfn.cel",
+      "palette": "town"
+    },
+    {
+      "id": "smithn",
+      "file": "towners/smith/smithn.cel",
+      "palette": "town"
+    },
+    {
+      "id": "pegkid1",
+      "file": "towners/townboy/pegkid1.cel",
+      "palette": "town"
+    },
+    {
+      "id": "twndrunk",
+      "file": "towners/drunk/twndrunk.cel",
+      "palette": "town"
+    },
+    {
+      "id": "witch",
+      "file": "towners/townwmn1/witch.cel",
+      "palette": "town"
+    },
+    {
+      "id": "wmnn",
+      "file": "towners/townwmn1/wmnn.cel",
+      "palette": "town"
+    }
+  ],
+  "player": [
+    {
+      "id": "healer",
+      "celTexture": "healer",
+      "mapPosition": [55, 79],
+      "onClick": { "name": "load", "file": "towners/healer/panel.json" }
+    },
+    {
+      "id": "strytell",
+      "celTexture": "strytell",
+      "mapPosition": [62, 71],
+      "onClick": { "name": "load", "file": "towners/strytell/panel.json" }
+    },
+    {
+      "id": "smith",
+      "celTexture": "smithn",
+      "mapPosition": [62, 63],
+      "onClick": { "name": "load", "file": "towners/smith/panel.json" }
+    },
+    {
+      "id": "twnf",
+      "celTexture": "twnfn",
+      "mapPosition": [55, 62],
+      "onClick": { "name": "load", "file": "towners/twnf/panel.json" }
+    },
+    {
+      "id": "twndrunk",
+      "celTexture": "twndrunk",
+      "mapPosition": [71, 84],
+      "onClick": { "name": "load", "file": "towners/drunk/panel.json" }
+    },
+    {
+      "id": "gillian",
+      "celTexture": "wmnn",
+      "mapPosition": [43, 66],
+      "onClick": { "name": "load", "file": "towners/gillian/panel.json" }
+    },
+    {
+      "id": "townboy",
+      "celTexture": "pegkid1",
+      "mapPosition": [12, 54],
+      "onClick": { "name": "load", "file": "towners/townboy/panel.json" }
+    },
+    {
+      "id": "witch",
+      "celTexture": "witch",
+      "mapPosition": [80, 20],
+      "onClick": { "name": "load", "file": "towners/adria/panel.json" }
+    },
+    {
+      "id": "cow1",
+      "celTexture": "cow",
+      "frames": 8,
+      "frameIndex": 4,
+      "mapPosition": [55, 13]
+    },
+    {
+      "id": "cow2",
+      "celTexture": "cow",
+      "frames": 8,
+      "frameIndex": 2,
+      "mapPosition": [57, 15]
+    },
+    {
+      "id": "cow3",
+      "celTexture": "cow",
+      "frames": 8,
+      "frameIndex": 5,
+      "mapPosition": [58, 19]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayerNewName" },
+    { "name": "text.setText", "id": "label2", "text": "Enter Name" }
+  ],
+  "inputText": {
+    "id": "heroName",
+    "bitmapFont": "font24g",
+    "position": [308, 318],
+    "anchor": "none",
+    "minSize": 1,
+    "maxSize": 15,
+    "regex": "[\\w ]*",
+    "onClick": {
+      "name": "if.fileExists",
+      "param1": "|heroName|text|",
+      "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "|heroName|text|"] },
+      "else": { "name": "load", "file": "level/newGame.json" }
+    },
+    "onMinSize": [
+      { "name": "resource.pop" },
+      { "name": "load", "file": "ui/singlePlayer/newNameTooShort.json" }
+    ],
+    "onChange": {
+      "name": "drawable.anchor",
+      "anchor": "right",
+      "id": "caret",
+      "idAnchor": "heroName"
+    }
+  },
+  "image": {
+    "id": "caret",
+    "position": [310, 318],
+    "anchor": "none",
+    "texture": "font24g",
+    "textureRect": [164, 312, 8, 26]
+  },
+  "button": [
+    {
+      "id": "ok",
+      "bitmapFont": "font30g",
+      "position": [329, 429],
+      "anchor": "none",
+      "onClick": { "name": "inputText.click", "id": "heroName" },
+      "sound": "titlslct",
+      "text": "OK"
+    },
+    {
+      "id": "cancel",
+      "bitmapFont": "font30g",
+      "position": [451, 429],
+      "anchor": "none",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/singlePlayer/newHero.json" }
+      ],
+      "sound": "titlslct",
+      "text": "Cancel"
+    }
+  ],
+  "event": {
+    "id": "blinkCaret",
+    "action": {
+      "name": "image.setTextureRect", "id": "caret",
+      "rect": [[0, 0, 4, 26], [168, 312, 4, 26]]
+    },
+    "seconds": 0.5
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "celFile": [
+    { "id": "rlsas", "file": "plrgfx/rogue/rls/rlsas.cl2" },
+    { "id": "rlsaw", "file": "plrgfx/rogue/rls/rlsaw.cl2" },
+    { "id": "rlsht", "file": "plrgfx/rogue/rls/rlsht.cl2" },
+    { "id": "rlsqm", "file": "plrgfx/rogue/rls/rlsqm.cl2" },
+    { "id": "rlswl", "file": "plrgfx/rogue/rls/rlswl.cl2" },
+    { "id": "rlsat", "file": "plrgfx/rogue/rls/rlsat.cl2" },
+    { "id": "rlsfm", "file": "plrgfx/rogue/rls/rlsfm.cl2" },
+    { "id": "rlslm", "file": "plrgfx/rogue/rls/rlslm.cl2" },
+    { "id": "rlsst", "file": "plrgfx/rogue/rls/rlsst.cl2" }
+  ],
+  "celTexture": {
+    "id": "rls",
+    "celFile": [
+      "rlsas",
+      "rlsaw",
+      "rlsht",
+      "rlsqm",
+      "rlswl",
+      "rlsat",
+      "rlsfm",
+      "rlslm",
+      "rlsst"
+    ],
+    "palette": "town"
+  }
+}

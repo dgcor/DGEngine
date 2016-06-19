@@ -1,0 +1,218 @@
+{
+  "action": { "name": "resource.add", "id": "gameMenu2" },
+  "texture": [
+    {
+      "id": "optbar",
+      "file": "data/optbar.cel",
+      "palette": "town"
+    },
+    {
+      "id": "option",
+      "file":"data/option.cel",
+      "palette": "town"
+    }
+  ],
+  "rectangle": [
+    {
+      "id": "progressBar1",
+      "color": "0x312816",
+      "position": [263, 121],
+      "anchor": "none",
+      "size": [14, 28]
+    },
+    {
+      "id": "progressBar2",
+      "color": "0x312816",
+      "position": [263, 166],
+      "anchor": "none",
+      "size": [14, 28]
+    },
+    {
+      "id": "progressBar3",
+      "color": "0x312816",
+      "position": [263, 211],
+      "anchor": "none",
+      "size": [14, 28]
+    }
+  ],
+  "image": [
+    {
+      "id": "optbar1",
+      "position": [261, 119],
+      "anchor": "none",
+      "texture":"optbar"
+    },
+    {
+      "id": "option1",
+      "position": [263, 121],
+      "anchor": "none",
+      "texture":"option"
+    },
+    {
+      "id": "optbar2",
+      "position": [261, 164],
+      "anchor": "none",
+      "texture":"optbar"
+    },
+    {
+      "id": "option2",
+      "position": [263, 166],
+      "anchor": "none",
+      "texture":"option"
+    },
+    {
+      "id": "optbar3",
+      "position": [261, 209],
+      "anchor": "none",
+      "texture":"optbar"
+    },
+    {
+      "id": "option3",
+      "position": [263, 211],
+      "anchor": "none",
+      "texture":"option"
+    }
+  ],
+  "button": [
+    {
+      "id": "btnOption1",
+      "texture": "empty",
+      "textureRect": [283, 28],
+      "position": [263, 121],
+      "anchor": "none",
+      "onClick": [
+        { "name": "drawable.centerOnMouseX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "steps": 17 },
+        { "name": "drawable.resizeToPositionX", "id": "progressBar1", "idToPosition": "option1", "offset": 14 },
+        { "name": "game.setProperty", "property": "musicVolume", "value": "|progressBar1|size.x|", "propRange": [0, 100], "valueRange": [14, 270] },
+        {
+          "name": "if.equal",
+          "param1": "|game|musicVolume|",
+          "param2": 0,
+          "then": { "name": "audio.stop", "id": "main" },
+          "else": { "name": "audio.play", "id": "main" }
+        }
+      ],
+      "onClickDrag": { "name": "button.click", "id": "btnOption1" }
+    },
+    {
+      "id": "btnOption2",
+      "texture": "empty",
+      "textureRect": [283, 28],
+      "position": [263, 166],
+      "anchor": "none",
+      "onClick": [
+        { "name": "drawable.centerOnMouseX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "steps": 17 },
+        { "name": "drawable.resizeToPositionX", "id": "progressBar2", "idToPosition": "option2", "offset": 14 },
+        { "name": "game.setProperty", "property": "soundVolume", "value": "|progressBar2|size.x|", "propRange": [0, 100], "valueRange": [14, 270] }
+      ],
+      "onClickDrag": { "name": "button.click", "id": "btnOption2" }
+    },
+    {
+      "id": "btnOption3",
+      "texture": "empty",
+      "textureRect": [283, 28],
+      "position": [263, 211],
+      "anchor": "none",
+      "onClick": [
+        { "name": "drawable.centerOnMouseX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "steps": 15 },
+        { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 }
+      ],
+      "onClickDrag": { "name": "button.click", "id": "btnOption3" }
+    },
+    {
+      "id": "music",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Music",
+      "position": [75, 116],
+      "anchor": "none",
+      "onFocus": [
+        "anchorLeftPentagram",
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" }
+      ]
+    },
+    {
+      "id": "sound",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Sound",
+      "position": [75, 161],
+      "anchor": "none",
+      "onFocus": [
+        "anchorLeftPentagram",
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar2", "anchor": "right" }
+      ]
+    },
+    {
+      "id": "gamma",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Gamma",
+      "position": [75, 206],
+      "anchor": "none",
+      "onFocus": [
+        "anchorLeftPentagram",
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar3", "anchor": "right" }
+      ]
+    },
+    {
+      "id": "colorCycling",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Color Cycling On",
+      "position": [319, 251],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": [
+        { "name": "button.setText", "id": "colorCycling", "text": "Color Cycling Off" },
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ],
+      "onToggle": [
+        { "name": "button.setText", "id": "colorCycling", "text": "Color Cycling On" },
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "previousMenu",
+      "bitmapFont": "bigtgold",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "text": "Previous Menu",
+      "position": [319, 296],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/level/saveSettings.json" },
+        { "name": "load", "file": "ui/level/gameMenu.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },
+    { "name": "drawable.moveX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "position": "|game|musicVolume|", "max": 100, "steps": 17 },
+    { "name": "drawable.moveX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "position": "|game|soundVolume|", "max": 100, "steps": 17 },
+    { "name": "drawable.anchorSizeX", "id": "progressBar1", "idAnchorTo": "option1", "offset": 14 },
+    { "name": "drawable.anchorSizeX", "id": "progressBar2", "idAnchorTo": "option2", "offset": 14 }
+  ]
+}

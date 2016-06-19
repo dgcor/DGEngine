@@ -1,0 +1,34 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "resource.popAll" },
+      { "name": "load", "file": "loadingScreens/{1}.json" },
+      { "name": "load", "file": "gameSettings.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "loadingScreen.setProgress", "progress": 10 },
+          { "name": "resource.add", "id": "level", "ignorePrevious": true },
+          { "name": "loadingScreen.setProgress", "progress": 20 },
+          { "name": "load", "file": "res/level/fonts.json" },
+          { "name": "loadingScreen.setProgress", "progress": 25 },
+          { "name": "load", "file": "res/level/textures.json" },
+          { "name": "loadingScreen.setProgress", "progress": 35 },
+          { "name": "load", "file": "level/loadBaseLevel.json" },
+          { "name": "loadingScreen.setProgress", "progress": 45},
+          { "name": "load", "file": "{3}/loadPlayerCel.json" },
+          { "name": "loadingScreen.setProgress", "progress": 55 },
+          { "name": "resource.add", "id": "currentLevel" },
+          { "name": "load", "file": "level/{2}/level.json" },
+          { "name": "loadingScreen.setProgress", "progress": 90 },
+          { "name": "load", "file": "{3}/loadPlayer.json" },
+          { "name": "loadingScreen.setProgress", "progress": 95 },
+          { "name": "load", "file": "level/{2}/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 100 },
+          { "name": "load", "file": "level/{2}/music.json" },
+          { "name": "load", "file": "level/playOrStopMusic.json" }
+        ]
+      }
+    ]
+  }
+}

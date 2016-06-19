@@ -1,0 +1,28 @@
+{
+  "palette": [
+    {
+      "id": "l1_1",
+      "file":"levels/l1data/l1_1.pal"
+    }
+  ],
+  "level": {
+    "id": "level",
+    "name": "King Leoric's Lair",
+    "palette": "l1_1",
+    "cel": "levels/l1data/l1.cel",
+    "mapSize": [96, 96],
+    "dun": { "file": "levels/l1data/sklkng1.dun" },
+    "til": "levels/l1data/l1.til",
+    "min": "levels/l1data/l1.min",
+    "minBlocks": 10,
+    "sol": "levels/l1data/l1.sol",
+    "options": "clearPlayers",
+    "onLeftClick": [
+      { "name": "level.moveToClick", "id": "level" }
+    ],
+    "onRightClick": [
+      { "name": "load", "file": "level/town/load.json" }
+    ]
+  },
+  "load": "level/l1/players.json"
+}

@@ -1,0 +1,90 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "singlePlayerNameExists",
+    "ignorePrevious": "update"
+  },
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "no" }
+    },
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    }
+  ],
+  "image": {
+    "id": "background",
+    "position": [0, 208],
+    "anchor": "none",
+    "textureRect": [640, 272],
+    "texture": "background"
+  },
+  "text": {
+    "id": "characterExists",
+    "bitmapFont": "font24s",
+    "position": [120, 236],
+    "anchor": "none",
+    "text": "Character already exists. Do you\nwant to overwrite \"{1}\"?"
+  },
+  "animation": [
+    {
+      "texture": "focus",
+      "id": "pent1",
+      "frames": 8,
+      "position": [230, 392],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "focus",
+      "id": "pent2",
+      "frames": 8,
+      "position": [380, 392],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": [
+    {
+      "id": "yes",
+      "horizontalAlign": "center",
+      "bitmapFont": "font30g",
+      "position": [319, 392],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": [
+        { "name": "io.deleteAll", "file": "{1}" },
+        { "name": "load", "file": "level/newGame.json" }
+      ],
+      "onFocus": [
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+      ],
+      "sound": "titlslct",
+      "text": "Yes"
+    },
+    {
+      "id": "no",
+      "horizontalAlign": "center",
+      "bitmapFont": "font30g",
+      "position": [319, 428],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/singlePlayer/newName.json" }
+      ],
+      "onFocus": [
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+      ],
+      "sound": "titlslct",
+      "text": "No"
+    }
+  ]
+}

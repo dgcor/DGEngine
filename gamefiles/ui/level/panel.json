@@ -1,0 +1,58 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent1",
+        "anchor": "left",
+        "offset": [-6, 2]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent2",
+        "anchor": "right",
+        "offset": [6, 2]
+      }
+    }
+  ],
+  "texture": {
+    "id": "textbox2",
+    "file": "data/textbox2.cel",
+    "palette": "town"
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "position": [347, 28],
+      "anchor": "none",
+      "textureRect": [267, 300],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder",
+      "position": [344, 25],
+      "anchor": "none",
+      "texture": "textbox2"
+    },
+    {
+      "id": "textWallSeparator",
+      "position": [346, 98],
+      "anchor": "none",
+      "textureRect": [2, 0, 266, 3],
+      "texture": "textbox2"
+    }
+  ],
+  "button": {
+    "id": "background",
+    "texture": "empty",
+    "anchor": "all",
+    "textureRect": [640, 480],
+    "resizable": true
+  }
+}

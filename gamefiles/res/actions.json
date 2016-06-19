@@ -1,0 +1,24 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "focus.click",
+      "action": { "name": "focus.click" }
+    },
+    {
+      "name": "action.set",
+      "id": "focus.clickNoSound",
+      "action": { "name": "focus.click", "playSound": false }
+    },
+    {
+      "name": "action.set",
+      "id": "focus.moveDown",
+      "action": { "name": "focus.moveDown" }
+    },
+    {
+      "name": "action.set",
+      "id": "focus.moveUp",
+      "action": { "name": "focus.moveUp" }
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "userPanelTalk"
+  },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "bitmapFont": "smaltext",
+      "color": "0xC4B78A",
+      "position": [484, 58],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Talk to Pepin"
+    }
+  ],
+  "menu": {
+    "id": "panelQuests",
+    "bitmapFont": "smaltext",
+    "position": [484, 190],
+    "horizontalAlign": "center",
+    "anchor": "none",
+    "focus": true,
+    "focusSound": "titlemov",
+    "visibleItems": 8,
+    "size": [270, 164],
+    "verticalPad": 12,
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": [
+      {
+        "text": "Gossip",
+        "onClick": [
+          { "name": "game.clearPlayingSounds" },
+          { "name": "sound.play", "id": "titlslct" },
+          { "name": "resource.popAll", "id": "userPanel" },
+          { "name": "loadRandom", "file": "towners/healer/gossip" }
+        ],
+        "onFocus": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram"
+        ]
+      },
+      {
+        "%QUESTS%": null,
+        "onClick": [
+          { "name": "game.clearPlayingSounds" },
+          { "name": "sound.play", "id": "titlslct" },
+          { "name": "resource.popAll", "id": "userPanel" },
+          { "name": "load", "file": "towners/healer/quests/%ID%.json" }
+        ],
+        "onFocus": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram"
+        ]
+      }
+    ]
+  },
+  "button": {
+    "id": "back",
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "focus": true,
+    "focusSound": "titlemov",
+    "position": [484, 298],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "text": "Back",
+    "onClick": [
+      { "name": "resource.pop" },
+      { "name": "load", "file": "towners/healer/panelMain.json" }
+    ],
+    "onFocus": [
+      "anchorLeftPentagram",
+      "anchorRightPentagram"
+    ]
+  },
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram",
+    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "0x9DA2BC" }
+  ]
+}

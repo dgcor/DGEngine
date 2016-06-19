@@ -1,0 +1,3 @@
+{
+  "load": ["level/loadBase.json", "cutstart", "town", "{1}"]
+}

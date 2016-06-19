@@ -1,0 +1,14 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "smithText",
+    "25",
+    "towners/gillian/quests/butcher.txt"
+  ],
+  "audio": {
+    "id": "bmaid08",
+    "file": "sfx/Towners/bmaid08.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -1,0 +1,22 @@
+/*.db
+/*.depend
+/*.dll
+/*.exe
+/*.layout
+/*.opendb
+/*.vcxproj.filters
+/*.vcxproj.user
+/.svn
+/.vs
+/bin
+/Debug
+/DIABDAT
+/DIABDAT.zip
+/gamefiles.zip
+/gamefiles/res/icon.png
+/obj
+/PhysicsFS
+/Release
+/Release Static
+/sfeMovie
+/SFML

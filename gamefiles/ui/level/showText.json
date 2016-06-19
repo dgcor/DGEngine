@@ -1,0 +1,55 @@
+{
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "{1}"
+    }
+  ],
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "textWallButton" }
+  },
+  "texture": {
+    "id": "textbox",
+    "file": "data/textbox.cel",
+    "palette": "town"
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "position": [27, 28],
+      "anchor": "none",
+      "textureRect": [588, 300],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder",
+      "position": [24, 25],
+      "anchor": "none",
+      "texture": "textbox"
+    }
+  ],
+  "button": {
+    "id": "textWallButton",
+    "anchor": "all",
+    "textureRect": [640, 480],
+    "texture": "empty",
+    "resizable": true,
+    "onClick": {
+      "name": "resource.pop"
+    }
+  },
+  "scrollableText": {
+    "id": "textBox",
+    "bitmapFont": "font30g",
+    "refresh": {2},
+    "file": "{3}",
+    "splitText": 40,
+    "position": [48, 49],
+    "anchor": "none",
+    "boxSize": [538, 257],
+    "onComplete": {
+      "name": "resource.pop"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+The Android install instructions are based on the SFML Android
+build instructions located at:
+https://github.com/SFML/SFML/wiki/Tutorial:-Building-SFML-for-Android
+
+This project is based on the SFML Android example that comes with SFML.
+If you are able to build SFML's Android example, you will be able to build
+this project as well.
+
+Use a recent Android NDK as this project uses C++14.
+
+Copy all the files inside the /src folder to the /android/jni folder.
+
+You need physfs for Android. You can use this one:
+https://github.com/edubart/android-libs/tree/master/jni/physfs-hg
+Copy these files to your Android NDK's sources folder.
+
+Movie playback is not supported on Android. The preprocessor
+define USE_SFML_MOVIE_STUB is used to use a stub class that does nothing
+when atempting to play a video.
+
+The Android port, for now, reads the files from the root of the sdcard.
+You need DIABDAT.zip and the contents of the gamefiles folder in a zip.
+Note: make sure gamefiles.zip has main.json at the root of the archive.
+
+adb push DIABDAT.zip /sdcard/DIABDAT.zip
+adb push gamefiles.zip /sdcard/gamefiles.zip
+
+For quick reference, here are the commands to build the project:
+
+android update project --target "android-23" --path .
+ndk-build
+ant debug
+
+adb install bin/NativeActivity-debug.apk

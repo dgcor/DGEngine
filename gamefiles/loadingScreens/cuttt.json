@@ -1,0 +1,27 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "palette": {
+    "id": "cuttt",
+    "file":"gendata/cuttt.pal"
+  },
+  "texture": {
+    "id": "cuttt",
+    "file":"gendata/cuttt.cel",
+    "palette": "cuttt"
+  },
+  "loadingScreen": {
+    "texture": "cuttt",
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0x5F3139",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

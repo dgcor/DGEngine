@@ -1,0 +1,62 @@
+This project's license is GNU GPL v3 because it uses parts of another
+projact called freeablo (CEL decoding) that has the same license.
+
+https://github.com/wheybags/freeablo
+
+A part of the BitmapFont class is based on a bitmap font implementation for SDL
+by Lazy Foo' Productions. The license is incompatible with GPL like licenses.
+
+http://lazyfoo.net
+
+The Liberation Serif Regular font uses the SIL Open Font License.
+
+http://scripts.sil.org/OFL
+
+PCX decoding function is based on an implementation by David Henry.
+It uses the MIT license.
+
+http://tfc.duke.free.fr/index.html
+
+PhysFS uses the zlib license.
+
+https://icculus.org/physfs/
+
+RapidJSON uses the MIT license.
+
+https://github.com/miloyip/rapidjson/
+
+SFML Animation class based on an implementation by Maximilian Wagenbach.
+It uses the zlib/png license.
+
+SFML PhysFS class based on an implementation by Oscar Triano.
+It uses the zlib/png license.
+
+https://github.com/SFML/SFML/wiki/Source:-SFML-PhysFS
+
+sfeMovie uses the LGPL v2.1 license.
+
+https://github.com/Yalir/sfeMovie
+
+SFML uses the zlib/png license.
+
+https://github.com/SFML/SFML
+
+Other SFML code snippets were taken from the wiki
+and should hava a permissive license.
+
+Mapbox Variant uses the BSD license.
+
+https://github.com/mapbox/variant/
+
+Small utility functions (string manipulation, etc) were taken from stackoverflow
+which use the cc by-sa 3.0 license with attribution required. I will update
+those functions in the future and point out the original authors in the next commits.
+
+As you can see, ths project uses code with many different licenses.
+Some problems may arise because of it. Personally, I would use a BSD/MIT/zlib like
+license. However, I do include code from GPL, even if relatively small, so I will use
+that for now. I will contact some of the authors of some of these libraries,
+namely Lazy Foo to see what they say. In case a problem arises, I will update
+that piece of code with something else.
+
+If you feel there is a problem with licensing, contact me.
