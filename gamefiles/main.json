@@ -12,19 +12,10 @@
   "mountFile": [
     { "file": "DIABDAT.zip", "append": true }
   ],
-  "saveDir": ".diablo",
-  "icon": {
-    "file":"res/icon.png"
-  },
-  "cursor": {
-    "show": false
-  },
-  "load": "settings.json",
-  "load": "res/actions.json",
-  "load": "res/fonts.json",
-  "load": "res/music.json",
-  "load": "res/palettes.json",
-  "load": "res/sounds.json",
-  "load": "res/textures.json",
-  "load": "ui/splashScreen.json"
+  "action": {
+    "name": "if.fileExists",
+    "param1": "ui_art/title.pcx",
+    "then": { "name": "load", "file": "ui/loadMain.json" },
+    "else": { "name": "load", "file": "ui/dataMissing.json" }
+  }
 }

@@ -5,7 +5,7 @@ Palette::Palette(const char* file)
 {
 	sf::PhysFSStream stream(file);
 
-	if (stream.getSize() < 768)
+	if (stream.hasError() == true || stream.getSize() < 768)
 	{
 		return;
 	}

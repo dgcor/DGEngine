@@ -24,6 +24,10 @@ public:
 
 	bool load()
 	{
+		if (file == nullptr || file->hasError() == true)
+		{
+			return false;
+		}
 		bool ret = movie.openFromStream(*file);
 		if (ret == true)
 		{

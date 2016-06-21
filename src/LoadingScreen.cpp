@@ -16,7 +16,7 @@ void LoadingScreen::setProgress(int percent_)
 	else
 	{
 		sf::Vector2f newSize(barSize);
-		newSize.x *= (percent_ / 100.0f);
+		newSize.x = std::round(newSize.x * (percent_ / 100.0f));
 		progressBar.setSize(newSize);
 	}
 }

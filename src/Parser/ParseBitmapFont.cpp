@@ -29,6 +29,11 @@ namespace Parser
 		else if (isValidString(elem, "textureId"))
 		{
 			img = parseTextureImg(game, elem);
+			auto imgSize = img.getSize();
+			if (imgSize.x == 0 || imgSize.y == 0)
+			{
+				return;
+			}
 			texture = std::make_shared<sf::Texture>();
 			texture->loadFromImage(img);
 			texture->setSmooth(getBool(elem, "smooth"));

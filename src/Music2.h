@@ -16,7 +16,14 @@ public:
 	Music2(const char* file_) : file(std::make_unique<sf::PhysFSStream>(file_)),
 		music(std::make_unique<sf::Music>()) {}
 
-	bool load() { return music->openFromStream(*file); }
+	bool load()
+	{
+		if (file == nullptr || file->hasError() == true)
+		{
+			return false;
+		}
+		return music->openFromStream(*file);
+	}
 
 	void play() { music->play(); }
 	void pause() { music->pause(); }
