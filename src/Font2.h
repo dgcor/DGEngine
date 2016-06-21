@@ -12,5 +12,12 @@ private:
 public:
 	Font2(const std::shared_ptr<sf::PhysFSStream>& file_) : file(file_) {}
 
-	bool load() { return loadFromStream(*file); }
+	bool load()
+	{
+		if (file == nullptr || file->hasError() == true)
+		{
+			return false;
+		}
+		return loadFromStream(*file);
+	}
 };

@@ -34,7 +34,7 @@ namespace Parser
 				return nullptr;
 			}
 
-			auto size = getUInt(elem, "fontSize");
+			auto size = getUInt(elem, "fontSize", 12);
 			auto text = std::make_unique<StringText>(displayText, *font, size);
 			text->setColor(getColor(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign")));

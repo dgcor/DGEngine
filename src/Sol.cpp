@@ -5,6 +5,11 @@ Sol::Sol(const std::string& path)
 {
 	sf::PhysFSStream file(path);
 
+	if (file.hasError() == true)
+	{
+		return;
+	}
+
 	auto size = (unsigned)file.getSize();
 	data.resize(size);
 

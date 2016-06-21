@@ -5,6 +5,11 @@ Min::Min(const std::string& filename, size_t minSize)
 {
 	sf::PhysFSStream file(filename);
 
+	if (file.hasError() == true)
+	{
+		return;
+	}
+
 	auto numPillars = file.getSize() / (minSize * 2);
 
 	file.seek(0);

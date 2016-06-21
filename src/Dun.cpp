@@ -7,6 +7,11 @@ Dun::Dun(const std::string& filename)
 {
 	sf::PhysFSStream file(filename);
 
+	if (file.hasError() == true)
+	{
+		return;
+	}
+
 	int16_t temp;
 	file.read(&temp, 2);
 	width = temp;
