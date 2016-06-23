@@ -1,5 +1,7 @@
-This project's license is GNU GPL v3 because it uses parts of another
-projact called freeablo (CEL decoding) that has the same license.
+This project's license is zLib. It uses parts of another
+projact called freeablo (CEL decoding) licensed under GPLv3.
+The project's author has granted permission to use that code in
+this project under the zLib license.
 
 https://github.com/wheybags/freeablo
 
@@ -51,12 +53,5 @@ https://github.com/mapbox/variant/
 Small utility functions (string manipulation, etc) were taken from stackoverflow
 which use the cc by-sa 3.0 license with attribution required. I will update
 those functions in the future and point out the original authors in the next commits.
-
-As you can see, ths project uses code with many different licenses.
-Some problems may arise because of it. Personally, I would use a BSD/MIT/zlib like
-license. However, I do include code from GPL, even if relatively small, so I will use
-that for now. I will contact some of the authors of some of these libraries,
-namely Lazy Foo to see what they say. In case a problem arises, I will update
-that piece of code with something else.
 
 If you feel there is a problem with licensing, contact me.
