@@ -16,10 +16,26 @@ namespace Parser
 			return;
 		}
 
+		std::shared_ptr<Action> action;
+		if (elem.HasMember("onComplete"))
+		{
+			action = parseAction(game, elem["onComplete"]);
+		}
 		auto movie = std::make_shared<Movie2>(elem["file"].GetString());
 		if (movie->load() == false)
 		{
+			if (action != nullptr)
+			{
+				game.Events().addBack(action);
+			}
 			return;
+		}
+		else
+		{
+			if (action != nullptr)
+			{
+				movie->setActionComplete(action);
+			}
 		}
 
 		auto anchor = getAnchor(elem, "anchor");
@@ -46,11 +62,6 @@ namespace Parser
 		movie->setVolume((float)vol);
 
 		movie->Visible(getBool(elem, "visible", true));
-
-		if (elem.HasMember("onComplete"))
-		{
-			movie->setActionComplete(parseAction(game, elem["onComplete"]));
-		}
 
 		game.Resources().addDrawable(elem["id"].GetString(), movie);
 

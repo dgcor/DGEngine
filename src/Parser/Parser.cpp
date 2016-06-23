@@ -28,12 +28,16 @@ namespace Parser
 		if (lastIdx != std::string::npos)
 		{
 			filePath = filePath.substr(0, lastIdx);
-		}
 
-		if (Utils::endsWith(filePath, "\\") == false &&
-			Utils::endsWith(filePath, "/") == false)
+			if (Utils::endsWith(filePath, "\\") == false &&
+				Utils::endsWith(filePath, "/") == false)
+			{
+				filePath += PHYSFS_getDirSeparator();
+			}
+		}
+		else
 		{
-			filePath += PHYSFS_getDirSeparator();
+			filePath = std::string(".") + PHYSFS_getDirSeparator();
 		}
 
 		game.setPath(filePath);
