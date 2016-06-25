@@ -75,6 +75,11 @@ private:
 	void onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt);
 	void onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt);
 	void onMouseMoved(const sf::Event::MouseMoveEvent& evt);
+#ifdef __ANDROID__
+	void onTouchBegan(const sf::Event::TouchEvent& evt);
+	void onTouchMoved(const sf::Event::TouchEvent& evt);
+	void onTouchEnded(const sf::Event::TouchEvent& evt);
+#endif
 
 	void updateMouse(const sf::Vector2i mousePos);
 	void checkKeyPress();

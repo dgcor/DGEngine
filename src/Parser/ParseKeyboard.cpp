@@ -20,8 +20,11 @@ namespace Parser
 			evt.alt = getBool(elem, "alt");
 			evt.control = getBool(elem, "control");
 			evt.shift = getBool(elem, "shift");
+#ifdef __ANDROID__
+			evt.system = false;
+#else
 			evt.system = getBool(elem, "system");
-
+#endif
 			const auto& keyElem = elem["key"];
 
 			if (keyElem.IsArray() == true)

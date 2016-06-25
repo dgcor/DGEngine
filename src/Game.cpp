@@ -119,6 +119,17 @@ void Game::processEvents()
 		case sf::Event::MouseMoved:
 			onMouseMoved(evt.mouseMove);
 			break;
+#ifdef __ANDROID__
+		case sf::Event::TouchBegan:
+			onTouchBegan(evt.touch);
+			break;
+		case sf::Event::TouchMoved:
+			onTouchMoved(evt.touch);
+			break;
+		case sf::Event::TouchEnded:
+			onTouchEnded(evt.touch);
+			break;
+#endif
 		default:
 			break;
 		}
@@ -232,6 +243,9 @@ void Game::onKeyPressed(const sf::Event::KeyEvent& evt)
 	if (disableInput == false)
 	{
 		keyPressed = evt;
+#ifdef __ANDROID__
+		keyPressed.system = false;
+#endif
 	}
 }
 
@@ -269,7 +283,33 @@ void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
 	updateMouse(sf::Vector2i(evt.x, evt.y));
 	mouseMoved = true;
 }
+#ifdef __ANDROID__
+void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
+{
+	updateMouse(sf::Vector2i(evt.x, evt.y));
+	sf::Event::MouseButtonEvent mouseEvt;
+	mouseEvt.button = sf::Mouse::Left;
+	mouseEvt.x = evt.x;
+	mouseEvt.y = evt.y;
+	onMouseButtonPressed(mouseEvt);
+}
 
+void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
+{
+	updateMouse(sf::Vector2i(evt.x, evt.y));
+	mouseMoved = true;
+}
+
+void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
+{
+	updateMouse(sf::Vector2i(evt.x, evt.y));
+	sf::Event::MouseButtonEvent mouseEvt;
+	mouseEvt.button = sf::Mouse::Left;
+	mouseEvt.x = evt.x;
+	mouseEvt.y = evt.y;
+	onMouseButtonReleased(mouseEvt);
+}
+#endif
 void Game::updateMouse()
 {
 	updateMouse(sf::Mouse::getPosition(window));
