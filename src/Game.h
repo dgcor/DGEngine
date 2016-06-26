@@ -26,25 +26,25 @@ private:
 	sf::Vector2u oldSize;
 	sf::Vector2u size;
 	sf::Vector2u windowTexSize;
-	unsigned framerate;
+	unsigned framerate = 60;
 	bool smoothScreen = false;
-	bool stretchToFit;
+	bool stretchToFit = false;
 	bool keepAR = true;
-	bool disableInput;
-	bool pauseOnFocusLoss;
-	bool paused;
+	bool disableInput = false;
+	bool pauseOnFocusLoss = false;
+	bool paused = false;
 
 	sf::Vector2f mousePosition;
 	sf::Mouse::Button mouseButton;
 	sf::Event::MouseWheelScrollEvent mouseWheel;
 	sf::Clock mouseClickClock;
-	bool mouseClicked;
-	bool mouseDoubleClicked;
-	bool mouseMoved;
-	bool mousePressed;
-	bool mouseReleased;
-	bool mouseScrolled;
-	char keyboardChar;
+	bool mouseClicked = false;
+	bool mouseDoubleClicked = false;
+	bool mouseMoved = false;
+	bool mousePressed = false;
+	bool mouseReleased = false;
+	bool mouseScrolled = false;
+	char keyboardChar = false;
 	sf::Event::KeyEvent keyPressed;
 
 	unsigned musicVolume = 100;
@@ -165,7 +165,7 @@ public:
 
 	void MinWidth(unsigned width_) { size.x = width_; }
 	void MinHeight(unsigned height_) { size.y = height_; }
-	void Framerate(unsigned framerate_) { framerate = std::min(framerate_, 60u); }
+	void Framerate(unsigned framerate_) { framerate = std::min(std::max(framerate_, 30u), 60u); }
 	void MousePosition(const sf::Vector2f& mouse_) { mousePosition = mouse_; }
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);

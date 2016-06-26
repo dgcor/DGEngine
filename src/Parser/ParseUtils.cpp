@@ -386,15 +386,15 @@ namespace Parser
 					char ch = str[0];
 					if (ch >= 'A' && ch <= 'Z')
 					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + 'A' - ch);
+						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'A');
 					}
 					if (ch >= 'a' && ch <= 'z')
 					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + 'a' - ch);
+						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'a');
 					}
 					if (ch >= '0' && ch <= '9')
 					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + '0' - ch);
+						return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + ch - '0');
 					}
 					if (ch == ' ')
 					{

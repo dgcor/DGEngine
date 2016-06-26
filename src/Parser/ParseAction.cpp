@@ -287,6 +287,24 @@ namespace Parser
 				getUInt(elem, "max"),
 				getVariable(elem, "steps"));
 		}
+		case str2int("drawable.moveStepX"):
+		{
+			return std::make_shared<ActDrawableMoveStepX>(
+				getString(elem, "id"),
+				getString(elem, "idAnchorTo"),
+				getUInt(elem, "range"),
+				getVariable(elem, "steps"),
+				getInt(elem, "stepOffset") );
+		}
+		case str2int("drawable.moveStepY"):
+		{
+			return std::make_shared<ActDrawableMoveStepY>(
+				getString(elem, "id"),
+				getString(elem, "idAnchorTo"),
+				getUInt(elem, "range"),
+				getVariable(elem, "steps"),
+				getInt(elem, "stepOffset"));
+		}
 		case str2int("drawable.resizeOnMouseX"):
 		{
 			return std::make_shared<ActDrawableResizeOnMouseX>(
@@ -388,6 +406,12 @@ namespace Parser
 		case str2int("focus.moveUp"):
 		{
 			return std::make_shared<ActFocusMoveUp>();
+		}
+		case str2int("focus.set"):
+		{
+			return std::make_shared<ActFocusSet>(
+				getString(elem, "id"),
+				getBool(elem, "focus", true));
 		}
 		case str2int("game.clearPlayingSounds"):
 		{

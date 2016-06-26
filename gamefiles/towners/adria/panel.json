@@ -13,11 +13,11 @@
       "action": "focus.click"
     },
     {
-      "key": "up",
+      "key": ["up", "w"],
       "action": "focus.moveUp"
     },
     {
-      "key": "down",
+      "key": ["down", "s"],
       "action": "focus.moveDown"
     }
   ],

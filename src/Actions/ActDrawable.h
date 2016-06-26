@@ -420,6 +420,104 @@ public:
 	}
 };
 
+class ActDrawableMoveStepX : public Action
+{
+private:
+	std::string id;
+	std::string idAnchorTo;
+	unsigned range;
+	Variable steps;
+	int stepOffset;
+
+public:
+	ActDrawableMoveStepX(const std::string& id_, const std::string& idAnchorTo_,
+		unsigned range_, const Variable& steps_, int stepOffset_)
+		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
+		steps(steps_), stepOffset(stepOffset_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<UIObject>(id);
+		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		if (item != nullptr && itemAnchor != nullptr)
+		{
+			auto itemPos = itemAnchor->DrawPosition();
+			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			if (numSteps > 1)
+			{
+				numSteps--;
+				auto newRange = (float)std::max(0, (int)range - (int)item->Size().x);
+				auto currSize = item->DrawPosition().x - itemPos.x;
+				auto currStep = std::round((currSize * numSteps) / newRange);
+				auto newStep = currStep + (float)stepOffset;
+				if (newStep < 0)
+				{
+					newStep = 0;
+				}
+				else if (newStep > numSteps)
+				{
+					newStep = numSteps;
+				}
+				if (newStep >= 1)
+				{
+					itemPos.x += std::round((newStep * newRange) / numSteps);
+				}
+			}
+			item->Position(itemPos);
+		}
+		return true;
+	}
+};
+
+class ActDrawableMoveStepY : public Action
+{
+private:
+	std::string id;
+	std::string idAnchorTo;
+	unsigned range;
+	Variable steps;
+	int stepOffset;
+
+public:
+	ActDrawableMoveStepY(const std::string& id_, const std::string& idAnchorTo_,
+		unsigned range_, const Variable& steps_, int stepOffset_)
+		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
+		steps(steps_), stepOffset(stepOffset_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<UIObject>(id);
+		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		if (item != nullptr && itemAnchor != nullptr)
+		{
+			auto itemPos = itemAnchor->DrawPosition();
+			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			if (numSteps > 1)
+			{
+				numSteps--;
+				auto newRange = (float)std::max(0, (int)range - (int)item->Size().y);
+				auto currSize = item->DrawPosition().y - itemPos.y;
+				auto currStep = std::round((currSize * numSteps) / newRange);
+				auto newStep = currStep + (float)stepOffset;
+				if (newStep < 0)
+				{
+					newStep = 0;
+				}
+				else if (newStep > numSteps)
+				{
+					newStep = numSteps;
+				}
+				if (newStep >= 1)
+				{
+					itemPos.y += std::round((newStep * newRange) / numSteps);
+				}
+			}
+			item->Position(itemPos);
+		}
+		return true;
+	}
+};
+
 class ActDrawableResizeOnMouseX : public Action
 {
 private:
