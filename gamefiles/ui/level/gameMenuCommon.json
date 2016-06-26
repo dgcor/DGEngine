@@ -19,7 +19,7 @@
       "action": "focus.click"
     },
     {
-      "key": "up",
+      "key": ["up", "w"],
       "action": "focus.moveUp"
     },
     {
@@ -28,7 +28,7 @@
       "action": "focus.moveUp"
     },
     {
-      "key": ["down", "tab"],
+      "key": ["down", "s", "tab"],
       "action": "focus.moveDown"
     },
     {

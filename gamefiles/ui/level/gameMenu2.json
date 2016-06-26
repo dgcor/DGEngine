@@ -1,5 +1,95 @@
 {
-  "action": { "name": "resource.add", "id": "gameMenu2" },
+  "action": [
+    { "name": "resource.add", "id": "gameMenu2" },
+    {
+      "name": "action.set",
+      "id": "updateAudioProgressBar",
+      "action": [
+        { "name": "drawable.resizeToPositionX", "id": "progressBar1", "idToPosition": "option1", "offset": 14 },
+        { "name": "game.setProperty", "property": "musicVolume", "value": "|progressBar1|size.x|", "propRange": [0, 100], "valueRange": [14, 270] },
+        {
+          "name": "if.equal",
+          "param1": "|game|musicVolume|",
+          "param2": 0,
+          "then": { "name": "audio.stop", "id": "main" },
+          "else": { "name": "audio.play", "id": "main" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSoundProgressBar",
+      "action": [
+        { "name": "drawable.resizeToPositionX", "id": "progressBar2", "idToPosition": "option2", "offset": 14 },
+        { "name": "game.setProperty", "property": "soundVolume", "value": "|progressBar2|size.x|", "propRange": [0, 100], "valueRange": [14, 270] }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateGammaProgressBar",
+      "action": { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 }
+    }
+  ],
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateAudioUpKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "steps": 17, "stepOffset": 1 },
+        "updateAudioProgressBar"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateAudioDownKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "steps": 17, "stepOffset": -1 },
+        "updateAudioProgressBar"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSoundUpKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "steps": 17, "stepOffset": 1 },
+        "updateSoundProgressBar"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSoundDownKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "steps": 17, "stepOffset": -1 },
+        "updateSoundProgressBar"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateGammaUpKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "steps": 15, "stepOffset": 1 },
+        "updateGammaProgressBar"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateGammaDownKeyboardShortcut",
+      "action": [
+        { "name": "drawable.moveStepX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "steps": 15, "stepOffset": -1 },
+        "updateGammaProgressBar"
+      ]
+    }
+  ],
+  "keyboard": [
+    {
+      "key": ["a", "left"],
+      "action": "updateAudioDownKeyboardShortcut"
+    },
+    {
+      "key": ["d", "right"],
+      "action": "updateAudioUpKeyboardShortcut"
+    }
+  ],
   "texture": [
     {
       "id": "optbar",
@@ -80,19 +170,13 @@
       "textureRect": [283, 28],
       "position": [263, 121],
       "anchor": "none",
+      "sound": "titlemov",
       "onClick": [
+        { "name": "button.click", "id": "music", "playSound": false },
         { "name": "drawable.centerOnMouseX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "steps": 17 },
-        { "name": "drawable.resizeToPositionX", "id": "progressBar1", "idToPosition": "option1", "offset": 14 },
-        { "name": "game.setProperty", "property": "musicVolume", "value": "|progressBar1|size.x|", "propRange": [0, 100], "valueRange": [14, 270] },
-        {
-          "name": "if.equal",
-          "param1": "|game|musicVolume|",
-          "param2": 0,
-          "then": { "name": "audio.stop", "id": "main" },
-          "else": { "name": "audio.play", "id": "main" }
-        }
+        "updateAudioProgressBar"
       ],
-      "onClickDrag": { "name": "button.click", "id": "btnOption1" }
+      "onClickDrag": { "name": "button.click", "id": "btnOption1", "playSound": false }
     },
     {
       "id": "btnOption2",
@@ -100,12 +184,13 @@
       "textureRect": [283, 28],
       "position": [263, 166],
       "anchor": "none",
+      "sound": "titlemov",
       "onClick": [
+        { "name": "button.click", "id": "sound", "playSound": false },
         { "name": "drawable.centerOnMouseX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "steps": 17 },
-        { "name": "drawable.resizeToPositionX", "id": "progressBar2", "idToPosition": "option2", "offset": 14 },
-        { "name": "game.setProperty", "property": "soundVolume", "value": "|progressBar2|size.x|", "propRange": [0, 100], "valueRange": [14, 270] }
+        "updateSoundProgressBar"
       ],
-      "onClickDrag": { "name": "button.click", "id": "btnOption2" }
+      "onClickDrag": { "name": "button.click", "id": "btnOption2", "playSound": false }
     },
     {
       "id": "btnOption3",
@@ -113,53 +198,100 @@
       "textureRect": [283, 28],
       "position": [263, 211],
       "anchor": "none",
+      "sound": "titlemov",
       "onClick": [
+        { "name": "button.click", "id": "gamma", "playSound": false },
         { "name": "drawable.centerOnMouseX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "steps": 15 },
-        { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 }
+        "updateGammaProgressBar"
       ],
-      "onClickDrag": { "name": "button.click", "id": "btnOption3" }
+      "onClickDrag": { "name": "button.click", "id": "btnOption3", "playSound": false }
     },
     {
       "id": "music",
       "bitmapFont": "bigtgold",
       "sound": "titlemov",
       "focus": true,
-      "focusSound": "titlemov",
+      "focusOnClick": false,
       "text": "Music",
       "position": [75, 116],
       "anchor": "none",
-      "onFocus": [
+      "onClick": [
         "anchorLeftPentagram",
-        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" }
-      ]
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },
+        { "name": "loadJson",
+          "json": {
+            "keyboard": [
+              {
+                "key": ["a", "left"],
+                "action": "updateAudioDownKeyboardShortcut"
+              },
+              {
+                "key": ["d", "right"],
+                "action": "updateAudioUpKeyboardShortcut"
+              }
+            ]
+          }
+        }
+      ],
+      "onFocus": { "name": "button.click", "id": "music" }
     },
     {
       "id": "sound",
       "bitmapFont": "bigtgold",
       "sound": "titlemov",
       "focus": true,
-      "focusSound": "titlemov",
+      "focusOnClick": false,
       "text": "Sound",
       "position": [75, 161],
       "anchor": "none",
-      "onFocus": [
+      "onClick": [
         "anchorLeftPentagram",
-        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar2", "anchor": "right" }
-      ]
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar2", "anchor": "right" },
+        { "name": "loadJson",
+          "json": {
+            "keyboard": [
+              {
+                "key": ["a", "left"],
+                "action": "updateSoundDownKeyboardShortcut"
+              },
+              {
+                "key": ["d", "right"],
+                "action": "updateSoundUpKeyboardShortcut"
+              }
+            ]
+          }
+        }
+      ],
+      "onFocus": { "name": "button.click", "id": "sound" }
     },
     {
       "id": "gamma",
       "bitmapFont": "bigtgold",
       "sound": "titlemov",
       "focus": true,
-      "focusSound": "titlemov",
+      "focusOnClick": false,
       "text": "Gamma",
       "position": [75, 206],
       "anchor": "none",
-      "onFocus": [
+      "onClick": [
         "anchorLeftPentagram",
-        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar3", "anchor": "right" }
-      ]
+        { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar3", "anchor": "right" },
+        { "name": "loadJson",
+          "json": {
+            "keyboard": [
+              {
+                "key": ["a", "left"],
+                "action": "updateGammaDownKeyboardShortcut"
+              },
+              {
+                "key": ["d", "right"],
+                "action": "updateGammaUpKeyboardShortcut"
+              }
+            ]
+          }
+        }
+      ],
+      "onFocus": { "name": "button.click", "id": "gamma" }
     },
     {
       "id": "colorCycling",
