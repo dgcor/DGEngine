@@ -1,4 +1,5 @@
 #include "ParseCursor.h"
+#include <cmath>
 #include "ParseAnimation.h"
 #include "ParseUtils.h"
 
