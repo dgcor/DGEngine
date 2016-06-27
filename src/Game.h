@@ -26,29 +26,29 @@ private:
 	sf::Vector2u oldSize;
 	sf::Vector2u size;
 	sf::Vector2u windowTexSize;
-	unsigned framerate = 60;
-	bool smoothScreen = false;
-	bool stretchToFit = false;
-	bool keepAR = true;
-	bool disableInput = false;
-	bool pauseOnFocusLoss = false;
-	bool paused = false;
+	unsigned framerate{ 60 };
+	bool smoothScreen{ false };
+	bool stretchToFit{ false };
+	bool keepAR{ true };
+	bool disableInput{ false };
+	bool pauseOnFocusLoss{ false };
+	bool paused{ false };
 
 	sf::Vector2f mousePosition;
 	sf::Mouse::Button mouseButton;
 	sf::Event::MouseWheelScrollEvent mouseWheel;
 	sf::Clock mouseClickClock;
-	bool mouseClicked = false;
-	bool mouseDoubleClicked = false;
-	bool mouseMoved = false;
-	bool mousePressed = false;
-	bool mouseReleased = false;
-	bool mouseScrolled = false;
-	char keyboardChar = false;
+	bool mouseClicked{ false };
+	bool mouseDoubleClicked{ false };
+	bool mouseMoved{ false };
+	bool mousePressed{ false };
+	bool mouseReleased{ false };
+	bool mouseScrolled{ false };
+	char keyboardChar{ false };
 	sf::Event::KeyEvent keyPressed;
 
-	unsigned musicVolume = 100;
-	unsigned soundVolume = 100;
+	unsigned musicVolume{ 100 };
+	unsigned soundVolume{ 100 };
 
 	sf::Time elapsedTime;
 
