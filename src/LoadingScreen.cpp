@@ -1,4 +1,5 @@
 #include "LoadingScreen.h"
+#include <cmath>
 #include "Game.h"
 #include "GameUtils.h"
 

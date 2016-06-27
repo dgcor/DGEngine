@@ -1,4 +1,5 @@
 #include "BitmapFont.h"
+#include <cmath>
 #include "Game.h"
 
 // This piece of code was originally from Lazy Foo' Productions (http://lazyfoo.net/)
