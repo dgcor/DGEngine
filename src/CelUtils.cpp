@@ -89,6 +89,19 @@ sf::Image CelUtils::loadImage(const char* fileName, const Palette& pal, bool isC
 	return img;
 }
 
+sf::Image CelUtils::loadImageFrame(const char* fileName, const Palette& pal, bool isCl2,
+	size_t frameIdx)
+{
+	CelFile celFile(fileName, isCl2, false);
+
+	if (celFile.Size() > 0 && frameIdx < celFile.Size())
+	{
+		return celFile.get(frameIdx, pal);
+	}
+
+	return sf::Image();
+}
+
 sf::Image CelUtils::loadBitmapFontImage(const char* fileName, const char* fileNameBin,
 	const Palette& pal, bool isCl2)
 {

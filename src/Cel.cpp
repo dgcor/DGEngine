@@ -452,6 +452,11 @@ CelFile::CelFile(const char* filename, bool isCl2_, bool isTileCel_)
 {
 	sf::PhysFSStream file(filename);
 
+	if (file.hasError() == true)
+	{
+		return;
+	}
+
 	uint32_t first;
 	file.read(&first, 4);
 

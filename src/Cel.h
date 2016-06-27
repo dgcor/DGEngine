@@ -40,7 +40,7 @@ class CelFile
 {
 private:
 	std::vector<std::vector<uint8_t>> mFrames;
-	size_t animLength;
+	size_t animLength{ 0 };
 	bool isCl2;
 	bool isTileCel;
 

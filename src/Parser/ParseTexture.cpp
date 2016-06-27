@@ -35,9 +35,18 @@ namespace Parser
 			}
 			bool isCl2 = Utils::endsWith(fileName, "cl2");
 
-			if (elem.HasMember("charMapFile"))
+			if (elem.HasMember("charMapFile") == true)
 			{
 				img = CelUtils::loadBitmapFontImage(fileName.c_str(), elem["charMapFile"].GetString(), *pal, isCl2);
+			}
+			else if (elem.HasMember("frame") == true)
+			{
+				auto frameIdx = getUInt_(elem["frame"]);
+				if (frameIdx > 0)
+				{
+					frameIdx--;
+				}
+				img = CelUtils::loadImageFrame(fileName.c_str(), *pal, isCl2, frameIdx);
 			}
 			else if (numFramesX != nullptr && numFramesY != nullptr)
 			{
