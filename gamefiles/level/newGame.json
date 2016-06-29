@@ -20,7 +20,6 @@
           { "name": "loadingScreen.setProgress", "progress": 45 },
           { "name": "load", "file": ["level/player/save.json", "%charName%", "%charClass%"] },
           { "name": "load", "file": ["level/player/loadCel.json", "%charName%"] },
-          { "name": "load", "file": "level/loadBaseLevel.json" },
           { "name": "loadingScreen.setProgress", "progress": 55 },
           { "name": "resource.add", "id": "currentLevel" },
           { "name": "load", "file": "level/town/level.json" },

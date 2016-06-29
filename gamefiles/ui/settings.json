@@ -52,9 +52,6 @@
       "mask": "0x00FF00"
     }
   ],
-  "cursor": {
-    "texture": "cursor"
-  },
   "image": {
     "id": "mainmenu",
     "texture": "mainmenu",
