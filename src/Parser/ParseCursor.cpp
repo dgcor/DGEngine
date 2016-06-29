@@ -21,9 +21,19 @@ namespace Parser
 
 	void parseCursor(Game& game, const Value& elem)
 	{
+		if (elem.IsNull() == true)
+		{
+			game.Resources().addCursor(nullptr);
+			return;
+		}
+		else if (elem.IsObject() == false)
+		{
+			return;
+		}
+
 		game.Window().setMouseCursorVisible(getBool(elem, "show"));
 
-		if (getBool(elem, "pop") == true)
+		if (getBool(elem, "pop", false) == true)
 		{
 			game.Resources().popCursor();
 			game.updateMouse();
@@ -40,10 +50,6 @@ namespace Parser
 			cursor->setOrigin(getOrigin(elem, size.x, size.y));
 			game.Resources().addCursor(cursor);
 			game.updateMouse();
-		}
-		else
-		{
-			game.Resources().addCursor(nullptr);
 		}
 	}
 }
