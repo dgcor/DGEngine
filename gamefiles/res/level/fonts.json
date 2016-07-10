@@ -5,24 +5,23 @@
       "textureId": "smaltext",
       "palette": "town",
       "file": "ctrlpan/smaltext.cel",
-      "charMapFile": "res/level/smaltextMap.bin",
-      "charMapIgnore": 255
+      "charMapFile": "res/level/smaltextCharMap.bin",
+      "charSizeFile": "res/level/smaltextSize.bin"
     },
     {
       "id": "medtexts",
       "textureId": "medtexts",
       "palette": "town",
       "file": "data/medtexts.cel",
-      "charMapFile": "res/level/medBigCharMap.bin",
-      "charMapIgnore": 255
+      "charMapFile": "res/level/medtextsCharMap.bin",
+      "charSizeFile": "res/level/medtextsSize.bin"
     },
     {
       "id": "bigtgold",
       "textureId": "bigtgold",
       "palette": "town",
       "file": "data/bigtgold.cel",
-      "charMapFile": "res/level/medBigCharMap.bin",
-      "charMapIgnore": 255,
+      "charMapFile": "res/level/bigtgoldCharMap.bin",
       "charSizeFile": "res/level/bigtgoldSize.bin"
     }
   ]

@@ -5,12 +5,12 @@
     {
       "name": "action.set",
       "id": "anchorLeftPentagram",
-      "action": { "name": "drawable.anchorToFocused", "id": "pent1", "anchor": "left" }
+      "action": { "name": "drawable.anchorToFocused", "id": "pent1", "anchor": "left", "offset": [-1, 0] }
     },
     {
       "name": "action.set",
       "id": "anchorRightPentagram",
-      "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right" }
+      "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right", "offset": [1, 0] }
     }
   ],
   "keyboard": [

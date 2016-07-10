@@ -8,9 +8,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Save Game",
-      "position": [319, 116],
+      "position": [321, 116],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -23,9 +24,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Options",
-      "position": [319, 161],
+      "position": [321, 161],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "resource.pop" },
         { "name": "load", "file": "ui/level/gameMenu2.json" }
@@ -42,9 +44,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "New Game",
-      "position": [319, 206],
+      "position": [321, 206],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "resource.popAll" },
         { "name": "game.setProperty", "property": "musicVolume", "value": 100 },
@@ -64,9 +67,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Load Game",
-      "position": [319, 251],
+      "position": [320, 251],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -79,9 +83,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Quit Diablo",
-      "position": [319, 296],
+      "position": [321, 296],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         {
           "name": "game.fadeOut",

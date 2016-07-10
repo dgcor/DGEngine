@@ -24,6 +24,7 @@ namespace FileUtils
 	std::string readText(const char* fileName);
 
 	std::vector<uint8_t> readChar(const char* fileName);
+	std::vector<uint8_t> readChar(const char* fileName, size_t maxNumBytes);
 
 	const char* getSaveDir();
 	bool setSaveDir(const char* dirName);

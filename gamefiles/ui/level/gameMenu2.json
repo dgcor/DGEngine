@@ -214,6 +214,7 @@
       "focusOnClick": false,
       "text": "Music",
       "position": [75, 116],
+      "horizontalSpaceOffset": 2,
       "anchor": "none",
       "onClick": [
         "anchorLeftPentagram",
@@ -244,6 +245,7 @@
       "text": "Sound",
       "position": [75, 161],
       "anchor": "none",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         "anchorLeftPentagram",
         { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar2", "anchor": "right" },
@@ -273,6 +275,7 @@
       "text": "Gamma",
       "position": [75, 206],
       "anchor": "none",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         "anchorLeftPentagram",
         { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar3", "anchor": "right" },
@@ -300,9 +303,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Color Cycling On",
-      "position": [319, 251],
+      "position": [320, 251],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "button.setText", "id": "colorCycling", "text": "Color Cycling Off" },
         "anchorLeftPentagram",
@@ -325,9 +329,10 @@
       "focus": true,
       "focusSound": "titlemov",
       "text": "Previous Menu",
-      "position": [319, 296],
+      "position": [320, 296],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "resource.pop" },
         { "name": "load", "file": "ui/level/saveSettings.json" },

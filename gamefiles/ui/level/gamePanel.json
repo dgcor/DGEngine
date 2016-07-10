@@ -63,7 +63,7 @@
     "onHoverEnter": {
       "name": "text.setText",
       "id": "txtPanel",
-      "lineSpacing": 24,
+      "verticalSpaceOffset": 14,
       "text": "Character Information\nHotkey : 'C'"
     },
     "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
@@ -93,7 +93,7 @@
     "onHoverEnter": {
       "name": "text.setText",
       "id": "txtPanel",
-      "lineSpacing": 24,
+      "verticalSpaceOffset": 14,
       "text": "Quests Log\nHotkey : 'Q'"
     },
     "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
@@ -119,7 +119,7 @@
     "onHoverEnter": {
       "name": "text.setText",
       "id": "txtPanel",
-      "lineSpacing": 24,
+      "verticalSpaceOffset": 14,
       "text": "Inventory\nHotkey : 'I'"
     },
     "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
@@ -145,7 +145,7 @@
     "onHoverEnter": {
       "name": "text.setText",
       "id": "txtPanel",
-      "lineSpacing": 24,
+      "verticalSpaceOffset": 14,
       "text": "Spell Book\nHotkey : 'B'"
     },
     "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
@@ -172,7 +172,7 @@
     "onHoverEnter": {
       "name": "text.setText",
       "id": "txtPanel",
-      "lineSpacing": 24,
+      "verticalSpaceOffset": 14,
       "text": "Main Menu\nHotkey : Esc"
     },
     "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
@@ -181,8 +181,9 @@
     "id": "txtPanel",
     "bitmapFont": "smaltext",
     "anchor": "bottom",
-    "position": [320, 432],
+    "position": [320, 429],
     "horizontalAlign": "center",
+    "horizontalSpaceOffset": 2,
     "verticalAlign": "center"
   },
   "keyboard": [

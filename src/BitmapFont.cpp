@@ -189,98 +189,83 @@ BitmapFont::BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int c
 	int padding_, bool verticalDirection, const std::vector<uint8_t>& charSizes)
 	: texture(tex), rows(rows_), columns(columns_), padding(padding_)
 {
-	if (charSizes.size() == 258)
+	size_t charStartIdx = 0;
+	if (charSizes.size() == 130 || charSizes.size() == 258)
 	{
-		int cellW = tex->getSize().x / columns;
-		int cellH = tex->getSize().y / rows;
-		int iRow = 0;
-		int iCol = 0;
-		for (auto i = 0; i < 256; i++)
-		{
-			chars[i].left = cellW * iCol;
-			chars[i].top = cellH * iRow;
-			chars[i].width = charSizes[i + 2];
-			chars[i].height = cellH;
+		charStartIdx = 2;
+	}
+	else if ((charSizes.size() == 128 || charSizes.size() == 256) == false)
+	{
+		this->calculateCharSizes(tex->copyToImage(), verticalDirection);
+		return;
+	}
 
-			if (verticalDirection == false)
+	int cellW = tex->getSize().x / columns;
+	int cellH = tex->getSize().y / rows;
+	int iRow = 0;
+	int iCol = 0;
+	for (size_t i = 0; i < 256; i++)
+	{
+		chars[i].left = cellW * iCol;
+		chars[i].top = cellH * iRow;
+		auto charSizeIdx = i + charStartIdx;
+		if (charSizeIdx < charSizes.size())
+		{
+			chars[i].width = charSizes[charSizeIdx];
+		}
+		else
+		{
+			chars[i].width = 0;
+		}
+		chars[i].height = cellH;
+
+		if (verticalDirection == false)
+		{
+			iCol++;
+			if (iCol >= columns)
 			{
-				iCol++;
-				if (iCol >= columns)
-				{
-					iCol = 0;
-					iRow++;
-				}
-			}
-			else
-			{
+				iCol = 0;
 				iRow++;
-				if (iRow >= rows)
-				{
-					iRow = 0;
-					iCol++;
-				}
 			}
 		}
+		else
+		{
+			iRow++;
+			if (iRow >= rows)
+			{
+				iRow = 0;
+				iCol++;
+			}
+		}
+	}
 
+	if (charStartIdx > 0)
+	{
 		space = charSizes[0];
 		newLine = charSizes[1];
 	}
-	else if (charSizes.size() == 256)
+	else
 	{
-		int cellW = tex->getSize().x / columns;
-		int cellH = tex->getSize().y / rows;
-		int iRow = 0;
-		int iCol = 0;
-		for (auto i = 0; i < 256; i++)
-		{
-			chars[i].left = cellW * iCol;
-			chars[i].top = cellH * iRow;
-			chars[i].width = charSizes[i];
-			chars[i].height = cellH;
-
-			if (verticalDirection == false)
-			{
-				iCol++;
-				if (iCol >= columns)
-				{
-					iCol = 0;
-					iRow++;
-				}
-			}
-			else
-			{
-				iRow++;
-				if (iRow >= rows)
-				{
-					iRow = 0;
-					iCol++;
-				}
-			}
-		}
-
 		space = charSizes[' '];
 		newLine = charSizes['\n'];
 	}
-	else
-	{
-		this->calculateCharSizes(tex->copyToImage(), verticalDirection);
-	}
 }
 
-float BitmapFont::calculateLineLength(const char* text) const
+float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) const
 {
+	auto ch = text[0];
+	if (ch == 0 || ch == '\n')
+	{
+		return 0.f;
+	}
+
 	//Temp offsets
-	float curX = 0;
+	float curX = 0.f;
 	bool wasSpace = false;
 
 	//Go through the text
 	while (true)
 	{
-		auto ch = text[0];
-		if (ch == 0 || ch == '\n')
-		{
-			return curX;
-		}
 		//If the current character is a space
 		if (ch == ' ')
 		{
@@ -304,41 +289,41 @@ float BitmapFont::calculateLineLength(const char* text) const
 			wasSpace = false;
 		}
 		text++;
+		ch = text[0];
+		if (ch == 0 || ch == '\n')
+		{
+			return curX;
+		}
+		else
+		{
+			curX += (float)horizSpaceOffset;
+		}
 	}
 }
 
 sf::Vector2f BitmapFont::calculateSize(const std::string& text) const
 {
-	return calculateSize(text, (float)newLine);
+	return calculateSize(text, 0, 0);
 }
 
-sf::Vector2f BitmapFont::calculateSize(const std::string& text, const float newLine_) const
+sf::Vector2f BitmapFont::calculateSize(const std::string& text,
+	int horizSpaceOffset, int vertSpaceOffset) const
 {
 	//Temp offsets
 	float maxX = 0, curX = 0, curY = 0;
 	bool wasSpace = false;
 
+	auto textPtr = text.c_str();
+	auto ch = textPtr[0];
+
 	//Go through the text
-	for (auto ch : text)
+	while (ch != 0)
 	{
-		//If the current character is a space
-		if (ch == ' ')
-		{
-			//Move over
-			curX += (float)space;
-			wasSpace = true;
-		}
-		//If the current character is a tab
-		else if (ch == '\t')
-		{
-			//Move over
-			curX += (float)chars['\t'].width;
-		}
 		//If the current character is a newline
-		else if (ch == '\n')
+		if (ch == '\n')
 		{
 			//Move down
-			curY += newLine_;
+			curY += newLine + vertSpaceOffset;
 
 			//Move back
 			if (curX > maxX)
@@ -350,27 +335,49 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text, const float newL
 		}
 		else
 		{
-			//Get the ASCII value of the character
-			int ascii = (unsigned char)ch;
+			//If the current character is a space
+			if (ch == ' ')
+			{
+				//Move over
+				curX += (float)space;
+				wasSpace = true;
+			}
+			//If the current character is a tab
+			else if (ch == '\t')
+			{
+				//Move over
+				curX += (float)chars['\t'].width;
+			}
+			else
+			{
+				//Get the ASCII value of the character
+				int ascii = (unsigned char)ch;
 
-			//Move over the width of the character + padding
-			curX += (float)chars[ascii].width + (float)(wasSpace ? 0 : padding);
-			wasSpace = false;
+				//Move over the width of the character + padding
+				curX += (float)chars[ascii].width + (float)(wasSpace ? 0 : padding);
+				wasSpace = false;
+			}
+			if (textPtr[1] != 0)
+			{
+				curX += (float)horizSpaceOffset;
+			}
 		}
+		textPtr++;
+		ch = textPtr[0];
 	}
 
-	return sf::Vector2f(std::max(maxX, curX), (newLine_ + curY));
+	return sf::Vector2f(std::max(maxX, curX), (newLine + curY));
 }
 
 void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
 	sf::RenderStates states, const sf::Color& color) const
 {
-	draw(pos, text, target, states, color, (float)newLine, 0.f, HorizontalAlign::Left);
+	draw(pos, text, target, states, color, 0, 0, 0.f, HorizontalAlign::Left);
 }
 
 void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-	sf::RenderStates states, const sf::Color& color, const float newLine_,
-	const float sizeX, const HorizontalAlign align) const
+	sf::RenderStates states, const sf::Color& color, int horizSpaceOffset,
+	int vertSpaceOffset, float sizeX, HorizontalAlign align) const
 {
 	sf::Sprite sprite(*texture);
 	sprite.setColor(color);
@@ -381,61 +388,65 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::Rend
 
 	if (align == HorizontalAlign::Center)
 	{
-		curX += std::round((sizeX / 2.f) - (calculateLineLength(&text.c_str()[0]) / 2.f));
+		curX += std::round((sizeX / 2.f) - (calculateLineLength(&text.c_str()[0], horizSpaceOffset) / 2.f));
 	}
 	else if (align == HorizontalAlign::Right)
 	{
-		curX += (sizeX - calculateLineLength(&text.c_str()[0]));
+		curX += (sizeX - calculateLineLength(&text.c_str()[0], horizSpaceOffset));
 	}
 
 	//Go through the text
 	for (size_t i = 0; i < text.size(); i++)
 	{
 		auto ch = text[i];
-		//If the current character is a space
-		if (ch == ' ')
-		{
-			//Move over
-			curX += (float)space;
-			wasSpace = true;
-		}
-		//If the current character is a tab
-		else if (ch == '\t')
-		{
-			//Move over
-			curX += (float)chars['\t'].width;
-		}
 		//If the current character is a newline
-		else if (ch == '\n')
+		if (ch == '\n')
 		{
 			//Move down
-			curY += newLine_;
+			curY += newLine + vertSpaceOffset;
 
 			//Move back
 			curX = pos.x;
 			if (align == HorizontalAlign::Center)
 			{
-				curX += std::round((sizeX / 2.f) - (calculateLineLength(&text.c_str()[i + 1]) / 2.f));
+				curX += std::round((sizeX / 2.f) - (calculateLineLength(&text.c_str()[i + 1], horizSpaceOffset) / 2.f));
 			}
 			else if (align == HorizontalAlign::Right)
 			{
-				curX += (sizeX - calculateLineLength(&text.c_str()[i + 1]));
+				curX += (sizeX - calculateLineLength(&text.c_str()[i + 1], horizSpaceOffset));
 			}
 			wasSpace = false;
 		}
 		else
 		{
-			//Get the ASCII value of the character
-			int ascii = (unsigned char)ch;
+			//If the current character is a space
+			if (ch == ' ')
+			{
+				//Move over
+				curX += (float)space;
+				wasSpace = true;
+			}
+			//If the current character is a tab
+			else if (ch == '\t')
+			{
+				//Move over
+				curX += (float)chars['\t'].width;
+			}
+			else
+			{
+				//Get the ASCII value of the character
+				int ascii = (unsigned char)ch;
 
-			//Show the character
-			sprite.setPosition(curX, curY);
-			sprite.setTextureRect(chars[ascii]);
-			target.draw(sprite, states);
+				//Show the character
+				sprite.setPosition(curX, curY);
+				sprite.setTextureRect(chars[ascii]);
+				target.draw(sprite, states);
 
-			//Move over the width of the character + padding
-			curX += (float)chars[ascii].width + (float)(wasSpace ? 0 : padding);
-			wasSpace = false;
+				//Move over the width of the character + padding
+				curX += (float)chars[ascii].width + (float)(wasSpace ? 0 : padding);
+				wasSpace = false;
+			}
+			curX += (float)horizSpaceOffset;
 		}
 	}
 }

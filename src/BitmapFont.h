@@ -18,6 +18,7 @@ private:
 	int padding;
 
 	void calculateCharSizes(const sf::Image& img, bool verticalDirection);
+	float calculateLineLength(const char* text, int horizSpaceOffset) const;
 
 public:
 	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
@@ -29,13 +30,13 @@ public:
 
 	int getNewLine() const { return newLine; }
 
-	float calculateLineLength(const char* text) const;
 	sf::Vector2f calculateSize(const std::string& text) const;
-	sf::Vector2f calculateSize(const std::string& text, const float newLine_) const;
+	sf::Vector2f calculateSize(const std::string& text,
+		int horizSpaceOffset, int vertSpaceOffset) const;
 
 	void draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
 		sf::RenderStates states, const sf::Color& color) const;
 	void draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-		sf::RenderStates states, const sf::Color& color, const float newLine_,
-		const float sizeX, const HorizontalAlign align) const;
+		sf::RenderStates states, const sf::Color& color, int horizSpaceOffset,
+		int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
 };
