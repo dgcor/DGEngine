@@ -12,15 +12,7 @@ void BitmapText::calcDrawPos()
 
 void BitmapText::calcSize()
 {
-	if (lineSpacing > 0.f)
-	{
-		size = font->calculateSize(text, lineSpacing);
-	}
-	else
-	{
-		lineSpacing = 0.f;
-		size = font->calculateSize(text);
-	}
+	size = font->calculateSize(text, horizSpaceOffset, vertSpaceOffset);
 }
 
 void BitmapText::updateSize(const Game& game)
@@ -37,7 +29,8 @@ void BitmapText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == true)
 	{
-		font->draw(drawPos, text, target, states, color, lineSpacing, size.x, horizAlign);
+		font->draw(drawPos, text, target, states, color,
+			horizSpaceOffset, vertSpaceOffset, size.x, horizAlign);
 	}
 }
 

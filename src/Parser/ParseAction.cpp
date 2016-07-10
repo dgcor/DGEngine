@@ -294,7 +294,7 @@ namespace Parser
 				getString(elem, "idAnchorTo"),
 				getUInt(elem, "range"),
 				getVariable(elem, "steps"),
-				getInt(elem, "stepOffset") );
+				getInt(elem, "stepOffset"));
 		}
 		case str2int("drawable.moveStepY"):
 		{
@@ -695,10 +695,20 @@ namespace Parser
 		}
 		case str2int("text.setText"):
 		{
-			return std::make_shared<ActTextSetText>(
+			auto action = std::make_shared<ActTextSetText>(
 				getString(elem, "id"),
-				getString(elem, "text"),
-				getUInt(elem, "lineSpacing"));
+				getString(elem, "text"));
+
+			if (elem.HasMember("horizontalSpaceOffset") == true)
+			{
+				action->setHorizontalSpaceOffset(getInt(elem["horizontalSpaceOffset"]));
+			}
+			if (elem.HasMember("verticalSpaceOffset") == true)
+			{
+				action->setVerticalSpaceOffset(getInt(elem["verticalSpaceOffset"]));
+			}
+
+			return action;
 		}
 		case str2int("variable.clear"):
 		{

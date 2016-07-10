@@ -17,19 +17,20 @@ private:
 	VerticalAlign vertAlign{ VerticalAlign::Bottom };
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	sf::Color color{ sf::Color::White };
-	float lineSpacing{ .0f };
+	int horizSpaceOffset{ 0 };
+	int vertSpaceOffset{ 0 };
 	bool visible{ true };
 
 	void calcDrawPos();
 	void calcSize();
 
 public:
-	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont> font_)
-		: text(text_), font(font_)
+	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont> font_,
+		int horizSpaceOffset_ = 0, int vertSpaceOffset_ = 0) : text(text_), font(font_),
+		horizSpaceOffset(horizSpaceOffset_), vertSpaceOffset(vertSpaceOffset_)
 	{
 		calcSize();
 		calcDrawPos();
-		lineSpacing = (float)font->getNewLine();
 	}
 
 	virtual ~BitmapText() {}
@@ -67,11 +68,6 @@ public:
 	virtual sf::Vector2f Size() const { return size; }
 	virtual void Size(const sf::Vector2f& size) {}
 
-	virtual void setLineSpacing(unsigned lineSpacing_)
-	{
-		lineSpacing = (float)lineSpacing_;
-		calcSize();
-	}
 	virtual sf::FloatRect getLocalBounds() const { return sf::FloatRect(drawPos, size); }
 	virtual sf::FloatRect getGlobalBounds() const { return sf::FloatRect(drawPos, size); }
 
@@ -83,12 +79,30 @@ public:
 			calcDrawPos();
 		}
 	}
-
 	virtual void setVerticalAlign(const VerticalAlign align)
 	{
 		if (vertAlign != align)
 		{
 			vertAlign = align;
+			calcDrawPos();
+		}
+	}
+
+	virtual void setHorizontalSpaceOffset(int offset)
+	{
+		if (horizSpaceOffset != offset)
+		{
+			horizSpaceOffset = offset;
+			calcSize();
+			calcDrawPos();
+		}
+	}
+	virtual void setVerticalSpaceOffset(int offset)
+	{
+		if (vertSpaceOffset != offset)
+		{
+			vertSpaceOffset = offset;
+			calcSize();
 			calcDrawPos();
 		}
 	}

@@ -166,7 +166,19 @@ namespace FileUtils
 		}
 		std::vector<uint8_t> data((size_t)ifs.getSize());
 		ifs.read(data.data(), ifs.getSize());
+		return data;
+	}
 
+	std::vector<uint8_t> readChar(const char* fileName, size_t maxNumBytes)
+	{
+		sf::PhysFSStream ifs(fileName);
+		if (ifs.hasError() == true)
+		{
+			return std::vector<uint8_t>();
+		}
+		auto size = std::min((size_t)ifs.getSize(), maxNumBytes);
+		std::vector<uint8_t> data(size);
+		ifs.read(data.data(), size);
 		return data;
 	}
 

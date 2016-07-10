@@ -1,10 +1,8 @@
 {
-  "action": [
-    {
-      "name": "resource.add",
-      "id": "{1}"
-    }
-  ],
+  "action": {
+    "name": "resource.add",
+    "id": "{1}"
+  },
   "keyboard": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "textWallButton" }
@@ -41,13 +39,15 @@
   },
   "scrollableText": {
     "id": "textBox",
-    "bitmapFont": "font30g",
+    "bitmapFont": "medtexts",
     "refresh": {2},
     "file": "{3}",
+    "horizontalSpaceOffset": 2,
+    "verticalSpaceOffset": 17,
     "splitText": 40,
     "position": [48, 49],
     "anchor": "none",
-    "boxSize": [538, 257],
+    "boxSize": [550, 257],
     "onComplete": {
       "name": "resource.pop"
     }

@@ -65,7 +65,10 @@ namespace Parser
 				return nullptr;
 			}
 
-			auto text = std::make_unique<BitmapText>(displayText, font);
+			auto horizSpaceOffset = getInt(elem, "horizontalSpaceOffset");
+			auto vertSpaceOffset = getInt(elem, "verticalSpaceOffset");
+
+			auto text = std::make_unique<BitmapText>(displayText, font, horizSpaceOffset, vertSpaceOffset);
 			text->setColor(getColor(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign")));
 			text->setVerticalAlign(GameUtils::getVerticalAlignment(getString(elem, "verticalAlign")));

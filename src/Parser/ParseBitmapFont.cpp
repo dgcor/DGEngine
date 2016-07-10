@@ -53,7 +53,7 @@ namespace Parser
 
 		if (elem.HasMember("charSizeFile"))
 		{
-			auto charSizes = FileUtils::readChar(elem["charSizeFile"].GetString());
+			auto charSizes = FileUtils::readChar(elem["charSizeFile"].GetString(), 258);
 			font = std::make_shared<BitmapFont>(texture, rows, cols, padding, isVertical, charSizes);
 		}
 		else

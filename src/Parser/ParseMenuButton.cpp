@@ -10,10 +10,12 @@ namespace Parser
 	std::shared_ptr<StringButton> parseMenuButton(
 		Anchor anchor,
 		const sf::Color& color,
-		const HorizontalAlign horizAlign,
-		const bool isTextFont,
+		HorizontalAlign horizAlign,
+		int horizSpaceOffset,
+		int vertSpaceOffset,
+		bool isTextFont,
 		const std::shared_ptr<Font2>& font,
-		const unsigned fontSize,
+		unsigned fontSize,
 		const std::shared_ptr<BitmapFont>& bitmapFont,
 		const std::shared_ptr<sf::SoundBuffer>& sound,
 		const std::shared_ptr<sf::SoundBuffer>& focusSound,
@@ -27,7 +29,8 @@ namespace Parser
 		}
 		else
 		{
-			drawableText = std::make_unique<BitmapText>("", bitmapFont);
+			drawableText = std::make_unique<BitmapText>("",
+				bitmapFont, horizSpaceOffset, vertSpaceOffset);
 		}
 		button->setText(std::move(std::make_unique<Text2>(std::move(drawableText))));
 

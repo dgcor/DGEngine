@@ -7,6 +7,7 @@
       "position": [84, 20],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.name|"
     },
     {
@@ -15,6 +16,7 @@
       "position": [236, 20],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.class|"
     },
     {
@@ -23,6 +25,7 @@
       "position": [85, 56],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.level|"
     },
     {
@@ -31,6 +34,7 @@
       "position": [256, 56],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.experience|"
     },
     {
@@ -39,6 +43,7 @@
       "position": [256, 84],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.expNextLevel|"
     },
     {
@@ -47,6 +52,7 @@
       "position": [256, 134],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.gold|"
     },
     {
@@ -55,6 +61,7 @@
       "position": [108, 144],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.strengthBase|"
     },
     {
@@ -63,6 +70,7 @@
       "position": [156, 144],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.strengthNow|"
     },
     {
@@ -71,6 +79,7 @@
       "position": [108, 172],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.magicBase|"
     },
     {
@@ -79,6 +88,7 @@
       "position": [156, 172],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.magicNow|"
     },
     {
@@ -87,6 +97,7 @@
       "position": [108, 200],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.dexterityBase|"
     },
     {
@@ -95,6 +106,7 @@
       "position": [156, 200],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.dexterityNow|"
     },
     {
@@ -103,6 +115,7 @@
       "position": [108, 228],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.vitalityBase|"
     },
     {
@@ -111,6 +124,7 @@
       "position": [156, 228],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.vitalityNow|"
     },
     {
@@ -119,6 +133,7 @@
       "position": [108, 256],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.points|",
       "format": ""
     },
@@ -128,6 +143,7 @@
       "position": [108, 292],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.lifeBase|"
     },
     {
@@ -136,6 +152,7 @@
       "position": [156, 292],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.lifeNow|"
     },
     {
@@ -144,6 +161,7 @@
       "position": [108, 320],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.manaBase|"
     },
     {
@@ -152,6 +170,7 @@
       "position": [156, 320],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.manaNow|"
     },
     {
@@ -160,6 +179,7 @@
       "position": [278, 172],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.armorClass|"
     },
     {
@@ -168,6 +188,7 @@
       "position": [278, 200],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.toHit|",
       "format": "[1]%"
     },
@@ -177,6 +198,7 @@
       "position": [278, 228],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": ["|currentLevel|currentPlayer.damageMin|", "|currentLevel|currentPlayer.damageMax|"],
       "format": "[1]-[2]"
     },
@@ -186,6 +208,7 @@
       "position": [278, 266],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.resistMagic|",
       "format": "[1]%"
     },
@@ -195,6 +218,7 @@
       "position": [278, 292],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.resistFire|",
       "format": "[1]%"
     },
@@ -204,6 +228,7 @@
       "position": [278, 320],
       "anchor": "left",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "binding": "|currentLevel|currentPlayer.resistLightning|",
       "format": "[1]%"
     }

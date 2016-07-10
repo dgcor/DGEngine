@@ -26,6 +26,8 @@ namespace Parser
 		auto color = getColor(elem, "color", sf::Color::White);
 		auto horizAlign = GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign"));
 		auto vertAlign = GameUtils::getVerticalAlignment(getString(elem, "verticalAlign"));
+		auto horizSpaceOffset = getInt(elem, "horizontalSpaceOffset");
+		auto vertSpaceOffset = getInt(elem, "verticalSpaceOffset");
 		auto fontSize = getUInt(elem, "fontSize");
 		auto hasFocus = getBool(elem, "focus");
 		auto focusOnClick = getBool(elem, "focusOnClick", true);
@@ -81,18 +83,19 @@ namespace Parser
 			if (val.HasMember("%QUESTS%"))
 			{
 				parseMenuQuests(game, val, *menu, pos, anchor, color, horizAlign,
-					isTextFont, font, fontSize, bitmapFont, sound,
-					focusSound, clickUp, hasFocus, focusOnClick);
+					horizSpaceOffset, vertSpaceOffset, isTextFont, font, fontSize,
+					bitmapFont, sound, focusSound, clickUp, hasFocus, focusOnClick);
 			}
 			else if (val.HasMember("%SAVEGAMES%"))
 			{
 				parseMenuSaveGames(game, val, *menu, pos, anchor, color, horizAlign,
-					isTextFont, font, fontSize, bitmapFont, sound,
-					focusSound, clickUp, hasFocus, focusOnClick);
+					horizSpaceOffset, vertSpaceOffset, isTextFont, font, fontSize,
+					bitmapFont, sound, focusSound, clickUp, hasFocus, focusOnClick);
 			}
 			else
 			{
-				auto button = parseMenuButton(anchor, color, horizAlign, isTextFont, font,
+				auto button = parseMenuButton(anchor, color, horizAlign,
+					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 					fontSize, bitmapFont, sound, focusSound, clickUp);
 				button->enable(getBool(val, "enable", true));
 				button->setText(getString(val, "text"));

@@ -46,10 +46,12 @@ namespace Parser
 		const sf::Vector2f& pos,
 		Anchor anchor,
 		const sf::Color& color,
-		const HorizontalAlign horizAlign,
-		const bool isTextFont,
+		HorizontalAlign horizAlign,
+		int horizSpaceOffset,
+		int vertSpaceOffset,
+		bool isTextFont,
 		const std::shared_ptr<Font2>& font,
-		const unsigned fontSize,
+		unsigned fontSize,
 		const std::shared_ptr<BitmapFont>& bitmapFont,
 		const std::shared_ptr<sf::SoundBuffer>& sound,
 		const std::shared_ptr<sf::SoundBuffer>& focusSound,
@@ -63,7 +65,8 @@ namespace Parser
 			MemoryPoolAllocator<CrtAllocator> allocator;
 			for (const auto& quest : level->Quests())
 			{
-				auto button = parseMenuButton(anchor, color, horizAlign, isTextFont, font,
+				auto button = parseMenuButton(anchor, color, horizAlign,
+					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 					fontSize, bitmapFont, sound, focusSound, clickUp);
 				button->setText(quest.Name());
 				button->Position(pos);

@@ -51,24 +51,6 @@ public:
 	virtual sf::FloatRect getLocalBounds() const { return text.getLocalBounds(); }
 	virtual sf::FloatRect getGlobalBounds() const { return text.getGlobalBounds(); }
 
-	virtual void setHorizontalAlign(const HorizontalAlign align)
-	{
-		if (horizAlign != align)
-		{
-			horizAlign = align;
-			calculateDrawPosition();
-		}
-	}
-
-	virtual void setVerticalAlign(const VerticalAlign align)
-	{
-		if (vertAlign != align)
-		{
-			vertAlign = align;
-			calculateDrawPosition();
-		}
-	}
-
 	virtual const sf::Vector2f& DrawPosition() const { return text.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return pos; }
 	virtual void Position(const sf::Vector2f& position)
@@ -78,7 +60,26 @@ public:
 	}
 	virtual sf::Vector2f Size() const { return sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height); }
 	virtual void Size(const sf::Vector2f& size) {}
-	virtual void setLineSpacing(unsigned lineSpacing) {}
+
+	virtual void setHorizontalAlign(const HorizontalAlign align)
+	{
+		if (horizAlign != align)
+		{
+			horizAlign = align;
+			calculateDrawPosition();
+		}
+	}
+	virtual void setVerticalAlign(const VerticalAlign align)
+	{
+		if (vertAlign != align)
+		{
+			vertAlign = align;
+			calculateDrawPosition();
+		}
+	}
+
+	virtual void setHorizontalSpaceOffset(int offset) {}
+	virtual void setVerticalSpaceOffset(int offset) {}
 
 	void setRotation(float angle) { text.setRotation(angle); }
 	void setScale(float factorX, float factorY) { text.setScale(factorX, factorY); }

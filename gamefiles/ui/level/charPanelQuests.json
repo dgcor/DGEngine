@@ -56,9 +56,10 @@
   "menu": {
     "id": "menuQuests",
     "bitmapFont": "smaltext",
-    "position": [162, 128],
+    "position": [160, 135],
     "horizontalAlign": "center",
     "verticalAlign": "center",
+    "horizontalSpaceOffset": 1,
     "anchor": "left",
     "focus": true,
     "focusSound": "titlemov",
@@ -89,7 +90,9 @@
     "bitmapFont": "smaltext",
     "focus": true,
     "focusSound": "titlemov",
-    "position": [92, 297],
+    "position": [160, 298],
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
     "sound": "titlslct",
     "text": "Close Quest Log",
     "onClick": [

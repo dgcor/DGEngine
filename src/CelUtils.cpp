@@ -108,41 +108,38 @@ sf::Image CelUtils::loadBitmapFontImage(const char* fileName, const char* fileNa
 	CelFile celFile(fileName, isCl2, false);
 	CelFrameCache cel(celFile, pal);
 
-	auto numFramesY = cel.size();
-
-	if (numFramesY == 0)
+	auto celSize = cel.size();
+	if (celSize == 0)
 	{
 		return sf::Image();
 	}
 
 	sf::Image img;
 	img.create(cel[0].Width() * 16, cel[0].Height() * 16, sf::Color::Transparent);
-	auto charMapping = FileUtils::readChar(fileNameBin);
-	if (charMapping.size() >= 255)
-	{
-		size_t xx = 0;
-		size_t yy = 0;
-		for (auto charMap : charMapping)
-		{
-			if (charMap != 0xFF)
-			{
-				const auto& frame = cel[charMap];
+	auto charMapping = FileUtils::readChar(fileNameBin, 256);
 
-				for (size_t j = 0; j < frame.Height(); j++)
+	size_t xx = 0;
+	size_t yy = 0;
+	for (auto charMap : charMapping)
+	{
+		if (charMap != 0xFF && charMap < celSize)
+		{
+			const auto& frame = cel[charMap];
+
+			for (size_t j = 0; j < frame.Height(); j++)
+			{
+				for (size_t i = 0; i < frame.Width(); i++)
 				{
-					for (size_t i = 0; i < frame.Width(); i++)
-					{
-						const auto& color = frame[i][j];
-						img.setPixel(frame.Width() * xx + i, frame.Height() * yy + j, color);
-					}
+					const auto& color = frame[i][j];
+					img.setPixel(frame.Width() * xx + i, frame.Height() * yy + j, color);
 				}
 			}
-			xx++;
-			if (xx == 16)
-			{
-				xx = 0;
-				yy++;
-			}
+		}
+		xx++;
+		if (xx == 16)
+		{
+			xx = 0;
+			yy++;
 		}
 	}
 	return img;

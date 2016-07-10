@@ -33,7 +33,7 @@ namespace Parser
 
 		game.Window().setMouseCursorVisible(getBool(elem, "show"));
 
-		if (getBool(elem, "pop", false) == true)
+		if (getBool(elem, "pop") == true)
 		{
 			game.Resources().popCursor();
 			game.updateMouse();

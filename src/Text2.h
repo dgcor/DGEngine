@@ -11,8 +11,6 @@ private:
 	std::string format;
 	std::vector<std::string> bindings;
 
-	void setBindingHelper(const std::string& binding);
-
 public:
 	Text2(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
 
@@ -28,10 +26,11 @@ public:
 	void setBinding(const std::string& binding);
 	void setBinding(const std::vector<std::string>& bindings_);
 	void setColor(const sf::Color& color) { text->setColor(color); }
-	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
-	void setLineSpacing(unsigned lineSpacing) { text->setLineSpacing(lineSpacing); }
 	void setFormat(const std::string& format_) { format = format_; }
+	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
 	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }
+	void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
+	void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }
