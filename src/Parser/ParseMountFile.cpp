@@ -17,14 +17,32 @@ namespace Parser
 		file = game.getPath() + file;
 		auto mount = getStringChar(elem, "mount");
 		auto append = getBool(elem, "append");
-		auto success = PHYSFS_mount(file.c_str(), mount, append);
-		if (success == 0)
+		if (PHYSFS_mount(file.c_str(), mount, append) != 0)
 		{
-			auto file2 = FileUtils::getFileWithoutExt(file);
-			if (file2.length() != file.length())
+			return;
+		}
+		auto fileNoExt = FileUtils::getFileWithoutExt(file);
+		if (fileNoExt.length() != file.length())
+		{
+			if (PHYSFS_mount(fileNoExt.c_str(), mount, append) != 0)
 			{
-				PHYSFS_mount(file2.c_str(), mount, append);
+				return;
 			}
+		}
+		auto fileMPQ = fileNoExt + ".mpq";
+		if (PHYSFS_mount(fileMPQ.c_str(), mount, append) != 0)
+		{
+			return;
+		}
+		auto fileZip = fileNoExt + ".zip";
+		if (PHYSFS_mount(fileZip.c_str(), mount, append) != 0)
+		{
+			return;
+		}
+		auto file7Zip = fileNoExt + ".7z";
+		if (PHYSFS_mount(file7Zip.c_str(), mount, append) != 0)
+		{
+			return;
 		}
 	}
 }

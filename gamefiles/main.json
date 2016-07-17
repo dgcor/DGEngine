@@ -10,7 +10,7 @@
   "smoothScreen": true,
   "init": true,
   "mountFile": [
-    { "file": "DIABDAT.zip", "append": true }
+    { "file": "DIABDAT.MPQ", "append": true }
   ],
   "action": {
     "name": "if.fileExists",
