@@ -16,7 +16,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "verticalAlign": "center",
-    "text": "Error loading DIABDAT.zip\nMake sure the game data is present.",
+    "text": "Error loading DIABDAT\nMake sure the game data is present.",
     "onClick": "game.close"
   }
 }
