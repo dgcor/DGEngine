@@ -13,8 +13,19 @@ namespace FileUtils
 
 	bool deleteAll(const char* filePath)
 	{
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+		PHYSFS_Stat fileStat;
+		if (PHYSFS_stat(filePath, &fileStat) == 0)
+		{
+			return false;
+		}
+#endif
 		bool ret = false;
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+		if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY)
+#else
 		if (PHYSFS_isDirectory(filePath) != 0)
+#endif
 		{
 			auto paths = PHYSFS_enumerateFiles(filePath);
 			if (paths != NULL)
@@ -25,8 +36,15 @@ namespace FileUtils
 					for (char** path = paths; *path != NULL; path++)
 					{
 						auto fullPath = std::string(filePath) + '/' + *path;
-
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+						if (PHYSFS_stat(fullPath.c_str(), &fileStat) == 0)
+						{
+							continue;
+						}
+						if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY)
+#else
 						if (PHYSFS_isDirectory(fullPath.c_str()) != 0)
+#endif
 						{
 							deleteAll(fullPath.c_str());
 						}
@@ -75,17 +93,33 @@ namespace FileUtils
 		auto files = PHYSFS_enumerateFiles(filePath.c_str());
 		if (files != NULL)
 		{
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+			PHYSFS_Stat fileStat;
+#endif
 			for (char** file = files; *file != NULL; file++)
 			{
 				auto file2 = filePath + '/' + std::string(*file);
 
-				if (Utils::endsWith(file2, fileExt) == true &&
-					PHYSFS_isDirectory(file2.c_str()) == 0)
+				if (Utils::endsWith(file2, fileExt) == false)
+				{
+					continue;
+				}
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+				if (PHYSFS_stat(file2.c_str(), &fileStat) == 0)
+				{
+					continue;
+				}
+				if (fileStat.filetype == PHYSFS_FILETYPE_REGULAR)
 				{
 					vec.push_back(file2);
 				}
+#else
+				if (PHYSFS_isDirectory(file2.c_str()) == 0)
+				{
+					vec.push_back(file2);
+				}
+#endif
 			}
-
 			PHYSFS_freeList(files);
 		}
 		return vec;
@@ -123,22 +157,36 @@ namespace FileUtils
 			auto writeDir = PHYSFS_getWriteDir();
 			if (writeDir != NULL)
 			{
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+				PHYSFS_Stat fileStat;
+#endif
 				for (char** dir = dirs; *dir != NULL; dir++)
 				{
-					if (PHYSFS_isDirectory(*dir) != 0)
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+					if (PHYSFS_stat(*dir, &fileStat) == 0)
 					{
-						auto realDir = PHYSFS_getRealDir(*dir);
-						if (realDir != NULL)
+						continue;
+					}
+					if (fileStat.filetype != PHYSFS_FILETYPE_DIRECTORY)
+					{
+						continue;
+					}
+#else
+					if (PHYSFS_isDirectory(*dir) == 0)
+					{
+						continue;
+					}
+#endif
+					auto realDir = PHYSFS_getRealDir(*dir);
+					if (realDir != NULL)
+					{
+						if (strcmp(writeDir, realDir) == 0)
 						{
-							if (strcmp(writeDir, realDir) == 0)
-							{
-								vecDirs.push_back(*dir);
-							}
+							vecDirs.push_back(*dir);
 						}
 					}
 				}
 			}
-
 			PHYSFS_freeList(dirs);
 		}
 		return vecDirs;
@@ -189,7 +237,16 @@ namespace FileUtils
 
 	bool setSaveDir(const char* dirName)
 	{
+#ifdef __ANDROID__
+		auto userDir = "data/data/com.dgengine/files/";
+#else
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+		auto userDir = PHYSFS_getPrefDir("DGEngine", dirName);
+#else
 		auto userDir = PHYSFS_getUserDir();
+#endif
+#endif
+#if (__ANDROID__) || (!(PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1))
 		if (PHYSFS_setWriteDir(userDir) != 0)
 		{
 			if (PHYSFS_mkdir(dirName) != 0)
@@ -199,6 +256,13 @@ namespace FileUtils
 			}
 		}
 		return false;
+#else
+		if (userDir == NULL)
+		{
+			return false;
+		}
+		return PHYSFS_setWriteDir(userDir) != 0;
+#endif
 	}
 
 	bool saveText(const char* filePath, const char* str, size_t strLen)
@@ -206,7 +270,11 @@ namespace FileUtils
 		auto file = PHYSFS_openWrite(filePath);
 		if (file != NULL)
 		{
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+			PHYSFS_writeBytes(file, str, strLen);
+#else
 			PHYSFS_write(file, str, 1, strLen);
+#endif
 			return PHYSFS_close(file) != 0;
 		}
 		return false;
