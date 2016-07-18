@@ -19,7 +19,11 @@ namespace Parser
 
 		if (doc.Parse(FileUtils::readText(fileName.c_str()).c_str()).HasParseError())
 		{
+#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+			PHYSFS_unmount(filePath.c_str());
+#else
 			PHYSFS_removeFromSearchPath(filePath.c_str());
+#endif
 			return;
 		}
 
