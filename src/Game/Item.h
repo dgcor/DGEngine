@@ -47,7 +47,7 @@ public:
 	}
 	void update(Game& game, const Level& level);
 
-	Variable getProperty(const std::string& prop) const;
+	bool getProperty(const std::string& prop, Variable& var) const;
 
 	const sf::Vector2u& InventorySize() const { return inventorySize; }
 	void InventorySize(const sf::Vector2u& size_) { inventorySize = size_; }

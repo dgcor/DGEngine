@@ -25,23 +25,28 @@ void Item::update(Game& game, const Level& level)
 	}
 }
 
-Variable Item::getProperty(const std::string& prop) const
+bool Item::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
 		switch (str2int(prop.c_str()))
 		{
 		case str2int("name"):
-			return Variable(name);
-		case str2int("description1"):
-			return Variable(description1);
-		case str2int("description2"):
-			return Variable(description2);
-		case str2int("description3"):
-			return Variable(description3);
-		default:
+			var = Variable(name);
 			break;
+		case str2int("description1"):
+			var = Variable(description1);
+			break;
+		case str2int("description2"):
+			var = Variable(description2);
+			break;
+		case str2int("description3"):
+			var = Variable(description3);
+			break;
+		default:
+			return false;
 		}
+		return true;
 	}
-	return Variable();
+	return false;
 }

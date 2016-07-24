@@ -15,15 +15,15 @@ void Circle::updateSize(const Game& game)
 	setPosition(pos);
 }
 
-Variable Circle::getProperty(const std::string& prop) const
+bool Circle::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
 		auto props = Utils::splitString(prop, '.');
 		if (props.size() > 0)
 		{
-			return GameUtils::getProperty(*this, Utils::str2int(props[0].c_str()), props);
+			return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
 		}
 	}
-	return Variable();
+	return false;
 }

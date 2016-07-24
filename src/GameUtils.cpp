@@ -184,8 +184,8 @@ namespace GameUtils
 		}
 	}
 
-	Variable getProperty(const UIObject& uiObject, const unsigned int propHash,
-		const std::vector<std::string>& props)
+	bool getUIObjProp(const UIObject& uiObject, const unsigned int propHash,
+		const std::vector<std::string>& props, Variable& var)
 	{
 		switch (propHash)
 		{
@@ -196,12 +196,13 @@ namespace GameUtils
 				auto movePos = uiObject.Position();
 				if (props[1] == "x")
 				{
-					return Variable((int64_t)movePos.x);
+					var = Variable((int64_t)movePos.x);
 				}
 				else
 				{
-					return Variable((int64_t)movePos.y);
+					var = Variable((int64_t)movePos.y);
 				}
+				return true;
 			}
 		}
 		break;
@@ -212,54 +213,57 @@ namespace GameUtils
 				auto moveSize = uiObject.Size();
 				if (props[1] == "x")
 				{
-					return Variable((int64_t)moveSize.x);
+					var = Variable((int64_t)moveSize.x);
 				}
 				else
 				{
-					return Variable((int64_t)moveSize.y);
+					var = Variable((int64_t)moveSize.y);
 				}
+				return true;
 			}
 		}
 		break;
 		}
-		return Variable();
+		return false;
 	}
 
-	Variable getProperty(const Game& game, const std::string& str)
+	bool getObjectProperty(const Game& game, const std::string& str, Variable& var)
 	{
-		if (str.size() > 1)
+		if ((str.size() > 2) && (str.front() == '|') && (str.back() == '|'))
 		{
-			auto props = Utils::splitString(str, '|');
-			if (props.size() > 1)
-			{
-				return getProperty(game, props[0], props[1]);
-			}
-		}
-		return Variable();
-	}
+			auto propStr = str.substr(1, str.size() - 2);
 
-	Variable getProperty(const Game& game, const std::string& id, const std::string& props)
-	{
-		if (id == "game")
-		{
-			return game.getProperty(props);
-		}
-		const UIObject* uiObject = game.Resources().getDrawable(id);
-		if (uiObject == nullptr)
-		{
-			if (id == "focus")
+			if (propStr.size() > 1)
 			{
-				uiObject = game.Resources().getFocused();
-			}
-			else if (id == "currentLevel")
-			{
-				uiObject = game.Resources().getCurrentLevel();
+				auto props = Utils::splitString(propStr, '|');
+				if (props.size() > 1)
+				{
+					const auto& id = props[0];
+					const auto& uiElemProps = props[1];
+
+					if (id == "game")
+					{
+						return game.getProperty(uiElemProps, var);
+					}
+					const UIObject* uiObject = game.Resources().getDrawable(id);
+					if (uiObject == nullptr)
+					{
+						if (id == "focus")
+						{
+							uiObject = game.Resources().getFocused();
+						}
+						else if (id == "currentLevel")
+						{
+							uiObject = game.Resources().getCurrentLevel();
+						}
+					}
+					if (uiObject != nullptr)
+					{
+						return uiObject->getProperty(uiElemProps, var);
+					}
+				}
 			}
 		}
-		if (uiObject != nullptr)
-		{
-			return uiObject->getProperty(props);
-		}
-		return Variable();
+		return false;
 	}
 }

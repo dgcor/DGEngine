@@ -63,7 +63,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto vol = game.getVariable<int64_t, unsigned>(volume, 100u);
+		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
 		game.MusicVolume((float)vol);
 		return true;
 	}
@@ -96,14 +96,15 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto prop2 = game.getVariable(prop);
+		Variable prop2(prop);
+		game.getVarOrProp(prop, prop2);
 		if (prop2.is<std::string>() == true)
 		{
 			const auto& propVal = prop2.get<std::string>();
 			auto value2 = value;
 			if (value2.is<std::string>() == true)
 			{
-				value2 = game.getVariable(value2.get<std::string>());
+				game.getVarOrProp(value2.get<std::string>(), value2);
 			}
 			if (value2.is<int64_t>() == true)
 			{
@@ -170,7 +171,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto vol = game.getVariable<int64_t, unsigned>(volume, 100u);
+		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
 		game.SoundVolume((float)vol);
 		return true;
 	}

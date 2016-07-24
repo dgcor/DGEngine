@@ -8,7 +8,9 @@ class ActTextSetText : public Action
 {
 private:
 	std::string id;
-	std::string text;
+	std::string textFormat;
+	std::vector<std::string> bindings;
+
 	int horizSpaceOffset{ 0 };
 	int vertSpaceOffset{ 0 };
 	bool hasHorizSpaceOffset{ false };
@@ -16,7 +18,11 @@ private:
 
 public:
 	ActTextSetText(const std::string& id_, const std::string& text_)
-		: id(id_), text(text_) {}
+		: id(id_), textFormat(text_) {}
+
+	ActTextSetText(const std::string& id_, const std::string& format_,
+		const std::vector<std::string>& bindings_) : id(id_),
+		textFormat(format_), bindings(bindings_) {}
 
 	void setHorizontalSpaceOffset(int offset)
 	{
@@ -43,7 +49,14 @@ public:
 			{
 				item->setVerticalSpaceOffset(vertSpaceOffset);
 			}
-			item->setText(game.getVariableString(text));
+			if (bindings.empty() == true)
+			{
+				item->setText(game.getVariableString(textFormat));
+			}
+			else
+			{
+				item->setText(Text2::getFormatString(game, bindings, textFormat));
+			}
 		}
 		return true;
 	}

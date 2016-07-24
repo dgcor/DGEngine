@@ -192,7 +192,7 @@ void Menu::update(Game& game)
 	}
 }
 
-Variable Menu::getProperty(const std::string& prop) const
+bool Menu::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -203,12 +203,13 @@ Variable Menu::getProperty(const std::string& prop) const
 			switch (propHash)
 			{
 			case str2int("itemCount"):
-				return Variable((int64_t)this->getItemCount());
+				var = Variable((int64_t)this->getItemCount());
 				break;
 			default:
-				return GameUtils::getProperty(*this, propHash, props);
+				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
+			return true;
 		}
 	}
-	return Variable();
+	return false;
 }

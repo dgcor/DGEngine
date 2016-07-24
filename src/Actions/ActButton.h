@@ -49,27 +49,6 @@ public:
 	}
 };
 
-class ActButtonSetClickAction : public Action
-{
-private:
-	std::string id;
-	std::shared_ptr<Action> action;
-
-public:
-	ActButtonSetClickAction(const std::string& id_, const std::shared_ptr<Action>& action_)
-		: id(id_), action(action_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
-		{
-			item->setClickAction(action);
-		}
-		return true;
-	}
-};
-
 class ActButtonSetBitmapFont : public Action
 {
 private:
@@ -98,6 +77,27 @@ public:
 					}
 				}
 			}
+		}
+		return true;
+	}
+};
+
+class ActButtonSetClickAction : public Action
+{
+private:
+	std::string id;
+	std::shared_ptr<Action> action;
+
+public:
+	ActButtonSetClickAction(const std::string& id_, const std::shared_ptr<Action>& action_)
+		: id(id_), action(action_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<Button>(id);
+		if (item != nullptr)
+		{
+			item->setClickAction(action);
 		}
 		return true;
 	}
@@ -160,17 +160,30 @@ class ActButtonSetText : public Action
 {
 private:
 	std::string id;
-	std::string text;
+	std::string textFormat;
+	std::vector<std::string> bindings;
 
 public:
-	ActButtonSetText(const std::string& id_, const std::string& text_) : id(id_), text(text_) {}
+	ActButtonSetText(const std::string& id_, const std::string& text_)
+		: id(id_), textFormat(text_) {}
+
+	ActButtonSetText(const std::string& id_, const std::string& format_,
+		const std::vector<std::string>& bindings_) : id(id_),
+		textFormat(format_), bindings(bindings_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto item = game.Resources().getResource<StringButton>(id);
 		if (item != nullptr)
 		{
-			item->setText(game.getVariableString(text));
+			if (bindings.empty() == true)
+			{
+				item->setText(game.getVariableString(textFormat));
+			}
+			else
+			{
+				item->setText(Text2::getFormatString(game, bindings, textFormat));
+			}
 		}
 		return true;
 	}

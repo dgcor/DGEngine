@@ -14,6 +14,9 @@ private:
 public:
 	Text2(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
 
+	static std::string getFormatString(const Game& game,
+		const std::vector<std::string>& bindings, const std::string& format);
+
 	DrawableText* getDrawableText() { return text.get(); }
 
 	std::string getText() const { return text->getText(); }
@@ -44,9 +47,15 @@ public:
 	virtual bool Visible() const { return text->Visible(); }
 	virtual void Visible(bool visible) { text->Visible(visible); }
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const { target.draw(*text, states); }
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		target.draw(*text, states);
+	}
 
 	virtual void update(Game& game);
 
-	virtual Variable getProperty(const std::string& prop) const { return text->getProperty(prop); }
+	virtual bool getProperty(const std::string& prop, Variable& var) const
+	{
+		return text->getProperty(prop, var);
+	}
 };

@@ -25,16 +25,12 @@ private:
 	std::string dir;
 	std::vector<std::string> filesRead;
 	std::string fileWrite;
+	std::string nullText;
 
 public:
-	ActFileCopy(const std::string& dir_, const std::string& fileRead_,
-		const std::string& fileWrite_) : dir(dir_), filesRead(), fileWrite(fileWrite_)
-	{
-		filesRead.push_back(fileRead_);
-	}
-
 	ActFileCopy(const std::string& dir_, const std::vector<std::string>& filesRead_,
-		const std::string& fileWrite_) : dir(dir_), filesRead(filesRead_), fileWrite(fileWrite_) {}
+		const std::string& fileWrite_, const std::string& nullText_)
+		: dir(dir_), filesRead(filesRead_), fileWrite(fileWrite_), nullText(nullText_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -43,14 +39,44 @@ public:
 			const auto& fileRead = filesRead[0];
 			auto str = FileUtils::readText(game.getVariableString(fileRead).c_str());
 
+			std::string param;
+			Variable var2;
+
 			for (size_t i = 1; i < filesRead.size(); i++)
 			{
-				auto param = game.getVariableString(filesRead[i]);
+				const auto& varStr = filesRead[i];
+
+				if ((varStr.size() > 2) &&
+					(varStr.front() == '%') &&
+					(varStr.back() == '%'))
+				{
+					if (game.getVariable(filesRead[i], var2) == true)
+					{
+						param = VarUtils::toString(var2);
+					}
+					else
+					{
+						param = nullText;
+					}
+				}
+				else if ((varStr.size() > 2) &&
+					(varStr.front() == '|') &&
+					(varStr.back() == '|'))
+				{
+					if (GameUtils::getObjectProperty(game, varStr, var2) == true)
+					{
+						param = VarUtils::toString(var2);
+					}
+					else
+					{
+						param = nullText;
+					}
+				}
+				else
+				{
+					param = varStr;
+				}
 				Utils::replaceStringInPlace(str, "{" + std::to_string(i) + "}", param);
-			}
-			for (const auto& var : game.getVariables())
-			{
-				Utils::replaceStringInPlace(str, "%" + var.first + "%", VarUtils::toString(var.second));
 			}
 
 			auto writePath = game.getVariableString(dir);

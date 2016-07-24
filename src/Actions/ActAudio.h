@@ -114,7 +114,7 @@ public:
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
 		{
-			auto vol = game.getVariable<int64_t, unsigned>(volume, game.MusicVolume());
+			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 			if (vol > 100)
 			{
 				vol = 100;

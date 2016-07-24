@@ -108,7 +108,7 @@ public:
 	}
 	virtual void update(Game& game, Level& level);
 
-	virtual Variable getProperty(const std::string& prop) const;
+	virtual bool getProperty(const std::string& prop, Variable& var) const;
 
 	void setCelTexture(const std::shared_ptr<CelTextureCacheVector>& celTexture_) { celTexture = celTexture_; }
 	void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }

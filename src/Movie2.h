@@ -59,6 +59,6 @@ public:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
-	virtual Variable getProperty(const std::string& prop) const;
+	virtual bool getProperty(const std::string& prop, Variable& var) const;
 };
 #endif	// USE_SFML_MOVIE_STUB

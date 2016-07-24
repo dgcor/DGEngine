@@ -31,7 +31,10 @@ void Game::init()
 	oldSize = size;
 	window.create(sf::VideoMode(size.x, size.y), title);
 #endif
-	window.setFramerateLimit(framerate);
+	if (framerate > 0)
+	{
+		window.setFramerateLimit(framerate);
+	}
 	if (stretchToFit == true)
 	{
 		stretchToFit = false;
@@ -511,14 +514,24 @@ std::map<std::string, Variable>::const_iterator Game::findVariable(const std::st
 	return variables.end();
 }
 
-Variable Game::getVariable(const std::string& key) const
+bool Game::getVarOrProp(const std::string& key, Variable& var) const
+{
+	if (getVariable(key, var) == true)
+	{
+		return true;
+	}
+	return GameUtils::getObjectProperty(*this, key, var);
+}
+
+bool Game::getVariable(const std::string& key, Variable& var) const
 {
 	auto it = findVariable(key);
 	if (it != variables.cend())
 	{
-		return it->second;
+		var = it->second;
+		return true;
 	}
-	return Parser::getVarOrObjectProperty(*this, key);
+	return false;
 }
 
 bool Game::getVariableBool(const std::string& key) const
@@ -531,7 +544,7 @@ bool Game::getVariableBool(const std::string& key) const
 	const auto& var = it->second;
 	if (var.is<bool>())
 	{
-		return (var.get<bool>() ? 1L : 0L);
+		return var.get<bool>();
 	}
 	else if (var.is<int64_t>())
 	{
@@ -619,7 +632,9 @@ std::string Game::getVariableString(const std::string& key) const
 				if (var.is<std::string>())
 				{
 					auto str = var.get<std::string>();
-					return VarUtils::toString(Parser::getVarOrObjectProperty(*this, str));
+					Variable var2(var);
+					GameUtils::getObjectProperty(*this, str, var2);
+					return VarUtils::toString(var2);
 				}
 				else if (var.is<int64_t>())
 				{
@@ -642,7 +657,9 @@ std::string Game::getVariableString(const std::string& key) const
 				}
 			}
 		}
-		return VarUtils::toString(Parser::getVarOrObjectProperty(*this, key));
+		Variable var2(key);
+		GameUtils::getObjectProperty(*this, key, var2);
+		return VarUtils::toString(var2);
 	}
 }
 
@@ -687,7 +704,7 @@ void Game::saveVariables(const std::string& filePath, const std::vector<std::str
 	}
 }
 
-Variable Game::getProperty(const std::string& prop) const
+bool Game::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -697,73 +714,100 @@ Variable Game::getProperty(const std::string& prop) const
 			switch (str2int(props[0].c_str()))
 			{
 			case str2int("framerate"):
-				return Variable((int64_t)framerate);
+				var = Variable((int64_t)framerate);
+				break;
 			case str2int("keepAR"):
-				return Variable((bool)keepAR);
+				var = Variable((bool)keepAR);
+				break;
 			case str2int("minSize"):
 			{
 				if (props.size() > 1)
 				{
 					if (props[1] == "x")
 					{
-						return Variable((int64_t)minSize.x);
+						var = Variable((int64_t)minSize.x);
 					}
 					else
 					{
-						return Variable((int64_t)minSize.y);
+						var = Variable((int64_t)minSize.y);
 					}
 				}
+				else
+				{
+					return false;
+				}
+				break;
 			}
 			break;
 			case str2int("musicVolume"):
-				return Variable((int64_t)musicVolume);
+				var = Variable((int64_t)musicVolume);
+				break;
 			case str2int("path"):
-				return Variable(path);
+				var = Variable(path);
+				break;
 			case str2int("refSize"):
 			{
 				if (props.size() > 1)
 				{
 					if (props[1] == "x")
 					{
-						return Variable((int64_t)refSize.x);
+						var = Variable((int64_t)refSize.x);
 					}
 					else
 					{
-						return Variable((int64_t)refSize.y);
+						var = Variable((int64_t)refSize.y);
 					}
 				}
+				else
+				{
+					return false;
+				}
+				break;
 			}
 			case str2int("saveDir"):
-				return Variable(std::string(FileUtils::getSaveDir()));
+				var = Variable(std::string(FileUtils::getSaveDir()));
+				break;
 			case str2int("size"):
 			{
 				if (props.size() > 1)
 				{
 					if (props[1] == "x")
 					{
-						return Variable((int64_t)size.x);
+						var = Variable((int64_t)size.x);
 					}
 					else
 					{
-						return Variable((int64_t)size.y);
+						var = Variable((int64_t)size.y);
 					}
 				}
+				else
+				{
+					return false;
+				}
+				break;
 			}
-			break;
 			case str2int("smoothScreen"):
-				return Variable((bool)smoothScreen);
+				var = Variable((bool)smoothScreen);
+				break;
 			case str2int("soundVolume"):
-				return Variable((int64_t)soundVolume);
+				var = Variable((int64_t)soundVolume);
+				break;
 			case str2int("stretchToFit"):
-				return Variable((bool)stretchToFit);
+				var = Variable((bool)stretchToFit);
+				break;
 			case str2int("title"):
-				return Variable(title);
+				var = Variable(title);
+				break;
 			case str2int("version"):
-				return Variable(version);
+				var = Variable(version);
+				break;
+			default:
+				return false;
 			}
+			return true;
 		}
 	}
-	return Variable();
+	return false;
 }
 
 void Game::setProperty(const std::string& prop, const Variable& val)

@@ -10,15 +10,6 @@ namespace Parser
 	using namespace rapidjson;
 	using Utils::str2int;
 
-	Variable getVarOrObjectProperty(const Game& game, const std::string& str)
-	{
-		if ((str.size() > 2) && (str.front() == '|') && (str.back() == '|'))
-		{
-			return GameUtils::getProperty(game, str.substr(1, str.size() - 2));
-		}
-		return Variable(str);
-	}
-
 	std::vector<std::pair<std::string, Variable>> getVariables(const Value& elem)
 	{
 		std::vector<std::pair<std::string, Variable>> vars;

@@ -1,0 +1,8 @@
+{
+  "windowSize": [{1}, {2}],
+  "keepAR": {3},
+  "stretchToFit": {4},
+  "smoothScreen": {5},
+  "framerate": {6},
+  "variable": { "skipIntro": {7} }
+}

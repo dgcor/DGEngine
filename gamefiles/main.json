@@ -1,13 +1,14 @@
 {
   "title" : "Diablo",
   "version": "1.09",
+  "saveDir": ".diablo",
   "refWindowSize": [640, 480],
-  "minWindowSize": [800, 600],
+  "minWindowSize": [640, 480],
   "windowSize": [800, 600],
-  "framerate": 60,
   "keepAR": true,
   "stretchToFit": true,
   "smoothScreen": true,
+  "load": "settings.json",
   "init": true,
   "mountFile": [
     { "file": "DIABDAT.MPQ", "append": true }

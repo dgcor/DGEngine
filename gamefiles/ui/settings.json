@@ -70,7 +70,7 @@
       "texture": "focus42",
       "id": "pent1",
       "frames": 8,
-      "position": [57, 192],
+      "position": [40, 192],
       "anchor": "none",
       "refresh": 50
     },
@@ -78,7 +78,7 @@
       "texture": "focus42",
       "id": "pent2",
       "frames": 8,
-      "position": [547, 192],
+      "position": [564, 192],
       "anchor": "none",
       "refresh": 50
     }
@@ -197,7 +197,7 @@
       ]
     },
     {
-      "id": "back",
+      "id": "framerate",
       "bitmapFont": "font42g",
       "sound": "titlemov",
       "focus": true,
@@ -205,10 +205,67 @@
       "position": [319, 363],
       "anchor": "none",
       "horizontalAlign": "center",
+      "onClick": {
+        "name": "switch",
+        "param": "|game|framerate|",
+        "case": [
+          {
+            "value": 0,
+            "action": [
+              { "name": "loadJson", "json": { "framerate": 50 } },
+              {
+                "name": "button.setText",
+                "id": "framerate",
+                "binding": "|game|framerate|",
+                "format": "Framerate Limit: [1]"
+              }
+            ]
+          },
+          {
+            "value": 50,
+            "action": [
+              { "name": "loadJson", "json": { "framerate": 60 } },
+              {
+                "name": "button.setText",
+                "id": "framerate",
+                "binding": "|game|framerate|",
+                "format": "Framerate Limit: [1]"
+              }
+            ]
+          },
+          {
+            "value": 60,
+            "action": [
+              { "name": "loadJson", "json": { "framerate": 0 } },
+              {
+                "name": "button.setText",
+                "id": "framerate",
+                "text": "Framerate Limit: Off"
+              }
+            ]
+          }
+        ],
+        "default": { "name": "loadJson", "json": { "windowSize": [640, 480] } }
+      },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "back",
+      "bitmapFont": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 406],
+      "anchor": "none",
+      "horizontalAlign": "center",
       "text": "OK",
       "onClick": {
         "name": "game.fadeOut",
         "action": [
+          { "name": "load", "file": "ui/saveSettings.json" },
           { "name": "resource.pop" },
           { "name": "game.fadeIn" }
         ]
@@ -240,6 +297,13 @@
       "param2": true,
       "then": { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: On" },
       "else": { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
+    },
+    {
+      "name": "if.equal",
+      "param1": "|game|framerate|",
+      "param2": 0,
+      "then": { "name": "button.setText", "id": "framerate", "text": "Framerate Limit: Off" },
+      "else": { "name": "button.setText", "id": "framerate", "binding": "|game|framerate|", "format": "Framerate Limit: [1]" }
     },
     "anchorLeftPentagram",
     "anchorRightPentagram"

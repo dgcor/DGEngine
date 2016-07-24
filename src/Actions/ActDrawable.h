@@ -197,7 +197,7 @@ public:
 			auto itemSize = item->Size().x;
 			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
 			auto offset = std::max(0.f, std::min(game.MousePosition().x - itemPos.x, (float)range));
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.x;
 			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
 			if (numSteps > 1 && newRange > 0)
@@ -251,7 +251,7 @@ public:
 			auto itemSize = item->Size().y;
 			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
 			auto offset = std::max(0.f, std::min(game.MousePosition().y - itemPos.y, (float)range));
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.y;
 			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
 			if (numSteps > 1 && newRange > 0)
@@ -347,9 +347,9 @@ public:
 			auto itemPos = itemAnchor->DrawPosition();
 			auto itemAnchorPos = itemPos;
 			auto newRange = (float)std::max(0, (int)range - (int)item->Size().x);
-			auto offset = (float)game.getVariable<int64_t, unsigned>(position, max);
+			auto offset = (float)game.getVarOrProp<int64_t, unsigned>(position, max);
 			offset = std::round((offset * newRange) / (float)max);
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
 				auto tmp = std::round((offset * (float)(numSteps - 1)) / newRange);
@@ -396,9 +396,9 @@ public:
 			auto itemPos = itemAnchor->DrawPosition();
 			auto itemAnchorPos = itemPos;
 			auto newRange = (float)std::max(0, (int)range - (int)item->Size().y);
-			auto offset = (float)game.getVariable<int64_t, unsigned>(position, max);
+			auto offset = (float)game.getVarOrProp<int64_t, unsigned>(position, max);
 			offset = std::round((offset * newRange) / (float)max);
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
 				auto tmp = std::round((offset * (float)(numSteps - 1)) / newRange);
@@ -442,7 +442,7 @@ public:
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
 				numSteps--;
@@ -491,7 +491,7 @@ public:
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
-			auto numSteps = game.getVariable<int64_t, int>(steps, -1);
+			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
 				numSteps--;

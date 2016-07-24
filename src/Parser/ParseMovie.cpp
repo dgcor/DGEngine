@@ -54,7 +54,7 @@ namespace Parser
 		movie->Size(size);
 
 		auto volume = getVariable(elem, "volume");
-		auto vol = game.getVariable<int64_t, unsigned>(volume, game.MusicVolume());
+		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 		if (vol > 100)
 		{
 			vol = 100;

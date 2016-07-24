@@ -28,5 +28,5 @@ public:
 	virtual bool Visible() const = 0;
 	virtual void Visible(bool visible) = 0;
 
-	virtual Variable getProperty(const std::string& prop) const = 0;
+	virtual bool getProperty(const std::string& prop, Variable& var) const = 0;
 };

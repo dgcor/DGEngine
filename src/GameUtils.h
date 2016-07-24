@@ -26,10 +26,8 @@ namespace GameUtils
 
 	VerticalAlign getVerticalAlignment(const std::string& align);
 
-	Variable getProperty(const UIObject& uiObject, const unsigned int propHash,
-		const std::vector<std::string>& props);
+	bool getUIObjProp(const UIObject& uiObject, const unsigned int propHash,
+		const std::vector<std::string>& props, Variable& var);
 
-	Variable getProperty(const Game& game, const std::string& str);
-
-	Variable getProperty(const Game& game, const std::string& id, const std::string& props);
+	bool getObjectProperty(const Game& game, const std::string& str, Variable& var);
 }
