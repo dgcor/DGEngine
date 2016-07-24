@@ -17,12 +17,12 @@
 					<Add option="-DUSE_SFML_MOVIE_STUB" />
 					<Add directory="./src" />
 					<Add directory="./SFML/include" />
-					<Add directory="./PhysicsFS" />
+					<Add directory="./PhysicsFS/src" />
 				</Compiler>
 				<Linker>
 					<Add directory="./src" />
 					<Add directory="./SFML/include" />
-					<Add directory="./PhysicsFS" />
+					<Add directory="./PhysicsFS/src" />
 				</Linker>
 			</Target>
 			<Target title="Release">

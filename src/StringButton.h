@@ -77,5 +77,8 @@ public:
 
 	virtual void update(Game& game);
 
-	virtual Variable getProperty(const std::string& prop) const { return text->getProperty(prop); }
+	virtual bool getProperty(const std::string& prop, Variable& var) const
+	{
+		return text->getProperty(prop, var);
+	}
 };

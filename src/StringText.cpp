@@ -23,7 +23,7 @@ void StringText::updateSize(const Game& game)
 	calculateDrawPosition();
 }
 
-Variable StringText::getProperty(const std::string& prop) const
+bool StringText::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -34,12 +34,13 @@ Variable StringText::getProperty(const std::string& prop) const
 			switch (propHash)
 			{
 			case str2int("text"):
-				return Variable(text.getString().toAnsiString());
+				var = Variable(text.getString().toAnsiString());
 				break;
 			default:
-				return GameUtils::getProperty(*this, propHash, props);
+				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
+			return true;
 		}
 	}
-	return Variable();
+	return false;
 }

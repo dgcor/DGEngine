@@ -170,17 +170,28 @@
     "bitmapFont": "font16s",
     "position": [17, 444],
     "anchor": "none",
-    "binding": ["|game|title|", "|game|version|"],
-    "format": "[1] v[2]",
-    "onClick": [
-      {
-        "name": "game.fadeOut",
-        "action": {
-          "name": "load",
-          "file": "ui/settings.json"
-        }
+    "onClick": {
+      "name": "game.fadeOut",
+      "action": {
+        "name": "load",
+        "file": "ui/settings.json"
       }
-    ]
+    },
+    "onHoverEnter": { "name": "button.setText", "id": "versionInfo", "text": "Change Settings" },
+    "onHoverLeave": {
+      "name": "button.setText",
+      "id": "versionInfo",
+      "binding": ["|game|title|", "|game|version|"],
+      "format": "[1] v[2]"
+    }
   },
-  "action": { "name": "menu.setBitmapFont", "id": "menu", "index": 2, "idFont": "font42y" }
+  "action": [
+    { "name": "menu.setBitmapFont", "id": "menu", "index": 2, "idFont": "font42y" },
+    {
+      "name": "button.setText",
+      "id": "versionInfo",
+      "binding": ["|game|title|", "|game|version|"],
+      "format": "[1] v[2]"
+    }
+  ]
 }

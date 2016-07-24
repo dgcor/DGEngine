@@ -150,7 +150,7 @@ void Level::update(Game& game)
 	}
 }
 
-Variable Level::getProperty(const std::string& prop) const
+bool Level::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -166,13 +166,13 @@ Variable Level::getProperty(const std::string& prop) const
 				{
 					if (mainPlayer != nullptr && mainPlayer->Id() == props[1])
 					{
-						return mainPlayer->getProperty(props[2]);
+						return mainPlayer->getProperty(props[2], var);
 					}
 					for (const auto& player : players)
 					{
 						if (player->Id() == props[1])
 						{
-							return player->getProperty(props[2]);
+							return player->getProperty(props[2], var);
 						}
 					}
 				}
@@ -182,16 +182,16 @@ Variable Level::getProperty(const std::string& prop) const
 			{
 				if (props.size() > 1 && currentPlayer != nullptr)
 				{
-					return currentPlayer->getProperty(props[1]);
+					return currentPlayer->getProperty(props[1], var);
 				}
 			}
 			break;
 			default:
-				return GameUtils::getProperty(*this, propHash, props);
+				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
 		}
 	}
-	return Variable();
+	return false;
 }
 
 Player* Level::getPlayer(const std::string id)

@@ -34,7 +34,7 @@ void BitmapText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-Variable BitmapText::getProperty(const std::string& prop) const
+bool BitmapText::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -45,12 +45,13 @@ Variable BitmapText::getProperty(const std::string& prop) const
 			switch (propHash)
 			{
 			case str2int("text"):
-				return Variable(text);
+				var = Variable(text);
 				break;
 			default:
-				return GameUtils::getProperty(*this, propHash, props);
+				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
+			return true;
 		}
 	}
-	return Variable();
+	return false;
 }

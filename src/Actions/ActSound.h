@@ -20,7 +20,7 @@ public:
 		if (sndBuffer != nullptr)
 		{
 			sf::Sound sound(*sndBuffer.get());
-			auto vol = game.getVariable<int64_t, unsigned>(volume, game.SoundVolume());
+			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
 			if (vol > 0)
 			{
 				if (vol > 100)

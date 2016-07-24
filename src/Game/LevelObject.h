@@ -24,5 +24,5 @@ public:
 	// Update
 	virtual void update(Game& game, Level& level) = 0;
 
-	virtual Variable getProperty(const std::string& prop) const = 0;
+	virtual bool getProperty(const std::string& prop, Variable& var) const = 0;
 };

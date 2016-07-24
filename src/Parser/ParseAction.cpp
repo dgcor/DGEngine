@@ -157,9 +157,19 @@ namespace Parser
 		}
 		case str2int("button.setText"):
 		{
-			return std::make_shared<ActButtonSetText>(
-				getString(elem, "id"),
-				getString(elem, "text"));
+			if (elem.HasMember("binding") == false)
+			{
+				return std::make_shared<ActButtonSetText>(
+					getString(elem, "id"),
+					getString(elem, "text"));
+			}
+			else
+			{
+				return std::make_shared<ActButtonSetText>(
+					getString(elem, "id"),
+					getString(elem, "format"),
+					getStringVector(elem, "binding"));
+			}
 		}
 		case str2int("button.setTexture"):
 		{
@@ -393,7 +403,8 @@ namespace Parser
 			return std::make_shared<ActFileCopy>(
 				getString(elem, "dir"),
 				getStringVector(elem, "file"),
-				getString(elem, "writeFile"));
+				getString(elem, "writeFile"),
+				getString(elem, "nullText"));
 		}
 		case str2int("focus.click"):
 		{
@@ -695,10 +706,20 @@ namespace Parser
 		}
 		case str2int("text.setText"):
 		{
-			auto action = std::make_shared<ActTextSetText>(
-				getString(elem, "id"),
-				getString(elem, "text"));
-
+			std::shared_ptr<ActTextSetText> action;
+			if (elem.HasMember("binding") == false)
+			{
+				action = std::make_shared<ActTextSetText>(
+					getString(elem, "id"),
+					getString(elem, "text"));
+			}
+			else
+			{
+				action = std::make_shared<ActTextSetText>(
+					getString(elem, "id"),
+					getString(elem, "format"),
+					getStringVector(elem, "binding"));
+			}
 			if (elem.HasMember("horizontalSpaceOffset") == true)
 			{
 				action->setHorizontalSpaceOffset(getInt(elem["horizontalSpaceOffset"]));
@@ -707,7 +728,6 @@ namespace Parser
 			{
 				action->setVerticalSpaceOffset(getInt(elem["verticalSpaceOffset"]));
 			}
-
 			return action;
 		}
 		case str2int("variable.clear"):

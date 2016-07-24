@@ -56,7 +56,7 @@ void InputText::update(Game& game)
 	text->update(game);
 }
 
-Variable InputText::getProperty(const std::string& prop) const
+bool InputText::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
@@ -67,11 +67,13 @@ Variable InputText::getProperty(const std::string& prop) const
 			switch (propHash)
 			{
 			case str2int("text"):
-				return Variable(this->getText());
+				var = Variable(this->getText());
+				break;
 			default:
-				return GameUtils::getProperty(*this, propHash, props);
+				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
+			return true;
 		}
 	}
-	return Variable();
+	return false;
 }

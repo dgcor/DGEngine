@@ -26,7 +26,7 @@ private:
 	sf::Vector2u oldSize;
 	sf::Vector2u size;
 	sf::Vector2u windowTexSize;
-	unsigned framerate{ 60 };
+	unsigned framerate{ 0 };
 	bool smoothScreen{ false };
 	bool stretchToFit{ false };
 	bool keepAR{ true };
@@ -165,7 +165,21 @@ public:
 
 	void MinWidth(unsigned width_) { size.x = width_; }
 	void MinHeight(unsigned height_) { size.y = height_; }
-	void Framerate(unsigned framerate_) { framerate = std::min(std::max(framerate_, 30u), 60u); }
+	void Framerate(unsigned framerate_)
+	{
+		if (framerate_ > 0)
+		{
+			framerate = std::min(std::max(framerate_, 30u), 60u);
+		}
+		else
+		{
+			framerate = 0;
+		}
+		if (window.isOpen() == true)
+		{
+			window.setFramerateLimit(framerate);
+		}
+	}
 	void MousePosition(const sf::Vector2f& mouse_) { mousePosition = mouse_; }
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);
@@ -227,7 +241,7 @@ public:
 	const std::map<std::string, Variable>& getVariables() { return variables; }
 
 	template <class T, class U>
-	U getVariable(const Variable& var, U defVal = U())
+	U getVarOrProp(const Variable& var, U defVal = U())
 	{
 		if (var.is<T>() == true)
 		{
@@ -235,16 +249,20 @@ public:
 		}
 		else if (var.is<std::string>() == true)
 		{
-			auto var2 = getVariable(var.get<std::string>());
-			if (var2.is<T>() == true)
+			Variable var2;
+			if (getVarOrProp(var.get<std::string>(), var2) == true)
 			{
-				return (U)var2.get<T>();
+				if (var2.is<T>() == true)
+				{
+					return (U)var2.get<T>();
+				}
 			}
 		}
 		return defVal;
 	}
 
-	Variable getVariable(const std::string& key) const;
+	bool getVarOrProp(const std::string& key, Variable& var) const;
+	bool getVariable(const std::string& key, Variable& var) const;
 	bool getVariableBool(const std::string& key) const;
 	double getVariableDouble(const std::string& key) const;
 	int64_t getVariableLong(const std::string& key) const;
@@ -258,6 +276,6 @@ public:
 
 	bool drawLoadingScreen();
 
-	Variable getProperty(const std::string& prop) const;
+	bool getProperty(const std::string& prop, Variable& var) const;
 	void setProperty(const std::string& prop, const Variable& val);
 };

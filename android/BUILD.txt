@@ -11,8 +11,8 @@ Use a recent Android NDK as this project uses C++14.
 Copy all the files inside the /src folder to the /android/jni folder.
 
 You need physfs for Android. You can use this one:
-https://github.com/edubart/android-libs/tree/master/jni/physfs-hg
-Copy these files to your Android NDK's sources folder.
+https://github.com/dgengin/physfs
+Follow the BUILD.txt instructions in the android flder.
 
 Movie playback is not supported on Android. The preprocessor
 define USE_SFML_MOVIE_STUB is used to use a stub class that does nothing

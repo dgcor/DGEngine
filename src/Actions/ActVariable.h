@@ -69,8 +69,8 @@ private:
 	std::string property;
 
 public:
-	ActVariableSetId(const std::string& id_, const std::string& key_, const std::string& property_)
-		: id(id_), key(key_), property(property_) {}
+	ActVariableSetId(const std::string& id_, const std::string& key_,
+		const std::string& property_) : id(id_), key(key_), property(property_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -79,7 +79,11 @@ public:
 			auto item = game.Resources().getResource<UIObject>(id);
 			if (item != nullptr)
 			{
-				game.setVariable(key, item->getProperty(property));
+				Variable var;
+				if (item->getProperty(property, var) == true)
+				{
+					game.setVariable(key, var);
+				}
 			}
 		}
 		return true;

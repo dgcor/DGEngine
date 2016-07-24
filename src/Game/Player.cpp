@@ -74,67 +74,94 @@ void Player::update(Game& game, Level& level)
 	}
 }
 
-Variable Player::getProperty(const std::string& prop) const
+bool Player::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.size() > 1)
 	{
 		switch (str2int(prop.c_str()))
 		{
 		case str2int("name"):
-			return Variable(name);
-		case str2int("class"):
-			return Variable(class_);
-		case str2int("level"):
-			return Variable((int64_t)level);
-		case str2int("experience"):
-			return Variable((int64_t)experience);
-		case str2int("expNextLevel"):
-			return Variable((int64_t)expNextLevel);
-		case str2int("points"):
-			return Variable((int64_t)points);
-		case str2int("gold"):
-			return Variable((int64_t)gold);
-		case str2int("strengthBase"):
-			return Variable((int64_t)strengthBase);
-		case str2int("strengthNow"):
-			return Variable((int64_t)strengthNow);
-		case str2int("magicBase"):
-			return Variable((int64_t)magicBase);
-		case str2int("magicNow"):
-			return Variable((int64_t)magicNow);
-		case str2int("dexterityBase"):
-			return Variable((int64_t)dexterityBase);
-		case str2int("dexterityNow"):
-			return Variable((int64_t)dexterityNow);
-		case str2int("vitalityBase"):
-			return Variable((int64_t)vitalityBase);
-		case str2int("vitalityNow"):
-			return Variable((int64_t)vitalityNow);
-		case str2int("lifeBase"):
-			return Variable((int64_t)lifeBase);
-		case str2int("lifeNow"):
-			return Variable((int64_t)lifeNow);
-		case str2int("manaBase"):
-			return Variable((int64_t)manaBase);
-		case str2int("manaNow"):
-			return Variable((int64_t)manaNow);
-		case str2int("armorClass"):
-			return Variable((int64_t)armorClass);
-		case str2int("toHit"):
-			return Variable((int64_t)toHit);
-		case str2int("damageMin"):
-			return Variable((int64_t)damageMin);
-		case str2int("damageMax"):
-			return Variable((int64_t)damageMax);
-		case str2int("resistMagic"):
-			return Variable((int64_t)resistMagic);
-		case str2int("resistFire"):
-			return Variable((int64_t)resistFire);
-		case str2int("resistLightning"):
-			return Variable((int64_t)resistLightning);
-		default:
+			var = Variable(name);
 			break;
+		case str2int("class"):
+			var = Variable(class_);
+			break;
+		case str2int("level"):
+			var = Variable((int64_t)level);
+			break;
+		case str2int("experience"):
+			var = Variable((int64_t)experience);
+			break;
+		case str2int("expNextLevel"):
+			var = Variable((int64_t)expNextLevel);
+			break;
+		case str2int("points"):
+			var = Variable((int64_t)points);
+			break;
+		case str2int("gold"):
+			var = Variable((int64_t)gold);
+			break;
+		case str2int("strengthBase"):
+			var = Variable((int64_t)strengthBase);
+			break;
+		case str2int("strengthNow"):
+			var = Variable((int64_t)strengthNow);
+			break;
+		case str2int("magicBase"):
+			var = Variable((int64_t)magicBase);
+			break;
+		case str2int("magicNow"):
+			var = Variable((int64_t)magicNow);
+			break;
+		case str2int("dexterityBase"):
+			var = Variable((int64_t)dexterityBase);
+			break;
+		case str2int("dexterityNow"):
+			var = Variable((int64_t)dexterityNow);
+			break;
+		case str2int("vitalityBase"):
+			var = Variable((int64_t)vitalityBase);
+			break;
+		case str2int("vitalityNow"):
+			var = Variable((int64_t)vitalityNow);
+			break;
+		case str2int("lifeBase"):
+			var = Variable((int64_t)lifeBase);
+			break;
+		case str2int("lifeNow"):
+			var = Variable((int64_t)lifeNow);
+			break;
+		case str2int("manaBase"):
+			var = Variable((int64_t)manaBase);
+			break;
+		case str2int("manaNow"):
+			var = Variable((int64_t)manaNow);
+			break;
+		case str2int("armorClass"):
+			var = Variable((int64_t)armorClass);
+			break;
+		case str2int("toHit"):
+			var = Variable((int64_t)toHit);
+			break;
+		case str2int("damageMin"):
+			var = Variable((int64_t)damageMin);
+			break;
+		case str2int("damageMax"):
+			var = Variable((int64_t)damageMax);
+			break;
+		case str2int("resistMagic"):
+			var = Variable((int64_t)resistMagic);
+			break;
+		case str2int("resistFire"):
+			var = Variable((int64_t)resistFire);
+			break;
+		case str2int("resistLightning"):
+			var = Variable((int64_t)resistLightning);
+			break;
+		default:
+			return false;
 		}
+		return true;
 	}
-	return Variable();
+	return false;
 }

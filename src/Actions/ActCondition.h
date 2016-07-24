@@ -13,7 +13,9 @@ static Variable getVariable(Game& game, const Variable& var)
 {
 	if (var.is<std::string>() == true)
 	{
-		return game.getVariable(var.get<std::string>());
+		Variable var2(var);
+		game.getVarOrProp(var.get<std::string>(), var2);
+		return var2;
 	}
 	return var;
 }
