@@ -1,3 +1,4 @@
+#include <math.h>
 #include "PathFinder.h"
 #include "LevelMap.h"
 
