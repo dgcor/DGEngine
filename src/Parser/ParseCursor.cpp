@@ -15,7 +15,7 @@ namespace Parser
 		}
 		else
 		{
-			return getVector2f<sf::Vector2f>(elem, "origin");
+			return getVector2fKey<sf::Vector2f>(elem, "origin");
 		}
 	}
 
@@ -31,9 +31,9 @@ namespace Parser
 			return;
 		}
 
-		game.Window().setMouseCursorVisible(getBool(elem, "show"));
+		game.Window().setMouseCursorVisible(getBoolKey(elem, "show"));
 
-		if (getBool(elem, "pop") == true)
+		if (getBoolKey(elem, "pop") == true)
 		{
 			game.Resources().popCursor();
 			game.updateMouse();

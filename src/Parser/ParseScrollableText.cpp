@@ -23,21 +23,21 @@ namespace Parser
 			return;
 		}
 
-		auto split = getUInt(elem, "splitText");
+		auto split = getUIntKey(elem, "splitText");
 		if (split > 0)
 		{
 			auto splitText = Utils::splitInLines(text->getText(), split);
 			text->setText(splitText);
 		}
 
-		auto speed = sf::milliseconds(getUInt(elem, "refresh"));
+		auto speed = sf::milliseconds(getUIntKey(elem, "refresh"));
 		auto scrollable = std::make_shared<ScrollableText>(std::move(text), speed);
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		scrollable->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		auto size = getVector2f<sf::Vector2f>(elem, "boxSize");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = getVector2fKey<sf::Vector2f>(elem, "boxSize");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
@@ -47,10 +47,10 @@ namespace Parser
 		}
 		scrollable->Position(pos);
 		scrollable->Size(size);
-		scrollable->Visible(getBool(elem, "visible", true));
+		scrollable->Visible(getBoolKey(elem, "visible", true));
 
-		scrollable->setLoop(getBool(elem, "loop"));
-		scrollable->setPause(getBool(elem, "pause"));
+		scrollable->setLoop(getBoolKey(elem, "loop"));
+		scrollable->setPause(getBoolKey(elem, "pause"));
 
 		scrollable->reset();
 		scrollable->updateViewPort(game);

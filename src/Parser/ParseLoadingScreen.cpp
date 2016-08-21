@@ -22,10 +22,10 @@ namespace Parser
 
 		auto loadingScreen = std::make_unique<LoadingScreen>(*tex);
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		loadingScreen->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			auto sizeTex = tex->getSize();
 			auto size = sf::Vector2f((float)sizeTex.x, (float)sizeTex.y);
@@ -36,9 +36,9 @@ namespace Parser
 			}
 		}
 		loadingScreen->setPosition(pos);
-		loadingScreen->setProgressBarColor(getColor(elem, "color"));
-		loadingScreen->setProgressBarPositionOffset(getVector2f<sf::Vector2f>(elem, "progressBarOffset"));
-		loadingScreen->setProgressBarSize(getVector2f<sf::Vector2f>(elem, "size"));
+		loadingScreen->setProgressBarColor(getColorKey(elem, "color"));
+		loadingScreen->setProgressBarPositionOffset(getVector2fKey<sf::Vector2f>(elem, "progressBarOffset"));
+		loadingScreen->setProgressBarSize(getVector2fKey<sf::Vector2f>(elem, "size"));
 
 		if (elem.HasMember("onComplete"))
 		{

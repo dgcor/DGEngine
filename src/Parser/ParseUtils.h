@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/PlayerProperties.h"
 #include "Json/JsonParser.h"
 #include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
@@ -9,37 +10,47 @@
 
 namespace Parser
 {
+	bool isValidArray(const rapidjson::Value& elem, const char* key);
 	bool isValidString(const rapidjson::Value& elem, const char* key);
 
-	Anchor getAnchor(const rapidjson::Value& elem, const char* key, Anchor val = Anchor::Top | Anchor::Left);
+	Anchor getAnchorKey(const rapidjson::Value& elem,
+		const char* key, Anchor val = Anchor::Top | Anchor::Left);
 
-	bool getBool(const rapidjson::Value& elem, bool val = false);
-	bool getBool(const rapidjson::Value& elem, const char* key, bool val = false);
-	bool getBool(const rapidjson::Value& elem, rapidjson::SizeType idx, bool val = false);
-	double getDouble(const rapidjson::Value& elem, double val = 0.0);
-	double getDouble(const rapidjson::Value& elem, const char* key, double val = 0.0);
-	double getDouble(const rapidjson::Value& elem, rapidjson::SizeType idx, double val = 0.0);
-	int getInt(const rapidjson::Value& elem, int val = 0);
-	int getInt(const rapidjson::Value& elem, const char* key, int val = 0);
-	int getInt(const rapidjson::Value& elem, rapidjson::SizeType idx, int val = 0);
-	int64_t getInt64(const rapidjson::Value& elem, int64_t val = 0);
-	int64_t getInt64(const rapidjson::Value& elem, const char* key, int64_t val = 0);
-	int64_t getInt64(const rapidjson::Value& elem, rapidjson::SizeType idx, int64_t val = 0);
-	const char* getStringChar_(const rapidjson::Value& elem, const char* val = "");
-	std::string getString(const rapidjson::Value& elem, const std::string& val = "");
-	const char* getStringChar(const rapidjson::Value& elem, const char* key, const char* val = "");
-	std::string getString(const rapidjson::Value& elem, const char* key, const std::string& val = "");
-	const char* getStringChar_(const rapidjson::Value& elem, rapidjson::SizeType idx, const char* val = "");
-	std::string getString_(const rapidjson::Value& elem, rapidjson::SizeType idx, const std::string& val = "");
-	unsigned getUInt_(const rapidjson::Value& elem, unsigned val = 0);
-	unsigned getUInt(const rapidjson::Value& elem, const char* key, unsigned val = 0);
-	unsigned getUInt(const rapidjson::Value& elem, rapidjson::SizeType idx, unsigned val = 0);
-	uint64_t getUInt64(const rapidjson::Value& elem, uint64_t val = 0);
-	uint64_t getUInt64(const rapidjson::Value& elem, const char* key, uint64_t val = 0);
-	uint64_t getUInt64(const rapidjson::Value& elem, rapidjson::SizeType idx, uint64_t val = 0);
+	bool getBoolVal(const rapidjson::Value& elem, bool val = false);
+	bool getBoolKey(const rapidjson::Value& elem, const char* key, bool val = false);
+	bool getBoolIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, bool val = false);
+	double getDoubleVal(const rapidjson::Value& elem, double val = 0.0);
+	double getDoubleKey(const rapidjson::Value& elem, const char* key, double val = 0.0);
+	double getDoubleIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, double val = 0.0);
+	int getIntVal(const rapidjson::Value& elem, int val = 0);
+	int getIntKey(const rapidjson::Value& elem, const char* key, int val = 0);
+	int getIntIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, int val = 0);
+	int64_t getInt64Val(const rapidjson::Value& elem, int64_t val = 0);
+	int64_t getInt64Key(const rapidjson::Value& elem, const char* key, int64_t val = 0);
+	int64_t getInt64Idx(const rapidjson::Value& elem, rapidjson::SizeType idx, int64_t val = 0);
+	const char* getStringCharVal(const rapidjson::Value& elem, const char* val = "");
+	std::string getStringVal(const rapidjson::Value& elem, const std::string& val = "");
+	const char* getStringCharKey(const rapidjson::Value& elem,
+		const char* key, const char* val = "");
+	std::string getStringKey(const rapidjson::Value& elem,
+		const char* key, const std::string& val = "");
+	const char* getStringCharIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, const char* val = "");
+	std::string getStringIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, const std::string& val = "");
+	unsigned getUIntVal(const rapidjson::Value& elem, unsigned val = 0);
+	unsigned getUIntKey(const rapidjson::Value& elem,
+		const char* key, unsigned val = 0);
+	unsigned getUIntIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, unsigned val = 0);
+	uint64_t getUInt64Val(const rapidjson::Value& elem, uint64_t val = 0);
+	uint64_t getUInt64Key(const rapidjson::Value& elem,
+		const char* key, uint64_t val = 0);
+	uint64_t getUInt64Idx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, uint64_t val = 0);
 
 	template <class T>
-	T getVector2f(const rapidjson::Value& elem, const T& val = T())
+	T getVector2fVal(const rapidjson::Value& elem, const T& val = T())
 	{
 		if (elem.IsArray() && elem.Size() > 1)
 		{
@@ -52,7 +63,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2f(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2fKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
 		if (elem.HasMember(key) && elem[key].IsArray())
 		{
@@ -65,7 +76,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2i(const rapidjson::Value& elem, const T& val = T())
+	T getVector2iVal(const rapidjson::Value& elem, const T& val = T())
 	{
 		if (elem.IsArray() && elem.Size() > 1)
 		{
@@ -78,7 +89,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2i(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2iKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
 		if (elem.HasMember(key) && elem[key].IsArray())
 		{
@@ -91,7 +102,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2u(const rapidjson::Value& elem, const T& val = T())
+	T getVector2uVal(const rapidjson::Value& elem, const T& val = T())
 	{
 		if (elem.IsArray() && elem.Size() > 1)
 		{
@@ -104,7 +115,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2u(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2uKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
 		if (elem.HasMember(key) && elem[key].IsArray())
 		{
@@ -116,18 +127,31 @@ namespace Parser
 		}
 	}
 
-	sf::IntRect getIntRect(const rapidjson::Value& elem, const char* key, const sf::IntRect& val = sf::IntRect());
-	sf::IntRect getIntRect(const rapidjson::Value& elem, const sf::IntRect& val = sf::IntRect());
-	sf::FloatRect getFloatRect(const rapidjson::Value& elem, const char* key, const sf::FloatRect& val = sf::FloatRect());
-	sf::FloatRect getFloatRect(const rapidjson::Value& elem, const sf::FloatRect& val = sf::FloatRect());
+	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
+		const char* key, const sf::IntRect& val = sf::IntRect());
+	sf::IntRect getIntRectVal(const rapidjson::Value& elem,
+		const sf::IntRect& val = sf::IntRect());
+	sf::FloatRect getFloatRectKey(const rapidjson::Value& elem,
+		const char* key, const sf::FloatRect& val = sf::FloatRect());
+	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem,
+		const sf::FloatRect& val = sf::FloatRect());
 
-	sf::Color getColor(const rapidjson::Value& elem, const char* key, const sf::Color& val = sf::Color());
+	sf::Color getColorKey(const rapidjson::Value& elem, const char* key,
+		const sf::Color& val = sf::Color());
 
-	std::vector<std::string> getStringVector(const rapidjson::Value& elem, const char* key);
+	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const char* key);
 
-	sf::Keyboard::Key getKeyCode(const rapidjson::Value& elem, sf::Keyboard::Key val = sf::Keyboard::Unknown);
+	sf::Keyboard::Key getKeyCodeKey(const rapidjson::Value& elem,
+		sf::Keyboard::Key val = sf::Keyboard::Unknown);
 
-	IgnoreResource getIgnoreResource(const rapidjson::Value& elem, const char* key, IgnoreResource val = IgnoreResource::None);
+	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
+		const char* key, IgnoreResource val = IgnoreResource::None);
 
-	Variable getVariable(const rapidjson::Value& elem, const char* key);
+	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
+		const char* key, PlayerDirection val = PlayerDirection::All);
+
+	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
+		const char* key, PlayerStatus val = PlayerStatus::Stand1);
+
+	Variable getVariableKey(const rapidjson::Value& elem, const char* key);
 }

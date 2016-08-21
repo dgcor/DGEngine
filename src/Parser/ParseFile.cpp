@@ -24,6 +24,7 @@
 #include "ParseMovie.h"
 #include "ParsePalette.h"
 #include "ParsePlayer.h"
+#include "ParsePlayerClass.h"
 #include "ParseQuest.h"
 #include "ParseRectangle.h"
 #include "ParseScrollableText.h"
@@ -79,7 +80,7 @@ namespace Parser
 			return;
 		}
 
-		auto fileName = getString_(params, 0);
+		auto fileName = getStringIdx(params, 0);
 		if (fileName == "null")
 		{
 			return;
@@ -88,7 +89,7 @@ namespace Parser
 		auto json = FileUtils::readText(fileName.c_str());
 		for (size_t i = 1; i < params.Size(); i++)
 		{
-			auto param = game.getVariableString(getString(params[i]));
+			auto param = game.getVariableString(getStringVal(params[i]));
 			Utils::replaceStringInPlace(json, "{" + std::to_string(i) + "}", param);
 		}
 		parseJson(game, json);
@@ -236,7 +237,7 @@ namespace Parser
 				break;
 			}
 			case str2int("framerate"): {
-				game.Framerate(getUInt_(it->value));
+				game.Framerate(getUIntVal(it->value));
 				break;
 			}
 			case str2int("icon"): {
@@ -270,7 +271,7 @@ namespace Parser
 				break;
 			}
 			case str2int("keepAR"): {
-				game.KeepAR(getBool(it->value, true));
+				game.KeepAR(getBoolVal(it->value, true));
 				break;
 			}
 			case str2int("keyboard"): {
@@ -314,7 +315,7 @@ namespace Parser
 			}
 			case str2int("minWindowSize"): {
 				sf::Vector2u minSize(640, 480);
-				game.MinSize(getVector2u<sf::Vector2u>(it->value, minSize));
+				game.MinSize(getVector2uVal<sf::Vector2u>(it->value, minSize));
 				break;
 			}
 			case str2int("mountFile"): {
@@ -361,6 +362,17 @@ namespace Parser
 				}
 				break;
 			}
+			case str2int("playerClass"): {
+				if (it->value.IsArray() == false) {
+					parsePlayerClass(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parsePlayerClass(game, val);
+					}
+				}
+				break;
+			}
 			case str2int("quest"): {
 				if (it->value.IsArray() == false) {
 					parseQuest(game, it->value);
@@ -385,11 +397,11 @@ namespace Parser
 			}
 			case str2int("refWindowSize"): {
 				sf::Vector2u refSize(640, 480);
-				game.RefSize(getVector2u<sf::Vector2u>(it->value, refSize));
+				game.RefSize(getVector2uVal<sf::Vector2u>(it->value, refSize));
 				break;
 			}
 			case str2int("saveDir"): {
-				auto saveDir = getString(it->value);
+				auto saveDir = getStringVal(it->value);
 				if (saveDir.size() > 0 && FileUtils::setSaveDir(saveDir.c_str()) == true)
 				{
 					PHYSFS_mount(PHYSFS_getWriteDir(), NULL, 0);
@@ -408,7 +420,7 @@ namespace Parser
 				break;
 			}
 			case str2int("smoothScreen"): {
-				game.SmoothScreen(getBool(it->value));
+				game.SmoothScreen(getBoolVal(it->value));
 				break;
 			}
 			case str2int("sound"): {
@@ -423,7 +435,7 @@ namespace Parser
 				break;
 			}
 			case str2int("stretchToFit"): {
-				game.StretchToFit(getBool(it->value));
+				game.StretchToFit(getBoolVal(it->value));
 				break;
 			}
 			case str2int("text"): {
@@ -449,7 +461,7 @@ namespace Parser
 				break;
 			}
 			case str2int("title"): {
-				game.setTitle(getString(it->value, game.getTitle()));
+				game.setTitle(getStringVal(it->value, game.getTitle()));
 				break;
 			}
 			case str2int("variable"): {
@@ -457,12 +469,12 @@ namespace Parser
 				break;
 			}
 			case str2int("version"): {
-				game.setVersion(getString(it->value, game.getVersion()));
+				game.setVersion(getStringVal(it->value, game.getVersion()));
 				break;
 			}
 			case str2int("windowSize"): {
 				sf::Vector2u minSize(640, 480);
-				game.WindowSize(getVector2u<sf::Vector2u>(it->value, minSize));
+				game.WindowSize(getVector2uVal<sf::Vector2u>(it->value, minSize));
 				break;
 			}
 			}

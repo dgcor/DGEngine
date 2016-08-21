@@ -5,6 +5,10 @@ this project under the zLib license.
 
 https://github.com/wheybags/freeablo
 
+the A* algorithm by Justin Heyes-Jones uses the MIT license.
+
+https://github.com/justinhj/astar-algorithm-cpp
+
 A part of the BitmapFont class is based on a bitmap font implementation for SDL
 by Lazy Foo' Productions. The license is incompatible with GPL like licenses.
 

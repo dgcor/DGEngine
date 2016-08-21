@@ -57,9 +57,6 @@ public:
 };
 
 typedef CelCache<CelFrame> CelFrameCache;
-typedef CelCache<sf::Image> CelImageCache;
 typedef CelCache<sf::Texture> CelTextureCache;
 
-typedef CelCacheVector<CelFrame> CelFrameCacheVector;
-typedef CelCacheVector<sf::Image> CelImageCacheVector;
 typedef CelCacheVector<sf::Texture> CelTextureCacheVector;

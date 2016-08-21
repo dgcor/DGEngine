@@ -32,7 +32,10 @@
     <ClCompile Include="src\Game\Level.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
     <ClCompile Include="src\Game\LevelMap.cpp" />
+    <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
+    <ClCompile Include="src\Game\PlayerClass.cpp" />
+    <ClCompile Include="src\Game\PlayerProperties.cpp" />
     <ClCompile Include="src\Game\Quest.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\ImageUtils.cpp" />
@@ -72,6 +75,7 @@
     <ClCompile Include="src\Parser\ParseMovie.cpp" />
     <ClCompile Include="src\Parser\ParsePalette.cpp" />
     <ClCompile Include="src\Parser\ParsePlayer.cpp" />
+    <ClCompile Include="src\Parser\ParsePlayerClass.cpp" />
     <ClCompile Include="src\Parser\ParseQuest.cpp" />
     <ClCompile Include="src\Parser\Parser.cpp" />
     <ClCompile Include="src\Parser\ParseRectangle.cpp" />
@@ -132,14 +136,19 @@
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\GameUtils.h" />
+    <ClInclude Include="src\Game\fsa.h" />
     <ClInclude Include="src\Game\Item.h" />
     <ClInclude Include="src\Game\ItemCollection.h" />
     <ClInclude Include="src\Game\Level.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
+    <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />
+    <ClInclude Include="src\Game\PlayerClass.h" />
+    <ClInclude Include="src\Game\PlayerProperties.h" />
     <ClInclude Include="src\Game\Quest.h" />
+    <ClInclude Include="src\Game\stlastar.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\ImageUtils.h" />
     <ClInclude Include="src\InputText.h" />
@@ -173,6 +182,7 @@
     <ClInclude Include="src\Parser\ParseMovie.h" />
     <ClInclude Include="src\Parser\ParsePalette.h" />
     <ClInclude Include="src\Parser\ParsePlayer.h" />
+    <ClInclude Include="src\Parser\ParsePlayerClass.h" />
     <ClInclude Include="src\Parser\ParseQuest.h" />
     <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Parser\ParseRectangle.h" />
@@ -298,14 +308,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\release\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SFML_STATIC;SFEMOVIE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>flac.lib;freetype.lib;gdi32.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network-s.lib;sfml-system-s.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;physfs.lib;sfeMovie.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>flac.lib;freetype.lib;gdi32.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network-s.lib;sfml-system-s.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;physfs-s.lib;sfeMovie-s.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>

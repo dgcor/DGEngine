@@ -6,23 +6,30 @@
 
 using Utils::str2int;
 
-void Player::calculatePosition(const Level& level, const sf::Vector2u& texSize)
+void Player::calculatePosition(Level& level, const sf::Vector2u& texSize)
 {
-	auto drawPos = level.Map().getCoords(position);
-	drawPos.x += (float)(level.getLevelX_() - ((int)texSize.x / 2)) + 32;
-	drawPos.y += (float)(level.getLevelY_() + 224 - ((int)texSize.y - 32));
+	if (walkPath.empty() == true)
+	{
+		setStatus(PlayerStatus::Stand1);
+	}
+	else
+	{
+		setStatus(PlayerStatus::Walk1);
+	}
+
+	if (walkPath.empty() == false)
+	{
+		setDirection(getPlayerDirection(mapPosition, walkPath.front()));
+		level.Map()[mapPosition.x][mapPosition.y].drawable = nullptr;
+		mapPosition = walkPath.front();
+		walkPath.pop();
+		level.Map()[mapPosition.x][mapPosition.y].drawable = this;
+	}
+
+	auto drawPos = level.Map().getCoords(mapPosition);
+	drawPos.x += (float)(level.getLevelX() - ((int)texSize.x / 2)) + 32;
+	drawPos.y += (float)(level.getLevelY() + 224 - ((int)texSize.y - 32));
 	sprite.setPosition(drawPos);
-}
-
-void Player::calculateFrameRange(const sf::Vector2i& oldPos, const sf::Vector2i& newPos)
-{
-	//if (frames == 8)
-	//{
-	//	if (oldPos.x < newPos.x)
-	//	{
-
-	//	}
-	//}
 }
 
 void Player::update(Game& game, Level& level)
@@ -47,7 +54,8 @@ void Player::update(Game& game, Level& level)
 		calculatePosition(level, sf::Vector2u(rect.width, rect.height));
 	}
 
-	if (frameRange.first > frameRange.second)
+	if (celTexture == nullptr
+		|| frameRange.first > frameRange.second)
 	{
 		return;
 	}
@@ -84,7 +92,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 			var = Variable(name);
 			break;
 		case str2int("class"):
-			var = Variable(class_);
+			var = Variable(class_->Name());
 			break;
 		case str2int("level"):
 			var = Variable((int64_t)level);

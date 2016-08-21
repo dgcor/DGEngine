@@ -36,7 +36,7 @@ namespace Parser
 			}
 			texture = std::make_shared<sf::Texture>();
 			texture->loadFromImage(img);
-			texture->setSmooth(getBool(elem, "smooth"));
+			texture->setSmooth(getBoolKey(elem, "smooth"));
 			game.Resources().addTexture(elem["textureId"].GetString(), texture);
 		}
 		else
@@ -44,10 +44,10 @@ namespace Parser
 			return;
 		}
 
-		auto rows = getInt(elem, "rows", 16);
-		auto cols = getInt(elem, "cols", 16);
-		auto padding = getInt(elem, "padding");
-		bool isVertical = getString(elem, "direction") == "vertical";
+		auto rows = getIntKey(elem, "rows", 16);
+		auto cols = getIntKey(elem, "cols", 16);
+		auto padding = getIntKey(elem, "padding");
+		bool isVertical = getStringKey(elem, "direction") == "vertical";
 
 		std::shared_ptr<BitmapFont> font;
 

@@ -112,6 +112,9 @@
 		<Unit filename="src/Game/LevelObject.h" />
 		<Unit filename="src/Game/Player.cpp" />
 		<Unit filename="src/Game/Player.h" />
+		<Unit filename="src/Game/PlayerClass.cpp" />
+		<Unit filename="src/Game/PlayerClass.h" />
+		<Unit filename="src/Game/PlayerProperties.h" />
 		<Unit filename="src/Game/Quest.cpp" />
 		<Unit filename="src/Game/Quest.h" />
 		<Unit filename="src/GameUtils.cpp" />
@@ -194,6 +197,8 @@
 		<Unit filename="src/Parser/ParsePalette.h" />
 		<Unit filename="src/Parser/ParsePlayer.cpp" />
 		<Unit filename="src/Parser/ParsePlayer.h" />
+		<Unit filename="src/Parser/ParsePlayerClass.cpp" />
+		<Unit filename="src/Parser/ParsePlayerClass.h" />
 		<Unit filename="src/Parser/ParseQuest.cpp" />
 		<Unit filename="src/Parser/ParseQuest.h" />
 		<Unit filename="src/Parser/ParseRectangle.cpp" />

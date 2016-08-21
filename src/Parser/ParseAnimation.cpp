@@ -20,7 +20,7 @@ namespace Parser
 			}
 			animation = std::make_shared<Animation>(*texture);
 
-			animation->setFrames(1, getInt(elem, "frames", 1));
+			animation->setFrames(1, getIntKey(elem, "frames", 1));
 		}
 		else if (isValidString(elem, "id"))
 		{
@@ -41,12 +41,12 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto scale = getDouble(elem, "scale", 1.0);
+		auto scale = getDoubleKey(elem, "scale", 1.0);
 		animation->scale(sf::Vector2f(scale, scale));
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		animation->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			auto size = animation->Size();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -56,9 +56,9 @@ namespace Parser
 			}
 		}
 		animation->Position(pos);
-		animation->Visible(getBool(elem, "visible", true));
-		animation->setFrameTime(sf::milliseconds(getUInt(elem, "refresh", 50)));
-		animation->setColor(getColor(elem, "color", sf::Color::White));
+		animation->Visible(getBoolKey(elem, "visible", true));
+		animation->setFrameTime(sf::milliseconds(getUIntKey(elem, "refresh", 50)));
+		animation->setColor(getColorKey(elem, "color", sf::Color::White));
 
 		return animation;
 	}

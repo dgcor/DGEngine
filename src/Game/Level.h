@@ -7,10 +7,12 @@
 #include <memory>
 #include "Min.h"
 #include "Palette.h"
+#include "PlayerClass.h"
 #include "Quest.h"
 #include "Sol.h"
 #include "TileSet.h"
 #include "UIObject.h"
+#include <unordered_map>
 #include <utility>
 #include "View2.h"
 
@@ -26,7 +28,6 @@ private:
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 
 	int32_t levelX, levelY;
-	int32_t levelX_{ 0 }, levelY_{ 0 };
 
 	std::vector<std::shared_ptr<sf::Texture>> tiles;
 	std::vector<std::shared_ptr<sf::Texture>> tiles2;
@@ -34,9 +35,13 @@ private:
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
 
-	std::shared_ptr<Player> mainPlayer;
+	std::vector<std::pair<std::string, std::shared_ptr<PlayerClass>>> playerClasses;
 	std::vector<std::shared_ptr<Player>> players;
-	std::shared_ptr<Player> currentPlayer;
+	Player* currentPlayer;
+	bool followCurrentPlayer{ true };
+
+	size_t playerClassClearIdx{ 0 };
+	size_t playerClearIdx{ 0 };
 
 	bool visible{ true };
 
@@ -62,19 +67,36 @@ public:
 
 	int32_t getLevelX() const { return levelX; }
 	int32_t getLevelY() const { return levelY; }
-	int32_t getLevelX_() const { return levelX_; }
-	int32_t getLevelY_() const { return levelY_; }
 
 	size_t Width() const { return map.Width(); }
 	size_t Height() const { return map.Height(); }
 
-	std::shared_ptr<Player>& MainPlayer() { return mainPlayer; }
-	const std::shared_ptr<Player>& MainPlayer() const { return mainPlayer; }
+	void addPlayerClass(const std::string& key, const std::shared_ptr<PlayerClass>& obj)
+	{
+		playerClasses.push_back(std::make_pair(key, obj));
+	}
+
+	std::shared_ptr<PlayerClass> getPlayerClass(const std::string& key) const
+	{
+		for (const auto& player : playerClasses)
+		{
+			if (player.first == key)
+			{
+				return player.second;
+			}
+		}
+		return nullptr;
+	}
 
 	std::vector<std::shared_ptr<Player>>& Players() { return players; }
 	const std::vector<std::shared_ptr<Player>>& Players() const { return players; }
 
 	Player* getPlayer(const std::string id);
+
+	void setPlayerClassClearIdx(size_t idx) { playerClassClearIdx = idx; }
+	void setPlayerClearIdx(size_t idx) { playerClearIdx = idx; }
+
+	void clearPlayers();
 
 	void resetView()
 	{
@@ -94,23 +116,18 @@ public:
 	virtual const sf::Vector2f& Position() const { return view.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { view.setPosition(position); }
 	virtual sf::Vector2f Size() const { return view.getSize(); }
-	virtual void Size(const sf::Vector2f& size)
-	{
-		view.setSize(size);
-		levelX_ = 0;
-	}
+	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
 
-	void move(const sf::Vector2i& pos_)
-	{
-		pos = pos_;
-	}
+	sf::Vector2f getDrawPosition(const sf::Vector2i& pos_) const;
 
-	void move(Game& game);
+	sf::Vector2i getMapClickPosition(Game& game);
 
+	void move(const sf::Vector2i& pos_) { pos = pos_; }
 
-	void setMainPlayer(const std::shared_ptr<Player>& player_) { mainPlayer = player_; }
+	void move(Game& game) { pos = getMapClickPosition(game); }
+
 	void addPlayer(const std::shared_ptr<Player>& player_) { players.push_back(player_); }
-	void setCurrentPlayer(const std::shared_ptr<Player>& player_)
+	void setCurrentPlayer(Player* player_)
 	{
 		currentPlayer = player_;
 		if (currentPlayer != nullptr)
@@ -118,6 +135,8 @@ public:
 			pos = currentPlayer->MapPosition();
 		}
 	}
+
+	void FollowCurrentPlayer(bool follow) { followCurrentPlayer = follow; }
 
 	virtual bool Visible() const { return visible; }
 	virtual void Visible(bool visible_) { visible = visible_; }

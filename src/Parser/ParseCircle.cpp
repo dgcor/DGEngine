@@ -14,7 +14,7 @@ namespace Parser
 			return;
 		}
 
-		auto circle = std::make_shared<Circle>((float)getInt(elem, "radius"));
+		auto circle = std::make_shared<Circle>((float)getIntKey(elem, "radius"));
 
 		if (elem.HasMember("texture"))
 		{
@@ -28,13 +28,13 @@ namespace Parser
 		if (elem.HasMember("textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
-			circle->setTextureRect(getIntRect(elem, "textureRect", rect));
+			circle->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		circle->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			auto size = circle->Size();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -44,11 +44,11 @@ namespace Parser
 			}
 		}
 		circle->Position(pos);
-		circle->Visible(getBool(elem, "visible", true));
+		circle->Visible(getBoolKey(elem, "visible", true));
 
-		circle->setFillColor(getColor(elem, "color", sf::Color::White));
-		circle->setOutlineColor(getColor(elem, "outlineColor", sf::Color::White));
-		circle->setOutlineThickness((float)getUInt(elem, "outlineThickness"));
+		circle->setFillColor(getColorKey(elem, "color", sf::Color::White));
+		circle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
+		circle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
 		game.Resources().addDrawable(elem["id"].GetString(), circle);
 	}

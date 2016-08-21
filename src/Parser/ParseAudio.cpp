@@ -18,9 +18,9 @@ namespace Parser
 			return;
 		}
 
-		music->setLoop(getBool(elem, "loop"));
+		music->setLoop(getBoolKey(elem, "loop"));
 
-		auto volume = getVariable(elem, "volume");
+		auto volume = getVariableKey(elem, "volume");
 		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 		if (vol > 100)
 		{
@@ -28,7 +28,7 @@ namespace Parser
 		}
 		music->setVolume((float)vol);
 
-		if (getBool(elem, "play") == true)
+		if (getBoolKey(elem, "play") == true)
 		{
 			music->play();
 		}

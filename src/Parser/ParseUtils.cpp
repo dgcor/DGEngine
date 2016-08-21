@@ -7,14 +7,19 @@ namespace Parser
 	using namespace rapidjson;
 	using namespace Utils;
 
+	bool isValidArray(const rapidjson::Value& elem, const char* key)
+	{
+		return (elem.HasMember(key) && elem[key].IsArray() && elem[key].Size() > 0);
+	}
+
 	bool isValidString(const rapidjson::Value& elem, const char* key)
 	{
 		return (elem.HasMember(key) && elem[key].IsString() && elem[key].GetStringLength() > 0);
 	}
 
-	Anchor getAnchor(const char* anchor, Anchor val)
+	Anchor getAnchorVal(const char* anchor, Anchor val)
 	{
-		switch (str2int(anchor))
+		switch (str2int(toLower(anchor).c_str()))
 		{
 		case str2int("none"):
 			return Anchor::None;
@@ -33,21 +38,21 @@ namespace Parser
 		}
 	}
 
-	Anchor getAnchor(const rapidjson::Value& elem, const char* key, Anchor val)
+	Anchor getAnchorKey(const rapidjson::Value& elem, const char* key, Anchor val)
 	{
 		if (elem.HasMember(key))
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString())
 			{
-				return getAnchor(keyElem.GetString(), val);
+				return getAnchorVal(keyElem.GetString(), val);
 			}
 			else if (keyElem.IsArray())
 			{
 				Anchor ret = Anchor::None;
 				for (const auto& arrElem : keyElem)
 				{
-					ret |= getAnchor(getString(arrElem).c_str(), val);
+					ret |= getAnchorVal(getStringVal(arrElem).c_str(), val);
 				}
 				return ret;
 			}
@@ -55,7 +60,7 @@ namespace Parser
 		return val;
 	}
 
-	bool getBool(const rapidjson::Value& elem, bool val)
+	bool getBoolVal(const rapidjson::Value& elem, bool val)
 	{
 		if (elem.IsBool()) {
 			return elem.GetBool();
@@ -65,7 +70,7 @@ namespace Parser
 		}
 	}
 
-	bool getBool(const rapidjson::Value& elem, const char* key, bool val)
+	bool getBoolKey(const rapidjson::Value& elem, const char* key, bool val)
 	{
 		if (elem.HasMember(key) && elem[key].IsBool()) {
 			return elem[key].GetBool();
@@ -75,7 +80,7 @@ namespace Parser
 		}
 	}
 
-	bool getBool(const rapidjson::Value& elem, rapidjson::SizeType idx, bool val)
+	bool getBoolIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, bool val)
 	{
 		if (idx < elem.Size() && elem[idx].IsBool()) {
 			return elem[idx].GetBool();
@@ -85,7 +90,7 @@ namespace Parser
 		}
 	}
 
-	double getDouble(const rapidjson::Value& elem, double val)
+	double getDoubleVal(const rapidjson::Value& elem, double val)
 	{
 		if (elem.IsDouble()) {
 			return elem.GetDouble();
@@ -95,7 +100,7 @@ namespace Parser
 		}
 	}
 
-	double getDouble(const rapidjson::Value& elem, const char* key, double val)
+	double getDoubleKey(const rapidjson::Value& elem, const char* key, double val)
 	{
 		if (elem.HasMember(key) && elem[key].IsDouble()) {
 			return elem[key].GetDouble();
@@ -105,7 +110,7 @@ namespace Parser
 		}
 	}
 
-	double getDouble(const rapidjson::Value& elem, rapidjson::SizeType idx, double val)
+	double getDoubleIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, double val)
 	{
 		if (idx < elem.Size() && elem[idx].IsDouble()) {
 			return elem[idx].GetDouble();
@@ -115,7 +120,7 @@ namespace Parser
 		}
 	}
 
-	int getInt(const rapidjson::Value& elem, int val)
+	int getIntVal(const rapidjson::Value& elem, int val)
 	{
 		if (elem.IsInt()) {
 			return elem.GetInt();
@@ -125,7 +130,7 @@ namespace Parser
 		}
 	}
 
-	int getInt(const rapidjson::Value& elem, const char* key, int val)
+	int getIntKey(const rapidjson::Value& elem, const char* key, int val)
 	{
 		if (elem.HasMember(key) && elem[key].IsInt()) {
 			return elem[key].GetInt();
@@ -135,7 +140,7 @@ namespace Parser
 		}
 	}
 
-	int getInt(const rapidjson::Value& elem, rapidjson::SizeType idx, int val)
+	int getIntIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, int val)
 	{
 		if (idx < elem.Size() && elem[idx].IsInt()) {
 			return elem[idx].GetInt();
@@ -145,7 +150,7 @@ namespace Parser
 		}
 	}
 
-	int64_t getInt64(const rapidjson::Value& elem, int64_t val)
+	int64_t getInt64Val(const rapidjson::Value& elem, int64_t val)
 	{
 		if (elem.IsInt64()) {
 			return elem.GetInt64();
@@ -155,7 +160,7 @@ namespace Parser
 		}
 	}
 
-	int64_t getInt64(const rapidjson::Value& elem, const char* key, int64_t val)
+	int64_t getInt64Key(const rapidjson::Value& elem, const char* key, int64_t val)
 	{
 		if (elem.HasMember(key) && elem[key].IsInt64()) {
 			return elem[key].GetInt64();
@@ -165,7 +170,7 @@ namespace Parser
 		}
 	}
 
-	int64_t getInt64(const rapidjson::Value& elem, rapidjson::SizeType idx, int64_t val)
+	int64_t getInt64Idx(const rapidjson::Value& elem, rapidjson::SizeType idx, int64_t val)
 	{
 		if (idx < elem.Size() && elem[idx].IsInt64()) {
 			return elem[idx].GetInt64();
@@ -175,7 +180,7 @@ namespace Parser
 		}
 	}
 
-	const char* getStringChar_(const rapidjson::Value& elem, const char* val)
+	const char* getStringCharVal(const rapidjson::Value& elem, const char* val)
 	{
 		if (elem.IsString()) {
 			return elem.GetString();
@@ -185,12 +190,13 @@ namespace Parser
 		}
 	}
 
-	std::string getString(const rapidjson::Value& elem, const std::string& val)
+	std::string getStringVal(const rapidjson::Value& elem, const std::string& val)
 	{
-		return getStringChar_(elem, val.c_str());
+		return getStringCharVal(elem, val.c_str());
 	}
 
-	const char* getStringChar(const rapidjson::Value& elem, const char* key, const char* val)
+	const char* getStringCharKey(const rapidjson::Value& elem,
+		const char* key, const char* val)
 	{
 		if (elem.HasMember(key) && elem[key].IsString()) {
 			return elem[key].GetString();
@@ -200,12 +206,14 @@ namespace Parser
 		}
 	}
 
-	std::string getString(const rapidjson::Value& elem, const char* key, const std::string& val)
+	std::string getStringKey(const rapidjson::Value& elem,
+		const char* key, const std::string& val)
 	{
-		return getStringChar(elem, key, val.c_str());
+		return getStringCharKey(elem, key, val.c_str());
 	}
 
-	const char* getStringChar_(const rapidjson::Value& elem, rapidjson::SizeType idx, const char* val)
+	const char* getStringCharIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, const char* val)
 	{
 		if (idx < elem.Size() && elem[idx].IsString()) {
 			return elem[idx].GetString();
@@ -215,12 +223,13 @@ namespace Parser
 		}
 	}
 
-	std::string getString_(const rapidjson::Value& elem, rapidjson::SizeType idx, const std::string& val)
+	std::string getStringIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, const std::string& val)
 	{
-		return getStringChar_(elem, idx, val.c_str());
+		return getStringCharIdx(elem, idx, val.c_str());
 	}
 
-	unsigned getUInt_(const rapidjson::Value& elem, unsigned val)
+	unsigned getUIntVal(const rapidjson::Value& elem, unsigned val)
 	{
 		if (elem.IsUint()) {
 			return elem.GetUint();
@@ -230,7 +239,7 @@ namespace Parser
 		}
 	}
 
-	unsigned getUInt(const rapidjson::Value& elem, const char* key, unsigned val)
+	unsigned getUIntKey(const rapidjson::Value& elem, const char* key, unsigned val)
 	{
 		if (elem.HasMember(key) && elem[key].IsUint()) {
 			return elem[key].GetUint();
@@ -240,7 +249,7 @@ namespace Parser
 		}
 	}
 
-	unsigned getUInt(const rapidjson::Value& elem, rapidjson::SizeType idx, unsigned val)
+	unsigned getUIntIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, unsigned val)
 	{
 		if (idx < elem.Size() && elem[idx].IsUint()) {
 			return elem[idx].GetUint();
@@ -250,7 +259,7 @@ namespace Parser
 		}
 	}
 
-	uint64_t getUInt64(const rapidjson::Value& elem, uint64_t val)
+	uint64_t getUInt64Val(const rapidjson::Value& elem, uint64_t val)
 	{
 		if (elem.IsUint64()) {
 			return elem.GetUint64();
@@ -260,7 +269,7 @@ namespace Parser
 		}
 	}
 
-	uint64_t getUInt64(const rapidjson::Value& elem, const char* key, uint64_t val)
+	uint64_t getUInt64Key(const rapidjson::Value& elem, const char* key, uint64_t val)
 	{
 		if (elem.HasMember(key) && elem[key].IsUint64()) {
 			return elem[key].GetUint64();
@@ -270,7 +279,7 @@ namespace Parser
 		}
 	}
 
-	uint64_t getUInt64(const rapidjson::Value& elem, rapidjson::SizeType idx, uint64_t val)
+	uint64_t getUInt64Idx(const rapidjson::Value& elem, rapidjson::SizeType idx, uint64_t val)
 	{
 		if (idx < elem.Size() && elem[idx].IsUint64()) {
 			return elem[idx].GetUint64();
@@ -280,51 +289,55 @@ namespace Parser
 		}
 	}
 
-	sf::IntRect getIntRect(const rapidjson::Value& elem, const char* key, const sf::IntRect& val)
+	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
+		const char* key, const sf::IntRect& val)
 	{
 		if (elem.HasMember(key))
 		{
-			return getIntRect(elem[key], val);
+			return getIntRectVal(elem[key], val);
 		}
 		return val;
 	}
 
-	sf::IntRect getIntRect(const rapidjson::Value& elem, const sf::IntRect& val)
+	sf::IntRect getIntRectVal(const rapidjson::Value& elem, const sf::IntRect& val)
 	{
 		if (elem.IsArray() && elem.Size() >= 4)
 		{
-			return sf::IntRect(getInt(elem[0]), getInt(elem[1]), getInt(elem[2]), getInt(elem[3]));
+			return sf::IntRect(getInt64Val(elem[0]), getInt64Val(elem[1]),
+				getInt64Val(elem[2]), getInt64Val(elem[3]));
 		}
 		else if (elem.IsArray() && elem.Size() >= 2)
 		{
-			return sf::IntRect(0, 0, getInt(elem[0]), getInt(elem[1]));
+			return sf::IntRect(0, 0, getInt64Val(elem[0]), getInt64Val(elem[1]));
 		}
 		return val;
 	}
 
-	sf::FloatRect getFloatRect(const rapidjson::Value& elem, const char* key, const sf::FloatRect& val)
+	sf::FloatRect getFloatRectKey(const rapidjson::Value& elem,
+		const char* key, const sf::FloatRect& val)
 	{
 		if (elem.HasMember(key))
 		{
-			return getFloatRect(elem[key], val);
+			return getFloatRectVal(elem[key], val);
 		}
 		return val;
 	}
 
-	sf::FloatRect getFloatRect(const rapidjson::Value& elem, const sf::FloatRect& val)
+	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem, const sf::FloatRect& val)
 	{
 		if (elem.IsArray() && elem.Size() >= 4)
 		{
-			return sf::FloatRect(getDouble(elem[0]), getDouble(elem[1]), getDouble(elem[2]), getDouble(elem[3]));
+			return sf::FloatRect(getDoubleVal(elem[0]), getDoubleVal(elem[1]),
+				getDoubleVal(elem[2]), getDoubleVal(elem[3]));
 		}
 		else if (elem.IsArray() && elem.Size() >= 2)
 		{
-			return sf::FloatRect(0, 0, getDouble(elem[0]), getDouble(elem[1]));
+			return sf::FloatRect(0, 0, getDoubleVal(elem[0]), getDoubleVal(elem[1]));
 		}
 		return val;
 	}
 
-	sf::Color getColor(const rapidjson::Value& elem, const char* key, const sf::Color& val)
+	sf::Color getColorKey(const rapidjson::Value& elem, const char* key, const sf::Color& val)
 	{
 		if (elem.HasMember(key) && elem[key].IsString())
 		{
@@ -345,7 +358,7 @@ namespace Parser
 		}
 	}
 
-	std::vector<std::string> getStringVector(const rapidjson::Value& elem, const char* key)
+	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const char* key)
 	{
 		std::vector<std::string> vec;
 		if (elem.HasMember(key) == true)
@@ -366,7 +379,7 @@ namespace Parser
 		return vec;
 	}
 
-	sf::Keyboard::Key getKeyCode(const rapidjson::Value& elem, sf::Keyboard::Key val)
+	sf::Keyboard::Key getKeyCodeKey(const rapidjson::Value& elem, sf::Keyboard::Key val)
 	{
 		if (elem.IsInt())
 		{
@@ -478,7 +491,8 @@ namespace Parser
 		return val;
 	}
 
-	IgnoreResource getIgnoreResource(const rapidjson::Value& elem, const char* key, IgnoreResource val)
+	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
+		const char* key, IgnoreResource val)
 	{
 		if (elem.HasMember(key))
 		{
@@ -511,7 +525,95 @@ namespace Parser
 		return val;
 	}
 
-	Variable getVariable(const rapidjson::Value& elem, const char* key)
+	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
+		const char* key, PlayerDirection val)
+	{
+		if (elem.HasMember(key) == false)
+		{
+			return val;
+		}
+		const auto& keyElem = elem[key];
+		if (keyElem.IsString() == false)
+		{
+			return val;
+		}
+		switch (str2int(toLower(keyElem.GetString()).c_str()))
+		{
+		case str2int("all"):
+			return PlayerDirection::All;
+		case str2int("front"):
+			return PlayerDirection::Front;
+		case str2int("frontleft"):
+			return PlayerDirection::FrontLeft;
+		case str2int("left"):
+			return PlayerDirection::Left;
+		case str2int("backleft"):
+			return PlayerDirection::BackLeft;
+		case str2int("back"):
+			return PlayerDirection::Back;
+		case str2int("backright"):
+			return PlayerDirection::BackRight;
+		case str2int("right"):
+			return PlayerDirection::Right;
+		case str2int("frontright"):
+			return PlayerDirection::FrontRight;
+		default:
+			return val;
+		}
+	}
+
+	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
+		const char* key, PlayerStatus val)
+	{
+		if (elem.HasMember(key) == false)
+		{
+			return val;
+		}
+		const auto& keyElem = elem[key];
+		if (keyElem.IsString() == false)
+		{
+			return val;
+		}
+		switch (str2int(toLower(keyElem.GetString()).c_str()))
+		{
+		case str2int("stand1"):
+			return PlayerStatus::Stand1;
+		case str2int("stand2"):
+			return PlayerStatus::Stand2;
+		case str2int("walk1"):
+			return PlayerStatus::Walk1;
+		case str2int("walk2"):
+			return PlayerStatus::Walk2;
+		case str2int("attack1"):
+			return PlayerStatus::Attack1;
+		case str2int("attack2"):
+			return PlayerStatus::Attack2;
+		case str2int("attack3"):
+			return PlayerStatus::Attack3;
+		case str2int("attack4"):
+			return PlayerStatus::Attack4;
+		case str2int("defend1"):
+			return PlayerStatus::Defend1;
+		case str2int("defend2"):
+			return PlayerStatus::Defend2;
+		case str2int("defend3"):
+			return PlayerStatus::Defend3;
+		case str2int("defend4"):
+			return PlayerStatus::Defend4;
+		case str2int("hit1"):
+			return PlayerStatus::Hit1;
+		case str2int("hit2"):
+			return PlayerStatus::Hit2;
+		case str2int("die1"):
+			return PlayerStatus::Die1;
+		case str2int("die2"):
+			return PlayerStatus::Die2;
+		default:
+			return val;
+		}
+	}
+
+	Variable getVariableKey(const rapidjson::Value& elem, const char* key)
 	{
 		Variable var;
 		if (elem.HasMember(key) == true)

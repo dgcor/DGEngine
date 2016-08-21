@@ -5,9 +5,14 @@
       "file":"levels/towndata/town.pal"
     },
     {
-      "id": "townInfra",
+      "id": "infra",
       "palette": "town",
       "trnFile":"plrgfx/infra.trn"
+    },
+    {
+      "id": "stone",
+      "palette": "town",
+      "trnFile":"plrgfx/stone.trn"
     }
   ]
 }

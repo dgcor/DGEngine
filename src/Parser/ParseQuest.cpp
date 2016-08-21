@@ -7,12 +7,13 @@ namespace Parser
 
 	Quest parseQuestObj(Game& game, const rapidjson::Value& elem)
 	{
-		return Quest(getString(elem, "id"), getString(elem, "name"), getInt(elem, "state"));
+		return Quest(getStringKey(elem, "id"),
+			getStringKey(elem, "name"), getIntKey(elem, "state"));
 	}
 
 	void parseQuest(Game& game, const rapidjson::Value& elem)
 	{
-		auto level = game.Resources().getLevel(getString(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
 		if (level == nullptr)
 		{
 			return;

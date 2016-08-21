@@ -42,7 +42,7 @@ namespace Parser
 			{
 				for (const auto& val : celElem)
 				{
-					auto cel = game.Resources().getCelFile(getString(val));
+					auto cel = game.Resources().getCelFile(getStringVal(val));
 					if (cel != nullptr)
 					{
 						celVec.push_back(cel.get());

@@ -18,11 +18,10 @@
     "sol": "levels/l1data/l1.sol",
     "options": "clearPlayers",
     "onLeftClick": [
-      { "name": "level.moveToClick", "id": "level" }
+      { "name": "player.moveToClick", "id": "hero" }
     ],
     "onRightClick": [
       { "name": "load", "file": "level/town/load.json" }
     ]
-  },
-  "load": "level/l1/players.json"
+  }
 }

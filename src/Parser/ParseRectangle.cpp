@@ -14,7 +14,7 @@ namespace Parser
 			return;
 		}
 
-		auto rectangle = std::make_shared<Rectangle>(getVector2f<sf::Vector2f>(elem, "size"));
+		auto rectangle = std::make_shared<Rectangle>(getVector2fKey<sf::Vector2f>(elem, "size"));
 
 		if (elem.HasMember("texture"))
 		{
@@ -28,13 +28,13 @@ namespace Parser
 		if (elem.HasMember("textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
-			rectangle->setTextureRect(getIntRect(elem, "textureRect", rect));
+			rectangle->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		rectangle->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			auto size = rectangle->getSize();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -45,11 +45,11 @@ namespace Parser
 			rectangle->Size(size);
 		}
 		rectangle->Position(pos);
-		rectangle->Visible(getBool(elem, "visible", true));
+		rectangle->Visible(getBoolKey(elem, "visible", true));
 
-		rectangle->setFillColor(getColor(elem, "color", sf::Color::White));
-		rectangle->setOutlineColor(getColor(elem, "outlineColor", sf::Color::White));
-		rectangle->setOutlineThickness((float)getUInt(elem, "outlineThickness"));
+		rectangle->setFillColor(getColorKey(elem, "color", sf::Color::White));
+		rectangle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
+		rectangle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
 		game.Resources().addDrawable(elem["id"].GetString(), rectangle);
 	}

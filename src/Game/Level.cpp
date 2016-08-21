@@ -20,7 +20,17 @@ void Level::updateViewPort(const Game& game)
 	view.setViewport(game);
 }
 
-void Level::move(Game& game)
+sf::Vector2f Level::getDrawPosition(const sf::Vector2i& pos_) const
+{
+	int32_t drawX, drawY;
+	const auto& size = view.getSize();
+	Render::getMapScreenCoords(size.x, size.y, *this,
+		pos_.x, pos_.y, pos_.x, pos_.y, 0, drawX, drawY);
+
+	return sf::Vector2f((float)drawX, (float)drawY);
+}
+
+sf::Vector2i Level::getMapClickPosition(Game& game)
 {
 	auto mousePos = game.MousePosition() - view.getPosition();
 	const auto& size = view.getSize();
@@ -28,8 +38,7 @@ void Level::move(Game& game)
 
 	mousePos.y -= 48.f;
 
-	auto posNew = Render::getClickedTile(size.x, size.y, *this, mousePos.x, mousePos.y, pos.x, pos.y, pos.x, pos.y, 0);
-	pos = sf::Vector2i(posNew.x, posNew.y);
+	return Render::getClickedTile(size.x, size.y, *this, mousePos.x, mousePos.y, pos.x, pos.y, pos.x, pos.y, 0);
 }
 
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -46,7 +55,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (size_t y = 0; y < map.Height(); y++)
 		{
-			Render::drawLevelHelper(*this, tiles, x, y, levelX_, levelY_, target, states);
+			Render::drawLevelHelper(*this, tiles, x, y, levelX, levelY, target, states);
 		}
 	}
 
@@ -54,7 +63,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (size_t y = 0; y < map.Height(); y++)
 		{
-			Render::drawLevelHelper2(*this, tiles2, x, y, levelX_, levelY_, target, states);
+			Render::drawLevelHelper2(*this, tiles2, x, y, levelX, levelY, target, states);
 		}
 	}
 
@@ -80,8 +89,6 @@ void Level::updateSize(const Game& game)
 	view.setCenter(size.x / 2, size.y / 2);
 
 	Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
-	levelX_ = levelX;
-	levelY_ = levelY;
 }
 
 void Level::update(Game& game)
@@ -92,10 +99,6 @@ void Level::update(Game& game)
 	}
 
 	mousePos = game.MousePosition() - view.getPosition();
-	if (mainPlayer != nullptr)
-	{
-		mainPlayer->update(game, *this);
-	}
 	for (auto& player : players)
 	{
 		player->update(game, *this);
@@ -118,35 +121,12 @@ void Level::update(Game& game)
 		}
 	}
 
-	const auto& size = view.getSize();
-	Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
+		const auto& size = view.getSize();
+		Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
 
-	if (levelX_ == 0)
+	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
-		levelX_ = levelX;
-		levelY_ = levelY;
-	}
-
-	if (levelX > levelX_) {
-		levelX_++;
-	}
-	else if (levelX < levelX_) {
-		levelX_--;
-	}
-
-	if (levelY > levelY_) {
-		levelY_++;
-	}
-	else if (levelY < levelY_) {
-		levelY_--;
-	}
-
-	if (currentPlayer != nullptr)
-	{
-		auto oldPos = currentPlayer->MapPosition();
-		map[oldPos.x][oldPos.y].drawable = nullptr;
-		currentPlayer->MapPosition(pos);
-		map[pos.x][pos.y].drawable = currentPlayer.get();
+		pos = currentPlayer->MapPosition();
 	}
 }
 
@@ -164,10 +144,6 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 			{
 				if (props.size() > 2)
 				{
-					if (mainPlayer != nullptr && mainPlayer->Id() == props[1])
-					{
-						return mainPlayer->getProperty(props[2], var);
-					}
 					for (const auto& player : players)
 					{
 						if (player->Id() == props[1])
@@ -196,13 +172,6 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 
 Player* Level::getPlayer(const std::string id)
 {
-	if (mainPlayer != nullptr)
-	{
-		if (mainPlayer->Id() == id)
-		{
-			return mainPlayer.get();
-		}
-	}
 	for (auto& player : players)
 	{
 		if (player->Id() == id)
@@ -211,6 +180,26 @@ Player* Level::getPlayer(const std::string id)
 		}
 	}
 	return nullptr;
+}
+
+void Level::clearPlayers()
+{
+	if (playerClassClearIdx < playerClasses.size())
+	{
+		playerClasses.erase(playerClasses.begin() + playerClassClearIdx, playerClasses.end());
+	}
+	if (playerClearIdx < players.size())
+	{
+		players.erase(players.begin() + playerClearIdx, players.end());
+	}
+	for (const auto& player : players)
+	{
+		if (player.get() == currentPlayer)
+		{
+			return;
+		}
+	}
+	currentPlayer = nullptr;
 }
 
 void Level::addQuest(const Quest& quest_)

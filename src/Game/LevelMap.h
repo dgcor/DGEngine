@@ -3,6 +3,7 @@
 #include <cstdint>
 #include "Dun.h"
 #include "Helper2D.h"
+#include <queue>
 #include <SFML/Graphics/Drawable.hpp>
 #include "TileSet.h"
 #include "Sol.h"
@@ -60,4 +61,6 @@ public:
 
 	sf::Vector2f getCoords(const sf::Vector2i& tile) const;
 	sf::Vector2i getTile(const sf::Vector2f& coords) const;
+
+	std::queue<sf::Vector2i> getPath(const sf::Vector2i& a, const sf::Vector2i& b);
 };

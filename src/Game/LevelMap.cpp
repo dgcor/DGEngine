@@ -1,4 +1,5 @@
 #include "LevelMap.h"
+#include "PathFinder.h"
 
 int LevelMap::tileSize = 32;
 
@@ -88,4 +89,53 @@ sf::Vector2f LevelMap::getCoords(const sf::Vector2i& tile) const
 sf::Vector2i LevelMap::getTile(const sf::Vector2f& coords) const
 {
 	return sf::Vector2i();
+}
+
+std::queue<sf::Vector2i> LevelMap::getPath(const sf::Vector2i& a, const sf::Vector2i& b)
+{
+	std::queue<sf::Vector2i> path;
+
+	MapSearchNode start(this, a.x, a.y, PlayerDirection::All);
+	MapSearchNode end(this, b.x, b.y, PlayerDirection::All);
+
+	if (end.IsPassable() == false)
+	{
+		return path;
+	}
+
+	PathFinder pathFinder(PATH_FINDER_MAX);
+	pathFinder.SetStartAndGoalStates(start, end);
+
+	unsigned int SearchState;
+
+	do
+	{
+		SearchState = pathFinder.SearchStep();
+
+		auto StepCount = pathFinder.GetStepCount();
+		if (StepCount == PATH_FINDER_MAX)
+		{
+			pathFinder.CancelSearch();
+		}
+	}
+	while (SearchState == PathFinder::SEARCH_STATE_SEARCHING);
+
+	if (SearchState == PathFinder::SEARCH_STATE_SUCCEEDED)
+	{
+		auto node = pathFinder.GetSolutionStart();
+
+		while (true)
+		{
+			if (node == nullptr)
+			{
+				break;
+			}
+			path.emplace(sf::Vector2i(node->x, node->y));
+			node = pathFinder.GetSolutionNext();
+		};
+		pathFinder.FreeSolutionNodes();
+	}
+	pathFinder.EnsureMemoryFreed();
+
+	return path;
 }

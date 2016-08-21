@@ -23,8 +23,8 @@ namespace Parser
 		}
 		return std::make_shared<ActIfCondition>(
 			conditionHash,
-			getVariable(elem, "param1"),
-			getVariable(elem, "param2"),
+			getVariableKey(elem, "param1"),
+			getVariableKey(elem, "param2"),
 			actThen,
 			actElse);
 	}
@@ -41,7 +41,7 @@ namespace Parser
 					val.HasMember("action") == true)
 				{
 					cases.push_back(
-						std::make_pair(getVariable(val, "value"),
+						std::make_pair(getVariableKey(val, "value"),
 							parseAction(game, val["action"]))
 					);
 				}
@@ -53,7 +53,7 @@ namespace Parser
 			actDefault = parseAction(game, elem["default"]);
 		}
 		return std::make_shared<ActSwitchCondition>(
-			getVariable(elem, "param"),
+			getVariableKey(elem, "param"),
 			cases,
 			actDefault);
 	}
