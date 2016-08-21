@@ -38,11 +38,11 @@ namespace Parser
 			}
 		}
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		movie->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		auto size = getVector2i<sf::Vector2f>(elem, "size", movie->Size());
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = getVector2iKey<sf::Vector2f>(elem, "size", movie->Size());
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
@@ -53,7 +53,7 @@ namespace Parser
 		movie->Position(pos);
 		movie->Size(size);
 
-		auto volume = getVariable(elem, "volume");
+		auto volume = getVariableKey(elem, "volume");
 		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 		if (vol > 100)
 		{
@@ -61,7 +61,7 @@ namespace Parser
 		}
 		movie->setVolume((float)vol);
 
-		movie->Visible(getBool(elem, "visible", true));
+		movie->Visible(getBoolKey(elem, "visible", true));
 
 		game.Resources().addDrawable(elem["id"].GetString(), movie);
 

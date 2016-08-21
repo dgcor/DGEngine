@@ -17,13 +17,13 @@ namespace Parser
 			}
 
 			sf::Event::KeyEvent evt;
-			evt.alt = getBool(elem, "alt");
-			evt.control = getBool(elem, "control");
-			evt.shift = getBool(elem, "shift");
+			evt.alt = getBoolKey(elem, "alt");
+			evt.control = getBoolKey(elem, "control");
+			evt.shift = getBoolKey(elem, "shift");
 #ifdef __ANDROID__
 			evt.system = false;
 #else
-			evt.system = getBool(elem, "system");
+			evt.system = getBoolKey(elem, "system");
 #endif
 			const auto& keyElem = elem["key"];
 
@@ -31,7 +31,7 @@ namespace Parser
 			{
 				for (const auto& arrKey : keyElem)
 				{
-					auto keyCode = Parser::getKeyCode(arrKey);
+					auto keyCode = Parser::getKeyCodeKey(arrKey);
 					if (keyCode != sf::Keyboard::Key::Unknown)
 					{
 						evt.code = keyCode;
@@ -41,7 +41,7 @@ namespace Parser
 			}
 			else
 			{
-				auto keyCode = Parser::getKeyCode(keyElem);
+				auto keyCode = Parser::getKeyCodeKey(keyElem);
 				if (keyCode != sf::Keyboard::Key::Unknown)
 				{
 					evt.code = keyCode;

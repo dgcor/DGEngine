@@ -25,13 +25,13 @@ namespace Parser
 		if (elem.HasMember("textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
-			image->setTextureRect(getIntRect(elem, "textureRect", rect));
+			image->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		image->setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			auto size = image->Size();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -41,9 +41,9 @@ namespace Parser
 			}
 		}
 		image->Position(pos);
-		image->Visible(getBool(elem, "visible", true));
+		image->Visible(getBoolKey(elem, "visible", true));
 
-		image->setColor(getColor(elem, "color", sf::Color::White));
+		image->setColor(getColorKey(elem, "color", sf::Color::White));
 
 		game.Resources().addDrawable(elem["id"].GetString(), image);
 	}

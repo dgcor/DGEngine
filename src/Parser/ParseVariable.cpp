@@ -15,7 +15,7 @@ namespace Parser
 		std::vector<std::pair<std::string, Variable>> vars;
 		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
 		{
-			auto key = getString(it->name);
+			auto key = getStringVal(it->name);
 			if (key.empty() == false)
 			{
 				const auto& value = it->value;
@@ -51,7 +51,7 @@ namespace Parser
 	{
 		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
 		{
-			auto key = getString(it->name);
+			auto key = getStringVal(it->name);
 			if (key.size() > 0)
 			{
 				const auto& value = it->value;

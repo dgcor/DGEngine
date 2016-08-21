@@ -29,7 +29,7 @@ namespace Parser
 
 		if (elem.HasMember("id"))
 		{
-			evt.setId(getString(elem["id"]));
+			evt.setId(getStringVal(elem["id"]));
 		}
 
 		game.Events().addBack(evt);

@@ -14,10 +14,10 @@ namespace Parser
 
 	void parseDun(const Value& elem, LevelMap& map, const TileSet& til, const Sol& sol)
 	{
-		Dun dun(getString(elem, "file"));
+		Dun dun(getStringKey(elem, "file"));
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
-			auto pos = getVector2u<sf::Vector2u>(elem, "position");
+			auto pos = getVector2uKey<sf::Vector2u>(elem, "position");
 			map.setArea(pos.x, pos.y, dun, til, sol);
 		}
 	}
@@ -33,7 +33,7 @@ namespace Parser
 		TileSet til(tilPath);
 		Sol sol(solPath);
 
-		auto mapSize = getVector2u<sf::Vector2u>(elem, "mapSize");
+		auto mapSize = getVector2uKey<sf::Vector2u>(elem, "mapSize");
 		LevelMap map(mapSize.x, mapSize.y);
 
 		const auto& dunElem = elem["dun"];
@@ -50,7 +50,7 @@ namespace Parser
 		}
 
 		// l4.min and town.min contain 16 blocks, all others 10.
-		Min min(minPath, getInt(elem, "minBlocks", 10));
+		Min min(minPath, getIntKey(elem, "minBlocks", 10));
 
 		auto pal = game.Resources().getPalette(palPath);
 		if (pal == nullptr)
@@ -66,11 +66,11 @@ namespace Parser
 
 	void parsePosSize(Game& game, const Value& elem, Level& level)
 	{
-		auto anchor = getAnchor(elem, "anchor");
+		auto anchor = getAnchorKey(elem, "anchor");
 		level.setAnchor(anchor);
-		auto pos = getVector2f<sf::Vector2f>(elem, "position");
-		auto size = getVector2f<sf::Vector2f>(elem, "size", game.WindowTexSizef());
-		if (getBool(elem, "relativeCoords", true) == true)
+		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.WindowTexSizef());
+		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
@@ -80,7 +80,7 @@ namespace Parser
 		}
 		level.Position(pos);
 		level.Size(size);
-		level.Visible(getBool(elem, "visible", true));
+		level.Visible(getBoolKey(elem, "visible", true));
 	}
 
 	void parseLevelOption(Game& game, Level& level, unsigned optionHash)
@@ -89,7 +89,7 @@ namespace Parser
 		{
 		case str2int("clearPlayers"):
 		{
-			level.Players().clear();
+			level.clearPlayers();
 			break;
 		}
 		default:
@@ -106,7 +106,7 @@ namespace Parser
 			{
 				for (const auto& val : dunElem)
 				{
-					parseLevelOption(game, level, str2int(getStringChar_(val)));
+					parseLevelOption(game, level, str2int(getStringCharVal(val)));
 				}
 			}
 			else if (dunElem.IsString() == true)
@@ -118,7 +118,7 @@ namespace Parser
 
 	void parseLevel(Game& game, const Value& elem)
 	{
-		auto id = getString(elem, "id");
+		auto id = getStringKey(elem, "id");
 		Level* level = game.Resources().getResource<Level>(id);
 		bool existingLevel = (level != nullptr);
 		if (level == nullptr)
@@ -137,6 +137,19 @@ namespace Parser
 			&& elem.HasMember("dun") == true)
 		{
 			parseLevelMap(game, elem, *level);
+		}
+
+		if (elem.HasMember("followCurrentPlayer") == true)
+		{
+			level->FollowCurrentPlayer(getBoolVal(elem["followCurrentPlayer"]));
+		}
+		if (elem.HasMember("playerClassClearIndex") == true)
+		{
+			level->setPlayerClassClearIdx(getUIntVal(elem["playerClassClearIndex"]));
+		}
+		if (elem.HasMember("playerClearIndex") == true)
+		{
+			level->setPlayerClearIdx(getUIntVal(elem["playerClearIndex"]));
 		}
 
 		if (existingLevel == false)

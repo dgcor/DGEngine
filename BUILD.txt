@@ -52,13 +52,17 @@ To compile in Linux (Ubuntu), you need gcc or clang with C++14 support
 and to have both PhysicsFS and SFML installed.
 
 sudo apt-get install libphysfs-dev
-sudo apt-get install libphysfs1
-sudo apt-get install libphysfs1-dbg
 sudo apt-get install libsfml-dev
-
-A Code::Blocks project file is provided that will build the project if
-the libraries above are installed in the system.
 
 You also need to use the preprocessor define USE_SFML_MOVIE_STUB to skip
 movie support. You can try to get it to use sfeMovie for Linux on your own.
-The provided project does this by default.
+The provided CMake project does this by default.
+
+CMake
+
+A CMake project file is provided. It doesn't add video playback support.
+It will generate a project to compile on the target platform.
+
+cmake CMakeLists.txt
+
+Both PhysicsFS and SFML must be installed.

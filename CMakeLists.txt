@@ -1,0 +1,277 @@
+cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+
+project(DGEngine)
+
+include_directories(./src)
+
+add_definitions(-DUSE_SFML_MOVIE_STUB)
+
+set(SOURCE_FILES
+    src/Main.cpp
+    src/Alignment.h
+    src/Anchor.h
+    src/Animation.cpp
+    src/Animation.h
+    src/BitmapButton.cpp
+    src/BitmapButton.h
+    src/BitmapFont.cpp
+    src/BitmapFont.h
+    src/BitmapText.cpp
+    src/BitmapText.h
+    src/Button.h
+    src/Cel.cpp
+    src/Cel.h
+    src/CelCache.h
+    src/CelUtils.cpp
+    src/CelUtils.h
+    src/Circle.cpp
+    src/Circle.h
+    src/DrawableText.h
+    src/Dun.cpp
+    src/Dun.h
+    src/Event.cpp
+    src/Event.h
+    src/EventManager.h
+    src/FileUtils.cpp
+    src/FileUtils.h
+    src/Font2.h
+    src/Game.cpp
+    src/Game.h
+    src/GameUtils.cpp
+    src/GameUtils.h
+    src/Helper2D.h
+    src/Image.cpp
+    src/Image.h
+    src/ImageUtils.cpp
+    src/ImageUtils.h
+    src/InputText.cpp
+    src/InputText.h
+    src/LoadingScreen.cpp
+    src/LoadingScreen.h
+    src/Menu.cpp
+    src/Menu.h
+    src/Min.cpp
+    src/Min.h
+    src/Movie2.cpp
+    src/Movie2.h
+    src/MovieStub.cpp
+    src/MovieStub.h
+    src/Music2.h
+    src/Palette.cpp
+    src/Palette.h
+    src/Pcx.cpp
+    src/Pcx.h
+    src/PhysFSStream.cpp
+    src/PhysFSStream.h
+    src/Rectangle.cpp
+    src/Rectangle.h
+    src/ResourceManager.cpp
+    src/ResourceManager.h
+    src/ReverseIterable.h
+    src/ScrollableText.cpp
+    src/ScrollableText.h
+    src/SFMLUtils.cpp
+    src/SFMLUtils.h
+    src/Sol.cpp
+    src/Sol.h
+    src/StringButton.cpp
+    src/StringButton.h
+    src/StringText.cpp
+    src/StringText.h
+    src/Text2.cpp
+    src/Text2.h
+    src/TileSet.cpp
+    src/TileSet.h
+    src/UIObject.h
+    src/Utils.cpp
+    src/Utils.h
+    src/Variable.cpp
+    src/Variable.h
+    src/View2.cpp
+    src/View2.h
+    src/Actions/ActAction.h
+    src/Actions/ActAudio.h
+    src/Actions/ActButton.h
+    src/Actions/ActCondition.h
+    src/Actions/ActCursor.h
+    src/Actions/ActDrawable.h
+    src/Actions/ActEvent.h
+    src/Actions/ActFade.h
+    src/Actions/ActFocus.h
+    src/Actions/ActGame.h
+    src/Actions/ActInputText.h
+    src/Actions/ActIO.h
+    src/Actions/Action.h
+    src/Actions/ActiontList.h
+    src/Actions/ActLevel.h
+    src/Actions/ActLoad.h
+    src/Actions/ActLoadingScreen.h
+    src/Actions/ActMenu.h
+    src/Actions/ActMovie.h
+    src/Actions/ActPlayer.h
+    src/Actions/ActQuest.h
+    src/Actions/ActResource.h
+    src/Actions/ActSound.h
+    src/Actions/ActText.h
+    src/Actions/ActTexture.h
+    src/Actions/ActVariable.h
+    src/Actions/ActVisibility.h
+    src/Game/fsa.h
+    src/Game/Item.cpp
+    src/Game/Item.h
+    src/Game/ItemCollection.cpp
+    src/Game/ItemCollection.h
+    src/Game/Level.cpp
+    src/Game/Level.h
+    src/Game/LevelHelper.cpp
+    src/Game/LevelHelper.h
+    src/Game/LevelMap.cpp
+    src/Game/LevelMap.h
+    src/Game/LevelObject.h
+    src/Game/PathFinder.cpp
+    src/Game/PathFinder.h
+    src/Game/Player.cpp
+    src/Game/Player.h
+    src/Game/PlayerClass.cpp
+    src/Game/PlayerClass.h
+    src/Game/PlayerProperties.cpp
+    src/Game/PlayerProperties.h
+    src/Game/Quest.cpp
+    src/Game/Quest.h
+    src/Game/stlastar.h
+    src/Json/JsonParser.h
+    src/Json/JsonUtils.cpp
+    src/Json/JsonUtils.h
+    src/Parser/ParseAction.cpp
+    src/Parser/ParseAction.h
+    src/Parser/ParseAnimation.cpp
+    src/Parser/ParseAnimation.h
+    src/Parser/ParseAudio.cpp
+    src/Parser/ParseAudio.h
+    src/Parser/ParseBitmapFont.cpp
+    src/Parser/ParseBitmapFont.h
+    src/Parser/ParseButton.cpp
+    src/Parser/ParseButton.h
+    src/Parser/ParseCelFile.cpp
+    src/Parser/ParseCelFile.h
+    src/Parser/ParseCelTexture.cpp
+    src/Parser/ParseCelTexture.h
+    src/Parser/ParseCircle.cpp
+    src/Parser/ParseCircle.h
+    src/Parser/ParseCondition.cpp
+    src/Parser/ParseCondition.h
+    src/Parser/ParseCursor.cpp
+    src/Parser/ParseCursor.h
+    src/Parser/ParseEvent.cpp
+    src/Parser/ParseEvent.h
+    src/Parser/ParseFile.cpp
+    src/Parser/ParseFile.h
+    src/Parser/ParseFont.cpp
+    src/Parser/ParseFont.h
+    src/Parser/ParseIcon.cpp
+    src/Parser/ParseIcon.h
+    src/Parser/ParseImage.cpp
+    src/Parser/ParseImage.h
+    src/Parser/ParseInputText.cpp
+    src/Parser/ParseInputText.h
+    src/Parser/ParseKeyboard.cpp
+    src/Parser/ParseKeyboard.h
+    src/Parser/ParseLevel.cpp
+    src/Parser/ParseLevel.h
+    src/Parser/ParseLoadingScreen.cpp
+    src/Parser/ParseLoadingScreen.h
+    src/Parser/ParseMenu.cpp
+    src/Parser/ParseMenu.h
+    src/Parser/ParseMenuButton.cpp
+    src/Parser/ParseMenuButton.h
+    src/Parser/ParseMenuQuests.cpp
+    src/Parser/ParseMenuQuests.h
+    src/Parser/ParseMenuSaveGames.cpp
+    src/Parser/ParseMenuSaveGames.h
+    src/Parser/ParseMountFile.cpp
+    src/Parser/ParseMountFile.h
+    src/Parser/ParseMovie.cpp
+    src/Parser/ParseMovie.h
+    src/Parser/ParsePalette.cpp
+    src/Parser/ParsePalette.h
+    src/Parser/ParsePlayer.cpp
+    src/Parser/ParsePlayer.h
+    src/Parser/ParsePlayerClass.cpp
+    src/Parser/ParsePlayerClass.h
+    src/Parser/ParseQuest.cpp
+    src/Parser/ParseQuest.h
+    src/Parser/Parser.cpp
+    src/Parser/Parser.h
+    src/Parser/ParseRectangle.cpp
+    src/Parser/ParseRectangle.h
+    src/Parser/ParseScrollableText.cpp
+    src/Parser/ParseScrollableText.h
+    src/Parser/ParseSound.cpp
+    src/Parser/ParseSound.h
+    src/Parser/ParseText.cpp
+    src/Parser/ParseText.h
+    src/Parser/ParseTexture.cpp
+    src/Parser/ParseTexture.h
+    src/Parser/ParseUtils.cpp
+    src/Parser/ParseUtils.h
+    src/Parser/ParseVariable.cpp
+    src/Parser/ParseVariable.h
+    src/rapidjson/allocators.h
+    src/rapidjson/document.h
+    src/rapidjson/encodedstream.h
+    src/rapidjson/encodings.h
+    src/rapidjson/filereadstream.h
+    src/rapidjson/filestream.h
+    src/rapidjson/filewritestream.h
+    src/rapidjson/memorybuffer.h
+    src/rapidjson/memorystream.h
+    src/rapidjson/prettywriter.h
+    src/rapidjson/rapidjson.h
+    src/rapidjson/reader.h
+    src/rapidjson/stringbuffer.h
+    src/rapidjson/writer.h
+    src/rapidjson/error/en.h
+    src/rapidjson/error/error.h
+    src/rapidjson/internal/biginteger.h
+    src/rapidjson/internal/diyfp.h
+    src/rapidjson/internal/dtoa.h
+    src/rapidjson/internal/ieee754.h
+    src/rapidjson/internal/itoa.h
+    src/rapidjson/internal/meta.h
+    src/rapidjson/internal/pow10.h
+    src/rapidjson/internal/stack.h
+    src/rapidjson/internal/strfunc.h
+    src/rapidjson/internal/strtod.h
+    src/rapidjson/msinttypes/inttypes.h
+    src/rapidjson/msinttypes/stdint.h
+    src/variant/optional.hpp
+    src/variant/recursive_wrapper.hpp
+    src/variant/variant.hpp
+    src/variant/variant_io.hpp
+)
+
+add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
+        message(FATAL_ERROR "GCC 5.0+ is required")
+    endif()
+endif()
+
+# Detect and add PhysFS
+find_package(PhysFS REQUIRED)
+if(PHYSFS_FOUND)
+   include_directories(${PHYSFS_INCLUDE_DIRS})
+   target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY})
+endif()
+
+# Detect and add SFML
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(SFML 2.3 REQUIRED system window graphics network audio)
+if(SFML_FOUND)
+    include_directories(${SFML_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+endif()
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)

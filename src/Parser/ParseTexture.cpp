@@ -15,8 +15,8 @@ namespace Parser
 
 		if (elem.HasMember("fill"))
 		{
-			auto size = getVector2u(elem, "size", game.WindowTexSize());
-			img.create(size.x, size.y, getColor(elem, "fill"));
+			auto size = getVector2uKey(elem, "size", game.WindowTexSize());
+			img.create(size.x, size.y, getColorKey(elem, "fill"));
 			return img;
 		}
 		else if (elem.HasMember("file") == false)
@@ -24,11 +24,11 @@ namespace Parser
 			return img;
 		}
 
-		std::string fileName = getString(elem["file"]);
+		std::string fileName = getStringVal(elem["file"]);
 
 		if (elem.HasMember("palette"))
 		{
-			auto pal = game.Resources().getPalette(getString(elem["palette"]));
+			auto pal = game.Resources().getPalette(getStringVal(elem["palette"]));
 			if (pal == nullptr)
 			{
 				return img;
@@ -41,7 +41,7 @@ namespace Parser
 			}
 			else if (elem.HasMember("frame") == true)
 			{
-				auto frameIdx = getUInt_(elem["frame"]);
+				auto frameIdx = getUIntVal(elem["frame"]);
 				if (frameIdx > 0)
 				{
 					frameIdx--;
@@ -51,7 +51,7 @@ namespace Parser
 			else if (numFramesX != nullptr && numFramesY != nullptr)
 			{
 				// construct cel already vertically splitted, if pieces exists
-				(*numFramesX) = getUInt(elem, "pieces", 1);
+				(*numFramesX) = getUIntKey(elem, "pieces", 1);
 				img = CelUtils::loadImage(fileName.c_str(), *pal, isCl2, *numFramesX, *numFramesY);
 			}
 			else
@@ -61,11 +61,11 @@ namespace Parser
 		}
 		else
 		{
-			img = ImageUtils::loadImage(fileName.c_str(), getColor(elem, "mask"));
+			img = ImageUtils::loadImage(fileName.c_str(), getColorKey(elem, "mask"));
 
 			if (elem.HasMember("split"))
 			{
-				auto piecesX = getUInt(elem, "pieces", 1);
+				auto piecesX = getUIntKey(elem, "pieces", 1);
 
 				if (elem["split"].GetString() == std::string("horizontal"))
 				{

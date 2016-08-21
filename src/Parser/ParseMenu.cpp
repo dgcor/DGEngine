@@ -15,23 +15,24 @@ namespace Parser
 
 	void parseMenu(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false)
+		if (isValidString(elem, "id") == false ||
+			isValidArray(elem, "items") == false)
 		{
 			return;
 		}
 
 		auto menu = std::make_shared<Menu>();
 
-		auto anchor = getAnchor(elem, "anchor");
-		auto color = getColor(elem, "color", sf::Color::White);
-		auto horizAlign = GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign"));
-		auto vertAlign = GameUtils::getVerticalAlignment(getString(elem, "verticalAlign"));
-		auto horizSpaceOffset = getInt(elem, "horizontalSpaceOffset");
-		auto vertSpaceOffset = getInt(elem, "verticalSpaceOffset");
-		auto fontSize = getUInt(elem, "fontSize");
-		auto hasFocus = getBool(elem, "focus");
-		auto focusOnClick = getBool(elem, "focusOnClick", true);
-		auto clickUp = getBool(elem, "clickUp");
+		auto anchor = getAnchorKey(elem, "anchor");
+		auto color = getColorKey(elem, "color", sf::Color::White);
+		auto horizAlign = GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign"));
+		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"));
+		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
+		auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
+		auto fontSize = getUIntKey(elem, "fontSize");
+		auto hasFocus = getBoolKey(elem, "focus");
+		auto focusOnClick = getBoolKey(elem, "focusOnClick", true);
+		auto clickUp = getBoolKey(elem, "clickUp");
 
 		std::shared_ptr<sf::SoundBuffer> sound;
 		if (elem.HasMember("sound"))
@@ -49,7 +50,7 @@ namespace Parser
 		std::shared_ptr<BitmapFont> bitmapFont;
 		if (isTextFont == true)
 		{
-			font = game.Resources().getFont(getString(elem["font"]));
+			font = game.Resources().getFont(getStringVal(elem["font"]));
 			if (font == nullptr)
 			{
 				return;
@@ -57,18 +58,18 @@ namespace Parser
 		}
 		else
 		{
-			bitmapFont = game.Resources().getBitmapFont(getString(elem["bitmapFont"]));
+			bitmapFont = game.Resources().getBitmapFont(getStringKey(elem, "bitmapFont"));
 			if (bitmapFont == nullptr)
 			{
 				return;
 			}
 		}
 
-		auto relativePos = getBool(elem, "relativeCoords", true);
+		auto relativePos = getBoolKey(elem, "relativeCoords", true);
 
-		auto origPos = getVector2f<sf::Vector2f>(elem, "position");
+		auto origPos = getVector2fKey<sf::Vector2f>(elem, "position");
 		auto pos = origPos;
-		auto size = getVector2f<sf::Vector2f>(elem, "size");
+		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
 		if (relativePos == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -97,10 +98,10 @@ namespace Parser
 				auto button = parseMenuButton(anchor, color, horizAlign,
 					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 					fontSize, bitmapFont, sound, focusSound, clickUp);
-				button->enable(getBool(val, "enable", true));
-				button->setText(getString(val, "text"));
+				button->enable(getBoolKey(val, "enable", true));
+				button->setText(getStringKey(val, "text"));
 
-				auto pos2 = getVector2f<sf::Vector2f>(val, "position", origPos);
+				auto pos2 = getVector2fKey<sf::Vector2f>(val, "position", origPos);
 				if (relativePos == true)
 				{
 					auto size = button->Size();
@@ -162,9 +163,9 @@ namespace Parser
 		menu->Size(size);
 		menu->Position(pos);
 		menu->ScrollPosition(GameUtils::getAlignmentPosition(pos, size, horizAlign, vertAlign));
-		menu->Visible(getBool(elem, "visible", true));
-		menu->setVerticalPad(getUInt(elem, "verticalPad"));
-		menu->setVisibleItems(getUInt(elem, "visibleItems"));
+		menu->Visible(getBoolKey(elem, "visible", true));
+		menu->setVerticalPad(getUIntKey(elem, "verticalPad"));
+		menu->setVisibleItems(getUIntKey(elem, "visibleItems"));
 
 		if (elem.HasMember("onScrollDown"))
 		{

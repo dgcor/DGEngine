@@ -32,9 +32,9 @@ namespace Parser
 		if (elem.HasMember("textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
-			button->setTextureRect(getIntRect(elem, "textureRect", rect));
+			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
-		button->setResizable(getBool(elem, "resizable"));
+		button->setResizable(getBoolKey(elem, "resizable"));
 
 		return button;
 	}
@@ -67,11 +67,11 @@ namespace Parser
 			{
 				return;
 			}
-			auto anchor = getAnchor(elem, "anchor");
+			auto anchor = getAnchorKey(elem, "anchor");
 			button->setAnchor(anchor);
-			auto pos = getVector2f<sf::Vector2f>(elem, "position");
+			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
 			auto size = button->Size();
-			if (getBool(elem, "relativeCoords", true) == true)
+			if (getBoolKey(elem, "relativeCoords", true) == true)
 			{
 				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 				if (game.StretchToFit() == false)
@@ -85,9 +85,9 @@ namespace Parser
 			{
 				bitmapBtn->Size(size);
 			}
-			button->Visible(getBool(elem, "visible", true));
+			button->Visible(getBoolKey(elem, "visible", true));
 
-			button->setColor(getColor(elem, "color", sf::Color::White));
+			button->setColor(getColorKey(elem, "color", sf::Color::White));
 		}
 		else
 		{
@@ -98,8 +98,8 @@ namespace Parser
 			}
 		}
 
-		button->enable(getBool(elem, "enable", true));
-		button->setClickUp(getBool(elem, "clickUp"));
+		button->enable(getBoolKey(elem, "enable", true));
+		button->setClickUp(getBoolKey(elem, "clickUp"));
 
 		if (elem.HasMember("onClick"))
 		{
@@ -158,9 +158,9 @@ namespace Parser
 
 		game.Resources().addDrawable(elem["id"].GetString(), button);
 
-		if (getBool(elem, "focus") == true)
+		if (getBoolKey(elem, "focus") == true)
 		{
-			button->focusEnabled(getBool(elem, "focusOnClick", true));
+			button->focusEnabled(getBoolKey(elem, "focusOnClick", true));
 			game.Resources().addFocused(button);
 		}
 	}

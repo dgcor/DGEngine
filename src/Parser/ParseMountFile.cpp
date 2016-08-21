@@ -9,14 +9,14 @@ namespace Parser
 
 	void parseMountFile(Game& game, const Value& elem)
 	{
-		auto file = getString(elem, "file");
+		auto file = getStringKey(elem, "file");
 		if (file.empty() == true)
 		{
 			return;
 		}
 		file = game.getPath() + file;
-		auto mount = getStringChar(elem, "mount");
-		auto append = getBool(elem, "append");
+		auto mount = getStringCharKey(elem, "mount");
+		auto append = getBoolKey(elem, "append");
 		if (PHYSFS_mount(file.c_str(), mount, append) != 0)
 		{
 			return;

@@ -16,7 +16,8 @@ namespace Parser
 		}
 
 		auto text = parseDrawableTextObj(game, elem);
-		auto inputText = std::make_shared<InputText>(std::move(text), getUInt(elem, "minSize"), getUInt(elem, "maxSize"));
+		auto inputText = std::make_shared<InputText>(std::move(text),
+			getUIntKey(elem, "minSize"), getUIntKey(elem, "maxSize"));
 
 		if (elem.HasMember("onClick"))
 		{
@@ -33,7 +34,7 @@ namespace Parser
 			inputText->setActionMinSize(parseAction(game, elem["onMinSize"]));
 		}
 
-		inputText->setRegex(getString(elem, "regex"));
+		inputText->setRegex(getStringKey(elem, "regex"));
 
 		game.Resources().addDrawable(elem["id"].GetString(), inputText);
 	}

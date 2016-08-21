@@ -10,18 +10,18 @@ namespace Parser
 	void parsePlayer(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false
-			|| isValidString(elem, "celTexture") == false)
+			|| isValidString(elem, "class") == false)
 		{
 			return;
 		}
 
-		auto level = game.Resources().getLevel(getString(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
 		if (level == nullptr)
 		{
 			return;
 		}
 
-		auto mapPos = getVector2i<sf::Vector2i>(elem, "mapPosition");
+		auto mapPos = getVector2iKey<sf::Vector2i>(elem, "mapPosition");
 		auto mapSize = level->Map().Size();
 		if (mapPos.x >= mapSize.x || mapPos.y >= mapSize.y)
 		{
@@ -34,72 +34,64 @@ namespace Parser
 			return;
 		}
 
-		auto celTexture = game.Resources().getCelTextureCache(elem["celTexture"].GetString());
-		if (celTexture == nullptr)
+		auto playerClass = level->getPlayerClass(elem["class"].GetString());
+		if (playerClass == nullptr)
 		{
 			return;
 		}
 
-		auto player = std::make_shared<Player>(celTexture);
+		auto player = std::make_shared<Player>(playerClass);
 
 		player->MapPosition(mapPos);
 		mapCell.drawable = player.get();
 
-		player->setCelIndex(getUInt(elem, "celIndex", 1) - 1);
-		player->setNumFrames(getUInt(elem, "frames", 1));
-		player->setFrameIndex(getUInt(elem, "frameIndex", 1));
+		player->setDirection(getPlayerDirectionKey(elem, "direction"));
+		player->setStatus(getPlayerStatusKey(elem, "status"));
+		player->setPalette(getUIntKey(elem, "palette"));
 
 		player->Id(elem["id"].GetString());
-		player->Name(getString(elem, "name"));
-		player->Class(getString(elem, "class"));
-		player->Level_(getInt(elem, "level"));
-		player->Experience(getInt(elem, "experience"));
-		player->ExpNextLevel(getInt(elem, "expNextLevel"));
-		player->Points(getInt(elem, "points"));
-		player->Gold(getInt(elem, "gold"));
-		auto strength = getInt(elem, "strengthBase");
+		player->Name(getStringKey(elem, "name"));
+		player->Level_(getIntKey(elem, "level"));
+		player->Experience(getIntKey(elem, "experience"));
+		player->ExpNextLevel(getIntKey(elem, "expNextLevel"));
+		player->Points(getIntKey(elem, "points"));
+		player->Gold(getIntKey(elem, "gold"));
+		auto strength = getIntKey(elem, "strengthBase");
 		player->StrengthBase(strength);
-		player->StrengthNow(getInt(elem, "strengthNow", strength));
-		auto magic = getInt(elem, "magicBase");
+		player->StrengthNow(getIntKey(elem, "strengthNow", strength));
+		auto magic = getIntKey(elem, "magicBase");
 		player->MagicBase(magic);
-		player->MagicNow(getInt(elem, "magicNow", magic));
-		auto dexterity = getInt(elem, "dexterityBase");
+		player->MagicNow(getIntKey(elem, "magicNow", magic));
+		auto dexterity = getIntKey(elem, "dexterityBase");
 		player->DexterityBase(dexterity);
-		player->DexterityNow(getInt(elem, "dexterityNow", dexterity));
-		auto vitality = getInt(elem, "vitalityBase");
+		player->DexterityNow(getIntKey(elem, "dexterityNow", dexterity));
+		auto vitality = getIntKey(elem, "vitalityBase");
 		player->VitalityBase(vitality);
-		player->VitalityNow(getInt(elem, "vitalityNow", vitality));
-		auto life = getInt(elem, "lifeBase");
+		player->VitalityNow(getIntKey(elem, "vitalityNow", vitality));
+		auto life = getIntKey(elem, "lifeBase");
 		player->LifeBase(life);
-		player->LifeNow(getInt(elem, "lifeNow", life));
-		auto mana = getInt(elem, "manaBase");
+		player->LifeNow(getIntKey(elem, "lifeNow", life));
+		auto mana = getIntKey(elem, "manaBase");
 		player->ManaBase(mana);
-		player->ManaNow(getInt(elem, "manaNow", mana));
-		player->ArmorClass(getInt(elem, "armorClass"));
-		player->ToHit(getInt(elem, "toHit"));
-		player->DamageMin(getInt(elem, "damageMin"));
-		player->DamageMax(getInt(elem, "damageMax"));
-		player->ResistMagic(getInt(elem, "resistMagic"));
-		player->ResistFire(getInt(elem, "resistFire"));
-		player->ResistLightning(getInt(elem, "resistLightning"));
+		player->ManaNow(getIntKey(elem, "manaNow", mana));
+		player->ArmorClass(getIntKey(elem, "armorClass"));
+		player->ToHit(getIntKey(elem, "toHit"));
+		player->DamageMin(getIntKey(elem, "damageMin"));
+		player->DamageMax(getIntKey(elem, "damageMax"));
+		player->ResistMagic(getIntKey(elem, "resistMagic"));
+		player->ResistFire(getIntKey(elem, "resistFire"));
+		player->ResistLightning(getIntKey(elem, "resistLightning"));
 
 		if (elem.HasMember("onClick") == true)
 		{
 			player->setClickAction(parseAction(game, elem["onClick"]));
 		}
 
-		if (getBool(elem, "mainPlayer") == true)
-		{
-			level->setMainPlayer(player);
-		}
-		else
-		{
-			level->addPlayer(player);
-		}
+		level->addPlayer(player);
 
-		if (getBool(elem, "currentPlayer") == true)
+		if (getBoolKey(elem, "currentPlayer") == true)
 		{
-			level->setCurrentPlayer(player);
+			level->setCurrentPlayer(player.get());
 		}
 	}
 }

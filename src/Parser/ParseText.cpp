@@ -15,15 +15,11 @@ namespace Parser
 
 		if (elem.HasMember("text"))
 		{
-			displayText = getString(elem["text"]);
+			displayText = getStringVal(elem["text"]);
 		}
 		else if (elem.HasMember("file"))
 		{
-			displayText = FileUtils::readText(getStringChar_(elem["file"]));
-		}
-		else
-		{
-			displayText = "";
+			displayText = FileUtils::readText(getStringCharVal(elem["file"]));
 		}
 
 		if (elem.HasMember("font"))
@@ -34,16 +30,16 @@ namespace Parser
 				return nullptr;
 			}
 
-			auto size = getUInt(elem, "fontSize", 12);
+			auto size = getUIntKey(elem, "fontSize", 12);
 			auto text = std::make_unique<StringText>(displayText, *font, size);
-			text->setColor(getColor(elem, "color", sf::Color::White));
-			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getString(elem, "verticalAlign")));
+			text->setColor(getColorKey(elem, "color", sf::Color::White));
+			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
+			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 
-			auto anchor = getAnchor(elem, "anchor");
+			auto anchor = getAnchorKey(elem, "anchor");
 			text->setAnchor(anchor);
-			auto pos = getVector2f<sf::Vector2f>(elem, "position");
-			if (getBool(elem, "relativeCoords", true) == true)
+			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+			if (getBoolKey(elem, "relativeCoords", true) == true)
 			{
 				auto size = text->Size();
 				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -53,7 +49,7 @@ namespace Parser
 				}
 			}
 			text->Position(pos);
-			text->Visible(getBool(elem, "visible", true));
+			text->Visible(getBoolKey(elem, "visible", true));
 
 			return std::move(text);
 		}
@@ -65,18 +61,18 @@ namespace Parser
 				return nullptr;
 			}
 
-			auto horizSpaceOffset = getInt(elem, "horizontalSpaceOffset");
-			auto vertSpaceOffset = getInt(elem, "verticalSpaceOffset");
+			auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
+			auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
 
 			auto text = std::make_unique<BitmapText>(displayText, font, horizSpaceOffset, vertSpaceOffset);
-			text->setColor(getColor(elem, "color", sf::Color::White));
-			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getString(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getString(elem, "verticalAlign")));
+			text->setColor(getColorKey(elem, "color", sf::Color::White));
+			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
+			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 
-			auto anchor = getAnchor(elem, "anchor");
+			auto anchor = getAnchorKey(elem, "anchor");
 			text->setAnchor(anchor);
-			auto pos = getVector2f<sf::Vector2f>(elem, "position");
-			if (getBool(elem, "relativeCoords", true) == true)
+			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+			if (getBoolKey(elem, "relativeCoords", true) == true)
 			{
 				auto size = text->Size();
 				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -86,7 +82,7 @@ namespace Parser
 				}
 			}
 			text->Position(pos);
-			text->Visible(getBool(elem, "visible", true));
+			text->Visible(getBoolKey(elem, "visible", true));
 
 			return std::move(text);
 		}
@@ -105,9 +101,9 @@ namespace Parser
 		auto hasBinding = elem.HasMember("binding") == true;
 		if (hasBinding == true)
 		{
-			text->setBinding(getStringVector(elem, "binding"));
+			text->setBinding(getStringVectorKey(elem, "binding"));
 		}
-		text->setFormat(getString(elem, "format", "[1]"));
+		text->setFormat(getStringKey(elem, "format", "[1]"));
 		if (hasBinding == true)
 		{
 			text->update(game);

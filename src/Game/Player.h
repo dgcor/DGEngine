@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "CelCache.h"
 #include <cstdint>
 #include "ItemCollection.h"
 #include "LevelObject.h"
 #include <memory>
+#include "PlayerClass.h"
+#include <queue>
 
 class Level;
 
@@ -13,11 +14,19 @@ class Player : public LevelObject
 {
 private:
 	sf::Sprite sprite;
-	sf::Vector2i position;
-	std::shared_ptr<CelTextureCacheVector> celTexture;
+	sf::Vector2i mapPosition;
+
+	std::queue<sf::Vector2i> walkPath;
+
+	std::shared_ptr<PlayerClass> class_;
+
+	PlayerDirection direction{ PlayerDirection::All };
+	PlayerStatus status { PlayerStatus::Stand1 };
+
 	size_t celIdx{ 0 };
-	size_t frames{ 0 };
-	size_t frameIndex{ 0 };
+	size_t palette{ 0 };
+
+	CelTextureCacheVector* celTexture{ nullptr };
 	std::pair<size_t, size_t> frameRange;
 	size_t currentFrame{ 0 };
 
@@ -32,7 +41,6 @@ private:
 	std::string id;
 
 	std::string name;
-	std::string class_;
 
 	int32_t level{ 0 };
 	int32_t experience{ 0 };
@@ -65,27 +73,40 @@ private:
 
 	void calculateRange()
 	{
-		if (celTexture != nullptr && frames > 0)
+		celTexture = class_->getCelTexture(palette);
+		if (celTexture != nullptr
+			&& direction < PlayerDirection::Size)
 		{
+			celIdx = class_->getStatusCelIndex(status);
 			auto numFrames = celTexture->size(celIdx);
-			auto period = (numFrames / frames);
-			frameRange.first = frameIndex * period;
-			frameRange.second = frameRange.first + period;
+			if (direction == PlayerDirection::All)
+			{
+				frameRange.first = 0;
+				frameRange.second = numFrames;
+			}
+			else
+			{
+				auto period = (numFrames / 8);
+				frameRange.first = (size_t)direction * period;
+				frameRange.second = frameRange.first + period;
+			}
 		}
 		else
 		{
+			celIdx = 0;
 			frameRange.first = 0;
 			frameRange.second = 0;
 		}
 	}
 
-	void calculatePosition(const Level& level, const sf::Vector2u& texSize);
-
-	void calculateFrameRange(const sf::Vector2i& oldPos, const sf::Vector2i& newPos);
+	void calculatePosition(Level& level, const sf::Vector2u& texSize);
 
 public:
 	Player() {}
-	Player(const std::shared_ptr<CelTextureCacheVector>& celTexture_) : celTexture(celTexture_) {}
+	Player(const std::shared_ptr<PlayerClass>& class__) : class_(class__)
+	{
+		calculateRange();
+	}
 
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
@@ -95,12 +116,8 @@ public:
 	}
 	virtual void Size(const sf::Vector2f& size) {}
 
-	virtual const sf::Vector2i& MapPosition() const { return position; }
-	virtual void MapPosition(const sf::Vector2i& pos)
-	{
-		calculateFrameRange(position, pos);
-		position = pos;
-	}
+	virtual const sf::Vector2i& MapPosition() const { return mapPosition; }
+	virtual void MapPosition(const sf::Vector2i& pos) { mapPosition = pos; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -110,29 +127,37 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 
-	void setCelTexture(const std::shared_ptr<CelTextureCacheVector>& celTexture_) { celTexture = celTexture_; }
+	void setWalkPath(const std::queue<sf::Vector2i> walkPath_) { walkPath = walkPath_; }
+
 	void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }
-	void setCelIndex(size_t CelIdx_)
+
+	void setDirection(PlayerDirection direction_)
 	{
-		if (celTexture != nullptr && CelIdx_ < celTexture->size())
+		if (direction != direction_)
 		{
-			celIdx = CelIdx_;
+			direction = direction_;
+			calculateRange();
 		}
-		else
+	}
+	void setStatus(PlayerStatus status_)
+	{
+		if (status != status_)
 		{
-			celIdx = 0;
+			status = status_;
+			calculateRange();
 		}
-		calculateRange();
 	}
-	void setNumFrames(size_t numFrames)
+	void setPalette(size_t palette_)
 	{
-		frames = numFrames;
-		calculateRange();
-	}
-	void setFrameIndex(size_t frameIndex_)
-	{
-		frameIndex = (frameIndex_ > 0) ? (frameIndex_ - 1) : 0;
-		calculateRange();
+		if (palette_ >= PlayerPaletteSize)
+		{
+			palette_ = 0;
+		}
+		if (palette != palette_)
+		{
+			palette = palette_;
+			calculateRange();
+		}
 	}
 
 	ItemCollection& Inventory1() { return inventory1; }
@@ -143,7 +168,7 @@ public:
 
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
-	const std::string& Class() const { return class_; }
+	const std::string& Class() const { return class_->Name(); }
 
 	int32_t Level_() const { return level; }
 	int32_t Experience() const { return experience; }
@@ -176,7 +201,7 @@ public:
 
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
-	void Class(const std::string& class__) { class_ = class__; }
+	void Class(const std::shared_ptr<PlayerClass>& class__) { class_ = class__; }
 
 	void Level_(int32_t level_) { level = level_; }
 	void Experience(int32_t experience_) { experience = experience_; }

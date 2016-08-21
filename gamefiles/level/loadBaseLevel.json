@@ -2,7 +2,9 @@
   "level": {
     "id": "level",
     "anchor": "all",
-    "size": [640, 352]
+    "size": [640, 352],
+    "playerClassClearIndex": 1,
+    "playerClearIndex": 1
   },
   "load": "ui/level/gamePanel.json",
   "load": "level/quests.json"
