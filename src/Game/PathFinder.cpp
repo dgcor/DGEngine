@@ -1,4 +1,5 @@
 #include "PathFinder.h"
+#include <cmath>
 #include "LevelMap.h"
 
 bool MapSearchNode::IsPassable(size_t x_, size_t y_)
@@ -17,7 +18,7 @@ bool MapSearchNode::IsSameState(MapSearchNode& rhs)
 
 float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal)
 {
-	return fabsf(x - nodeGoal.x) + fabsf(y - nodeGoal.y);
+	return std::fabs(x - nodeGoal.x) + std::fabs(y - nodeGoal.y);
 }
 
 bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
@@ -25,7 +26,7 @@ bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
 	return ((x == nodeGoal.x) && (y == nodeGoal.y));
 }
 
-void MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
+bool MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 	int16_t x, int16_t y, int16_t parent_x, int16_t parent_y)
 {
 	if ((IsPassable(x, y) == true) && !((parent_x == x) && (parent_y == y)))
@@ -33,7 +34,9 @@ void MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 		auto direction = getPlayerDirection(sf::Vector2i(parent_x, parent_y), sf::Vector2i(x, y));
 		auto searchNode = MapSearchNode(map, x, y, direction);
 		astarsearch->AddSuccessor(searchNode);
+		return true;
 	}
+	return false;
 }
 
 bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode>* astarsearch, MapSearchNode* parent_node)
@@ -47,14 +50,33 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode>* astarsearch, MapSe
 		parent_y = parent_node->y;
 	}
 
-	addSuccessor(astarsearch, x - 1, y - 1, parent_x, parent_y);
-	addSuccessor(astarsearch, x - 1, y, parent_x, parent_y);
-	addSuccessor(astarsearch, x - 1, y + 1, parent_x, parent_y);
-	addSuccessor(astarsearch, x, y - 1, parent_x, parent_y);
-	addSuccessor(astarsearch, x, y + 1, parent_x, parent_y);
-	addSuccessor(astarsearch, x + 1, y - 1, parent_x, parent_y);
-	addSuccessor(astarsearch, x + 1, y, parent_x, parent_y);
-	addSuccessor(astarsearch, x + 1, y + 1, parent_x, parent_y);
+	bool canWalkLeft = addSuccessor(astarsearch, x - 1, y, parent_x, parent_y);
+	bool canWalkRight = addSuccessor(astarsearch, x + 1, y, parent_x, parent_y);
+	bool canWalkUp = addSuccessor(astarsearch, x, y - 1, parent_x, parent_y);
+	bool canWalkDown = addSuccessor(astarsearch, x, y + 1, parent_x, parent_y);
+
+	if (canWalkLeft == true)
+	{
+		if (canWalkUp == true)
+		{
+			addSuccessor(astarsearch, x - 1, y - 1, parent_x, parent_y);
+		}
+		if (canWalkDown == true)
+		{
+			addSuccessor(astarsearch, x - 1, y + 1, parent_x, parent_y);
+		}
+	}
+	if (canWalkRight == true)
+	{
+		if (canWalkUp == true)
+		{
+			addSuccessor(astarsearch, x + 1, y - 1, parent_x, parent_y);
+		}
+		if (canWalkDown == true)
+		{
+			addSuccessor(astarsearch, x + 1, y + 1, parent_x, parent_y);
+		}
+	}
 	return true;
 }
 
