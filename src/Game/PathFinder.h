@@ -10,7 +10,7 @@ class LevelMap;
 class MapSearchNode
 {
 private:
-	void addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
+	bool addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 		int16_t x, int16_t y, int16_t parent_x, int16_t parent_y);
 
 public:

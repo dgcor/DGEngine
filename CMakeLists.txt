@@ -256,6 +256,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
         message(FATAL_ERROR "GCC 5.0+ is required")
     endif()
+
+    if(NOT BEOS)
+        add_definitions(-Wall)
+    endif()
 endif()
 
 # Detect and add PhysFS
