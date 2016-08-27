@@ -2,8 +2,6 @@ Windows
 
 To compile in Windows, you need Visual Studio 2015, since this project
 uses C++ features that are present only in VS2015.
-There is a Code::blocks project for Windows, but it is only used to check
-for errors compiling with gcc.
 
 The provided project expects the following folders in the root of the
 project to build properly.
