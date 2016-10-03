@@ -3,21 +3,25 @@
 
 using Utils::str2int;
 
-std::string Quest::getProperty(const std::string& prop) const
+bool Quest::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.empty() == true)
 	{
-		switch (str2int(prop.c_str()))
-		{
-		case str2int("id"):
-			return id;
-		case str2int("name"):
-			return name;
-		case str2int("state"):
-			return std::to_string(state);
-		default:
-			break;
-		}
+		return false;
 	}
-	return "";
+	switch (str2int(prop.c_str()))
+	{
+	case str2int("id"):
+		var = Variable(id);
+		break;
+	case str2int("name"):
+		var = Variable(name);
+		break;
+	case str2int("state"):
+		var = Variable((int64_t)state);
+		break;
+	default:
+		return false;
+	}
+	return true;
 }

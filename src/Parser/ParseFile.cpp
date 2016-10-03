@@ -17,15 +17,11 @@
 #include "ParseImage.h"
 #include "ParseInputText.h"
 #include "ParseKeyboard.h"
-#include "ParseLevel.h"
 #include "ParseLoadingScreen.h"
 #include "ParseMenu.h"
 #include "ParseMountFile.h"
 #include "ParseMovie.h"
 #include "ParsePalette.h"
-#include "ParsePlayer.h"
-#include "ParsePlayerClass.h"
-#include "ParseQuest.h"
 #include "ParseRectangle.h"
 #include "ParseScrollableText.h"
 #include "ParseSound.h"
@@ -33,6 +29,11 @@
 #include "ParseUtils.h"
 #include "ParseText.h"
 #include "ParseTexture.h"
+#include "Parser/Game/ParseLevel.h"
+#include "Parser/Game/ParseLevelObject.h"
+#include "Parser/Game/ParsePlayer.h"
+#include "Parser/Game/ParsePlayerClass.h"
+#include "Parser/Game/ParseQuest.h"
 #include "PhysFSStream.h"
 #include "Utils.h"
 
@@ -286,7 +287,25 @@ namespace Parser
 				break;
 			}
 			case str2int("level"): {
-				parseLevel(game, it->value);
+				if (it->value.IsArray() == false) {
+					parseLevel(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseLevel(game, val);
+					}
+				}
+				break;
+			}
+			case str2int("levelObject"): {
+				if (it->value.IsArray() == false) {
+					parseLevelObject(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseLevelObject(game, val);
+					}
+				}
 				break;
 			}
 			case str2int("load"): {

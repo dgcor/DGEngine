@@ -1,0 +1,36 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "clearPanelText",
+      "action": { "name": "text.setText", "id": "txtPanel", "text": "" }
+    },
+    {
+      "name": "action.set",
+      "id": "updatePanelTextSpacing",
+      "action": {
+        "name": "switch",
+        "param": "|txtPanel|lineCount|",
+        "case": [
+          {
+            "value": 2,
+            "action": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 14 }
+          },
+          {
+            "value": 3,
+            "action": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 8 }
+          },
+          {
+            "value": 4,
+            "action": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 4 }
+          },
+          {
+            "value": 5,
+            "action": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 2 }
+          }
+        ],
+        "default": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 2 }
+      }
+    }
+  ]
+}

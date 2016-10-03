@@ -3,6 +3,7 @@
     { "name": "resource.add", "id": "userPanel" },
     { "name": "game.clearPlayingSounds" }
   ],
+  "load": "ui/level/disableGamePanelKeys.json",
   "keyboard": [
     {
       "key": "esc",

@@ -307,15 +307,19 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text) const
 }
 
 sf::Vector2f BitmapFont::calculateSize(const std::string& text,
-	int horizSpaceOffset, int vertSpaceOffset) const
+	int horizSpaceOffset, int vertSpaceOffset, unsigned* lineCount) const
 {
 	//Temp offsets
 	float maxX = 0, curX = 0, curY = 0;
+	unsigned numLines = 0;
 	bool wasSpace = false;
 
 	auto textPtr = text.c_str();
 	auto ch = textPtr[0];
-
+	if (ch != 0)
+	{
+		numLines++;
+	}
 	//Go through the text
 	while (ch != 0)
 	{
@@ -332,6 +336,7 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 			}
 			curX = 0;
 			wasSpace = false;
+			numLines++;
 		}
 		else
 		{
@@ -365,7 +370,10 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 		textPtr++;
 		ch = textPtr[0];
 	}
-
+	if (lineCount != nullptr)
+	{
+		(*lineCount) = numLines;
+	}
 	return sf::Vector2f(std::max(maxX, curX), (newLine + curY));
 }
 

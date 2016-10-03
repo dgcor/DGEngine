@@ -12,8 +12,10 @@
           { "name": "loadingScreen.setProgress", "progress": 10 },
           { "name": "resource.add", "id": "level", "ignorePrevious": true },
           { "name": "loadingScreen.setProgress", "progress": 20 },
-          { "name": "load", "file": "res/level/fonts.json" },
+          { "name": "load", "file": "res/level/actions.json" },
           { "name": "loadingScreen.setProgress", "progress": 25 },
+          { "name": "load", "file": "res/level/fonts.json" },
+          { "name": "loadingScreen.setProgress", "progress": 30 },
           { "name": "load", "file": "res/level/textures.json" },
           { "name": "loadingScreen.setProgress", "progress": 35 },
           { "name": "load", "file": "level/loadBaseLevel.json" },
@@ -32,7 +34,8 @@
           { "name": "load", "file": "level/town/sounds.json" },
           { "name": "loadingScreen.setProgress", "progress": 100 },
           { "name": "load", "file": "level/town/music.json" },
-          { "name": "load", "file": "level/playOrStopMusic.json" }
+          { "name": "load", "file": "level/playOrStopMusic.json" },
+          { "name": "load", "file": ["level/setMapAction.json", "town"] }
         ]
       }
     ]

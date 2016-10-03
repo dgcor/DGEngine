@@ -11,13 +11,18 @@ private:
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	HorizontalAlign horizAlign{ HorizontalAlign::Left };
 	VerticalAlign vertAlign{ VerticalAlign::Bottom };
+	unsigned lineCount{ 0 };
 	bool visible{ true };
 
+	void calcLineCount();
 	void calculateDrawPosition();
 
 public:
-	StringText(const sf::String& string, const sf::Font& font, unsigned int characterSize = 30) :
-		text(string, font, characterSize) {}
+	StringText(const sf::String& text_, const sf::Font& font, unsigned int characterSize = 30)
+		: text(text_, font, characterSize)
+	{
+		calcLineCount();
+	}
 
 	virtual ~StringText() {}
 
@@ -34,8 +39,11 @@ public:
 	virtual void setText(const std::string& string)
 	{
 		text.setString(string);
+		calcLineCount();
 		calculateDrawPosition();
 	}
+
+	virtual unsigned getLineCount() const { return lineCount; }
 
 	void setFont(const sf::Font& font) { text.setFont(font); }
 	void setCharacterSize(unsigned int size) { text.setCharacterSize(size); }

@@ -1,182 +1,200 @@
 {
-  "button": {
-    "id": "charPanel",
-    "anchor": "left",
-    "texture": "char",
-    "visible": false
+  "action": {
+    "name": "action.set",
+    "id": "menu.saveAndCloseAction",
+    "action": [
+      { "name": "load", "file": "ui/level/saveSettings.json" },
+      { "name": "resource.popAll", "id": "gameMenuCommon" },
+      { "name": "resource.ignore", "id": "level", "ignore": "none" }
+    ]
   },
-  "button": {
-    "id": "invPanel",
-    "anchor": "right",
-    "position": [320, 0],
-    "texture": "inv",
-    "visible": false
-  },
-  "button": {
-    "id": "questPanel",
-    "anchor": "left",
-    "texture": "quest",
-    "visible": false
-  },
-  "button": {
-    "id": "spellPanel",
-    "anchor": "right",
-    "position": [320, 0],
-    "texture": "spellbk",
-    "visible": false
-  },
+  "button": [
+    {
+      "id": "charPanel",
+      "anchor": "left",
+      "texture": "char",
+      "visible": false
+    },
+    {
+      "id": "invPanel",
+      "anchor": "right",
+      "position": [320, 0],
+      "texture": "inv",
+      "visible": false
+    },
+    {
+      "id": "questPanel",
+      "anchor": "left",
+      "texture": "quest",
+      "visible": false
+    },
+    {
+      "id": "spellPanel",
+      "anchor": "right",
+      "position": [320, 0],
+      "texture": "spellbk",
+      "visible": false
+    }
+  ],
   "image": {
     "id": "panel8",
     "texture": "panel8",
     "position": [0, 336],
     "anchor": "bottom"
   },
-  "button": {
-    "id": "panelBackground",
-    "texture": "empty",
-    "position": [0, 352],
-    "anchor": "bottom",
-    "textureRect": [640, 128]
-  },
-  "button": {
-    "id": "char",
-    "texture": "empty",
-    "anchor": "bottom",
-    "position": [9, 361],
-    "textureRect": [71, 19],
-    "clickUp": true,
-    "onClick": [
-      { "name": "resource.pop", "id": "charPanelQuests" },
-      { "name": "load", "file": "ui/level/charPanelLabels.json" },
-      { "name": "drawable.visible", "id": "charPanel", "visible": true },
-      { "name": "drawable.visible", "id": "questPanel", "visible": false },
-      { "name": "button.setToggle", "id": "quest", "toggle": false }
-    ],
-    "onToggle": [
-      { "name": "resource.pop", "id": "charPanelLabels" },
-      { "name": "resource.pop", "id": "charPanelQuests" },
-      { "name": "drawable.visible", "id": "charPanel", "visible": false },
-      { "name": "drawable.visible", "id": "questPanel", "visible": false }
-    ],
-    "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
-    "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
-    "onHoverEnter": {
-      "name": "text.setText",
-      "id": "txtPanel",
-      "verticalSpaceOffset": 14,
-      "text": "Character Information\nHotkey : 'C'"
+  "button": [
+    {
+      "id": "panelBackground",
+      "texture": "empty",
+      "position": [0, 352],
+      "anchor": "bottom",
+      "textureRect": [640, 128]
     },
-    "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
-  },
-  "button": {
-    "id": "quest",
-    "texture": "empty",
-    "anchor": "bottom",
-    "position": [9, 387],
-    "textureRect": [0, 19, 71, 19],
-    "clickUp": true,
-    "onClick": [
-      { "name": "resource.pop", "id": "charPanelLabels" },
-      { "name": "load", "file": "ui/level/charPanelQuests.json" },
-      { "name": "drawable.visible", "id": "charPanel", "visible": false },
-      { "name": "drawable.visible", "id": "questPanel", "visible": true },
-      { "name": "button.setToggle", "id": "char", "toggle": false }
-    ],
-    "onToggle": [
-      { "name": "resource.pop", "id": "charPanelLabels" },
-      { "name": "resource.pop", "id": "charPanelQuests" },
-      { "name": "drawable.visible", "id": "charPanel", "visible": false },
-      { "name": "drawable.visible", "id": "questPanel", "visible": false }
-    ],
-    "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
-    "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
-    "onHoverEnter": {
-      "name": "text.setText",
-      "id": "txtPanel",
-      "verticalSpaceOffset": 14,
-      "text": "Quests Log\nHotkey : 'Q'"
+    {
+      "id": "char",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 361],
+      "textureRect": [71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "resource.pop", "id": "charPanelQuests" },
+        { "name": "load", "file": "ui/level/charPanelLabels.json" },
+        { "name": "drawable.visible", "id": "charPanel", "visible": true },
+        { "name": "drawable.visible", "id": "questPanel", "visible": false },
+        { "name": "button.setToggle", "id": "quest", "toggle": false }
+      ],
+      "onToggle": [
+        { "name": "resource.pop", "id": "charPanelLabels" },
+        { "name": "resource.pop", "id": "charPanelQuests" },
+        { "name": "drawable.visible", "id": "charPanel", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel", "visible": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
     },
-    "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
-  },
-  "button": {
-    "id": "inv",
-    "texture": "empty",
-    "anchor": "bottom",
-    "position": [560, 361],
-    "textureRect": [0, 76, 71, 19],
-    "clickUp": true,
-    "onClick": [
-      { "name": "drawable.visible", "id": "invPanel", "visible": true },
-      { "name": "drawable.visible", "id": "spellPanel", "visible": false },
-      { "name": "button.setToggle", "id": "spell", "toggle": false }
-    ],
-    "onToggle": [
-      { "name": "drawable.visible", "id": "invPanel", "visible": false },
-      { "name": "drawable.visible", "id": "spellPanel", "visible": false }
-    ],
-    "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
-    "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
-    "onHoverEnter": {
-      "name": "text.setText",
-      "id": "txtPanel",
-      "verticalSpaceOffset": 14,
-      "text": "Inventory\nHotkey : 'I'"
+    {
+      "id": "quest",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 387],
+      "textureRect": [0, 19, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "resource.pop", "id": "charPanelLabels" },
+        { "name": "load", "file": "ui/level/charPanelQuests.json" },
+        { "name": "drawable.visible", "id": "charPanel", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel", "visible": true },
+        { "name": "button.setToggle", "id": "char", "toggle": false }
+      ],
+      "onToggle": [
+        { "name": "resource.pop", "id": "charPanelLabels" },
+        { "name": "resource.pop", "id": "charPanelQuests" },
+        { "name": "drawable.visible", "id": "charPanel", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel", "visible": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
     },
-    "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
-  },
-  "button": {
-    "id": "spell",
-    "texture": "empty",
-    "anchor": "bottom",
-    "position": [560, 387],
-    "textureRect": [0, 95, 71, 19],
-    "clickUp": true,
-    "onClick": [
-      { "name": "drawable.visible", "id": "invPanel", "visible": false },
-      { "name": "drawable.visible", "id": "spellPanel", "visible": true },
-      { "name": "button.setToggle", "id": "inv", "toggle": false }
-    ],
-    "onToggle": [
-      { "name": "drawable.visible", "id": "invPanel", "visible": false },
-      { "name": "drawable.visible", "id": "spellPanel", "visible": false }
-    ],
-    "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
-    "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
-    "onHoverEnter": {
-      "name": "text.setText",
-      "id": "txtPanel",
-      "verticalSpaceOffset": 14,
-      "text": "Spell Book\nHotkey : 'B'"
+    {
+      "id": "inv",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [560, 361],
+      "textureRect": [0, 76, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": true },
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+        { "name": "button.setToggle", "id": "spell", "toggle": false }
+      ],
+      "onToggle": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": false },
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
     },
-    "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
-  },
-  "button": {
-    "id": "menu",
-    "texture": "empty",
-    "anchor": "bottom",
-    "position": [9, 453],
-    "sound": "titlemov",
-    "textureRect": [0, 57, 71, 19],
-    "clickUp": true,
-    "onClick": [
-      { "name": "load", "file": "ui/level/gameMenuCommon.json" },
-      { "name": "load", "file": "ui/level/gameMenu.json" }
-    ],
-    "onToggle": [
-      { "name": "load", "file": "ui/level/saveSettings.json" },
-      { "name": "resource.popAll", "id": "gameMenuCommon" },
-      { "name": "resource.ignore", "id": "level", "ignore": "none" }
-    ],
-    "onClickIn": { "name": "button.setTexture", "id": "menu", "texture": "panel8bu" },
-    "onClickOut": { "name": "button.setTexture", "id": "menu", "texture": "empty" },
-    "onHoverEnter": {
-      "name": "text.setText",
-      "id": "txtPanel",
-      "verticalSpaceOffset": 14,
-      "text": "Main Menu\nHotkey : Esc"
+    {
+      "id": "spell",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [560, 387],
+      "textureRect": [0, 95, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": false },
+        { "name": "drawable.visible", "id": "spellPanel", "visible": true },
+        { "name": "button.setToggle", "id": "inv", "toggle": false }
+      ],
+      "onToggle": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": false },
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
     },
-    "onHoverLeave": { "name": "text.setText", "id": "txtPanel", "text": "" }
-  },
+    {
+      "id": "map",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 427],
+      "textureRect": [0, 38, 71, 19],
+      "clickUp": true,
+      "onClickIn": { "name": "button.setTexture", "id": "map", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "map", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "menu",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 453],
+      "sound": "titlemov",
+      "textureRect": [0, 57, 71, 19],
+      "clickUp": true,
+      "onClick": {
+        "name": "if.resourceExists",
+        "param1": "gameMenuCommon",
+        "then": "menu.saveAndCloseAction",
+        "else": [
+          { "name": "load", "file": "ui/level/gameMenuCommon.json" },
+          { "name": "load", "file": "ui/level/gameMenu.json" }
+        ]
+      },
+      "onClickIn": { "name": "button.setTexture", "id": "menu", "texture": "panel8bu" },
+      "onClickOut": { "name": "button.setTexture", "id": "menu", "texture": "empty" },
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+        "updatePanelTextSpacing"
+      ],
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
   "text": {
     "id": "txtPanel",
     "bitmapFont": "smaltext",
@@ -188,8 +206,28 @@
   },
   "keyboard": [
     {
+      "key": "b",
+      "action": { "name": "button.click", "id": "spell" }
+    },
+    {
+      "key": "c",
+      "action": { "name": "button.click", "id": "char" }
+    },
+    {
       "key": "esc",
       "action": { "name": "button.click", "id": "menu" }
+    },
+    {
+      "key": "i",
+      "action": { "name": "button.click", "id": "inv" }
+    },
+    {
+      "key": "q",
+      "action": { "name": "button.click", "id": "quest" }
+    },
+    {
+      "key": "tab",
+      "action": { "name": "button.click", "id": "map" }
     }
   ]
 }

@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Actions/Action.h"
 #include "Anchor.h"
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Variable.h"
@@ -21,8 +23,14 @@ public:
 	virtual const sf::Vector2i& MapPosition() const = 0;
 	virtual void MapPosition(const sf::Vector2i& pos) = 0;
 
+	// Game
+	virtual void executeAction(Game& game) const = 0;
+	virtual bool Passable() const = 0;
+	virtual void setAction(const std::shared_ptr<Action>& action) = 0;
+
 	// Update
 	virtual void update(Game& game, Level& level) = 0;
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const = 0;
+	virtual void setProperty(const std::string& prop, const Variable& val) = 0;
 };

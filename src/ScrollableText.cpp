@@ -83,13 +83,14 @@ void ScrollableText::update(Game& game)
 
 bool ScrollableText::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
-		{
-			return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
-		}
+		return false;
 	}
-	return false;
+	auto props = Utils::splitString(prop, '.');
+	if (props.empty() == true)
+	{
+		return false;
+	}
+	return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
 }

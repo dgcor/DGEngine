@@ -1,8 +1,8 @@
 #include "Level.h"
 #include "Game.h"
+#include "Game/LevelHelper.h"
 #include "GameUtils.h"
 #include <iostream>
-#include "LevelHelper.h"
 #include "Utils.h"
 
 using Utils::str2int;
@@ -18,6 +18,22 @@ void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 void Level::updateViewPort(const Game& game)
 {
 	view.setViewport(game);
+}
+
+void Level::executeHoverEnterAction(Game& game)
+{
+	if (hoverEnterAction != nullptr)
+	{
+		game.Events().addBack(hoverEnterAction);
+	}
+}
+
+void Level::executeHoverLeaveAction(Game& game)
+{
+	if (hoverLeaveAction != nullptr)
+	{
+		game.Events().addFront(hoverLeaveAction);
+	}
 }
 
 sf::Vector2f Level::getDrawPosition(const sf::Vector2i& pos_) const
@@ -99,6 +115,12 @@ void Level::update(Game& game)
 	}
 
 	mousePos = game.MousePosition() - view.getPosition();
+
+	for (auto& obj : levelObjects)
+	{
+		obj->update(game, *this);
+	}
+
 	for (auto& player : players)
 	{
 		player->update(game, *this);
@@ -121,8 +143,8 @@ void Level::update(Game& game)
 		}
 	}
 
-		const auto& size = view.getSize();
-		Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
+	const auto& size = view.getSize();
+	Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
 
 	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
@@ -132,40 +154,64 @@ void Level::update(Game& game)
 
 bool Level::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
+		return false;
+	}
+	auto props = Utils::splitString(prop, '.');
+	if (props.empty() == true)
+	{
+		return false;
+	}
+	auto propHash = str2int(props[0].c_str());
+	switch (propHash)
+	{
+	case str2int("currentPlayer"):
+	{
+		if (props.size() > 1 && currentPlayer != nullptr)
 		{
-			auto propHash = str2int(props[0].c_str());
-			switch (propHash)
+			return currentPlayer->getProperty(props[1], var);
+		}
+	}
+	break;
+	case str2int("hoverObject"):
+	{
+		if (props.size() > 1 && hoverObject != nullptr)
+		{
+			return hoverObject->getProperty(props[1], var);
+		}
+	}
+	break;
+	case str2int("player"):
+	{
+		if (props.size() > 2)
+		{
+			for (const auto& player : players)
 			{
-			case str2int("player"):
-			{
-				if (props.size() > 2)
+				if (player->Id() == props[1])
 				{
-					for (const auto& player : players)
-					{
-						if (player->Id() == props[1])
-						{
-							return player->getProperty(props[2], var);
-						}
-					}
+					return player->getProperty(props[2], var);
 				}
-			}
-			break;
-			case str2int("currentPlayer"):
-			{
-				if (props.size() > 1 && currentPlayer != nullptr)
-				{
-					return currentPlayer->getProperty(props[1], var);
-				}
-			}
-			break;
-			default:
-				return GameUtils::getUIObjProp(*this, propHash, props, var);
 			}
 		}
+	}
+	break;
+	case str2int("quest"):
+	{
+		if (props.size() > 2)
+		{
+			for (const auto& quest : quests)
+			{
+				if (quest.Id() == props[1])
+				{
+					return quest.getProperty(props[2], var);
+				}
+			}
+		}
+	}
+	break;
+	default:
+		return GameUtils::getUIObjProp(*this, propHash, props, var);
 	}
 	return false;
 }
@@ -182,15 +228,28 @@ Player* Level::getPlayer(const std::string id)
 	return nullptr;
 }
 
-void Level::clearPlayers()
+Player* Level::getPlayerOrCurrent(const std::string id)
 {
-	if (playerClassClearIdx < playerClasses.size())
+	if (id.empty() == true)
 	{
-		playerClasses.erase(playerClasses.begin() + playerClassClearIdx, playerClasses.end());
+		return currentPlayer;
 	}
-	if (playerClearIdx < players.size())
+	return getPlayer(id);
+}
+
+void Level::clearPlayerClasses(size_t clearIdx)
+{
+	if (clearIdx < playerClasses.size())
 	{
-		players.erase(players.begin() + playerClearIdx, players.end());
+		playerClasses.erase(playerClasses.begin() + clearIdx, playerClasses.end());
+	}
+}
+
+void Level::clearPlayers(size_t clearIdx)
+{
+	if (clearIdx < players.size())
+	{
+		players.erase(players.begin() + clearIdx, players.end());
 	}
 	for (const auto& player : players)
 	{
@@ -235,5 +294,19 @@ void Level::setQuestState(const std::string& questId, int state)
 			quest.State(state);
 			return;
 		}
+	}
+}
+
+void Level::updateLevelObjectPositions()
+{
+	for (auto& obj : levelObjects)
+	{
+		const auto& mapPosition = obj->MapPosition();
+		map[mapPosition.x][mapPosition.y].object = obj;
+	}
+	for (auto& obj : players)
+	{
+		const auto& mapPosition = obj->MapPosition();
+		map[mapPosition.x][mapPosition.y].object = obj;
 	}
 }

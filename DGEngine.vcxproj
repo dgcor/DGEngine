@@ -27,6 +27,8 @@
     <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
+    <ClCompile Include="src\Game\CelLevelObject.cpp" />
+    <ClCompile Include="src\Game\ImageLevelObject.cpp" />
     <ClCompile Include="src\Game\Item.cpp" />
     <ClCompile Include="src\Game\ItemCollection.cpp" />
     <ClCompile Include="src\Game\Level.cpp" />
@@ -48,6 +50,11 @@
     <ClCompile Include="src\Movie2.cpp" />
     <ClCompile Include="src\MovieStub.cpp" />
     <ClCompile Include="src\Palette.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseLevel.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseLevelObject.cpp" />
+    <ClCompile Include="src\Parser\Game\ParsePlayer.cpp" />
+    <ClCompile Include="src\Parser\Game\ParsePlayerClass.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseQuest.cpp" />
     <ClCompile Include="src\Parser\ParseAction.cpp" />
     <ClCompile Include="src\Parser\ParseAnimation.cpp" />
     <ClCompile Include="src\Parser\ParseAudio.cpp" />
@@ -65,7 +72,6 @@
     <ClCompile Include="src\Parser\ParseImage.cpp" />
     <ClCompile Include="src\Parser\ParseInputText.cpp" />
     <ClCompile Include="src\Parser\ParseKeyboard.cpp" />
-    <ClCompile Include="src\Parser\ParseLevel.cpp" />
     <ClCompile Include="src\Parser\ParseLoadingScreen.cpp" />
     <ClCompile Include="src\Parser\ParseMenu.cpp" />
     <ClCompile Include="src\Parser\ParseMenuButton.cpp" />
@@ -74,9 +80,6 @@
     <ClCompile Include="src\Parser\ParseMountFile.cpp" />
     <ClCompile Include="src\Parser\ParseMovie.cpp" />
     <ClCompile Include="src\Parser\ParsePalette.cpp" />
-    <ClCompile Include="src\Parser\ParsePlayer.cpp" />
-    <ClCompile Include="src\Parser\ParsePlayerClass.cpp" />
-    <ClCompile Include="src\Parser\ParseQuest.cpp" />
     <ClCompile Include="src\Parser\Parser.cpp" />
     <ClCompile Include="src\Parser\ParseRectangle.cpp" />
     <ClCompile Include="src\Parser\ParseScrollableText.cpp" />
@@ -122,6 +125,7 @@
     <ClInclude Include="src\Actions\ActMovie.h" />
     <ClInclude Include="src\Actions\ActPlayer.h" />
     <ClInclude Include="src\Actions\ActQuest.h" />
+    <ClInclude Include="src\Actions\ActRandom.h" />
     <ClInclude Include="src\Actions\ActResource.h" />
     <ClInclude Include="src\Actions\ActSound.h" />
     <ClInclude Include="src\Actions\ActText.h" />
@@ -136,7 +140,9 @@
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\GameUtils.h" />
+    <ClInclude Include="src\Game\CelLevelObject.h" />
     <ClInclude Include="src\Game\fsa.h" />
+    <ClInclude Include="src\Game\ImageLevelObject.h" />
     <ClInclude Include="src\Game\Item.h" />
     <ClInclude Include="src\Game\ItemCollection.h" />
     <ClInclude Include="src\Game\Level.h" />
@@ -155,6 +161,11 @@
     <ClInclude Include="src\Json\JsonParser.h" />
     <ClInclude Include="src\Json\JsonUtils.h" />
     <ClInclude Include="src\MovieStub.h" />
+    <ClInclude Include="src\Parser\Game\ParseLevel.h" />
+    <ClInclude Include="src\Parser\Game\ParseLevelObject.h" />
+    <ClInclude Include="src\Parser\Game\ParsePlayer.h" />
+    <ClInclude Include="src\Parser\Game\ParsePlayerClass.h" />
+    <ClInclude Include="src\Parser\Game\ParseQuest.h" />
     <ClInclude Include="src\Parser\ParseAction.h" />
     <ClInclude Include="src\Parser\ParseAnimation.h" />
     <ClInclude Include="src\Parser\ParseAudio.h" />
@@ -172,7 +183,6 @@
     <ClInclude Include="src\Parser\ParseImage.h" />
     <ClInclude Include="src\Parser\ParseInputText.h" />
     <ClInclude Include="src\Parser\ParseKeyboard.h" />
-    <ClInclude Include="src\Parser\ParseLevel.h" />
     <ClInclude Include="src\Parser\ParseLoadingScreen.h" />
     <ClInclude Include="src\Parser\ParseMenu.h" />
     <ClInclude Include="src\Parser\ParseMenuButton.h" />
@@ -181,9 +191,6 @@
     <ClInclude Include="src\Parser\ParseMountFile.h" />
     <ClInclude Include="src\Parser\ParseMovie.h" />
     <ClInclude Include="src\Parser\ParsePalette.h" />
-    <ClInclude Include="src\Parser\ParsePlayer.h" />
-    <ClInclude Include="src\Parser\ParsePlayerClass.h" />
-    <ClInclude Include="src\Parser\ParseQuest.h" />
     <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Parser\ParseRectangle.h" />
     <ClInclude Include="src\Parser\ParseScrollableText.h" />

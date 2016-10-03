@@ -1,10 +1,15 @@
 {
+  "load": "res/level/levelHoverAction.json",
   "level": {
     "id": "level",
     "anchor": "all",
     "size": [640, 352],
     "playerClassClearIndex": 1,
-    "playerClearIndex": 1
+    "playerClearIndex": 1,
+    "onHoverEnter": "levelHoverAction",
+    "onHoverLeave": "clearPanelText",
+    "onLeftClick": { "name": "player.moveToClick", "id": "hero" },
+    "onRightClick": null
   },
   "load": "ui/level/gamePanel.json",
   "load": "level/quests.json"

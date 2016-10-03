@@ -23,6 +23,7 @@ public:
 	MapSearchNode(const LevelMap* map_, int16_t x_, int16_t y_,
 		const PlayerDirection& direction_) : map(map_), x(x_), y(y_), direction(direction_) {}
 
+	bool IsPassableIgnoreObject();
 	bool IsPassable() { return IsPassable((size_t)x, (size_t)y); }
 	bool IsPassable(size_t x_, size_t y_);
 

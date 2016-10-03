@@ -8,6 +8,8 @@
         "action": [
           { "name": "loadingScreen.setProgress", "progress": 35 },
           { "name": "resource.add", "id": "currentLevel" },
+          { "name": "load", "file": "level/clearPlayers.json" },
+          { "name": "level.clearObjects" },
           { "name": "load", "file": "level/{2}/level.json" },
           { "name": "loadingScreen.setProgress", "progress": 70 },
           { "name": "load", "file": "level/{2}/players.json" },
@@ -15,6 +17,11 @@
           { "name": "load", "file": "level/{2}/sounds.json" },
           { "name": "loadingScreen.setProgress", "progress": 100 },
           { "name": "load", "file": "level/{2}/music.json" },
+          { "name": "if.equal",
+            "param1": "{3}",
+            "param2": "positionPlayer",
+            "then": { "name": "load", "file": ["level/positionPlayer.json", "{4}"] }
+          },
           { "name": "load", "file": "level/playOrStopMusic.json" }
         ]
       }

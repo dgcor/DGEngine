@@ -4,6 +4,67 @@
 #include "Game.h"
 #include "Game/Level.h"
 
+class ActLevelClearObjects : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActLevelClearObjects(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearLevelObjects();
+		}
+		return true;
+	}
+};
+
+class ActLevelClearPlayerClasses : public Action
+{
+private:
+	std::string id;
+	size_t clearIdx;
+
+public:
+	ActLevelClearPlayerClasses(const std::string& id_, size_t clearIdx_)
+		: id(id_), clearIdx(clearIdx_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearPlayerClasses(clearIdx);
+		}
+		return true;
+	}
+};
+
+class ActLevelClearPlayers : public Action
+{
+private:
+	std::string id;
+	size_t clearIdx;
+
+public:
+	ActLevelClearPlayers(const std::string& id_, size_t clearIdx_)
+		: id(id_), clearIdx(clearIdx_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearPlayers(clearIdx);
+		}
+		return true;
+	}
+};
+
 class ActLevelMove : public Action
 {
 private:

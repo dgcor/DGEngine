@@ -10,14 +10,14 @@ bool Event::update(Game& game)
 
 	currentTime += game.getElapsedTime();
 
-	if (currentTime >= frameTime)
+	if (currentTime >= timeout)
 	{
 		auto ret = action->execute(game);
 
-		if (ret == false && frameTime != sf::Time::Zero)
+		if (ret == false && timeout != sf::Time::Zero)
 		{
 			// reset time, but keep the remainder
-			currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
+			currentTime = sf::microseconds(currentTime.asMicroseconds() % timeout.asMicroseconds());
 		}
 		else
 		{

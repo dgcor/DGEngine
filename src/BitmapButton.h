@@ -29,6 +29,7 @@ private:
 	bool hovered{ false };
 	bool clickUp{ false };
 	bool beingDragged{ false };
+	bool wasClicked{ false };
 	bool visible{ true };
 	bool resizable{ false };
 

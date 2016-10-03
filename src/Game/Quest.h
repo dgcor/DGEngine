@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "Variable.h"
 
 class Quest
 {
@@ -21,5 +22,5 @@ public:
 	int State() const { return state; }
 	void State(int state_) { state = state_; }
 
-	std::string getProperty(const std::string& prop) const;
+	bool getProperty(const std::string& prop, Variable& var) const;
 };

@@ -98,7 +98,7 @@ std::queue<sf::Vector2i> LevelMap::getPath(const sf::Vector2i& a, const sf::Vect
 	MapSearchNode start(this, a.x, a.y, PlayerDirection::All);
 	MapSearchNode end(this, b.x, b.y, PlayerDirection::All);
 
-	if (end.IsPassable() == false)
+	if (end.IsPassableIgnoreObject() == false)
 	{
 		return path;
 	}

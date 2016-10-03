@@ -1,0 +1,53 @@
+{
+  "action": { "name": "resource.add", "id": "noMap" },
+  "keyboard": {
+    "key": "esc",
+    "action": [
+      { "name": "resource.pop", "id": "noMap" },
+      { "name": "event.delete", "id": "closeNoMap" }
+    ]
+  },
+  "texture": {
+    "id": "textbox",
+    "file": "data/textbox.cel",
+    "palette": "town"
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "position": [104, 150],
+      "anchor": "none",
+      "textureRect": [435, 57],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder1",
+      "position": [101, 147],
+      "anchor": "none",
+      "textureRect": [438, 60],
+      "texture": "textbox"
+    },
+    {
+      "id": "textWallBorder2",
+      "position": [103, 148],
+      "anchor": "none",
+      "textureRect": [155, 244, 436, 59],
+      "texture": "textbox"
+    }
+  ],
+  "text": {
+    "id": "mapText",
+    "bitmapFont": "smaltext",
+    "color": "0xC4B78A",
+    "position": [322, 172],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "No automap available in town"
+  },
+  "event": {
+    "id": "closeNoMap",
+    "action": { "name": "resource.pop", "id": "noMap" },
+    "seconds": 4
+  }
+}

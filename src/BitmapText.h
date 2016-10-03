@@ -19,6 +19,7 @@ private:
 	sf::Color color{ sf::Color::White };
 	int horizSpaceOffset{ 0 };
 	int vertSpaceOffset{ 0 };
+	unsigned lineCount{ 0 };
 	bool visible{ true };
 
 	void calcDrawPos();
@@ -55,6 +56,8 @@ public:
 		calcSize();
 		calcDrawPos();
 	}
+
+	virtual unsigned getLineCount() const { return lineCount; }
 
 	virtual void setColor(const sf::Color& color_) { color = color_; }
 

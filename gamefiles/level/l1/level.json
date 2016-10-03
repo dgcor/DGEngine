@@ -15,13 +15,14 @@
     "til": "levels/l1data/l1.til",
     "min": "levels/l1data/l1.min",
     "minBlocks": 10,
-    "sol": "levels/l1data/l1.sol",
-    "options": "clearPlayers",
-    "onLeftClick": [
-      { "name": "player.moveToClick", "id": "hero" }
-    ],
-    "onRightClick": [
-      { "name": "load", "file": "level/town/load.json" }
-    ]
+    "sol": "levels/l1data/l1.sol"
+  },
+  "levelObject": {
+    "id": "town",
+    "name": "Up to town",
+    "mapPosition": [66, 26],
+    "texture": "empty",
+    "textureRect": [32, 32],
+    "action": { "name": "load", "file": ["level/town/load.json", "positionPlayer", "[25, 31]"] }
   }
 }

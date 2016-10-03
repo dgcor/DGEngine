@@ -3,8 +3,8 @@
 #include <cstdint>
 #include "Dun.h"
 #include "Helper2D.h"
+#include "LevelObject.h"
 #include <queue>
-#include <SFML/Graphics/Drawable.hpp>
 #include "TileSet.h"
 #include "Sol.h"
 #include <vector>
@@ -12,10 +12,24 @@
 struct LevelCell
 {
 	int16_t minIndex{ -1 };
-	const sf::Drawable* drawable{ nullptr };
+	std::shared_ptr<LevelObject> object;
 	int8_t sol{ 0 };
 
-	bool Passable() const { return !(sol & 0x01); }
+	bool PassableIgnoreObject() const
+	{
+		return !(sol & 0x01);
+	}
+
+	bool Passable() const
+	{
+		// Temporary logic
+		bool passable = PassableIgnoreObject();
+		if (object != nullptr)
+		{
+			return object->Passable();
+		}
+		return passable;
+	}
 };
 
 class LevelMap

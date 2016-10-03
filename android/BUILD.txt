@@ -19,10 +19,12 @@ define USE_SFML_MOVIE_STUB is used to use a stub class that does nothing
 when atempting to play a video.
 
 The Android port, for now, reads the files from the root of the sdcard.
-You need DIABDAT.zip and the contents of the gamefiles folder in a zip.
+You need DIABDAT.MPQ (or folder/zip) and the contents of the gamefiles
+folder in a zip.
 Note: make sure gamefiles.zip has main.json at the root of the archive.
+MPQ files are only supported if you use the above physfs version.
 
-adb push DIABDAT.zip /sdcard/DIABDAT.zip
+adb push DIABDAT.MPQ /sdcard/DIABDAT.MPQ
 adb push gamefiles.zip /sdcard/gamefiles.zip
 
 For quick reference, here are the commands to build the project:

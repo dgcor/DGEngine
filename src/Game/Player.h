@@ -33,13 +33,14 @@ private:
 	sf::Time m_frameTime{ sf::milliseconds(50) };
 	sf::Time m_currentTime;
 
-	std::shared_ptr<Action> clickAction;
+	std::shared_ptr<Action> action;
+
+	bool hovered{ false };
 
 	ItemCollection inventory1;
 	ItemCollection inventory2;
 
 	std::string id;
-
 	std::string name;
 
 	int32_t level{ 0 };
@@ -99,7 +100,7 @@ private:
 		}
 	}
 
-	void calculatePosition(Level& level, const sf::Vector2u& texSize);
+	void updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSize);
 
 public:
 	Player() {}
@@ -117,7 +118,13 @@ public:
 	virtual void Size(const sf::Vector2f& size) {}
 
 	virtual const sf::Vector2i& MapPosition() const { return mapPosition; }
+
 	virtual void MapPosition(const sf::Vector2i& pos) { mapPosition = pos; }
+	virtual void MapPosition(Level& level, const sf::Vector2i& pos);
+
+	virtual void executeAction(Game& game) const;
+	virtual bool Passable() const { return true; }
+	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -126,10 +133,9 @@ public:
 	virtual void update(Game& game, Level& level);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual void setProperty(const std::string& prop, const Variable& val);
 
 	void setWalkPath(const std::queue<sf::Vector2i> walkPath_) { walkPath = walkPath_; }
-
-	void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }
 
 	void setDirection(PlayerDirection direction_)
 	{

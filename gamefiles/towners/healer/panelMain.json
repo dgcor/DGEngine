@@ -81,6 +81,10 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "text": "Receive Healing",
+      "onClick": [
+        { "name": "sound.loadPlay", "file": "sfx/misc/cast8.wav" },
+        { "name": "player.setProperty", "property": "lifeBase", "value": "|currentLevel|currentPlayer.lifeBase|" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

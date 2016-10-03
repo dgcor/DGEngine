@@ -1,0 +1,34 @@
+{
+  "palette": [
+    {
+      "id": "l4_4",
+      "file":"levels/l4data/l4_4.pal"
+    }
+  ],
+  "level": {
+    "id": "level",
+    "name": "Hell",
+    "palette": "l4_4",
+    "cel": "levels/l4data/l4.cel",
+    "mapSize": [96, 96],
+    "dun": [
+      { "file": "levels/l4data/warlord2.dun", "position": [0, 0] },
+      { "file": "levels/l4data/diab1.dun", "position": [10, 1] },
+      { "file": "levels/l4data/diab2b.dun", "position": [0, 15] },
+      { "file": "levels/l4data/diab3b.dun", "position": [21, 18] },
+      { "file": "levels/l4data/diab4b.dun", "position": [21, 0] }
+    ],
+    "til": "levels/l4data/l4.til",
+    "min": "levels/l4data/l4.min",
+    "minBlocks": 16,
+    "sol": "levels/l4data/l4.sol"
+  },
+  "levelObject": {
+    "id": "town",
+    "name": "Up to town",
+    "mapPosition": [6, 7],
+    "texture": "empty",
+    "textureRect": [32, 32],
+    "action": { "name": "load", "file": ["level/town/load.json", "positionPlayer", "[42, 80]"] }
+  }
+}

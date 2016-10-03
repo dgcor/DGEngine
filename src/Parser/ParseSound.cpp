@@ -5,6 +5,25 @@ namespace Parser
 {
 	using namespace rapidjson;
 
+	std::shared_ptr<sf::SoundBuffer> parseSoundObj(Game& game,
+		const std::string& id, const std::string& file)
+	{
+		sf::PhysFSStream stream(file);
+		if (stream.hasError() == true)
+		{
+			return nullptr;
+		}
+
+		auto sound = std::make_shared<sf::SoundBuffer>();
+		if (sound->loadFromStream(stream) == false)
+		{
+			return nullptr;
+		}
+
+		game.Resources().addSound(id, sound);
+		return sound;
+	}
+
 	void parseSound(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false || isValidString(elem, "file") == false)
@@ -12,18 +31,6 @@ namespace Parser
 			return;
 		}
 
-		sf::PhysFSStream stream(elem["file"].GetString());
-		if (stream.hasError() == true)
-		{
-			return;
-		}
-
-		auto sound = std::make_shared<sf::SoundBuffer>();
-		if (sound->loadFromStream(stream) == false)
-		{
-			return;
-		}
-
-		game.Resources().addSound(elem["id"].GetString(), sound);
+		parseSoundObj(game, elem["id"].GetString(), elem["file"].GetString());
 	}
 }
