@@ -1,0 +1,28 @@
+{
+  "palette": [
+    {
+      "id": "l3pwater",
+      "file":"levels/l3data/l3pwater.pal"
+    }
+  ],
+  "level": {
+    "id": "level",
+    "name": "Foul Water",
+    "palette": "l3pwater",
+    "cel": "levels/l3data/l3.cel",
+    "mapSize": [96, 96],
+    "dun": { "file": "levels/l3data/foulwatr.dun" },
+    "til": "levels/l3data/l3.til",
+    "min": "levels/l3data/l3.min",
+    "minBlocks": 10,
+    "sol": "levels/l3data/l3.sol"
+  },
+  "levelObject": {
+    "id": "town",
+    "name": "Up to town",
+    "mapPosition": [14, 67],
+    "texture": "empty",
+    "textureRect": [32, 32],
+    "action": { "name": "load", "file": ["level/town/load.json", "positionPlayer", "[18, 69]"] }
+  }
+}

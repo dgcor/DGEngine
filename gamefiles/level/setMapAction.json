@@ -1,0 +1,8 @@
+{
+  "action": {
+    "name": "if.fileExists",
+    "param1": "level/{1}/map.json",
+    "then": { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "level/{1}/map.json" } },
+    "else": { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "ui/level/noMap.json" } }
+  }
+}

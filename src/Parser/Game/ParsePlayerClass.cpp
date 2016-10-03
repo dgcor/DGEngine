@@ -1,6 +1,6 @@
 #include "ParsePlayerClass.h"
-#include "ParseAction.h"
-#include "ParseUtils.h"
+#include "Parser/ParseAction.h"
+#include "Parser/ParseUtils.h"
 #include "Game/PlayerClass.h"
 
 namespace Parser

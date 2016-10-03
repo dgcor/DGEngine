@@ -99,68 +99,94 @@
     {
       "id": "healer",
       "class": "healer",
+      "name": "Pepin the healer",
       "mapPosition": [55, 79],
-      "onClick": { "name": "load", "file": "towners/healer/panel.json" }
+      "action": { "name": "load", "file": "towners/healer/panel.json" }
     },
     {
       "id": "strytell",
       "class": "strytell",
+      "name": "Cain the elder",
       "mapPosition": [62, 71],
-      "onClick": { "name": "load", "file": "towners/strytell/panel.json" }
+      "action": { "name": "load", "file": "towners/strytell/panel.json" }
     },
     {
       "id": "smith",
       "class": "smith",
+      "name": "Griswold the blacksmith",
       "mapPosition": [62, 63],
-      "onClick": { "name": "load", "file": "towners/smith/panel.json" }
+      "action": { "name": "load", "file": "towners/smith/panel.json" }
     },
     {
       "id": "twnf",
       "class": "twnf",
+      "name": "Ogden the tavern owner",
       "mapPosition": [55, 62],
-      "onClick": { "name": "load", "file": "towners/twnf/panel.json" }
+      "action": { "name": "load", "file": "towners/twnf/panel.json" }
     },
     {
       "id": "twndrunk",
       "class": "twndrunk",
+      "name": "Farnham the drunk",
       "mapPosition": [71, 84],
-      "onClick": { "name": "load", "file": "towners/drunk/panel.json" }
+      "action": { "name": "load", "file": "towners/drunk/panel.json" }
     },
     {
       "id": "gillian",
       "class": "gillian",
+      "name": "Gillian the barmaid",
       "mapPosition": [43, 66],
-      "onClick": { "name": "load", "file": "towners/gillian/panel.json" }
+      "action": { "name": "load", "file": "towners/gillian/panel.json" }
     },
     {
       "id": "townboy",
       "class": "townboy",
-      "mapPosition": [12, 54],
-      "onClick": { "name": "load", "file": "towners/townboy/panel.json" }
+      "name": "Wirt the peg-legged boy",
+      "mapPosition": [11, 53],
+      "action": { "name": "load", "file": "towners/townboy/panel.json" }
     },
     {
       "id": "witch",
       "class": "witch",
+      "name": "Adria the witch",
       "mapPosition": [80, 20],
-      "onClick": { "name": "load", "file": "towners/adria/panel.json" }
+      "action": { "name": "load", "file": "towners/adria/panel.json" }
     },
     {
       "id": "cow1",
       "class": "cow",
+      "name": "Cow",
       "direction": "BackLeft",
-      "mapPosition": [55, 13]
+      "mapPosition": [55, 13],
+      "action": {
+        "name": "random",
+        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
+        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
+      }
     },
     {
       "id": "cow2",
       "class": "cow",
+      "name": "Cow",
       "direction": "FrontLeft",
-      "mapPosition": [57, 15]
+      "mapPosition": [57, 15],
+      "action": {
+        "name": "random",
+        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
+        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
+      }
     },
     {
       "id": "cow3",
       "class": "cow",
+      "name": "Cow",
       "direction": "Back",
-      "mapPosition": [58, 19]
+      "mapPosition": [58, 19],
+      "action": {
+        "name": "random",
+        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
+        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
+      }
     }
   ]
 }

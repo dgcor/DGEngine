@@ -48,5 +48,26 @@ namespace Utils
 			std::uniform_int_distribution<T> dist(min, max);
 			return dist(mt);
 		}
+
+		template <class T>
+		static T getf()
+		{
+			std::uniform_real_distribution<T> dist(0., 1.);
+			return dist(mt);
+		}
+
+		template <class T>
+		static T getf(T max)
+		{
+			std::uniform_real_distribution<T> dist(0., max);
+			return dist(mt);
+		}
+
+		template <class T>
+		static T getf(T min, T max)
+		{
+			std::uniform_real_distribution<T> dist(min, max);
+			return dist(mt);
+		}
 	};
 }

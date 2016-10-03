@@ -706,181 +706,179 @@ void Game::saveVariables(const std::string& filePath, const std::vector<std::str
 
 bool Game::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
-		{
-			switch (str2int(props[0].c_str()))
-			{
-			case str2int("framerate"):
-				var = Variable((int64_t)framerate);
-				break;
-			case str2int("keepAR"):
-				var = Variable((bool)keepAR);
-				break;
-			case str2int("minSize"):
-			{
-				if (props.size() > 1)
-				{
-					if (props[1] == "x")
-					{
-						var = Variable((int64_t)minSize.x);
-					}
-					else
-					{
-						var = Variable((int64_t)minSize.y);
-					}
-				}
-				else
-				{
-					return false;
-				}
-				break;
-			}
-			break;
-			case str2int("musicVolume"):
-				var = Variable((int64_t)musicVolume);
-				break;
-			case str2int("path"):
-				var = Variable(path);
-				break;
-			case str2int("refSize"):
-			{
-				if (props.size() > 1)
-				{
-					if (props[1] == "x")
-					{
-						var = Variable((int64_t)refSize.x);
-					}
-					else
-					{
-						var = Variable((int64_t)refSize.y);
-					}
-				}
-				else
-				{
-					return false;
-				}
-				break;
-			}
-			case str2int("saveDir"):
-				var = Variable(std::string(FileUtils::getSaveDir()));
-				break;
-			case str2int("size"):
-			{
-				if (props.size() > 1)
-				{
-					if (props[1] == "x")
-					{
-						var = Variable((int64_t)size.x);
-					}
-					else
-					{
-						var = Variable((int64_t)size.y);
-					}
-				}
-				else
-				{
-					return false;
-				}
-				break;
-			}
-			case str2int("smoothScreen"):
-				var = Variable((bool)smoothScreen);
-				break;
-			case str2int("soundVolume"):
-				var = Variable((int64_t)soundVolume);
-				break;
-			case str2int("stretchToFit"):
-				var = Variable((bool)stretchToFit);
-				break;
-			case str2int("title"):
-				var = Variable(title);
-				break;
-			case str2int("version"):
-				var = Variable(version);
-				break;
-			default:
-				return false;
-			}
-			return true;
-		}
+		return false;
 	}
-	return false;
+	auto props = Utils::splitString(prop, '.');
+	if (props.empty() == true)
+	{
+		return false;
+	}
+	switch (str2int(props[0].c_str()))
+	{
+	case str2int("framerate"):
+		var = Variable((int64_t)framerate);
+		break;
+	case str2int("keepAR"):
+		var = Variable((bool)keepAR);
+		break;
+	case str2int("minSize"):
+	{
+		if (props.size() > 1)
+		{
+			if (props[1] == "x")
+			{
+				var = Variable((int64_t)minSize.x);
+			}
+			else
+			{
+				var = Variable((int64_t)minSize.y);
+			}
+		}
+		else
+		{
+			return false;
+		}
+		break;
+	}
+	break;
+	case str2int("musicVolume"):
+		var = Variable((int64_t)musicVolume);
+		break;
+	case str2int("path"):
+		var = Variable(path);
+		break;
+	case str2int("refSize"):
+	{
+		if (props.size() > 1)
+		{
+			if (props[1] == "x")
+			{
+				var = Variable((int64_t)refSize.x);
+			}
+			else
+			{
+				var = Variable((int64_t)refSize.y);
+			}
+		}
+		else
+		{
+			return false;
+		}
+		break;
+	}
+	case str2int("saveDir"):
+		var = Variable(std::string(FileUtils::getSaveDir()));
+		break;
+	case str2int("size"):
+	{
+		if (props.size() > 1)
+		{
+			if (props[1] == "x")
+			{
+				var = Variable((int64_t)size.x);
+			}
+			else
+			{
+				var = Variable((int64_t)size.y);
+			}
+		}
+		else
+		{
+			return false;
+		}
+		break;
+	}
+	case str2int("smoothScreen"):
+		var = Variable((bool)smoothScreen);
+		break;
+	case str2int("soundVolume"):
+		var = Variable((int64_t)soundVolume);
+		break;
+	case str2int("stretchToFit"):
+		var = Variable((bool)stretchToFit);
+		break;
+	case str2int("title"):
+		var = Variable(title);
+		break;
+	case str2int("version"):
+		var = Variable(version);
+		break;
+	default:
+		return false;
+	}
+	return true;
 }
 
 void Game::setProperty(const std::string& prop, const Variable& val)
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
+		return;
+	}
+	switch (str2int(prop.c_str()))
+	{
+	case str2int("framerate"):
+	{
+		if (val.is<int64_t>() == true)
 		{
-			switch (str2int(props[0].c_str()))
-			{
-			case str2int("framerate"):
-			{
-				if (val.is<int64_t>() == true)
-				{
-					Framerate((unsigned)val.get<int64_t>());
-				}
-			}
-			break;
-			case str2int("keepAR"):
-			{
-				if (val.is<bool>() == true)
-				{
-					KeepAR(val.get<bool>());
-				}
-			}
-			break;
-			case str2int("musicVolume"):
-			{
-				if (val.is<int64_t>() == true)
-				{
-					MusicVolume((unsigned)val.get<int64_t>());
-				}
-			}
-			break;
-			case str2int("smoothScreen"):
-			{
-				if (val.is<bool>() == true)
-				{
-					SmoothScreen(val.get<bool>());
-				}
-			}
-			break;
-			case str2int("soundVolume"):
-			{
-				if (val.is<int64_t>() == true)
-				{
-					SoundVolume((unsigned)val.get<int64_t>());
-				}
-			}
-			break;
-			case str2int("stretchToFit"):
-			{
-				if (val.is<bool>() == true)
-				{
-					StretchToFit(val.get<bool>());
-				}
-			}
-			break;
-			case str2int("title"):
-			{
-				if (val.is<std::string>() == true)
-				{
-					setTitle(val.get<std::string>());
-				}
-			}
-			break;
-			case str2int("version"):
-				if (val.is<std::string>() == true)
-				{
-					setVersion(val.get<std::string>());
-				}
-			}
+			Framerate((unsigned)val.get<int64_t>());
+		}
+	}
+	break;
+	case str2int("keepAR"):
+	{
+		if (val.is<bool>() == true)
+		{
+			KeepAR(val.get<bool>());
+		}
+	}
+	break;
+	case str2int("musicVolume"):
+	{
+		if (val.is<int64_t>() == true)
+		{
+			MusicVolume((unsigned)val.get<int64_t>());
+		}
+	}
+	break;
+	case str2int("smoothScreen"):
+	{
+		if (val.is<bool>() == true)
+		{
+			SmoothScreen(val.get<bool>());
+		}
+	}
+	break;
+	case str2int("soundVolume"):
+	{
+		if (val.is<int64_t>() == true)
+		{
+			SoundVolume((unsigned)val.get<int64_t>());
+		}
+	}
+	break;
+	case str2int("stretchToFit"):
+	{
+		if (val.is<bool>() == true)
+		{
+			StretchToFit(val.get<bool>());
+		}
+	}
+	break;
+	case str2int("title"):
+	{
+		if (val.is<std::string>() == true)
+		{
+			setTitle(val.get<std::string>());
+		}
+	}
+	break;
+	case str2int("version"):
+		if (val.is<std::string>() == true)
+		{
+			setVersion(val.get<std::string>());
 		}
 	}
 }

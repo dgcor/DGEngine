@@ -194,22 +194,23 @@ void Menu::update(Game& game)
 
 bool Menu::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
-		{
-			auto propHash = str2int(props[0].c_str());
-			switch (propHash)
-			{
-			case str2int("itemCount"):
-				var = Variable((int64_t)this->getItemCount());
-				break;
-			default:
-				return GameUtils::getUIObjProp(*this, propHash, props, var);
-			}
-			return true;
-		}
+		return false;
 	}
-	return false;
+	auto props = Utils::splitString(prop, '.');
+	if (props.empty() == true)
+	{
+		return false;
+	}
+	auto propHash = str2int(props[0].c_str());
+	switch (propHash)
+	{
+	case str2int("itemCount"):
+		var = Variable((int64_t)this->getItemCount());
+		break;
+	default:
+		return GameUtils::getUIObjProp(*this, propHash, props, var);
+	}
+	return true;
 }

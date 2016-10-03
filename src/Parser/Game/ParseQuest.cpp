@@ -1,5 +1,5 @@
-#include "ParseQuest.h"
-#include "ParseUtils.h"
+#include "Parser/Game/ParseQuest.h"
+#include "Parser/ParseUtils.h"
 
 namespace Parser
 {

@@ -19,3 +19,18 @@ public:
 		return true;
 	}
 };
+
+class ActEventResetTime : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActEventResetTime(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		game.Events().resetTime(id);
+		return true;
+	}
+};

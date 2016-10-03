@@ -85,6 +85,7 @@ void StringButton::update(Game& game)
 			{
 				game.clearMouseClicked();
 				beingDragged = true;
+				wasClicked = true;
 				if (clickInAction != nullptr)
 				{
 					game.Events().addFront(clickInAction);
@@ -117,12 +118,17 @@ void StringButton::update(Game& game)
 	}
 	else
 	{
-		if (game.wasMouseReleased() == true && game.getMouseButton() == sf::Mouse::Left)
+		if (game.wasMouseReleased() == true &&
+			game.getMouseButton() == sf::Mouse::Left)
 		{
 			beingDragged = false;
-			if (clickOutAction != nullptr)
+			if (wasClicked == true)
 			{
-				game.Events().addFront(clickOutAction);
+				wasClicked = false;
+				if (clickOutAction != nullptr)
+				{
+					game.Events().addFront(clickOutAction);
+				}
 			}
 		}
 		if (hovered == true)

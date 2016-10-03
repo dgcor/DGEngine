@@ -1,0 +1,8 @@
+{
+  "action": {
+    "name": "player.move",
+    "id": "hero",
+    "position": {1},
+    "resetDirection": true
+  }
+}

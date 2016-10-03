@@ -105,6 +105,11 @@ int32_t normalWidth(const std::vector<uint8_t>& frame, size_t frameNum, bool fro
 				widthRegular += val;
 				i += val;
 
+				// prevents crash when loading l4
+				if (i + 1 >= frame.size()) {
+					break;
+				}
+
 				// Workaround for frames that start with a few px, then trans for the rest of the line
 				if (128 <= frame[i + 1]) {
 					hasTrans = true;

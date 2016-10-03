@@ -92,6 +92,18 @@ void ResourceManager::ignoreTopResource(IgnoreResource ignore)
 	}
 }
 
+bool ResourceManager::resourceExists(const std::string& id)
+{
+	for (auto& res : resources)
+	{
+		if (res.id == id)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 Animation* ResourceManager::getCursor() const
 {
 	if (cursors.empty() == true)

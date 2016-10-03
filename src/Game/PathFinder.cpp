@@ -2,11 +2,20 @@
 #include <cmath>
 #include "LevelMap.h"
 
+bool MapSearchNode::IsPassableIgnoreObject()
+{
+	if (x < map->Width() && y < map->Height())
+	{
+		return (*map)[x][y].PassableIgnoreObject();
+	}
+	return false;
+}
+
 bool MapSearchNode::IsPassable(size_t x_, size_t y_)
 {
 	if (x_ < map->Width() && y_ < map->Height())
 	{
-		return (*map)[x_][y_].Passable() && (*map)[x_][y_].drawable == nullptr;
+		return (*map)[x_][y_].Passable();
 	}
 	return false;
 }
@@ -84,7 +93,10 @@ float MapSearchNode::GetCost(MapSearchNode& successor)
 {
 	if (IsPassable(x, y) == true)
 	{
-		return 1.f;
+		if ((*map)[x][y].object == nullptr)
+		{
+			return 1.f;
+		}
 	}
 	return 9.f;
 }

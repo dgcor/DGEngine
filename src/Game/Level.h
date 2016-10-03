@@ -34,20 +34,23 @@ private:
 
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
+	std::shared_ptr<Action> hoverEnterAction;
+	std::shared_ptr<Action> hoverLeaveAction;
+
+	LevelObject* hoverObject{ nullptr };
+
+	std::vector<std::shared_ptr<LevelObject>> levelObjects;
 
 	std::vector<std::pair<std::string, std::shared_ptr<PlayerClass>>> playerClasses;
 	std::vector<std::shared_ptr<Player>> players;
-	Player* currentPlayer;
+	Player* currentPlayer{ nullptr };
 	bool followCurrentPlayer{ true };
-
-	size_t playerClassClearIdx{ 0 };
-	size_t playerClearIdx{ 0 };
 
 	bool visible{ true };
 
 	std::vector<Quest> quests;
 
-	static const LevelCell get(size_t x, size_t y, const Level& level)
+	static const LevelCell& get(size_t x, size_t y, const Level& level)
 	{
 		return level.map[x][y];
 	}
@@ -55,9 +58,9 @@ private:
 public:
 	void Init(const LevelMap& map, Min& min, CelFrameCache& cel);
 
-	Misc::Helper2D<const Level, const LevelCell> operator[] (size_t x) const
+	Misc::Helper2D<const Level, const LevelCell&> operator[] (size_t x) const
 	{
-		return Misc::Helper2D<const Level, const LevelCell>(*this, x, get);
+		return Misc::Helper2D<const Level, const LevelCell&>(*this, x, get);
 	}
 
 	const sf::Vector2f& MousePosition() const { return mousePos; }
@@ -70,6 +73,8 @@ public:
 
 	size_t Width() const { return map.Width(); }
 	size_t Height() const { return map.Height(); }
+
+	void clearLevelObjects() { levelObjects.clear(); }
 
 	void addPlayerClass(const std::string& key, const std::shared_ptr<PlayerClass>& obj)
 	{
@@ -92,11 +97,10 @@ public:
 	const std::vector<std::shared_ptr<Player>>& Players() const { return players; }
 
 	Player* getPlayer(const std::string id);
+	Player* getPlayerOrCurrent(const std::string id);
 
-	void setPlayerClassClearIdx(size_t idx) { playerClassClearIdx = idx; }
-	void setPlayerClearIdx(size_t idx) { playerClearIdx = idx; }
-
-	void clearPlayers();
+	void clearPlayerClasses(size_t clearIdx);
+	void clearPlayers(size_t clearIdx);
 
 	void resetView()
 	{
@@ -106,8 +110,16 @@ public:
 
 	void updateViewPort(const Game& game);
 
+	void executeHoverEnterAction(Game& game);
+	void executeHoverLeaveAction(Game& game);
+
 	void setLeftAction(const std::shared_ptr<Action>& action) { leftAction = action; }
 	void setRightAction(const std::shared_ptr<Action>& action) { rightAction = action; }
+	void setHoverEnterAction(const std::shared_ptr<Action>& action) { hoverEnterAction = action; }
+	void setHoverLeaveAction(const std::shared_ptr<Action>& action) { hoverLeaveAction = action; }
+
+	LevelObject* getHoverObject() const { return hoverObject; }
+	void setHoverObject(LevelObject* object) { hoverObject = object; }
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
@@ -117,6 +129,8 @@ public:
 	virtual void Position(const sf::Vector2f& position) { view.setPosition(position); }
 	virtual sf::Vector2f Size() const { return view.getSize(); }
 	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
+
+	void addLevelObject(const std::shared_ptr<LevelObject>& obj) { levelObjects.push_back(obj); }
 
 	sf::Vector2f getDrawPosition(const sf::Vector2i& pos_) const;
 
@@ -137,6 +151,8 @@ public:
 	}
 
 	void FollowCurrentPlayer(bool follow) { followCurrentPlayer = follow; }
+
+	void updateLevelObjectPositions();
 
 	virtual bool Visible() const { return visible; }
 	virtual void Visible(bool visible_) { visible = visible_; }

@@ -1,0 +1,30 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "levelHoverAction",
+    "action": [
+      {
+        "name": "switch",
+        "param": "|currentLevel|hoverObject.type|",
+        "case": [
+          {
+            "value": "player",
+            "action": {
+              "name": "if.notEqual",
+              "param1": "|currentLevel|hoverObject.id|",
+              "param2": "hero",
+              "then": { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" },
+              "else": { "name": "text.setText", "id": "txtPanel", "text": "" }
+            }
+          },
+          {
+            "value": "item",
+            "action": { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" }
+          }
+        ],
+        "default": { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" }
+      },
+      "updatePanelTextSpacing"
+    ]
+  }
+}

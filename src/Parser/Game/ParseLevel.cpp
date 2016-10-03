@@ -3,8 +3,8 @@
 #include "FileUtils.h"
 #include "Game/LevelMap.h"
 #include "GameUtils.h"
-#include "ParseAction.h"
-#include "ParseUtils.h"
+#include "Parser/ParseAction.h"
+#include "Parser/ParseUtils.h"
 #include "Utils.h"
 
 namespace Parser
@@ -62,6 +62,7 @@ namespace Parser
 
 		CelFrameCache celCache(cel, *pal);
 		level.Init(map, min, celCache);
+		level.updateLevelObjectPositions();
 	}
 
 	void parsePosSize(Game& game, const Value& elem, Level& level)
@@ -81,39 +82,6 @@ namespace Parser
 		level.Position(pos);
 		level.Size(size);
 		level.Visible(getBoolKey(elem, "visible", true));
-	}
-
-	void parseLevelOption(Game& game, Level& level, unsigned optionHash)
-	{
-		switch (optionHash)
-		{
-		case str2int("clearPlayers"):
-		{
-			level.clearPlayers();
-			break;
-		}
-		default:
-			break;
-		}
-	}
-
-	void parseLevelOptions(Game& game, const Value& elem, Level& level)
-	{
-		if (elem.HasMember("options") == true)
-		{
-			const auto& dunElem = elem["options"];
-			if (dunElem.IsArray() == true)
-			{
-				for (const auto& val : dunElem)
-				{
-					parseLevelOption(game, level, str2int(getStringCharVal(val)));
-				}
-			}
-			else if (dunElem.IsString() == true)
-			{
-				parseLevelOption(game, level, str2int(dunElem.GetString()));
-			}
-		}
 	}
 
 	void parseLevel(Game& game, const Value& elem)
@@ -143,22 +111,10 @@ namespace Parser
 		{
 			level->FollowCurrentPlayer(getBoolVal(elem["followCurrentPlayer"]));
 		}
-		if (elem.HasMember("playerClassClearIndex") == true)
-		{
-			level->setPlayerClassClearIdx(getUIntVal(elem["playerClassClearIndex"]));
-		}
-		if (elem.HasMember("playerClearIndex") == true)
-		{
-			level->setPlayerClearIdx(getUIntVal(elem["playerClearIndex"]));
-		}
 
 		if (existingLevel == false)
 		{
 			parsePosSize(game, elem, *level);
-		}
-		else
-		{
-			parseLevelOptions(game, elem, *level);
 		}
 
 		level->resetView();
@@ -172,6 +128,16 @@ namespace Parser
 		if (elem.HasMember("onRightClick"))
 		{
 			level->setRightAction(parseAction(game, elem["onRightClick"]));
+		}
+
+		if (elem.HasMember("onHoverEnter"))
+		{
+			level->setHoverEnterAction(parseAction(game, elem["onHoverEnter"]));
+		}
+
+		if (elem.HasMember("onHoverLeave"))
+		{
+			level->setHoverLeaveAction(parseAction(game, elem["onHoverLeave"]));
 		}
 	}
 }

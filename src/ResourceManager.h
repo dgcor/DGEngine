@@ -133,6 +133,7 @@ public:
 	void popAllResources(bool popBaseResources);
 	void ignoreResources(const std::string& id, IgnoreResource ignore);
 	void ignoreTopResource(IgnoreResource ignore);
+	bool resourceExists(const std::string& id);
 
 	Animation* getCursor() const;
 	Level* getCurrentLevel() const { return currentLevel; }

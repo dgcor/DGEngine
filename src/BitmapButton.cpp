@@ -64,7 +64,7 @@ void BitmapButton::updateSize(const Game& game)
 		return;
 	}
 	auto pos = sprite.getPosition();
-	auto size = sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);;
+	auto size = sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
 	sprite.setPosition(pos);
 	if (resizable == true)
@@ -97,6 +97,7 @@ void BitmapButton::update(Game& game)
 			{
 				game.clearMouseClicked();
 				beingDragged = true;
+				wasClicked = true;
 				if (clickInAction != nullptr)
 				{
 					game.Events().addFront(clickInAction);
@@ -129,12 +130,17 @@ void BitmapButton::update(Game& game)
 	}
 	else
 	{
-		if (game.wasMouseReleased() == true && game.getMouseButton() == sf::Mouse::Left)
+		if (game.wasMouseReleased() == true &&
+			game.getMouseButton() == sf::Mouse::Left)
 		{
 			beingDragged = false;
-			if (clickOutAction != nullptr)
+			if (wasClicked == true)
 			{
-				game.Events().addFront(clickOutAction);
+				wasClicked = false;
+				if (clickOutAction != nullptr)
+				{
+					game.Events().addFront(clickOutAction);
+				}
 			}
 		}
 		if (hovered == true)
@@ -157,13 +163,14 @@ void BitmapButton::update(Game& game)
 
 bool BitmapButton::getProperty(const std::string& prop, Variable& var) const
 {
-	if (prop.size() > 1)
+	if (prop.size() <= 1)
 	{
-		auto props = Utils::splitString(prop, '.');
-		if (props.size() > 0)
-		{
-			return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
-		}
+		return false;
 	}
-	return false;
+	auto props = Utils::splitString(prop, '.');
+	if (props.empty() == true)
+	{
+		return false;
+	}
+	return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
 }

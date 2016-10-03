@@ -32,7 +32,7 @@ public:
 
 	sf::Vector2f calculateSize(const std::string& text) const;
 	sf::Vector2f calculateSize(const std::string& text,
-		int horizSpaceOffset, int vertSpaceOffset) const;
+		int horizSpaceOffset, int vertSpaceOffset, unsigned* lineCount = nullptr) const;
 
 	void draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
 		sf::RenderStates states, const sf::Color& color) const;

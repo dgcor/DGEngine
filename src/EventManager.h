@@ -17,18 +17,32 @@ public:
 	void addFront(const Event& event_) { events.push_front(event_); }
 	void addFront(const std::shared_ptr<Action>& action) { events.push_front(Event(action)); }
 
-	void remove(std::string& id)
+	void remove(const std::string& id)
 	{
 		if (id.empty())
 		{
 			return;
 		}
-
 		for (auto& evt : events)
 		{
 			if (evt.getId() == id)
 			{
 				evt = Event(nullptr);
+			}
+		}
+	}
+
+	void resetTime(const std::string& id)
+	{
+		if (id.empty())
+		{
+			return;
+		}
+		for (auto& evt : events)
+		{
+			if (evt.getId() == id)
+			{
+				evt.resetTime();
 			}
 		}
 	}

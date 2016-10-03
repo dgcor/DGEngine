@@ -19,6 +19,7 @@
 #include "Actions/ActMovie.h"
 #include "Actions/ActPlayer.h"
 #include "Actions/ActQuest.h"
+#include "Actions/ActRandom.h"
 #include "Actions/ActResource.h"
 #include "Actions/ActSound.h"
 #include "Actions/ActText.h"
@@ -28,7 +29,7 @@
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "ParseCondition.h"
-#include "ParseQuest.h"
+#include "Parser/Game/ParseQuest.h"
 #include "ParseUtils.h"
 
 namespace Parser
@@ -398,6 +399,11 @@ namespace Parser
 		{
 			return std::make_shared<ActEventDelete>(getStringKey(elem, "id"));
 		}
+
+		case str2int("event.resetTime"):
+		{
+			return std::make_shared<ActEventResetTime>(getStringKey(elem, "id"));
+		}
 		case str2int("file.copy"):
 		{
 			return std::make_shared<ActFileCopy>(
@@ -510,6 +516,11 @@ namespace Parser
 		{
 			return getIfCondition(str2int("!="), game, elem);
 		}
+
+		case str2int("if.resourceExists"):
+		{
+			return getIfCondition(str2int("resourceExists"), game, elem);
+		}
 		case str2int("image.setTextureRect"):
 		{
 			if (elem.HasMember("rect") && elem["rect"].IsArray())
@@ -544,6 +555,22 @@ namespace Parser
 		case str2int("io.deleteAll"):
 		{
 			return std::make_shared<ActIODeleteAll>(getStringKey(elem, "file"));
+		}
+		case str2int("level.clearObjects"):
+		{
+			return std::make_shared<ActLevelClearObjects>(getStringKey(elem, "id"));
+		}
+		case str2int("level.clearPlayerClasses"):
+		{
+			return std::make_shared<ActLevelClearPlayerClasses>(
+				getStringKey(elem, "id"),
+				(size_t)getUIntKey(elem, "index"));
+		}
+		case str2int("level.clearPlayers"):
+		{
+			return std::make_shared<ActLevelClearPlayers>(
+				getStringKey(elem, "id"),
+				(size_t)getUIntKey(elem, "index"));
 		}
 		case str2int("level.move"):
 		{
@@ -643,6 +670,14 @@ namespace Parser
 		{
 			return std::make_shared<ActMoviePlay>(getStringKey(elem, "id"));
 		}
+		case str2int("player.move"):
+		{
+			return std::make_shared<ActPlayerMove>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idLevel"),
+				getVector2iKey<sf::Vector2i>(elem, "position"),
+				getBoolKey(elem, "resetDirection"));
+		}
 		case str2int("player.moveToClick"):
 		{
 			return std::make_shared<ActPlayerMoveToClick>(
@@ -655,6 +690,14 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idLevel"),
 				getUIntKey(elem, "palette"));
+		}
+		case str2int("player.setProperty"):
+		{
+			return std::make_shared<ActPlayerSetProperty>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "property"),
+				getVariableKey(elem, "value"));
 		}
 		case str2int("quest.add"):
 		{
@@ -674,6 +717,45 @@ namespace Parser
 				getStringKey(elem, "idLevel"),
 				getStringKey(elem, "idQuest"),
 				getIntKey(elem, "state"));
+		}
+		case str2int("randomList"):
+		{
+			auto actionList = std::make_shared<ActRandomList>();
+			bool hasActions = false;
+			for (const auto& val : elem)
+			{
+				auto action = parseAction(game, val);
+				if (action != nullptr)
+				{
+					actionList->add(action);
+					hasActions = true;
+				}
+			}
+			if (hasActions == true)
+			{
+				return nullptr;
+			}
+			return actionList;
+		}
+		case str2int("random"):
+		{
+			std::shared_ptr<Action> action1;
+			if (elem.HasMember("action1"))
+			{
+				action1 = parseAction(game, elem["action1"]);
+			}
+			std::shared_ptr<Action> action2;
+			if (elem.HasMember("action2"))
+			{
+				action2 = parseAction(game, elem["action2"]);
+			}
+			if (action1 == nullptr && action2 == nullptr)
+			{
+				return nullptr;
+			}
+			return std::make_shared<ActRandom>(
+				(float)getDoubleKey(elem, "percentage", 0.5),
+				action1, action2);
 		}
 		case str2int("resource.add"):
 		{
@@ -700,6 +782,12 @@ namespace Parser
 				getBoolKey(elem, "popBase"),
 				getIgnoreResourceKey(elem, "ignorePrevious"));
 		}
+		case str2int("sound.loadPlay"):
+		{
+			return std::make_shared<ActSoundLoadPlay>(
+				getStringKey(elem, "file"),
+				getVariableKey(elem, "volume"));
+		}
 		case str2int("sound.play"):
 		{
 			return std::make_shared<ActSoundPlay>(
@@ -709,6 +797,19 @@ namespace Parser
 		case str2int("switch"):
 		{
 			return getSwitchCondition(game, elem);
+		}
+		case str2int("text.setSpacing"):
+		{
+			auto action = std::make_shared<ActTextSetSpacing>(getStringKey(elem, "id"));
+			if (elem.HasMember("horizontal") == true)
+			{
+				action->setHorizontalSpaceOffset(getIntVal(elem["horizontal"]));
+			}
+			if (elem.HasMember("vertical") == true)
+			{
+				action->setVerticalSpaceOffset(getIntVal(elem["vertical"]));
+			}
+			return action;
 		}
 		case str2int("text.setText"):
 		{

@@ -1,6 +1,6 @@
 #include "ParsePlayer.h"
-#include "ParseAction.h"
-#include "ParseUtils.h"
+#include "Parser/ParseAction.h"
+#include "Parser/ParseUtils.h"
 #include "Game/Player.h"
 
 namespace Parser
@@ -29,7 +29,7 @@ namespace Parser
 		}
 		auto& mapCell = level->Map()[mapPos.x][mapPos.y];
 
-		if (mapCell.drawable != nullptr)
+		if (mapCell.object != nullptr)
 		{
 			return;
 		}
@@ -43,7 +43,7 @@ namespace Parser
 		auto player = std::make_shared<Player>(playerClass);
 
 		player->MapPosition(mapPos);
-		mapCell.drawable = player.get();
+		mapCell.object = player;
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
 		player->setStatus(getPlayerStatusKey(elem, "status"));
@@ -82,9 +82,9 @@ namespace Parser
 		player->ResistFire(getIntKey(elem, "resistFire"));
 		player->ResistLightning(getIntKey(elem, "resistLightning"));
 
-		if (elem.HasMember("onClick") == true)
+		if (elem.HasMember("action") == true)
 		{
-			player->setClickAction(parseAction(game, elem["onClick"]));
+			player->setAction(parseAction(game, elem["action"]));
 		}
 
 		level->addPlayer(player);

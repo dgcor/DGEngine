@@ -14,13 +14,40 @@
     "til": "levels/towndata/town.til",
     "min": "levels/towndata/town.min",
     "minBlocks": 16,
-    "sol": "levels/towndata/town.sol",
-    "options": "clearPlayers",
-    "onLeftClick": [
-      { "name": "player.moveToClick", "id": "hero" }
-    ],
-    "onRightClick": [
-      { "name": "load", "file": "level/l1/load.json" }
-    ]
-  }
+    "sol": "levels/towndata/town.sol"
+  },
+  "levelObject": [
+    {
+      "id": "l1",
+      "name": "Down to dungeon",
+      "mapPosition": [25, 29],
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "action": { "name": "load", "file": ["level/l1/load.json", "positionPlayer", "[67, 28]"] }
+    },
+    {
+      "id": "l5",
+      "name": "Down to catacombs",
+      "mapPosition": [49, 21],
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "action": { "name": "load", "file": ["level/l5/load.json", "positionPlayer", "[57, 22]"] }
+    },
+    {
+      "id": "l10",
+      "name": "Down to caves",
+      "mapPosition": [17, 69],
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "action": { "name": "load", "file": ["level/l10/load.json", "positionPlayer", "[15, 67]"] }
+    },
+    {
+      "id": "l15",
+      "name": "Down to hell",
+      "mapPosition": [41, 80],
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "action": { "name": "load", "file": ["level/l15/load.json", "positionPlayer", "[7, 7]"] }
+    }
+  ]
 }

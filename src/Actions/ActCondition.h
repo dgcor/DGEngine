@@ -78,7 +78,15 @@ public:
 		case str2int("<="):
 			return ifCondition(game, var1 <= var2);
 		case str2int("fileExists"):
-			return ifCondition(game, var1.is<std::string>() ? FileUtils::exists(var1.get<std::string>().c_str()) : false);
+			return ifCondition(game,
+				var1.is<std::string>() ?
+				FileUtils::exists(var1.get<std::string>().c_str()) :
+				false);
+		case str2int("resourceExists"):
+			return ifCondition(game,
+				var1.is<std::string>() ?
+				game.Resources().resourceExists(var1.get<std::string>()) :
+				false);
 		}
 		return true;
 	}

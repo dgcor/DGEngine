@@ -110,13 +110,18 @@ set(SOURCE_FILES
     src/Actions/ActMovie.h
     src/Actions/ActPlayer.h
     src/Actions/ActQuest.h
+    src/Actions/ActRandom.h
     src/Actions/ActResource.h
     src/Actions/ActSound.h
     src/Actions/ActText.h
     src/Actions/ActTexture.h
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
+    src/Game/CelLevelObject.cpp
+    src/Game/CelLevelObject.h
     src/Game/fsa.h
+    src/Game/ImageLevelObject.cpp
+    src/Game/ImageLevelObject.h
     src/Game/Item.cpp
     src/Game/Item.h
     src/Game/ItemCollection.cpp
@@ -176,8 +181,6 @@ set(SOURCE_FILES
     src/Parser/ParseInputText.h
     src/Parser/ParseKeyboard.cpp
     src/Parser/ParseKeyboard.h
-    src/Parser/ParseLevel.cpp
-    src/Parser/ParseLevel.h
     src/Parser/ParseLoadingScreen.cpp
     src/Parser/ParseLoadingScreen.h
     src/Parser/ParseMenu.cpp
@@ -194,12 +197,6 @@ set(SOURCE_FILES
     src/Parser/ParseMovie.h
     src/Parser/ParsePalette.cpp
     src/Parser/ParsePalette.h
-    src/Parser/ParsePlayer.cpp
-    src/Parser/ParsePlayer.h
-    src/Parser/ParsePlayerClass.cpp
-    src/Parser/ParsePlayerClass.h
-    src/Parser/ParseQuest.cpp
-    src/Parser/ParseQuest.h
     src/Parser/Parser.cpp
     src/Parser/Parser.h
     src/Parser/ParseRectangle.cpp
@@ -216,18 +213,33 @@ set(SOURCE_FILES
     src/Parser/ParseUtils.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
+    src/Parser/Game/ParseLevel.cpp
+    src/Parser/Game/ParseLevel.h
+    src/Parser/Game/ParseLevelObject.cpp
+    src/Parser/Game/ParseLevelObject.h
+    src/Parser/Game/ParsePlayer.cpp
+    src/Parser/Game/ParsePlayer.h
+    src/Parser/Game/ParsePlayerClass.cpp
+    src/Parser/Game/ParsePlayerClass.h
+    src/Parser/Game/ParseQuest.cpp
+    src/Parser/Game/ParseQuest.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
     src/rapidjson/encodedstream.h
     src/rapidjson/encodings.h
     src/rapidjson/filereadstream.h
-    src/rapidjson/filestream.h
     src/rapidjson/filewritestream.h
+    src/rapidjson/fwd.h
+    src/rapidjson/istreamwrapper.h
     src/rapidjson/memorybuffer.h
     src/rapidjson/memorystream.h
+    src/rapidjson/ostreamwrapper.h
+    src/rapidjson/pointer.h
     src/rapidjson/prettywriter.h
     src/rapidjson/rapidjson.h
     src/rapidjson/reader.h
+    src/rapidjson/schema.h
+    src/rapidjson/stream.h
     src/rapidjson/stringbuffer.h
     src/rapidjson/writer.h
     src/rapidjson/error/en.h
@@ -239,9 +251,11 @@ set(SOURCE_FILES
     src/rapidjson/internal/itoa.h
     src/rapidjson/internal/meta.h
     src/rapidjson/internal/pow10.h
+    src/rapidjson/internal/regex.h
     src/rapidjson/internal/stack.h
     src/rapidjson/internal/strfunc.h
     src/rapidjson/internal/strtod.h
+    src/rapidjson/internal/swap.h
     src/rapidjson/msinttypes/inttypes.h
     src/rapidjson/msinttypes/stdint.h
     src/variant/optional.hpp

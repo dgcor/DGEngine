@@ -215,7 +215,7 @@ namespace Render
 
 		if (coords.x >= -64 && coords.x <= size.x && coords.y >= -256 && coords.y <= size.y)
 		{
-			auto drawObj = level.Map()[x][y].drawable;
+			auto drawObj = level.Map()[x][y].object;
 			if (drawObj != nullptr)
 			{
 				target.draw(*drawObj, states);
