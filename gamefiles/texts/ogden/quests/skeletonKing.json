@@ -1,0 +1,16 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.skeletonKing.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/ogden/quests/skeletonKing1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/ogden/quests/skeletonKing2.json" }
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.poisonedWater.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/pepin/quests/poisonedWater1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/pepin/quests/poisonedWater2.json" }
+      }
+    ]
+  }
+}

@@ -2,7 +2,7 @@
 #include "BitmapFont.h"
 #include "FileUtils.h"
 #include "ParseTexture.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -11,6 +11,11 @@ namespace Parser
 	void parseBitmapFont(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -65,6 +70,6 @@ namespace Parser
 			font = std::make_shared<BitmapFont>(texture, rows, cols, padding, isVertical, img);
 		}
 
-		game.Resources().addBitmapFont(elem["id"].GetString(), font);
+		game.Resources().addBitmapFont(id, font);
 	}
 }

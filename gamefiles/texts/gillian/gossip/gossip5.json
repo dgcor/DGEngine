@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/gillian/gossip/gossip5.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bmaid36.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

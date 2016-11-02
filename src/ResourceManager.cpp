@@ -141,42 +141,42 @@ void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Ac
 
 void ResourceManager::addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
 {
-	resources.back().fonts.insert(std::make_pair(key, obj));
+	resources.back().fonts[key] = obj;
 }
 
 void ResourceManager::addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
 {
-	resources.back().bitmapFonts.insert(std::make_pair(key, obj));
+	resources.back().bitmapFonts[key] = obj;
 }
 
 void ResourceManager::addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
 {
-	resources.back().textures.insert(std::make_pair(key, obj));
+	resources.back().textures[key] = obj;
 }
 
 void ResourceManager::addSong(const std::string& key, const std::shared_ptr<Music2>& obj)
 {
-	resources.back().songs.insert(std::make_pair(key, obj));
+	resources.back().songs[key] = obj;
 }
 
 void ResourceManager::addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
 {
-	resources.back().sounds.insert(std::make_pair(key, obj));
+	resources.back().sounds[key] = obj;
 }
 
 void ResourceManager::addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
 {
-	resources.back().palettes.insert(std::make_pair(key, obj));
+	resources.back().palettes[key] = obj;
 }
 
 void ResourceManager::addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj)
 {
-	resources.back().celFiles.insert(std::make_pair(key, obj));
+	resources.back().celFiles[key] = obj;
 }
 
 void ResourceManager::addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
 {
-	resources.back().celCaches.insert(std::make_pair(key, obj));
+	resources.back().celCaches[key] = obj;
 }
 
 void ResourceManager::addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)

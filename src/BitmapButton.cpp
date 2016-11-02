@@ -81,7 +81,7 @@ void BitmapButton::update(Game& game)
 	}
 
 	auto rect = sprite.getGlobalBounds();
-	if (rect.contains(game.MousePosition()))
+	if (rect.contains(game.MousePositionf()))
 	{
 		if (hovered == false)
 		{

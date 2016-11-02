@@ -1,0 +1,13 @@
+{
+  "celFile": [
+    { "id": "slsas", "file": "plrgfx/sorceror/sls/slsas.cel" },
+    { "id": "slsat", "file": "plrgfx/sorceror/sls/slsat.cel" },
+    { "id": "slsaw", "file": "plrgfx/sorceror/sls/slsaw.cel" },
+    { "id": "slsfm", "file": "plrgfx/sorceror/sls/slsfm.cel" },
+    { "id": "slsht", "file": "plrgfx/sorceror/sls/slsht.cel" },
+    { "id": "slslm", "file": "plrgfx/sorceror/sls/slslm.cel" },
+    { "id": "slsqm", "file": "plrgfx/sorceror/sls/slsqm.cel" },
+    { "id": "slsst", "file": "plrgfx/sorceror/sls/slsst.cel" },
+    { "id": "slswl", "file": "plrgfx/sorceror/sls/slswl.cel" }
+  ]
+}

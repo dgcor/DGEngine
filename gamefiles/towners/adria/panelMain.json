@@ -25,19 +25,21 @@
     {
       "id": "panelTitle1",
       "bitmapFont": "smaltext",
-      "color": "0xC4B78A",
-      "position": [484, 58],
+      "color": "%textGold%",
+      "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Witch's Shack"
     },
     {
       "id": "panelText",
       "bitmapFont": "smaltext",
-      "color": "0xC4B78A",
-      "position": [484, 142],
+      "color": "%textGold%",
+      "position": [480, 142],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Would you like to:"
     }
   ],
@@ -45,13 +47,14 @@
     {
       "id": "talk",
       "bitmapFont": "smaltext",
-      "color": "0x9DA2BC",
+      "color": "%textBlue%",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 178],
+      "position": [480, 178],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Talk to Adria",
       "onClick": [
         { "name": "resource.pop" },
@@ -68,10 +71,11 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 202],
+      "position": [480, 202],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "Buy Basic Items",
+      "horizontalSpaceOffset": 1,
+      "text": "Buy Items",
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -83,10 +87,11 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 228],
+      "position": [480, 226],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "Buy Premium Items",
+      "horizontalSpaceOffset": 1,
+      "text": "Sell Items",
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -98,10 +103,11 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 251],
+      "position": [480, 250],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "Sell Items",
+      "horizontalSpaceOffset": 1,
+      "text": "Recharge Staves",
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -113,9 +119,10 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 275],
+      "position": [480, 274],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Leave the Shack",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [

@@ -3,6 +3,7 @@
     "name": "resource.add",
     "id": "{1}"
   },
+  "load": "ui/level/disableGamePanelKeys.json",
   "keyboard": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "textWallButton" }

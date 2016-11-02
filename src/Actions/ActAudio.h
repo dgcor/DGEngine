@@ -38,22 +38,32 @@ class ActAudioPlay : public Action
 private:
 	std::string id;
 	bool clear;
-	bool loop;
+	bool loop{ false };
+	bool hasLoop{ false };
 
 public:
-	ActAudioPlay(const std::string& id_, bool clear_, bool loop_)
-		: id(id_), clear(clear_), loop(loop_) {}
+	ActAudioPlay(const std::string& id_, bool clear_)
+		: id(id_), clear(clear_) {}
+
+	void setLoop(bool loop_)
+	{
+		loop = loop_;
+		hasLoop = true;
+	}
 
 	virtual bool execute(Game& game)
 	{
-		if (clear)
+		if (clear == true)
 		{
 			game.Resources().stopSongs();
 		}
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
 		{
-			song->setLoop(loop);
+			if (hasLoop == true)
+			{
+				song->setLoop(loop);
+			}
 			song->setVolume((float)game.MusicVolume());
 			if (song->getStatus() != sf::Music::Playing)
 			{

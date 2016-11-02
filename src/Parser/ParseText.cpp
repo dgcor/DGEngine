@@ -2,8 +2,8 @@
 #include "BitmapText.h"
 #include "FileUtils.h"
 #include "GameUtils.h"
-#include "ParseUtils.h"
 #include "StringText.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -32,7 +32,7 @@ namespace Parser
 
 			auto size = getUIntKey(elem, "fontSize", 12);
 			auto text = std::make_unique<StringText>(displayText, *font, size);
-			text->setColor(getColorKey(elem, "color", sf::Color::White));
+			text->setColor(getColorVar(game, elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
 			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 
@@ -65,7 +65,7 @@ namespace Parser
 			auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
 
 			auto text = std::make_unique<BitmapText>(displayText, font, horizSpaceOffset, vertSpaceOffset);
-			text->setColor(getColorKey(elem, "color", sf::Color::White));
+			text->setColor(getColorVar(game, elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
 			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 
@@ -117,6 +117,11 @@ namespace Parser
 		{
 			return;
 		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 
 		std::shared_ptr<Text2> text(std::move(parseText2Obj(game, elem)));
 		if (text == nullptr)
@@ -124,6 +129,6 @@ namespace Parser
 			return;
 		}
 
-		game.Resources().addDrawable(elem["id"].GetString(), text);
+		game.Resources().addDrawable(id, text);
 	}
 }

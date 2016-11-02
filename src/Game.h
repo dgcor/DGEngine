@@ -1,12 +1,12 @@
 #pragma once
 
 #include "EventManager.h"
+#include "FadeInOut.h"
 #include "Game/Level.h"
 #include "LoadingScreen.h"
 #include <memory>
 #include "Menu.h"
 #include "Parser/ParseVariable.h"
-#include "Rectangle.h"
 #include "ResourceManager.h"
 #include <string>
 #include <SFML/Audio.hpp>
@@ -34,7 +34,8 @@ private:
 	bool pauseOnFocusLoss{ false };
 	bool paused{ false };
 
-	sf::Vector2f mousePosition;
+	sf::Vector2i mousePositioni;
+	sf::Vector2f mousePositionf;
 	sf::Mouse::Button mouseButton;
 	sf::Event::MouseWheelScrollEvent mouseWheel;
 	sf::Clock mouseClickClock;
@@ -62,7 +63,7 @@ private:
 	std::map<std::string, Variable> variables;
 
 	std::unique_ptr<LoadingScreen> loadingScreen;
-	std::unique_ptr<Rectangle> fadeInOut;
+	std::unique_ptr<FadeInOut> fadeInOut;
 
 	void processEvents();
 	void onClosed();
@@ -149,7 +150,8 @@ public:
 	bool StretchToFit() const { return stretchToFit; }
 	bool KeepAR() const { return keepAR; }
 
-	const sf::Vector2f& MousePosition() const { return mousePosition; }
+	const sf::Vector2i& MousePositioni() const { return mousePositioni; }
+	const sf::Vector2f& MousePositionf() const { return mousePositionf; }
 	sf::Mouse::Button getMouseButton() { return mouseButton; }
 	const sf::Event::MouseWheelScrollEvent& getMouseWheelScroll() const { return mouseWheel; }
 	void clearMouseClicked() { mouseClicked = false; }
@@ -180,7 +182,6 @@ public:
 			window.setFramerateLimit(framerate);
 		}
 	}
-	void MousePosition(const sf::Vector2f& mouse_) { mousePosition = mouse_; }
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);
 	void KeepAR(bool keepAR_);
@@ -231,8 +232,8 @@ public:
 	LoadingScreen* getLoadingScreen() { return loadingScreen.get(); }
 	void setLoadingScreen(std::unique_ptr<LoadingScreen> loadingScreen_) { loadingScreen = std::move(loadingScreen_); }
 
-	Rectangle* getFadeInOut() { return fadeInOut.get(); }
-	void setFadeInOut(std::unique_ptr<Rectangle> fadeInOut_) { fadeInOut = std::move(fadeInOut_); }
+	FadeInOut* getFadeInOut() const { return fadeInOut.get(); }
+	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) { fadeInOut = std::move(fadeInOut_); }
 
 	void updateMouse();
 

@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/ogden/quests/magicRock.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/tavown18.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

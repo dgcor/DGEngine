@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/farnham/quests/anvilOfFury.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/drunk14.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

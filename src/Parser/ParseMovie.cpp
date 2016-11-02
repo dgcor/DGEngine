@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Movie2.h"
 #include "ParseAction.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -11,7 +11,23 @@ namespace Parser
 
 	void parseMovie(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false || isValidString(elem, "file") == false)
+		if (isValidString(elem, "file") == false)
+		{
+			return;
+		}
+
+		std::string file(elem["file"].GetString());
+		std::string id;
+
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else if (getIdFromFile(file, id) == false)
+		{
+			return;
+		}
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -21,7 +37,7 @@ namespace Parser
 		{
 			action = parseAction(game, elem["onComplete"]);
 		}
-		auto movie = std::make_shared<Movie2>(elem["file"].GetString());
+		auto movie = std::make_shared<Movie2>(file);
 		if (movie->load() == false)
 		{
 			if (action != nullptr)
@@ -63,7 +79,7 @@ namespace Parser
 
 		movie->Visible(getBoolKey(elem, "visible", true));
 
-		game.Resources().addDrawable(elem["id"].GetString(), movie);
+		game.Resources().addDrawable(id, movie);
 
 		try
 		{

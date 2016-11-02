@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/gillian/quests/ogdensSign.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bmaid02.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

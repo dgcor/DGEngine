@@ -5,6 +5,11 @@ TileSet::TileSet(const std::string& filename)
 {
 	sf::PhysFSStream file(filename);
 
+	if (file.hasError() == true)
+	{
+		return;
+	}
+
 	size_t numBlocks = (size_t)file.getSize() / (4 * 2);
 
 	file.seek(0);

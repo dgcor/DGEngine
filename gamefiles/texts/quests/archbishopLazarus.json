@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/quests/archbishopLazarus.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/storyt36.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -24,6 +24,7 @@
     <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\Dun.cpp" />
     <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\FadeInOut.cpp" />
     <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
@@ -86,8 +87,12 @@
     <ClCompile Include="src\Parser\ParseSound.cpp" />
     <ClCompile Include="src\Parser\ParseText.cpp" />
     <ClCompile Include="src\Parser\ParseTexture.cpp" />
-    <ClCompile Include="src\Parser\ParseUtils.cpp" />
     <ClCompile Include="src\Parser\ParseVariable.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtils.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsIdx.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsKey.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsVal.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsVar.cpp" />
     <ClCompile Include="src\Pcx.cpp" />
     <ClCompile Include="src\PhysFSStream.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
@@ -138,6 +143,7 @@
     <ClInclude Include="src\CelCache.h" />
     <ClInclude Include="src\CelUtils.h" />
     <ClInclude Include="src\Circle.h" />
+    <ClInclude Include="src\FadeInOut.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\GameUtils.h" />
     <ClInclude Include="src\Game\CelLevelObject.h" />
@@ -149,6 +155,7 @@
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
+    <ClInclude Include="src\Game\MapCoord.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />
     <ClInclude Include="src\Game\PlayerClass.h" />
@@ -197,8 +204,12 @@
     <ClInclude Include="src\Parser\ParseSound.h" />
     <ClInclude Include="src\Parser\ParseText.h" />
     <ClInclude Include="src\Parser\ParseTexture.h" />
-    <ClInclude Include="src\Parser\ParseUtils.h" />
     <ClInclude Include="src\Parser\ParseVariable.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtils.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsIdx.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsKey.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsVal.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsVar.h" />
     <ClInclude Include="src\Rectangle.h" />
     <ClInclude Include="src\ReverseIterable.h" />
     <ClInclude Include="src\SFMLUtils.h" />

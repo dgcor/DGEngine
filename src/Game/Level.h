@@ -10,6 +10,7 @@
 #include "PlayerClass.h"
 #include "Quest.h"
 #include "Sol.h"
+#include <string>
 #include "TileSet.h"
 #include "UIObject.h"
 #include <unordered_map>
@@ -21,13 +22,14 @@ class Level : public UIObject
 private:
 	LevelMap map;
 
-	sf::Vector2f mousePos;
+	sf::Vector2f mousePositionf;
+	bool hasMouseInside{ false };
 	View2 view;
-	sf::Vector2i pos;
+	MapCoord currentMapPosition;
 
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 
-	int32_t levelX, levelY;
+	std::string name;
 
 	std::vector<std::shared_ptr<sf::Texture>> tiles;
 	std::vector<std::shared_ptr<sf::Texture>> tiles2;
@@ -46,6 +48,7 @@ private:
 	Player* currentPlayer{ nullptr };
 	bool followCurrentPlayer{ true };
 
+	bool pause{ false };
 	bool visible{ true };
 
 	std::vector<Quest> quests;
@@ -55,6 +58,8 @@ private:
 		return level.map[x][y];
 	}
 
+	void updateMouse(Game& game);
+
 public:
 	void Init(const LevelMap& map, Min& min, CelFrameCache& cel);
 
@@ -63,16 +68,16 @@ public:
 		return Misc::Helper2D<const Level, const LevelCell&>(*this, x, get);
 	}
 
-	const sf::Vector2f& MousePosition() const { return mousePos; }
+	const sf::Vector2f& MousePositionf() const { return mousePositionf; }
+	bool HasMouseInside() const { return hasMouseInside; }
 
 	LevelMap& Map() { return map; }
 	const LevelMap& Map() const { return map; }
 
-	int32_t getLevelX() const { return levelX; }
-	int32_t getLevelY() const { return levelY; }
-
 	size_t Width() const { return map.Width(); }
 	size_t Height() const { return map.Height(); }
+
+	void Name(const std::string& name_) { name = name_; }
 
 	void clearLevelObjects() { levelObjects.clear(); }
 
@@ -132,13 +137,22 @@ public:
 
 	void addLevelObject(const std::shared_ptr<LevelObject>& obj) { levelObjects.push_back(obj); }
 
-	sf::Vector2f getDrawPosition(const sf::Vector2i& pos_) const;
+	MapCoord getMapCoordOverMouse() const
+	{
+		return map.getTile(mousePositionf);
+	}
 
-	sf::Vector2i getMapClickPosition(Game& game);
+	void move(const MapCoord& mapPos)
+	{
+		currentMapPosition = mapPos;
+		auto center = map.getCoords(mapPos);
+		view.setCenter(center.x, center.y);
+	}
 
-	void move(const sf::Vector2i& pos_) { pos = pos_; }
-
-	void move(Game& game) { pos = getMapClickPosition(game); }
+	void move(Game& game)
+	{
+		view.setCenter(mousePositionf);
+	}
 
 	void addPlayer(const std::shared_ptr<Player>& player_) { players.push_back(player_); }
 	void setCurrentPlayer(Player* player_)
@@ -146,13 +160,16 @@ public:
 		currentPlayer = player_;
 		if (currentPlayer != nullptr)
 		{
-			pos = currentPlayer->MapPosition();
+			currentMapPosition = currentPlayer->MapPosition();
 		}
 	}
 
 	void FollowCurrentPlayer(bool follow) { followCurrentPlayer = follow; }
 
 	void updateLevelObjectPositions();
+
+	virtual bool Pause() const { return pause; }
+	virtual void Pause(bool pause_) { pause = pause_; }
 
 	virtual bool Visible() const { return visible; }
 	virtual void Visible(bool visible_) { visible = visible_; }

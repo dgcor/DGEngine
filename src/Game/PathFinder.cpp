@@ -40,7 +40,7 @@ bool MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 {
 	if ((IsPassable(x, y) == true) && !((parent_x == x) && (parent_y == y)))
 	{
-		auto direction = getPlayerDirection(sf::Vector2i(parent_x, parent_y), sf::Vector2i(x, y));
+		auto direction = getPlayerDirection(MapCoord(parent_x, parent_y), MapCoord(x, y));
 		auto searchNode = MapSearchNode(map, x, y, direction);
 		astarsearch->AddSuccessor(searchNode);
 		return true;

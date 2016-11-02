@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/griswold/gossip/gossip4.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bsmith48.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

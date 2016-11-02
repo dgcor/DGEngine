@@ -2,6 +2,7 @@
 #include "ParseMenuButton.h"
 #include "ParseAction.h"
 #include "Utils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -60,59 +61,74 @@ namespace Parser
 		bool focusOnClick)
 	{
 		auto level = game.Resources().getCurrentLevel();
-		if (level != nullptr)
+		if (level == nullptr)
 		{
-			MemoryPoolAllocator<CrtAllocator> allocator;
-			for (const auto& quest : level->Quests())
+			return;
+		}
+		const auto& quests = level->Quests();
+		if (quests.empty() == true)
+		{
+			return;
+		}
+
+		auto ignoreItems = getStringVectorKey(elem, "ignoreItems");
+
+		MemoryPoolAllocator<CrtAllocator> allocator;
+		for (const auto& quest : quests)
+		{
+			if (std::find(ignoreItems.begin(), ignoreItems.end(), quest.Id())
+				!= ignoreItems.end())
 			{
-				auto button = parseMenuButton(anchor, color, horizAlign,
-					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
-					fontSize, bitmapFont, sound, focusSound, clickUp);
-				button->setText(quest.Name());
-				button->Position(pos);
+				continue;
+			}
 
-				if (elem.HasMember("onClick"))
-				{
-					Value elemCopy(elem["onClick"], allocator);
-					replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
-					button->setClickAction(parseAction(game, elemCopy));
-				}
+			auto button = parseMenuButton(anchor, color, horizAlign,
+				horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+				fontSize, bitmapFont, sound, focusSound, clickUp);
+			button->setText(quest.Name());
+			button->Position(pos);
 
-				if (elem.HasMember("onDoubleClick"))
-				{
-					Value elemCopy(elem["onDoubleClick"], allocator);
-					replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
-					button->setDoubleClickAction(parseAction(game, elemCopy));
-				}
+			if (elem.HasMember("onClick"))
+			{
+				Value elemCopy(elem["onClick"], allocator);
+				replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
+				button->setClickAction(parseAction(game, elemCopy));
+			}
 
-				if (elem.HasMember("onFocus"))
-				{
-					Value elemCopy(elem["onFocus"], allocator);
-					replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
-					button->setFocusAction(parseAction(game, elemCopy));
-				}
+			if (elem.HasMember("onDoubleClick"))
+			{
+				Value elemCopy(elem["onDoubleClick"], allocator);
+				replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
+				button->setDoubleClickAction(parseAction(game, elemCopy));
+			}
 
-				if (elem.HasMember("onHoverEnter"))
-				{
-					Value elemCopy(elem["onHoverEnter"], allocator);
-					replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
-					button->setHoverEnterAction(parseAction(game, elemCopy));
-				}
+			if (elem.HasMember("onFocus"))
+			{
+				Value elemCopy(elem["onFocus"], allocator);
+				replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
+				button->setFocusAction(parseAction(game, elemCopy));
+			}
 
-				if (elem.HasMember("onHoverLeave"))
-				{
-					Value elemCopy(elem["onHoverLeave"], allocator);
-					replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
-					button->setHoverLeaveAction(parseAction(game, elemCopy));
-				}
+			if (elem.HasMember("onHoverEnter"))
+			{
+				Value elemCopy(elem["onHoverEnter"], allocator);
+				replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
+				button->setHoverEnterAction(parseAction(game, elemCopy));
+			}
 
-				menu.addItem(button);
+			if (elem.HasMember("onHoverLeave"))
+			{
+				Value elemCopy(elem["onHoverLeave"], allocator);
+				replaceValueString(elemCopy, allocator, "%ID%", quest.Id());
+				button->setHoverLeaveAction(parseAction(game, elemCopy));
+			}
 
-				if (hasFocus == true)
-				{
-					button->focusEnabled(focusOnClick);
-					game.Resources().addFocused(button);
-				}
+			menu.addItem(button);
+
+			if (hasFocus == true)
+			{
+				button->focusEnabled(focusOnClick);
+				game.Resources().addFocused(button);
 			}
 		}
 	}

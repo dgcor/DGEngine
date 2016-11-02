@@ -85,6 +85,7 @@
         "%SAVEGAMES%": null,
         "onClick": [
           { "name": "load", "file": ["ui/loadCharInfo.json", "|focus|text|"] },
+          { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete" },
@@ -98,6 +99,7 @@
         "text": "New Hero",
         "onClick": [
           { "name": "load", "file": "ui/charInfoDefault.json" },
+          { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete", "enable": false },

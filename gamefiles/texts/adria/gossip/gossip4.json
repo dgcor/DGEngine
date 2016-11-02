@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/adria/gossip/gossip4.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/witch42.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -4,9 +4,9 @@
 #include "GameUtils.h"
 #include "ParseAction.h"
 #include "ParseText.h"
-#include "ParseUtils.h"
 #include "StringButton.h"
 #include "StringText.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -57,6 +57,11 @@ namespace Parser
 		{
 			return;
 		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 
 		std::shared_ptr<Button> button;
 
@@ -87,7 +92,7 @@ namespace Parser
 			}
 			button->Visible(getBoolKey(elem, "visible", true));
 
-			button->setColor(getColorKey(elem, "color", sf::Color::White));
+			button->setColor(getColorVar(game, elem, "color", sf::Color::White));
 		}
 		else
 		{
@@ -156,7 +161,7 @@ namespace Parser
 			button->setFocusSound(game.Resources().getSound(elem["focusSound"].GetString()));
 		}
 
-		game.Resources().addDrawable(elem["id"].GetString(), button);
+		game.Resources().addDrawable(id, button);
 
 		if (getBoolKey(elem, "focus") == true)
 		{

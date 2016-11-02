@@ -69,7 +69,7 @@ void StringButton::update(Game& game)
 	text->update(game);
 
 	auto rect = text->getGlobalBounds();
-	if (rect.contains(game.MousePosition()))
+	if (rect.contains(game.MousePositionf()))
 	{
 		if (hovered == false)
 		{

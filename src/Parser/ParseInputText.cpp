@@ -2,7 +2,7 @@
 #include "InputText.h"
 #include "ParseAction.h"
 #include "ParseText.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -11,6 +11,11 @@ namespace Parser
 	void parseInputText(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -34,8 +39,11 @@ namespace Parser
 			inputText->setActionMinSize(parseAction(game, elem["onMinSize"]));
 		}
 
-		inputText->setRegex(getStringKey(elem, "regex"));
+		if (isValidString(elem, "regex") == true)
+		{
+			inputText->setRegex(elem["regex"].GetString());
+		}
 
-		game.Resources().addDrawable(elem["id"].GetString(), inputText);
+		game.Resources().addDrawable(id, inputText);
 	}
 }

@@ -1,0 +1,20 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.snotspill.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/misc/quests/snotspill1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/misc/quests/snotspill2.json" }
+      },
+      {
+        "value": 2,
+        "action": { "name": "load", "file": "texts/misc/quests/snotspill3.json" }
+      }
+    ]
+  }
+}

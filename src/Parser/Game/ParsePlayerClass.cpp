@@ -1,7 +1,7 @@
 #include "ParsePlayerClass.h"
-#include "Parser/ParseAction.h"
-#include "Parser/ParseUtils.h"
 #include "Game/PlayerClass.h"
+#include "Parser/ParseAction.h"
+#include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -28,6 +28,11 @@ namespace Parser
 	{
 		if (isValidString(elem, "id") == false ||
 			elem.HasMember("celTextures") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -80,6 +85,6 @@ namespace Parser
 		playerClass->Type(getStringKey(elem, "type"));
 		playerClass->Description(getStringKey(elem, "description"));
 
-		level->addPlayerClass(elem["id"].GetString(), playerClass);
+		level->addPlayerClass(id, playerClass);
 	}
 }

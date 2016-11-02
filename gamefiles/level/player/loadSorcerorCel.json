@@ -1,0 +1,85 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/player/loadSorcerorCelFilesBeta.json" },
+    "else": { "name": "load", "file": "level/player/loadSorcerorCelFiles.json" }
+  },
+  "celTexture": [
+    {
+      "id": "sls",
+      "celFile": [
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
+      ],
+      "palette": "town"
+    },
+    {
+      "id": "slsInfra",
+      "celFile": [
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
+      ],
+      "palette": "infra"
+    },
+    {
+      "id": "slsStone",
+      "celFile": [
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
+      ],
+      "palette": "stone"
+    }
+  ],
+  "playerClass": {
+    "id": "Sorceror",
+    "name": "Sorceror",
+    "type": "Human",
+    "description": "Sorceror",
+    "celTextures": [
+      { "palette": 0, "name": "sls" },
+      { "palette": 1, "name": "slsInfra" },
+      { "palette": 2, "name": "slsStone" }
+    ],
+    "celIndexes": [
+      { "name": "Stand1", "index": 7 },
+      { "name": "Stand2", "index": 0 },
+      { "name": "Walk1", "index": 8 },
+      { "name": "Walk2", "index": 2 },
+      { "name": "Attack1", "index": 1 },
+      { "name": "Attack2", "index": 3 },
+      { "name": "Attack3", "index": 5 },
+      { "name": "Attack4", "index": 6 },
+      { "name": "Defend1", "index": 4 },
+      { "name": "Defend2", "index": 4 },
+      { "name": "Defend3", "index": 4 },
+      { "name": "Defend4", "index": 4 },
+      { "name": "Hit1", "index": 4 },
+      { "name": "Hit2", "index": 4 },
+      { "name": "Die1", "index": 4 },
+      { "name": "Die2", "index": 4 }
+    ]
+  }
+}

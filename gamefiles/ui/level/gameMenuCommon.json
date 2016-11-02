@@ -2,6 +2,7 @@
   "action": [
     { "name": "resource.add", "id": "gameMenuCommon" },
     { "name": "resource.ignore", "id": "level", "ignore": "update" },
+    { "name": "level.pause", "pause": true },
     {
       "name": "action.set",
       "id": "anchorLeftPentagram",

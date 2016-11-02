@@ -1,44 +1,93 @@
 #include "ParseFont.h"
 #include "FileUtils.h"
 #include "Palette.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
+	bool parsePaletteFromId(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "fromId") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				std::string id(elem["id"].GetString());
+				if (fromId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getPalette(fromId);
+					if (obj != nullptr)
+					{
+						game.Resources().addPalette(id, obj);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void parsePalette(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false)
+		if (parsePaletteFromId(game, elem) == true)
 		{
 			return;
 		}
 
-		std::shared_ptr<Palette> palette;
-
 		if (isValidString(elem, "file") == true)
 		{
-			palette = std::make_shared<Palette>(elem["file"].GetString());
+			std::string file(elem["file"].GetString());
+			std::string id;
+
+			if (isValidString(elem, "id") == true)
+			{
+				id = elem["id"].GetString();
+			}
+			else if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+			if (isValidId(id) == false)
+			{
+				return;
+			}
+
+			auto palette = std::make_shared<Palette>(file);
+			game.Resources().addPalette(id, palette);
 		}
 		else if (isValidString(elem, "palette") == true
 			&& isValidString(elem, "trnFile") == true)
 		{
+			std::string file(elem["trnFile"].GetString());
+			std::string id;
+
+			if (isValidString(elem, "id") == true)
+			{
+				id = elem["id"].GetString();
+			}
+			else if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+			if (isValidId(id) == false)
+			{
+				return;
+			}
+
 			auto refPalette = game.Resources().getPalette(elem["palette"].GetString());
 			if (refPalette == nullptr)
 			{
 				return;
 			}
-			auto trnFile = FileUtils::readChar(elem["trnFile"].GetString());
+			auto trnFile = FileUtils::readChar(file.c_str());
 			if (trnFile.size() < 256)
 			{
 				return;
 			}
-			palette = std::make_shared<Palette>(*refPalette.get(), trnFile);
+			auto palette = std::make_shared<Palette>(*refPalette.get(), trnFile);
+			game.Resources().addPalette(id, palette);
 		}
-		if (palette == nullptr)
-		{
-			return;
-		}
-		game.Resources().addPalette(elem["id"].GetString(), palette);
 	}
 }

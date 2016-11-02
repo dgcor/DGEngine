@@ -1,7 +1,7 @@
 #include "ParseAnimation.h"
 #include "GameUtils.h"
 #include "ParseTexture.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -58,24 +58,27 @@ namespace Parser
 		animation->Position(pos);
 		animation->Visible(getBoolKey(elem, "visible", true));
 		animation->setFrameTime(sf::milliseconds(getUIntKey(elem, "refresh", 50)));
-		animation->setColor(getColorKey(elem, "color", sf::Color::White));
+		animation->setColor(getColorVar(game, elem, "color", sf::Color::White));
 
 		return animation;
 	}
 
 	void parseAnimation(Game& game, const Value& elem)
 	{
-		if (elem.HasMember("id") == false)
+		if (isValidString(elem, "id") == false)
 		{
 			return;
 		}
-
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 		auto animation = parseAnimationObj(game, elem);
 		if (animation == nullptr)
 		{
 			return;
 		}
-
-		game.Resources().addDrawable(elem["id"].GetString(), animation);
+		game.Resources().addDrawable(id, animation);
 	}
 }

@@ -32,6 +32,8 @@ set(SOURCE_FILES
     src/Event.cpp
     src/Event.h
     src/EventManager.h
+    src/FadeInOut.cpp
+    src/FadeInOut.h
     src/FileUtils.cpp
     src/FileUtils.h
     src/Font2.h
@@ -133,6 +135,7 @@ set(SOURCE_FILES
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
     src/Game/LevelObject.h
+    src/Game/MapCoord.h
     src/Game/PathFinder.cpp
     src/Game/PathFinder.h
     src/Game/Player.cpp
@@ -209,8 +212,6 @@ set(SOURCE_FILES
     src/Parser/ParseText.h
     src/Parser/ParseTexture.cpp
     src/Parser/ParseTexture.h
-    src/Parser/ParseUtils.cpp
-    src/Parser/ParseUtils.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
     src/Parser/Game/ParseLevel.cpp
@@ -223,6 +224,16 @@ set(SOURCE_FILES
     src/Parser/Game/ParsePlayerClass.h
     src/Parser/Game/ParseQuest.cpp
     src/Parser/Game/ParseQuest.h
+    src/Parser/Utils/ParseUtils.cpp
+    src/Parser/Utils/ParseUtils.h
+    src/Parser/Utils/ParseUtilsIdx.cpp
+    src/Parser/Utils/ParseUtilsIdx.h
+    src/Parser/Utils/ParseUtilsKey.cpp
+    src/Parser/Utils/ParseUtilsKey.h
+    src/Parser/Utils/ParseUtilsVal.cpp
+    src/Parser/Utils/ParseUtilsVal.h
+    src/Parser/Utils/ParseUtilsVar.cpp
+    src/Parser/Utils/ParseUtilsVar.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
     src/rapidjson/encodedstream.h

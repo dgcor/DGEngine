@@ -1,5 +1,5 @@
-#include "Parser/Game/ParseQuest.h"
-#include "Parser/ParseUtils.h"
+#include "ParseQuest.h"
+#include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -20,7 +20,8 @@ namespace Parser
 		}
 
 		auto quest = parseQuestObj(game, elem);
-		if (quest.Id().empty() == true)
+		if (quest.Id().empty() == true ||
+			isValidId(quest.Id()) == false)
 		{
 			return;
 		}

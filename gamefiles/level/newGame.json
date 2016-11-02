@@ -12,6 +12,7 @@
           { "name": "loadingScreen.setProgress", "progress": 10 },
           { "name": "resource.add", "id": "level", "ignorePrevious": true },
           { "name": "loadingScreen.setProgress", "progress": 20 },
+          { "name": "load", "file": "level/variables.json" },
           { "name": "load", "file": "res/level/actions.json" },
           { "name": "loadingScreen.setProgress", "progress": 25 },
           { "name": "load", "file": "res/level/fonts.json" },

@@ -1,6 +1,6 @@
 #include "ParseEvent.h"
 #include "ParseAction.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -27,9 +27,13 @@ namespace Parser
 
 		auto evt = Event(action, sf::seconds(seconds));
 
-		if (elem.HasMember("id"))
+		if (isValidString(elem, "id") == true)
 		{
-			evt.setId(getStringVal(elem["id"]));
+			std::string id(elem["id"].GetString());
+			if (isValidId(id) == true)
+			{
+				evt.setId(id);
+			}
 		}
 
 		game.Events().addBack(evt);

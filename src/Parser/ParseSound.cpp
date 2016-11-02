@@ -1,5 +1,5 @@
 #include "ParseSound.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -24,13 +24,56 @@ namespace Parser
 		return sound;
 	}
 
+	bool parseSoundFromId(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "fromId") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				std::string id(elem["id"].GetString());
+				if (fromId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getSound(fromId);
+					if (obj != nullptr)
+					{
+						game.Resources().addSound(id, obj);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void parseSound(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false || isValidString(elem, "file") == false)
+		if (parseSoundFromId(game, elem) == true)
 		{
 			return;
 		}
 
-		parseSoundObj(game, elem["id"].GetString(), elem["file"].GetString());
+		if (isValidString(elem, "file") == false)
+		{
+			return;
+		}
+
+		std::string file(elem["file"].GetString());
+		std::string id;
+
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else if (getIdFromFile(file, id) == false)
+		{
+			return;
+		}
+		if (isValidId(id) == false)
+		{
+			return;
+		}
+
+		parseSoundObj(game, id, file);
 	}
 }

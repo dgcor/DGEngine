@@ -1,0 +1,85 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/player/loadWarriorCelFilesBeta.json" },
+    "else": { "name": "load", "file": "level/player/loadWarriorCelFiles.json" }
+  },
+  "celTexture": [
+    {
+      "id": "wls",
+      "celFile": [
+        "wlsas",
+        "wlsat",
+        "wlsaw",
+        "wlsfm",
+        "wlsht",
+        "wlslm",
+        "wlsqm",
+        "wlsst",
+        "wlswl"
+      ],
+      "palette": "town"
+    },
+    {
+      "id": "wlsInfra",
+      "celFile": [
+        "wlsas",
+        "wlsat",
+        "wlsaw",
+        "wlsfm",
+        "wlsht",
+        "wlslm",
+        "wlsqm",
+        "wlsst",
+        "wlswl"
+      ],
+      "palette": "infra"
+    },
+    {
+      "id": "wlsStone",
+      "celFile": [
+        "wlsas",
+        "wlsat",
+        "wlsaw",
+        "wlsfm",
+        "wlsht",
+        "wlslm",
+        "wlsqm",
+        "wlsst",
+        "wlswl"
+      ],
+      "palette": "stone"
+    }
+  ],
+  "playerClass": {
+    "id": "Warrior",
+    "name": "Warrior",
+    "type": "Human",
+    "description": "Warrior",
+    "celTextures": [
+      { "palette": 0, "name": "wls" },
+      { "palette": 1, "name": "wlsInfra" },
+      { "palette": 2, "name": "wlsStone" }
+    ],
+    "celIndexes": [
+      { "name": "Stand1", "index": 7 },
+      { "name": "Stand2", "index": 0 },
+      { "name": "Walk1", "index": 8 },
+      { "name": "Walk2", "index": 2 },
+      { "name": "Attack1", "index": 1 },
+      { "name": "Attack2", "index": 3 },
+      { "name": "Attack3", "index": 5 },
+      { "name": "Attack4", "index": 6 },
+      { "name": "Defend1", "index": 4 },
+      { "name": "Defend2", "index": 4 },
+      { "name": "Defend3", "index": 4 },
+      { "name": "Defend4", "index": 4 },
+      { "name": "Hit1", "index": 4 },
+      { "name": "Hit2", "index": 4 },
+      { "name": "Die1", "index": 4 },
+      { "name": "Die2", "index": 4 }
+    ]
+  }
+}

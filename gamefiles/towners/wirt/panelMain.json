@@ -1,0 +1,126 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "userPanelMain"
+  },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [480, 58],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Wirt the Peg-Legged Boy"
+    },
+    {
+      "id": "panelText1",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [480, 178],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "I have something for sale,"
+    },
+    {
+      "id": "panelText2",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [480, 202],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "but it will cost 50 gold"
+    },
+    {
+      "id": "panelText3",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [476, 226],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "just to take a look."
+    }
+  ],
+  "button": [
+    {
+      "id": "talk",
+      "bitmapFont": "smaltext",
+      "color": "%textBlue%",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [480, 130],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Talk to Wirt",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "towners/wirt/panelTalk.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "ShowItem",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [480, 250],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "What Have you Got?",
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "back",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [480, 274],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Say Goodbye",
+      "onClick": { "name": "resource.popAll", "id": "userPanel" },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

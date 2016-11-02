@@ -14,7 +14,7 @@ class CelLevelObject : public LevelObject
 {
 private:
 	sf::Sprite sprite;
-	sf::Vector2i mapPosition;
+	MapCoord mapPosition;
 
 	size_t celIdx{ 0 };
 	size_t palette{ 0 };
@@ -44,8 +44,8 @@ public:
 	}
 	virtual void Size(const sf::Vector2f& size) {}
 
-	virtual const sf::Vector2i& MapPosition() const { return mapPosition; }
-	virtual void MapPosition(const sf::Vector2i& pos) { mapPosition = pos; }
+	virtual const MapCoord& MapPosition() const { return mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
 	virtual bool Passable() const { return true; }

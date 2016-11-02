@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/farnham/quests/poisonedWater.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/drunk04.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

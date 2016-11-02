@@ -1,40 +1,12 @@
 {
   "sound": [
-    {
-      "id": "bmaid31",
-      "file": "sfx/Towners/Bmaid31.wav"
-    },
-    {
-      "id": "bsmith44",
-      "file": "sfx/Towners/Bsmith44.wav"
-    },
-    {
-      "id": "drunk27",
-      "file": "sfx/Towners/Drunk27.wav"
-    },
-    {
-      "id": "bsmith44",
-      "file": "sfx/Towners/Bsmith44.wav"
-    },
-    {
-      "id": "healer37",
-      "file": "sfx/Towners/Healer37.wav"
-    },
-    {
-      "id": "pegboy32",
-      "file": "sfx/Towners/Pegboy32.wav"
-    },
-    {
-      "id": "storyt25",
-      "file": "sfx/Towners/storyt25.wav"
-    },
-    {
-      "id": "tavown36",
-      "file": "sfx/Towners/tavown36.wav"
-    },
-    {
-      "id": "witch38",
-      "file": "sfx/Towners/Witch38.wav"
-    }
+    { "id": "bmaidWelcome", "file": "sfx/Towners/Bmaid31.wav" },
+    { "id": "bsmithWelcome", "file": "sfx/Towners/Bsmith44.wav" },
+    { "id": "drunkWelcome", "file": "sfx/Towners/Drunk27.wav" },
+    { "id": "healerWelcome", "file": "sfx/Towners/Healer37.wav" },
+    { "id": "pegboyWelcome", "file": "sfx/Towners/Pegboy32.wav" },
+    { "id": "storytWelcome", "file": "sfx/Towners/storyt25.wav" },
+    { "id": "tavownWelcome", "file": "sfx/Towners/tavown36.wav" },
+    { "id": "witchWelcome", "file": "sfx/Towners/Witch38.wav" }
   ]
 }

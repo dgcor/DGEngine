@@ -11,12 +11,12 @@ class ActPlayerMove : public Action
 private:
 	std::string idPlayer;
 	std::string idLevel;
-	sf::Vector2i position;
+	MapCoord position;
 	bool resetDirection;
 
 public:
 	ActPlayerMove(const std::string& idPlayer_, const std::string& idLevel_,
-		const sf::Vector2i& pos_, bool resetDirection_)
+		const MapCoord pos_, bool resetDirection_)
 		: idPlayer(idPlayer_), idLevel(idLevel_),
 		position(pos_), resetDirection(resetDirection_) {}
 
@@ -58,7 +58,7 @@ public:
 			if (player != nullptr)
 			{
 				auto a = player->MapPosition();
-				auto b = level->getMapClickPosition(game);
+				auto b = level->getMapCoordOverMouse();
 				player->setWalkPath(level->Map().getPath(a, b));
 			}
 		}

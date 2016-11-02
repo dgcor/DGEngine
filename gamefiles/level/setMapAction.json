@@ -2,7 +2,32 @@
   "action": {
     "name": "if.fileExists",
     "param1": "level/{1}/map.json",
-    "then": { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "level/{1}/map.json" } },
-    "else": { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "ui/level/noMap.json" } }
+    "then": [
+      { "name": "button.setClickAction", "id": "map",
+        "action": [
+          {
+            "name": "if.equal",
+            "param1": "%showMap%",
+            "param2": true,
+            "then": [
+              { "name": "variable.set", "key": "showMap", "val": false },
+              { "name": "drawable.visible", "id": "txtMapLabel", "visible": true }
+            ],
+            "else": [
+              { "name": "variable.set", "key": "showMap", "val": true },
+              { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+            ]
+          },
+          {
+            "name": "load", "file": "level/{1}/map.json"
+          }
+        ]
+      },
+      { "name": "load", "file": "level/{1}/map.json" }
+    ],
+    "else": [
+      { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "ui/level/noMap.json" } },
+      { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+    ]
   }
 }

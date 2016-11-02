@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/misc/quests/gharbadTheWeak1.txt"
+  ],
+  "audio": {
+    "file": "sfx/monsters/garbud01.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

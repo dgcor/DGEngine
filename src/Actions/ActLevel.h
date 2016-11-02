@@ -69,10 +69,10 @@ class ActLevelMove : public Action
 {
 private:
 	std::string id;
-	sf::Vector2i pos;
+	MapCoord pos;
 
 public:
-	ActLevelMove(const std::string& id_, const sf::Vector2i& pos_) : id(id_), pos(pos_) {}
+	ActLevelMove(const std::string& id_, const MapCoord& pos_) : id(id_), pos(pos_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -124,6 +124,26 @@ public:
 			{
 				level->move(player->MapPosition());
 			}
+		}
+		return true;
+	}
+};
+
+class ActLevelPause : public Action
+{
+private:
+	std::string id;
+	bool pause;
+
+public:
+	ActLevelPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getLevel(id);
+		if (item != nullptr)
+		{
+			item->Pause(pause);
 		}
 		return true;
 	}

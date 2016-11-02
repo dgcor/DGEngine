@@ -1,0 +1,53 @@
+{
+  "action": { "name": "resource.add", "id": "msgBox" },
+  "keyboard": {
+    "key": "esc",
+    "action": [
+      { "name": "resource.pop", "id": "msgBox" },
+      { "name": "event.delete", "id": "closeMsgBox" }
+    ]
+  },
+  "texture": {
+    "id": "textbox",
+    "file": "data/textbox.cel",
+    "palette": "town"
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "position": [104, 150],
+      "anchor": "none",
+      "textureRect": [435, 57],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder1",
+      "position": [101, 147],
+      "anchor": "none",
+      "textureRect": [438, 60],
+      "texture": "textbox"
+    },
+    {
+      "id": "textWallBorder2",
+      "position": [103, 148],
+      "anchor": "none",
+      "textureRect": [155, 244, 436, 59],
+      "texture": "textbox"
+    }
+  ],
+  "text": {
+    "id": "textMsg",
+    "bitmapFont": "smaltext",
+    "color": "%textGold%",
+    "position": [322, 172],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "{1}"
+  },
+  "event": {
+    "id": "closeMsgBox",
+    "action": { "name": "resource.pop", "id": "msgBox" },
+    "seconds": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/misc/quests/lachdanan3.txt"
+  ],
+  "audio": {
+    "file": "sfx/monsters/lach03.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

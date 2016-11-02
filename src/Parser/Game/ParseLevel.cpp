@@ -4,7 +4,7 @@
 #include "Game/LevelMap.h"
 #include "GameUtils.h"
 #include "Parser/ParseAction.h"
-#include "Parser/ParseUtils.h"
+#include "Parser/Utils/ParseUtils.h"
 #include "Utils.h"
 
 namespace Parser
@@ -31,7 +31,15 @@ namespace Parser
 		auto palPath = elem["palette"].GetString();
 
 		TileSet til(tilPath);
+		if (til.size() == 0)
+		{
+			return;
+		}
 		Sol sol(solPath);
+		if (sol.size() == 0)
+		{
+			return;
+		}
 
 		auto mapSize = getVector2uKey<sf::Vector2u>(elem, "mapSize");
 		LevelMap map(mapSize.x, mapSize.y);
@@ -51,6 +59,10 @@ namespace Parser
 
 		// l4.min and town.min contain 16 blocks, all others 10.
 		Min min(minPath, getIntKey(elem, "minBlocks", 10));
+		if (min.size() == 0)
+		{
+			return;
+		}
 
 		auto pal = game.Resources().getPalette(palPath);
 		if (pal == nullptr)
@@ -91,6 +103,10 @@ namespace Parser
 		bool existingLevel = (level != nullptr);
 		if (level == nullptr)
 		{
+			if (isValidId(id) == false)
+			{
+				return;
+			}
 			auto levelPtr = std::make_shared<Level>();
 			game.Resources().addDrawable(id, levelPtr);
 			level = levelPtr.get();
@@ -106,6 +122,8 @@ namespace Parser
 		{
 			parseLevelMap(game, elem, *level);
 		}
+
+		level->Name(getStringKey(elem, "name"));
 
 		if (elem.HasMember("followCurrentPlayer") == true)
 		{

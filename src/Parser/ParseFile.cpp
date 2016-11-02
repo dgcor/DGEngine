@@ -26,7 +26,6 @@
 #include "ParseScrollableText.h"
 #include "ParseSound.h"
 #include "ParseVariable.h"
-#include "ParseUtils.h"
 #include "ParseText.h"
 #include "ParseTexture.h"
 #include "Parser/Game/ParseLevel.h"
@@ -36,6 +35,7 @@
 #include "Parser/Game/ParseQuest.h"
 #include "PhysFSStream.h"
 #include "Utils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -76,7 +76,11 @@ namespace Parser
 
 	void parseFile(Game& game, const Value& params)
 	{
-		if (params.IsArray() == false && params.Empty() == true)
+		if (params.IsArray() == false)
+		{
+			return;
+		}
+		if (params.Empty() == true)
 		{
 			return;
 		}
@@ -484,7 +488,14 @@ namespace Parser
 				break;
 			}
 			case str2int("variable"): {
-				parseVariable(game, it->value);
+				if (it->value.IsArray() == false) {
+					parseVariable(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseVariable(game, val);
+					}
+				}
 				break;
 			}
 			case str2int("version"): {

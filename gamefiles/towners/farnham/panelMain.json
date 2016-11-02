@@ -1,0 +1,90 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "userPanelMain"
+  },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [480, 58],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Farnham the Drunk"
+    },
+    {
+      "id": "panelText",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [480, 142],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Would you like to:"
+    }
+  ],
+  "button": [
+    {
+      "id": "talk",
+      "bitmapFont": "smaltext",
+      "color": "%textBlue%",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [480, 178],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Talk to Farnham",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "towners/farnham/panelTalk.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    },
+    {
+      "id": "back",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [480, 250],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Say Goodbye",
+      "onClick": { "name": "resource.popAll", "id": "userPanel" },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

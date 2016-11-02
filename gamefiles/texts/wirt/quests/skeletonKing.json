@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/wirt/quests/skeletonKing.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/pegboy01.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/pepin/quests/archbishopLazarus.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/healer03.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

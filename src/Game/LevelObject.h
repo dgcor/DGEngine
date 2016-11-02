@@ -2,8 +2,10 @@
 
 #include "Actions/Action.h"
 #include "Anchor.h"
+#include "MapCoord.h"
 #include <memory>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <string>
 #include "Variable.h"
 
@@ -20,8 +22,8 @@ public:
 	virtual void Size(const sf::Vector2f& size) = 0;
 
 	// Map Position
-	virtual const sf::Vector2i& MapPosition() const = 0;
-	virtual void MapPosition(const sf::Vector2i& pos) = 0;
+	virtual const MapCoord& MapPosition() const = 0;
+	virtual void MapPosition(const MapCoord& pos) = 0;
 
 	// Game
 	virtual void executeAction(Game& game) const = 0;

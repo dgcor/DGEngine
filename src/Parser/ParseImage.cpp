@@ -1,7 +1,7 @@
 #include "ParseImage.h"
 #include "Image.h"
 #include "GameUtils.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -10,6 +10,11 @@ namespace Parser
 	void parseImage(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false || isValidString(elem, "texture") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -43,8 +48,8 @@ namespace Parser
 		image->Position(pos);
 		image->Visible(getBoolKey(elem, "visible", true));
 
-		image->setColor(getColorKey(elem, "color", sf::Color::White));
+		image->setColor(getColorVar(game, elem, "color", sf::Color::White));
 
-		game.Resources().addDrawable(elem["id"].GetString(), image);
+		game.Resources().addDrawable(id, image);
 	}
 }
