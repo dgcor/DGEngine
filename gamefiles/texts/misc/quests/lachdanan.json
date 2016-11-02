@@ -1,0 +1,20 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.lachdanan.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/misc/quests/lachdanan1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/misc/quests/lachdanan2.json" }
+      },
+      {
+        "value": 2,
+        "action": { "name": "load", "file": "texts/misc/quests/lachdanan3.json" }
+      }
+    ]
+  }
+}

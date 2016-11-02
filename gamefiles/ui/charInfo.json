@@ -1,6 +1,6 @@
 {
   "action": [
-    { "name": "load", "file": ["ui/singlePlayer/setPlayerImage.json", "{6}"] },
+    { "name": "variable.set", "key": "charClass", "val": "{6}" },
     { "name": "text.setText", "id": "txtLevel", "text": "{1}" },
     { "name": "text.setText", "id": "txtStrength", "text": "{2}" },
     { "name": "text.setText", "id": "txtMagic", "text": "{3}" },

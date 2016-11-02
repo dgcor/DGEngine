@@ -235,6 +235,10 @@ void Game::onGainedFocus()
 
 void Game::onTextEntered(const sf::Event::TextEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	if (evt.unicode < 256)
 	{
 		keyboardChar = static_cast<char>(evt.unicode);
@@ -243,26 +247,35 @@ void Game::onTextEntered(const sf::Event::TextEvent& evt)
 
 void Game::onKeyPressed(const sf::Event::KeyEvent& evt)
 {
-	if (disableInput == false)
+	if (disableInput == true)
 	{
-		keyPressed = evt;
-#ifdef __ANDROID__
-		keyPressed.system = false;
-#endif
+		return;
 	}
+	keyPressed = evt;
+#ifdef __ANDROID__
+	keyPressed.system = false;
+#endif
 }
 
 void Game::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	updateMouse();
 	mouseWheel = evt;
-	mouseWheel.x = mousePosition.x;
-	mouseWheel.y = mousePosition.y;
+	mouseWheel.x = mousePositioni.x;
+	mouseWheel.y = mousePositioni.y;
 	mouseScrolled = true;
 }
 
 void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	mouseButton = evt.button;
 	mouseClicked = true;
 	mousePressed = true;
@@ -276,6 +289,10 @@ void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
 
 void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	mouseButton = evt.button;
 	mousePressed = false;
 	mouseReleased = true;
@@ -284,11 +301,19 @@ void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
 void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
 {
 	updateMouse(sf::Vector2i(evt.x, evt.y));
+	if (disableInput == true)
+	{
+		return;
+	}
 	mouseMoved = true;
 }
 #ifdef __ANDROID__
 void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	updateMouse(sf::Vector2i(evt.x, evt.y));
 	sf::Event::MouseButtonEvent mouseEvt;
 	mouseEvt.button = sf::Mouse::Left;
@@ -300,11 +325,19 @@ void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
 void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
 {
 	updateMouse(sf::Vector2i(evt.x, evt.y));
+	if (disableInput == true)
+	{
+		return;
+	}
 	mouseMoved = true;
 }
 
 void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
 {
+	if (disableInput == true)
+	{
+		return;
+	}
 	updateMouse(sf::Vector2i(evt.x, evt.y));
 	sf::Event::MouseButtonEvent mouseEvt;
 	mouseEvt.button = sf::Mouse::Left;
@@ -320,13 +353,15 @@ void Game::updateMouse()
 
 void Game::updateMouse(const sf::Vector2i mousePos)
 {
-	mousePosition = window.mapPixelToCoords(mousePos);
-	mousePosition.x = std::round(mousePosition.x);
-	mousePosition.y = std::round(mousePosition.y);
+	mousePositionf = window.mapPixelToCoords(mousePos);
+	mousePositionf.x = std::round(mousePositionf.x);
+	mousePositionf.y = std::round(mousePositionf.y);
+	mousePositioni.x = (int)mousePositionf.x;
+	mousePositioni.y = (int)mousePositionf.y;
 	auto cursor = resourceManager.getCursor();
 	if (cursor != nullptr)
 	{
-		cursor->Position(mousePosition);
+		cursor->Position(mousePositionf);
 	}
 }
 
@@ -405,6 +440,7 @@ void Game::drawFadeEffect()
 	if (fadeInOut != nullptr)
 	{
 		windowTex.draw(static_cast<sf::RectangleShape>(*fadeInOut));
+		fadeInOut->update(*this);
 	}
 }
 

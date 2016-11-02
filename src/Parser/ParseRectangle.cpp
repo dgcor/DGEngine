@@ -1,7 +1,7 @@
 #include "ParseRectangle.h"
 #include "GameUtils.h"
 #include "Rectangle.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -10,6 +10,11 @@ namespace Parser
 	void parseRectangle(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -47,10 +52,10 @@ namespace Parser
 		rectangle->Position(pos);
 		rectangle->Visible(getBoolKey(elem, "visible", true));
 
-		rectangle->setFillColor(getColorKey(elem, "color", sf::Color::White));
-		rectangle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
+		rectangle->setFillColor(getColorVar(game, elem, "color", sf::Color::White));
+		rectangle->setOutlineColor(getColorVar(game, elem, "outlineColor", sf::Color::White));
 		rectangle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		game.Resources().addDrawable(elem["id"].GetString(), rectangle);
+		game.Resources().addDrawable(id, rectangle);
 	}
 }

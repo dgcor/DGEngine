@@ -1,7 +1,7 @@
 #include "ParseCircle.h"
 #include "Circle.h"
 #include "GameUtils.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -10,6 +10,11 @@ namespace Parser
 	void parseCircle(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -46,10 +51,10 @@ namespace Parser
 		circle->Position(pos);
 		circle->Visible(getBoolKey(elem, "visible", true));
 
-		circle->setFillColor(getColorKey(elem, "color", sf::Color::White));
-		circle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
+		circle->setFillColor(getColorVar(game, elem, "color", sf::Color::White));
+		circle->setOutlineColor(getColorVar(game, elem, "outlineColor", sf::Color::White));
 		circle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		game.Resources().addDrawable(elem["id"].GetString(), circle);
+		game.Resources().addDrawable(id, circle);
 	}
 }

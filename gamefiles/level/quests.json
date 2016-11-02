@@ -1,6 +1,68 @@
 {
-  "quest": {
-    "id": "butcher",
-    "name": "The Butcher"
-  }
+  "quest": [
+    {
+      "id": "anvilOfFury",
+      "name": "Anvil of Fury"
+    },
+    {
+      "id": "archbishopLazarus",
+      "name": "Archbishop Lazarus"
+    },
+    {
+      "id": "arkainesValor",
+      "name": "Arkaine's Valor"
+    },
+    {
+      "id": "blackMushroom",
+      "name": "Black Mushroom"
+    },
+    {
+      "id": "chamberOfBone",
+      "name": "The Chamber of Bone"
+    },
+    {
+      "id": "diablo",
+      "name": "Diablo"
+    },
+    {
+      "id": "gharbadTheWeak",
+      "name": "Gharbad the Weak"
+    },
+    {
+      "id": "hallsOfTheBlind",
+      "name": "Halls of the Blind"
+    },
+    {
+      "id": "lachdanan",
+      "name": "Lachdanan"
+    },
+    {
+      "id": "magicRock",
+      "name": "The Magic Rock"
+    },
+    {
+      "id": "ogdensSign",
+      "name": "Ogden's Sign"
+    },
+    {
+      "id": "poisonedWater",
+      "name": "Poisoned Water Supply"
+    },
+    {
+      "id": "skeletonKing",
+      "name": "The Curse of King Leoric"
+    },
+    {
+      "id": "theButcher",
+      "name": "The Butcher"
+    },
+    {
+      "id": "warlordOfBlood",
+      "name": "Warlord of Blood"
+    },
+    {
+      "id": "zharTheMad",
+      "name": "Zhar the Mad"
+    }
+  ]
 }

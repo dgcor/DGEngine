@@ -17,7 +17,8 @@ void CelLevelObject::executeAction(Game& game) const
 void CelLevelObject::update(Game& game, Level& level)
 {
 	auto rect = sprite.getGlobalBounds();
-	if (rect.contains(level.MousePosition()))
+	if (level.HasMouseInside() == true &&
+		rect.contains(level.MousePositionf()) == true)
 	{
 		if (hovered == false)
 		{

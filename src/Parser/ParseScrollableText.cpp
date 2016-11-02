@@ -2,9 +2,9 @@
 #include "GameUtils.h"
 #include "ParseScrollableText.h"
 #include "ParseText.h"
-#include "ParseUtils.h"
 #include "ScrollableText.h"
 #include "Utils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -13,6 +13,11 @@ namespace Parser
 	void parseScrollableText(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
+		{
+			return;
+		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -60,6 +65,6 @@ namespace Parser
 			scrollable->setAction(parseAction(game, elem["onComplete"]));
 		}
 
-		game.Resources().addDrawable(elem["id"].GetString(), scrollable);
+		game.Resources().addDrawable(id, scrollable);
 	}
 }

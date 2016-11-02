@@ -1,0 +1,11 @@
+{
+  "action": {
+    "name": "if.resourceExists",
+    "param1": "msgBox",
+    "then": [
+      { "name": "event.resetTime", "id": "closeMsgBox" },
+      { "name": "text.setText", "id": "textMsg", "text": "{1}" }
+    ],
+    "else": { "name": "load", "file": ["ui/level/showMsg2.json", "{1}"] }
+  }
+}

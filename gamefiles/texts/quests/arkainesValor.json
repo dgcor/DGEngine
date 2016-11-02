@@ -1,0 +1,50 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/quests/arkainesValor.txt"
+  ],
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|currentPlayer.class|",
+    "case": [
+      {
+        "value": "Rogue",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "audio": {
+              "file": "sfx/rogue/rogue10.wav",
+              "play": true,
+              "volume": "|game|soundVolume|"
+            }
+          }
+        }
+      },
+      {
+        "value": "Sorceror",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "audio": {
+              "file": "sfx/sorceror/mage10.wav",
+              "play": true,
+              "volume": "|game|soundVolume|"
+            }
+          }
+        }
+      }
+    ],
+    "default": {
+      "name": "loadJson",
+      "json": {
+        "audio": {
+          "file": "sfx/Warrior/warior10.wav",
+          "play": true,
+          "volume": "|game|soundVolume|"
+        }
+      }
+    }
+  }
+}

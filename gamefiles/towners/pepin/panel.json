@@ -1,0 +1,28 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "userPanel" },
+    { "name": "game.clearPlayingSounds" }
+  ],
+  "load": "ui/level/disableGamePanelKeys.json",
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "back", "playSound": false }
+    },
+    {
+      "key": "enter",
+      "action": "focus.click"
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s"],
+      "action": "focus.moveDown"
+    }
+  ],
+  "load": "ui/level/panel.json",
+  "load": "towners/pepin/panelMain.json",
+  "action": { "name": "sound.play", "id": "healerWelcome" }
+}

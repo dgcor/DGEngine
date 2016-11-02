@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/cain/quests/chamberOfBone.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/storyt07.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

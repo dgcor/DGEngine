@@ -1,16 +1,13 @@
 {
   "palette": [
     {
-      "id": "town",
       "file":"levels/towndata/town.pal"
     },
     {
-      "id": "infra",
       "palette": "town",
       "trnFile":"plrgfx/infra.trn"
     },
     {
-      "id": "stone",
       "palette": "town",
       "trnFile":"plrgfx/stone.trn"
     }

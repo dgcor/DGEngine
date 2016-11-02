@@ -1,7 +1,7 @@
 #include "ParseAction.h"
 #include "GameUtils.h"
 #include "ParseLoadingScreen.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -36,7 +36,7 @@ namespace Parser
 			}
 		}
 		loadingScreen->setPosition(pos);
-		loadingScreen->setProgressBarColor(getColorKey(elem, "color"));
+		loadingScreen->setProgressBarColor(getColorVar(game, elem, "color"));
 		loadingScreen->setProgressBarPositionOffset(getVector2fKey<sf::Vector2f>(elem, "progressBarOffset"));
 		loadingScreen->setProgressBarSize(getVector2fKey<sf::Vector2f>(elem, "size"));
 

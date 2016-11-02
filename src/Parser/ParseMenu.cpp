@@ -5,9 +5,9 @@
 #include "ParseMenuButton.h"
 #include "ParseMenuQuests.h"
 #include "ParseMenuSaveGames.h"
-#include "ParseUtils.h"
 #include "StringButton.h"
 #include "StringText.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -20,11 +20,16 @@ namespace Parser
 		{
 			return;
 		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 
 		auto menu = std::make_shared<Menu>();
 
 		auto anchor = getAnchorKey(elem, "anchor");
-		auto color = getColorKey(elem, "color", sf::Color::White);
+		auto color = getColorVar(game, elem, "color", sf::Color::White);
 		auto horizAlign = GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign"));
 		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"));
 		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
@@ -179,6 +184,6 @@ namespace Parser
 
 		menu->calculatePositions();
 
-		game.Resources().addDrawable(elem["id"].GetString(), menu);
+		game.Resources().addDrawable(id, menu);
 	}
 }

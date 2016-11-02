@@ -10,9 +10,9 @@ using Utils::str2int;
 void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 {
 	map = map_;
-	pos = sf::Vector2i((int)map.Width() / 2, (int)map.Height() / 2);
-	tiles = Render::loadTilesetSprite(cel_, min_, false);
-	tiles2 = Render::loadTilesetSprite(cel_, min_, true);
+	currentMapPosition = MapCoord(map.Width() / 2, map.Height() / 2);
+	tiles = LevelHelper::loadTilesetSprite(cel_, min_, false);
+	tiles2 = LevelHelper::loadTilesetSprite(cel_, min_, true);
 }
 
 void Level::updateViewPort(const Game& game)
@@ -36,27 +36,6 @@ void Level::executeHoverLeaveAction(Game& game)
 	}
 }
 
-sf::Vector2f Level::getDrawPosition(const sf::Vector2i& pos_) const
-{
-	int32_t drawX, drawY;
-	const auto& size = view.getSize();
-	Render::getMapScreenCoords(size.x, size.y, *this,
-		pos_.x, pos_.y, pos_.x, pos_.y, 0, drawX, drawY);
-
-	return sf::Vector2f((float)drawX, (float)drawY);
-}
-
-sf::Vector2i Level::getMapClickPosition(Game& game)
-{
-	auto mousePos = game.MousePosition() - view.getPosition();
-	const auto& size = view.getSize();
-	mousePos.y = (mousePos.y * (float)game.WindowTexSize().y) / size.y;
-
-	mousePos.y -= 48.f;
-
-	return Render::getClickedTile(size.x, size.y, *this, mousePos.x, mousePos.y, pos.x, pos.y, pos.x, pos.y, 0);
-}
-
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == false)
@@ -67,11 +46,29 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	auto origView = target.getView();
 	target.setView(view);
 
+	sf::Sprite sprite;
+
+	auto viewCenter = target.getView().getCenter();
+	auto viewSize = target.getView().getSize();
+
+	sf::FloatRect drawRect(viewCenter.x - (viewSize.x / 2) - 64,
+		viewCenter.y - (viewSize.y / 2) - 256,
+		viewSize.x + 64, viewSize.y + 256);
+
 	for (size_t x = 0; x < map.Width(); x++)
 	{
 		for (size_t y = 0; y < map.Height(); y++)
 		{
-			Render::drawLevelHelper(*this, tiles, x, y, levelX, levelY, target, states);
+			size_t index = map[x][y].minIndex;
+			auto coords = map.getCoords(MapCoord(x, y));
+
+			if (drawRect.contains(coords) == true &&
+				index < tiles.size())
+			{
+				sprite.setTexture(*tiles[index], true);
+				sprite.setPosition(coords);
+				target.draw(sprite, states);
+			}
 		}
 	}
 
@@ -79,7 +76,23 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (size_t y = 0; y < map.Height(); y++)
 		{
-			Render::drawLevelHelper2(*this, tiles2, x, y, levelX, levelY, target, states);
+			size_t index = map[x][y].minIndex;
+			auto coords = map.getCoords(MapCoord(x, y));
+
+			if (drawRect.contains(coords) == true)
+			{
+				auto drawObj = map[x][y].object.get();
+				if (drawObj != nullptr)
+				{
+					target.draw(*drawObj, states);
+				}
+				if (index < tiles2.size())
+				{
+					sprite.setTexture(*tiles2[index], true);
+					sprite.setPosition(coords);
+					target.draw(sprite, states);
+				}
+			}
 		}
 	}
 
@@ -91,7 +104,6 @@ void Level::updateSize(const Game& game)
 	auto size = view.getSize();
 	if (game.StretchToFit() == true)
 	{
-		view.setCenter(size.x / 2, size.y / 2);
 		view.setViewport(game);
 	}
 	else
@@ -102,33 +114,28 @@ void Level::updateSize(const Game& game)
 		view.setSize(size);
 		view.setViewport(game);
 	}
-	view.setCenter(size.x / 2, size.y / 2);
+}
 
-	Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
+void Level::updateMouse(Game& game)
+{
+	mousePositionf = view.getCenter() - (view.getSize() / 2.f) + game.MousePositionf();
+	mousePositionf.x = std::round(mousePositionf.x);
+	mousePositionf.y = std::round(mousePositionf.y);
 }
 
 void Level::update(Game& game)
 {
-	if (visible == false)
+	if (pause == true || visible == false)
 	{
 		return;
 	}
 
-	mousePos = game.MousePosition() - view.getPosition();
-
-	for (auto& obj : levelObjects)
-	{
-		obj->update(game, *this);
-	}
-
-	for (auto& player : players)
-	{
-		player->update(game, *this);
-	}
+	updateMouse(game);
 
 	sf::FloatRect rect(view.getPosition(), view.getSize());
-	if (rect.contains(game.MousePosition()))
+	if (rect.contains(game.MousePositionf()) == true)
 	{
+		hasMouseInside = true;
 		if (game.wasMouseClicked() == true &&
 			game.getMouseButton() == sf::Mouse::Left &&
 			leftAction != nullptr)
@@ -142,13 +149,25 @@ void Level::update(Game& game)
 			game.Events().addBack(rightAction);
 		}
 	}
+	else
+	{
+		hasMouseInside = false;
+	}
 
-	const auto& size = view.getSize();
-	Render::getMapScreenCoords(size.x, size.y, *this, pos.x, pos.y, pos.x, pos.y, 0, levelX, levelY);
+	for (auto& obj : levelObjects)
+	{
+		obj->update(game, *this);
+	}
+
+	for (auto& player : players)
+	{
+		player->update(game, *this);
+	}
 
 	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
-		pos = currentPlayer->MapPosition();
+		currentMapPosition = currentPlayer->MapPosition();
+		view.setCenter(currentPlayer->getBasePosition());
 	}
 }
 
@@ -182,6 +201,10 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
+	case str2int("name"):
+		var = Variable(name);
+		return true;
+		break;
 	case str2int("player"):
 	{
 		if (props.size() > 2)

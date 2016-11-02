@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/gillian/quests/skeletonKing.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bmaid01.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

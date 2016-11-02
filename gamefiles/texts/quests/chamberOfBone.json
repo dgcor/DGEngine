@@ -1,0 +1,50 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/quests/chamberOfBone.txt"
+  ],
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|currentPlayer.class|",
+    "case": [
+      {
+        "value": "Rogue",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "audio": {
+              "file": "sfx/rogue/rogue01.wav",
+              "play": true,
+              "volume": "|game|soundVolume|"
+            }
+          }
+        }
+      },
+      {
+        "value": "Sorceror",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "audio": {
+              "file": "sfx/sorceror/mage01.wav",
+              "play": true,
+              "volume": "|game|soundVolume|"
+            }
+          }
+        }
+      }
+    ],
+    "default": {
+      "name": "loadJson",
+      "json": {
+        "audio": {
+          "file": "sfx/Warrior/warior01.wav",
+          "play": true,
+          "volume": "|game|soundVolume|"
+        }
+      }
+    }
+  }
+}

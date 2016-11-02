@@ -7,15 +7,17 @@
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "skip" }
   },
-  "texture": {
-    "id": "title",
-    "file":"ui_art/title.pcx"
-  },
-  "texture": {
-    "id": "logo",
-    "file": "ui_art/logo.pcx",
-    "mask": "0x00FF00"
-  },
+  "texture": [
+    {
+      "id": "title",
+      "file":"ui_art/title.pcx"
+    },
+    {
+      "id": "logo",
+      "file": "ui_art/logo.pcx",
+      "mask": "0x00FF00"
+    }
+  ],
   "image": {
     "id": "title",
     "texture": "title",
@@ -56,17 +58,14 @@
   },
   "event": {
     "id": "load",
-    "action": [
-      { "name": "button.setClickAction", "id": "skip", "action": null },
-      {
-        "name": "game.fadeOut",
-        "action": [
-          { "name": "resource.pop" },
-          { "name": "load", "file": "ui/mainMenu.json" },
-          { "name": "game.fadeIn" }
-        ]
-      }
-    ],
+    "action": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/mainMenu.json" },
+        { "name": "game.fadeIn" }
+      ]
+    },
     "seconds": 6
   },
   "action": {

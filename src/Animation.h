@@ -43,7 +43,7 @@ private:
 	bool loop;
 
 public:
-	Animation(const sf::Texture& tex, sf::Time frameTime = sf::milliseconds(50),
+	Animation(const sf::Texture& tex, const sf::Time& frameTime = sf::milliseconds(50),
 		bool pause_ = false, bool loop_ = true) : Image(tex),
 		framePosX(0), framePosY(0), frameTime(frameTime), pause(pause_), loop(loop_) {}
 

@@ -17,15 +17,17 @@
     }
   ],
   "action": {
-    "name": "if.fileExists",
-    "param1": "ui_art/cursor.pcx",
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
     "then": {
       "name": "loadJson",
       "json": {
         "texture": {
           "id": "cursor",
-          "file": "ui_art/cursor.pcx",
-          "mask": "0x000000"
+          "file": "data/inv/objcurs.cel",
+          "frame": 1,
+          "palette": "town"
         }
       }
     },
@@ -34,9 +36,8 @@
       "json": {
         "texture": {
           "id": "cursor",
-          "file": "data/inv/objcurs.cel",
-          "frame": 1,
-          "palette": "town"
+          "file": "ui_art/cursor.pcx",
+          "mask": "0x000000"
         }
       }
     }

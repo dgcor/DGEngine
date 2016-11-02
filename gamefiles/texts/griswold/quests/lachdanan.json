@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/griswold/quests/lachdanan.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bsmith13.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -25,24 +25,27 @@
     {
       "id": "panelTitle1",
       "bitmapFont": "smaltext",
-      "color": "0xC4B78A",
-      "position": [484, 58],
+      "color": "%textGold%",
+      "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Talk to Adria"
     }
   ],
   "menu": {
     "id": "panelQuests",
     "bitmapFont": "smaltext",
-    "position": [484, 190],
+    "position": [480, 195],
     "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "horizontalSpaceOffset": 1,
     "anchor": "none",
     "focus": true,
     "focusSound": "titlemov",
     "visibleItems": 8,
-    "size": [270, 164],
-    "verticalPad": 12,
+    "size": [256, 180],
+    "verticalPad": 14,
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": [
@@ -52,7 +55,7 @@
           { "name": "game.clearPlayingSounds" },
           { "name": "sound.play", "id": "titlslct" },
           { "name": "resource.popAll", "id": "userPanel" },
-          { "name": "loadRandom", "file": "towners/adria/gossip" }
+          { "name": "loadRandom", "file": "texts/adria/gossip" }
         ],
         "onFocus": [
           "anchorLeftPentagram",
@@ -61,11 +64,12 @@
       },
       {
         "%QUESTS%": null,
+        "ignoreItems": ["diablo", "gharbadTheWeak", "zharTheMad"],
         "onClick": [
           { "name": "game.clearPlayingSounds" },
           { "name": "sound.play", "id": "titlslct" },
           { "name": "resource.popAll", "id": "userPanel" },
-          { "name": "load", "file": "towners/adria/quests/%ID%.json" }
+          { "name": "load", "file": "texts/adria/quests/%ID%.json" }
         ],
         "onFocus": [
           "anchorLeftPentagram",
@@ -80,9 +84,10 @@
     "sound": "titlslct",
     "focus": true,
     "focusSound": "titlemov",
-    "position": [484, 298],
+    "position": [480, 298],
     "anchor": "none",
     "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
     "text": "Back",
     "onClick": [
       { "name": "resource.pop" },
@@ -96,6 +101,6 @@
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram",
-    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "0x9DA2BC" }
+    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "%textBlue%" }
   ]
 }

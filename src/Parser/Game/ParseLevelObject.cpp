@@ -1,7 +1,7 @@
 #include "ParseLevelObject.h"
-#include "Parser/ParseAction.h"
-#include "Parser/ParseUtils.h"
 #include "Game/ImageLevelObject.h"
+#include "Parser/ParseAction.h"
+#include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -14,6 +14,11 @@ namespace Parser
 		{
 			return;
 		}
+		std::string id(elem["id"].GetString());
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 
 		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
 		if (level == nullptr)
@@ -21,8 +26,8 @@ namespace Parser
 			return;
 		}
 
-		auto mapPos = getVector2iKey<sf::Vector2i>(elem, "mapPosition");
-		auto mapSize = level->Map().Size();
+		auto mapPos = getVector2uKey<MapCoord>(elem, "mapPosition");
+		auto mapSize = level->Map().MapSize();
 		if (mapPos.x >= mapSize.x || mapPos.y >= mapSize.y)
 		{
 			return;
@@ -51,7 +56,7 @@ namespace Parser
 			levelObj->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
-		levelObj->Id(elem["id"].GetString());
+		levelObj->Id(id);
 		levelObj->Name(getStringKey(elem, "name"));
 
 		if (elem.HasMember("action") == true)

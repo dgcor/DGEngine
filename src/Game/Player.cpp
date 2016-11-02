@@ -6,6 +6,13 @@
 
 using Utils::str2int;
 
+sf::Vector2f Player::getBasePosition() const
+{
+	return sf::Vector2f(
+		std::round(sprite.getPosition().x + (float)(sprite.getTextureRect().width / 2)),
+		std::round(sprite.getPosition().y + (float)(sprite.getTextureRect().height - LevelMap::TileSize() / 2)));
+}
+
 void Player::executeAction(Game& game) const
 {
 	if (action != nullptr)
@@ -14,7 +21,7 @@ void Player::executeAction(Game& game) const
 	}
 }
 
-void Player::MapPosition(Level& level, const sf::Vector2i& pos)
+void Player::MapPosition(Level& level, const MapCoord& pos)
 {
 	auto oldObj = level.Map()[mapPosition.x][mapPosition.y].object;
 	level.Map()[mapPosition.x][mapPosition.y].object = nullptr;
@@ -53,15 +60,16 @@ void Player::updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSiz
 	}
 
 	auto drawPos = level.Map().getCoords(mapPosition);
-	drawPos.x += (float)(level.getLevelX() - ((int)texSize.x / 2)) + 32;
-	drawPos.y += (float)(level.getLevelY() + 224 - ((int)texSize.y - 32));
+	drawPos.x += (float)(-((int)texSize.x / 2)) + LevelMap::TileSize();
+	drawPos.y += (float)(224 - ((int)texSize.y - LevelMap::TileSize()));
 	sprite.setPosition(drawPos);
 }
 
 void Player::update(Game& game, Level& level)
 {
 	auto rect = sprite.getGlobalBounds();
-	if (rect.contains(level.MousePosition()))
+	if (level.HasMouseInside() == true &&
+		rect.contains(level.MousePositionf()) == true)
 	{
 		if (hovered == false)
 		{

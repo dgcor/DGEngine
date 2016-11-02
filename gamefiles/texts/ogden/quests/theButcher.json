@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "25",
+    "texts/ogden/quests/theButcher.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/tavown08.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

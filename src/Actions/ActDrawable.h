@@ -196,7 +196,7 @@ public:
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().x;
 			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
-			auto offset = std::max(0.f, std::min(game.MousePosition().x - itemPos.x, (float)range));
+			auto offset = std::max(0.f, std::min(game.MousePositionf().x - itemPos.x, (float)range));
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.x;
 			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
@@ -250,7 +250,7 @@ public:
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().y;
 			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
-			auto offset = std::max(0.f, std::min(game.MousePosition().y - itemPos.y, (float)range));
+			auto offset = std::max(0.f, std::min(game.MousePositionf().y - itemPos.y, (float)range));
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.y;
 			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
@@ -533,7 +533,7 @@ public:
 		auto item = game.Resources().getResource<UIObject>(id);
 		if (item != nullptr)
 		{
-			auto newSize = game.MousePosition().x - item->Position().x;
+			auto newSize = game.MousePositionf().x - item->Position().x;
 			if (newSize < range.x)
 			{
 				newSize = range.x;
@@ -565,7 +565,7 @@ public:
 		auto item = game.Resources().getResource<UIObject>(id);
 		if (item != nullptr)
 		{
-			auto newSize = game.MousePosition().y - item->Position().y;
+			auto newSize = game.MousePositionf().y - item->Position().y;
 			if (newSize < range.x)
 			{
 				newSize = range.x;

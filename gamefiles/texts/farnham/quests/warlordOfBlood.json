@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/farnham/quests/warlordOfBlood.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/drunk17.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

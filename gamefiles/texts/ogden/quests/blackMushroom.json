@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/ogden/quests/blackMushroom.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/tavown19.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

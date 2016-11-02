@@ -25,19 +25,21 @@
     {
       "id": "panelTitle1",
       "bitmapFont": "smaltext",
-      "color": "0xC4B78A",
-      "position": [484, 58],
+      "color": "%textGold%",
+      "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Gillian"
     },
     {
       "id": "panelText",
       "bitmapFont": "smaltext",
-      "color": "0xC4B78A",
-      "position": [484, 142],
+      "color": "%textGold%",
+      "position": [480, 142],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Would you like to:"
     }
   ],
@@ -45,13 +47,14 @@
     {
       "id": "talk",
       "bitmapFont": "smaltext",
-      "color": "0x9DA2BC",
+      "color": "%textBlue%",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 178],
+      "position": [480, 178],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Talk to Gillian",
       "onClick": [
         { "name": "resource.pop" },
@@ -68,9 +71,10 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [484, 251],
+      "position": [480, 250],
       "anchor": "none",
       "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
       "text": "Say Goodbye",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [

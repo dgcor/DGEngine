@@ -16,7 +16,8 @@ void ImageLevelObject::executeAction(Game& game) const
 void ImageLevelObject::update(Game& game, Level& level)
 {
 	auto rect = sprite.getGlobalBounds();
-	if (rect.contains(level.MousePosition()))
+	if (level.HasMouseInside() == true &&
+		rect.contains(level.MousePositionf()) == true)
 	{
 		if (hovered == false)
 		{
@@ -37,8 +38,8 @@ void ImageLevelObject::update(Game& game, Level& level)
 	if (rect.width > 0 && rect.height > 0)
 	{
 		auto drawPos = level.Map().getCoords(mapPosition);
-		drawPos.x += (float)(level.getLevelX() - ((int)rect.width / 2)) + 32;
-		drawPos.y += (float)(level.getLevelY() + 224 - ((int)rect.height - 32));
+		drawPos.x += (float)(- ((int)rect.width / 2)) + 32;
+		drawPos.y += (float)(224 - ((int)rect.height - 32));
 		sprite.setPosition(drawPos);
 	}
 }

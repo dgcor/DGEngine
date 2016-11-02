@@ -56,16 +56,15 @@
   "menu": {
     "id": "menuQuests",
     "bitmapFont": "smaltext",
-    "position": [160, 135],
+    "position": [160, 130],
     "horizontalAlign": "center",
-    "verticalAlign": "center",
     "horizontalSpaceOffset": 1,
     "anchor": "left",
     "focus": true,
     "focusSound": "titlemov",
-    "visibleItems": 8,
+    "visibleItems": 7,
     "size": [270, 164],
-    "verticalPad": 12,
+    "verticalPad": 14,
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": [
@@ -75,7 +74,7 @@
           { "name": "game.clearPlayingSounds" },
           { "name": "sound.play", "id": "titlslct" },
           { "name": "button.click", "id": "quest" },
-          { "name": "load", "file": "quests/%ID%.json" }
+          { "name": "load", "file": "texts/quests/%ID%.json" }
         ],
         "onFocus": [
           "anchorLeftPentagram",

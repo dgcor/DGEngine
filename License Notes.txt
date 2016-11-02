@@ -48,7 +48,7 @@ SFML uses the zlib/png license.
 https://github.com/SFML/SFML
 
 Other SFML code snippets were taken from the wiki
-and should hava a permissive license.
+and should have a permissive license.
 
 Mapbox Variant uses the BSD license.
 

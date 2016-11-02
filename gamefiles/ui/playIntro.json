@@ -1,0 +1,15 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": {
+      "name": "load",
+      "file": ["ui/playVideo.json", "introVideo", "gendata/diablo.smk", "{1}"]
+    },
+    "else": {
+      "name": "load",
+      "file": ["ui/playVideo.json", "introVideo", "gendata/diablo1.smk", "{1}"]
+    }
+  }
+}

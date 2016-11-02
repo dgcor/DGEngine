@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/adria/quests/magicRock.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/witch20.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

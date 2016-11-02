@@ -1,0 +1,13 @@
+{
+  "celFile": [
+    { "id": "rlsas", "file": "plrgfx/rogue/rls/rlsas.cel" },
+    { "id": "rlsat", "file": "plrgfx/rogue/rls/rlsat.cel" },
+    { "id": "rlsaw", "file": "plrgfx/rogue/rls/rlsaw.cel" },
+    { "id": "rlsfm", "file": "plrgfx/rogue/rls/rlsfm.cel" },
+    { "id": "rlsht", "file": "plrgfx/rogue/rls/rlsht.cel" },
+    { "id": "rlslm", "file": "plrgfx/rogue/rls/rlslm.cel" },
+    { "id": "rlsqm", "file": "plrgfx/rogue/rls/rlsqm.cel" },
+    { "id": "rlsst", "file": "plrgfx/rogue/rls/rlsst.cel" },
+    { "id": "rlswl", "file": "plrgfx/rogue/rls/rlswl.cel" }
+  ]
+}

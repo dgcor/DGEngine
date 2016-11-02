@@ -5,6 +5,11 @@
   "cursor": {
     "show": false
   },
+  "action": {
+    "name": "if.fileExists",
+    "param1": "ui_art/cursor.pcx",
+    "else": { "name": "variable.set", "key": "beta", "val": true }
+  },
   "load": "res/actions.json",
   "load": "res/fonts.json",
   "load": "res/music.json",

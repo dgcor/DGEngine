@@ -5,8 +5,19 @@
     "action": [
       { "name": "load", "file": "ui/level/saveSettings.json" },
       { "name": "resource.popAll", "id": "gameMenuCommon" },
-      { "name": "resource.ignore", "id": "level", "ignore": "none" }
+      { "name": "resource.ignore", "id": "level", "ignore": "none" },
+      { "name": "level.pause", "pause": false }
     ]
+  },
+  "text": {
+    "id": "txtMapLabel",
+    "bitmapFont": "smaltext",
+    "color": "%textGold%",
+    "position": [8, 10],
+    "horizontalSpaceOffset": 1,
+    "binding": "|currentLevel|name|",
+    "format": "Level: [1]",
+    "visible": false
   },
   "button": [
     {

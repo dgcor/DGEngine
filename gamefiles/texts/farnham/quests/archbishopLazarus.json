@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/farnham/quests/archbishopLazarus.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/drunk03.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

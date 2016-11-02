@@ -30,7 +30,7 @@
 #include "Json/JsonUtils.h"
 #include "ParseCondition.h"
 #include "Parser/Game/ParseQuest.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -86,10 +86,15 @@ namespace Parser
 		}
 		case str2int("audio.play"):
 		{
-			return std::make_shared<ActAudioPlay>(
+			auto action = std::make_shared<ActAudioPlay>(
 				getStringKey(elem, "id"),
-				getBoolKey(elem, "clear"),
-				getBoolKey(elem, "loop"));
+				getBoolKey(elem, "clear"));
+
+			if (elem.HasMember("loop") == true)
+			{
+				action->setLoop(getBoolVal(elem["loop"]));
+			}
+			return action;
 		}
 		case str2int("audio.resumeAll"):
 		{
@@ -148,7 +153,7 @@ namespace Parser
 		{
 			return std::make_shared<ActButtonSetColor>(
 				getStringKey(elem, "id"),
-				getColorKey(elem, "color", sf::Color::White));
+				getColorVar(game, elem, "color", sf::Color::White));
 		}
 		case str2int("button.setFont"):
 		{
@@ -444,10 +449,12 @@ namespace Parser
 		}
 		case str2int("game.fadeIn"):
 		{
-			auto action = std::make_shared<ActGameFadeIn>(
-				getColorKey(elem, "color"),
-				getUIntKey(elem, "refresh", 15),
-				getUIntKey(elem, "fade", 25));
+			auto action = std::make_shared<ActGameFade>(
+				getColorVar(game, elem, "color"),
+				false,
+				getBoolKey(elem, "enableInput", true),
+				getUIntKey(elem, "fade", 25),
+				sf::milliseconds(getUIntKey(elem, "refresh", 15)));
 
 			if (elem.HasMember("action"))
 			{
@@ -457,10 +464,12 @@ namespace Parser
 		}
 		case str2int("game.fadeOut"):
 		{
-			auto action = std::make_shared<ActGameFadeOut>(
-				getColorKey(elem, "color", sf::Color::Transparent),
-				getUIntKey(elem, "refresh", 15),
-				getUIntKey(elem, "fade", 25));
+			auto action = std::make_shared<ActGameFade>(
+				getColorVar(game, elem, "color", sf::Color::Transparent),
+				true,
+				getBoolKey(elem, "enableInput"),
+				getUIntKey(elem, "fade", 25),
+				sf::milliseconds(getUIntKey(elem, "refresh", 15)));
 
 			if (elem.HasMember("action"))
 			{
@@ -516,7 +525,6 @@ namespace Parser
 		{
 			return getIfCondition(str2int("!="), game, elem);
 		}
-
 		case str2int("if.resourceExists"):
 		{
 			return getIfCondition(str2int("resourceExists"), game, elem);
@@ -576,7 +584,7 @@ namespace Parser
 		{
 			return std::make_shared<ActLevelMove>(
 				getStringKey(elem, "id"),
-				getVector2iKey<sf::Vector2i>(elem, "position"));
+				getVector2uKey<MapCoord>(elem, "position"));
 		}
 		case str2int("level.moveToClick"):
 		{
@@ -587,6 +595,12 @@ namespace Parser
 			return std::make_shared<ActLevelMoveToPlayer>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idPlayer"));
+		}
+		case str2int("level.pause"):
+		{
+			return std::make_shared<ActLevelPause>(
+				getStringKey(elem, "id"),
+				getBoolKey(elem, "pause", true));
 		}
 		case str2int("load"):
 		{
@@ -646,7 +660,7 @@ namespace Parser
 			return std::make_shared<ActMenuSetColor>(
 				getStringKey(elem, "id"),
 				getUIntKey(elem, "index"),
-				getColorKey(elem, "color", sf::Color::White));
+				getColorVar(game, elem, "color", sf::Color::White));
 		}
 		case str2int("menu.setFont"):
 		{
@@ -675,7 +689,7 @@ namespace Parser
 			return std::make_shared<ActPlayerMove>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idLevel"),
-				getVector2iKey<sf::Vector2i>(elem, "position"),
+				getVector2uKey<MapCoord>(elem, "position"),
 				getBoolKey(elem, "resetDirection"));
 		}
 		case str2int("player.moveToClick"):

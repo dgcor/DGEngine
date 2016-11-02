@@ -38,9 +38,9 @@ private:
 	static int tileSize;
 
 	std::vector<LevelCell> cells;
-	size_t width{ 0 };
-	size_t height{ 0 };
-	sf::Vector2i size;
+
+	sf::Vector2u mapSize;
+	sf::Vector2u size;
 
 	static const LevelCell& get(size_t x, size_t y, const LevelMap& map)
 	{
@@ -66,15 +66,17 @@ public:
 		return Misc::Helper2D<const LevelMap, const LevelCell&>(*this, x, get);
 	}
 
-	size_t Width() const { return width; }
-	size_t Height() const { return height; }
+	size_t Width() const { return mapSize.x; }
+	size_t Height() const { return mapSize.y; }
 
-	const sf::Vector2i& Size() const { return size; }
+	const sf::Vector2u& MapSize() const { return mapSize; }
+
+	const sf::Vector2u& Size() const { return size; }
 
 	static int TileSize() { return tileSize; }
 
-	sf::Vector2f getCoords(const sf::Vector2i& tile) const;
-	sf::Vector2i getTile(const sf::Vector2f& coords) const;
+	sf::Vector2f getCoords(const MapCoord& tile) const;
+	MapCoord getTile(const sf::Vector2f& coords) const;
 
-	std::queue<sf::Vector2i> getPath(const sf::Vector2i& a, const sf::Vector2i& b);
+	std::queue<MapCoord> getPath(const MapCoord& a, const MapCoord& b) const;
 };

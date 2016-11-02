@@ -19,6 +19,18 @@ namespace sf
 		return sf::Color(r, g, b, a);
 	}
 
+	sf::Color stringToColor(const std::string& str)
+	{
+		if (str.length() >= 10)
+		{
+			return sf::rgbaToColor(std::stoul(str, 0, 16));
+		}
+		else
+		{
+			return sf::rgbToColor(std::stoul(str, 0, 16));
+		}
+	}
+
 	void viewStretchKeepAR(sf::View& view, const sf::Vector2u& windowSize, sf::FloatRect viewPort)
 	{
 		// Compares the aspect ratio of the window to the aspect ratio of the view,

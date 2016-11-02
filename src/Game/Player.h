@@ -14,9 +14,9 @@ class Player : public LevelObject
 {
 private:
 	sf::Sprite sprite;
-	sf::Vector2i mapPosition;
+	MapCoord mapPosition;
 
-	std::queue<sf::Vector2i> walkPath;
+	std::queue<MapCoord> walkPath;
 
 	std::shared_ptr<PlayerClass> class_;
 
@@ -109,6 +109,8 @@ public:
 		calculateRange();
 	}
 
+	sf::Vector2f getBasePosition() const;
+
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
 	virtual sf::Vector2f Size() const
@@ -117,10 +119,9 @@ public:
 	}
 	virtual void Size(const sf::Vector2f& size) {}
 
-	virtual const sf::Vector2i& MapPosition() const { return mapPosition; }
-
-	virtual void MapPosition(const sf::Vector2i& pos) { mapPosition = pos; }
-	virtual void MapPosition(Level& level, const sf::Vector2i& pos);
+	virtual const MapCoord& MapPosition() const { return mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
+	void MapPosition(Level& level, const MapCoord& pos);
 
 	virtual void executeAction(Game& game) const;
 	virtual bool Passable() const { return true; }
@@ -135,7 +136,7 @@ public:
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
 
-	void setWalkPath(const std::queue<sf::Vector2i> walkPath_) { walkPath = walkPath_; }
+	void setWalkPath(const std::queue<MapCoord> walkPath_) { walkPath = walkPath_; }
 
 	void setDirection(PlayerDirection direction_)
 	{

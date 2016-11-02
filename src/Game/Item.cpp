@@ -9,7 +9,7 @@ using Utils::str2int;
 void Item::update(Game& game, const Level& level)
 {
 	auto rect = sprite.getGlobalBounds();
-	if (rect.contains(level.MousePosition()))
+	if (rect.contains(level.MousePositionf()))
 	{
 		if (game.getMouseButton() == sf::Mouse::Left)
 		{

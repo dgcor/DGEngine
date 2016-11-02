@@ -1,7 +1,7 @@
 #include "ParseCursor.h"
 #include <cmath>
 #include "ParseAnimation.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -9,7 +9,9 @@ namespace Parser
 
 	sf::Vector2f getOrigin(const Value& elem, float width, float height)
 	{
-		if (elem.HasMember("origin") && elem["origin"].IsString() && elem["origin"].GetString() == std::string("center"))
+		if (elem.HasMember("origin") &&
+			elem["origin"].IsString() &&
+			elem["origin"].GetString() == std::string("center"))
 		{
 			return sf::Vector2f(std::round(width / 2.f), std::round(height / 2.f));
 		}

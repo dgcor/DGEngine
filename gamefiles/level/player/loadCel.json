@@ -1,3 +1,20 @@
 {
-  "load": "{1}/loadPlayerCel.json"
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Warrior",
+        "action": { "name": "load", "file": "level/player/loadWarriorCel.json" }
+      },
+      {
+        "value": "Rogue",
+        "action": { "name": "load", "file": "level/player/loadRogueCel.json" }
+      },
+      {
+        "value": "Sorceror",
+        "action": { "name": "load", "file": "level/player/loadSorcerorCel.json" }
+      }
+    ]
+  }
 }

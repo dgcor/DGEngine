@@ -1,0 +1,24 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.gharbadTheWeak.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/misc/quests/gharbadTheWeak1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/misc/quests/gharbadTheWeak2.json" }
+      },
+      {
+        "value": 2,
+        "action": { "name": "load", "file": "texts/misc/quests/gharbadTheWeak3.json" }
+      },
+      {
+        "value": 3,
+        "action": { "name": "load", "file": "texts/misc/quests/gharbadTheWeak4.json" }
+      }
+    ]
+  }
+}

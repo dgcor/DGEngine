@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/wirt/quests/lachdanan.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/pegboy12.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

@@ -3,7 +3,7 @@
 
 int LevelMap::tileSize = 32;
 
-LevelMap::LevelMap(size_t width_, size_t height_) : width(width_), height(height_)
+LevelMap::LevelMap(size_t width_, size_t height_) : mapSize(width_, height_)
 {
 	cells.resize(width_ * height_);
 	size.x = width_ * tileSize;
@@ -58,12 +58,12 @@ void LevelMap::setArea(size_t x, size_t y, const Dun& dun, const TileSet& til, c
 			auto cellX = x + i;
 			auto cellY = y + j;
 
-			if (cellX >= width || cellY >= height)
+			if (cellX >= mapSize.x || cellY >= mapSize.y)
 			{
 				continue;
 			}
 
-			auto& cell = cells[cellX + (cellY * width)];
+			auto& cell = cells[cellX + (cellY * mapSize.x)];
 
 			if (dunIndex == -1)
 			{
@@ -79,21 +79,78 @@ void LevelMap::setArea(size_t x, size_t y, const Dun& dun, const TileSet& til, c
 	}
 }
 
-sf::Vector2f LevelMap::getCoords(const sf::Vector2i& tile) const
+sf::Vector2f LevelMap::getCoords(const MapCoord& tile) const
 {
 	return sf::Vector2f(
-		(tile.y*(-32)) + 32 * tile.x + height * 32 - 32,
+		(tile.y*(-32)) + 32 * tile.x + mapSize.y * 32 - 32,
 		(tile.y * 16) + 16 * tile.x);
 }
 
-sf::Vector2i LevelMap::getTile(const sf::Vector2f& coords) const
+MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 {
-	return sf::Vector2i();
+	// Position on the map in pixels
+	int32_t flatX = (int32_t)coords.x;
+	int32_t flatY = (int32_t)coords.y;
+
+	// position on the map divided into 32x16 flat blocks
+	// every second one of these blocks is centred on an isometric
+	// block centre, the others are centred on isometric block corners
+	int32_t flatGridX = (flatX + 16) / 32;
+	int32_t flatGridY = (flatY + 8) / 16;
+
+	// origin position (in flat grid coords) for the first line (isometric y = 0)
+	int32_t flatOriginPosX = mapSize.y;
+	int32_t flatOriginPosY = 15;
+
+	// when a flat grid box is clicked that does not centre on an isometric block, work out which
+	// isometric quadrant of that box was clicked, then adjust flatGridPos accordingly
+	if ((flatGridX % 2 == 1 && flatGridY % 2 == 1) || (flatGridX % 2 == 0 && flatGridY % 2 == 0))
+	{
+		// origin of current flat grid box
+		int32_t baseX = 32 * flatGridX - 16;
+		int32_t baseY = 16 * flatGridY - 8;
+
+		// position within grid box
+		int32_t blockPosX = flatX - baseX;
+		int32_t blockPosY = flatY - baseY;
+
+		if (blockPosY * 2 > blockPosX)
+		{
+			if (blockPosX < (15 - blockPosY) * 2)
+			{
+				flatGridX--;
+			}
+			else
+			{
+				flatGridY++;
+			}
+		}
+		else
+		{
+			if (blockPosX < (15 - blockPosY) * 2)
+			{
+				flatGridY--;
+			}
+			else
+			{
+				flatGridX++;
+			}
+		}
+	}
+
+	// flatOrigin adjusted for the current y value
+	int32_t lineOriginPosX = flatOriginPosX + ((flatGridX - flatOriginPosX) - (flatGridY - flatOriginPosY)) / 2;
+	int32_t lineOriginPosY = flatOriginPosY - (-(flatGridX - flatOriginPosX) - (flatGridY - flatOriginPosY)) / 2;
+
+	int32_t isoPosX = flatGridX - lineOriginPosX;
+	int32_t isoPosY = flatGridY - lineOriginPosY;
+
+	return MapCoord(isoPosX, isoPosY);
 }
 
-std::queue<sf::Vector2i> LevelMap::getPath(const sf::Vector2i& a, const sf::Vector2i& b)
+std::queue<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const
 {
-	std::queue<sf::Vector2i> path;
+	std::queue<MapCoord> path;
 
 	MapSearchNode start(this, a.x, a.y, PlayerDirection::All);
 	MapSearchNode end(this, b.x, b.y, PlayerDirection::All);
@@ -117,8 +174,7 @@ std::queue<sf::Vector2i> LevelMap::getPath(const sf::Vector2i& a, const sf::Vect
 		{
 			pathFinder.CancelSearch();
 		}
-	}
-	while (SearchState == PathFinder::SEARCH_STATE_SEARCHING);
+	} while (SearchState == PathFinder::SEARCH_STATE_SEARCHING);
 
 	if (SearchState == PathFinder::SEARCH_STATE_SUCCEEDED)
 	{
@@ -130,7 +186,7 @@ std::queue<sf::Vector2i> LevelMap::getPath(const sf::Vector2i& a, const sf::Vect
 			{
 				break;
 			}
-			path.emplace(sf::Vector2i(node->x, node->y));
+			path.emplace(MapCoord(node->x, node->y));
 			node = pathFinder.GetSolutionNext();
 		};
 		pathFinder.FreeSolutionNodes();

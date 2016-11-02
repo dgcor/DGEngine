@@ -1,7 +1,7 @@
 #include "ParseCelFile.h"
 #include "Cel.h"
-#include "ParseUtils.h"
 #include "Utils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -25,13 +25,60 @@ namespace Parser
 		return celFile;
 	}
 
+	bool parseCelFileFromId(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "fromId") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				std::string id(elem["id"].GetString());
+				if (fromId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getCelFile(fromId);
+					if (obj != nullptr)
+					{
+						game.Resources().addCelFile(id, obj);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void parseCelFile(Game& game, const Value& elem)
 	{
+		if (parseCelFileFromId(game, elem) == true)
+		{
+			return;
+		}
+		std::string id;
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else
+		{
+			if (isValidString(elem, "file") == false)
+			{
+				return;
+			}
+			std::string file(elem["file"].GetString());
+			if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+		}
+		if (isValidId(id) == false)
+		{
+			return;
+		}
 		auto celFile = parseCelFileObj(game, elem);
 		if (celFile == nullptr)
 		{
 			return;
 		}
-		game.Resources().addCelFile(elem["id"].GetString(), celFile);
+		game.Resources().addCelFile(id, celFile);
 	}
 }

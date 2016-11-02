@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/griswold/quests/arkainesValor.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/bsmith14.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

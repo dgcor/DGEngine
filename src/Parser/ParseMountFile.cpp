@@ -1,7 +1,7 @@
 #include "ParseMountFile.h"
 #include "FileUtils.h"
-#include "ParseUtils.h"
 #include <physfs.h>
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {

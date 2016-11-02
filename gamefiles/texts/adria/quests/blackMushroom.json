@@ -1,0 +1,20 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "|currentLevel|quest.blackMushroom.state|",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/adria/quests/blackMushroom1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/adria/quests/blackMushroom2.json" }
+      },
+      {
+        "value": 2,
+        "action": { "name": "load", "file": "texts/adria/quests/blackMushroom3.json" }
+      }
+    ]
+  }
+}

@@ -255,7 +255,7 @@
     {
       "id": "back",
       "bitmapFont": "font42g",
-      "sound": "titlemov",
+      "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
       "position": [319, 406],

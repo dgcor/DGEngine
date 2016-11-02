@@ -1,8 +1,3 @@
 {
-  "action": {
-    "name": "if.resourceExists",
-    "param1": "noMap",
-    "then": { "name": "event.resetTime", "id": "closeNoMap" },
-    "else": { "name": "load", "file": "ui/level/noMap2.json" }
-  }
+  "load": ["ui/level/showMsg.json", "No automap available in town"]
 }

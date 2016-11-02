@@ -1,21 +1,66 @@
 #include "ParseCelTexture.h"
 #include "ParseCelFile.h"
 #include "CelCache.h"
-#include "ParseUtils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
+	bool parseCelTextureFromId(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "fromId") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				std::string id(elem["id"].GetString());
+				if (fromId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getCelTextureCache(fromId);
+					if (obj != nullptr)
+					{
+						game.Resources().addCelTextureCache(id, obj);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void parseCelTexture(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false
-			|| isValidString(elem, "palette") == false)
+		if (parseCelTextureFromId(game, elem) == true)
+		{
+			return;
+		}
+		if (isValidString(elem, "palette") == false)
+		{
+			return;
+		}
+		std::string id;
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else
+		{
+			if (isValidString(elem, "file") == false)
+			{
+				return;
+			}
+			std::string file(elem["file"].GetString());
+			if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+		}
+		if (isValidId(id) == false)
 		{
 			return;
 		}
 
-		std::string id = elem["id"].GetString();
 		std::vector<const CelFile*> celVec;
 
 		if (elem.HasMember("file") == true)

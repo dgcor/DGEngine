@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/wirt/gossip/gossip1.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/pegboy33.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

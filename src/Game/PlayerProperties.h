@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include <SFML/System/Vector2.hpp>
+#include "MapCoord.h"
 
 enum class PlayerDirection : size_t
 {
@@ -40,4 +40,4 @@ enum class PlayerStatus : size_t
 	Size
 };
 
-PlayerDirection getPlayerDirection(const sf::Vector2i& currPos, const sf::Vector2i& newPos);
+PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos);

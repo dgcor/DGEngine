@@ -1,8 +1,8 @@
 #include "ParseTexture.h"
 #include "CelUtils.h"
 #include "ImageUtils.h"
-#include "ParseUtils.h"
 #include "Utils.h"
+#include "Utils/ParseUtils.h"
 
 namespace Parser
 {
@@ -16,7 +16,7 @@ namespace Parser
 		if (elem.HasMember("fill"))
 		{
 			auto size = getVector2uKey(elem, "size", game.WindowTexSize());
-			img.create(size.x, size.y, getColorKey(elem, "fill"));
+			img.create(size.x, size.y, getColorVar(game, elem, "fill"));
 			return img;
 		}
 		else if (elem.HasMember("file") == false)
@@ -61,7 +61,7 @@ namespace Parser
 		}
 		else
 		{
-			img = ImageUtils::loadImage(fileName.c_str(), getColorKey(elem, "mask"));
+			img = ImageUtils::loadImage(fileName.c_str(), getColorVar(game, elem, "mask"));
 
 			if (elem.HasMember("split"))
 			{
@@ -90,9 +90,52 @@ namespace Parser
 		return img;
 	}
 
+	bool parseTextureFromId(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "fromId") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				std::string id(elem["id"].GetString());
+				if (fromId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getTexture(fromId);
+					if (obj != nullptr)
+					{
+						game.Resources().addTexture(id, obj);
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	void parseTexture(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false)
+		if (parseTextureFromId(game, elem) == true)
+		{
+			return;
+		}
+		std::string id;
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else
+		{
+			if (isValidString(elem, "file") == false)
+			{
+				return;
+			}
+			std::string file(elem["file"].GetString());
+			if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+		}
+		if (isValidId(id) == false)
 		{
 			return;
 		}
@@ -111,6 +154,6 @@ namespace Parser
 
 		texture->setRepeated(true);
 
-		game.Resources().addTexture(elem["id"].GetString(), texture);
+		game.Resources().addTexture(id, texture);
 	}
 }

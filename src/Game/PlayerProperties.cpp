@@ -1,6 +1,6 @@
 #include "PlayerProperties.h"
 
-PlayerDirection getPlayerDirection(const sf::Vector2i& currPos, const sf::Vector2i& newPos)
+PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos)
 {
 	if (newPos.x == currPos.x)
 	{

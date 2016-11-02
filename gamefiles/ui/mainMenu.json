@@ -32,20 +32,22 @@
       "action": { "name": "menu.click", "id": "menu", "index": 5 }
     }
   ],
-  "texture": {
-    "id": "mainmenu",
-    "file": "ui_art/mainmenu.pcx"
-  },
-  "texture": {
-    "id": "smlogo",
-    "file": "ui_art/smlogo.pcx",
-    "mask": "0x00FF00"
-  },
-  "texture": {
-    "id": "focus42",
-    "file": "ui_art/focus42.pcx",
-    "mask": "0x00FF00"
-  },
+  "texture": [
+    {
+      "id": "mainmenu",
+      "file": "ui_art/mainmenu.pcx"
+    },
+    {
+      "id": "smlogo",
+      "file": "ui_art/smlogo.pcx",
+      "mask": "0x00FF00"
+    },
+    {
+      "id": "focus42",
+      "file": "ui_art/focus42.pcx",
+      "mask": "0x00FF00"
+    }
+  ],
   "cursor": {
     "texture": "cursor"
   },
@@ -54,30 +56,32 @@
     "texture": "mainmenu",
     "anchor": "none"
   },
-  "animation": {
-    "id": "smlogo",
-    "texture": "smlogo",
-    "frames": 15,
-    "position": [125, 0],
-    "anchor": "none",
-    "refresh": 50
-  },
-  "animation": {
-    "texture": "focus42",
-    "id": "pent1",
-    "frames": 8,
-    "position": [67, 192],
-    "anchor": "none",
-    "refresh": 50
-  },
-  "animation": {
-    "texture": "focus42",
-    "id": "pent2",
-    "frames": 8,
-    "position": [537, 192],
-    "anchor": "none",
-    "refresh": 50
-  },
+  "animation": [
+    {
+      "id": "smlogo",
+      "texture": "smlogo",
+      "frames": 15,
+      "position": [125, 0],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "focus42",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 192],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "focus42",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 192],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
   "menu": {
     "id": "menu",
     "bitmapFont": "font42g",
@@ -91,12 +95,10 @@
       {
         "text": "Single Player",
         "position": [170, 192],
-        "onClick": [
-          {
-            "name": "load",
-            "file": "ui/singlePlayer/main.json"
-          }
-        ],
+        "onClick": {
+          "name": "load",
+          "file": "ui/singlePlayer/main.json"
+        },
         "onFocus": [
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
@@ -116,15 +118,10 @@
       {
         "text": "Replay Intro",
         "position": [174, 277],
-        "onClick": [
-          {
-            "name": "load",
-            "file": ["ui/playVideo.json",
-              "introVideo",
-              "gendata/diablo1.smk",
-              "ui/fadeIn.json"]
-          }
-        ],
+        "onClick": {
+          "name": "load",
+          "file": ["ui/playIntro.json", "ui/fadeIn.json"]
+        },
         "onFocus": [
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
@@ -133,15 +130,13 @@
       {
         "text": "Show Credits",
         "position": [173, 320],
-        "onClick": [
-          {
-            "name": "game.fadeOut",
-            "action": {
-              "name": "load",
-              "file": "ui/credits.json"
-            }
+        "onClick": {
+          "name": "game.fadeOut",
+          "action": {
+            "name": "load",
+            "file": "ui/credits.json"
           }
-        ],
+        },
         "onFocus": [
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
@@ -150,14 +145,12 @@
       {
         "text": "Exit Diablo",
         "position": [192, 363],
-        "onClick": [
-          {
-            "name": "game.fadeOut",
-            "action": {
-              "name": "game.close"
-            }
+        "onClick": {
+          "name": "game.fadeOut",
+          "action": {
+            "name": "game.close"
           }
-        ],
+        },
         "onFocus": [
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
@@ -169,6 +162,7 @@
     "id": "versionInfo",
     "bitmapFont": "font16s",
     "position": [17, 444],
+    "sound": "titlslct",
     "anchor": "none",
     "onClick": {
       "name": "game.fadeOut",
