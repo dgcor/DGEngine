@@ -17,6 +17,26 @@ enum class PlayerDirection : size_t
 	Size
 };
 
+enum class PlayerInventory : size_t
+{
+	Body,
+	Belt,
+	Stash,
+	Size
+};
+
+enum class PlayerItemMount : size_t
+{
+	LeftHand,
+	RightHand,
+	Armor,
+	Helmet,
+	Amulet,
+	LeftRing,
+	RightRing,
+	Size
+};
+
 const size_t PlayerPaletteSize = 8;
 
 enum class PlayerStatus : size_t

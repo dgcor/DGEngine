@@ -8,7 +8,7 @@ namespace Parser
 
 	void parseKeyboard(Game& game, const Value& elem)
 	{
-		if (elem.HasMember("key"))
+		if (elem.HasMember("key") == true)
 		{
 			std::shared_ptr<Action> action;
 			if (elem["action"].IsNull() == false)
@@ -29,9 +29,9 @@ namespace Parser
 
 			if (keyElem.IsArray() == true)
 			{
-				for (const auto& arrKey : keyElem)
+				for (const auto& arrVal : keyElem)
 				{
-					auto keyCode = Parser::getKeyCodeKey(arrKey);
+					auto keyCode = Parser::getKeyCodeVal(arrVal);
 					if (keyCode != sf::Keyboard::Key::Unknown)
 					{
 						evt.code = keyCode;
@@ -41,7 +41,7 @@ namespace Parser
 			}
 			else
 			{
-				auto keyCode = Parser::getKeyCodeKey(keyElem);
+				auto keyCode = Parser::getKeyCodeVal(keyElem);
 				if (keyCode != sf::Keyboard::Key::Unknown)
 				{
 					evt.code = keyCode;

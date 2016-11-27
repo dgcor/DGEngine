@@ -50,6 +50,8 @@ namespace Parser
 		levelObj->MapPosition(mapPos);
 		mapCell.object = levelObj;
 
+		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
+
 		if (elem.HasMember("textureRect"))
 		{
 			sf::IntRect rect(0, 0, 32, 32);

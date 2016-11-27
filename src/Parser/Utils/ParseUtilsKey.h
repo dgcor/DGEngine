@@ -2,6 +2,7 @@
 
 #include "Game/PlayerProperties.h"
 #include "Json/JsonParser.h"
+#include "ParseUtilsVal.h"
 #include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -36,40 +37,43 @@ namespace Parser
 	template <class T>
 	T getVector2fKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
-		if (elem.HasMember(key) && elem[key].IsArray() && elem[key].Size() > 1)
+		if (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 1
+			&& elem[key][0].IsNumber() == true
+			&& elem[key][1].IsNumber() == true)
 		{
 			return T(elem[key][0].GetDouble(), elem[key][1].GetDouble());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	template <class T>
 	T getVector2iKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
-		if (elem.HasMember(key) && elem[key].IsArray() && elem[key].Size() > 1)
+		if (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 1
+			&& elem[key][0].IsNumber() == true
+			&& elem[key][1].IsNumber() == true)
 		{
 			return T(elem[key][0].GetInt(), elem[key][1].GetInt());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	template <class T>
 	T getVector2uKey(const rapidjson::Value& elem, const char* key, const T& val = T())
 	{
-		if (elem.HasMember(key) && elem[key].IsArray() && elem[key].Size() > 1)
+		if (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 1
+			&& elem[key][0].IsNumber() == true
+			&& elem[key][1].IsNumber() == true)
 		{
 			return T(elem[key][0].GetUint(), elem[key][1].GetUint());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
@@ -83,14 +87,20 @@ namespace Parser
 
 	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const char* key);
 
-	sf::Keyboard::Key getKeyCodeKey(const rapidjson::Value& elem,
-		sf::Keyboard::Key val = sf::Keyboard::Unknown);
-
 	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
 		const char* key, IgnoreResource val = IgnoreResource::None);
 
+	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
+		const char* key, PlayerInventory inv);
+
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
 		const char* key, PlayerDirection val = PlayerDirection::All);
+
+	PlayerInventory getPlayerInventoryKey(const rapidjson::Value& elem,
+		const char* key, PlayerInventory val = PlayerInventory::Body);
+
+	PlayerItemMount getPlayerItemMountKey(const rapidjson::Value& elem,
+		const char* key, PlayerItemMount val = PlayerItemMount::LeftHand);
 
 	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
 		const char* key, PlayerStatus val = PlayerStatus::Stand1);

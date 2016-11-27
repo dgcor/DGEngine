@@ -236,6 +236,7 @@ public:
 	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) { fadeInOut = std::move(fadeInOut_); }
 
 	void updateMouse();
+	void updateCursorPosition();
 
 	void play();
 

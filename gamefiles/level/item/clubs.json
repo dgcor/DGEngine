@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "club",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 77,
+      "name": "Club",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
+      "actionDropInventory": { "name": "sound.play", "id": "invsword" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

@@ -73,6 +73,16 @@ namespace Utils
 		return strings;
 	}
 
+	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter)
+	{
+		auto pos = str.find(delimiter, 0);
+		if (pos != std::string::npos)
+		{
+			return std::make_pair(str.substr(0, pos), str.substr(pos + 1, str.size() - pos));
+		}
+		return std::make_pair(str, "");
+	}
+
 	std::string toLower(const std::string& str)
 	{
 		auto ret = str;

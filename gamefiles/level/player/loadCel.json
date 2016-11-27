@@ -5,15 +5,15 @@
     "case": [
       {
         "value": "Warrior",
-        "action": { "name": "load", "file": "level/player/loadWarriorCel.json" }
+        "action": { "name": "load", "file": "level/player/warriorCel.json" }
       },
       {
         "value": "Rogue",
-        "action": { "name": "load", "file": "level/player/loadRogueCel.json" }
+        "action": { "name": "load", "file": "level/player/rogueCel.json" }
       },
       {
         "value": "Sorceror",
-        "action": { "name": "load", "file": "level/player/loadSorcerorCel.json" }
+        "action": { "name": "load", "file": "level/player/sorcerorCel.json" }
       }
     ]
   }

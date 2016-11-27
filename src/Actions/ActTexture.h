@@ -12,7 +12,8 @@ private:
 	bool resetRect;
 
 public:
-	ActSetTexture(const std::string& id_, const std::string& idTexture_, bool resetRect_)
+	ActSetTexture(const std::string& id_,
+		const std::string& idTexture_, bool resetRect_)
 		: id(id_), idTexture(idTexture_), resetRect(resetRect_) {}
 
 	virtual bool execute(Game& game)
@@ -31,6 +32,46 @@ public:
 };
 
 template <class T>
+class ActSetTextureFromInventory : public Action
+{
+private:
+	std::string id;
+	std::string idLevel;
+	std::string idPlayer;
+	size_t invIdx;
+	size_t itemIdx;
+	bool resetRect;
+
+public:
+	ActSetTextureFromInventory(const std::string& id_, const std::string& idLevel_,
+		const std::string& idPlayer_, size_t invIdx_, size_t itemIdx_, bool resetRect_)
+		: id(id_), idLevel(idLevel_), idPlayer(idPlayer_), invIdx(invIdx_),
+		itemIdx(itemIdx_), resetRect(resetRect_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto resource = game.Resources().getResource<T>(id);
+		if (resource != nullptr)
+		{
+			auto level = game.Resources().getLevel(idLevel);
+			if (level != nullptr)
+			{
+				auto player = level->getPlayerOrCurrent(idPlayer);
+				if (player != nullptr)
+				{
+					auto item = player->getInventoryItem(invIdx, itemIdx);
+					if (item != nullptr)
+					{
+						resource->setTexture(item->Class()->getCelInventoryTexture(), resetRect);
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
+template <class T>
 class ActSetTextureRect : public Action
 {
 private:
@@ -38,7 +79,8 @@ private:
 	sf::IntRect rect;
 
 public:
-	ActSetTextureRect(const std::string& id_, const sf::IntRect& rect_) : id(id_), rect(rect_) {}
+	ActSetTextureRect(const std::string& id_,
+		const sf::IntRect& rect_) : id(id_), rect(rect_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -60,7 +102,8 @@ private:
 	size_t idx{ 0 };
 
 public:
-	ActSetTextureRectVec(const std::string& id_, const std::vector<sf::IntRect> & rectVec_)
+	ActSetTextureRectVec(const std::string& id_,
+		const std::vector<sf::IntRect> & rectVec_)
 		: id(id_), rectVec(rectVec_) {}
 
 	virtual bool execute(Game& game)

@@ -42,6 +42,7 @@ set(SOURCE_FILES
     src/GameUtils.cpp
     src/GameUtils.h
     src/Helper2D.h
+    src/IgnoreResource.h
     src/Image.cpp
     src/Image.h
     src/ImageUtils.cpp
@@ -101,10 +102,12 @@ set(SOURCE_FILES
     src/Actions/ActFade.h
     src/Actions/ActFocus.h
     src/Actions/ActGame.h
+    src/Actions/ActImage.h
     src/Actions/ActInputText.h
     src/Actions/ActIO.h
     src/Actions/Action.h
     src/Actions/ActiontList.h
+    src/Actions/ActItem.h
     src/Actions/ActLevel.h
     src/Actions/ActLoad.h
     src/Actions/ActLoadingScreen.h
@@ -164,6 +167,8 @@ set(SOURCE_FILES
     src/Parser/ParseCelFile.h
     src/Parser/ParseCelTexture.cpp
     src/Parser/ParseCelTexture.h
+    src/Parser/ParseCelTexturePack.cpp
+    src/Parser/ParseCelTexturePack.h
     src/Parser/ParseCircle.cpp
     src/Parser/ParseCircle.h
     src/Parser/ParseCondition.cpp
@@ -214,6 +219,10 @@ set(SOURCE_FILES
     src/Parser/ParseTexture.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
+    src/Parser/Game/ParseItem.cpp
+    src/Parser/Game/ParseItem.h
+    src/Parser/Game/ParseItemClass.cpp
+    src/Parser/Game/ParseItemClass.h
     src/Parser/Game/ParseLevel.cpp
     src/Parser/Game/ParseLevel.h
     src/Parser/Game/ParseLevelObject.cpp

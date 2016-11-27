@@ -1,0 +1,60 @@
+{
+  "itemClass": [
+    {
+      "id": "healthPotion",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 13,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 43,
+      "name": "Potion of Healing",
+      "type": "Potion",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
+      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "manaPotion",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 13,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 50,
+      "name": "Potion of Mana",
+      "type": "Potion",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
+      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "fullHealthPotion",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 16,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 46,
+      "name": "Potion of Full Healing",
+      "type": "Potion",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
+      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "fullManaPotion",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 14,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 11,
+      "name": "Potion of Full Mana",
+      "type": "Potion",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
+      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

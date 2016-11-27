@@ -30,7 +30,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		game.Resources().popCursor(popAll);
-		game.updateMouse();
+		game.updateCursorPosition();
 		return true;
 	}
 };

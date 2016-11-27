@@ -31,6 +31,370 @@
         ],
         "default": { "name": "text.setSpacing", "id": "txtPanel", "vertical": 2 }
       }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftHand",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgLeftHand", "inventory": "body", "item": "LeftHand" },
+        { "name": "image.centerTexture", "id": "imgLeftHand" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftHand|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightHand",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgRightHand", "inventory": "body", "item": "RightHand" },
+        { "name": "image.centerTexture", "id": "imgRightHand" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.RightHand|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerRightHand", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerRightHand", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryArmor",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgArmor", "inventory": "body", "item": "Armor" },
+        { "name": "image.centerTexture", "id": "imgArmor" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.Armor|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerArmor", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerArmor", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryHelmet",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgHelmet", "inventory": "body", "item": "Helmet" },
+        { "name": "image.centerTexture", "id": "imgHelmet" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.Helmet|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerHelmet", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerHelmet", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryAmulet",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgAmulet", "inventory": "body", "item": "Amulet" },
+        { "name": "image.centerTexture", "id": "imgAmulet" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.Amulet|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerAmulet", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerAmulet", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftRing",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgLeftRing", "inventory": "body", "item": "LeftRing" },
+        { "name": "image.centerTexture", "id": "imgLeftRing" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftRing|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerLeftRing", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerLeftRing", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightRing",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgRightRing", "inventory": "body", "item": "RightRing" },
+        { "name": "image.centerTexture", "id": "imgRightRing" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Body.RightRing|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "playerRightRing", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "playerRightRing", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftHandText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftHand|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.LeftHand.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightHandText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.RightHand|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.RightHand.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryArmorText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.Armor|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Armor.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryHelmetText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.Helmet|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Helmet.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryAmuletText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.Amulet|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Amulet.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftRingText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftRing|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.LeftRing.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightRingText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Body.RightRing|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.RightRing.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftHandClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.inList",
+          "param": "|currentLevel|selectedItem.type|",
+          "list": ["Shield", "Weapon"],
+          "then": [
+            { "name": "image.setTexture", "id": "imgLeftHand", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "LeftHand" },
+            "updateInventoryLeftHand"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgLeftHand", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "LeftHand" },
+          "updateInventoryLeftHand"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightHandClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.inList",
+          "param": "|currentLevel|selectedItem.type|",
+          "list": ["Shield", "Weapon"],
+          "then": [
+            { "name": "image.setTexture", "id": "imgRightHand", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "RightHand" },
+            "updateInventoryRightHand"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgRightHand", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "RightHand" },
+          "updateInventoryRightHand"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryArmorClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|selectedItem.type|",
+          "param2": "Armor",
+          "then": [
+            { "name": "image.setTexture", "id": "imgArmor", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "Armor" },
+            "updateInventoryArmor"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgArmor", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "Armor" },
+          "updateInventoryArmor"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryHelmetClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|selectedItem.type|",
+          "param2": "Helmet",
+          "then": [
+            { "name": "image.setTexture", "id": "imgHelmet", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "Helmet" },
+            "updateInventoryHelmet"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgHelmet", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "Helmet" },
+          "updateInventoryHelmet"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryAmuletClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|selectedItem.type|",
+          "param2": "Amulet",
+          "then": [
+            { "name": "image.setTexture", "id": "imgAmulet", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "Amulet" },
+            "updateInventoryAmulet"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgAmulet", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "Amulet" },
+          "updateInventoryAmulet"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryLeftRingClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|selectedItem.type|",
+          "param2": "Ring",
+          "then": [
+            { "name": "image.setTexture", "id": "imgLeftRing", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "LeftRing" },
+            "updateInventoryLeftRing"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgLeftRing", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "LeftRing" },
+          "updateInventoryLeftRing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryRightRingClick",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|selectedItem.type|",
+          "param2": "Ring",
+          "then": [
+            { "name": "image.setTexture", "id": "imgRightRing", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "RightRing" },
+            "updateInventoryRightRing"
+          ]
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "imgRightRing", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "RightRing" },
+          "updateInventoryRightRing"
+        ]
+      }
     }
   ]
 }

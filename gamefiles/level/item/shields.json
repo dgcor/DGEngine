@@ -1,0 +1,32 @@
+{
+  "itemClass": [
+    {
+      "id": "buckler",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 94,
+      "name": "Buckler",
+      "type": "Shield",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipshld" },
+      "actionDropInventory": { "name": "sound.play", "id": "invshiel" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "shield",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 116,
+      "name": "Shield",
+      "type": "Shield",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipshld" },
+      "actionDropInventory": { "name": "sound.play", "id": "invshiel" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

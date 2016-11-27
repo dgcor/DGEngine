@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <cstdlib>
 #include "Game.h"
 #include "GameUtils.h"
 #include "Level.h"
@@ -68,23 +69,29 @@ void Player::updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSiz
 void Player::update(Game& game, Level& level)
 {
 	auto rect = sprite.getGlobalBounds();
-	if (level.HasMouseInside() == true &&
-		rect.contains(level.MousePositionf()) == true)
+	if (enableHover == true)
 	{
-		if (hovered == false)
+		if (level.HasMouseInside() == true &&
+			rect.contains(level.MousePositionf()) == true)
 		{
-			hovered = true;
-			level.setHoverObject(this);
-			level.executeHoverEnterAction(game);
+			if (hovered == false)
+			{
+				hovered = true;
+				level.setHoverObject(this);
+				level.executeHoverEnterAction(game);
+			}
 		}
-	}
-	else
-	{
-		if (hovered == true)
+		else
 		{
-			hovered = false;
-			level.setHoverObject(nullptr);
-			level.executeHoverLeaveAction(game);
+			if (hovered == true)
+			{
+				hovered = false;
+				if (level.getHoverObject() == this)
+				{
+					level.setHoverObject(nullptr);
+					level.executeHoverLeaveAction(game);
+				}
+			}
 		}
 	}
 	if (rect.width > 0 && rect.height > 0)
@@ -99,13 +106,13 @@ void Player::update(Game& game, Level& level)
 	}
 
 	// add delta time
-	m_currentTime += game.getElapsedTime();
+	currentTime += game.getElapsedTime();
 
 	// if current time is bigger then the frame time advance one frame
-	if (m_currentTime >= m_frameTime)
+	if (currentTime >= frameTime)
 	{
 		// reset time, but keep the remainder
-		m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_frameTime.asMicroseconds());
+		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
 		currentFrame++;
 		if (currentFrame < frameRange.first || currentFrame >= frameRange.second)
@@ -120,13 +127,48 @@ void Player::update(Game& game, Level& level)
 	}
 }
 
+std::shared_ptr<Item> Player::getInventoryItem(size_t invIdx, size_t itemIdx) const
+{
+	if (invIdx < inventories.size())
+	{
+		if (itemIdx < inventories[invIdx].Size())
+		{
+			return inventories[invIdx][itemIdx];
+		}
+	}
+	return nullptr;
+}
+
+bool Player::setInventoryItem(size_t invIdx, size_t itemIdx,
+	const std::shared_ptr<Item>& item)
+{
+	if (invIdx < inventories.size())
+	{
+		if (itemIdx < inventories[invIdx].Size())
+		{
+			if (item == nullptr)
+			{
+				inventories[invIdx][itemIdx] = nullptr;
+				return true;
+			}
+			if (inventories[invIdx].isTypeAllowed(item->Class()->TypeHash()) == true)
+			{
+				inventories[invIdx][itemIdx] = item;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 bool Player::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.empty() == true)
 	{
 		return false;
 	}
-	switch (str2int(prop.c_str()))
+	auto props = Utils::splitStringIn2(prop, '.');
+	switch (str2int(props.first.c_str()))
 	{
 	case str2int("type"):
 		var = Variable("player");
@@ -212,6 +254,56 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 	case str2int("resistLightning"):
 		var = Variable((int64_t)resistLightning);
 		break;
+	case str2int("hasItem"):
+	{
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		auto invIdx = GameUtils::getPlayerInventoryIndex(props2.first);
+		if (invIdx < inventories.size())
+		{
+			size_t itemIdx = 0;
+			if (invIdx == (size_t)PlayerInventory::Body)
+			{
+				itemIdx = GameUtils::getPlayerItemMountIndex(props2.second);
+			}
+			else
+			{
+				itemIdx = std::strtoul(props2.second.c_str(), NULL, 10);
+			}
+			if (itemIdx < inventories[invIdx].Size())
+			{
+				var = Variable(inventories[invIdx][itemIdx] != nullptr);
+				break;
+			}
+		}
+		return false;
+	}
+	case str2int("inventory"):
+	{
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		auto invIdx = GameUtils::getPlayerInventoryIndex(props2.first);
+		if (invIdx < inventories.size())
+		{
+			auto props3 = Utils::splitStringIn2(props2.second, '.');
+			size_t itemIdx = 0;
+			if (invIdx == (size_t)PlayerInventory::Body)
+			{
+				itemIdx = GameUtils::getPlayerItemMountIndex(props3.first);
+			}
+			else
+			{
+				itemIdx = std::strtoul(props3.first.c_str(), NULL, 10);
+			}
+			if (itemIdx < inventories[invIdx].Size())
+			{
+				auto item = inventories[invIdx][itemIdx].get();
+				if (item != nullptr)
+				{
+					return item->getProperty(props3.second, var);
+				}
+			}
+		}
+		return false;
+	}
 	default:
 		return false;
 	}

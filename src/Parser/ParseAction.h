@@ -7,4 +7,5 @@
 namespace Parser
 {
 	std::shared_ptr<Action> parseAction(Game& game, const rapidjson::Value& elem);
+	void parseActionAndExecute(Game& game, const rapidjson::Value& elem);
 }

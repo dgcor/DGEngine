@@ -31,7 +31,10 @@ void ImageLevelObject::update(Game& game, Level& level)
 		if (hovered == true)
 		{
 			hovered = false;
-			level.setHoverObject(nullptr);
+			if (level.getHoverObject() == this)
+			{
+				level.setHoverObject(nullptr);
+			}
 			level.executeHoverLeaveAction(game);
 		}
 	}

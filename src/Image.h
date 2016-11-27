@@ -16,6 +16,11 @@ public:
 	void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
 	void setColor(const sf::Color& color) { sprite.setColor(color); }
 	void setOrigin(const sf::Vector2f& origin) { sprite.setOrigin(origin); }
+	void setOrigin();
+
+	void centerTexture();
+
+	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }

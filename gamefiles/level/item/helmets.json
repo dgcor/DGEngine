@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "helmet",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 104,
+      "name": "Helmet",
+      "type": "Helmet",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipcap" },
+      "actionDropInventory": { "name": "sound.play", "id": "invcap" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

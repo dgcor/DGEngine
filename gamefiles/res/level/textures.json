@@ -29,6 +29,11 @@
       "id": "pentspn2",
       "file": "data/pentspn2.cel",
       "palette": "town"
+    },
+    {
+      "id": "red",
+      "fill": "0xFF000022",
+      "size": [1, 1]
     }
   ],
   "action": {

@@ -3,6 +3,7 @@
 #include "Json/JsonParser.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "Variable.h"
 
 namespace Parser
 {
@@ -25,40 +26,40 @@ namespace Parser
 	template <class T>
 	T getVector2fVal(const rapidjson::Value& elem, const T& val = T())
 	{
-		if (elem.IsArray() && elem.Size() > 1)
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
 		{
 			return T(elem[0].GetDouble(), elem[1].GetDouble());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	template <class T>
 	T getVector2iVal(const rapidjson::Value& elem, const T& val = T())
 	{
-		if (elem.IsArray() && elem.Size() > 1)
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
 		{
 			return T(elem[0].GetInt(), elem[1].GetInt());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	template <class T>
 	T getVector2uVal(const rapidjson::Value& elem, const T& val = T())
 	{
-		if (elem.IsArray() && elem.Size() > 1)
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
 		{
 			return T(elem[0].GetUint(), elem[1].GetUint());
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
 	sf::IntRect getIntRectVal(const rapidjson::Value& elem,
@@ -66,4 +67,9 @@ namespace Parser
 
 	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem,
 		const sf::FloatRect& val = sf::FloatRect());
+
+	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem,
+		sf::Keyboard::Key val = sf::Keyboard::Unknown);
+
+	Variable getVariableVal(const rapidjson::Value& elem);
 }

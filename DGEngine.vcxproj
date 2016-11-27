@@ -1,8 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug NoMovie|Win32">
+      <Configuration>Debug NoMovie</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release NoMovie|Win32">
+      <Configuration>Release NoMovie</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release Static|Win32">
@@ -31,6 +39,7 @@
     <ClCompile Include="src\Game\CelLevelObject.cpp" />
     <ClCompile Include="src\Game\ImageLevelObject.cpp" />
     <ClCompile Include="src\Game\Item.cpp" />
+    <ClCompile Include="src\Game\ItemClass.cpp" />
     <ClCompile Include="src\Game\ItemCollection.cpp" />
     <ClCompile Include="src\Game\Level.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
@@ -51,6 +60,8 @@
     <ClCompile Include="src\Movie2.cpp" />
     <ClCompile Include="src\MovieStub.cpp" />
     <ClCompile Include="src\Palette.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseItem.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseItemClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevel.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevelObject.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayer.cpp" />
@@ -63,6 +74,7 @@
     <ClCompile Include="src\Parser\ParseButton.cpp" />
     <ClCompile Include="src\Parser\ParseCelFile.cpp" />
     <ClCompile Include="src\Parser\ParseCelTexture.cpp" />
+    <ClCompile Include="src\Parser\ParseCelTexturePack.cpp" />
     <ClCompile Include="src\Parser\ParseCircle.cpp" />
     <ClCompile Include="src\Parser\ParseCondition.cpp" />
     <ClCompile Include="src\Parser\ParseCursor.cpp" />
@@ -119,10 +131,12 @@
     <ClInclude Include="src\Actions\ActFade.h" />
     <ClInclude Include="src\Actions\ActFocus.h" />
     <ClInclude Include="src\Actions\ActGame.h" />
+    <ClInclude Include="src\Actions\ActImage.h" />
     <ClInclude Include="src\Actions\ActInputText.h" />
     <ClInclude Include="src\Actions\ActIO.h" />
     <ClInclude Include="src\Actions\Action.h" />
     <ClInclude Include="src\Actions\ActiontList.h" />
+    <ClInclude Include="src\Actions\ActItem.h" />
     <ClInclude Include="src\Actions\ActLevel.h" />
     <ClInclude Include="src\Actions\ActLoad.h" />
     <ClInclude Include="src\Actions\ActLoadingScreen.h" />
@@ -150,6 +164,7 @@
     <ClInclude Include="src\Game\fsa.h" />
     <ClInclude Include="src\Game\ImageLevelObject.h" />
     <ClInclude Include="src\Game\Item.h" />
+    <ClInclude Include="src\Game\ItemClass.h" />
     <ClInclude Include="src\Game\ItemCollection.h" />
     <ClInclude Include="src\Game\Level.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
@@ -162,12 +177,15 @@
     <ClInclude Include="src\Game\PlayerProperties.h" />
     <ClInclude Include="src\Game\Quest.h" />
     <ClInclude Include="src\Game\stlastar.h" />
+    <ClInclude Include="src\IgnoreResource.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\ImageUtils.h" />
     <ClInclude Include="src\InputText.h" />
     <ClInclude Include="src\Json\JsonParser.h" />
     <ClInclude Include="src\Json\JsonUtils.h" />
     <ClInclude Include="src\MovieStub.h" />
+    <ClInclude Include="src\Parser\Game\ParseItem.h" />
+    <ClInclude Include="src\Parser\Game\ParseItemClass.h" />
     <ClInclude Include="src\Parser\Game\ParseLevel.h" />
     <ClInclude Include="src\Parser\Game\ParseLevelObject.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayer.h" />
@@ -180,6 +198,7 @@
     <ClInclude Include="src\Parser\ParseButton.h" />
     <ClInclude Include="src\Parser\ParseCelFile.h" />
     <ClInclude Include="src\Parser\ParseCelTexture.h" />
+    <ClInclude Include="src\Parser\ParseCelTexturePack.h" />
     <ClInclude Include="src\Parser\ParseCircle.h" />
     <ClInclude Include="src\Parser\ParseCondition.h" />
     <ClInclude Include="src\Parser\ParseCursor.h" />
@@ -257,7 +276,20 @@
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
@@ -277,7 +309,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'" Label="PropertySheets">
@@ -285,6 +323,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -295,6 +334,21 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;sfeMovie-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\debug\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>
@@ -313,6 +367,26 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;physfs.lib;sfeMovie.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\release\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-network.lib;sfml-system.lib;sfml-window.lib;physfs.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\release\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>No</GenerateDebugInformation>

@@ -28,9 +28,7 @@
       "name": "action.set",
       "id": "updateGammaProgressBar",
       "action": { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 }
-    }
-  ],
-  "action": [
+    },
     {
       "name": "action.set",
       "id": "updateAudioUpKeyboardShortcut",

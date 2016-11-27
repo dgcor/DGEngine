@@ -42,12 +42,8 @@ bool StringText::getProperty(const std::string& prop, Variable& var) const
 	{
 		return false;
 	}
-	auto props = Utils::splitString(prop, '.');
-	if (props.empty() == true)
-	{
-		return false;
-	}
-	auto propHash = str2int(props[0].c_str());
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int(props.first.c_str());
 	switch (propHash)
 	{
 	case str2int("lineCount"):
@@ -57,7 +53,7 @@ bool StringText::getProperty(const std::string& prop, Variable& var) const
 		var = Variable(text.getString().toAnsiString());
 		break;
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props, var);
+		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
 	}
 	return true;
 }
