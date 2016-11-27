@@ -3,7 +3,7 @@
 #include "PlayerProperties.h"
 #include "stlastar.h"
 
-#define PATH_FINDER_MAX 100
+#define PATH_FINDER_MAX 150
 
 class LevelMap;
 

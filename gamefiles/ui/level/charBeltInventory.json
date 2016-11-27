@@ -1,0 +1,474 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateBeltItem1",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt1", "inventory": "belt", "item": 0 },
+        { "name": "image.centerTexture", "id": "imgBelt1" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.0|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt1", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt1", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt1", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt1", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem2",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt2", "inventory": "belt", "item": 1 },
+        { "name": "image.centerTexture", "id": "imgBelt2" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.1|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt2", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt2", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt2", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt2", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem3",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt3", "inventory": "belt", "item": 2 },
+        { "name": "image.centerTexture", "id": "imgBelt3" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.2|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt3", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt3", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt3", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt3", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem4",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt4", "inventory": "belt", "item": 3 },
+        { "name": "image.centerTexture", "id": "imgBelt4" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.3|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt4", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt4", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt4", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt4", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem5",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt5", "inventory": "belt", "item": 4 },
+        { "name": "image.centerTexture", "id": "imgBelt5" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.4|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt5", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt5", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt5", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt5", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem6",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt6", "inventory": "belt", "item": 5 },
+        { "name": "image.centerTexture", "id": "imgBelt6" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.5|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt6", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt6", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt6", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt6", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem7",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt7", "inventory": "belt", "item": 6 },
+        { "name": "image.centerTexture", "id": "imgBelt7" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.6|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt7", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt7", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt7", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt7", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem8",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt8", "inventory": "belt", "item": 7 },
+        { "name": "image.centerTexture", "id": "imgBelt8" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.Belt.7|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt8", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt8", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt8", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt8", "visible": false }
+          ]
+        }
+      ]
+    }
+  ],
+  "button": [
+    {
+      "id": "playerBelt1",
+      "texture": "red",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [205, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt1", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 0 },
+        "updateBeltItem1"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt2",
+      "texture": "red",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [234, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt2", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 1 },
+        "updateBeltItem2"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt3",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [263, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt3", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 2 },
+        "updateBeltItem3"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt4",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [292, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt4", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 3 },
+        "updateBeltItem4"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt5",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [321, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt5", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 4 },
+        "updateBeltItem5"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.4|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.4.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt6",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [350, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt6", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 5 },
+        "updateBeltItem6"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.5|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.5.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt7",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [379, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt7", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 6 },
+        "updateBeltItem7"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.6|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.6.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt8",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [408, 357],
+      "onClick": [
+        { "name": "image.setTexture", "id": "imgBelt8", "texture": "empty" },
+        { "name": "item.update", "inventory": "belt", "item": 7 },
+        "updateBeltItem8"
+      ],
+      "onHoverEnter": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.Belt.7|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.belt.7.name|" },
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
+  "image": [
+    {
+      "id": "imgBelt1",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [205, 357]
+    },
+    {
+      "id": "imgBelt2",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [234, 357]
+    },
+    {
+      "id": "imgBelt3",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [263, 357]
+    },
+    {
+      "id": "imgBelt4",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [292, 357]
+    },
+    {
+      "id": "imgBelt5",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [321, 357]
+    },
+    {
+      "id": "imgBelt6",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [350, 357]
+    },
+    {
+      "id": "imgBelt7",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [379, 357]
+    },
+    {
+      "id": "imgBelt8",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [408, 357]
+    }
+  ],
+  "text": [
+    {
+      "id": "txtBelt1",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [228, 374],
+      "visible": false,
+      "text": "1"
+    },
+    {
+      "id": "txtBelt2",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [255, 374],
+      "visible": false,
+      "text": "2"
+    },
+    {
+      "id": "txtBelt3",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [284, 374],
+      "visible": false,
+      "text": "3"
+    },
+    {
+      "id": "txtBelt4",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [312, 374],
+      "visible": false,
+      "text": "4"
+    },
+    {
+      "id": "txtBelt5",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [342, 374],
+      "visible": false,
+      "text": "5"
+    },
+    {
+      "id": "txtBelt6",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [371, 374],
+      "visible": false,
+      "text": "6"
+    },
+    {
+      "id": "txtBelt7",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [400, 374],
+      "visible": false,
+      "text": "7"
+    },
+    {
+      "id": "txtBelt8",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [429, 374],
+      "visible": false,
+      "text": "8"
+    }
+  ]
+}

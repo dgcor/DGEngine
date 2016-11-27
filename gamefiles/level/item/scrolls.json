@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "scroll",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 37,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 12,
+      "name": "Scroll",
+      "type": "Scroll",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipscrl" },
+      "actionDropInventory": { "name": "sound.play", "id": "invscrol" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

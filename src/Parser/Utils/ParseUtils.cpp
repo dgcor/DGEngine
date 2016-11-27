@@ -12,7 +12,9 @@ namespace Parser
 
 	bool isValidArray(const rapidjson::Value& elem, const char* key)
 	{
-		return (elem.HasMember(key) && elem[key].IsArray() && elem[key].Size() > 0);
+		return (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 0);
 	}
 
 	bool isValidId(const std::string& id)
@@ -30,6 +32,8 @@ namespace Parser
 
 	bool isValidString(const rapidjson::Value& elem, const char* key)
 	{
-		return (elem.HasMember(key) && elem[key].IsString() && elem[key].GetStringLength() > 0);
+		return (elem.HasMember(key) == true
+			&& elem[key].IsString() == true
+			&& elem[key].GetStringLength() > 0);
 	}
 }

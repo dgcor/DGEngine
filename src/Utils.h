@@ -16,6 +16,8 @@ namespace Utils
 
 	std::vector<std::string> splitString(const std::string& str, char delimiter);
 
+	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter);
+
 	constexpr unsigned int str2int(const char* str, int h = 0)
 	{
 		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];

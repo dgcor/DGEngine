@@ -1,0 +1,32 @@
+{
+  "itemClass": [
+    {
+      "id": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 129,
+      "name": "Short Bow",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipbow" },
+      "actionDropInventory": { "name": "sound.play", "id": "invbow" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "bow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 129,
+      "name": "Bow",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipbow" },
+      "actionDropInventory": { "name": "sound.play", "id": "invbow" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

@@ -2,11 +2,12 @@
 
 #include "Actions/Action.h"
 #include "CelCache.h"
-#include "Player.h"
+#include "ItemClass.h"
 #include "LevelMap.h"
 #include <memory>
 #include "Min.h"
 #include "Palette.h"
+#include "Player.h"
 #include "PlayerClass.h"
 #include "Quest.h"
 #include "Sol.h"
@@ -43,10 +44,13 @@ private:
 
 	std::vector<std::shared_ptr<LevelObject>> levelObjects;
 
+	std::unordered_map<std::string, std::shared_ptr<ItemClass>> itemClasses;
 	std::vector<std::pair<std::string, std::shared_ptr<PlayerClass>>> playerClasses;
 	std::vector<std::shared_ptr<Player>> players;
 	Player* currentPlayer{ nullptr };
 	bool followCurrentPlayer{ true };
+
+	std::shared_ptr<Item> selectedItem;
 
 	bool pause{ false };
 	bool visible{ true };
@@ -80,6 +84,23 @@ public:
 	void Name(const std::string& name_) { name = name_; }
 
 	void clearLevelObjects() { levelObjects.clear(); }
+
+	void addItemClass(const std::string& key, const std::shared_ptr<ItemClass>& obj)
+	{
+		itemClasses.insert(std::make_pair(key, obj));
+	}
+
+	std::shared_ptr<ItemClass> getItemClass(const std::string& key) const
+	{
+		for (const auto& item : itemClasses)
+		{
+			if (item.first == key)
+			{
+				return item.second;
+			}
+		}
+		return nullptr;
+	}
 
 	void addPlayerClass(const std::string& key, const std::shared_ptr<PlayerClass>& obj)
 	{
@@ -137,6 +158,20 @@ public:
 
 	void addLevelObject(const std::shared_ptr<LevelObject>& obj) { levelObjects.push_back(obj); }
 
+	void deleteLevelObject(const LevelObject* obj)
+	{
+		auto it = std::find_if(levelObjects.begin(),
+			levelObjects.end(),
+			[&](std::shared_ptr<LevelObject> const& p)
+		{
+			return p.get() == obj;
+		});
+		if (it != levelObjects.end())
+		{
+			levelObjects.erase(it);
+		}
+	}
+
 	MapCoord getMapCoordOverMouse() const
 	{
 		return map.getTile(mousePositionf);
@@ -177,6 +212,9 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+
+	const std::shared_ptr<Item>& SelectedItem() const { return selectedItem; }
+	void SelectedItem(const std::shared_ptr<Item>& item) { selectedItem = item; }
 
 	const std::vector<Quest>& Quests() const { return quests; };
 	void addQuest(const Quest& quest_);

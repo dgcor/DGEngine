@@ -1,0 +1,135 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelInventory" },
+  "button": [
+    {
+      "id": "playerLeftHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 76],
+      "onClick": "updateInventoryLeftHandClick",
+      "onHoverEnter": "updateInventoryLeftHandText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerRightHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [569, 76],
+      "onClick": "updateInventoryRightHandClick",
+      "onHoverEnter": "updateInventoryRightHandText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerArmor",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, 76],
+      "onClick": "updateInventoryArmorClick",
+      "onHoverEnter": "updateInventoryArmorText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerHelmet",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [453, 2],
+      "onClick": "updateInventoryHelmetClick",
+      "onHoverEnter": "updateInventoryHelmetText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerAmulet",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [525, 32],
+      "onClick": "updateInventoryAmuletClick",
+      "onHoverEnter": "updateInventoryAmuletText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerLeftRing",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [368, 180],
+      "onClick": "updateInventoryLeftRingClick",
+      "onHoverEnter": "updateInventoryLeftRingText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerRightRing",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [569, 180],
+      "onClick": "updateInventoryRightRingClick",
+      "onHoverEnter": "updateInventoryRightRingText",
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
+  "image": [
+    {
+      "id": "imgLeftHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 77]
+    },
+    {
+      "id": "imgRightHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [569, 77]
+    },
+    {
+      "id": "imgArmor",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, 77]
+    },
+    {
+      "id": "imgHelmet",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, -10]
+    },
+    {
+      "id": "imgAmulet",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [511, 5]
+    },
+    {
+      "id": "imgLeftRing",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [354, 150]
+    },
+    {
+      "id": "imgRightRing",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [555, 150]
+    }
+  ],
+  "action": [
+    "updateInventoryLeftHand",
+    "updateInventoryRightHand",
+    "updateInventoryArmor",
+    "updateInventoryHelmet",
+    "updateInventoryAmulet",
+    "updateInventoryLeftRing",
+    "updateInventoryRightRing"
+  ]
+}

@@ -3,68 +3,86 @@
 #include "Actions/Action.h"
 #include "CelCache.h"
 #include <cstdint>
+#include "ItemClass.h"
+#include "LevelObject.h"
 #include <memory>
 #include "Variable.h"
 
-class Level;
-
-class Item : public sf::Drawable
+class Item : public LevelObject
 {
 private:
 	sf::Sprite sprite;
-	sf::Vector2u position;
-	std::shared_ptr<CelTextureCache> celTexture;
+	MapCoord mapPosition;
+
+	std::shared_ptr<ItemClass> class_;
+
 	std::pair<size_t, size_t> frameRange;
+	size_t currentFrame{ 0 };
+
+	sf::Time frameTime{ sf::milliseconds(40) };
+	sf::Time currentTime;
+
 	sf::Vector2u inventorySize;
 
-	std::shared_ptr<Action> clickAction;
+	bool enableHover{ true };
+	bool hovered{ false };
 
-	std::string id;
 	std::string name;
-	std::string class_;
 	std::string description1;
 	std::string description2;
 	std::string description3;
 
 public:
 	Item() {}
-	Item(const std::shared_ptr<CelTextureCache>& celTexture_, const std::pair<size_t, size_t>& frameRange_)
-		: celTexture(celTexture_), frameRange(frameRange_) {}
+	Item(const std::shared_ptr<ItemClass>& class__) : class_(class__)
+	{
+		frameRange.first = 0;
+		frameRange.second = class_->getCelDropTextureSize() - 1;
+		currentFrame = frameRange.second;
+	}
 
-	const sf::Vector2u& PlayerPosition() const { return position; }
-	void PlayerPosition(const sf::Vector2u& position_) { position = position_; }
+	void resetDropAnimation() { currentFrame = 0; }
 
-	const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
-	sf::Vector2f Size() const
+	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
+	virtual sf::Vector2f Size() const
 	{
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
-	void Size(const sf::Vector2f& size) {}
+
+	virtual const MapCoord& MapPosition() const { return mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
+	void MapPosition(Level& level, const MapCoord& pos);
+
+	virtual void executeAction(Game& game) const;
+	virtual bool Passable() const { return true; }
+	virtual void setAction(const std::shared_ptr<Action>& action_) {}
+
+	virtual bool Hoverable() const { return enableHover; }
+	virtual void Hoverable(bool hoverable) { enableHover = hoverable; }
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(sprite, states);
 	}
-	void update(Game& game, const Level& level);
+	virtual void update(Game& game, Level& level);
 
-	bool getProperty(const std::string& prop, Variable& var) const;
+	void updateDrawPosition(const Level& level);
+
+	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual void setProperty(const std::string& prop, const Variable& val) {};
 
 	const sf::Vector2u& InventorySize() const { return inventorySize; }
 	void InventorySize(const sf::Vector2u& size_) { inventorySize = size_; }
 
-	void setCelTexture(const std::shared_ptr<CelTextureCache>& celTexture_) { celTexture = celTexture_; }
-	void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }
+	ItemClass* Class() const { return class_.get(); }
 
-	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
-	const std::string& Class() const { return class_; }
+	const std::string& ClassName() const { return class_->Name(); }
 	const std::string& Description1() const { return description1; }
 	const std::string& Description2() const { return description2; }
 	const std::string& Description3() const { return description3; }
 
-	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
-	void Class(const std::string& class__) { class_ = class__; }
 	void Description1(const std::string& description) { description1 = description; }
 	void Description2(const std::string& description) { description2 = description; }
 	void Description3(const std::string& description) { description3 = description; }

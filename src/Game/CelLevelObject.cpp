@@ -32,7 +32,10 @@ void CelLevelObject::update(Game& game, Level& level)
 		if (hovered == true)
 		{
 			hovered = false;
-			level.setHoverObject(nullptr);
+			if (level.getHoverObject() == this)
+			{
+				level.setHoverObject(nullptr);
+			}
 			level.executeHoverLeaveAction(game);
 		}
 	}
@@ -44,13 +47,13 @@ void CelLevelObject::update(Game& game, Level& level)
 	}
 
 	// add delta time
-	m_currentTime += game.getElapsedTime();
+	currentTime += game.getElapsedTime();
 
 	// if current time is bigger then the frame time advance one frame
-	if (m_currentTime >= m_frameTime)
+	if (currentTime >= frameTime)
 	{
 		// reset time, but keep the remainder
-		m_currentTime = sf::microseconds(m_currentTime.asMicroseconds() % m_frameTime.asMicroseconds());
+		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
 		currentFrame++;
 		if (currentFrame < frameRange.first || currentFrame >= frameRange.second)

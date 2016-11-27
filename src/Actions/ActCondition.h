@@ -82,11 +82,44 @@ public:
 				var1.is<std::string>() ?
 				FileUtils::exists(var1.get<std::string>().c_str()) :
 				false);
-		case str2int("resourceExists"):
-			return ifCondition(game,
-				var1.is<std::string>() ?
-				game.Resources().resourceExists(var1.get<std::string>()) :
-				false);
+		}
+		return true;
+	}
+};
+
+class ActInListCondition : public Action
+{
+private:
+	Variable var;
+	std::vector<Variable> list;
+	std::shared_ptr<Action> condThen;
+	std::shared_ptr<Action> condElse;
+
+public:
+	ActInListCondition(Variable var_, const std::vector<Variable>& list_,
+		const std::shared_ptr<Action>& then_, const std::shared_ptr<Action>& else_)
+		: var(var_), list(list_), condThen(then_), condElse(else_) {}
+
+	virtual bool execute(Game& game)
+	{
+		if (list.empty() == false)
+		{
+			auto var1 = getVariable(game, var);
+			for (const auto& elem : list)
+			{
+				if (var1 == getVariable(game, elem))
+				{
+					if (condThen != nullptr)
+					{
+						return condThen->execute(game);
+					}
+					return true;
+				}
+			}
+		}
+		if (condElse != nullptr)
+		{
+			return condElse->execute(game);
 		}
 		return true;
 	}

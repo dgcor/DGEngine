@@ -22,10 +22,6 @@ bool Rectangle::getProperty(const std::string& prop, Variable& var) const
 	{
 		return false;
 	}
-	auto props = Utils::splitString(prop, '.');
-	if (props.empty() == true)
-	{
-		return false;
-	}
-	return GameUtils::getUIObjProp(*this, Utils::str2int(props[0].c_str()), props, var);
+	auto props = Utils::splitStringIn2(prop, '.');
+	return GameUtils::getUIObjProp(*this, Utils::str2int(props.first.c_str()), props.second, var);
 }

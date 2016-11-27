@@ -1,0 +1,32 @@
+{
+  "itemClass": [
+    {
+      "id": "shortStaff",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 39,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 120,
+      "name": "Short Staff",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipstaf" },
+      "actionDropInventory": { "name": "sound.play", "id": "invstaf" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "staff",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 39,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 120,
+      "name": "Staff",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipstaf" },
+      "actionDropInventory": { "name": "sound.play", "id": "invstaf" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

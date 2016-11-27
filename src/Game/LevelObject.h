@@ -17,9 +17,7 @@ class LevelObject : public sf::Drawable
 public:
 	// Move
 	virtual const sf::Vector2f& Position() const = 0;
-	virtual void Position(const sf::Vector2f& pos) = 0;
 	virtual sf::Vector2f Size() const = 0;
-	virtual void Size(const sf::Vector2f& size) = 0;
 
 	// Map Position
 	virtual const MapCoord& MapPosition() const = 0;
@@ -27,6 +25,8 @@ public:
 
 	// Game
 	virtual void executeAction(Game& game) const = 0;
+	virtual bool Hoverable() const = 0;
+	virtual void Hoverable(bool hoverable) = 0;
 	virtual bool Passable() const = 0;
 	virtual void setAction(const std::shared_ptr<Action>& action) = 0;
 

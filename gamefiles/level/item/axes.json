@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "axe",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 155,
+      "name": "Axe",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipaxe" },
+      "actionDropInventory": { "name": "sound.play", "id": "invaxe" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "item": [
+    {
+      "class": "sword",
+      "name": "Short Sword",
+      "mapPosition": [56, 73]
+    },
+    {
+      "class": "shield",
+      "name": "Shield",
+      "mapPosition": [57, 73]
+    },
+    {
+      "class": "ring",
+      "name": "Ring",
+      "mapPosition": [58, 73]
+    },
+    {
+      "class": "manaPotion",
+      "name": "Potion of Mana",
+      "mapPosition": [59, 73]
+    },
+    {
+      "class": "amulet",
+      "name": "Amulet",
+      "mapPosition": [60, 73]
+    },
+    {
+      "class": "plateArmor",
+      "name": "Plate Armor",
+      "mapPosition": [61, 73]
+    },
+    {
+      "class": "helmet",
+      "name": "Helmet",
+      "mapPosition": [62, 73]
+    },
+    {
+      "class": "armor",
+      "name": "Armor",
+      "mapPosition": [63, 73]
+    },
+    {
+      "class": "valorArmor",
+      "name": "Armor of Valor",
+      "mapPosition": [56, 74]
+    },
+    {
+      "class": "axe",
+      "name": "Axe",
+      "mapPosition": [57, 74]
+    },
+    {
+      "class": "book",
+      "name": "Book",
+      "mapPosition": [58, 74]
+    },
+    {
+      "class": "club",
+      "name": "Club",
+      "mapPosition": [59, 74]
+    },
+    {
+      "class": "flail",
+      "name": "Flail",
+      "mapPosition": [60, 74]
+    },
+    {
+      "class": "fullHealthPotion",
+      "name": "Potion of Full Healing",
+      "mapPosition": [61, 74]
+    },
+    {
+      "class": "fullManaPotion",
+      "name": "Potion of Full Mana",
+      "mapPosition": [62, 74]
+    },
+    {
+      "class": "scroll",
+      "name": "Scroll",
+      "mapPosition": [63, 74]
+    }
+  ]
+}

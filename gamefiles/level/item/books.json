@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "book",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 10,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 97,
+      "name": "Book",
+      "type": "Book",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipbook" },
+      "actionDropInventory": { "name": "sound.play", "id": "invbook" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

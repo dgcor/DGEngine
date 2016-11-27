@@ -177,27 +177,29 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 	{
 		return false;
 	}
-	auto props = Utils::splitString(prop, '.');
-	if (props.empty() == true)
-	{
-		return false;
-	}
-	auto propHash = str2int(props[0].c_str());
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int(props.first.c_str());
 	switch (propHash)
 	{
 	case str2int("currentPlayer"):
 	{
-		if (props.size() > 1 && currentPlayer != nullptr)
+		if (currentPlayer != nullptr)
 		{
-			return currentPlayer->getProperty(props[1], var);
+			return currentPlayer->getProperty(props.second, var);
 		}
+	}
+	break;
+	case str2int("hasSelectedItem"):
+	{
+		var = Variable(selectedItem != nullptr);
+		return true;
 	}
 	break;
 	case str2int("hoverObject"):
 	{
-		if (props.size() > 1 && hoverObject != nullptr)
+		if (hoverObject != nullptr)
 		{
-			return hoverObject->getProperty(props[1], var);
+			return hoverObject->getProperty(props.second, var);
 		}
 	}
 	break;
@@ -207,34 +209,38 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		break;
 	case str2int("player"):
 	{
-		if (props.size() > 2)
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		for (const auto& player : players)
 		{
-			for (const auto& player : players)
+			if (player->Id() == props2.first)
 			{
-				if (player->Id() == props[1])
-				{
-					return player->getProperty(props[2], var);
-				}
+				return player->getProperty(props2.second, var);
 			}
 		}
 	}
 	break;
 	case str2int("quest"):
 	{
-		if (props.size() > 2)
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		for (const auto& quest : quests)
 		{
-			for (const auto& quest : quests)
+			if (quest.Id() == props2.first)
 			{
-				if (quest.Id() == props[1])
-				{
-					return quest.getProperty(props[2], var);
-				}
+				return quest.getProperty(props2.second, var);
 			}
 		}
 	}
 	break;
+	case str2int("selectedItem"):
+	{
+		if (selectedItem != nullptr)
+		{
+			return selectedItem->getProperty(props.second, var);
+		}
+	}
+	break;
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props, var);
+		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
 	}
 	return false;
 }

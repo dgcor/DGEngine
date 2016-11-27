@@ -34,9 +34,9 @@ private:
 	bool resizable{ false };
 
 public:
-	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	sf::FloatRect getLocalBounds() const { return sprite.getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return sprite.getGlobalBounds(); }
+	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
 	bool getResizable() const { return resizable; }

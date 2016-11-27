@@ -3,6 +3,7 @@
 #include "CelCache.h"
 #include <memory>
 #include "PlayerProperties.h"
+#include <string>
 
 class PlayerClass
 {

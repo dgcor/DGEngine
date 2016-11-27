@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "ring",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 35,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 23,
+      "name": "Ring",
+      "type": "Ring",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipring" },
+      "actionDropInventory": { "name": "sound.play", "id": "invring" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

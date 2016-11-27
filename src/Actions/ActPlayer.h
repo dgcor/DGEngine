@@ -57,8 +57,17 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				auto a = player->MapPosition();
-				auto b = level->getMapCoordOverMouse();
+				MapCoord a = player->MapPosition();
+				MapCoord b;
+				auto hoverObj = level->getHoverObject();
+				if (hoverObj != nullptr && hoverObj != player)
+				{
+					b = hoverObj->MapPosition();
+				}
+				else
+				{
+					b = level->getMapCoordOverMouse();
+				}
 				player->setWalkPath(level->Map().getPath(a, b));
 			}
 		}

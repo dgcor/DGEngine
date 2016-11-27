@@ -3,10 +3,10 @@
     "name": "if.equal",
     "param1": "%beta%",
     "param2": true,
-    "then": { "name": "load", "file": "level/player/loadRogueCelFilesBeta.json" },
-    "else": { "name": "load", "file": "level/player/loadRogueCelFiles.json" }
+    "then": { "name": "load", "file": "level/player/rogueCelFilesBeta.json" },
+    "else": { "name": "load", "file": "level/player/rogueCelFiles.json" }
   },
-  "celTexture": [
+  "celTexturePack": [
     {
       "id": "rls",
       "celFile": [

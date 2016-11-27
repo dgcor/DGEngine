@@ -61,14 +61,14 @@ namespace Parser
 			return;
 		}
 
-		std::vector<const CelFile*> celVec;
+		const CelFile* celObj = nullptr;
 
 		if (elem.HasMember("file") == true)
 		{
 			auto cel = parseCelFileObj(game, elem);
 			if (cel != nullptr)
 			{
-				celVec.push_back(cel.get());
+				celObj = cel.get();
 				game.Resources().addCelFile(id, cel);
 			}
 		}
@@ -80,22 +80,11 @@ namespace Parser
 				auto cel = game.Resources().getCelFile(celElem.GetString());
 				if (cel != nullptr)
 				{
-					celVec.push_back(cel.get());
-				}
-			}
-			else if (celElem.IsArray() == true)
-			{
-				for (const auto& val : celElem)
-				{
-					auto cel = game.Resources().getCelFile(getStringVal(val));
-					if (cel != nullptr)
-					{
-						celVec.push_back(cel.get());
-					}
+					celObj = cel.get();
 				}
 			}
 		}
-		if (celVec.empty() == true)
+		if (celObj == nullptr)
 		{
 			return;
 		}
@@ -105,6 +94,6 @@ namespace Parser
 			return;
 		}
 
-		game.Resources().addCelTextureCache(id, std::make_shared<CelTextureCacheVector>(celVec, *pal));
+		game.Resources().addCelTextureCache(id, std::make_shared<CelTextureCache>(*celObj, *pal));
 	}
 }

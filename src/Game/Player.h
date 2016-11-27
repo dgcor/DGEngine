@@ -8,20 +8,19 @@
 #include "PlayerClass.h"
 #include <queue>
 
-class Level;
-
 class Player : public LevelObject
 {
 private:
 	sf::Sprite sprite;
 	MapCoord mapPosition;
+	MapCoord mapPositionMoveTo;
 
 	std::queue<MapCoord> walkPath;
 
 	std::shared_ptr<PlayerClass> class_;
 
 	PlayerDirection direction{ PlayerDirection::All };
-	PlayerStatus status { PlayerStatus::Stand1 };
+	PlayerStatus status{ PlayerStatus::Stand1 };
 
 	size_t celIdx{ 0 };
 	size_t palette{ 0 };
@@ -30,15 +29,15 @@ private:
 	std::pair<size_t, size_t> frameRange;
 	size_t currentFrame{ 0 };
 
-	sf::Time m_frameTime{ sf::milliseconds(50) };
-	sf::Time m_currentTime;
+	sf::Time frameTime{ sf::milliseconds(50) };
+	sf::Time currentTime;
 
 	std::shared_ptr<Action> action;
 
+	bool enableHover{ true };
 	bool hovered{ false };
 
-	ItemCollection inventory1;
-	ItemCollection inventory2;
+	std::array<ItemCollection, (size_t)PlayerInventory::Size> inventories;
 
 	std::string id;
 	std::string name;
@@ -103,7 +102,6 @@ private:
 	void updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSize);
 
 public:
-	Player() {}
 	Player(const std::shared_ptr<PlayerClass>& class__) : class_(class__)
 	{
 		calculateRange();
@@ -112,20 +110,23 @@ public:
 	sf::Vector2f getBasePosition() const;
 
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
 	virtual sf::Vector2f Size() const
 	{
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
-	virtual void Size(const sf::Vector2f& size) {}
 
 	virtual const MapCoord& MapPosition() const { return mapPosition; }
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 	void MapPosition(Level& level, const MapCoord& pos);
 
+	const MapCoord& MapPositionMoveTo() const { return mapPositionMoveTo; }
+
 	virtual void executeAction(Game& game) const;
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+
+	virtual bool Hoverable() const { return enableHover; }
+	virtual void Hoverable(bool hoverable) { enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -136,7 +137,14 @@ public:
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
 
-	void setWalkPath(const std::queue<MapCoord> walkPath_) { walkPath = walkPath_; }
+	void setWalkPath(const std::queue<MapCoord> walkPath_)
+	{
+		walkPath = walkPath_;
+		if (walkPath.empty() == false)
+		{
+			mapPositionMoveTo = walkPath.back();
+		}
+	}
 
 	void setDirection(PlayerDirection direction_)
 	{
@@ -167,11 +175,18 @@ public:
 		}
 	}
 
-	ItemCollection& Inventory1() { return inventory1; }
-	const ItemCollection& Inventory1() const { return inventory1; }
+	std::shared_ptr<Item> getInventoryItem(size_t invIdx, size_t itemIdx) const;
 
-	ItemCollection& Inventory2() { return inventory2; }
-	const ItemCollection& Inventory2() const { return inventory2; }
+	bool setInventoryItem(size_t invIdx, size_t itemIdx,
+		const std::shared_ptr<Item>& item);
+
+	ItemCollection& getInventory(PlayerInventory inv) { return inventories[(size_t)inv]; }
+	const ItemCollection& getInventory(PlayerInventory inv) const { return inventories[(size_t)inv]; }
+
+	ItemCollection& getInventory(size_t idx) { return inventories[idx]; }
+	const ItemCollection& getInventory(size_t idx) const { return inventories[0]; }
+
+	size_t getInventorySize() { return inventories.size(); }
 
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
@@ -208,7 +223,6 @@ public:
 
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
-	void Class(const std::shared_ptr<PlayerClass>& class__) { class_ = class__; }
 
 	void Level_(int32_t level_) { level = level_; }
 	void Experience(int32_t experience_) { experience = experience_; }

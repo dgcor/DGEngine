@@ -125,11 +125,15 @@
       "textureRect": [0, 76, 71, 19],
       "clickUp": true,
       "onClick": [
+        { "name": "resource.pop", "id": "charPanelSpells" },
+        { "name": "load", "file": "ui/level/charPanelInventory.json" },
         { "name": "drawable.visible", "id": "invPanel", "visible": true },
         { "name": "drawable.visible", "id": "spellPanel", "visible": false },
         { "name": "button.setToggle", "id": "spell", "toggle": false }
       ],
       "onToggle": [
+        { "name": "resource.pop", "id": "charPanelInventory" },
+        { "name": "resource.pop", "id": "charPanelSpells" },
         { "name": "drawable.visible", "id": "invPanel", "visible": false },
         { "name": "drawable.visible", "id": "spellPanel", "visible": false }
       ],
@@ -149,11 +153,15 @@
       "textureRect": [0, 95, 71, 19],
       "clickUp": true,
       "onClick": [
+        { "name": "resource.pop", "id": "charPanelInventory" },
+        { "name": "load", "file": "ui/level/charPanelSpells.json" },
         { "name": "drawable.visible", "id": "invPanel", "visible": false },
         { "name": "drawable.visible", "id": "spellPanel", "visible": true },
         { "name": "button.setToggle", "id": "inv", "toggle": false }
       ],
       "onToggle": [
+        { "name": "resource.pop", "id": "charPanelInventory" },
+        { "name": "resource.pop", "id": "charPanelSpells" },
         { "name": "drawable.visible", "id": "invPanel", "visible": false },
         { "name": "drawable.visible", "id": "spellPanel", "visible": false }
       ],
@@ -189,8 +197,9 @@
       "textureRect": [0, 57, 71, 19],
       "clickUp": true,
       "onClick": {
-        "name": "if.resourceExists",
-        "param1": "gameMenuCommon",
+        "name": "if.equal",
+        "param1": "|game|hasResource.gameMenuCommon|",
+        "param2": true,
         "then": "menu.saveAndCloseAction",
         "else": [
           { "name": "load", "file": "ui/level/gameMenuCommon.json" },
@@ -240,5 +249,6 @@
       "key": "tab",
       "action": { "name": "button.click", "id": "map" }
     }
-  ]
+  ],
+  "load": "ui/level/charBeltInventory.json"
 }

@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "amulet",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 35,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 56,
+      "name": "Amulet",
+      "type": "Amulet",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipring" },
+      "actionDropInventory": { "name": "sound.play", "id": "invring" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

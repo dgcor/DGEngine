@@ -92,7 +92,7 @@ void ResourceManager::ignoreTopResource(IgnoreResource ignore)
 	}
 }
 
-bool ResourceManager::resourceExists(const std::string& id)
+bool ResourceManager::resourceExists(const std::string& id) const
 {
 	for (auto& res : resources)
 	{
@@ -104,7 +104,7 @@ bool ResourceManager::resourceExists(const std::string& id)
 	return false;
 }
 
-Animation* ResourceManager::getCursor() const
+UIObject* ResourceManager::getCursor() const
 {
 	if (cursors.empty() == true)
 	{
@@ -174,9 +174,14 @@ void ResourceManager::addCelFile(const std::string& key, const std::shared_ptr<C
 	resources.back().celFiles[key] = obj;
 }
 
-void ResourceManager::addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
+void ResourceManager::addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
 {
 	resources.back().celCaches[key] = obj;
+}
+
+void ResourceManager::addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
+{
+	resources.back().celCachesVec[key] = obj;
 }
 
 void ResourceManager::addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)
@@ -345,13 +350,27 @@ std::shared_ptr<CelFile> ResourceManager::getCelFile(const std::string& key) con
 	return nullptr;
 }
 
-std::shared_ptr<CelTextureCacheVector> ResourceManager::getCelTextureCache(const std::string& key) const
+std::shared_ptr<CelTextureCache> ResourceManager::getCelTextureCache(const std::string& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
 		const auto elem = res.celCaches.find(key);
 
 		if (elem != res.celCaches.cend())
+		{
+			return elem->second;
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<CelTextureCacheVector> ResourceManager::getCelTextureCacheVec(const std::string& key) const
+{
+	for (const auto& res : reverse(resources))
+	{
+		const auto elem = res.celCachesVec.find(key);
+
+		if (elem != res.celCachesVec.cend())
 		{
 			return elem->second;
 		}

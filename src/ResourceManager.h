@@ -6,6 +6,7 @@
 #include "CelCache.h"
 #include "Font2.h"
 #include "Game/Level.h"
+#include "IgnoreResource.h"
 #include <list>
 #include <memory>
 #include "Music2.h"
@@ -18,13 +19,6 @@
 #include <SFML/Graphics.hpp>
 
 class Button;
-
-enum class IgnoreResource
-{
-	None,
-	DrawAndUpdate,
-	Update
-};
 
 struct ResourceBundle
 {
@@ -68,7 +62,8 @@ struct ResourceBundle
 	std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds;
 	std::unordered_map<std::string, std::shared_ptr<Palette>> palettes;
 	std::unordered_map<std::string, std::shared_ptr<CelFile>> celFiles;
-	std::unordered_map<std::string, std::shared_ptr<CelTextureCacheVector>> celCaches;
+	std::unordered_map<std::string, std::shared_ptr<CelTextureCache>> celCaches;
+	std::unordered_map<std::string, std::shared_ptr<CelTextureCacheVector>> celCachesVec;
 
 	std::vector<std::pair<std::string, std::shared_ptr<UIObject>>> drawables;
 	std::vector<std::shared_ptr<Button>> focusButtons;
@@ -79,7 +74,7 @@ class ResourceManager
 {
 private:
 	std::vector<ResourceBundle> resources;
-	std::vector<std::shared_ptr<Animation>> cursors;
+	std::vector<std::shared_ptr<UIObject>> cursors;
 	std::list<sf::Sound> playingSounds;
 	mutable std::pair<std::string, UIObject*> drawableCache{ "", nullptr };
 	Level* currentLevel{ nullptr };
@@ -133,9 +128,9 @@ public:
 	void popAllResources(bool popBaseResources);
 	void ignoreResources(const std::string& id, IgnoreResource ignore);
 	void ignoreTopResource(IgnoreResource ignore);
-	bool resourceExists(const std::string& id);
+	bool resourceExists(const std::string& id) const;
 
-	Animation* getCursor() const;
+	UIObject* getCursor() const;
 	Level* getCurrentLevel() const { return currentLevel; }
 	Level* getLevel(const std::string& id) const
 	{
@@ -145,7 +140,7 @@ public:
 		}
 		return getResource<Level>(id);
 	}
-	void addCursor(const std::shared_ptr<Animation>& cursor_) { cursors.push_back(cursor_); }
+	void addCursor(const std::shared_ptr<UIObject>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
 	void popAllCursors() { cursors.clear(); }
 
@@ -158,7 +153,8 @@ public:
 	void addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj);
 	void addPalette(const std::string& key, const std::shared_ptr<Palette>& obj);
 	void addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj);
-	void addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj);
+	void addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj);
+	void addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj);
 
 	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj);
 
@@ -178,7 +174,8 @@ public:
 	std::shared_ptr<sf::SoundBuffer> getSound(const std::string& key) const;
 	std::shared_ptr<Palette> getPalette(const std::string& key) const;
 	std::shared_ptr<CelFile> getCelFile(const std::string& key) const;
-	std::shared_ptr<CelTextureCacheVector> getCelTextureCache(const std::string& key) const;
+	std::shared_ptr<CelTextureCache> getCelTextureCache(const std::string& key) const;
+	std::shared_ptr<CelTextureCacheVector> getCelTextureCacheVec(const std::string& key) const;
 
 	UIObject* getDrawable(const std::string& key) const;
 

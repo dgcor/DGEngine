@@ -16,7 +16,7 @@ namespace Parser
 	void parsePlayerClassCelTexture(Game& game,
 		PlayerClass& playerClass, const Value& elem)
 	{
-		auto celTexture = game.Resources().getCelTextureCache(getStringKey(elem, "name"));
+		auto celTexture = game.Resources().getCelTextureCacheVec(getStringKey(elem, "name"));
 		if (celTexture == nullptr)
 		{
 			return;

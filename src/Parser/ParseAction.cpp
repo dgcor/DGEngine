@@ -9,9 +9,11 @@
 #include "Actions/ActFade.h"
 #include "Actions/ActFocus.h"
 #include "Actions/ActGame.h"
+#include "Actions/ActImage.h"
 #include "Actions/ActInputText.h"
 #include "Actions/ActIO.h"
 #include "Actions/ActiontList.h"
+#include "Actions/ActItem.h"
 #include "Actions/ActLevel.h"
 #include "Actions/ActLoad.h"
 #include "Actions/ActLoadingScreen.h"
@@ -182,6 +184,19 @@ namespace Parser
 			return std::make_shared<ActSetTexture<BitmapButton>>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "texture"),
+				getBoolKey(elem, "resetRect"));
+		}
+		case str2int("button.setTextureFromInventory"):
+		{
+			auto inv = getPlayerInventoryKey(elem, "inventory");
+			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
+
+			return std::make_shared<ActSetTextureFromInventory<BitmapButton>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"),
+				(size_t)inv,
+				itemIdx,
 				getBoolKey(elem, "resetRect"));
 		}
 		case str2int("button.setTextureRect"):
@@ -517,6 +532,10 @@ namespace Parser
 		{
 			return getIfCondition(str2int(">"), game, elem);
 		}
+		case str2int("if.inList"):
+		{
+			return getInListCondition(game, elem);
+		}
 		case str2int("if.lower"):
 		{
 			return getIfCondition(str2int("<"), game, elem);
@@ -528,6 +547,30 @@ namespace Parser
 		case str2int("if.resourceExists"):
 		{
 			return getIfCondition(str2int("resourceExists"), game, elem);
+		}
+		case str2int("image.centerTexture"):
+		{
+			return std::make_shared<ActImageCenterTexture>(getStringKey(elem, "id"));
+		}
+		case str2int("image.setTexture"):
+		{
+			return std::make_shared<ActSetTexture<Image>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "texture"),
+				getBoolKey(elem, "resetRect"));
+		}
+		case str2int("image.setTextureFromInventory"):
+		{
+			auto inv = getPlayerInventoryKey(elem, "inventory");
+			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
+
+			return std::make_shared<ActSetTextureFromInventory<Image>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"),
+				(size_t)inv,
+				itemIdx,
+				getBoolKey(elem, "resetRect"));
 		}
 		case str2int("image.setTextureRect"):
 		{
@@ -563,6 +606,29 @@ namespace Parser
 		case str2int("io.deleteAll"):
 		{
 			return std::make_shared<ActIODeleteAll>(getStringKey(elem, "file"));
+		}
+		case str2int("item.drop"):
+		{
+			return std::make_shared<ActItemDrop>(
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"));
+		}
+		case str2int("item.pickFromLevel"):
+		{
+			return std::make_shared<ActItemPickFromLevel>(
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"));
+		}
+		case str2int("item.update"):
+		{
+			auto inv = getPlayerInventoryKey(elem, "inventory");
+			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
+
+			return std::make_shared<ActItemUpdate>(
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"),
+				(size_t)inv,
+				itemIdx);
 		}
 		case str2int("level.clearObjects"):
 		{
@@ -715,9 +781,14 @@ namespace Parser
 		}
 		case str2int("quest.add"):
 		{
+			auto quest = parseQuestObj(game, elem);
+			if (isValidId(quest.Id()) == false)
+			{
+				return nullptr;
+			}
 			return std::make_shared<ActQuestAdd>(
 				getStringKey(elem, "idLevel"),
-				parseQuestObj(game, elem));
+				quest);
 		}
 		case str2int("quest.delete"):
 		{
@@ -773,8 +844,12 @@ namespace Parser
 		}
 		case str2int("resource.add"):
 		{
-			return std::make_shared<ActResourceAdd>(
-				getStringKey(elem, "id"),
+			auto id = getStringKey(elem, "id");
+			if (isValidId(id) == false)
+			{
+				return nullptr;
+			}
+			return std::make_shared<ActResourceAdd>(id,
 				getIgnoreResourceKey(elem, "ignorePrevious"));
 		}
 		case str2int("resource.ignore"):
@@ -915,5 +990,42 @@ namespace Parser
 			}
 		}
 		return nullptr;
+	}
+
+	void parseActionAndExecute(Game& game, const rapidjson::Value& elem)
+	{
+		if (elem.IsNull() == true)
+		{
+			return;
+		}
+		else if (elem.IsString() == true)
+		{
+			auto action = game.Resources().getAction(elem.GetString());
+			if (action != nullptr)
+			{
+				action->execute(game);
+			}
+			return;
+		}
+		else if (elem.IsObject() == true)
+		{
+			auto action = parseActionElem(game, elem);
+			if (action != nullptr)
+			{
+				action->execute(game);
+			}
+			return;
+		}
+		else if (elem.IsArray() == true)
+		{
+			for (const auto& val : elem)
+			{
+				auto action = parseAction(game, val);
+				if (action != nullptr)
+				{
+					action->execute(game);
+				}
+			}
+		}
 	}
 }

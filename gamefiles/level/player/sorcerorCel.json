@@ -3,65 +3,65 @@
     "name": "if.equal",
     "param1": "%beta%",
     "param2": true,
-    "then": { "name": "load", "file": "level/player/loadWarriorCelFilesBeta.json" },
-    "else": { "name": "load", "file": "level/player/loadWarriorCelFiles.json" }
+    "then": { "name": "load", "file": "level/player/sorcerorCelFilesBeta.json" },
+    "else": { "name": "load", "file": "level/player/sorcerorCelFiles.json" }
   },
-  "celTexture": [
+  "celTexturePack": [
     {
-      "id": "wls",
+      "id": "sls",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
       ],
       "palette": "town"
     },
     {
-      "id": "wlsInfra",
+      "id": "slsInfra",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
       ],
       "palette": "infra"
     },
     {
-      "id": "wlsStone",
+      "id": "slsStone",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "slsas",
+        "slsat",
+        "slsaw",
+        "slsfm",
+        "slsht",
+        "slslm",
+        "slsqm",
+        "slsst",
+        "slswl"
       ],
       "palette": "stone"
     }
   ],
   "playerClass": {
-    "id": "Warrior",
-    "name": "Warrior",
+    "id": "Sorceror",
+    "name": "Sorceror",
     "type": "Human",
-    "description": "Warrior",
+    "description": "Sorceror",
     "celTextures": [
-      { "palette": 0, "name": "wls" },
-      { "palette": 1, "name": "wlsInfra" },
-      { "palette": 2, "name": "wlsStone" }
+      { "palette": 0, "name": "sls" },
+      { "palette": 1, "name": "slsInfra" },
+      { "palette": 2, "name": "slsStone" }
     ],
     "celIndexes": [
       { "name": "Stand1", "index": 7 },

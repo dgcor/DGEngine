@@ -1,0 +1,20 @@
+{
+  "sound": [
+    { "id": "bfire", "file": "sfx/misc/bfire.wav" },
+    { "id": "flipanvl", "fromId": "flipharm" },
+    { "id": "flipblst", "fromId": "flipring" },
+    { "id": "flipbody", "fromId": "fliplarm" },
+    { "id": "flipbook", "fromId": "fliplarm" },
+    { "id": "flipmush", "fromId": "fliplarm" },
+    { "id": "fliprock", "fromId": "flipshld" },
+    { "id": "flipsign", "fromId": "flipshld" },
+    { "id": "invanvl", "fromId": "invharm" },
+    { "id": "invblst", "fromId": "invring" },
+    { "id": "invbody", "fromId": "invlarm" },
+    { "id": "invbook", "fromId": "invlarm" },
+    { "id": "invmush", "fromId": "invlarm" },
+    { "id": "invrock", "fromId": "invshld" },
+    { "id": "invsign", "fromId": "invshld" },
+    { "id": "readbook", "file": "sfx/misc/cast9.wav" }
+  ]
+}

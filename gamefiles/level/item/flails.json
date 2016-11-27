@@ -1,0 +1,18 @@
+{
+  "itemClass": [
+    {
+      "id": "flail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 33,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 142,
+      "name": "Flail",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
+      "actionDropInventory": { "name": "sound.play", "id": "invsword" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

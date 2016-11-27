@@ -1,8 +1,8 @@
 #include "ParseUtilsKey.h"
-#include "ParseUtilsVal.h"
 #include <cctype>
 #include "FileUtils.h"
 #include "Game.h"
+#include "GameUtils.h"
 #include "SFMLUtils.h"
 #include "Utils.h"
 
@@ -10,42 +10,21 @@ namespace Parser
 {
 	using namespace Utils;
 
-	Anchor getAnchorVal(const char* anchor, Anchor val)
-	{
-		switch (str2int(toLower(anchor).c_str()))
-		{
-		case str2int("none"):
-			return Anchor::None;
-		case str2int("top"):
-			return Anchor::Top;
-		case str2int("bottom"):
-			return Anchor::Bottom;
-		case str2int("left"):
-			return Anchor::Left;
-		case str2int("right"):
-			return Anchor::Right;
-		case str2int("all"):
-			return Anchor::Top | Anchor::Bottom | Anchor::Left | Anchor::Right;
-		default:
-			return val;
-		}
-	}
-
 	Anchor getAnchorKey(const rapidjson::Value& elem, const char* key, Anchor val)
 	{
-		if (elem.HasMember(key))
+		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
-			if (keyElem.IsString())
+			if (keyElem.IsString() == true)
 			{
-				return getAnchorVal(keyElem.GetString(), val);
+				return GameUtils::getAnchor(keyElem.GetString(), val);
 			}
-			else if (keyElem.IsArray())
+			else if (keyElem.IsArray() == true)
 			{
 				Anchor ret = Anchor::None;
 				for (const auto& arrElem : keyElem)
 				{
-					ret |= getAnchorVal(getStringVal(arrElem).c_str(), val);
+					ret |= GameUtils::getAnchor(getStringVal(arrElem).c_str(), val);
 				}
 				return ret;
 			}
@@ -55,40 +34,52 @@ namespace Parser
 
 	bool getBoolKey(const rapidjson::Value& elem, const char* key, bool val)
 	{
-		if (elem.HasMember(key) && elem[key].IsBool()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsBool() == true)
+		{
 			return elem[key].GetBool();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
 
 	double getDoubleKey(const rapidjson::Value& elem, const char* key, double val)
 	{
-		if (elem.HasMember(key) && elem[key].IsDouble()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsDouble() == true)
+		{
 			return elem[key].GetDouble();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
 
 	int getIntKey(const rapidjson::Value& elem, const char* key, int val)
 	{
-		if (elem.HasMember(key) && elem[key].IsInt()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsInt() == true)
+		{
 			return elem[key].GetInt();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
 
 	int64_t getInt64Key(const rapidjson::Value& elem, const char* key, int64_t val)
 	{
-		if (elem.HasMember(key) && elem[key].IsInt64()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsInt64() == true)
+		{
 			return elem[key].GetInt64();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
@@ -96,10 +87,13 @@ namespace Parser
 	const char* getStringCharKey(const rapidjson::Value& elem,
 		const char* key, const char* val)
 	{
-		if (elem.HasMember(key) && elem[key].IsString()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsString() == true)
+		{
 			return elem[key].GetString();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
@@ -112,20 +106,26 @@ namespace Parser
 
 	unsigned getUIntKey(const rapidjson::Value& elem, const char* key, unsigned val)
 	{
-		if (elem.HasMember(key) && elem[key].IsUint()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsUint() == true)
+		{
 			return elem[key].GetUint();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
 
 	uint64_t getUInt64Key(const rapidjson::Value& elem, const char* key, uint64_t val)
 	{
-		if (elem.HasMember(key) && elem[key].IsUint64()) {
+		if (elem.HasMember(key) == true
+			&& elem[key].IsUint64() == true)
+		{
 			return elem[key].GetUint64();
 		}
-		else {
+		else
+		{
 			return val;
 		}
 	}
@@ -133,7 +133,7 @@ namespace Parser
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
 		const char* key, const sf::IntRect& val)
 	{
-		if (elem.HasMember(key))
+		if (elem.HasMember(key) == true)
 		{
 			return getIntRectVal(elem[key], val);
 		}
@@ -143,7 +143,7 @@ namespace Parser
 	sf::FloatRect getFloatRectKey(const rapidjson::Value& elem,
 		const char* key, const sf::FloatRect& val)
 	{
-		if (elem.HasMember(key))
+		if (elem.HasMember(key) == true)
 		{
 			return getFloatRectVal(elem[key], val);
 		}
@@ -152,7 +152,8 @@ namespace Parser
 
 	sf::Color getColorKey(const rapidjson::Value& elem, const char* key, const sf::Color& val)
 	{
-		if (elem.HasMember(key) && elem[key].IsString())
+		if (elem.HasMember(key) == true
+			&& elem[key].IsString() == true)
 		{
 			try
 			{
@@ -184,263 +185,115 @@ namespace Parser
 		return vec;
 	}
 
-	sf::Keyboard::Key getKeyCodeKey(const rapidjson::Value& elem, sf::Keyboard::Key val)
+	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
+		const char* key, IgnoreResource val)
 	{
-		if (elem.IsInt())
+		if (elem.HasMember(key) == true)
 		{
-			auto num = elem.GetInt();
-			if (num >= sf::Keyboard::Unknown && num < sf::Keyboard::KeyCount)
+			const auto& keyElem = elem[key];
+			if (keyElem.IsBool() == true)
 			{
-				return static_cast<sf::Keyboard::Key>(num);
-			}
-		}
-		else if (elem.IsString())
-		{
-			std::string str = elem.GetString();
-			if (str.size() > 0)
-			{
-				if (str.size() == 1)
+				if (keyElem.GetBool() == true)
 				{
-					char ch = str[0];
-					if (ch >= 'A' && ch <= 'Z')
-					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'A');
-					}
-					if (ch >= 'a' && ch <= 'z')
-					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'a');
-					}
-					if (ch >= '0' && ch <= '9')
-					{
-						return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + ch - '0');
-					}
-					if (ch == ' ')
-					{
-						return sf::Keyboard::Space;
-					}
+					return IgnoreResource::DrawAndUpdate;
 				}
 				else
 				{
-					switch (str2int(toLower(str).c_str()))
-					{
-					case str2int("esc"):
-					case str2int("escape"):
-						return sf::Keyboard::Escape;
-					case str2int("space"):
-						return sf::Keyboard::Space;
-					case str2int("enter"):
-					case str2int("return"):
-						return sf::Keyboard::Return;
-					case str2int("backspace"):
-						return sf::Keyboard::BackSpace;
-					case str2int("tab"):
-						return sf::Keyboard::Tab;
-					case str2int("pageup"):
-						return sf::Keyboard::PageUp;
-					case str2int("pagedown"):
-						return sf::Keyboard::PageDown;
-					case str2int("end"):
-						return sf::Keyboard::End;
-					case str2int("home"):
-						return sf::Keyboard::Home;
-					case str2int("insert"):
-						return sf::Keyboard::Insert;
-					case str2int("delete"):
-						return sf::Keyboard::Delete;
-					case str2int("left"):
-						return sf::Keyboard::Left;
-					case str2int("right"):
-						return sf::Keyboard::Right;
-					case str2int("up"):
-						return sf::Keyboard::Up;
-					case str2int("down"):
-						return sf::Keyboard::Down;
-					case str2int("f1"):
-						return sf::Keyboard::F1;
-					case str2int("f2"):
-						return sf::Keyboard::F2;
-					case str2int("f3"):
-						return sf::Keyboard::F3;
-					case str2int("f4"):
-						return sf::Keyboard::F4;
-					case str2int("f5"):
-						return sf::Keyboard::F5;
-					case str2int("f6"):
-						return sf::Keyboard::F6;
-					case str2int("f7"):
-						return sf::Keyboard::F7;
-					case str2int("f8"):
-						return sf::Keyboard::F8;
-					case str2int("f9"):
-						return sf::Keyboard::F9;
-					case str2int("f10"):
-						return sf::Keyboard::F10;
-					case str2int("f11"):
-						return sf::Keyboard::F11;
-					case str2int("f12"):
-						return sf::Keyboard::F12;
-					case str2int("f13"):
-						return sf::Keyboard::F13;
-					case str2int("f14"):
-						return sf::Keyboard::F14;
-					case str2int("f15"):
-						return sf::Keyboard::F15;
-					case str2int("pause"):
-						return sf::Keyboard::Pause;
-					default:
-						return val;
-					}
+					return IgnoreResource::None;
 				}
+			}
+			else if (keyElem.IsString() == true)
+			{
+				return GameUtils::getIgnoreResource(keyElem.GetString(), val);
 			}
 		}
 		return val;
 	}
 
-	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
-		const char* key, IgnoreResource val)
+	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
+		const char* key, PlayerInventory inv)
 	{
-		if (elem.HasMember(key))
+		size_t itemIdx = 0;
+		if (elem.HasMember(key) == true)
 		{
-			const auto& ignoreElem = elem[key];
-
-			if (ignoreElem.IsBool())
+			const auto& keyElem = elem[key];
+			if (keyElem.IsUint() == true)
 			{
-				if (ignoreElem.GetBool() == true)
-				{
-					return IgnoreResource::DrawAndUpdate;
-				}
-				else
-				{
-					return IgnoreResource::None;
-				}
+				itemIdx = keyElem.GetUint();
 			}
-			else if (ignoreElem.IsString())
+			else if (keyElem.IsString() == true)
 			{
-				switch (str2int(toLower(elem[key].GetString()).c_str()))
+				if (inv == PlayerInventory::Body)
 				{
-				case str2int("none"):
-					return IgnoreResource::None;
-				case str2int("drawandupdate"):
-					return IgnoreResource::DrawAndUpdate;
-				case str2int("update"):
-					return IgnoreResource::Update;
+					itemIdx = (size_t)GameUtils::getPlayerItemMount(keyElem.GetString());
 				}
 			}
 		}
-		return val;
+		return itemIdx;
 	}
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
 		const char* key, PlayerDirection val)
 	{
-		if (elem.HasMember(key) == false)
+		if (elem.HasMember(key) == true)
 		{
-			return val;
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getPlayerDirection(keyElem.GetString(), val);
+			}
 		}
-		const auto& keyElem = elem[key];
-		if (keyElem.IsString() == false)
+		return val;
+	}
+
+	PlayerInventory getPlayerInventoryKey(const rapidjson::Value& elem,
+		const char* key, PlayerInventory val)
+	{
+		if (elem.HasMember(key) == true)
 		{
-			return val;
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getPlayerInventory(keyElem.GetString(), val);
+			}
 		}
-		switch (str2int(toLower(keyElem.GetString()).c_str()))
+		return val;
+	}
+
+	PlayerItemMount getPlayerItemMountKey(const rapidjson::Value& elem,
+		const char* key, PlayerItemMount val)
+	{
+		if (elem.HasMember(key) == true)
 		{
-		case str2int("all"):
-			return PlayerDirection::All;
-		case str2int("front"):
-			return PlayerDirection::Front;
-		case str2int("frontleft"):
-			return PlayerDirection::FrontLeft;
-		case str2int("left"):
-			return PlayerDirection::Left;
-		case str2int("backleft"):
-			return PlayerDirection::BackLeft;
-		case str2int("back"):
-			return PlayerDirection::Back;
-		case str2int("backright"):
-			return PlayerDirection::BackRight;
-		case str2int("right"):
-			return PlayerDirection::Right;
-		case str2int("frontright"):
-			return PlayerDirection::FrontRight;
-		default:
-			return val;
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getPlayerItemMount(keyElem.GetString(), val);
+			}
 		}
+		return val;
 	}
 
 	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
 		const char* key, PlayerStatus val)
 	{
-		if (elem.HasMember(key) == false)
+		if (elem.HasMember(key) == true)
 		{
-			return val;
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getPlayerStatus(keyElem.GetString(), val);
+			}
 		}
-		const auto& keyElem = elem[key];
-		if (keyElem.IsString() == false)
-		{
-			return val;
-		}
-		switch (str2int(toLower(keyElem.GetString()).c_str()))
-		{
-		case str2int("stand1"):
-			return PlayerStatus::Stand1;
-		case str2int("stand2"):
-			return PlayerStatus::Stand2;
-		case str2int("walk1"):
-			return PlayerStatus::Walk1;
-		case str2int("walk2"):
-			return PlayerStatus::Walk2;
-		case str2int("attack1"):
-			return PlayerStatus::Attack1;
-		case str2int("attack2"):
-			return PlayerStatus::Attack2;
-		case str2int("attack3"):
-			return PlayerStatus::Attack3;
-		case str2int("attack4"):
-			return PlayerStatus::Attack4;
-		case str2int("defend1"):
-			return PlayerStatus::Defend1;
-		case str2int("defend2"):
-			return PlayerStatus::Defend2;
-		case str2int("defend3"):
-			return PlayerStatus::Defend3;
-		case str2int("defend4"):
-			return PlayerStatus::Defend4;
-		case str2int("hit1"):
-			return PlayerStatus::Hit1;
-		case str2int("hit2"):
-			return PlayerStatus::Hit2;
-		case str2int("die1"):
-			return PlayerStatus::Die1;
-		case str2int("die2"):
-			return PlayerStatus::Die2;
-		default:
-			return val;
-		}
+		return val;
 	}
 
 	Variable getVariableKey(const rapidjson::Value& elem, const char* key)
 	{
-		Variable var;
 		if (elem.HasMember(key) == true)
 		{
-			const auto& value = elem[key];
-			if (value.IsString())
-			{
-				var.set<std::string>(std::string(value.GetString()));
-			}
-			else if (value.IsInt64())
-			{
-				var.set<int64_t>(value.GetInt64());
-			}
-			else if (value.IsDouble())
-			{
-				var.set<double>(value.GetDouble());
-			}
-			else if (value.IsBool())
-			{
-				var.set<bool>(value.GetBool());
-			}
+			return getVariableVal(elem[key]);
 		}
-		return var;
+		return Variable();
 	}
 }

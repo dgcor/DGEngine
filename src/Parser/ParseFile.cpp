@@ -9,6 +9,7 @@
 #include "ParseButton.h"
 #include "ParseCelFile.h"
 #include "ParseCelTexture.h"
+#include "ParseCelTexturePack.h"
 #include "ParseCircle.h"
 #include "ParseCursor.h"
 #include "ParseEvent.h"
@@ -28,6 +29,8 @@
 #include "ParseVariable.h"
 #include "ParseText.h"
 #include "ParseTexture.h"
+#include "Parser/Game/ParseItem.h"
+#include "Parser/Game/ParseItemClass.h"
 #include "Parser/Game/ParseLevel.h"
 #include "Parser/Game/ParseLevelObject.h"
 #include "Parser/Game/ParsePlayer.h"
@@ -124,11 +127,7 @@ namespace Parser
 			switch (str2int(it->name.GetString()))
 			{
 			case str2int("action"): {
-				auto action = parseAction(game, it->value);
-				if (action != nullptr)
-				{
-					action->execute(game);
-				}
+				parseActionAndExecute(game, it->value);
 				break;
 			}
 			case str2int("animation"): {
@@ -197,6 +196,17 @@ namespace Parser
 				}
 				break;
 			}
+			case str2int("celTexturePack"): {
+				if (it->value.IsArray() == false) {
+					parseCelTexturePack(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseCelTexturePack(game, val);
+					}
+				}
+				break;
+			}
 			case str2int("circle"): {
 				if (it->value.IsArray() == false) {
 					parseCircle(game, it->value);
@@ -256,6 +266,28 @@ namespace Parser
 				else {
 					for (const auto& val : it->value) {
 						parseImage(game, val);
+					}
+				}
+				break;
+			}
+			case str2int("item"): {
+				if (it->value.IsArray() == false) {
+					parseItem(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseItem(game, val);
+					}
+				}
+				break;
+			}
+			case str2int("itemClass"): {
+				if (it->value.IsArray() == false) {
+					parseItemClass(game, it->value);
+				}
+				else {
+					for (const auto& val : it->value) {
+						parseItemClass(game, val);
 					}
 				}
 				break;

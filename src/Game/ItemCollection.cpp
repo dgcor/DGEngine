@@ -1,29 +1,64 @@
 #include "ItemCollection.h"
+#include "Utils.h"
 
-ItemCollection::ItemCollection(const sf::Vector2u& size_) : size(size_), maxItemSize(size_)
+ItemCollection::ItemCollection(size_t size_) : size(size_, 0)
 {
-	items.resize(size_.x * size.y);
+	items.resize(size_);
 }
 
-bool ItemCollection::set(const std::shared_ptr<Item>& item,
-	const sf::Vector2u& position, std::shared_ptr<Item>& oldItem)
+ItemCollection::ItemCollection(const sf::Vector2u& size_) : size(size_)
 {
-	if (allowedItemClasses.empty() == false
-		&& std::find(
-			allowedItemClasses.begin(),
-			allowedItemClasses.end(),
-			item->Class()
-		) == allowedItemClasses.end())
+	items.resize(size_.x * size_.y);
+}
+
+void ItemCollection::init(size_t size_)
+{
+	size = sf::Vector2u(size_, 0);
+	items.resize(size_);
+}
+
+void ItemCollection::init(const sf::Vector2u& size_)
+{
+	size = size_;
+	items.resize(size_.x * size_.y);
+}
+
+void ItemCollection::allowType(const std::string& type)
+{
+	auto typeHash = Utils::str2int(type.c_str());
+	if (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) == allowedTypes.end())
 	{
-		return false;
+		allowedTypes.push_back(typeHash);
 	}
-	auto itemSize = item->InventorySize();
-	if (itemSize.x > maxItemSize.x
-		|| itemSize.y > maxItemSize.y)
+}
+
+bool ItemCollection::isTypeAllowed(const std::string& type) const
+{
+	return isTypeAllowed(Utils::str2int(type.c_str()));
+}
+
+bool ItemCollection::isTypeAllowed(unsigned typeHash) const
+{
+	if (allowedTypes.empty() == true)
 	{
-		return false;
+		return true;
 	}
+	return (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) != allowedTypes.end());
+}
+
+void ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item)
+{
+	if (idx < items.size())
+	{
+		items[idx] = item;
+	}
+}
+
+void ItemCollection::set(const sf::Vector2u& position, const std::shared_ptr<Item>& item)
+{
 	auto pos = position;
+
+	auto itemSize = item->InventorySize();
 	auto posEndX = pos.x + itemSize.x;
 	auto posEndY = pos.y + itemSize.y;
 	if (posEndX > size.x)
@@ -50,12 +85,10 @@ bool ItemCollection::set(const std::shared_ptr<Item>& item,
 				}
 				else
 				{
-					return false;
+					return;
 				}
 			}
 		}
 	}
-	oldItem = itemTemp;
 	items[pos.x + pos.y * size.y] = item;
-	return true;
 }

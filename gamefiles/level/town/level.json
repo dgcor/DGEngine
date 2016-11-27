@@ -22,5 +22,6 @@
     "param2": true,
     "then": { "name": "load", "file": "level/town/levelObjectsBeta.json" },
     "else": { "name": "load", "file": "level/town/levelObjects.json" }
-  }
+  },
+  "load": "level/town/items.json"
 }

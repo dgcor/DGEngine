@@ -358,6 +358,11 @@ void Game::updateMouse(const sf::Vector2i mousePos)
 	mousePositionf.y = std::round(mousePositionf.y);
 	mousePositioni.x = (int)mousePositionf.x;
 	mousePositioni.y = (int)mousePositionf.y;
+	updateCursorPosition();
+}
+
+void Game::updateCursorPosition()
+{
 	auto cursor = resourceManager.getCursor();
 	if (cursor != nullptr)
 	{
@@ -746,39 +751,33 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 	{
 		return false;
 	}
-	auto props = Utils::splitString(prop, '.');
-	if (props.empty() == true)
-	{
-		return false;
-	}
-	switch (str2int(props[0].c_str()))
+	auto props = Utils::splitStringIn2(prop, '.');
+	switch (str2int(props.first.c_str()))
 	{
 	case str2int("framerate"):
 		var = Variable((int64_t)framerate);
 		break;
+
+	case str2int("hasResource"):
+	{
+		var = Variable((bool)resourceManager.resourceExists(props.second));
+		break;
+	}
 	case str2int("keepAR"):
 		var = Variable((bool)keepAR);
 		break;
 	case str2int("minSize"):
 	{
-		if (props.size() > 1)
+		if (props.second == "x")
 		{
-			if (props[1] == "x")
-			{
-				var = Variable((int64_t)minSize.x);
-			}
-			else
-			{
-				var = Variable((int64_t)minSize.y);
-			}
+			var = Variable((int64_t)minSize.x);
 		}
 		else
 		{
-			return false;
+			var = Variable((int64_t)minSize.y);
 		}
 		break;
 	}
-	break;
 	case str2int("musicVolume"):
 		var = Variable((int64_t)musicVolume);
 		break;
@@ -787,20 +786,13 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		break;
 	case str2int("refSize"):
 	{
-		if (props.size() > 1)
+		if (props.second == "x")
 		{
-			if (props[1] == "x")
-			{
-				var = Variable((int64_t)refSize.x);
-			}
-			else
-			{
-				var = Variable((int64_t)refSize.y);
-			}
+			var = Variable((int64_t)refSize.x);
 		}
 		else
 		{
-			return false;
+			var = Variable((int64_t)refSize.y);
 		}
 		break;
 	}
@@ -809,20 +801,13 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		break;
 	case str2int("size"):
 	{
-		if (props.size() > 1)
+		if (props.second == "x")
 		{
-			if (props[1] == "x")
-			{
-				var = Variable((int64_t)size.x);
-			}
-			else
-			{
-				var = Variable((int64_t)size.y);
-			}
+			var = Variable((int64_t)size.x);
 		}
 		else
 		{
-			return false;
+			var = Variable((int64_t)size.y);
 		}
 		break;
 	}

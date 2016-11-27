@@ -13,7 +13,12 @@ private:
 
 public:
 	CelCache() {}
-	CelCache(const CelFile& cel_, const Palette& palette_) : cel(&cel_), palette(&palette_) {}
+	CelCache(const CelFile& cel_, const Palette& palette_)
+		: cel(&cel_), palette(&palette_) {}
+
+	T& get(size_t index) { return (*this)[index]; }
+	T& getFirst() { return (*this)[0]; }
+	T& getLast() { return (*this)[cache.size() - 1]; }
 
 	T& operator[] (size_t index)
 	{
@@ -39,7 +44,8 @@ private:
 
 public:
 	CelCacheVector() {}
-	CelCacheVector(const std::vector<const CelFile*>& cel_, const Palette& palette_) : celVec(cel_), palette(&palette_) {}
+	CelCacheVector(const std::vector<const CelFile*>& cel_,
+		const Palette& palette_) : celVec(cel_), palette(&palette_) {}
 
 	T& get(size_t celIdx, size_t frameIdx)
 	{
@@ -51,6 +57,9 @@ public:
 		cache[index] = celVec[celIdx]->get(frameIdx, *palette);
 		return cache[index];
 	}
+
+	T& getFirst(size_t celIdx) { return get(celIdx, 0); }
+	T& getLast(size_t celIdx) { return  get(celIdx, celVec[celIdx]->Size() - 1); }
 
 	size_t size() const { return celVec.size(); }
 	size_t size(size_t celIdx) const { return celVec[celIdx]->Size(); }

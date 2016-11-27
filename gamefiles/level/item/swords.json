@@ -1,0 +1,32 @@
+{
+  "itemClass": [
+    {
+      "id": "shortSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 75,
+      "name": "Short Sword",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
+      "actionDropInventory": { "name": "sound.play", "id": "invsword" },
+      "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "sword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 67,
+      "name": "Sword",
+      "type": "Weapon",
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
+      "actionDropInventory": { "name": "sound.play", "id": "invsword" },
+      "actionPickInventory": "pickItemInInventory"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "player": {
+    "id": "hero",
+    "class": "Warrior",
+    "name": "{1}",
+    "currentPlayer": true,
+    "direction": "Front",
+    "mapPosition": [64, 73],
+    "enableHover": false,
+    "level": 1,
+    "experience": 0,
+    "expNextLevel": 2000,
+    "gold": 100,
+    "strengthBase": 30,
+    "magicBase": 10,
+    "dexterityBase": 20,
+    "vitalityBase": 25,
+    "points": 0,
+    "lifeBase": 70,
+    "manaBase": 10,
+    "armor": 7,
+    "toHit": 60,
+    "damageMin": 2,
+    "damageMax": 6,
+    "resistMagic": 0,
+    "resistFire": 0,
+    "resistLightning": 0,
+    "inventory": [
+      {
+        "index": "Body",
+        "allowedClassTypes": ["Amulet", "Armor", "Helmet", "Ring", "Shield", "Weapon"],
+        "item": [
+          {
+            "index": "LeftHand",
+            "class": "shortSword",
+            "name": "Short Sword"
+          },
+          {
+            "index": "RightHand",
+            "class": "buckler",
+            "name": "Buckler"
+          }
+        ]
+      },
+      {
+        "index": "Belt",
+        "size": 8,
+        "allowedClassTypes": ["Potion", "Scroll"],
+        "item": [
+          {
+            "index": 0,
+            "class": "healthPotion",
+            "name": "Potion of Healing"
+          },
+          {
+            "index": 1,
+            "class": "healthPotion",
+            "name": "Potion of Healing"
+          }
+        ]
+      },
+      {
+        "index": "Stash",
+        "size": [4, 10]
+      }
+    ]
+  }
+}

@@ -8,8 +8,6 @@
 #include "PlayerClass.h"
 #include <queue>
 
-class Level;
-
 class ImageLevelObject : public LevelObject
 {
 private:
@@ -19,11 +17,12 @@ private:
 	std::pair<size_t, size_t> frameRange;
 	size_t currentFrame{ 0 };
 
-	sf::Time m_frameTime{ sf::milliseconds(50) };
-	sf::Time m_currentTime;
+	sf::Time frameTime{ sf::milliseconds(50) };
+	sf::Time currentTime;
 
 	std::shared_ptr<Action> action;
 
+	bool enableHover{ true };
 	bool hovered{ false };
 
 	std::string id;
@@ -33,12 +32,10 @@ public:
 	ImageLevelObject(const sf::Texture& tex) : sprite(tex) {}
 
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
 	virtual sf::Vector2f Size() const
 	{
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
-	virtual void Size(const sf::Vector2f& size) {}
 
 	virtual const MapCoord& MapPosition() const { return mapPosition; }
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
@@ -46,6 +43,9 @@ public:
 	virtual void executeAction(Game& game) const;
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+
+	virtual bool Hoverable() const { return enableHover; }
+	virtual void Hoverable(bool hoverable) { enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
