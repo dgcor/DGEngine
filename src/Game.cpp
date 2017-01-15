@@ -177,7 +177,7 @@ void Game::onResized(const sf::Event::SizeEvent& evt)
 	{
 		if (keepAR == true)
 		{
-			sf::viewStretchKeepAR(view, newSize);
+			SFMLUtils::viewStretchKeepAR(view, newSize);
 		}
 		else
 		{
@@ -482,7 +482,7 @@ void Game::StretchToFit(bool stretchToFit_)
 				stretchToFit = true;
 				if (keepAR == true)
 				{
-					sf::viewStretchKeepAR(view, size);
+					SFMLUtils::viewStretchKeepAR(view, size);
 				}
 				else
 				{
@@ -515,7 +515,7 @@ void Game::KeepAR(bool keepAR_)
 			auto view = window.getView();
 			if (keepAR_ == true)
 			{
-				sf::viewStretchKeepAR(view, size);
+				SFMLUtils::viewStretchKeepAR(view, size);
 			}
 			else
 			{

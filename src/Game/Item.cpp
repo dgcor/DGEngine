@@ -6,6 +6,16 @@
 
 using Utils::str2int;
 
+void Item::resetDropAnimation()
+{
+	currentFrame = 0;
+	if (enableHover == true)
+	{
+		wasHoverEnabledOnItemDrop = true;
+		enableHover = false;
+	}
+}
+
 void Item::executeAction(Game& game) const
 {
 	auto& action = class_->getAction();
@@ -25,12 +35,15 @@ void Item::MapPosition(Level& level, const MapCoord& pos)
 
 void Item::update(Game& game, Level& level)
 {
-	auto rect = sprite.getGlobalBounds();
 	if (enableHover == true)
 	{
 		if (level.HasMouseInside() == true &&
-			rect.contains(level.MousePositionf()) == true)
+			mapPosition == level.getMapCoordOverMouse())
 		{
+			if (level.getClickedObject() == nullptr)
+			{
+				level.setClickedObject(this);
+			}
 			if (hovered == false)
 			{
 				hovered = true;
@@ -73,6 +86,14 @@ void Item::update(Game& game, Level& level)
 		else if (currentFrame < frameRange.second)
 		{
 			currentFrame++;
+		}
+		else
+		{
+			if (wasHoverEnabledOnItemDrop == true)
+			{
+				enableHover = true;
+				wasHoverEnabledOnItemDrop = false;
+			}
 		}
 
 		if (currentFrame < class_->getCelDropTextureSize())

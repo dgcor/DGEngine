@@ -2,8 +2,8 @@
 
 #include "Action.h"
 #include "Game.h"
+#include "Game/GameProperties.h"
 #include "Game/Level.h"
-#include "Game/PlayerProperties.h"
 #include <string>
 
 class ActPlayerMove : public Action

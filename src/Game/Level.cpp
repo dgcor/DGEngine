@@ -36,6 +36,28 @@ void Level::executeHoverLeaveAction(Game& game)
 	}
 }
 
+void Level::deleteLevelObject(const LevelObject* obj)
+{
+	auto it = std::find_if(levelObjects.begin(),
+		levelObjects.end(),
+		[&](std::shared_ptr<LevelObject> const& p)
+	{
+		return p.get() == obj;
+	});
+	if (it != levelObjects.end())
+	{
+		levelObjects.erase(it);
+		if (clickedObject == obj)
+		{
+			clickedObject = nullptr;
+		}
+		if (hoverObject == obj)
+		{
+			hoverObject = nullptr;
+		}
+	}
+}
+
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == false)
@@ -121,6 +143,8 @@ void Level::updateMouse(Game& game)
 	mousePositionf = view.getCenter() - (view.getSize() / 2.f) + game.MousePositionf();
 	mousePositionf.x = std::round(mousePositionf.x);
 	mousePositionf.y = std::round(mousePositionf.y);
+
+	mapCoordOverMouse = map.getTile(mousePositionf);
 }
 
 void Level::update(Game& game)
@@ -137,10 +161,14 @@ void Level::update(Game& game)
 	{
 		hasMouseInside = true;
 		if (game.wasMouseClicked() == true &&
-			game.getMouseButton() == sf::Mouse::Left &&
-			leftAction != nullptr)
+			game.getMouseButton() == sf::Mouse::Left)
 		{
-			game.Events().addBack(leftAction);
+			clickedMapPosition = getMapCoordOverMouse();
+			clickedObject = nullptr;
+			if (leftAction != nullptr)
+			{
+				game.Events().addBack(leftAction);
+			}
 		}
 		else if (game.wasMouseReleased() == true &&
 			game.getMouseButton() == sf::Mouse::Right &&
@@ -181,6 +209,13 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 	auto propHash = str2int(props.first.c_str());
 	switch (propHash)
 	{
+	case str2int("clickedObject"):
+	{
+		if (clickedObject != nullptr)
+		{
+			return clickedObject->getProperty(props.second, var);
+		}
+	}
 	case str2int("currentPlayer"):
 	{
 		if (currentPlayer != nullptr)

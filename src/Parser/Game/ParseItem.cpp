@@ -89,8 +89,9 @@ namespace Parser
 		}
 		else if (isPlayerItem == true)
 		{
-			player->setInventoryItem((size_t)PlayerInventory::Body,
-				(size_t)getPlayerItemMountKey(elem, "bodyPart"), item);
+			// TODO: change
+			auto& inventory = player->getInventory((size_t)PlayerInventory::Body);
+			inventory.set((size_t)getPlayerItemMountKey(elem, "bodyPart"), item);
 		}
 	}
 }

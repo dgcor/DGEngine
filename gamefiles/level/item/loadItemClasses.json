@@ -14,8 +14,80 @@
     },
     {
       "name": "action.set",
+      "id": "pickItemInventoryFull",
+      "action": [
+        {
+          "name": "randomList",
+          "actions": [
+            { "name": "sound.play", "id": "inventoryFull1" },
+            { "name": "sound.play", "id": "inventoryFull2" },
+            { "name": "sound.play", "id": "inventoryFull3" }
+          ]
+        },
+        { "name": "item.executeDropAction" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "pickItemInLevelToBeltOrStash",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.inventory.belt.isFull|",
+        "param2": false,
+        "then": [
+          {
+            "name": "item.loadFromLevel",
+            "inventory": "belt",
+            "onInventoryFull": "pickItemInventoryFull"
+          },
+          "updateBeltItems"
+        ],
+        "else": {
+          "name": "item.loadFromLevel",
+          "inventory": "stash",
+          "position": "BottomLeft",
+          "onInventoryFull": "pickItemInventoryFull"
+        }
+      }
+    },
+    {
+      "name": "action.set",
       "id": "pickItemInLevel",
-      "action": { "name": "item.pickFromLevel" }
+      "action": {
+        "name": "if.equal",
+        "param1": "|game|hasResource.charPanelInventory|",
+        "param2": true,
+        "then": { "name": "item.pickFromLevel" },
+        "else": {
+          "name": "switch",
+          "param": "|currentLevel|clickedObject.type|",
+          "case": [
+            {
+              "value": "Gold",
+              "action": {
+                "name": "item.loadFromLevel",
+                "inventory": "stash",
+                "position": "BottomRight",
+                "onInventoryFull": "pickItemInventoryFull"
+              }
+            },
+            {
+              "value": "Potion",
+              "action": "pickItemInLevelToBeltOrStash"
+            },
+            {
+              "value": "Scroll",
+              "action": "pickItemInLevelToBeltOrStash"
+            }
+          ],
+          "default": {
+            "name": "item.loadFromLevel",
+            "inventory": "stash",
+            "position": "TopRight",
+            "onInventoryFull": "pickItemInventoryFull"
+          }
+        }
+      }
     }
   ],
   "celTexturePack": {

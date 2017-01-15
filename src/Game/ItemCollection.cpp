@@ -1,7 +1,9 @@
 #include "ItemCollection.h"
 #include "Utils.h"
 
-ItemCollection::ItemCollection(size_t size_) : size(size_, 0)
+using Utils::str2int;
+
+ItemCollection::ItemCollection(size_t size_) : size(size_, 1)
 {
 	items.resize(size_);
 }
@@ -13,7 +15,7 @@ ItemCollection::ItemCollection(const sf::Vector2u& size_) : size(size_)
 
 void ItemCollection::init(size_t size_)
 {
-	size = sf::Vector2u(size_, 0);
+	size = sf::Vector2u(size_, 1);
 	items.resize(size_);
 }
 
@@ -25,7 +27,7 @@ void ItemCollection::init(const sf::Vector2u& size_)
 
 void ItemCollection::allowType(const std::string& type)
 {
-	auto typeHash = Utils::str2int(type.c_str());
+	auto typeHash = str2int(type.c_str());
 	if (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) == allowedTypes.end())
 	{
 		allowedTypes.push_back(typeHash);
@@ -34,7 +36,7 @@ void ItemCollection::allowType(const std::string& type)
 
 bool ItemCollection::isTypeAllowed(const std::string& type) const
 {
-	return isTypeAllowed(Utils::str2int(type.c_str()));
+	return isTypeAllowed(str2int(type.c_str()));
 }
 
 bool ItemCollection::isTypeAllowed(unsigned typeHash) const
@@ -46,19 +48,89 @@ bool ItemCollection::isTypeAllowed(unsigned typeHash) const
 	return (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) != allowedTypes.end());
 }
 
-void ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item)
+bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item)
+{
+	std::shared_ptr<Item> oldItem;
+	return set(idx, item, oldItem);
+}
+
+bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item,
+	std::shared_ptr<Item>& oldItem)
 {
 	if (idx < items.size())
 	{
-		items[idx] = item;
+		if (item != nullptr &&
+			isTypeAllowed(item->Class()->TypeHash()) == false)
+		{
+			return false;
+		}
+		if (enforceItemSize == false)
+		{
+			return setAndDontEnforceItemSize(idx, item, oldItem);
+		}
+		else
+		{
+			return setAndEnforceItemSize(sf::Vector2u(idx % size.x, idx / size.x), item, oldItem);
+		}
 	}
+	return false;
 }
 
-void ItemCollection::set(const sf::Vector2u& position, const std::shared_ptr<Item>& item)
+bool ItemCollection::set(const sf::Vector2u& position, const std::shared_ptr<Item>& item)
 {
-	auto pos = position;
+	std::shared_ptr<Item> oldItem;
+	return set(position, item, oldItem);
+}
 
-	auto itemSize = item->InventorySize();
+bool ItemCollection::set(const sf::Vector2u& position,
+	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+{
+	size_t idx = position.x + position.y * size.x;
+	if (idx < items.size())
+	{
+		if (item != nullptr &&
+			isTypeAllowed(item->Class()->TypeHash()) == false)
+		{
+			return false;
+		}
+		if (enforceItemSize == false)
+		{
+			return setAndDontEnforceItemSize(idx, item, oldItem);
+		}
+		else
+		{
+			return setAndEnforceItemSize(position, item, oldItem);
+		}
+	}
+	return false;
+}
+
+bool ItemCollection::setAndDontEnforceItemSize(size_t idx,
+	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+{
+	oldItem = items[idx];
+	items[idx] = item;
+	return true;
+}
+
+bool ItemCollection::setAndEnforceItemSize(const sf::Vector2u& position,
+	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+{
+	if (size.x == 0 || size.y == 0)
+	{
+		return false;
+	}
+	sf::Vector2u itemSize(1, 1);
+	if (item != nullptr)
+	{
+		itemSize = item->Class()->InventorySize();
+		if (itemSize.x > size.x
+			|| itemSize.y > size.y)
+		{
+			return false;
+		}
+	}
+	auto pos = position;
 	auto posEndX = pos.x + itemSize.x;
 	auto posEndY = pos.y + itemSize.y;
 	if (posEndX > size.x)
@@ -71,24 +143,229 @@ void ItemCollection::set(const sf::Vector2u& position, const std::shared_ptr<Ite
 		posEndY = size.y;
 		pos.y = size.y - itemSize.y;
 	}
-	std::shared_ptr<Item> itemTemp;
+	std::shared_ptr<Item> oldItemTemp;
 	for (size_t i = pos.x; i < posEndX; i++)
 	{
-		for (size_t j = pos.x; j < posEndX; j++)
+		for (size_t j = pos.y; j < posEndY; j++)
 		{
-			const auto& item = get(i, j);
-			if (item != nullptr)
+			const auto& item2 = get(i, j);
+			if (item2 != nullptr)
 			{
-				if (itemTemp == nullptr)
+				if (oldItemTemp == nullptr)
 				{
-					itemTemp = item;
+					oldItemTemp = item2;
 				}
-				else
+				else if (oldItemTemp != item2)
 				{
-					return;
+					return false;
 				}
 			}
 		}
 	}
-	items[pos.x + pos.y * size.y] = item;
+	if (oldItemTemp != nullptr)
+	{
+		for (size_t i = 0; i < items.size(); i++)
+		{
+			if (items[i] == oldItemTemp)
+			{
+				items[i] = nullptr;
+			}
+		}
+	}
+	oldItem = oldItemTemp;
+	for (size_t i = pos.x; i < posEndX; i++)
+	{
+		for (size_t j = pos.y; j < posEndY; j++)
+		{
+			items[i + j * size.x] = item;
+		}
+	}
+	return true;
+}
+
+bool ItemCollection::isFull() const
+{
+	for (const auto& item : items)
+	{
+		if (item == nullptr)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ItemCollection::isItemSlotInUse(size_t idx) const
+{
+	if (idx < items.size())
+	{
+		return isItemSlotInUse(sf::Vector2u(idx % size.x, idx / size.x));
+	}
+	return false;
+}
+
+bool ItemCollection::isItemSlotInUse(const sf::Vector2u& position) const
+{
+	if (position.x >= size.x
+		|| position.y >= size.y)
+	{
+		return false;
+	}
+	auto item = get(position).get();
+	if (item == nullptr)
+	{
+		return false;
+	}
+	bool isPrevItemSameX = false;
+	bool isPrevItemSameY = false;
+	if (position.x > 0)
+	{
+		isPrevItemSameX = (get(position.x - 1, position.y).get() == item);
+	}
+	if (position.y > 0)
+	{
+		isPrevItemSameY = (get(position.x, position.y - 1).get() == item);
+	}
+	if (isPrevItemSameX || isPrevItemSameY)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool ItemCollection::isItemSlotEmpty(int x, int y,
+	const sf::Vector2u& itemSize, size_t& itemIdx) const
+{
+	size_t sizeX = (size_t)x + itemSize.x;
+	size_t sizeY = (size_t)y + itemSize.y;
+
+	for (size_t i = x; i < sizeX; i++)
+	{
+		for (size_t j = y; j < sizeY; j++)
+		{
+			if (get(i, j).get() != nullptr)
+			{
+				return false;
+			}
+		}
+	}
+	itemIdx = (size_t)(x + y * (int)size.x);
+	return true;
+}
+
+bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
+	size_t& itemIdx, InventoryPosition invPos) const
+{
+	if (itemSize.x > size.x || itemSize.y > size.y)
+	{
+		return false;
+	}
+
+	int sizeX = (int)size.x - (int)itemSize.x;
+	int sizeY = (int)size.y - (int)itemSize.y;
+
+	switch (invPos)
+	{
+	default:
+	case InventoryPosition::TopLeft:
+	{
+		for (int y = 0; y <= sizeY; y++)
+		{
+			for (int x = 0; x <= sizeX; x++)
+			{
+				if (isItemSlotEmpty((size_t)x, (size_t)y,
+					itemSize, itemIdx) == true)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+	}
+	case InventoryPosition::TopRight:
+	{
+		for (int y = 0; y <= sizeY; y++)
+		{
+			for (int x = sizeX; x >= 0; x--)
+			{
+				if (isItemSlotEmpty((size_t)x, (size_t)y,
+					itemSize, itemIdx) == true)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+	}
+	case InventoryPosition::BottomLeft:
+	{
+		for (int y = sizeY; y >= 0; y--)
+		{
+			for (int x = 0; x <= sizeX; x++)
+			{
+				if (isItemSlotEmpty((size_t)x, (size_t)y,
+					itemSize, itemIdx) == true)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+	}
+	case InventoryPosition::BottomRight:
+	{
+		for (int y = sizeY; y >= 0; y--)
+		{
+			for (int x = sizeX; x >= 0; x--)
+			{
+				if (isItemSlotEmpty((size_t)x, (size_t)y,
+					itemSize, itemIdx) == true)
+				{
+					return true;
+				}
+			}
+		}
+		break;
+	}
+	}
+	return false;
+}
+
+bool ItemCollection::getProperty(const std::string& prop, Variable& var) const
+{
+	if (prop.empty() == true)
+	{
+		return false;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	switch (str2int(props.first.c_str()))
+	{
+	case str2int("capacity"):
+		var = Variable((int64_t)items.size());
+		break;
+	case str2int("enforceItemSize"):
+		var = Variable((bool)enforceItemSize);
+		break;
+	case str2int("isFull"):
+		var = Variable((bool)isFull());
+		break;
+	case str2int("size"):
+	{
+		if (props.second == "x")
+		{
+			var = Variable((int64_t)size.x);
+		}
+		else
+		{
+			var = Variable((int64_t)size.y);
+		}
+	}
+	break;
+	default:
+		return false;
+	}
+	return true;
 }

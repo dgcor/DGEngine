@@ -64,6 +64,7 @@ namespace Parser
 		itemClass->Name(getStringKey(elem, "name"));
 		itemClass->Type(getStringKey(elem, "type"));
 		itemClass->Description(getStringKey(elem, "description"));
+		itemClass->InventorySize(getVector2uKey(elem, "inventorySize", sf::Vector2u(1, 1)));
 
 		if (elem.HasMember("action") == true)
 		{

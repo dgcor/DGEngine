@@ -9,6 +9,7 @@
       "celIndexInventory": 23,
       "name": "Ring",
       "type": "Ring",
+      "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipring" },
       "actionDropInventory": { "name": "sound.play", "id": "invring" },

@@ -9,6 +9,7 @@
       "celIndexInventory": 104,
       "name": "Helmet",
       "type": "Helmet",
+      "inventorySize": [2, 2],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipcap" },
       "actionDropInventory": { "name": "sound.play", "id": "invcap" },

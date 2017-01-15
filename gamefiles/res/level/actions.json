@@ -34,13 +34,195 @@
     },
     {
       "name": "action.set",
+      "id": "updateBeltItem1",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt1", "inventory": "belt", "item": 0 },
+        { "name": "image.centerTexture", "id": "imgBelt1" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.0|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt1", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt1", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt1", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt1", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem2",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt2", "inventory": "belt", "item": 1 },
+        { "name": "image.centerTexture", "id": "imgBelt2" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.1|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt2", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt2", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt2", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt2", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem3",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt3", "inventory": "belt", "item": 2 },
+        { "name": "image.centerTexture", "id": "imgBelt3" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.2|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt3", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt3", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt3", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt3", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem4",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt4", "inventory": "belt", "item": 3 },
+        { "name": "image.centerTexture", "id": "imgBelt4" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.3|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt4", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt4", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt4", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt4", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem5",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt5", "inventory": "belt", "item": 4 },
+        { "name": "image.centerTexture", "id": "imgBelt5" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.4|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt5", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt5", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt5", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt5", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem6",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt6", "inventory": "belt", "item": 5 },
+        { "name": "image.centerTexture", "id": "imgBelt6" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.5|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt6", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt6", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt6", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt6", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem7",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt7", "inventory": "belt", "item": 6 },
+        { "name": "image.centerTexture", "id": "imgBelt7" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.6|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt7", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt7", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt7", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt7", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItem8",
+      "action": [
+        { "name": "image.setTextureFromInventory", "id": "imgBelt8", "inventory": "belt", "item": 7 },
+        { "name": "image.centerTexture", "id": "imgBelt8" },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.belt.7|",
+          "param2": true,
+          "then": [
+            { "name": "button.setTexture", "id": "playerBelt8", "texture": "red" },
+            { "name": "drawable.visible", "id": "txtBelt8", "visible": true }
+          ],
+          "else": [
+            { "name": "button.setTexture", "id": "playerBelt8", "texture": "empty" },
+            { "name": "drawable.visible", "id": "txtBelt8", "visible": false }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBeltItems",
+      "action": [
+        "updateBeltItem1",
+        "updateBeltItem2",
+        "updateBeltItem3",
+        "updateBeltItem4",
+        "updateBeltItem5",
+        "updateBeltItem6",
+        "updateBeltItem7",
+        "updateBeltItem8"
+      ]
+    },
+    {
+      "name": "action.set",
       "id": "updateInventoryLeftHand",
       "action": [
         { "name": "image.setTextureFromInventory", "id": "imgLeftHand", "inventory": "body", "item": "LeftHand" },
         { "name": "image.centerTexture", "id": "imgLeftHand" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftHand|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.LeftHand|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "empty" }
@@ -55,7 +237,7 @@
         { "name": "image.centerTexture", "id": "imgRightHand" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.RightHand|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.RightHand|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerRightHand", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerRightHand", "texture": "empty" }
@@ -70,7 +252,7 @@
         { "name": "image.centerTexture", "id": "imgArmor" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.Armor|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.Armor|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerArmor", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerArmor", "texture": "empty" }
@@ -85,7 +267,7 @@
         { "name": "image.centerTexture", "id": "imgHelmet" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.Helmet|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.Helmet|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerHelmet", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerHelmet", "texture": "empty" }
@@ -100,7 +282,7 @@
         { "name": "image.centerTexture", "id": "imgAmulet" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.Amulet|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.Amulet|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerAmulet", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerAmulet", "texture": "empty" }
@@ -115,7 +297,7 @@
         { "name": "image.centerTexture", "id": "imgLeftRing" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftRing|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.LeftRing|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerLeftRing", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerLeftRing", "texture": "empty" }
@@ -130,7 +312,7 @@
         { "name": "image.centerTexture", "id": "imgRightRing" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.Body.RightRing|",
+          "param1": "|currentLevel|currentPlayer.hasItem.body.RightRing|",
           "param2": true,
           "then": { "name": "button.setTexture", "id": "playerRightRing", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerRightRing", "texture": "empty" }
@@ -139,13 +321,579 @@
     },
     {
       "name": "action.set",
+      "id": "updateInventoryStash",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv11", "inventory": "stash", "item": [0, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv11", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv12", "inventory": "stash", "item": [0, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv12", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv13", "inventory": "stash", "item": [0, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv13", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv14", "inventory": "stash", "item": [0, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv14", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv21", "inventory": "stash", "item": [1, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv21", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv22", "inventory": "stash", "item": [1, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv22", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv23", "inventory": "stash", "item": [1, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv23", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv24", "inventory": "stash", "item": [1, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv24", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv31", "inventory": "stash", "item": [2, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv31", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv32", "inventory": "stash", "item": [2, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv32", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv33", "inventory": "stash", "item": [2, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv33", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv34", "inventory": "stash", "item": [2, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv34", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv41", "inventory": "stash", "item": [3, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv41", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv42", "inventory": "stash", "item": [3, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv42", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv43", "inventory": "stash", "item": [3, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv43", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv44", "inventory": "stash", "item": [3, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv44", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv51", "inventory": "stash", "item": [4, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv51", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv52", "inventory": "stash", "item": [4, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv52", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv53", "inventory": "stash", "item": [4, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv53", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv54", "inventory": "stash", "item": [4, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv54", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv61", "inventory": "stash", "item": [5, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv61", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv62", "inventory": "stash", "item": [5, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv62", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv63", "inventory": "stash", "item": [5, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv63", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv64", "inventory": "stash", "item": [5, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv64", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv71", "inventory": "stash", "item": [6, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv71", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv72", "inventory": "stash", "item": [6, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv72", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv73", "inventory": "stash", "item": [6, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv73", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv74", "inventory": "stash", "item": [6, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv74", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv81", "inventory": "stash", "item": [7, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv81", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv82", "inventory": "stash", "item": [7, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv82", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv83", "inventory": "stash", "item": [7, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv83", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv84", "inventory": "stash", "item": [7, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv84", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv91", "inventory": "stash", "item": [8, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv91", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv92", "inventory": "stash", "item": [8, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv92", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv93", "inventory": "stash", "item": [8, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv93", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv94", "inventory": "stash", "item": [8, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv94", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,0|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv101", "inventory": "stash", "item": [9, 0] },
+          "else": { "name": "image.setTexture", "id": "imgInv101", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,1|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv102", "inventory": "stash", "item": [9, 1] },
+          "else": { "name": "image.setTexture", "id": "imgInv102", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,2|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv103", "inventory": "stash", "item": [9, 2] },
+          "else": { "name": "image.setTexture", "id": "imgInv103", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,3|",
+          "param2": true,
+          "then": { "name": "image.setTextureFromInventory", "id": "imgInv104", "inventory": "stash", "item": [9, 3] },
+          "else": { "name": "image.setTexture", "id": "imgInv104", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv11", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv11", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv12", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv12", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv13", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv13", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv14", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv14", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv21", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv21", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv22", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv22", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv23", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv23", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv24", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv24", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv31", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv31", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv32", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv32", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv33", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv33", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv34", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv34", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv41", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv41", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv42", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv42", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv43", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv43", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv44", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv44", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv51", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv51", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv52", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv52", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv53", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv53", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv54", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv54", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv61", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv61", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv62", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv62", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv63", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv63", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv64", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv64", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv71", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv71", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv72", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv72", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv73", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv73", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv74", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv74", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv81", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv81", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv82", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv82", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv83", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv83", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv84", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv84", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv91", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv91", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv92", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv92", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv93", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv93", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv94", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv94", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv101", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv101", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv102", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv102", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv103", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv103", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv104", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv104", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
       "id": "updateInventoryLeftHandText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftHand|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.LeftHand|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.LeftHand.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.LeftHand.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -155,10 +903,10 @@
       "id": "updateInventoryRightHandText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.RightHand|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.RightHand|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.RightHand.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.RightHand.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -168,10 +916,10 @@
       "id": "updateInventoryArmorText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.Armor|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.Armor|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Armor.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.Armor.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -181,10 +929,10 @@
       "id": "updateInventoryHelmetText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.Helmet|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.Helmet|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Helmet.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.Helmet.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -194,10 +942,10 @@
       "id": "updateInventoryAmuletText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.Amulet|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.Amulet|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.Amulet.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.Amulet.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -207,10 +955,10 @@
       "id": "updateInventoryLeftRingText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.LeftRing|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.LeftRing|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.LeftRing.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.LeftRing.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -220,10 +968,10 @@
       "id": "updateInventoryRightRingText",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.Body.RightRing|",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.RightRing|",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.inventory.body.RightRing.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.body.RightRing.name|" },
           "updatePanelTextSpacing"
         ]
       }
@@ -395,6 +1143,846 @@
           "updateInventoryRightRing"
         ]
       }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash11Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.0,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash12Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.0,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash13Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.0,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash14Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.0,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash21Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.1,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash22Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.1,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash23Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.1,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash24Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.1,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash31Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.2,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash32Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.2,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash33Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.2,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash34Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.2,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash41Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.3,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash42Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.3,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash43Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.3,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash44Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.3,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash51Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.4,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash52Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.4,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash53Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.4,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash54Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.4,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash61Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.5,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash62Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.5,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash63Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.5,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash64Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.5,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash71Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.6,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash72Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.6,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash73Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.6,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash74Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.6,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash81Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.7,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash82Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.7,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash83Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.7,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash84Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.7,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash91Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.8,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash92Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.8,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash93Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.8,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash94Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.8,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash101Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,0|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.9,0.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash102Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,1|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.9,1.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash103Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,2|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.9,2.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash104Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,3|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.stash.9,3.name|" },
+          "updatePanelTextSpacing"
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash11Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash12Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash13Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash14Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash21Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash22Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash23Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash24Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash31Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash32Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash33Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash34Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash41Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash42Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash43Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash44Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash51Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash52Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash53Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash54Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash61Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash62Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash63Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash64Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash71Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash72Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash73Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash74Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash81Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash82Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash83Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash84Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash91Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash92Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash93Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash94Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash101Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash102Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash103Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash104Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 3] },
+        "updateInventoryStash"
+      ]
     }
   ]
 }

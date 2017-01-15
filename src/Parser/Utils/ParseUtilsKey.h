@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Game/PlayerProperties.h"
+#include "Game/GameProperties.h"
 #include "Json/JsonParser.h"
 #include "ParseUtilsVal.h"
 #include "ResourceManager.h"
@@ -92,6 +92,9 @@ namespace Parser
 
 	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
 		const char* key, PlayerInventory inv);
+
+	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
+		const char* key, InventoryPosition val = InventoryPosition::TopLeft);
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
 		const char* key, PlayerDirection val = PlayerDirection::All);

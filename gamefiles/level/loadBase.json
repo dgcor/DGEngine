@@ -27,6 +27,8 @@
           { "name": "loadingScreen.setProgress", "progress": 50},
           { "name": "load", "file": "level/player/loadCel.json" },
           { "name": "loadingScreen.setProgress", "progress": 55 },
+          { "name": "load", "file": "res/player/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 60 },
           { "name": "resource.add", "id": "currentLevel" },
           { "name": "load", "file": "level/{2}/level.json" },
           { "name": "loadingScreen.setProgress", "progress": 75 },

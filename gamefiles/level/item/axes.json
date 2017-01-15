@@ -9,6 +9,7 @@
       "celIndexInventory": 155,
       "name": "Axe",
       "type": "Weapon",
+      "inventorySize": [2, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipaxe" },
       "actionDropInventory": { "name": "sound.play", "id": "invaxe" },

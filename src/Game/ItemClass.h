@@ -28,6 +28,8 @@ private:
 	unsigned typeHash;
 	std::string description;
 
+	sf::Vector2u inventorySize;
+
 public:
 	ItemClass(const std::shared_ptr<CelTextureCacheVector>& celTextureDrop_,
 		size_t celDropIdx_, const std::shared_ptr<CelTextureCache>& celTextureInventory_,
@@ -69,6 +71,7 @@ public:
 	const std::string& Type() const { return type; }
 	unsigned TypeHash() const { return typeHash; }
 	const std::string& Description() const { return description; }
+	const sf::Vector2u& InventorySize() const { return inventorySize; }
 
 	void Name(const std::string& name_) { name = name_; }
 	void Type(const std::string& type_)
@@ -77,4 +80,5 @@ public:
 		typeHash = Utils::str2int(Utils::toLower(type_).c_str());
 	}
 	void Description(const std::string& description_) { description = description_; }
+	void InventorySize(const sf::Vector2u& inventorySize_) { inventorySize = inventorySize_; }
 };

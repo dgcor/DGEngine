@@ -22,8 +22,7 @@ private:
 	sf::Time frameTime{ sf::milliseconds(40) };
 	sf::Time currentTime;
 
-	sf::Vector2u inventorySize;
-
+	bool wasHoverEnabledOnItemDrop{ false };
 	bool enableHover{ true };
 	bool hovered{ false };
 
@@ -41,7 +40,7 @@ public:
 		currentFrame = frameRange.second;
 	}
 
-	void resetDropAnimation() { currentFrame = 0; }
+	void resetDropAnimation();
 
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
 	virtual sf::Vector2f Size() const
@@ -70,9 +69,6 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val) {};
-
-	const sf::Vector2u& InventorySize() const { return inventorySize; }
-	void InventorySize(const sf::Vector2u& size_) { inventorySize = size_; }
 
 	ItemClass* Class() const { return class_.get(); }
 

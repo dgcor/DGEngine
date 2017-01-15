@@ -1,4 +1,5 @@
 {
+  "load": "ui/level/closeCharPanels.json",
   "action": [
     { "name": "resource.add", "id": "userPanel" },
     { "name": "game.clearPlayingSounds" }

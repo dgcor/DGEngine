@@ -39,14 +39,20 @@ private:
 	std::string idLevel;
 	std::string idPlayer;
 	size_t invIdx;
-	size_t itemIdx;
+	sf::Vector2u itemPos;
+	bool isCoordXY;
 	bool resetRect;
 
 public:
 	ActSetTextureFromInventory(const std::string& id_, const std::string& idLevel_,
-		const std::string& idPlayer_, size_t invIdx_, size_t itemIdx_, bool resetRect_)
-		: id(id_), idLevel(idLevel_), idPlayer(idPlayer_), invIdx(invIdx_),
-		itemIdx(itemIdx_), resetRect(resetRect_) {}
+		const std::string& idPlayer_, size_t invIdx_, size_t itemIdx_,
+		bool resetRect_) : id(id_), idLevel(idLevel_), idPlayer(idPlayer_),
+		invIdx(invIdx_), itemPos(itemIdx_, 0), isCoordXY(false), resetRect(resetRect_) {}
+
+	ActSetTextureFromInventory(const std::string& id_, const std::string& idLevel_,
+		const std::string& idPlayer_, size_t invIdx_, const sf::Vector2u& itemPos_,
+		bool resetRect_) : id(id_), idLevel(idLevel_), idPlayer(idPlayer_),
+		invIdx(invIdx_), itemPos(itemPos_), isCoordXY(true), resetRect(resetRect_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -59,7 +65,13 @@ public:
 				auto player = level->getPlayerOrCurrent(idPlayer);
 				if (player != nullptr)
 				{
-					auto item = player->getInventoryItem(invIdx, itemIdx);
+					const auto& inventory = player->getInventory(invIdx);
+					size_t itemIdx = itemPos.x;
+					if (isCoordXY == true)
+					{
+						itemIdx = inventory.getIndex(itemPos);
+					}
+					auto item = inventory.get(itemIdx).get();
 					if (item != nullptr)
 					{
 						resource->setTexture(item->Class()->getCelInventoryTexture(), resetRect);

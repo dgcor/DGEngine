@@ -4,10 +4,6 @@
     "param": "%charClass%",
     "case": [
       {
-        "value": "Warrior",
-        "action": { "name": "load", "file": "level/player/warriorCel.json" }
-      },
-      {
         "value": "Rogue",
         "action": { "name": "load", "file": "level/player/rogueCel.json" }
       },
@@ -15,6 +11,7 @@
         "value": "Sorceror",
         "action": { "name": "load", "file": "level/player/sorcerorCel.json" }
       }
-    ]
+    ],
+    "default": { "name": "load", "file": "level/player/warriorCel.json" }
   }
 }

@@ -2,7 +2,7 @@
 
 #include "Alignment.h"
 #include "Anchor.h"
-#include "Game/PlayerProperties.h"
+#include "Game/GameProperties.h"
 #include "IgnoreResource.h"
 #include <SFML/System/Vector2.hpp>
 #include <string>
@@ -35,6 +35,9 @@ namespace GameUtils
 	sf::Keyboard::Key getKeyCode(const std::string& str, sf::Keyboard::Key val);
 
 	IgnoreResource getIgnoreResource(const std::string& str, IgnoreResource val);
+
+	InventoryPosition getInventoryPosition(const std::string& str,
+		InventoryPosition val = InventoryPosition::TopLeft);
 
 	PlayerDirection getPlayerDirection(const std::string& str, PlayerDirection val);
 

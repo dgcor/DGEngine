@@ -127,40 +127,6 @@ void Player::update(Game& game, Level& level)
 	}
 }
 
-std::shared_ptr<Item> Player::getInventoryItem(size_t invIdx, size_t itemIdx) const
-{
-	if (invIdx < inventories.size())
-	{
-		if (itemIdx < inventories[invIdx].Size())
-		{
-			return inventories[invIdx][itemIdx];
-		}
-	}
-	return nullptr;
-}
-
-bool Player::setInventoryItem(size_t invIdx, size_t itemIdx,
-	const std::shared_ptr<Item>& item)
-{
-	if (invIdx < inventories.size())
-	{
-		if (itemIdx < inventories[invIdx].Size())
-		{
-			if (item == nullptr)
-			{
-				inventories[invIdx][itemIdx] = nullptr;
-				return true;
-			}
-			if (inventories[invIdx].isTypeAllowed(item->Class()->TypeHash()) == true)
-			{
-				inventories[invIdx][itemIdx] = item;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 bool Player::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.empty() == true)
@@ -256,23 +222,39 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		break;
 	case str2int("hasItem"):
 	{
-		auto props2 = Utils::splitStringIn2(props.second, '.');
-		auto invIdx = GameUtils::getPlayerInventoryIndex(props2.first);
-		if (invIdx < inventories.size())
+		std::string props2;
+		size_t invIdx;
+		size_t itemIdx;
+		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
 		{
-			size_t itemIdx = 0;
-			if (invIdx == (size_t)PlayerInventory::Body)
+			var = Variable(inventories[invIdx][itemIdx] != nullptr);
+			break;
+		}
+		return false;
+	}
+	case str2int("isItemSlotInUse"):
+	{
+		std::string props2;
+		size_t invIdx;
+		size_t itemIdx;
+		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		{
+			var = Variable(inventories[invIdx].isItemSlotInUse(itemIdx));
+			break;
+		}
+		return false;
+	}
+	case str2int("item"):
+	{
+		std::string props2;
+		size_t invIdx;
+		size_t itemIdx;
+		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		{
+			auto item = inventories[invIdx][itemIdx].get();
+			if (item != nullptr)
 			{
-				itemIdx = GameUtils::getPlayerItemMountIndex(props2.second);
-			}
-			else
-			{
-				itemIdx = std::strtoul(props2.second.c_str(), NULL, 10);
-			}
-			if (itemIdx < inventories[invIdx].Size())
-			{
-				var = Variable(inventories[invIdx][itemIdx] != nullptr);
-				break;
+				return item->getProperty(props2, var);
 			}
 		}
 		return false;
@@ -283,24 +265,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		auto invIdx = GameUtils::getPlayerInventoryIndex(props2.first);
 		if (invIdx < inventories.size())
 		{
-			auto props3 = Utils::splitStringIn2(props2.second, '.');
-			size_t itemIdx = 0;
-			if (invIdx == (size_t)PlayerInventory::Body)
-			{
-				itemIdx = GameUtils::getPlayerItemMountIndex(props3.first);
-			}
-			else
-			{
-				itemIdx = std::strtoul(props3.first.c_str(), NULL, 10);
-			}
-			if (itemIdx < inventories[invIdx].Size())
-			{
-				auto item = inventories[invIdx][itemIdx].get();
-				if (item != nullptr)
-				{
-					return item->getProperty(props3.second, var);
-				}
-			}
+			return inventories[invIdx].getProperty(props2.second, var);
 		}
 		return false;
 	}
@@ -335,4 +300,40 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 	}
 	break;
 	}
+}
+
+bool Player::parseInventoryAndItem(const std::string& str,
+	std::string& props, size_t& invIdx, size_t& itemIdx) const
+{
+	auto strPair = Utils::splitStringIn2(str, '.');
+	invIdx = GameUtils::getPlayerInventoryIndex(strPair.first);
+	if (invIdx < inventories.size())
+	{
+		auto strPair2 = Utils::splitStringIn2(strPair.second, '.');
+		auto strPair3 = Utils::splitStringIn2(strPair2.first, ',');
+		itemIdx = 0;
+		if (strPair3.second.empty() == false)
+		{
+			size_t x = std::strtoul(strPair3.first.c_str(), NULL, 10);
+			size_t y = std::strtoul(strPair3.second.c_str(), NULL, 10);
+			itemIdx = inventories[invIdx].getIndex(x, y);
+		}
+		else
+		{
+			if (invIdx == (size_t)PlayerInventory::Body)
+			{
+				itemIdx = GameUtils::getPlayerItemMountIndex(strPair2.first);
+			}
+			else
+			{
+				itemIdx = std::strtoul(strPair2.first.c_str(), NULL, 10);
+			}
+		}
+		if (itemIdx < inventories[invIdx].Size())
+		{
+			props = strPair2.second;
+			return true;
+		}
+	}
+	return false;
 }

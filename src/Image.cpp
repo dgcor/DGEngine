@@ -1,6 +1,7 @@
 #include "Image.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "SFMLUtils.h"
 #include "Utils.h"
 
 void Image::setOrigin()
@@ -11,10 +12,7 @@ void Image::setOrigin()
 
 void Image::centerTexture()
 {
-	auto texSize = sprite.getTexture()->getSize();
-	float originX = std::round(-((float)sprite.getTextureRect().width / 2.f) + ((float)texSize.x / 2.f));
-	float originY = std::round(-((float)sprite.getTextureRect().height / 2.f) + ((float)texSize.y / 2.f));
-	setOrigin(sf::Vector2f(originX, originY));
+	SFMLUtils::spriteCenterTexture(sprite);
 }
 
 void Image::updateSize(const Game& game)

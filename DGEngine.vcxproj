@@ -37,6 +37,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
     <ClCompile Include="src\Game\CelLevelObject.cpp" />
+    <ClCompile Include="src\Game\GameProperties.cpp" />
     <ClCompile Include="src\Game\ImageLevelObject.cpp" />
     <ClCompile Include="src\Game\Item.cpp" />
     <ClCompile Include="src\Game\ItemClass.cpp" />
@@ -47,7 +48,6 @@
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
-    <ClCompile Include="src\Game\PlayerProperties.cpp" />
     <ClCompile Include="src\Game\Quest.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\ImageUtils.cpp" />
@@ -162,6 +162,7 @@
     <ClInclude Include="src\GameUtils.h" />
     <ClInclude Include="src\Game\CelLevelObject.h" />
     <ClInclude Include="src\Game\fsa.h" />
+    <ClInclude Include="src\Game\GameProperties.h" />
     <ClInclude Include="src\Game\ImageLevelObject.h" />
     <ClInclude Include="src\Game\Item.h" />
     <ClInclude Include="src\Game\ItemClass.h" />
@@ -174,7 +175,6 @@
     <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />
     <ClInclude Include="src\Game\PlayerClass.h" />
-    <ClInclude Include="src\Game\PlayerProperties.h" />
     <ClInclude Include="src\Game\Quest.h" />
     <ClInclude Include="src\Game\stlastar.h" />
     <ClInclude Include="src\IgnoreResource.h" />

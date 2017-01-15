@@ -56,7 +56,8 @@
       },
       {
         "index": "Stash",
-        "size": [4, 10]
+        "enforceItemSize": true,
+        "size": [10, 4]
       }
     ]
   }
