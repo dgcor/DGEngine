@@ -17,12 +17,12 @@ namespace Parser
 				{
 					if (var.is<std::string>() == true)
 					{
-						return sf::stringToColor(var.get<std::string>());
+						return SFMLUtils::stringToColor(var.get<std::string>());
 					}
 				}
 				else
 				{
-					return sf::stringToColor(colorStr);
+					return SFMLUtils::stringToColor(colorStr);
 				}
 			}
 			catch (std::exception ex) {}

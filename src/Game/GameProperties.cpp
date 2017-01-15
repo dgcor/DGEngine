@@ -1,4 +1,4 @@
-#include "PlayerProperties.h"
+#include "GameProperties.h"
 
 PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos)
 {

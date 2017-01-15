@@ -144,6 +144,24 @@ namespace Parser
 		return val;
 	}
 
+	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
+		PlayerInventory inv)
+	{
+		size_t itemIdx = 0;
+		if (elem.IsUint() == true)
+		{
+			itemIdx = elem.GetUint();
+		}
+		else if (elem.IsString() == true)
+		{
+			if (inv == PlayerInventory::Body)
+			{
+				itemIdx = (size_t)GameUtils::getPlayerItemMount(elem.GetString());
+			}
+		}
+		return itemIdx;
+	}
+
 	Variable getVariableVal(const rapidjson::Value& elem)
 	{
 		Variable var;

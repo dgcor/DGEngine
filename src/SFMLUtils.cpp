@@ -1,6 +1,7 @@
 #include "SFMLUtils.h"
+#include <cmath>
 
-namespace sf
+namespace SFMLUtils
 {
 	sf::Color rgbToColor(unsigned val)
 	{
@@ -23,11 +24,45 @@ namespace sf
 	{
 		if (str.length() >= 10)
 		{
-			return sf::rgbaToColor(std::stoul(str, 0, 16));
+			return rgbaToColor(std::stoul(str, 0, 16));
 		}
 		else
 		{
-			return sf::rgbToColor(std::stoul(str, 0, 16));
+			return rgbToColor(std::stoul(str, 0, 16));
+		}
+	}
+
+	void spriteCenterTexture(sf::Sprite& sprite)
+	{
+		sf::Vector2f origin;
+		auto texSize = sprite.getTexture()->getSize();
+		auto texRect = sprite.getTextureRect();
+		bool updateTexRect = false;
+
+		float valX = std::round(-((float)texRect.width / 2.f) + ((float)texSize.x / 2.f));
+		if ((int)texSize.x <= texRect.width)
+		{
+			origin.x = valX;
+		}
+		else
+		{
+			texRect.left = valX;
+			updateTexRect = true;
+		}
+		float valY = std::round(-((float)texRect.height / 2.f) + ((float)texSize.y / 2.f));
+		if ((int)texSize.y <= texRect.height)
+		{
+			origin.y = valY;
+		}
+		else
+		{
+			texRect.top = valY;
+			updateTexRect = true;
+		}
+		sprite.setOrigin(origin);
+		if (updateTexRect == true)
+		{
+			sprite.setTextureRect(texRect);
 		}
 	}
 

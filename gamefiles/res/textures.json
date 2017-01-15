@@ -26,7 +26,7 @@
         "texture": {
           "id": "cursor",
           "file": "data/inv/objcurs.cel",
-          "frame": 1,
+          "frame": 0,
           "palette": "town"
         }
       }

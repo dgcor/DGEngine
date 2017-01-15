@@ -324,6 +324,22 @@ namespace GameUtils
 		return val;
 	}
 
+	InventoryPosition getInventoryPosition(const std::string& str, InventoryPosition val)
+	{
+		switch (str2int(toLower(str).c_str()))
+		{
+		case str2int("topleft"):
+			return InventoryPosition::TopLeft;
+		case str2int("topright"):
+			return InventoryPosition::TopRight;
+		case str2int("bottomleft"):
+			return InventoryPosition::BottomLeft;
+		case str2int("bottomright"):
+			return InventoryPosition::BottomRight;
+		}
+		return val;
+	}
+
 	PlayerDirection getPlayerDirection(const std::string& str, PlayerDirection val)
 	{
 		switch (str2int(toLower(str).c_str()))

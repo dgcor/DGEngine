@@ -42,10 +42,6 @@ namespace Parser
 			else if (elem.HasMember("frame") == true)
 			{
 				auto frameIdx = getUIntVal(elem["frame"]);
-				if (frameIdx > 0)
-				{
-					frameIdx--;
-				}
 				img = CelUtils::loadImageFrame(fileName.c_str(), *pal, isCl2, frameIdx);
 			}
 			else if (numFramesX != nullptr && numFramesY != nullptr)
@@ -152,7 +148,7 @@ namespace Parser
 			return;
 		}
 
-		texture->setRepeated(true);
+		texture->setRepeated(getBoolKey(elem, "repeat", true));
 
 		game.Resources().addTexture(id, texture);
 	}

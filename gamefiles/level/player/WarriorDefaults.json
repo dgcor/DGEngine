@@ -61,7 +61,15 @@
       },
       {
         "index": "Stash",
-        "size": [4, 10]
+        "enforceItemSize": true,
+        "size": [10, 4],
+        "item": [
+          {
+            "index": [0, 0],
+            "class": "club",
+            "name": "Club"
+          }
+        ]
       }
     ]
   }

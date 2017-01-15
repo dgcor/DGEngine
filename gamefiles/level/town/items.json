@@ -21,6 +21,21 @@
       "mapPosition": [59, 73]
     },
     {
+      "class": "manaPotion",
+      "name": "Potion of Mana",
+      "mapPosition": [56, 70]
+    },
+    {
+      "class": "manaPotion",
+      "name": "Potion of Mana",
+      "mapPosition": [57, 70]
+    },
+    {
+      "class": "manaPotion",
+      "name": "Potion of Mana",
+      "mapPosition": [58, 70]
+    },
+    {
       "class": "amulet",
       "name": "Amulet",
       "mapPosition": [60, 73]

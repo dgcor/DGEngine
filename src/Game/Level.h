@@ -21,11 +21,13 @@
 class Level : public UIObject
 {
 private:
+	View2 view;
 	LevelMap map;
 
 	sf::Vector2f mousePositionf;
 	bool hasMouseInside{ false };
-	View2 view;
+
+	MapCoord mapCoordOverMouse;
 	MapCoord currentMapPosition;
 
 	Anchor anchor{ Anchor::Top | Anchor::Left };
@@ -40,6 +42,9 @@ private:
 	std::shared_ptr<Action> hoverEnterAction;
 	std::shared_ptr<Action> hoverLeaveAction;
 
+	MapCoord clickedMapPosition;
+
+	LevelObject* clickedObject{ nullptr };
 	LevelObject* hoverObject{ nullptr };
 
 	std::vector<std::shared_ptr<LevelObject>> levelObjects;
@@ -144,6 +149,11 @@ public:
 	void setHoverEnterAction(const std::shared_ptr<Action>& action) { hoverEnterAction = action; }
 	void setHoverLeaveAction(const std::shared_ptr<Action>& action) { hoverLeaveAction = action; }
 
+	const MapCoord& getClickedMapPosition() const { return clickedMapPosition; }
+
+	LevelObject* getClickedObject() const { return clickedObject; }
+	void setClickedObject(LevelObject* object) { clickedObject = object; }
+
 	LevelObject* getHoverObject() const { return hoverObject; }
 	void setHoverObject(LevelObject* object) { hoverObject = object; }
 
@@ -158,24 +168,9 @@ public:
 
 	void addLevelObject(const std::shared_ptr<LevelObject>& obj) { levelObjects.push_back(obj); }
 
-	void deleteLevelObject(const LevelObject* obj)
-	{
-		auto it = std::find_if(levelObjects.begin(),
-			levelObjects.end(),
-			[&](std::shared_ptr<LevelObject> const& p)
-		{
-			return p.get() == obj;
-		});
-		if (it != levelObjects.end())
-		{
-			levelObjects.erase(it);
-		}
-	}
+	void deleteLevelObject(const LevelObject* obj);
 
-	MapCoord getMapCoordOverMouse() const
-	{
-		return map.getTile(mousePositionf);
-	}
+	MapCoord getMapCoordOverMouse() const { return mapCoordOverMouse; }
 
 	void move(const MapCoord& mapPos)
 	{

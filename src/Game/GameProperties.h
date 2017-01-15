@@ -3,6 +3,15 @@
 #include <cstddef>
 #include "MapCoord.h"
 
+enum class InventoryPosition : size_t
+{
+	TopLeft,
+	TopRight,
+	BottomLeft,
+	BottomRight,
+	Size
+};
+
 enum class PlayerDirection : size_t
 {
 	Front,

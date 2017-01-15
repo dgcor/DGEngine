@@ -10,7 +10,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	void parsePlayerItem(Game& game, const Level& level,
-		Player& player, size_t invIdx, const Value& elem)
+		ItemCollection& inventory, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
 		{
@@ -22,6 +22,10 @@ namespace Parser
 		{
 			itemIdx = (size_t)GameUtils::getPlayerItemMountIndex(idxElem.GetString());
 		}
+		else if (idxElem.IsArray() == true)
+		{
+			itemIdx = inventory.getIndex(getVector2uVal<sf::Vector2u>(idxElem));
+		}
 		else if (idxElem.IsUint() == true)
 		{
 			itemIdx = idxElem.GetUint();
@@ -31,7 +35,10 @@ namespace Parser
 			return;
 		}
 		auto item = parseItemObj(game, level, elem);
-		player.setInventoryItem(invIdx, itemIdx, item);
+		if (itemIdx < inventory.Size())
+		{
+			inventory.set(itemIdx, item);
+		}
 	}
 
 	void parsePlayerInventory(Game& game, const Level& level,
@@ -77,6 +84,13 @@ namespace Parser
 		{
 			inventory.init((size_t)PlayerItemMount::Size);
 		}
+		if (inventory.Size() == 0)
+		{
+			return;
+		}
+
+		inventory.setEnforceItemSize(getBoolKey(elem, "enforceItemSize"));
+
 		if (elem.HasMember("allowedClassTypes") == true)
 		{
 			const auto& classesElem = elem["allowedClassTypes"];
@@ -92,10 +106,6 @@ namespace Parser
 				}
 			}
 		}
-		if (inventory.Size() == 0)
-		{
-			return;
-		}
 		if (elem.HasMember("item") == true)
 		{
 			const auto& itemsElem = elem["item"];
@@ -103,12 +113,12 @@ namespace Parser
 			{
 				for (const auto& val : itemsElem)
 				{
-					parsePlayerItem(game, level, player, invIdx, val);
+					parsePlayerItem(game, level, inventory, val);
 				}
 			}
 			else if (itemsElem.IsObject() == true)
 			{
-				parsePlayerItem(game, level, player, invIdx, itemsElem);
+				parsePlayerItem(game, level, inventory, itemsElem);
 			}
 		}
 	}

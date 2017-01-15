@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/GameProperties.h"
 #include "Json/JsonParser.h"
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -70,6 +71,9 @@ namespace Parser
 
 	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem,
 		sf::Keyboard::Key val = sf::Keyboard::Unknown);
+
+	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
+		PlayerInventory inv);
 
 	Variable getVariableVal(const rapidjson::Value& elem);
 }

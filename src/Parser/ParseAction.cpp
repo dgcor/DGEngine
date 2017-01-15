@@ -189,15 +189,29 @@ namespace Parser
 		case str2int("button.setTextureFromInventory"):
 		{
 			auto inv = getPlayerInventoryKey(elem, "inventory");
-			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
-
-			return std::make_shared<ActSetTextureFromInventory<BitmapButton>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "idLevel"),
-				getStringKey(elem, "idPlayer"),
-				(size_t)inv,
-				itemIdx,
-				getBoolKey(elem, "resetRect"));
+			if (elem.HasMember("item") &&
+				elem["item"].IsArray() == true)
+			{
+				auto itemPos = getVector2uVal<sf::Vector2u>(elem["item"]);
+				return std::make_shared<ActSetTextureFromInventory<BitmapButton>>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemPos,
+					getBoolKey(elem, "resetRect"));
+			}
+			else
+			{
+				size_t itemIdx = getInventoryItemIndexVal(elem["item"], inv);
+				return std::make_shared<ActSetTextureFromInventory<BitmapButton>>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemIdx,
+					getBoolKey(elem, "resetRect"));
+			}
 		}
 		case str2int("button.setTextureRect"):
 		{
@@ -562,15 +576,29 @@ namespace Parser
 		case str2int("image.setTextureFromInventory"):
 		{
 			auto inv = getPlayerInventoryKey(elem, "inventory");
-			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
-
-			return std::make_shared<ActSetTextureFromInventory<Image>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "idLevel"),
-				getStringKey(elem, "idPlayer"),
-				(size_t)inv,
-				itemIdx,
-				getBoolKey(elem, "resetRect"));
+			if (elem.HasMember("item") &&
+				elem["item"].IsArray() == true)
+			{
+				auto itemPos = getVector2uVal<sf::Vector2u>(elem["item"]);
+				return std::make_shared<ActSetTextureFromInventory<Image>>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemPos,
+					getBoolKey(elem, "resetRect"));
+			}
+			else
+			{
+				size_t itemIdx = getInventoryItemIndexVal(elem["item"], inv);
+				return std::make_shared<ActSetTextureFromInventory<Image>>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemIdx,
+					getBoolKey(elem, "resetRect"));
+			}
 		}
 		case str2int("image.setTextureRect"):
 		{
@@ -613,6 +641,26 @@ namespace Parser
 				getStringKey(elem, "idLevel"),
 				getStringKey(elem, "idPlayer"));
 		}
+		case str2int("item.executeDropAction"):
+		{
+			return std::make_shared<ActItemExecuteDropAction>(
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"));
+		}
+		case str2int("item.loadFromLevel"):
+		{
+			auto action = std::make_shared<ActItemLoadFromLevel>(
+				getStringKey(elem, "idLevel"),
+				getStringKey(elem, "idPlayer"),
+				(size_t)getPlayerInventoryKey(elem, "inventory"),
+				getInventoryPositionKey(elem, "position"));
+
+			if (elem.HasMember("onInventoryFull"))
+			{
+				action->setInventoryFullAction(parseAction(game, elem["onInventoryFull"]));
+			}
+			return action;
+		}
 		case str2int("item.pickFromLevel"):
 		{
 			return std::make_shared<ActItemPickFromLevel>(
@@ -622,13 +670,25 @@ namespace Parser
 		case str2int("item.update"):
 		{
 			auto inv = getPlayerInventoryKey(elem, "inventory");
-			size_t itemIdx = getInventoryItemIndexKey(elem, "item", inv);
-
-			return std::make_shared<ActItemUpdate>(
-				getStringKey(elem, "idLevel"),
-				getStringKey(elem, "idPlayer"),
-				(size_t)inv,
-				itemIdx);
+			if (elem.HasMember("item") &&
+				elem["item"].IsArray() == true)
+			{
+				auto itemPos = getVector2uVal<sf::Vector2u>(elem["item"]);
+				return std::make_shared<ActItemUpdate>(
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemPos);
+			}
+			else
+			{
+				size_t itemIdx = getInventoryItemIndexVal(elem["item"], inv);
+				return std::make_shared<ActItemUpdate>(
+					getStringKey(elem, "idLevel"),
+					getStringKey(elem, "idPlayer"),
+					(size_t)inv,
+					itemIdx);
+			}
 		}
 		case str2int("level.clearObjects"):
 		{
@@ -807,16 +867,20 @@ namespace Parser
 		{
 			auto actionList = std::make_shared<ActRandomList>();
 			bool hasActions = false;
-			for (const auto& val : elem)
+			if (elem.HasMember("actions") == true &&
+				elem["actions"].IsArray() == true)
 			{
-				auto action = parseAction(game, val);
-				if (action != nullptr)
+				for (const auto& val : elem["actions"])
 				{
-					actionList->add(action);
-					hasActions = true;
+					auto action = parseAction(game, val);
+					if (action != nullptr)
+					{
+						actionList->add(action);
+						hasActions = true;
+					}
 				}
 			}
-			if (hasActions == true)
+			if (hasActions == false)
 			{
 				return nullptr;
 			}

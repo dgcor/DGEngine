@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlayerProperties.h"
+#include "GameProperties.h"
 #include "stlastar.h"
 
 #define PATH_FINDER_MAX 150

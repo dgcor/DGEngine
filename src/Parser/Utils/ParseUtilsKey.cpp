@@ -157,7 +157,7 @@ namespace Parser
 		{
 			try
 			{
-				return sf::stringToColor(elem[key].GetString());
+				return SFMLUtils::stringToColor(elem[key].GetString());
 			}
 			catch (std::exception ex) {}
 		}
@@ -213,23 +213,25 @@ namespace Parser
 	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
 		const char* key, PlayerInventory inv)
 	{
-		size_t itemIdx = 0;
+		if (elem.HasMember(key) == true)
+		{
+			return getInventoryItemIndexVal(elem[key], inv);
+		}
+		return 0;
+	}
+
+	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
+		const char* key, InventoryPosition val)
+	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
-			if (keyElem.IsUint() == true)
+			if (keyElem.IsString() == true)
 			{
-				itemIdx = keyElem.GetUint();
-			}
-			else if (keyElem.IsString() == true)
-			{
-				if (inv == PlayerInventory::Body)
-				{
-					itemIdx = (size_t)GameUtils::getPlayerItemMount(keyElem.GetString());
-				}
+				return GameUtils::getInventoryPosition(keyElem.GetString(), val);
 			}
 		}
-		return itemIdx;
+		return val;
 	}
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,

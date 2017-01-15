@@ -125,6 +125,8 @@ set(SOURCE_FILES
     src/Game/CelLevelObject.cpp
     src/Game/CelLevelObject.h
     src/Game/fsa.h
+    src/Game/GameProperties.cpp
+    src/Game/GameProperties.h
     src/Game/ImageLevelObject.cpp
     src/Game/ImageLevelObject.h
     src/Game/Item.cpp
@@ -145,8 +147,6 @@ set(SOURCE_FILES
     src/Game/Player.h
     src/Game/PlayerClass.cpp
     src/Game/PlayerClass.h
-    src/Game/PlayerProperties.cpp
-    src/Game/PlayerProperties.h
     src/Game/Quest.cpp
     src/Game/Quest.h
     src/Game/stlastar.h

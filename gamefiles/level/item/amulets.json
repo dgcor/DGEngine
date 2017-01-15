@@ -9,6 +9,7 @@
       "celIndexInventory": 56,
       "name": "Amulet",
       "type": "Amulet",
+      "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipring" },
       "actionDropInventory": { "name": "sound.play", "id": "invring" },

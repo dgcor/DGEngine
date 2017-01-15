@@ -9,6 +9,7 @@
       "celIndexInventory": 77,
       "name": "Club",
       "type": "Weapon",
+      "inventorySize": [1, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
       "actionDropInventory": { "name": "sound.play", "id": "invsword" },

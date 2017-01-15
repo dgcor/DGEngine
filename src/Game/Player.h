@@ -101,6 +101,9 @@ private:
 
 	void updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSize);
 
+	bool parseInventoryAndItem(const std::string& str,
+		std::string& props, size_t& invIdx, size_t& itemIdx) const;
+
 public:
 	Player(const std::shared_ptr<PlayerClass>& class__) : class_(class__)
 	{
@@ -175,16 +178,11 @@ public:
 		}
 	}
 
-	std::shared_ptr<Item> getInventoryItem(size_t invIdx, size_t itemIdx) const;
-
-	bool setInventoryItem(size_t invIdx, size_t itemIdx,
-		const std::shared_ptr<Item>& item);
-
 	ItemCollection& getInventory(PlayerInventory inv) { return inventories[(size_t)inv]; }
 	const ItemCollection& getInventory(PlayerInventory inv) const { return inventories[(size_t)inv]; }
 
 	ItemCollection& getInventory(size_t idx) { return inventories[idx]; }
-	const ItemCollection& getInventory(size_t idx) const { return inventories[0]; }
+	const ItemCollection& getInventory(size_t idx) const { return inventories[idx]; }
 
 	size_t getInventorySize() { return inventories.size(); }
 

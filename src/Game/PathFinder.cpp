@@ -93,10 +93,15 @@ float MapSearchNode::GetCost(MapSearchNode& successor)
 {
 	if (IsPassable(x, y) == true)
 	{
-		if ((*map)[x][y].object == nullptr)
+		auto obj = (*map)[x][y].object.get();
+		if (obj == nullptr)
 		{
 			return 1.f;
 		}
+		//else if (obj->Passable() == true)
+		//{
+		//	return 1.f;
+		//}
 	}
 	return 9.f;
 }

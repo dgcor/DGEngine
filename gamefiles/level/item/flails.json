@@ -9,6 +9,7 @@
       "celIndexInventory": 142,
       "name": "Flail",
       "type": "Weapon",
+      "inventorySize": [2, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
       "actionDropInventory": { "name": "sound.play", "id": "invsword" },
