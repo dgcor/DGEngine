@@ -50,7 +50,7 @@ namespace Parser
 		{
 			if (action != nullptr)
 			{
-				movie->setActionComplete(action);
+				movie->setAction(str2int16("complete"), action);
 			}
 		}
 

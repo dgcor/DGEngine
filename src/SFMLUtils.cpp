@@ -46,7 +46,7 @@ namespace SFMLUtils
 		}
 		else
 		{
-			texRect.left = valX;
+			texRect.left = (int)valX;
 			updateTexRect = true;
 		}
 		float valY = std::round(-((float)texRect.height / 2.f) + ((float)texSize.y / 2.f));
@@ -56,7 +56,7 @@ namespace SFMLUtils
 		}
 		else
 		{
-			texRect.top = valY;
+			texRect.top = (int)valY;
 			updateTexRect = true;
 		}
 		sprite.setOrigin(origin);

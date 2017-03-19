@@ -11,29 +11,15 @@
     "experience": 0,
     "expNextLevel": 2000,
     "gold": 100,
-    "strengthBase": 20,
-    "magicBase": 15,
-    "dexterityBase": 30,
-    "vitalityBase": 20,
     "points": 0,
-    "lifeBase": 45,
-    "manaBase": 22,
-    "armor": 6,
-    "toHit": 65,
-    "damageMin": 1,
-    "damageMax": 4,
-    "resistMagic": 0,
-    "resistFire": 0,
-    "resistLightning": 0,
     "inventory": [
       {
         "index": "Body",
-        "allowedClassTypes": ["Amulet", "Armor", "Helmet", "Ring", "Shield", "Weapon"],
+        "allowedClassTypes": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Staff", "Sword"],
         "item": [
           {
             "index": "LeftHand",
-            "class": "shortBow",
-            "name": "Short Bow"
+            "class": "shortBow"
           }
         ]
       },
@@ -44,13 +30,11 @@
         "item": [
           {
             "index": 0,
-            "class": "healthPotion",
-            "name": "Potion of Healing"
+            "class": "healthPotion"
           },
           {
             "index": 1,
-            "class": "healthPotion",
-            "name": "Potion of Healing"
+            "class": "healthPotion"
           }
         ]
       },

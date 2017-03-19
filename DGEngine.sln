@@ -1,21 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DGEngine", "DGEngine.vcxproj", "{B30255A6-E921-4847-9FB1-26842AB465A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Clang|Win32 = Debug Clang|Win32
 		Debug NoMovie|Win32 = Debug NoMovie|Win32
+		Debug VS2015|Win32 = Debug VS2015|Win32
 		Debug|Win32 = Debug|Win32
 		Release NoMovie|Win32 = Release NoMovie|Win32
 		Release Static|Win32 = Release Static|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug Clang|Win32.ActiveCfg = Debug Clang|Win32
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug Clang|Win32.Build.0 = Debug Clang|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoMovie|Win32.ActiveCfg = Debug NoMovie|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoMovie|Win32.Build.0 = Debug NoMovie|Win32
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug VS2015|Win32.ActiveCfg = Debug VS2015|Win32
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug VS2015|Win32.Build.0 = Debug VS2015|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug|Win32.Build.0 = Debug|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Release NoMovie|Win32.ActiveCfg = Release NoMovie|Win32

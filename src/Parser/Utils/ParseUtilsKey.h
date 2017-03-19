@@ -14,28 +14,30 @@ namespace Parser
 	Anchor getAnchorKey(const rapidjson::Value& elem,
 		const char* key, Anchor val = Anchor::Top | Anchor::Left);
 
-	bool getBoolKey(const rapidjson::Value& elem, const char* key, bool val = false);
+	bool getBoolKey(const rapidjson::Value& elem, const char* key, bool val = {});
 
-	double getDoubleKey(const rapidjson::Value& elem, const char* key, double val = 0.0);
+	double getDoubleKey(const rapidjson::Value& elem, const char* key, double val = {});
 
-	int getIntKey(const rapidjson::Value& elem, const char* key, int val = 0);
+	float getFloatKey(const rapidjson::Value& elem, const char* key, float val = {});
 
-	int64_t getInt64Key(const rapidjson::Value& elem, const char* key, int64_t val = 0);
+	int getIntKey(const rapidjson::Value& elem, const char* key, int val = {});
+
+	int64_t getInt64Key(const rapidjson::Value& elem, const char* key, int64_t val = {});
 
 	const char* getStringCharKey(const rapidjson::Value& elem,
 		const char* key, const char* val = "");
 
 	std::string getStringKey(const rapidjson::Value& elem,
-		const char* key, const std::string& val = "");
+		const char* key, const std::string& val = {});
 
 	unsigned getUIntKey(const rapidjson::Value& elem,
-		const char* key, unsigned val = 0);
+		const char* key, unsigned val = {});
 
 	uint64_t getUInt64Key(const rapidjson::Value& elem,
-		const char* key, uint64_t val = 0);
+		const char* key, uint64_t val = {});
 
 	template <class T>
-	T getVector2fKey(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsArray() == true
@@ -43,13 +45,13 @@ namespace Parser
 			&& elem[key][0].IsNumber() == true
 			&& elem[key][1].IsNumber() == true)
 		{
-			return T(elem[key][0].GetDouble(), elem[key][1].GetDouble());
+			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat());
 		}
 		return val;
 	}
 
 	template <class T>
-	T getVector2iKey(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2iKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsArray() == true
@@ -63,7 +65,7 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector2uKey(const rapidjson::Value& elem, const char* key, const T& val = T())
+	T getVector2uKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsArray() == true
@@ -77,13 +79,13 @@ namespace Parser
 	}
 
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
-		const char* key, const sf::IntRect& val = sf::IntRect());
+		const char* key, const sf::IntRect& val = {});
 
 	sf::FloatRect getFloatRectKey(const rapidjson::Value& elem,
-		const char* key, const sf::FloatRect& val = sf::FloatRect());
+		const char* key, const sf::FloatRect& val = {});
 
 	sf::Color getColorKey(const rapidjson::Value& elem, const char* key,
-		const sf::Color& val = sf::Color());
+		const sf::Color& val = {});
 
 	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const char* key);
 
@@ -95,6 +97,20 @@ namespace Parser
 
 	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
 		const char* key, InventoryPosition val = InventoryPosition::TopLeft);
+
+	template <class T>
+	T getMinMaxIntKey(const rapidjson::Value& elem, const char* key, T val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getMinMaxIntVal<T>(elem[key], val);
+		}
+		return val;
+	}
+
+	ItemCoordInventory getItemCoordInventoryKey(const rapidjson::Value& elem, const char* key);
+
+	ItemXY getItemXYKey(const rapidjson::Value& elem, const char* key, const ItemXY& val = {});
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
 		const char* key, PlayerDirection val = PlayerDirection::All);

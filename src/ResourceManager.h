@@ -143,6 +143,7 @@ public:
 	void addCursor(const std::shared_ptr<UIObject>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
 	void popAllCursors() { cursors.clear(); }
+	size_t cursorCount() const { return cursors.size(); }
 
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
@@ -189,6 +190,22 @@ public:
 				if (elem.first == key)
 				{
 					return dynamic_cast<T*>(elem.second.get());
+				}
+			}
+		}
+		return nullptr;
+	}
+
+	template <class T>
+	std::shared_ptr<T> getResourceSharedPtr(const std::string& key) const
+	{
+		for (auto it = resources.rbegin(); it != resources.rend(); ++it)
+		{
+			for (const auto& elem : it->drawables)
+			{
+				if (elem.first == key)
+				{
+					return std::dynamic_pointer_cast<T>(elem.second);
 				}
 			}
 		}

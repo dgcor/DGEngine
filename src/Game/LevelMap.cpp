@@ -3,14 +3,20 @@
 
 int LevelMap::tileSize = 32;
 
-LevelMap::LevelMap(size_t width_, size_t height_) : mapSize(width_, height_)
+LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 {
-	cells.resize(width_ * height_);
-	size.x = width_ * tileSize;
-	size.y = height_ * tileSize;
+	if (mapSize.x == std::numeric_limits<Coord>::max())
+	{
+		mapSize.x--;
+	}
+	if (mapSize.y == std::numeric_limits<Coord>::max())
+	{
+		mapSize.y--;
+	}
+	cells.resize(mapSize.x * mapSize.y);
 }
 
-void LevelMap::setArea(size_t x, size_t y, const Dun& dun, const TileSet& til, const Sol& sol)
+void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol)
 {
 	auto dWidth = dun.Width() * 2;
 	auto dHeight = dun.Height() * 2;
@@ -79,11 +85,11 @@ void LevelMap::setArea(size_t x, size_t y, const Dun& dun, const TileSet& til, c
 	}
 }
 
-sf::Vector2f LevelMap::getCoords(const MapCoord& tile) const
+sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 {
 	return sf::Vector2f(
-		(tile.y*(-32)) + 32 * tile.x + mapSize.y * 32 - 32,
-		(tile.y * 16) + 16 * tile.x);
+		(float)((tile.y*(-32)) + 32 * tile.x + mapSize.y * 32 - 32),
+		(float)((tile.y * 16) + 16 * tile.x));
 }
 
 MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
@@ -145,7 +151,7 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 	int32_t isoPosX = flatGridX - lineOriginPosX;
 	int32_t isoPosY = flatGridY - lineOriginPosY;
 
-	return MapCoord(isoPosX, isoPosY);
+	return MapCoord((Coord)isoPosX, (Coord)isoPosY);
 }
 
 std::queue<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const
@@ -186,7 +192,7 @@ std::queue<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) con
 			{
 				break;
 			}
-			path.emplace(MapCoord(node->x, node->y));
+			path.push(MapCoord(node->x, node->y));
 			node = pathFinder.GetSolutionNext();
 		};
 		pathFinder.FreeSolutionNodes();

@@ -9,21 +9,40 @@
       { "name": "level.pause", "pause": false }
     ]
   },
-  "text": {
-    "id": "txtMapLabel",
-    "bitmapFont": "smaltext",
-    "color": "%textGold%",
-    "position": [8, 10],
-    "horizontalSpaceOffset": 1,
-    "binding": "|currentLevel|name|",
-    "format": "Level: [1]",
-    "visible": false
-  },
+  "text": [
+    {
+      "id": "txtMapLabel",
+      "replaceVars": true,
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [8, 10],
+      "horizontalSpaceOffset": 1,
+      "binding": "|currentLevel|name|",
+      "format": "Level: [1]",
+      "visible": false
+    },
+    {
+      "id": "txtZoom",
+      "replaceVars": true,
+      "anchor": "topRight",
+      "bitmapFont": "smaltext",
+      "color": "%textGold%",
+      "position": [632, 10],
+      "horizontalAlign": "right",
+      "horizontalSpaceOffset": 1,
+      "binding": "|currentLevel|zoomPercentage|",
+      "format": "Zoom: [1]%",
+      "visible": false
+    }
+  ],
   "button": [
     {
       "id": "charPanel",
       "anchor": "left",
       "texture": "char",
+      "captureScrollEvent": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
       "visible": false
     },
     {
@@ -31,12 +50,18 @@
       "anchor": "right",
       "position": [320, 0],
       "texture": "inv",
+      "captureScrollEvent": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
       "visible": false
     },
     {
       "id": "questPanel",
       "anchor": "left",
       "texture": "quest",
+      "captureScrollEvent": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
       "visible": false
     },
     {
@@ -44,6 +69,9 @@
       "anchor": "right",
       "position": [320, 0],
       "texture": "spellbk",
+      "captureScrollEvent": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
       "visible": false
     }
   ],
@@ -79,12 +107,14 @@
         { "name": "resource.pop", "id": "charPanelLabels" },
         { "name": "resource.pop", "id": "charPanelQuests" },
         { "name": "drawable.visible", "id": "charPanel", "visible": false },
-        { "name": "drawable.visible", "id": "questPanel", "visible": false }
+        { "name": "drawable.visible", "id": "questPanel", "visible": false },
+        "setLevelHoverActions"
       ],
       "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"
@@ -107,12 +137,14 @@
         { "name": "resource.pop", "id": "charPanelLabels" },
         { "name": "resource.pop", "id": "charPanelQuests" },
         { "name": "drawable.visible", "id": "charPanel", "visible": false },
-        { "name": "drawable.visible", "id": "questPanel", "visible": false }
+        { "name": "drawable.visible", "id": "questPanel", "visible": false },
+        "setLevelHoverActions"
       ],
       "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"
@@ -135,12 +167,14 @@
         { "name": "resource.pop", "id": "charPanelInventory" },
         { "name": "resource.pop", "id": "charPanelSpells" },
         { "name": "drawable.visible", "id": "invPanel", "visible": false },
-        { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+        "setLevelHoverActions"
       ],
       "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"
@@ -163,12 +197,14 @@
         { "name": "resource.pop", "id": "charPanelInventory" },
         { "name": "resource.pop", "id": "charPanelSpells" },
         { "name": "drawable.visible", "id": "invPanel", "visible": false },
-        { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+        "setLevelHoverActions"
       ],
       "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"
@@ -184,6 +220,7 @@
       "onClickOut": { "name": "button.setTexture", "id": "map", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"
@@ -210,6 +247,7 @@
       "onClickOut": { "name": "button.setTexture", "id": "menu", "texture": "empty" },
       "onHoverEnter": [
         { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+        "setPanelTextColorWhite",
         "updatePanelTextSpacing"
       ],
       "onHoverLeave": "clearPanelText"

@@ -52,8 +52,8 @@ namespace Parser
 		rectangle->Position(pos);
 		rectangle->Visible(getBoolKey(elem, "visible", true));
 
-		rectangle->setFillColor(getColorVar(game, elem, "color", sf::Color::White));
-		rectangle->setOutlineColor(getColorVar(game, elem, "outlineColor", sf::Color::White));
+		rectangle->setFillColor(getColorKey(elem, "color", sf::Color::White));
+		rectangle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		rectangle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
 		game.Resources().addDrawable(id, rectangle);

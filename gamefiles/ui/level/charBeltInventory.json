@@ -11,15 +11,7 @@
         { "name": "item.update", "inventory": "belt", "item": 0 },
         "updateBeltItem1"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.0|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.0.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt1Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -33,15 +25,7 @@
         { "name": "item.update", "inventory": "belt", "item": 1 },
         "updateBeltItem2"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.1|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.1.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt2Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -55,15 +39,7 @@
         { "name": "item.update", "inventory": "belt", "item": 2 },
         "updateBeltItem3"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.2|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.2.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt3Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -77,15 +53,7 @@
         { "name": "item.update", "inventory": "belt", "item": 3 },
         "updateBeltItem4"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.3|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.3.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt4Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -99,15 +67,7 @@
         { "name": "item.update", "inventory": "belt", "item": 4 },
         "updateBeltItem5"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.4|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.4.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt5Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -121,15 +81,7 @@
         { "name": "item.update", "inventory": "belt", "item": 5 },
         "updateBeltItem6"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.5|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.5.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt6Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -143,15 +95,7 @@
         { "name": "item.update", "inventory": "belt", "item": 6 },
         "updateBeltItem7"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.6|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.6.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt7Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -165,15 +109,7 @@
         { "name": "item.update", "inventory": "belt", "item": 7 },
         "updateBeltItem8"
       ],
-      "onHoverEnter": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.belt.7|",
-        "param2": true,
-        "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|currentPlayer.item.belt.7.name|" },
-          "updatePanelTextSpacing"
-        ]
-      },
+      "onHoverEnter": "updateInventoryBelt8Text",
       "onHoverLeave": "clearPanelText"
     }
   ],

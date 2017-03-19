@@ -24,6 +24,7 @@
   "text": [
     {
       "id": "panelTitle1",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 58],
@@ -63,13 +64,17 @@
         ]
       },
       {
-        "%QUESTS%": null,
-        "ignoreItems": ["gharbadTheWeak", "zharTheMad"],
+        "load": "currentLevel|quests",
+        "exclude": {
+          "property": "id",
+          "value": ["gharbadTheWeak", "zharTheMad"]
+        },
+        "text": "%name%",
         "onClick": [
           { "name": "game.clearPlayingSounds" },
           { "name": "sound.play", "id": "titlslct" },
           { "name": "resource.popAll", "id": "userPanel" },
-          { "name": "load", "file": "texts/cain/quests/%ID%.json" }
+          { "name": "load", "file": "texts/cain/quests/%id%.json" }
         ],
         "onFocus": [
           "anchorLeftPentagram",
@@ -101,6 +106,6 @@
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram",
-    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "%textBlue%" }
+    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "%textBlue%", "replaceVars": true }
   ]
 }

@@ -58,6 +58,21 @@
     "name": "Rogue",
     "type": "Human",
     "description": "Rogue",
+    "defaults": {
+      "strengthBase": 20,
+      "magicBase": 15,
+      "dexterityBase": 30,
+      "vitalityBase": 20,
+      "lifeBase": 45,
+      "manaBase": 22,
+      "armor": 6,
+      "toHit": 65,
+      "damageMin": 1,
+      "damageMax": 4,
+      "resistMagic": 0,
+      "resistFire": 0,
+      "resistLightning": 0
+    },
     "celTextures": [
       { "palette": 0, "name": "rls" },
       { "palette": 1, "name": "rlsInfra" },

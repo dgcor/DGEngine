@@ -14,10 +14,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<InputText>(id);
-		if (item != nullptr)
+		auto text = game.Resources().getResource<InputText>(id);
+		if (text != nullptr)
 		{
-			item->click(game);
+			text->click(game);
 		}
 		return true;
 	}

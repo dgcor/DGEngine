@@ -8,7 +8,16 @@
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 43,
       "name": "Potion of Healing",
+      "shortName": "Potion",
       "type": "Potion",
+      "defaults": {
+        "identified": true,
+        "magic": false,
+        "toLife": 50,
+        "toMana": 0
+      },
+      "description1": "potion",
+      "description2": "rightClickToUse",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flippot" },
@@ -17,48 +26,48 @@
     },
     {
       "id": "manaPotion",
+      "fromId": "healthPotion",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 13,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 50,
       "name": "Potion of Mana",
-      "type": "Potion",
-      "inventorySize": [1, 1],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
-      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
-      "actionPickInventory": "pickItemInInventory"
+      "defaults": {
+        "identified": true,
+        "toLife": 0,
+        "toMana": 50
+      }
     },
     {
       "id": "fullHealthPotion",
+      "fromId": "healthPotion",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 16,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 46,
       "name": "Potion of Full Healing",
-      "type": "Potion",
-      "inventorySize": [1, 1],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
-      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
-      "actionPickInventory": "pickItemInInventory"
+      "defaults": {
+        "identified": true,
+        "toLife": "max",
+        "toMana": 0
+      }
     },
     {
       "id": "fullManaPotion",
+      "fromId": "healthPotion",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 14,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 11,
       "name": "Potion of Full Mana",
-      "type": "Potion",
-      "inventorySize": [1, 1],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flippot" },
-      "actionDropInventory": { "name": "sound.play", "id": "invpot" },
-      "actionPickInventory": "pickItemInInventory"
+      "defaults": {
+        "identified": true,
+        "toLife": 0,
+        "toMana": "max"
+      }
     }
   ]
 }

@@ -4,6 +4,7 @@
 #include "Anchor.h"
 #include "MapCoord.h"
 #include <memory>
+#include "Queryable.h"
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
@@ -12,7 +13,7 @@
 class Game;
 class Level;
 
-class LevelObject : public sf::Drawable
+class LevelObject : public sf::Drawable, public Queryable
 {
 public:
 	// Move
@@ -33,6 +34,5 @@ public:
 	// Update
 	virtual void update(Game& game, Level& level) = 0;
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const = 0;
 	virtual void setProperty(const std::string& prop, const Variable& val) = 0;
 };

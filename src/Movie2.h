@@ -38,8 +38,9 @@ public:
 	void play() { movie.play(); }
 	void pause() { movie.pause(); }
 
-	void setActionComplete(const std::shared_ptr<Action>& action_) { actionComplete = action_; }
 	void setVolume(float volume) { movie.setVolume(volume); }
+
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
@@ -60,5 +61,6 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };
 #endif	// USE_SFML_MOVIE_STUB

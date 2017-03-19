@@ -1,17 +1,87 @@
 #include "ParseMenu.h"
 #include "BitmapText.h"
+#include "FileUtils.h"
 #include "GameUtils.h"
 #include "ParseAction.h"
 #include "ParseMenuButton.h"
-#include "ParseMenuQuests.h"
-#include "ParseMenuSaveGames.h"
 #include "StringButton.h"
 #include "StringText.h"
+#include "Utils.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
+	typedef std::tuple<unsigned, std::string, Variable> ExcludeObject;
 	using namespace rapidjson;
+
+	void parseExcludeObj(const Value& elem, std::vector<ExcludeObject>& list)
+	{
+		if (elem.HasMember("value") == false)
+		{
+			return;
+		}
+		const auto& valElem = elem["value"];
+
+		auto conditionHash = str2int32(getStringCharKey(elem, "if"));
+		auto property = getStringKey(elem, "property");
+
+		if (valElem.IsArray() == false)
+		{
+			list.push_back(std::make_tuple(conditionHash,
+				property,
+				getVariableVal(valElem)));
+		}
+		else
+		{
+			for (const auto& val : valElem)
+			{
+				list.push_back(std::make_tuple(conditionHash,
+					property,
+					getVariableVal(val)));
+			}
+		}
+	}
+
+	std::vector<ExcludeObject> parseExcludeList(const Value& elem)
+	{
+		std::vector<ExcludeObject> list;
+		if (elem.IsObject() == true)
+		{
+			parseExcludeObj(elem, list);
+		}
+		else if (elem.IsArray() == true)
+		{
+			for (const auto& val : elem)
+			{
+				if (val.IsObject() == true)
+				{
+					parseExcludeObj(val, list);
+				}
+			}
+		}
+		return list;
+	}
+
+	bool compareVariables(unsigned conditionHash,
+		const Variable& var1, const Variable& var2)
+	{
+		switch (conditionHash)
+		{
+		default:
+		case str2int32("=="):
+			return var1 == var2;
+		case str2int32("!="):
+			return var1 != var2;
+		case str2int32(">"):
+			return var1 > var2;
+		case str2int32(">="):
+			return var1 >= var2;
+		case str2int32("<"):
+			return var1 < var2;
+		case str2int32("<="):
+			return var1 <= var2;
+		}
+	}
 
 	void parseMenu(Game& game, const Value& elem)
 	{
@@ -29,7 +99,7 @@ namespace Parser
 		auto menu = std::make_shared<Menu>();
 
 		auto anchor = getAnchorKey(elem, "anchor");
-		auto color = getColorVar(game, elem, "color", sf::Color::White);
+		auto color = getColorKey(elem, "color", sf::Color::White);
 		auto horizAlign = GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign"));
 		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"));
 		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
@@ -86,80 +156,165 @@ namespace Parser
 
 		for (const auto& val : elem["items"])
 		{
-			if (val.HasMember("%QUESTS%"))
+			if (isValidString(val, "load") == true)
 			{
-				parseMenuQuests(game, val, *menu, pos, anchor, color, horizAlign,
-					horizSpaceOffset, vertSpaceOffset, isTextFont, font, fontSize,
-					bitmapFont, sound, focusSound, clickUp, hasFocus, focusOnClick);
-			}
-			else if (val.HasMember("%SAVEGAMES%"))
-			{
-				parseMenuSaveGames(game, val, *menu, pos, anchor, color, horizAlign,
-					horizSpaceOffset, vertSpaceOffset, isTextFont, font, fontSize,
-					bitmapFont, sound, focusSound, clickUp, hasFocus, focusOnClick);
+				std::string prop(val["load"].GetString());
+
+				auto props = Utils::splitStringIn2(prop, '|');
+				const auto& uiObjId = props.first;
+				const auto& uiElemProps = props.second;
+
+				std::vector<ExcludeObject> excludeList;
+
+				if (val.HasMember("exclude") == true)
+				{
+					excludeList = parseExcludeList(val["exclude"]);
+				}
+
+				if (uiObjId == "game" && uiElemProps == "saves")
+				{
+					MemoryPoolAllocator<CrtAllocator> allocator;
+
+					for (const auto& dir : FileUtils::getSaveDirList())
+					{
+						bool skip = false;
+						for (const auto& excludeObj : excludeList)
+						{
+							if (compareVariables(std::get<0>(excludeObj),
+								Variable(dir),
+								std::get<2>(excludeObj)) == true)
+							{
+								skip = true;
+								break;
+							}
+						}
+						if (skip == true)
+						{
+							continue;
+						}
+
+						Value valCopy(val, allocator);
+						replaceValWithString(valCopy, allocator, "%save%", dir);
+
+						parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
+							horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+							fontSize, bitmapFont, sound, focusSound, clickUp,
+							hasFocus, focusOnClick, relativePos, origPos);
+					}
+				}
+				else
+				{
+					auto level = game.Resources().getResource<Level>(uiObjId);
+					if (level == nullptr)
+					{
+						if (uiObjId == "currentLevel")
+						{
+							level = game.Resources().getCurrentLevel();
+						}
+					}
+					if (level == nullptr)
+					{
+						continue;
+					}
+
+					if (uiElemProps == "quests")
+					{
+						MemoryPoolAllocator<CrtAllocator> allocator;
+
+						for (const auto& quest : level->Quests())
+						{
+							bool skip = false;
+							for (const auto& excludeObj : excludeList)
+							{
+								Variable ignorePropVar;
+								if (quest.getProperty(std::get<1>(excludeObj), ignorePropVar) == true)
+								{
+									if (compareVariables(std::get<0>(excludeObj),
+										ignorePropVar,
+										std::get<2>(excludeObj)) == true)
+									{
+										skip = true;
+										break;
+									}
+								}
+							}
+							if (skip == true)
+							{
+								continue;
+							}
+
+							Value valCopy(val, allocator);
+							replaceValWithQueryable(valCopy, allocator, quest);
+
+							parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
+								horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+								fontSize, bitmapFont, sound, focusSound, clickUp,
+								hasFocus, focusOnClick, relativePos, origPos);
+						}
+					}
+					else
+					{
+						auto props2 = Utils::splitStringIn2(uiElemProps, '.');
+						auto player = level->getPlayer(props2.first);
+						if (player == nullptr)
+						{
+							player = level->getCurrentPlayer();
+						}
+						if (player == nullptr)
+						{
+							continue;
+						}
+						auto props3 = Utils::splitStringIn2(props2.second, '.');
+						auto invIdx = GameUtils::getPlayerInventoryIndex(props3.second);
+						if (invIdx < player->getInventorySize())
+						{
+							MemoryPoolAllocator<CrtAllocator> allocator;
+							const auto& itemCollection = player->getInventory(invIdx);
+							for (size_t i = 0; i < itemCollection.Size(); i++)
+							{
+								if (itemCollection.isItemSlotInUse(i) == false)
+								{
+									continue;
+								}
+								const auto& item = itemCollection[i];
+								bool skip = false;
+								for (const auto& excludeObj : excludeList)
+								{
+									Variable ignorePropVar;
+									if (item->getProperty(std::get<1>(excludeObj), ignorePropVar) == true)
+									{
+										if (compareVariables(std::get<0>(excludeObj),
+											ignorePropVar,
+											std::get<2>(excludeObj)) == true)
+										{
+											skip = true;
+											break;
+										}
+									}
+								}
+								if (skip == true)
+								{
+									continue;
+								}
+
+								Value valCopy(val, allocator);
+								replaceValWithQueryable(valCopy, allocator, *item);
+
+								parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
+									horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+									fontSize, bitmapFont, sound, focusSound, clickUp,
+									hasFocus, focusOnClick, relativePos, origPos);
+							}
+						}
+					}
+				}
 			}
 			else
 			{
-				auto button = parseMenuButton(anchor, color, horizAlign,
+				parseMenuButton(game, val, *menu, anchor, color, horizAlign,
 					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
-					fontSize, bitmapFont, sound, focusSound, clickUp);
-				button->enable(getBoolKey(val, "enable", true));
-				button->setText(getStringKey(val, "text"));
-
-				auto pos2 = getVector2fKey<sf::Vector2f>(val, "position", origPos);
-				if (relativePos == true)
-				{
-					auto size = button->Size();
-					GameUtils::setAnchorPosSize(anchor, pos2, size, game.RefSize(), game.MinSize());
-					if (game.StretchToFit() == false)
-					{
-						GameUtils::setAnchorPosSize(anchor, pos2, size, game.MinSize(), game.WindowSize());
-					}
-				}
-				button->Position(pos2);
-
-				if (val.HasMember("onClick"))
-				{
-					button->setClickAction(parseAction(game, val["onClick"]));
-				}
-
-				if (val.HasMember("onDoubleClick"))
-				{
-					button->setDoubleClickAction(parseAction(game, val["onDoubleClick"]));
-				}
-
-				if (val.HasMember("onClickIn"))
-				{
-					button->setClickInAction(parseAction(game, val["onClickIn"]));
-				}
-
-				if (val.HasMember("onClickOut"))
-				{
-					button->setClickOutAction(parseAction(game, val["onClickOut"]));
-				}
-
-				if (val.HasMember("onFocus"))
-				{
-					button->setFocusAction(parseAction(game, val["onFocus"]));
-				}
-
-				if (val.HasMember("onHoverEnter"))
-				{
-					button->setHoverEnterAction(parseAction(game, val["onHoverEnter"]));
-				}
-
-				if (val.HasMember("onHoverLeave"))
-				{
-					button->setHoverLeaveAction(parseAction(game, val["onHoverLeave"]));
-				}
-
-				menu->addItem(button);
-
-				if (hasFocus == true)
-				{
-					button->focusEnabled(focusOnClick);
-					game.Resources().addFocused(button);
-				}
+					fontSize, bitmapFont, sound, focusSound, clickUp,
+					hasFocus, focusOnClick, relativePos, origPos);
 			}
 		}
 
@@ -174,12 +329,11 @@ namespace Parser
 
 		if (elem.HasMember("onScrollDown"))
 		{
-			menu->setScrollDownAction(parseAction(game, elem["onScrollDown"]));
+			menu->setAction(str2int16("scrollDown"), parseAction(game, elem["onScrollDown"]));
 		}
-
 		if (elem.HasMember("onScrollUp"))
 		{
-			menu->setScrollUpAction(parseAction(game, elem["onScrollUp"]));
+			menu->setAction(str2int16("scrollUp"), parseAction(game, elem["onScrollUp"]));
 		}
 
 		menu->calculatePositions();

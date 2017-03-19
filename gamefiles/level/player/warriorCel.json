@@ -58,6 +58,21 @@
     "name": "Warrior",
     "type": "Human",
     "description": "Warrior",
+    "defaults": {
+      "strengthBase": 30,
+      "magicBase": 10,
+      "dexterityBase": 20,
+      "vitalityBase": 25,
+      "lifeBase": 70,
+      "manaBase": 10,
+      "armor": 7,
+      "toHit": 60,
+      "damageMin": 2,
+      "damageMax": 6,
+      "resistMagic": 0,
+      "resistFire": 0,
+      "resistLightning": 0
+    },
     "celTextures": [
       { "palette": 0, "name": "wls" },
       { "palette": 1, "name": "wlsInfra" },

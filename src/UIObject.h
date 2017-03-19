@@ -1,15 +1,19 @@
 #pragma once
 
+#include "Actions/Action.h"
 #include "Anchor.h"
+#include <memory>
+#include "Queryable.h"
 #include <SFML/Graphics.hpp>
-#include <string>
-#include "Variable.h"
 
 class Game;
 
-class UIObject : public sf::Drawable
+class UIObject : public sf::Drawable, public Queryable
 {
 public:
+	// Action
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) = 0;
+
 	// Anchor
 	virtual void setAnchor(const Anchor anchor) = 0;
 	virtual void updateSize(const Game& game) = 0;
@@ -27,6 +31,4 @@ public:
 	// Visible
 	virtual bool Visible() const = 0;
 	virtual void Visible(bool visible) = 0;
-
-	virtual bool getProperty(const std::string& prop, Variable& var) const = 0;
 };

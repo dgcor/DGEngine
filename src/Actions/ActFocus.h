@@ -4,6 +4,31 @@
 #include "Button.h"
 #include "Game.h"
 
+class ActFocusAdd : public Action
+{
+private:
+	std::string id;
+	bool setFocus;
+
+public:
+	ActFocusAdd(const std::string& id_, bool setFocus_)
+		: id(id_), setFocus(setFocus_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto button = game.Resources().getResourceSharedPtr<Button>(id);
+		if (button != nullptr)
+		{
+			game.Resources().addFocused(button);
+			if (setFocus == true)
+			{
+				game.Resources().setFocused(button.get());
+			}
+		}
+		return true;
+	}
+};
+
 class ActFocusClick : public Action
 {
 private:
@@ -50,16 +75,16 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<Button>(id);
+		if (button != nullptr)
 		{
-			if (item != game.Resources().getFocused())
+			if (button != game.Resources().getFocused())
 			{
-				game.Resources().setFocused(item);
+				game.Resources().setFocused(button);
 				if (focus == true &&
-					item == game.Resources().getFocused())
+					button == game.Resources().getFocused())
 				{
-					item->focus(game);
+					button->focus(game);
 				}
 			}
 		}

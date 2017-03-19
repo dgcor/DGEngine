@@ -3,7 +3,22 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
-using Utils::str2int;
+void InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("change"):
+		actionChange = action;
+		return;
+	case str2int16("click"):
+	case str2int16("enter"):
+		actionEnter = action;
+		return;
+	case str2int16("minSize"):
+		actionMinSize = action;
+		return;
+	}
+}
 
 void InputText::click(Game& game)
 {
@@ -63,10 +78,10 @@ bool InputText::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int(props.first.c_str());
+	auto propHash = str2int32(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int("text"):
+	case str2int32("text"):
 		var = Variable(this->getText());
 		break;
 	default:

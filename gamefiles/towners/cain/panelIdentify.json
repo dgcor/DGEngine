@@ -1,0 +1,97 @@
+{
+  "action": [
+    { "name": "drawable.setPositionX", "id": "pent1", "position": 32 },
+    { "name": "drawable.setPositionX", "id": "pent2", "position": 575 },
+    { "name": "resource.add", "id": "userPanelIdentify" }
+  ],
+  "menu": {
+    "id": "mainMenu",
+    "bitmapFont": "smaltext",
+    "position": [52, 94],
+    "horizontalSpaceOffset": 1,
+    "anchor": "none",
+    "focus": true,
+    "focusOnClick": false,
+    "focusSound": "titlemov",
+    "visibleItems": 4,
+    "size": [518, 186],
+    "verticalPad": 38,
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": [
+      {
+        "load": "currentLevel|currentPlayer.inventory.body",
+        "exclude": {
+          "property": "identified",
+          "value": true
+        },
+        "text": "%name%\n  %d.0%,  %d.3%",
+        "onClick": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram",
+          "mainMenu.moveScrollbar"
+        ],
+        "onFocus": "focus.clickNoSound"
+      },
+      {
+        "load": "currentLevel|currentPlayer.inventory.belt",
+        "exclude": {
+          "property": "identified",
+          "value": true
+        },
+        "text": "%name%\n  %d.0%,  %d.3%",
+        "onClick": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram",
+          "mainMenu.moveScrollbar"
+        ],
+        "onFocus": "focus.clickNoSound"
+      },
+      {
+        "load": "currentLevel|currentPlayer.inventory.stash",
+        "exclude": {
+          "property": "identified",
+          "value": true
+        },
+        "text": "%name%\n  %d.0%,  %d.3%",
+        "onClick": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram",
+          "mainMenu.moveScrollbar"
+        ],
+        "onFocus": "focus.clickNoSound"
+      }
+    ]
+  },
+  "button": [
+    {
+      "id": "back",
+      "bitmapFont": "smaltext",
+      "sound": "titlslct",
+      "position": [320, 304],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Back",
+      "onClick": [
+        { "name": "resource.popAll", "id": "userPanelFrame" },
+        { "name": "resource.add", "id": "userPanelFrame" },
+        { "name": "load", "file": "ui/level/panel.json" },
+        { "name": "load", "file": "towners/cain/panelMain.json" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  ],
+  "action": [
+    {
+      "name": "if.notEqual",
+      "param1": "|mainMenu|itemCount|",
+      "param2": 0,
+      "then": { "name": "load", "file": "towners/cain/panelIdentifyListItems.json" },
+      "else": { "name": "load", "file": "towners/cain/panelIdentifyNoItems.json" }
+    }
+  ]
+}

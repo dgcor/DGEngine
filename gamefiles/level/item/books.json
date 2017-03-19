@@ -9,6 +9,10 @@
       "celIndexInventory": 97,
       "name": "Book",
       "type": "Book",
+      "defaults": {
+        "identified": true
+      },
+      "description1": "rightClickToRead",
       "inventorySize": [2, 2],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipbook" },

@@ -11,7 +11,7 @@ class MapSearchNode
 {
 private:
 	bool addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
-		int16_t x, int16_t y, int16_t parent_x, int16_t parent_y);
+		int16_t x_, int16_t y_, int16_t parent_x, int16_t parent_y);
 
 public:
 	const LevelMap* map = nullptr;
@@ -24,8 +24,8 @@ public:
 		const PlayerDirection& direction_) : map(map_), x(x_), y(y_), direction(direction_) {}
 
 	bool IsPassableIgnoreObject();
-	bool IsPassable() { return IsPassable((size_t)x, (size_t)y); }
-	bool IsPassable(size_t x_, size_t y_);
+	bool IsPassable() { return IsPassable(x, y); }
+	bool IsPassable(int16_t x_, int16_t y_);
 
 	float GoalDistanceEstimate(MapSearchNode& nodeGoal);
 	bool IsGoal(MapSearchNode& nodeGoal);

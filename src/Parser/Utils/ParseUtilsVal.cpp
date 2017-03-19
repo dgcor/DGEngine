@@ -10,96 +10,84 @@ namespace Parser
 	using namespace rapidjson;
 	using namespace Utils;
 
-	bool getBoolVal(const rapidjson::Value& elem, bool val)
+	bool getBoolVal(const Value& elem, bool val)
 	{
 		if (elem.IsBool() == true)
 		{
 			return elem.GetBool();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	double getDoubleVal(const rapidjson::Value& elem, double val)
+	double getDoubleVal(const Value& elem, double val)
 	{
 		if (elem.IsDouble() == true)
 		{
 			return elem.GetDouble();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	int getIntVal(const rapidjson::Value& elem, int val)
+	float getFloatVal(const Value& elem, float val)
+	{
+		if (elem.IsFloat() == true)
+		{
+			return elem.GetFloat();
+		}
+		return val;
+	}
+
+	int getIntVal(const Value& elem, int val)
 	{
 		if (elem.IsInt() == true)
 		{
 			return elem.GetInt();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	int64_t getInt64Val(const rapidjson::Value& elem, int64_t val)
+	int64_t getInt64Val(const Value& elem, int64_t val)
 	{
 		if (elem.IsInt64() == true)
 		{
 			return elem.GetInt64();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	const char* getStringCharVal(const rapidjson::Value& elem, const char* val)
+	const char* getStringCharVal(const Value& elem, const char* val)
 	{
 		if (elem.IsString() == true)
 		{
 			return elem.GetString();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	std::string getStringVal(const rapidjson::Value& elem, const std::string& val)
+	std::string getStringVal(const Value& elem, const std::string& val)
 	{
 		return getStringCharVal(elem, val.c_str());
 	}
 
-	unsigned getUIntVal(const rapidjson::Value& elem, unsigned val)
+	unsigned getUIntVal(const Value& elem, unsigned val)
 	{
 		if (elem.IsUint() == true)
 		{
 			return elem.GetUint();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	uint64_t getUInt64Val(const rapidjson::Value& elem, uint64_t val)
+	uint64_t getUInt64Val(const Value& elem, uint64_t val)
 	{
 		if (elem.IsUint64() == true)
 		{
 			return elem.GetUint64();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	sf::IntRect getIntRectVal(const rapidjson::Value& elem, const sf::IntRect& val)
+	sf::IntRect getIntRectVal(const Value& elem, const sf::IntRect& val)
 	{
 		if (elem.IsArray() == true
 			&& elem.Size() >= 4)
@@ -115,23 +103,23 @@ namespace Parser
 		return val;
 	}
 
-	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem, const sf::FloatRect& val)
+	sf::FloatRect getFloatRectVal(const Value& elem, const sf::FloatRect& val)
 	{
 		if (elem.IsArray() == true
 			&& elem.Size() >= 4)
 		{
-			return sf::FloatRect(getDoubleVal(elem[0]), getDoubleVal(elem[1]),
-				getDoubleVal(elem[2]), getDoubleVal(elem[3]));
+			return sf::FloatRect(getFloatVal(elem[0]), getFloatVal(elem[1]),
+				getFloatVal(elem[2]), getFloatVal(elem[3]));
 		}
 		else if (elem.IsArray() == true
 			&& elem.Size() >= 2)
 		{
-			return sf::FloatRect(0, 0, getDoubleVal(elem[0]), getDoubleVal(elem[1]));
+			return sf::FloatRect(0, 0, getFloatVal(elem[0]), getFloatVal(elem[1]));
 		}
 		return val;
 	}
 
-	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem, sf::Keyboard::Key val)
+	sf::Keyboard::Key getKeyCodeVal(const Value& elem, sf::Keyboard::Key val)
 	{
 		if (elem.IsInt() == true)
 		{
@@ -144,7 +132,7 @@ namespace Parser
 		return val;
 	}
 
-	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
+	size_t getInventoryItemIndexVal(const Value& elem,
 		PlayerInventory inv)
 	{
 		size_t itemIdx = 0;
@@ -162,7 +150,97 @@ namespace Parser
 		return itemIdx;
 	}
 
-	Variable getVariableVal(const rapidjson::Value& elem)
+	InventoryPosition getInventoryPositionVal(const Value& elem, InventoryPosition val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getInventoryPosition(elem.GetString(), val);
+		}
+		return val;
+	}
+
+	ItemXY getItemXYVal(const Value& elem, const ItemXY& val)
+	{
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsUint() == true
+			&& elem[1].IsUint() == true)
+		{
+			auto x = elem[0].GetUint();
+			auto y = elem[1].GetUint();
+
+			if (x <= 0xFF && y <= 0xFF)
+			{
+				return ItemXY((uint8_t)x, (uint8_t)y);
+			}
+		}
+		return val;
+	}
+
+	ItemCoordInventory getItemCoordInventoryVal(const Value& elem)
+	{
+		std::string playerId;
+		if (elem.HasMember("playerId") == true &&
+			elem["playerId"].IsString() == true)
+		{
+			playerId = elem["playerId"].GetString();
+		}
+		PlayerInventory inv = PlayerInventory::Body;
+		if (elem.HasMember("inventory") == true)
+		{
+			inv = getPlayerInventoryVal(elem["inventory"]);
+			if (elem.HasMember("item") == true)
+			{
+				if (elem["item"].IsArray() == true)
+				{
+					auto itemPos = getItemXYVal(elem["item"]);
+					return ItemCoordInventory(playerId, (size_t)inv, itemPos);
+				}
+				else
+				{
+					size_t itemIdx = getInventoryItemIndexVal(elem["item"], inv);
+					return ItemCoordInventory(playerId, (size_t)inv, itemIdx);
+				}
+			}
+			return ItemCoordInventory(playerId, (size_t)inv, 0);
+		}
+		return ItemCoordInventory(playerId);
+	}
+
+	ItemLocation getItemLocationVal(const Value& elem)
+	{
+		if (elem.HasMember("mapPosition") == true)
+		{
+			const auto& mapElem = elem["mapPosition"];
+			if (mapElem.IsArray() == true
+				&& mapElem.Size() > 1
+				&& mapElem[0].IsUint() == true
+				&& mapElem[1].IsUint() == true)
+			{
+				return{ MapCoord((uint16_t)mapElem[0].GetUint(), (uint16_t)mapElem[1].GetUint()) };
+			}
+		}
+		return{ getItemCoordInventoryVal(elem) };
+	}
+
+	PlayerInventory getPlayerInventoryVal(const Value& elem, PlayerInventory val)
+	{
+		if (elem.IsUint() == true)
+		{
+			auto idx = elem.GetUint();
+			if (idx < (size_t)PlayerInventory::Size)
+			{
+				return (PlayerInventory)idx;
+			}
+		}
+		else if (elem.IsString() == true)
+		{
+			return GameUtils::getPlayerInventory(elem.GetString(), val);
+		}
+		return val;
+	}
+
+	Variable getVariableVal(const Value& elem)
 	{
 		Variable var;
 		if (elem.IsString() == true)

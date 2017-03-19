@@ -9,6 +9,11 @@
       "celIndexInventory": 12,
       "name": "Scroll",
       "type": "Scroll",
+      "defaults": {
+        "identified": true
+      },
+      "description1": "rightClickToRead2",
+      "description2": "required",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipscrl" },

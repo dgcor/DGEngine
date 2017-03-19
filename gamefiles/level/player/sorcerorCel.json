@@ -58,6 +58,21 @@
     "name": "Sorceror",
     "type": "Human",
     "description": "Sorceror",
+    "defaults": {
+      "strengthBase": 15,
+      "magicBase": 35,
+      "dexterityBase": 15,
+      "vitalityBase": 20,
+      "lifeBase": 30,
+      "manaBase": 70,
+      "armor": 3,
+      "toHit": 57,
+      "damageMin": 2,
+      "damageMax": 4,
+      "resistMagic": 0,
+      "resistFire": 0,
+      "resistLightning": 0
+    },
     "celTextures": [
       { "palette": 0, "name": "sls" },
       { "palette": 1, "name": "slsInfra" },

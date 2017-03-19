@@ -5,8 +5,6 @@
 #include <iostream>
 #include "Utils.h"
 
-using Utils::str2int;
-
 void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 {
 	map = map_;
@@ -15,9 +13,30 @@ void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 	tiles2 = LevelHelper::loadTilesetSprite(cel_, min_, true);
 }
 
-void Level::updateViewPort(const Game& game)
+void Level::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
-	view.setViewport(game);
+	switch (nameHash16)
+	{
+	case str2int16("click"):
+	case str2int16("leftClick"):
+		leftAction = action;
+		return;
+	case str2int16("rightClick"):
+		rightAction = action;
+		return;
+	case str2int16("hoverEnter"):
+		hoverEnterAction = action;
+		return;
+	case str2int16("hoverLeave"):
+		hoverLeaveAction = action;
+		return;
+	case str2int16("scrollDown"):
+		scrollDownAction = action;
+		return;
+	case str2int16("scrollUp"):
+		scrollUpAction = action;
+		return;
+	}
 }
 
 void Level::executeHoverEnterAction(Game& game)
@@ -36,25 +55,90 @@ void Level::executeHoverLeaveAction(Game& game)
 	}
 }
 
+void Level::Zoom(float factor, bool smooth)
+{
+	if (factor > 2.f)
+	{
+		factor = 2.f;
+	}
+	else if (factor < 0.5f)
+	{
+		factor = 0.5f;
+	}
+	smoothZoom = smooth;
+	if (smooth == false)
+	{
+		currentZoomFactor = factor;
+	}
+	else
+	{
+		zoomStepStart = 0.f;
+		startZoomFactor = currentZoomFactor;
+		diffZoomFactor = factor - startZoomFactor;
+	}
+	stopZoomFactor = factor;
+	hasNewZoom = true;
+}
+
+// Quart ease out function
+// http://easings.net/
+// t is the current time.
+// b is the beginning value of the property.
+// c is the change between the beginning and destination value of the property.
+// d is the final time.
+static float easeOutFunction(float t, float b, float c, float d)
+{
+	t = t / d - 1;
+	return -c * (t*t*t*t - 1) + b;
+}
+
+void::Level::updateZoom(const Game& game)
+{
+	if (hasNewZoom == false)
+	{
+		return;
+	}
+	if (smoothZoom == false)
+	{
+		hasNewZoom = false;
+	}
+	else
+	{
+		zoomStepStart += game.getElapsedTime().asSeconds();
+
+		if (zoomStepStart >= zoomStepStop)
+		{
+			zoomStepStart = zoomStepStop;
+			hasNewZoom = false;
+		}
+
+		currentZoomFactor = easeOutFunction(
+			zoomStepStart,
+			startZoomFactor,
+			diffZoomFactor,
+			zoomStepStop);
+	}
+
+	view.setZoom(1.f / currentZoomFactor);
+
+	view.updateViewport(game);
+}
+
 void Level::deleteLevelObject(const LevelObject* obj)
 {
-	auto it = std::find_if(levelObjects.begin(),
-		levelObjects.end(),
-		[&](std::shared_ptr<LevelObject> const& p)
+	levelObjects.erase(
+		std::remove_if(levelObjects.begin(),
+			levelObjects.end(),
+			[&](const std::shared_ptr<LevelObject>& p) { return p.get() == obj; }),
+		levelObjects.end());
+
+	if (clickedObject == obj)
 	{
-		return p.get() == obj;
-	});
-	if (it != levelObjects.end())
+		clickedObject = nullptr;
+	}
+	if (hoverObject == obj)
 	{
-		levelObjects.erase(it);
-		if (clickedObject == obj)
-		{
-			clickedObject = nullptr;
-		}
-		if (hoverObject == obj)
-		{
-			hoverObject = nullptr;
-		}
+		hoverObject = nullptr;
 	}
 }
 
@@ -66,7 +150,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 
 	auto origView = target.getView();
-	target.setView(view);
+	target.setView(view.getView());
 
 	sf::Sprite sprite;
 
@@ -77,12 +161,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		viewCenter.y - (viewSize.y / 2) - 256,
 		viewSize.x + 64, viewSize.y + 256);
 
-	for (size_t x = 0; x < map.Width(); x++)
+	for (Coord x = 0; x < map.Width(); x++)
 	{
-		for (size_t y = 0; y < map.Height(); y++)
+		for (Coord y = 0; y < map.Height(); y++)
 		{
 			size_t index = map[x][y].minIndex;
-			auto coords = map.getCoords(MapCoord(x, y));
+			auto coords = map.getCoord(MapCoord(x, y));
 
 			if (drawRect.contains(coords) == true &&
 				index < tiles.size())
@@ -94,12 +178,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 	}
 
-	for (size_t x = 0; x < map.Width(); x++)
+	for (Coord x = 0; x < map.Width(); x++)
 	{
-		for (size_t y = 0; y < map.Height(); y++)
+		for (Coord y = 0; y < map.Height(); y++)
 		{
 			size_t index = map[x][y].minIndex;
-			auto coords = map.getCoords(MapCoord(x, y));
+			auto coords = map.getCoord(MapCoord(x, y));
 
 			if (drawRect.contains(coords) == true)
 			{
@@ -123,27 +207,12 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Level::updateSize(const Game& game)
 {
-	auto size = view.getSize();
-	if (game.StretchToFit() == true)
-	{
-		view.setViewport(game);
-	}
-	else
-	{
-		auto vPos = view.getPosition();
-		GameUtils::setAnchorPosSize(anchor, vPos, size, game.OldWindowSize(), game.WindowSize());
-		view.setPosition(vPos);
-		view.setSize(size);
-		view.setViewport(game);
-	}
+	view.updateSize(game);
 }
 
-void Level::updateMouse(Game& game)
+void Level::updateMouse(const Game& game)
 {
-	mousePositionf = view.getCenter() - (view.getSize() / 2.f) + game.MousePositionf();
-	mousePositionf.x = std::round(mousePositionf.x);
-	mousePositionf.y = std::round(mousePositionf.y);
-
+	mousePositionf = view.getPosition(game.MousePositionf());
 	mapCoordOverMouse = map.getTile(mousePositionf);
 }
 
@@ -153,6 +222,8 @@ void Level::update(Game& game)
 	{
 		return;
 	}
+
+	updateZoom(game);
 
 	updateMouse(game);
 
@@ -175,6 +246,26 @@ void Level::update(Game& game)
 			rightAction != nullptr)
 		{
 			game.Events().addBack(rightAction);
+		}
+
+		if (game.wasMouseScrolled() == true)
+		{
+			game.clearMouseScrolled();
+			const auto& scroll = game.getMouseWheelScroll();
+			if (scroll.delta < 0.f)
+			{
+				if (scrollDownAction != nullptr)
+				{
+					game.Events().addBack(scrollDownAction);
+				}
+			}
+			else
+			{
+				if (scrollUpAction != nullptr)
+				{
+					game.Events().addBack(scrollUpAction);
+				}
+			}
 		}
 	}
 	else
@@ -206,17 +297,17 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int(props.first.c_str());
+	auto propHash = str2int32(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int("clickedObject"):
+	case str2int32("clickedObject"):
 	{
 		if (clickedObject != nullptr)
 		{
 			return clickedObject->getProperty(props.second, var);
 		}
 	}
-	case str2int("currentPlayer"):
+	case str2int32("currentPlayer"):
 	{
 		if (currentPlayer != nullptr)
 		{
@@ -224,13 +315,7 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int("hasSelectedItem"):
-	{
-		var = Variable(selectedItem != nullptr);
-		return true;
-	}
-	break;
-	case str2int("hoverObject"):
+	case str2int32("hoverObject"):
 	{
 		if (hoverObject != nullptr)
 		{
@@ -238,11 +323,11 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int("name"):
+	case str2int32("name"):
 		var = Variable(name);
 		return true;
 		break;
-	case str2int("player"):
+	case str2int32("player"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
 		for (const auto& player : players)
@@ -254,7 +339,7 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int("quest"):
+	case str2int32("quest"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
 		for (const auto& quest : quests)
@@ -265,22 +350,86 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 			}
 		}
 	}
-	break;
-	case str2int("selectedItem"):
-	{
-		if (selectedItem != nullptr)
-		{
-			return selectedItem->getProperty(props.second, var);
-		}
-	}
-	break;
+	case str2int32("zoom"):
+		var = Variable((double)stopZoomFactor);
+		return true;
+		break;
+	case str2int32("zoomPercentage"):
+		var = Variable((int64_t)(std::roundf(stopZoomFactor * 100.f)));
+		return true;
+		break;
 	default:
 		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
 	}
 	return false;
 }
 
-Player* Level::getPlayer(const std::string id)
+const Queryable* Level::getQueryable(const std::string& prop) const
+{
+	if (prop.empty() == true)
+	{
+		return this;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int32(props.first.c_str());
+	const Queryable* queryable = nullptr;
+	switch (propHash)
+	{
+	case str2int32("clickedObject"):
+	{
+		queryable = clickedObject;
+		break;
+	}
+	case str2int32("currentPlayer"):
+	{
+		queryable = currentPlayer;
+		break;
+	}
+	break;
+	case str2int32("hoverObject"):
+	{
+		queryable = hoverObject;
+		break;
+	}
+	break;
+	case str2int32("player"):
+	{
+		props = Utils::splitStringIn2(props.second, '.');
+		for (const auto& player : players)
+		{
+			if (player->Id() == props.first)
+			{
+				queryable = player.get();
+				break;
+			}
+		}
+	}
+	break;
+	case str2int32("quest"):
+	{
+		props = Utils::splitStringIn2(props.second, '.');
+		for (const auto& quest : quests)
+		{
+			if (quest.Id() == props.first)
+			{
+				queryable = &quest;
+				break;
+			}
+		}
+	}
+	break;
+	default:
+		break;
+	}
+	if (queryable != nullptr &&
+		props.second.empty() == false)
+	{
+		return queryable->getQueryable(props.second);
+	}
+	return queryable;
+}
+
+Player* Level::getPlayer(const std::string& id) const
 {
 	for (auto& player : players)
 	{
@@ -292,7 +441,7 @@ Player* Level::getPlayer(const std::string id)
 	return nullptr;
 }
 
-Player* Level::getPlayerOrCurrent(const std::string id)
+Player* Level::getPlayerOrCurrent(const std::string& id) const
 {
 	if (id.empty() == true)
 	{
@@ -323,6 +472,121 @@ void Level::clearPlayers(size_t clearIdx)
 		}
 	}
 	currentPlayer = nullptr;
+}
+
+std::shared_ptr<Item> Level::getItem(const MapCoord& mapCoord) const
+{
+	auto mapObj = map[mapCoord.x][mapCoord.y].object;
+	if (mapObj != nullptr)
+	{
+		std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(mapObj);
+		if (item != nullptr)
+		{
+			return item;
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Item> Level::getItem(const ItemCoordInventory& itemCoord) const
+{
+	auto player = getPlayerOrCurrent(itemCoord.getPlayerId());
+	if (player != nullptr)
+	{
+		if (itemCoord.isSelectedItem() == true)
+		{
+			return player->SelectedItem();
+		}
+		auto& inventory = player->getInventory(itemCoord.getInventoryIdx());
+		if (itemCoord.isCoordXY() == true)
+		{
+			return inventory.get(itemCoord.getItemXY());
+		}
+		else
+		{
+			return inventory.get(itemCoord.getItemIdx());
+		}
+	}
+	return nullptr;
+}
+
+std::shared_ptr<Item> Level::getItem(const ItemLocation& location) const
+{
+	if (location.is<MapCoord>() == true)
+	{
+		return getItem(location.get<MapCoord>());
+	}
+	else
+	{
+		return getItem(location.get<ItemCoordInventory>());
+	}
+}
+
+bool Level::setItem(const MapCoord& mapCoord, const std::shared_ptr<Item>& item)
+{
+	auto& mapCel = map[mapCoord.x][mapCoord.y];
+	if (item == nullptr)
+	{
+		if (mapCel.object != nullptr &&
+			dynamic_cast<Item*>(mapCel.object.get()) != nullptr)
+		{
+			deleteLevelObject(mapCel.object.get());
+		}
+		mapCel.object = nullptr;
+		return true;
+	}
+	if (mapCel.Passable() == true
+		&& mapCel.object == nullptr)
+	{
+		item->MapPosition(mapCoord);
+		item->updateDrawPosition(*this);
+		mapCel.object = item;
+		addLevelObject(item);
+		return true;
+	}
+	return false;
+}
+
+bool Level::setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<Item>& item)
+{
+	auto player = getPlayerOrCurrent(itemCoord.getPlayerId());
+	if (player != nullptr)
+	{
+		if (itemCoord.isSelectedItem() == true)
+		{
+			player->SelectedItem(item);
+			return true;
+		}
+		auto invIdx = itemCoord.getInventoryIdx();
+		if (invIdx < player->getInventorySize())
+		{
+			auto& inventory = player->getInventory(invIdx);
+			size_t itemIdx;
+			if (itemCoord.isCoordXY() == true)
+			{
+				itemIdx = inventory.getIndex(itemCoord.getItemXY());
+			}
+			else
+			{
+				itemIdx = itemCoord.getItemIdx();
+			}
+			std::shared_ptr<Item> oldItem;
+			return inventory.set(itemIdx, item, oldItem);
+		}
+	}
+	return false;
+}
+
+bool Level::setItem(const ItemLocation& location, const std::shared_ptr<Item>& item)
+{
+	if (location.is<MapCoord>() == true)
+	{
+		return setItem(location.get<MapCoord>(), item);
+	}
+	else
+	{
+		return setItem(location.get<ItemCoordInventory>(), item);
+	}
 }
 
 void Level::addQuest(const Quest& quest_)

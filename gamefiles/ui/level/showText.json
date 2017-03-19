@@ -8,11 +8,6 @@
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "textWallButton" }
   },
-  "texture": {
-    "id": "textbox",
-    "file": "data/textbox.cel",
-    "palette": "town"
-  },
   "image": [
     {
       "id": "textWallBackground",

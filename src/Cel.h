@@ -27,9 +27,9 @@ public:
 		return frame.rawImage[x + (frame.height - 1 - y) * frame.width];
 	}
 
-	Misc::Helper2D<const CelFrame, const sf::Color&> operator[] (size_t x) const
+	Misc::Helper2D<const CelFrame, const sf::Color&, size_t> operator[] (size_t x) const
 	{
-		return Misc::Helper2D<const CelFrame, const sf::Color&>(*this, x, get);
+		return Misc::Helper2D<const CelFrame, const sf::Color&, size_t>(*this, x, get);
 	}
 
 	operator sf::Image() const;

@@ -4,6 +4,16 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+void Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("complete"):
+		actionComplete = action;
+		return;
+	}
+}
+
 void Movie2::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == true)
@@ -41,6 +51,6 @@ bool Movie2::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, Utils::str2int(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int32(props.first.c_str()), props.second, var);
 }
 #endif	// USE_SFML_MOVIE_STUB

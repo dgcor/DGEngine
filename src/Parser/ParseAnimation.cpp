@@ -20,7 +20,7 @@ namespace Parser
 			}
 			animation = std::make_shared<Animation>(*texture);
 
-			animation->setFrames(1, getIntKey(elem, "frames", 1));
+			animation->setFrames(1, (int16_t)getIntKey(elem, "frames", 1));
 		}
 		else if (isValidString(elem, "id"))
 		{
@@ -41,7 +41,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto scale = getDoubleKey(elem, "scale", 1.0);
+		auto scale = getFloatKey(elem, "scale", 1.0);
 		animation->scale(sf::Vector2f(scale, scale));
 		auto anchor = getAnchorKey(elem, "anchor");
 		animation->setAnchor(anchor);
@@ -58,7 +58,7 @@ namespace Parser
 		animation->Position(pos);
 		animation->Visible(getBoolKey(elem, "visible", true));
 		animation->setFrameTime(sf::milliseconds(getUIntKey(elem, "refresh", 50)));
-		animation->setColor(getColorVar(game, elem, "color", sf::Color::White));
+		animation->setColor(getColorKey(elem, "color", sf::Color::White));
 
 		return animation;
 	}

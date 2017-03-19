@@ -1,0 +1,25 @@
+{
+  "image": [
+    {
+      "id": "textWallSeparatorUpper1",
+      "position": [26, 74],
+      "anchor": "none",
+      "textureRect": [2, 0, 195, 3],
+      "texture": "textbox2"
+    },
+    {
+      "id": "textWallSeparatorUpper2",
+      "position": [219, 74],
+      "anchor": "none",
+      "textureRect": [3, 0, 201, 3],
+      "texture": "textbox2"
+    },
+    {
+      "id": "textWallSeparatorUpper3",
+      "position": [420, 74],
+      "anchor": "none",
+      "textureRect": [76, 0, 192, 3],
+      "texture": "textbox2"
+    }
+  ]
+}

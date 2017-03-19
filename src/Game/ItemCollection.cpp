@@ -1,33 +1,40 @@
 #include "ItemCollection.h"
 #include "Utils.h"
 
-using Utils::str2int;
-
-ItemCollection::ItemCollection(size_t size_) : size(size_, 1)
+ItemCollection::ItemCollection(size_t size_)
 {
-	items.resize(size_);
+	init(size_);
 }
 
-ItemCollection::ItemCollection(const sf::Vector2u& size_) : size(size_)
+ItemCollection::ItemCollection(const ItemXY& size_)
 {
-	items.resize(size_.x * size_.y);
+	init(size_);
 }
 
 void ItemCollection::init(size_t size_)
 {
-	size = sf::Vector2u(size_, 1);
-	items.resize(size_);
+	uint8_t newSize = (size_ > 0xFF ? 0xFF : (uint8_t)size_);
+	size = ItemXY(newSize, 1);
+	items.resize(newSize);
 }
 
-void ItemCollection::init(const sf::Vector2u& size_)
+void ItemCollection::init(const ItemXY& size_)
 {
-	size = size_;
-	items.resize(size_.x * size_.y);
+	if (size_.x * size_.y > 1024)
+	{
+		size.x = 32;
+		size.y = 32;
+	}
+	else
+	{
+		size = size_;
+	}
+	items.resize(size.x * size.y);
 }
 
 void ItemCollection::allowType(const std::string& type)
 {
-	auto typeHash = str2int(type.c_str());
+	auto typeHash = str2int32(type.c_str());
 	if (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) == allowedTypes.end())
 	{
 		allowedTypes.push_back(typeHash);
@@ -36,10 +43,10 @@ void ItemCollection::allowType(const std::string& type)
 
 bool ItemCollection::isTypeAllowed(const std::string& type) const
 {
-	return isTypeAllowed(str2int(type.c_str()));
+	return isTypeAllowed(str2int32(type.c_str()));
 }
 
-bool ItemCollection::isTypeAllowed(unsigned typeHash) const
+bool ItemCollection::isTypeAllowed(uint32_t typeHash) const
 {
 	if (allowedTypes.empty() == true)
 	{
@@ -70,19 +77,22 @@ bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item,
 		}
 		else
 		{
-			return setAndEnforceItemSize(sf::Vector2u(idx % size.x, idx / size.x), item, oldItem);
+			return setAndEnforceItemSize(
+				ItemXY((uint8_t)(idx % size.x), (uint8_t)(idx / size.x)),
+				item,
+				oldItem);
 		}
 	}
 	return false;
 }
 
-bool ItemCollection::set(const sf::Vector2u& position, const std::shared_ptr<Item>& item)
+bool ItemCollection::set(const ItemXY& position, const std::shared_ptr<Item>& item)
 {
 	std::shared_ptr<Item> oldItem;
 	return set(position, item, oldItem);
 }
 
-bool ItemCollection::set(const sf::Vector2u& position,
+bool ItemCollection::set(const ItemXY& position,
 	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
 {
 	size_t idx = position.x + position.y * size.x;
@@ -113,14 +123,14 @@ bool ItemCollection::setAndDontEnforceItemSize(size_t idx,
 	return true;
 }
 
-bool ItemCollection::setAndEnforceItemSize(const sf::Vector2u& position,
+bool ItemCollection::setAndEnforceItemSize(const ItemXY& position,
 	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
 {
 	if (size.x == 0 || size.y == 0)
 	{
 		return false;
 	}
-	sf::Vector2u itemSize(1, 1);
+	ItemXY itemSize(1, 1);
 	if (item != nullptr)
 	{
 		itemSize = item->Class()->InventorySize();
@@ -131,8 +141,8 @@ bool ItemCollection::setAndEnforceItemSize(const sf::Vector2u& position,
 		}
 	}
 	auto pos = position;
-	auto posEndX = pos.x + itemSize.x;
-	auto posEndY = pos.y + itemSize.y;
+	size_t posEndX = (size_t)(pos.x + itemSize.x);
+	size_t posEndY = (size_t)(pos.y + itemSize.y);
 	if (posEndX > size.x)
 	{
 		posEndX = size.x;
@@ -199,12 +209,12 @@ bool ItemCollection::isItemSlotInUse(size_t idx) const
 {
 	if (idx < items.size())
 	{
-		return isItemSlotInUse(sf::Vector2u(idx % size.x, idx / size.x));
+		return isItemSlotInUse(ItemXY((uint8_t)(idx % size.x), (uint8_t)(idx / size.x)));
 	}
 	return false;
 }
 
-bool ItemCollection::isItemSlotInUse(const sf::Vector2u& position) const
+bool ItemCollection::isItemSlotInUse(const ItemXY& position) const
 {
 	if (position.x >= size.x
 		|| position.y >= size.y)
@@ -237,7 +247,7 @@ bool ItemCollection::isItemSlotInUse(const sf::Vector2u& position) const
 }
 
 bool ItemCollection::isItemSlotEmpty(int x, int y,
-	const sf::Vector2u& itemSize, size_t& itemIdx) const
+	const ItemXY& itemSize, size_t& itemIdx) const
 {
 	size_t sizeX = (size_t)x + itemSize.x;
 	size_t sizeY = (size_t)y + itemSize.y;
@@ -256,7 +266,7 @@ bool ItemCollection::isItemSlotEmpty(int x, int y,
 	return true;
 }
 
-bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
+bool ItemCollection::getItemSlot(const ItemXY& itemSize,
 	size_t& itemIdx, InventoryPosition invPos) const
 {
 	if (itemSize.x > size.x || itemSize.y > size.y)
@@ -276,8 +286,7 @@ bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
 		{
 			for (int x = 0; x <= sizeX; x++)
 			{
-				if (isItemSlotEmpty((size_t)x, (size_t)y,
-					itemSize, itemIdx) == true)
+				if (isItemSlotEmpty(x, y, itemSize, itemIdx) == true)
 				{
 					return true;
 				}
@@ -291,8 +300,7 @@ bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
 		{
 			for (int x = sizeX; x >= 0; x--)
 			{
-				if (isItemSlotEmpty((size_t)x, (size_t)y,
-					itemSize, itemIdx) == true)
+				if (isItemSlotEmpty(x, y, itemSize, itemIdx) == true)
 				{
 					return true;
 				}
@@ -306,8 +314,7 @@ bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
 		{
 			for (int x = 0; x <= sizeX; x++)
 			{
-				if (isItemSlotEmpty((size_t)x, (size_t)y,
-					itemSize, itemIdx) == true)
+				if (isItemSlotEmpty(x, y, itemSize, itemIdx) == true)
 				{
 					return true;
 				}
@@ -321,8 +328,7 @@ bool ItemCollection::getItemSlot(const sf::Vector2u& itemSize,
 		{
 			for (int x = sizeX; x >= 0; x--)
 			{
-				if (isItemSlotEmpty((size_t)x, (size_t)y,
-					itemSize, itemIdx) == true)
+				if (isItemSlotEmpty(x, y, itemSize, itemIdx) == true)
 				{
 					return true;
 				}
@@ -341,18 +347,18 @@ bool ItemCollection::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int(props.first.c_str()))
+	switch (str2int32(props.first.c_str()))
 	{
-	case str2int("capacity"):
+	case str2int32("capacity"):
 		var = Variable((int64_t)items.size());
 		break;
-	case str2int("enforceItemSize"):
+	case str2int32("enforceItemSize"):
 		var = Variable((bool)enforceItemSize);
 		break;
-	case str2int("isFull"):
+	case str2int32("isFull"):
 		var = Variable((bool)isFull());
 		break;
-	case str2int("size"):
+	case str2int32("size"):
 	{
 		if (props.second == "x")
 		{

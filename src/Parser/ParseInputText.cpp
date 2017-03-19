@@ -26,17 +26,15 @@ namespace Parser
 
 		if (elem.HasMember("onClick"))
 		{
-			inputText->setActionEnter(parseAction(game, elem["onClick"]));
+			inputText->setAction(str2int16("click"), parseAction(game, elem["onClick"]));
 		}
-
 		if (elem.HasMember("onChange"))
 		{
-			inputText->setActionChange(parseAction(game, elem["onChange"]));
+			inputText->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
 		}
-
 		if (elem.HasMember("onMinSize"))
 		{
-			inputText->setActionMinSize(parseAction(game, elem["onMinSize"]));
+			inputText->setAction(str2int16("minSize"), parseAction(game, elem["onMinSize"]));
 		}
 
 		if (isValidString(elem, "regex") == true)

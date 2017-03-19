@@ -14,10 +14,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Image>(id);
-		if (item != nullptr)
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
 		{
-			item->centerTexture();
+			image->centerTexture();
 		}
 		return true;
 	}

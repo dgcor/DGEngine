@@ -23,8 +23,8 @@ public:
 	Dun(const std::string&);
 	Dun(size_t width_, size_t height_);
 
-	Misc::Helper2D<Dun, int16_t&> operator[] (size_t x);
-	Misc::Helper2D<const Dun, const int16_t&> operator[] (size_t x) const;
+	Misc::Helper2D<Dun, int16_t&, size_t> operator[] (size_t x);
+	Misc::Helper2D<const Dun, const int16_t&, size_t> operator[] (size_t x) const;
 
 	size_t Width() const { return width; }
 	size_t Height() const { return height; }

@@ -11,29 +11,15 @@
     "experience": 0,
     "expNextLevel": 2000,
     "gold": 100,
-    "strengthBase": 15,
-    "magicBase": 35,
-    "dexterityBase": 15,
-    "vitalityBase": 20,
     "points": 0,
-    "lifeBase": 30,
-    "manaBase": 70,
-    "armor": 3,
-    "toHit": 57,
-    "damageMin": 2,
-    "damageMax": 4,
-    "resistMagic": 0,
-    "resistFire": 0,
-    "resistLightning": 0,
     "inventory": [
       {
         "index": "Body",
-        "allowedClassTypes": ["Amulet", "Armor", "Helmet", "Ring", "Shield", "Weapon"],
+        "allowedClassTypes": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Staff", "Sword"],
         "item": [
           {
             "index": "LeftHand",
-            "class": "shortStaff",
-            "name": "Short Staff"
+            "class": "shortStaff"
           }
         ]
       },
@@ -44,13 +30,11 @@
         "item": [
           {
             "index": 0,
-            "class": "manaPotion",
-            "name": "Potion of Mana"
+            "class": "manaPotion"
           },
           {
             "index": 1,
-            "class": "manaPotion",
-            "name": "Potion of Mana"
+            "class": "manaPotion"
           }
         ]
       },

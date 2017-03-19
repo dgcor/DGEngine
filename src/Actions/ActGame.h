@@ -64,7 +64,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
-		game.MusicVolume((float)vol);
+		game.MusicVolume(vol);
 		return true;
 	}
 };
@@ -147,7 +147,7 @@ public:
 						auto PropDiff = x > y ? x - y : y - x;
 
 						val -= valueRange.x;
-						val = std::round(val * PropDiff / (double)valueDiff) + propRange.x;
+						val = std::lround(val * PropDiff / (double)valueDiff) + propRange.x;
 					}
 					game.setProperty(propVal, Variable((int64_t)val));
 				}
@@ -172,7 +172,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
-		game.SoundVolume((float)vol);
+		game.SoundVolume(vol);
 		return true;
 	}
 };

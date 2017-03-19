@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+class Player;
+
 class PlayerClass
 {
 private:
@@ -14,6 +16,8 @@ private:
 	std::string name;
 	std::string type;
 	std::string description;
+
+	std::vector<LevelObjProperty> defaults;
 
 public:
 	PlayerClass() : statusCelIndexes() {}
@@ -59,6 +63,9 @@ public:
 	{
 		return celTextures;
 	}
+
+	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
+	void setDefault(const char* prop, int16_t val);
 
 	const std::string& Name() const { return name; }
 	const std::string& Type() const { return type; }

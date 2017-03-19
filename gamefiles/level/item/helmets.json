@@ -1,19 +1,107 @@
 {
   "itemClass": [
     {
-      "id": "helmet",
+      "id": "cap",
+      "fromId": "baseArmor",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 30,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 104,
-      "name": "Helmet",
+      "celIndexInventory": 102,
+      "name": "Cap",
+      "shortName": "Cap",
       "type": "Helmet",
+      "defaults": {
+        "armor": 3,
+        "durability": 15,
+        "durabilityMax": 15
+      },
       "inventorySize": [2, 2],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipcap" },
       "actionDropInventory": { "name": "sound.play", "id": "invcap" },
       "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "skullCap",
+      "fromId": "cap",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 101,
+      "name": "Skull Cap",
+      "defaults": {
+        "armor": 4,
+        "durability": 20,
+        "durabilityMax": 20
+      }
+    },
+    {
+      "id": "helm",
+      "fromId": "cap",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 93,
+      "name": "Helm",
+      "shortName": "Helm",
+      "defaults": {
+        "armor": 6,
+        "durability": 30,
+        "durabilityMax": 30,
+        "requiredStrength": 25
+      }
+    },
+    {
+      "id": "fullHelm",
+      "fromId": "helm",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 86,
+      "name": "Full Helm",
+      "defaults": {
+        "armor": 8,
+        "durability": 35,
+        "durabilityMax": 35,
+        "requiredStrength": 35
+      }
+    },
+    {
+      "id": "crown",
+      "fromId": "helm",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 106,
+      "name": "Crown",
+      "shortName": "Crown",
+      "defaults": {
+        "armor": 12,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 0
+      }
+    },
+    {
+      "id": "greatHelm",
+      "fromId": "helm",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 30,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 109,
+      "name": "Great Helm",
+      "defaults": {
+        "armor": 15,
+        "durability": 60,
+        "durabilityMax": 60,
+        "requiredStrength": 50
+      }
     }
   ]
 }

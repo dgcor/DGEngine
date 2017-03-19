@@ -121,4 +121,13 @@ namespace Utils
 	{
 		return trimStart(trimEnd(str, chars), chars);
 	}
+
+	std::string removeEmptyLines(const std::string& str)
+	{
+		auto ret = trim(str, "\n");
+		ret.erase(std::unique(ret.begin(), ret.end(),
+			[](char a, char b) { return a == '\n' && b == '\n'; }),
+			ret.end());
+		return ret;
+	}
 }

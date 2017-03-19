@@ -3,10 +3,12 @@
 #include "Actions/Action.h"
 #include "CelCache.h"
 #include <cstdint>
+#include "GameProperties.h"
 #include "ItemClass.h"
 #include "LevelObject.h"
 #include <memory>
-#include "Variable.h"
+
+typedef std::array<LevelObjProperty, 12> ItemProperties;
 
 class Item : public LevelObject
 {
@@ -27,11 +29,32 @@ private:
 	bool hovered{ false };
 
 	std::string name;
-	std::string description1;
-	std::string description2;
-	std::string description3;
+	std::array<std::string, 5> descriptions;
+
+	size_t propertiesSize{ 0 };
+	ItemProperties properties;
+
+	bool identified{ false };
 
 public:
+	using iterator = ItemProperties::iterator;
+	using const_iterator = ItemProperties::const_iterator;
+	using reverse_iterator = ItemProperties::reverse_iterator;
+	using const_reverse_iterator = ItemProperties::const_reverse_iterator;
+
+	iterator begin() { return properties.begin(); }
+	iterator end() { return properties.begin() + propertiesSize; }
+	const_iterator begin() const { return properties.begin(); }
+	const_iterator end() const { return properties.begin() + propertiesSize; }
+	const_iterator cbegin() const { return properties.cbegin(); }
+	const_iterator cend() const { return properties.cbegin() + propertiesSize; }
+	reverse_iterator rbegin() { return properties.rend() - propertiesSize; }
+	reverse_iterator rend() { return properties.rend(); }
+	const_reverse_iterator rbegin() const { return properties.rend() - propertiesSize; }
+	const_reverse_iterator rend() const { return properties.rend(); }
+	const_reverse_iterator crbegin() const { return properties.crend() - propertiesSize; }
+	const_reverse_iterator crend() const { return properties.crend(); }
+
 	Item() {}
 	Item(const std::shared_ptr<ItemClass>& class__) : class_(class__)
 	{
@@ -69,17 +92,55 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val) {};
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
 	ItemClass* Class() const { return class_.get(); }
 
-	const std::string& Name() const { return name; }
-	const std::string& ClassName() const { return class_->Name(); }
-	const std::string& Description1() const { return description1; }
-	const std::string& Description2() const { return description2; }
-	const std::string& Description3() const { return description3; }
+	bool hasItemProperty(const char* prop) const;
+	bool hasItemProperty(const std::string& prop) const
+	{
+		return hasItemProperty(prop.c_str());
+	}
 
-	void Name(const std::string& name_) { name = name_; }
-	void Description1(const std::string& description) { description1 = description; }
-	void Description2(const std::string& description) { description2 = description; }
-	void Description3(const std::string& description) { description3 = description; }
+	int16_t getItemPropertyByHash(uint16_t propHash) const;
+	int16_t getItemProperty(const char* prop) const;
+	int16_t getItemProperty(const std::string& prop) const
+	{
+		return getItemProperty(prop.c_str());
+	}
+
+	bool getItemPropertyByHash(uint16_t propHash, int16_t& value) const;
+	bool getItemProperty(const char* prop, int16_t& value) const;
+	bool getItemProperty(const std::string& prop, int16_t& value) const
+	{
+		return getItemProperty(prop.c_str(), value);
+	}
+	void setItemPropertyByHash(uint16_t propHash, int16_t value);
+	void setItemProperty(const char* prop, int16_t value);
+	void setItemProperty(const std::string& prop, int16_t value) const
+	{
+		return setItemProperty(prop.c_str(), value);
+	}
+
+	void updateFullName();
+
+	void updateDescriptions();
+
+	void applyDefaults();
+
+	const std::string& Name() const
+	{
+		if (identified == false)
+		{
+			return SimpleName();
+		}
+		return name;
+	}
+	const std::string& ShortName() const { return class_->ShortName(); }
+	const std::string& SimpleName() const { return class_->Name(); }
+	const std::string& ItemType() const { return class_->Type(); }
+	bool Identified() const { return identified; }
+
+	void Name(const std::string& val) { name = val; }
+	void Identified(bool val) { identified = val; }
 };

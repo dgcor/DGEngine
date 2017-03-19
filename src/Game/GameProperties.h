@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include "MapCoord.h"
+#include <utility>
 
 enum class InventoryPosition : size_t
 {
@@ -11,6 +12,8 @@ enum class InventoryPosition : size_t
 	BottomRight,
 	Size
 };
+
+typedef std::pair<uint16_t, int16_t> LevelObjProperty;
 
 enum class PlayerDirection : size_t
 {

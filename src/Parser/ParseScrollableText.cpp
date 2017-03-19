@@ -62,7 +62,7 @@ namespace Parser
 
 		if (elem.HasMember("onComplete"))
 		{
-			scrollable->setAction(parseAction(game, elem["onComplete"]));
+			scrollable->setAction(str2int16("complete"), parseAction(game, elem["onComplete"]));
 		}
 
 		game.Resources().addDrawable(id, scrollable);

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "Variable.h"
+#include "Queryable.h"
 
-class Quest
+class Quest : public Queryable
 {
 private:
 	std::string id;
@@ -22,5 +22,6 @@ public:
 	int State() const { return state; }
 	void State(int state_) { state = state_; }
 
-	bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

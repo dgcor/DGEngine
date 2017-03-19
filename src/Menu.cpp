@@ -3,7 +3,18 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
-using Utils::str2int;
+void Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("scrollDown"):
+		scrollDownAction = action;
+		return;
+	case str2int16("scrollUp"):
+		scrollUpAction = action;
+		return;
+	}
+}
 
 void Menu::calculatePositions()
 {
@@ -174,6 +185,7 @@ void Menu::update(Game& game)
 		const auto& scroll = game.getMouseWheelScroll();
 		if (scrollRect.contains(scroll.x, scroll.y))
 		{
+			game.clearMouseScrolled();
 			if (scroll.delta < 0.f)
 			{
 				if (scrollDownAction != nullptr)
@@ -199,10 +211,10 @@ bool Menu::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int(props.first.c_str());
+	auto propHash = str2int32(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int("itemCount"):
+	case str2int32("itemCount"):
 		var = Variable((int64_t)this->getItemCount());
 		break;
 	default:

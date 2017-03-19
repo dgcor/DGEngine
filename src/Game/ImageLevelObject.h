@@ -55,6 +55,7 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val) {}
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 

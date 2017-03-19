@@ -3,9 +3,11 @@
 #include "Actions/Action.h"
 #include "CelCache.h"
 #include "ItemClass.h"
+#include "ItemLocation.h"
 #include "LevelMap.h"
 #include <memory>
 #include "Min.h"
+#include "Namer.h"
 #include "Palette.h"
 #include "Player.h"
 #include "PlayerClass.h"
@@ -22,6 +24,15 @@ class Level : public UIObject
 {
 private:
 	View2 view;
+	float currentZoomFactor{ 1.f };
+	float startZoomFactor{ 1.f };
+	float stopZoomFactor{ 1.f };
+	float diffZoomFactor{ 0.f };
+	bool hasNewZoom{ false };
+	bool smoothZoom{ false };
+	float zoomStepStart{ 0.f };		// in seconds
+	float zoomStepStop{ 1.f };		// in seconds
+
 	LevelMap map;
 
 	sf::Vector2f mousePositionf;
@@ -29,8 +40,6 @@ private:
 
 	MapCoord mapCoordOverMouse;
 	MapCoord currentMapPosition;
-
-	Anchor anchor{ Anchor::Top | Anchor::Left };
 
 	std::string name;
 
@@ -41,6 +50,8 @@ private:
 	std::shared_ptr<Action> rightAction;
 	std::shared_ptr<Action> hoverEnterAction;
 	std::shared_ptr<Action> hoverLeaveAction;
+	std::shared_ptr<Action> scrollDownAction;
+	std::shared_ptr<Action> scrollUpAction;
 
 	MapCoord clickedMapPosition;
 
@@ -49,32 +60,33 @@ private:
 
 	std::vector<std::shared_ptr<LevelObject>> levelObjects;
 
+	std::unordered_map<std::string, std::shared_ptr<Namer>> namers;
 	std::unordered_map<std::string, std::shared_ptr<ItemClass>> itemClasses;
 	std::vector<std::pair<std::string, std::shared_ptr<PlayerClass>>> playerClasses;
 	std::vector<std::shared_ptr<Player>> players;
 	Player* currentPlayer{ nullptr };
 	bool followCurrentPlayer{ true };
 
-	std::shared_ptr<Item> selectedItem;
-
 	bool pause{ false };
 	bool visible{ true };
 
 	std::vector<Quest> quests;
 
-	static const LevelCell& get(size_t x, size_t y, const Level& level)
+	static const LevelCell& get(Coord x, Coord y, const Level& level)
 	{
 		return level.map[x][y];
 	}
 
-	void updateMouse(Game& game);
+	void updateZoom(const Game& game);
+
+	void updateMouse(const Game& game);
 
 public:
 	void Init(const LevelMap& map, Min& min, CelFrameCache& cel);
 
-	Misc::Helper2D<const Level, const LevelCell&> operator[] (size_t x) const
+	Misc::Helper2D<const Level, const LevelCell&, Coord> operator[] (Coord x) const
 	{
-		return Misc::Helper2D<const Level, const LevelCell&>(*this, x, get);
+		return Misc::Helper2D<const Level, const LevelCell&, Coord>(*this, x, get);
 	}
 
 	const sf::Vector2f& MousePositionf() const { return mousePositionf; }
@@ -83,12 +95,27 @@ public:
 	LevelMap& Map() { return map; }
 	const LevelMap& Map() const { return map; }
 
-	size_t Width() const { return map.Width(); }
-	size_t Height() const { return map.Height(); }
+	Coord Width() const { return map.Width(); }
+	Coord Height() const { return map.Height(); }
 
 	void Name(const std::string& name_) { name = name_; }
 
 	void clearLevelObjects() { levelObjects.clear(); }
+
+	void addNamer(const std::string& key, const std::shared_ptr<Namer>& obj)
+	{
+		namers.insert(std::make_pair(key, obj));
+	}
+
+	std::shared_ptr<Namer> getNamer(const std::string& key) const
+	{
+		auto it = namers.find(key);
+		if (it != namers.end())
+		{
+			return it->second;
+		}
+		return nullptr;
+	}
 
 	void addItemClass(const std::string& key, const std::shared_ptr<ItemClass>& obj)
 	{
@@ -97,12 +124,10 @@ public:
 
 	std::shared_ptr<ItemClass> getItemClass(const std::string& key) const
 	{
-		for (const auto& item : itemClasses)
+		auto it = itemClasses.find(key);
+		if (it != itemClasses.end())
 		{
-			if (item.first == key)
-			{
-				return item.second;
-			}
+			return it->second;
 		}
 		return nullptr;
 	}
@@ -127,27 +152,16 @@ public:
 	std::vector<std::shared_ptr<Player>>& Players() { return players; }
 	const std::vector<std::shared_ptr<Player>>& Players() const { return players; }
 
-	Player* getPlayer(const std::string id);
-	Player* getPlayerOrCurrent(const std::string id);
+	Player* getPlayer(const std::string& id) const;
+	Player* getPlayerOrCurrent(const std::string& id) const;
 
 	void clearPlayerClasses(size_t clearIdx);
 	void clearPlayers(size_t clearIdx);
 
-	void resetView()
-	{
-		const auto& vSize = view.getSize();
-		view.reset(sf::FloatRect(0, 0, vSize.x, vSize.y));
-	}
-
-	void updateViewPort(const Game& game);
+	void resetView() { view.reset(); }
 
 	void executeHoverEnterAction(Game& game);
 	void executeHoverLeaveAction(Game& game);
-
-	void setLeftAction(const std::shared_ptr<Action>& action) { leftAction = action; }
-	void setRightAction(const std::shared_ptr<Action>& action) { rightAction = action; }
-	void setHoverEnterAction(const std::shared_ptr<Action>& action) { hoverEnterAction = action; }
-	void setHoverLeaveAction(const std::shared_ptr<Action>& action) { hoverLeaveAction = action; }
 
 	const MapCoord& getClickedMapPosition() const { return clickedMapPosition; }
 
@@ -157,7 +171,9 @@ public:
 	LevelObject* getHoverObject() const { return hoverObject; }
 	void setHoverObject(LevelObject* object) { hoverObject = object; }
 
-	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+
+	virtual void setAnchor(const Anchor anchor) { view.setAnchor(anchor); }
 	virtual void updateSize(const Game& game);
 
 	virtual const sf::Vector2f& DrawPosition() const { return view.getPosition(); }
@@ -165,6 +181,11 @@ public:
 	virtual void Position(const sf::Vector2f& position) { view.setPosition(position); }
 	virtual sf::Vector2f Size() const { return view.getSize(); }
 	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
+
+	float Zoom() const { return stopZoomFactor; }
+	void Zoom(float factor, bool smooth = false);
+
+	void updateViewport(const Game& game) { view.updateViewport(game); }
 
 	void addLevelObject(const std::shared_ptr<LevelObject>& obj) { levelObjects.push_back(obj); }
 
@@ -175,7 +196,7 @@ public:
 	void move(const MapCoord& mapPos)
 	{
 		currentMapPosition = mapPos;
-		auto center = map.getCoords(mapPos);
+		auto center = map.getCoord(mapPos);
 		view.setCenter(center.x, center.y);
 	}
 
@@ -185,6 +206,7 @@ public:
 	}
 
 	void addPlayer(const std::shared_ptr<Player>& player_) { players.push_back(player_); }
+	Player* getCurrentPlayer() const { return currentPlayer; }
 	void setCurrentPlayer(Player* player_)
 	{
 		currentPlayer = player_;
@@ -207,9 +229,14 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const;
 
-	const std::shared_ptr<Item>& SelectedItem() const { return selectedItem; }
-	void SelectedItem(const std::shared_ptr<Item>& item) { selectedItem = item; }
+	std::shared_ptr<Item> getItem(const MapCoord& mapCoord) const;
+	std::shared_ptr<Item> getItem(const ItemCoordInventory& itemCoord) const;
+	std::shared_ptr<Item> getItem(const ItemLocation& location) const;
+	bool setItem(const MapCoord& mapCoord, const std::shared_ptr<Item>& item);
+	bool setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<Item>& item);
+	bool setItem(const ItemLocation& location, const std::shared_ptr<Item>& item);
 
 	const std::vector<Quest>& Quests() const { return quests; };
 	void addQuest(const Quest& quest_);

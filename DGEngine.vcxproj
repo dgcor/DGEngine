@@ -1,8 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Clang|Win32">
+      <Configuration>Debug Clang</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug NoMovie|Win32">
       <Configuration>Debug NoMovie</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug VS2015|Win32">
+      <Configuration>Debug VS2015</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
@@ -45,6 +53,7 @@
     <ClCompile Include="src\Game\Level.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
     <ClCompile Include="src\Game\LevelMap.cpp" />
+    <ClCompile Include="src\Game\Namer.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
@@ -64,6 +73,7 @@
     <ClCompile Include="src\Parser\Game\ParseItemClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevel.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevelObject.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseNamer.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayer.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayerClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseQuest.cpp" />
@@ -88,8 +98,6 @@
     <ClCompile Include="src\Parser\ParseLoadingScreen.cpp" />
     <ClCompile Include="src\Parser\ParseMenu.cpp" />
     <ClCompile Include="src\Parser\ParseMenuButton.cpp" />
-    <ClCompile Include="src\Parser\ParseMenuQuests.cpp" />
-    <ClCompile Include="src\Parser\ParseMenuSaveGames.cpp" />
     <ClCompile Include="src\Parser\ParseMountFile.cpp" />
     <ClCompile Include="src\Parser\ParseMovie.cpp" />
     <ClCompile Include="src\Parser\ParsePalette.cpp" />
@@ -104,7 +112,6 @@
     <ClCompile Include="src\Parser\Utils\ParseUtilsIdx.cpp" />
     <ClCompile Include="src\Parser\Utils\ParseUtilsKey.cpp" />
     <ClCompile Include="src\Parser\Utils\ParseUtilsVal.cpp" />
-    <ClCompile Include="src\Parser\Utils\ParseUtilsVar.cpp" />
     <ClCompile Include="src\Pcx.cpp" />
     <ClCompile Include="src\PhysFSStream.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
@@ -167,11 +174,16 @@
     <ClInclude Include="src\Game\Item.h" />
     <ClInclude Include="src\Game\ItemClass.h" />
     <ClInclude Include="src\Game\ItemCollection.h" />
+    <ClInclude Include="src\Game\ItemLocation.h" />
+    <ClInclude Include="src\Game\ItemProperties.h" />
+    <ClInclude Include="src\Game\ItemXY.h" />
     <ClInclude Include="src\Game\Level.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
     <ClInclude Include="src\Game\MapCoord.h" />
+    <ClInclude Include="src\Game\Namer.h" />
+    <ClInclude Include="src\Game\PairXY.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />
     <ClInclude Include="src\Game\PlayerClass.h" />
@@ -188,6 +200,7 @@
     <ClInclude Include="src\Parser\Game\ParseItemClass.h" />
     <ClInclude Include="src\Parser\Game\ParseLevel.h" />
     <ClInclude Include="src\Parser\Game\ParseLevelObject.h" />
+    <ClInclude Include="src\Parser\Game\ParseNamer.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayer.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayerClass.h" />
     <ClInclude Include="src\Parser\Game\ParseQuest.h" />
@@ -212,8 +225,6 @@
     <ClInclude Include="src\Parser\ParseLoadingScreen.h" />
     <ClInclude Include="src\Parser\ParseMenu.h" />
     <ClInclude Include="src\Parser\ParseMenuButton.h" />
-    <ClInclude Include="src\Parser\ParseMenuQuests.h" />
-    <ClInclude Include="src\Parser\ParseMenuSaveGames.h" />
     <ClInclude Include="src\Parser\ParseMountFile.h" />
     <ClInclude Include="src\Parser\ParseMovie.h" />
     <ClInclude Include="src\Parser\ParsePalette.h" />
@@ -228,7 +239,7 @@
     <ClInclude Include="src\Parser\Utils\ParseUtilsIdx.h" />
     <ClInclude Include="src\Parser\Utils\ParseUtilsKey.h" />
     <ClInclude Include="src\Parser\Utils\ParseUtilsVal.h" />
-    <ClInclude Include="src\Parser\Utils\ParseUtilsVar.h" />
+    <ClInclude Include="src\Queryable.h" />
     <ClInclude Include="src\Rectangle.h" />
     <ClInclude Include="src\ReverseIterable.h" />
     <ClInclude Include="src\SFMLUtils.h" />
@@ -262,15 +273,23 @@
     <ClInclude Include="src\UIObject.h" />
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Variable.h" />
+    <ClInclude Include="src\Variant.h" />
     <ClInclude Include="src\View2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B30255A6-E921-4847-9FB1-26842AB465A4}</ProjectGuid>
     <RootNamespace>DGEngine</RootNamespace>
     <ProjectName>DGEngine</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug VS2015|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
@@ -279,27 +298,33 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141_clang_c2</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -309,7 +334,13 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug VS2015|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -323,10 +354,26 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug VS2015|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\debug\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;sfeMovie-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug VS2015|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\debug\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -340,7 +387,22 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\debug\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>freetype.lib;jpeg.lib;openal32.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\sfeMovie\debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'">
+    <ClCompile>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\sfeMovie\debug\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -355,7 +417,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -374,7 +436,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -394,7 +456,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

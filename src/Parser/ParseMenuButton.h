@@ -5,7 +5,10 @@
 
 namespace Parser
 {
-	std::shared_ptr<StringButton> parseMenuButton(
+	void parseMenuButton(
+		Game& game,
+		const rapidjson::Value& val,
+		::Menu& menu,
 		Anchor anchor,
 		const sf::Color& color,
 		HorizontalAlign horizAlign,
@@ -17,5 +20,9 @@ namespace Parser
 		const std::shared_ptr<BitmapFont>& bitmapFont,
 		const std::shared_ptr<sf::SoundBuffer>& sound,
 		const std::shared_ptr<sf::SoundBuffer>& focusSound,
-		bool clickUp);
+		bool clickUp,
+		bool hasFocus,
+		bool focusOnClick,
+		bool relativePos,
+		const sf::Vector2f& origPos);
 }

@@ -30,6 +30,8 @@ public:
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+
 	virtual void setAnchor(const Anchor anchor_) { text->setAnchor(anchor_); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }
 
@@ -39,9 +41,6 @@ public:
 	virtual sf::Vector2f Size() const { return text->Size(); }
 	virtual void Size(const sf::Vector2f& size) {}
 
-	void setActionChange(const std::shared_ptr<Action>& action_) { actionChange = action_; }
-	void setActionEnter(const std::shared_ptr<Action>& action_) { actionEnter = action_; }
-	void setActionMinSize(const std::shared_ptr<Action>& action_) { actionMinSize = action_; }
 	void setRegex(const std::string& regex_)
 	{
 		hasRegex = false;
@@ -68,4 +67,5 @@ public:
 	virtual void update(Game& game);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };
