@@ -32,6 +32,7 @@ private:
 	bool wasClicked{ false };
 	bool visible{ true };
 	bool resizable{ false };
+	bool captureScrollEvent{ false };
 
 public:
 	sf::FloatRect getLocalBounds() const { return sprite.getLocalBounds(); }
@@ -41,6 +42,11 @@ public:
 
 	bool getResizable() const { return resizable; }
 	void setResizable(bool resizable_) { resizable = resizable_; }
+
+	bool getCaptureScrollEvent() const { return resizable; }
+	void setCaptureScrollEvent(bool captureScroll) { captureScrollEvent = captureScroll; }
+
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
@@ -52,21 +58,12 @@ public:
 	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
-	virtual void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }
-	virtual void setClickDragAction(const std::shared_ptr<Action>& action) { clickDragAction = action; }
-	virtual void setClickInAction(const std::shared_ptr<Action>& action) { clickInAction = action; }
-	virtual void setClickOutAction(const std::shared_ptr<Action>& action) { clickOutAction = action; }
 	virtual void setClickSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { clickSound = buffer; }
 	virtual void setClickUp(bool clickUp_) { clickUp = clickUp_; }
 	virtual void setColor(const sf::Color& color_) { sprite.setColor(color_); }
-	virtual void setDoubleClickAction(const std::shared_ptr<Action>& action) { doubleClickAction = action; }
-	virtual void setFocusAction(const std::shared_ptr<Action>& action) { focusAction = action; }
 	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { focusSound = buffer; }
-	virtual void setHoverEnterAction(const std::shared_ptr<Action>& action) { hoverEnterAction = action; }
-	virtual void setHoverLeaveAction(const std::shared_ptr<Action>& action) { hoverLeaveAction = action; }
 	virtual void setOrigin(float x, float y) { sprite.setOrigin(x, y); }
 	virtual void setToggle(bool toggle) { toggled = toggle; }
-	virtual void setToggleAction(const std::shared_ptr<Action>& action) { toggleAction = action; }
 	virtual sf::Vector2f Size() const { return sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height); }
 	virtual void Size(const sf::Vector2f& size) { sprite.setTextureRect(sf::IntRect(0, 0, (int)size.x, (int)size.y)); }
 
@@ -78,4 +75,5 @@ public:
 	virtual void update(Game& game);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

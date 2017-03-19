@@ -3,7 +3,39 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
-using Utils::str2int;
+void StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("click"):
+		clickAction = action;
+		return;
+	case str2int16("doubleClick"):
+		doubleClickAction = action;
+		return;
+	case str2int16("toggle"):
+		toggleAction = action;
+		return;
+	case str2int16("clickDrag"):
+		clickDragAction = action;
+		return;
+	case str2int16("clickIn"):
+		clickInAction = action;
+		return;
+	case str2int16("clickOut"):
+		clickOutAction = action;
+		return;
+	case str2int16("focus"):
+		focusAction = action;
+		return;
+	case str2int16("hoverEnter"):
+		hoverEnterAction = action;
+		return;
+	case str2int16("hoverLeave"):
+		hoverLeaveAction = action;
+		return;
+	}
+}
 
 void StringButton::click(Game& game, bool playSound)
 {

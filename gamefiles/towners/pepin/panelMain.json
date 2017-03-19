@@ -24,6 +24,7 @@
   "text": [
     {
       "id": "panelTitle1",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 46],
@@ -34,6 +35,7 @@
     },
     {
       "id": "panelTitle2",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 70],
@@ -44,6 +46,7 @@
     },
     {
       "id": "panelText",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 142],
@@ -56,6 +59,7 @@
   "button": [
     {
       "id": "talk",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textBlue%",
       "sound": "titlslct",

@@ -85,6 +85,19 @@ namespace Parser
 		playerClass->Type(getStringKey(elem, "type"));
 		playerClass->Description(getStringKey(elem, "description"));
 
+		if (elem.HasMember("defaults") == true)
+		{
+			const auto& defaults = elem["defaults"];
+			if (defaults.IsObject() == true)
+			{
+				for (auto it = defaults.MemberBegin(); it != defaults.MemberEnd(); ++it)
+				{
+					playerClass->setDefault(it->name.GetString(),
+						getMinMaxIntVal<int16_t>(it->value));
+				}
+			}
+		}
+
 		level->addPlayerClass(id, playerClass);
 	}
 }

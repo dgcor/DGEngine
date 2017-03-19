@@ -1,0 +1,180 @@
+{
+  "namer": [
+    {
+      "id": "armor",
+      "names": [
+        {
+          "property": "indestructible",
+          "value": { "min": true, "max": true, "text": "Armor: %armor%  Indestructible" }
+        },
+        { "value": { "text": "Armor: %armor%  Dur: %durability%/%durabilityMax%" } }
+      ]
+    },
+    {
+      "id": "indestructible",
+      "names": "Indestructible"
+    },
+    {
+      "id": "magic1",
+      "names": [
+        {
+          "property": "identified",
+          "value": { "min": false, "max": false, "text": "Not Identified" }
+        },
+        {
+          "property": "toStrength",
+          "value": { "text": "+%toStrength% to Strength" }
+        },
+        {
+          "property": "toMagic",
+          "value": { "text": "+%toMagic% to Magic" }
+        },
+        {
+          "property": "toDexterity",
+          "value": { "text": "+%toDexterity% to Dexterity" }
+        },
+        {
+          "property": "toVitality",
+          "value": { "text": "+%toVitality% to Vitality" }
+        }
+      ]
+    },
+    {
+      "id": "magic2",
+      "names": [
+        {
+          "property": "magic",
+          "value": { "min": false, "max": false, "text": "" }
+        },
+        {
+          "property": "identified",
+          "value": { "min": false, "max": false, "text": "" }
+        },
+        {
+          "property": "toStrength",
+          "value": { "text": "+%toStrength% to Strength" }
+        },
+        {
+          "property": "toMagic",
+          "value": { "text": "+%toMagic% to Magic" }
+        },
+        {
+          "property": "toDexterity",
+          "value": { "text": "+%toDexterity% to Dexterity" }
+        },
+        {
+          "property": "toVitality",
+          "value": { "text": "+%toVitality% to Vitality" }
+        }
+      ]
+    },
+    {
+      "id": "noAttributes",
+      "names": "No Required Attributes"
+    },
+    {
+      "id": "potion",
+      "names": [
+        {
+          "property": "toLife",
+          "value": [
+            { "min": "min", "max": -1000, "text": "Kill Player" },
+            { "min": -1000, "max": -1, "text": "Steal Life" },
+            { "min": 1, "max": 1000, "text": "Recover Life" },
+            { "min": 1000, "max": "max", "text": "Fully Recover Life" }
+          ]
+        },
+        {
+          "property": "toMana",
+          "value": [
+            { "min": "min", "max": -1000, "text": "Remove All Mana" },
+            { "min": -1000, "max": -1, "text": "Steal Mana" },
+            { "min": 1, "max": 1000, "text": "Recover Mana" },
+            { "min": 1000, "max": "max", "text": "Fully Recover Mana" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "required",
+      "names": [
+        {
+          "property": "requiredStrength",
+          "value": { "min": 1, "text": "Required: %requiredStrength% Str" }
+        },
+        {
+          "property": "requiredMagic",
+          "value": { "min": 1, "text": "Required: %requiredMagic% Mag" }
+        },
+        {
+          "property": "requiredDexterity",
+          "value": { "min": 1, "text": "Required: %requiredDexterity% Dex" }
+        },
+        {
+          "property": "requiredVitality",
+          "value": { "min": 1, "text": "Required: %requiredVitality% Vit" }
+        }
+      ]
+    },
+    {
+      "id": "requiredStrDex",
+      "names": [
+        {
+          "property": "requiredStrength",
+          "value": { "min": 0, "max": 0, "text": "Required: %requiredDexterity% Dex" }
+        },
+        {
+          "property": "requiredDexterity",
+          "value": { "min": 1, "text": "Required: %requiredStrength% Str %requiredDexterity% Dex" }
+        },
+        {
+          "property": "requiredStrength",
+          "value": { "min": 1, "text": "Required: %requiredStrength% Str" }
+        }
+      ]
+    },
+    {
+      "id": "requiredStrMag",
+      "names": [
+        {
+          "property": "requiredStrength",
+          "value": { "min": 0, "max": 0, "text": "Required: %requiredMagic% Mag" }
+        },
+        {
+          "property": "requiredMagic",
+          "value": { "min": 1, "text": "Required: %requiredStrength% Str %requiredMagic% Mag" }
+        },
+        {
+          "property": "requiredStrength",
+          "value": { "min": 1, "text": "Required: %requiredStrength% Str" }
+        }
+      ]
+    },
+    {
+      "id": "rightClickToRead",
+      "names": "Right Click to Read"
+    },
+    {
+      "id": "rightClickToRead2",
+      "names": "Right-Click to Read"
+    },
+    {
+      "id": "rightClickToRead3",
+      "names": "Right-Click to Read, then\nLeft-Click to Target"
+    },
+    {
+      "id": "rightClickToUse",
+      "names": "Right Click to Use"
+    },
+    {
+      "id": "weapon",
+      "names": [
+        {
+          "property": "indestructible",
+          "value": { "min": true, "max": true, "text": "Damage: %damageMin%-%damageMax%  Indestructible" }
+        },
+        { "value": { "text": "Damage: %damageMin%-%damageMax%  Dur: %durability%/%durabilityMax%" } }
+      ]
+    }
+  ]
+}

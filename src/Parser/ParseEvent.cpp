@@ -19,9 +19,9 @@ namespace Parser
 			{
 				seconds = (float)elemSec.GetUint();
 			}
-			else if (elemSec.IsDouble())
+			else if (elemSec.IsFloat())
 			{
-				seconds = (float)elemSec.GetDouble();
+				seconds = elemSec.GetFloat();
 			}
 		}
 

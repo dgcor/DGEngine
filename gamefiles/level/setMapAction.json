@@ -3,7 +3,9 @@
     "name": "if.fileExists",
     "param1": "level/{1}/map.json",
     "then": [
-      { "name": "button.setClickAction", "id": "map",
+      { "name": "drawable.setAction",
+        "id": "map",
+        "event": "click",
         "action": [
           {
             "name": "if.equal",
@@ -26,7 +28,12 @@
       { "name": "load", "file": "level/{1}/map.json" }
     ],
     "else": [
-      { "name": "button.setClickAction", "id": "map", "action": { "name": "load", "file": "ui/level/noMap.json" } },
+      {
+        "name": "drawable.setAction",
+        "id": "map",
+        "event": "click",
+        "action": { "name": "load", "file": "ui/level/noMap.json" }
+      },
       { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
     ]
   }

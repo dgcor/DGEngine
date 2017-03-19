@@ -456,7 +456,7 @@ public:
 				}
 				else if (newStep > numSteps)
 				{
-					newStep = numSteps;
+					newStep = (float)numSteps;
 				}
 				if (newStep >= 1)
 				{
@@ -505,7 +505,7 @@ public:
 				}
 				else if (newStep > numSteps)
 				{
-					newStep = numSteps;
+					newStep = (float)numSteps;
 				}
 				if (newStep >= 1)
 				{
@@ -629,6 +629,29 @@ public:
 			auto itemSize = item->Size();
 			itemSize.y = newSize + offset;
 			item->Size(itemSize);
+		}
+		return true;
+	}
+};
+
+class ActDrawableSetAction : public Action
+{
+private:
+	std::string id;
+	uint16_t nameHash;
+	std::shared_ptr<Action> action;
+
+public:
+	ActDrawableSetAction(const std::string& id_,
+		const char* name, const std::shared_ptr<Action>& action_)
+		: id(id_), nameHash(str2int16(name)), action(action_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<UIObject>(id);
+		if (item != nullptr)
+		{
+			item->setAction(nameHash, action);
 		}
 		return true;
 	}

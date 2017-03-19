@@ -66,6 +66,7 @@ set(SOURCE_FILES
     src/Pcx.h
     src/PhysFSStream.cpp
     src/PhysFSStream.h
+    src/Queryable.h
     src/Rectangle.cpp
     src/Rectangle.h
     src/ResourceManager.cpp
@@ -90,6 +91,7 @@ set(SOURCE_FILES
     src/Utils.h
     src/Variable.cpp
     src/Variable.h
+    src/Variant.h
     src/View2.cpp
     src/View2.h
     src/Actions/ActAction.h
@@ -131,8 +133,13 @@ set(SOURCE_FILES
     src/Game/ImageLevelObject.h
     src/Game/Item.cpp
     src/Game/Item.h
+    src/Game/ItemClass.cpp
+    src/Game/ItemClass.h
     src/Game/ItemCollection.cpp
     src/Game/ItemCollection.h
+    src/Game/ItemLocation.h
+    src/Game/ItemProperties.h
+    src/Game/ItemXY.h
     src/Game/Level.cpp
     src/Game/Level.h
     src/Game/LevelHelper.cpp
@@ -141,6 +148,9 @@ set(SOURCE_FILES
     src/Game/LevelMap.h
     src/Game/LevelObject.h
     src/Game/MapCoord.h
+    src/Game/Namer.cpp
+    src/Game/Namer.h
+    src/Game/PairXY.h
     src/Game/PathFinder.cpp
     src/Game/PathFinder.h
     src/Game/Player.cpp
@@ -195,10 +205,6 @@ set(SOURCE_FILES
     src/Parser/ParseMenu.h
     src/Parser/ParseMenuButton.cpp
     src/Parser/ParseMenuButton.h
-    src/Parser/ParseMenuQuests.cpp
-    src/Parser/ParseMenuQuests.h
-    src/Parser/ParseMenuSaveGames.cpp
-    src/Parser/ParseMenuSaveGames.h
     src/Parser/ParseMountFile.cpp
     src/Parser/ParseMountFile.h
     src/Parser/ParseMovie.cpp
@@ -227,6 +233,8 @@ set(SOURCE_FILES
     src/Parser/Game/ParseLevel.h
     src/Parser/Game/ParseLevelObject.cpp
     src/Parser/Game/ParseLevelObject.h
+    src/Parser/Game/ParseNamer.cpp
+    src/Parser/Game/ParseNamer.h
     src/Parser/Game/ParsePlayer.cpp
     src/Parser/Game/ParsePlayer.h
     src/Parser/Game/ParsePlayerClass.cpp
@@ -241,8 +249,6 @@ set(SOURCE_FILES
     src/Parser/Utils/ParseUtilsKey.h
     src/Parser/Utils/ParseUtilsVal.cpp
     src/Parser/Utils/ParseUtilsVal.h
-    src/Parser/Utils/ParseUtilsVar.cpp
-    src/Parser/Utils/ParseUtilsVar.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
     src/rapidjson/encodedstream.h
@@ -282,6 +288,7 @@ set(SOURCE_FILES
     src/variant/recursive_wrapper.hpp
     src/variant/variant.hpp
     src/variant/variant_io.hpp
+    src/variant/variant_visitor.hpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

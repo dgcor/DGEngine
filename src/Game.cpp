@@ -6,8 +6,6 @@
 #include "SFMLUtils.h"
 #include "Utils.h"
 
-using Utils::str2int;
-
 Game::~Game()
 {
 	resourceManager = ResourceManager();
@@ -171,7 +169,7 @@ void Game::onResized(const sf::Event::SizeEvent& evt)
 	auto view = window.getView();
 	if (stretchToFit == false)
 	{
-		view.reset(sf::FloatRect(0.f, 0.f, evt.width, evt.height));
+		view.reset(sf::FloatRect(0.f, 0.f, (float)evt.width, (float)evt.height));
 	}
 	else
 	{
@@ -472,7 +470,7 @@ void Game::StretchToFit(bool stretchToFit_)
 			if (stretchToFit_ == true)
 			{
 				auto view = window.getView();
-				view.reset(sf::FloatRect(0, 0, minSize.x, minSize.y));
+				view.reset(sf::FloatRect(0, 0, (float)minSize.x, (float)minSize.y));
 				window.setView(view);
 				oldSize = size;
 				size = minSize;
@@ -497,7 +495,7 @@ void Game::StretchToFit(bool stretchToFit_)
 				window.setView(view);
 				oldSize = minSize;
 				updateSize();
-				view.reset(sf::FloatRect(0, 0, size.x, size.y));
+				view.reset(sf::FloatRect(0, 0, (float)size.x, (float)size.y));
 				window.setView(view);
 				updateWindowTex();
 			}
@@ -612,7 +610,7 @@ double Game::getVariableDouble(const std::string& key) const
 	const auto& var = it->second;
 	if (var.is<int64_t>())
 	{
-		return var.get<int64_t>();
+		return (double)var.get<int64_t>();
 	}
 	else if (var.is<double>())
 	{
@@ -752,21 +750,25 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int(props.first.c_str()))
+	switch (str2int32(props.first.c_str()))
 	{
-	case str2int("framerate"):
+	case str2int32("framerate"):
 		var = Variable((int64_t)framerate);
 		break;
-
-	case str2int("hasResource"):
+	case str2int32("hasEvent"):
+	{
+		var = Variable((bool)eventManager.exists(props.second));
+		break;
+	}
+	case str2int32("hasResource"):
 	{
 		var = Variable((bool)resourceManager.resourceExists(props.second));
 		break;
 	}
-	case str2int("keepAR"):
+	case str2int32("keepAR"):
 		var = Variable((bool)keepAR);
 		break;
-	case str2int("minSize"):
+	case str2int32("minSize"):
 	{
 		if (props.second == "x")
 		{
@@ -778,13 +780,13 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		}
 		break;
 	}
-	case str2int("musicVolume"):
+	case str2int32("musicVolume"):
 		var = Variable((int64_t)musicVolume);
 		break;
-	case str2int("path"):
+	case str2int32("path"):
 		var = Variable(path);
 		break;
-	case str2int("refSize"):
+	case str2int32("refSize"):
 	{
 		if (props.second == "x")
 		{
@@ -796,10 +798,10 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		}
 		break;
 	}
-	case str2int("saveDir"):
+	case str2int32("saveDir"):
 		var = Variable(std::string(FileUtils::getSaveDir()));
 		break;
-	case str2int("size"):
+	case str2int32("size"):
 	{
 		if (props.second == "x")
 		{
@@ -811,19 +813,19 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		}
 		break;
 	}
-	case str2int("smoothScreen"):
+	case str2int32("smoothScreen"):
 		var = Variable((bool)smoothScreen);
 		break;
-	case str2int("soundVolume"):
+	case str2int32("soundVolume"):
 		var = Variable((int64_t)soundVolume);
 		break;
-	case str2int("stretchToFit"):
+	case str2int32("stretchToFit"):
 		var = Variable((bool)stretchToFit);
 		break;
-	case str2int("title"):
+	case str2int32("title"):
 		var = Variable(title);
 		break;
-	case str2int("version"):
+	case str2int32("version"):
 		var = Variable(version);
 		break;
 	default:
@@ -838,9 +840,9 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 	{
 		return;
 	}
-	switch (str2int(prop.c_str()))
+	switch (str2int32(prop.c_str()))
 	{
-	case str2int("framerate"):
+	case str2int32("framerate"):
 	{
 		if (val.is<int64_t>() == true)
 		{
@@ -848,7 +850,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("keepAR"):
+	case str2int32("keepAR"):
 	{
 		if (val.is<bool>() == true)
 		{
@@ -856,7 +858,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("musicVolume"):
+	case str2int32("musicVolume"):
 	{
 		if (val.is<int64_t>() == true)
 		{
@@ -864,7 +866,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("smoothScreen"):
+	case str2int32("smoothScreen"):
 	{
 		if (val.is<bool>() == true)
 		{
@@ -872,7 +874,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("soundVolume"):
+	case str2int32("soundVolume"):
 	{
 		if (val.is<int64_t>() == true)
 		{
@@ -880,7 +882,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("stretchToFit"):
+	case str2int32("stretchToFit"):
 	{
 		if (val.is<bool>() == true)
 		{
@@ -888,7 +890,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("title"):
+	case str2int32("title"):
 	{
 		if (val.is<std::string>() == true)
 		{
@@ -896,10 +898,42 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("version"):
+	case str2int32("version"):
 		if (val.is<std::string>() == true)
 		{
 			setVersion(val.get<std::string>());
 		}
 	}
+}
+
+const Queryable* Game::getQueryable(const std::string& prop) const
+{
+	if (prop.empty() == true)
+	{
+		return this;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	if (props.first.empty() == true ||
+		props.first == "game")
+	{
+		return this;
+	}
+	const Queryable* queryable = resourceManager.getDrawable(props.first);
+	if (queryable == nullptr)
+	{
+		if (props.first == "focus")
+		{
+			queryable = resourceManager.getFocused();
+		}
+		else if (props.first == "currentLevel")
+		{
+			queryable = resourceManager.getCurrentLevel();
+		}
+	}
+	if (queryable != nullptr &&
+		props.second.empty() == false)
+	{
+		return queryable->getQueryable(props.second);
+	}
+	return queryable;
 }

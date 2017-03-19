@@ -3,8 +3,6 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
-using Utils::str2int;
-
 void BitmapText::calcDrawPos()
 {
 	drawPos = GameUtils::getAlignmentPosition(pos, size, horizAlign, vertAlign);
@@ -41,13 +39,13 @@ bool BitmapText::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int(props.first.c_str());
+	auto propHash = str2int32(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int("lineCount"):
+	case str2int32("lineCount"):
 		var = Variable((int64_t)lineCount);
 		break;
-	case str2int("text"):
+	case str2int32("text"):
 		var = Variable(text);
 		break;
 	default:

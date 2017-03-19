@@ -17,9 +17,24 @@ public:
 	void addFront(const Event& event_) { events.push_front(event_); }
 	void addFront(const std::shared_ptr<Action>& action) { events.push_front(Event(action)); }
 
+	bool exists(const std::string& id) const
+	{
+		if (id.empty() == false)
+		{
+			for (auto& evt : events)
+			{
+				if (evt.getId() == id)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	void remove(const std::string& id)
 	{
-		if (id.empty())
+		if (id.empty() == true)
 		{
 			return;
 		}
@@ -34,7 +49,7 @@ public:
 
 	void resetTime(const std::string& id)
 	{
-		if (id.empty())
+		if (id.empty() == true)
 		{
 			return;
 		}

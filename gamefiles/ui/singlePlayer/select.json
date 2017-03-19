@@ -82,14 +82,15 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "%SAVEGAMES%": null,
+        "load": "game|saves",
+        "text": "%save%",
         "onClick": [
           { "name": "load", "file": ["ui/loadCharInfo.json", "|focus|text|"] },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete" },
-          { "name": "button.setBitmapFont", "id": "delete", "idFont": "font30g" },
+          { "name": "button.setFont", "id": "delete", "idFont": "font30g" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },
@@ -103,7 +104,7 @@
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete", "enable": false },
-          { "name": "button.setBitmapFont", "id": "delete", "idFont": "font30s" },
+          { "name": "button.setFont", "id": "delete", "idFont": "font30s" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },

@@ -3,6 +3,40 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+void BitmapButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("click"):
+		clickAction = action;
+		return;
+	case str2int16("doubleClick"):
+		doubleClickAction = action;
+		return;
+	case str2int16("toggle"):
+		toggleAction = action;
+		return;
+	case str2int16("clickDrag"):
+		clickDragAction = action;
+		return;
+	case str2int16("clickIn"):
+		clickInAction = action;
+		return;
+	case str2int16("clickOut"):
+		clickOutAction = action;
+		return;
+	case str2int16("focus"):
+		focusAction = action;
+		return;
+	case str2int16("hoverEnter"):
+		hoverEnterAction = action;
+		return;
+	case str2int16("hoverLeave"):
+		hoverLeaveAction = action;
+		return;
+	}
+}
+
 void BitmapButton::click(Game& game, bool playSound)
 {
 	if (enabled == false)
@@ -83,6 +117,11 @@ void BitmapButton::update(Game& game)
 	auto rect = sprite.getGlobalBounds();
 	if (rect.contains(game.MousePositionf()))
 	{
+		if (captureScrollEvent == true &&
+			game.wasMouseScrolled() == true)
+		{
+			game.clearMouseScrolled();
+		}
 		if (hovered == false)
 		{
 			hovered = true;
@@ -168,5 +207,5 @@ bool BitmapButton::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, Utils::str2int(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int32(props.first.c_str()), props.second, var);
 }

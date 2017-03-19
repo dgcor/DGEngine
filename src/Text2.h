@@ -35,6 +35,8 @@ public:
 	void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
 	void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }
 
@@ -58,4 +60,5 @@ public:
 	{
 		return text->getProperty(prop, var);
 	}
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

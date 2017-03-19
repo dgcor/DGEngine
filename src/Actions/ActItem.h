@@ -3,90 +3,45 @@
 #include "Action.h"
 #include "Game.h"
 #include "Game/GameProperties.h"
+#include "Game/ItemLocation.h"
 #include "Game/Level.h"
 #include "Image.h"
 
-static void updateCursorWithItemImage(Game& game, const Item& item)
+static void updateCursorWithItemImage(Game& game, const Item& item, bool equiped)
 {
-	auto image = std::make_shared<Image>(item.Class()->getCelInventoryTexture());
+	auto image = std::make_shared<Image>(item.Class()->getCelInventoryTexture(equiped));
 	image->setOrigin();
 	game.Resources().addCursor(image);
 	game.updateCursorPosition();
 }
 
-class ActItemPickFromLevel : public Action
-{
-private:
-	std::string idLevel;
-	std::string idPlayer;
-
-public:
-	ActItemPickFromLevel(const std::string& idLevel_, const std::string& idPlayer_)
-		: idLevel(idLevel_), idPlayer(idPlayer_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto level = game.Resources().getLevel(idLevel);
-		if (level != nullptr)
-		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr &&
-				level->SelectedItem() == nullptr)
-			{
-				auto mapPos = player->MapPositionMoveTo();
-				auto mapObj = level->Map()[mapPos.x][mapPos.y].object;
-				if (mapObj != nullptr)
-				{
-					std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(mapObj);
-					if (item != nullptr)
-					{
-						level->Map()[mapPos.x][mapPos.y].object = nullptr;
-						level->deleteLevelObject(mapObj.get());
-						level->SelectedItem(item);
-						updateCursorWithItemImage(game, *item);
-						auto action = item->Class()->getActionPickLevel();
-						if (action != nullptr)
-						{
-							game.Events().addBack(action);
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
-};
-
 class ActItemDrop : public Action
 {
 private:
 	std::string idLevel;
-	std::string idPlayer;
+	ItemCoordInventory itemCoord;
 
 public:
-	ActItemDrop(const std::string& idLevel_, const std::string& idPlayer_)
-		: idLevel(idLevel_), idPlayer(idPlayer_) {}
+	ActItemDrop(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto item = level->SelectedItem();
+			auto item = level->getItem(itemCoord);
 			if (item != nullptr)
 			{
 				auto mapPos = level->getMapCoordOverMouse();
-				auto& mapCel = level->Map()[mapPos.x][mapPos.y];
-				if (mapCel.Passable() == true
-					&& mapCel.object == nullptr)
+				if (level->setItem(mapPos, item) == true)
 				{
-					item->MapPosition(mapPos);
-					item->updateDrawPosition(*level);
 					item->resetDropAnimation();
-					mapCel.object = item;
-					level->addLevelObject(item);
-					level->SelectedItem(nullptr);
-					game.Resources().popCursor();
+					level->setItem(itemCoord, nullptr);
+					if (game.Resources().cursorCount() > 1)
+					{
+						game.Resources().popCursor();
+					}
 					game.updateCursorPosition();
 
 					auto action = item->Class()->getActionDropLevel();
@@ -118,21 +73,17 @@ public:
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr &&
-				level->SelectedItem() == nullptr)
+				player->SelectedItem() == nullptr)
 			{
 				auto mapPos = player->MapPositionMoveTo();
-				auto mapObj = level->Map()[mapPos.x][mapPos.y].object;
-				if (mapObj != nullptr)
+				auto item = level->getItem(mapPos);
+				if (item != nullptr)
 				{
-					std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(mapObj);
-					if (item != nullptr)
+					item->resetDropAnimation();
+					auto action = item->Class()->getActionDropLevel();
+					if (action != nullptr)
 					{
-						item->resetDropAnimation();
-						auto action = item->Class()->getActionDropLevel();
-						if (action != nullptr)
-						{
-							game.Events().addBack(action);
-						}
+						game.Events().addBack(action);
 					}
 				}
 			}
@@ -145,15 +96,30 @@ class ActItemLoadFromLevel : public Action
 {
 private:
 	std::string idLevel;
-	std::string idPlayer;
-	size_t invIdx;
+	ItemCoordInventory itemCoord;
 	InventoryPosition invPos;
+	bool useInvPos{ false };
 	std::shared_ptr<Action> inventoryFullAction;
 
+	void executePickFromLevelAction(Game& game, Item& item)
+	{
+		auto action = item.Class()->getActionPickLevel();
+		if (action != nullptr)
+		{
+			game.Events().addBack(action);
+		}
+	}
+
 public:
-	ActItemLoadFromLevel(const std::string& idLevel_, const std::string& idPlayer_,
-		size_t invIdx_, InventoryPosition invPos_) : idLevel(idLevel_),
-		idPlayer(idPlayer_), invIdx(invIdx_), invPos(invPos_) {}
+	ActItemLoadFromLevel(const std::string& idLevel_,
+		const ItemCoordInventory& itemCoord_)
+		: idLevel(idLevel_), itemCoord(itemCoord_) {}
+
+	void setInventoryPosition(InventoryPosition invPos_)
+	{
+		invPos = invPos_;
+		useInvPos = true;
+	}
 
 	void setInventoryFullAction(const std::shared_ptr<Action>& action_)
 	{
@@ -165,27 +131,39 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
+			auto player = level->getPlayerOrCurrent(itemCoord.getPlayerId());
 			if (player != nullptr)
 			{
 				auto mapPos = player->MapPositionMoveTo();
-				auto mapObj = level->Map()[mapPos.x][mapPos.y].object;
-				if (mapObj != nullptr)
+				auto item = level->getItem(mapPos);
+				if (item != nullptr)
 				{
-					std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(mapObj);
-					if (item != nullptr)
+					if (itemCoord.isSelectedItem() == true &&
+						player->SelectedItem() == nullptr)
 					{
-						if (invIdx < player->getInventorySize())
+						level->setItem(mapPos, nullptr);
+						player->SelectedItem(item);
+						updateCursorWithItemImage(game, *item,
+							player->canEquipItem(*item));
+						executePickFromLevelAction(game, *item);
+					}
+					else
+					{
+						if (useInvPos == false)
 						{
-							auto& inventory = player->getInventory(invIdx);
+							level->setItem(mapPos, nullptr);
+							level->setItem(itemCoord, item);
+						}
+						else if (itemCoord.getInventoryIdx() < player->getInventorySize())
+						{
+							auto& inventory = player->getInventory(itemCoord.getInventoryIdx());
 							auto itemSize = item->Class()->InventorySize();
 							size_t itemIdx = 0;
 							if (inventory.getItemSlot(itemSize, itemIdx, invPos) == true)
 							{
-								level->Map()[mapPos.x][mapPos.y].object = nullptr;
-								level->deleteLevelObject(mapObj.get());
-
+								level->setItem(mapPos, nullptr);
 								inventory.set(itemIdx, item);
+								executePickFromLevelAction(game, *item);
 							}
 							else
 							{
@@ -207,49 +185,49 @@ class ActItemUpdate : public Action
 {
 private:
 	std::string idLevel;
-	std::string idPlayer;
-	size_t invIdx;
-	sf::Vector2u itemPos;
-	bool isCoordXY;
+	ItemCoordInventory itemCoord;
 
 public:
-	ActItemUpdate(const std::string& idLevel_, const std::string& idPlayer_,
-		size_t invIdx_, size_t itemIdx_) : idLevel(idLevel_),
-		idPlayer(idPlayer_), invIdx(invIdx_),
-		itemPos(itemIdx_, 0), isCoordXY(false) {}
-
-	ActItemUpdate(const std::string& idLevel_, const std::string& idPlayer_,
-		size_t invIdx_, const sf::Vector2u& itemPos_) : idLevel(idLevel_),
-		idPlayer(idPlayer_), invIdx(invIdx_),
-		itemPos(itemPos_), isCoordXY(true) {}
+	ActItemUpdate(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(idLevel);
-		if (level != nullptr)
+		if (level != nullptr &&
+			itemCoord.isSelectedItem() == false)
 		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
+			auto player = level->getPlayerOrCurrent(itemCoord.getPlayerId());
 			if (player != nullptr)
 			{
+				auto invIdx = itemCoord.getInventoryIdx();
 				if (invIdx < player->getInventorySize())
 				{
 					auto& inventory = player->getInventory(invIdx);
-					size_t itemIdx = itemPos.x;
-					if (isCoordXY == true)
+					size_t itemIdx;
+					if (itemCoord.isCoordXY() == true)
 					{
-						itemIdx = inventory.getIndex(itemPos);
+						itemIdx = inventory.getIndex(itemCoord.getItemXY());
 					}
-					auto selectedItem = level->SelectedItem();
+					else
+					{
+						itemIdx = itemCoord.getItemIdx();
+					}
+					auto selectedItem = player->SelectedItem();
 					if (selectedItem != nullptr)
 					{
 						std::shared_ptr<Item> oldItem;
 						if (inventory.set(itemIdx, selectedItem, oldItem) == true)
 						{
-							level->SelectedItem(oldItem);
-							game.Resources().popCursor();
+							player->SelectedItem(oldItem);
+							if (game.Resources().cursorCount() > 1)
+							{
+								game.Resources().popCursor();
+							}
 							if (oldItem != nullptr)
 							{
-								updateCursorWithItemImage(game, *oldItem);
+								updateCursorWithItemImage(game, *oldItem,
+									player->canEquipItem(*oldItem));
 							}
 							else
 							{
@@ -268,8 +246,9 @@ public:
 						if (oldItem != nullptr)
 						{
 							inventory.set(itemIdx, nullptr);
-							level->SelectedItem(oldItem);
-							updateCursorWithItemImage(game, *oldItem);
+							player->SelectedItem(oldItem);
+							updateCursorWithItemImage(game, *oldItem,
+								player->canEquipItem(*oldItem));
 
 							auto action = oldItem->Class()->getActionPickInventory();
 							if (action != nullptr)

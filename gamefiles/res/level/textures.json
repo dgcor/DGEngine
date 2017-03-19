@@ -34,6 +34,27 @@
       "id": "red",
       "fill": "0xFF000022",
       "size": [1, 1]
+    },
+    {
+      "id": "textbox",
+      "file": "data/textbox.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textbox2",
+      "file": "data/textbox2.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textslid",
+      "file": "data/textslid.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textslidBackground",
+      "file": "data/textslid.cel",
+      "frame": 13,
+      "palette": "town"
     }
   ],
   "action": {

@@ -7,6 +7,7 @@
 #include <memory>
 #include "Menu.h"
 #include "Parser/ParseVariable.h"
+#include "Queryable.h"
 #include "ResourceManager.h"
 #include <string>
 #include <SFML/Audio.hpp>
@@ -14,7 +15,7 @@
 #include "Variable.h"
 #include <vector>
 
-class Game : public sf::NonCopyable
+class Game : public sf::NonCopyable, public Queryable
 {
 private:
 	sf::RenderWindow window;
@@ -106,7 +107,7 @@ public:
 	const sf::Vector2u& WindowTexSize() const { return windowTexSize; }
 	sf::Vector2f WindowTexSizef() const
 	{
-		return sf::Vector2f((float)windowTexSize.x, (float)windowTexSize.x);
+		return sf::Vector2f((float)windowTexSize.x, (float)windowTexSize.y);
 	}
 	void WindowSize(const sf::Vector2u& size_)
 	{
@@ -201,7 +202,7 @@ public:
 	void addPlayingSound(const sf::SoundBuffer& obj);
 	void addPlayingSound(const sf::SoundBuffer* obj);
 
-	const sf::Time& getElapsedTime() { return elapsedTime; }
+	const sf::Time& getElapsedTime() const { return elapsedTime; }
 
 	const std::string& getPath() const { return path; }
 	const std::string& getTitle() const { return title; }
@@ -231,6 +232,8 @@ public:
 
 	LoadingScreen* getLoadingScreen() { return loadingScreen.get(); }
 	void setLoadingScreen(std::unique_ptr<LoadingScreen> loadingScreen_) { loadingScreen = std::move(loadingScreen_); }
+
+	bool drawLoadingScreen();
 
 	FadeInOut* getFadeInOut() const { return fadeInOut.get(); }
 	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) { fadeInOut = std::move(fadeInOut_); }
@@ -276,8 +279,8 @@ public:
 
 	void saveVariables(const std::string& filePath, const std::vector<std::string>& varNames) const;
 
-	bool drawLoadingScreen();
-
-	bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	void setProperty(const std::string& prop, const Variable& val);
+
+	virtual const Queryable* getQueryable(const std::string& prop) const;
 };

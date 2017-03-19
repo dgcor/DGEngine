@@ -1,0 +1,54 @@
+{
+  "itemClass": [
+    {
+      "id": "baseArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 161,
+      "name": "Armor",
+      "type": "Armor",
+      "defaults": {
+        "identified": true,
+        "magic": false
+      },
+      "description1": "armor",
+      "description2": "magic1",
+      "description3": "magic2",
+      "description4": "required",
+      "inventorySize": [2, 3],
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "fliplarm" },
+      "actionDropInventory": { "name": "sound.play", "id": "invlarm" },
+      "actionPickInventory": "pickItemInInventory",
+      "prefix": "armorPrefixes",
+      "suffix": "armorSuffixes"
+    },
+    {
+      "id": "baseWeapon",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 161,
+      "name": "Weapon",
+      "type": "Weapon",
+      "defaults": {
+        "identified": true,
+        "magic": false
+      },
+      "description1": "weapon",
+      "description2": "magic1",
+      "description3": "magic2",
+      "description4": "required",
+      "inventorySize": [2, 3],
+      "action": "pickItemInLevel",
+      "actionDropLevel": { "name": "sound.play", "id": "fliplarm" },
+      "actionDropInventory": { "name": "sound.play", "id": "invlarm" },
+      "actionPickInventory": "pickItemInInventory",
+      "prefix": "weaponPrefixes",
+      "suffix": "weaponSuffixes"
+    }
+  ]
+}

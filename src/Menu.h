@@ -83,8 +83,6 @@ public:
 		scrollRect.height = (int)size.y;
 	}
 
-	void setScrollDownAction(const std::shared_ptr<Action>& action) { scrollDownAction = action; }
-	void setScrollUpAction(const std::shared_ptr<Action>& action) { scrollUpAction = action; }
 	void setVerticalAlign(const VerticalAlign align)
 	{
 		if (vertAlign != align)
@@ -125,6 +123,8 @@ public:
 		}
 	}
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+
 	virtual void setAnchor(const Anchor anchor_)
 	{
 		if (anchor != anchor_)
@@ -142,4 +142,5 @@ public:
 	virtual void update(Game& game);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

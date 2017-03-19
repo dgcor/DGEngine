@@ -8,7 +8,6 @@
 namespace Parser
 {
 	using namespace rapidjson;
-	using Utils::str2int;
 
 	std::vector<std::pair<std::string, Variable>> getVariables(const Value& elem)
 	{

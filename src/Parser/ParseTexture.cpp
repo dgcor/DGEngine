@@ -16,7 +16,7 @@ namespace Parser
 		if (elem.HasMember("fill"))
 		{
 			auto size = getVector2uKey(elem, "size", game.WindowTexSize());
-			img.create(size.x, size.y, getColorVar(game, elem, "fill"));
+			img.create(size.x, size.y, getColorKey(elem, "fill"));
 			return img;
 		}
 		else if (elem.HasMember("file") == false)
@@ -57,7 +57,7 @@ namespace Parser
 		}
 		else
 		{
-			img = ImageUtils::loadImage(fileName.c_str(), getColorVar(game, elem, "mask"));
+			img = ImageUtils::loadImage(fileName.c_str(), getColorKey(elem, "mask"));
 
 			if (elem.HasMember("split"))
 			{

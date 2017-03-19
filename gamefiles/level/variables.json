@@ -1,8 +1,10 @@
 {
   "variable": [
+    { "identifyPrice": 100 },
     { "showMap": false },
     { "textBlue": "0xA7B0DE" },
     { "textGold": "0xEDD689" },
-    { "textRed": "0xFE9292" }
+    { "textRed": "0xFE9292" },
+    { "WirtSeePrice": 50 }
   ]
 }

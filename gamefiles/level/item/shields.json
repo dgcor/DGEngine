@@ -2,13 +2,20 @@
   "itemClass": [
     {
       "id": "buckler",
+      "fromId": "baseArmor",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 38,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 94,
       "name": "Buckler",
+      "shortName": "Buckler",
       "type": "Shield",
+      "defaults": {
+        "armor": 5,
+        "durability": 16,
+        "durabilityMax": 16
+      },
       "inventorySize": [2, 2],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipshld" },
@@ -16,19 +23,86 @@
       "actionPickInventory": "pickItemInInventory"
     },
     {
-      "id": "shield",
+      "id": "smallShield",
+      "fromId": "buckler",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 38,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 116,
-      "name": "Shield",
-      "type": "Shield",
-      "inventorySize": [2, 3],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flipshld" },
-      "actionDropInventory": { "name": "sound.play", "id": "invshiel" },
-      "actionPickInventory": "pickItemInInventory"
+      "name": "Small Shield",
+      "shortName": "Shield",
+      "defaults": {
+        "armor": 8,
+        "durability": 24,
+        "durabilityMax": 24,
+        "requiredStrength": 25
+      },
+      "inventorySize": [2, 3]
+    },
+    {
+      "id": "largeShield",
+      "fromId": "smallShield",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 158,
+      "name": "Large Shield",
+      "defaults": {
+        "armor": 10,
+        "durability": 32,
+        "durabilityMax": 32,
+        "requiredStrength": 40
+      }
+    },
+    {
+      "id": "kiteShield",
+      "fromId": "smallShield",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 124,
+      "name": "Kite Shield",
+      "defaults": {
+        "armor": 15,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 50
+      }
+    },
+    {
+      "id": "towerShield",
+      "fromId": "smallShield",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 143,
+      "name": "Tower Shield",
+      "defaults": {
+        "armor": 20,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 60
+      }
+    },
+    {
+      "id": "gothicShield",
+      "fromId": "smallShield",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 38,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 159,
+      "name": "Gothic Shield",
+      "defaults": {
+        "armor": 18,
+        "durability": 60,
+        "durabilityMax": 60,
+        "requiredStrength": 80
+      }
     }
   ]
 }

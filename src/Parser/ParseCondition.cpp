@@ -6,7 +6,6 @@
 namespace Parser
 {
 	using namespace rapidjson;
-	using Utils::str2int;
 
 	std::shared_ptr<Action> getIfCondition(unsigned conditionHash,
 		Game& game, const Value& elem)
@@ -64,13 +63,19 @@ namespace Parser
 			for (const auto& val : elem["case"])
 			{
 				if (val.IsObject() == true &&
-					val.HasMember("value") == true &&
-					val.HasMember("action") == true)
+					val.HasMember("value") == true)
 				{
-					cases.push_back(
-						std::make_pair(getVariableKey(val, "value"),
-							parseAction(game, val["action"]))
-					);
+					if (val.HasMember("action") == true)
+					{
+						cases.push_back(
+							std::make_pair(getVariableKey(val, "value"),
+								parseAction(game, val["action"]))
+						);
+					}
+					else
+					{
+						cases.push_back(std::make_pair(getVariableKey(val, "value"), nullptr));
+					}
 				}
 			}
 		}

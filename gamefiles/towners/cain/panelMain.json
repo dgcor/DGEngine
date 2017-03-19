@@ -24,6 +24,7 @@
   "text": [
     {
       "id": "panelTitle1",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 58],
@@ -34,6 +35,7 @@
     },
     {
       "id": "panelText",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textGold%",
       "position": [480, 142],
@@ -46,6 +48,7 @@
   "button": [
     {
       "id": "talk",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
       "color": "%textBlue%",
       "sound": "titlslct",
@@ -76,6 +79,13 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Identify an Item",
+      "onClick": [
+        { "name": "resource.popAll", "id": "userPanelFrame" },
+        { "name": "resource.add", "id": "userPanelFrame" },
+        { "name": "load", "file": "ui/level/panelBig.json" },
+        { "name": "load", "file": "towners/cain/panelIdentifyCommon.json" },
+        { "name": "load", "file": "towners/cain/panelIdentify.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

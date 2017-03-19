@@ -20,10 +20,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<Button>(id);
+		if (button != nullptr)
 		{
-			item->click(game, playSound);
+			button->click(game, playSound);
 		}
 		return true;
 	}
@@ -40,64 +40,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<Button>(id);
+		if (button != nullptr)
 		{
-			item->enable(enable);
-		}
-		return true;
-	}
-};
-
-class ActButtonSetBitmapFont : public Action
-{
-private:
-	std::string id;
-	std::string idFont;
-
-public:
-	ActButtonSetBitmapFont(const std::string& id_, const std::string& idFont_)
-		: id(id_), idFont(idFont_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<StringButton>(id);
-		if (item != nullptr)
-		{
-			auto text = item->getDrawableText();
-			if (text != nullptr)
-			{
-				auto fontText = dynamic_cast<BitmapText*>(text);
-				if (fontText != nullptr)
-				{
-					auto newFont = game.Resources().getBitmapFont(idFont);
-					if (newFont != nullptr)
-					{
-						fontText->setFont(newFont);
-					}
-				}
-			}
-		}
-		return true;
-	}
-};
-
-class ActButtonSetClickAction : public Action
-{
-private:
-	std::string id;
-	std::shared_ptr<Action> action;
-
-public:
-	ActButtonSetClickAction(const std::string& id_, const std::shared_ptr<Action>& action_)
-		: id(id_), action(action_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
-		{
-			item->setClickAction(action);
+			button->enable(enable);
 		}
 		return true;
 	}
@@ -114,10 +60,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<StringButton>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<StringButton>(id);
+		if (button != nullptr)
 		{
-			item->setColor(color);
+			button->setColor(color);
 		}
 		return true;
 	}
@@ -135,19 +81,29 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<StringButton>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<StringButton>(id);
+		if (button != nullptr)
 		{
-			auto text = item->getDrawableText();
+			auto text = button->getDrawableText();
 			if (text != nullptr)
 			{
-				auto fontText = dynamic_cast<StringText*>(text);
-				if (fontText != nullptr)
+				auto bitmapText = dynamic_cast<BitmapText*>(text);
+				if (bitmapText != nullptr)
+				{
+					auto newFont = game.Resources().getBitmapFont(idFont);
+					if (newFont != nullptr)
+					{
+						bitmapText->setFont(newFont);
+					}
+					return true;
+				}
+				auto stringText = dynamic_cast<StringText*>(text);
+				if (stringText != nullptr)
 				{
 					auto newFont = game.Resources().getFont(idFont);
 					if (newFont != nullptr)
 					{
-						fontText->setFont(*newFont);
+						stringText->setFont(*newFont);
 					}
 				}
 			}
@@ -173,16 +129,16 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<StringButton>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<StringButton>(id);
+		if (button != nullptr)
 		{
 			if (bindings.empty() == true)
 			{
-				item->setText(game.getVariableString(textFormat));
+				button->setText(game.getVariableString(textFormat));
 			}
 			else
 			{
-				item->setText(Text2::getFormatString(game, bindings, textFormat));
+				button->setText(Text2::getFormatString(game, bindings, textFormat));
 			}
 		}
 		return true;
@@ -200,10 +156,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Button>(id);
-		if (item != nullptr)
+		auto button = game.Resources().getResource<Button>(id);
+		if (button != nullptr)
 		{
-			item->setToggle(toggle);
+			button->setToggle(toggle);
 		}
 		return true;
 	}

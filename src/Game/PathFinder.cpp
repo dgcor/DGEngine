@@ -6,16 +6,16 @@ bool MapSearchNode::IsPassableIgnoreObject()
 {
 	if (x < map->Width() && y < map->Height())
 	{
-		return (*map)[x][y].PassableIgnoreObject();
+		return (*map)[(Coord)x][(Coord)y].PassableIgnoreObject();
 	}
 	return false;
 }
 
-bool MapSearchNode::IsPassable(size_t x_, size_t y_)
+bool MapSearchNode::IsPassable(int16_t x_, int16_t y_)
 {
 	if (x_ < map->Width() && y_ < map->Height())
 	{
-		return (*map)[x_][y_].Passable();
+		return (*map)[(Coord)x_][(Coord)y_].Passable();
 	}
 	return false;
 }
@@ -27,7 +27,7 @@ bool MapSearchNode::IsSameState(MapSearchNode& rhs)
 
 float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal)
 {
-	return std::fabs(x - nodeGoal.x) + std::fabs(y - nodeGoal.y);
+	return (float)(std::abs(x - nodeGoal.x) + std::abs(y - nodeGoal.y));
 }
 
 bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
@@ -36,12 +36,14 @@ bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
 }
 
 bool MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
-	int16_t x, int16_t y, int16_t parent_x, int16_t parent_y)
+	int16_t x_, int16_t y_, int16_t parent_x, int16_t parent_y)
 {
-	if ((IsPassable(x, y) == true) && !((parent_x == x) && (parent_y == y)))
+	if ((IsPassable(x_, y_) == true) && !((parent_x == x_) && (parent_y == y_)))
 	{
-		auto direction = getPlayerDirection(MapCoord(parent_x, parent_y), MapCoord(x, y));
-		auto searchNode = MapSearchNode(map, x, y, direction);
+		auto direction_ = getPlayerDirection(
+			MapCoord((Coord)parent_x, (Coord)parent_y),
+			MapCoord((Coord)x_, (Coord)y_));
+		auto searchNode = MapSearchNode(map, x_, y_, direction_);
 		astarsearch->AddSuccessor(searchNode);
 		return true;
 	}
@@ -93,7 +95,7 @@ float MapSearchNode::GetCost(MapSearchNode& successor)
 {
 	if (IsPassable(x, y) == true)
 	{
-		auto obj = (*map)[x][y].object.get();
+		auto obj = (*map)[(Coord)x][(Coord)y].object.get();
 		if (obj == nullptr)
 		{
 			return 1.f;

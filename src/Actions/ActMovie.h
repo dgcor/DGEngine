@@ -15,10 +15,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Movie2>(id);
-		if (item != nullptr)
+		auto movie = game.Resources().getResource<Movie2>(id);
+		if (movie != nullptr)
 		{
-			item->pause();
+			movie->pause();
 		}
 		return true;
 	}
@@ -34,10 +34,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Movie2>(id);
-		if (item != nullptr)
+		auto movie = game.Resources().getResource<Movie2>(id);
+		if (movie != nullptr)
 		{
-			item->play();
+			movie->play();
 		}
 		return true;
 	}

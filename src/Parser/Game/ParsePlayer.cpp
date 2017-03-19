@@ -24,7 +24,7 @@ namespace Parser
 		}
 		else if (idxElem.IsArray() == true)
 		{
-			itemIdx = inventory.getIndex(getVector2uVal<sf::Vector2u>(idxElem));
+			itemIdx = inventory.getIndex(getItemXYVal(idxElem));
 		}
 		else if (idxElem.IsUint() == true)
 		{
@@ -75,7 +75,7 @@ namespace Parser
 			}
 			else if (sizeElem.IsArray() == true)
 			{
-				inventory.init(getVector2uVal<sf::Vector2u>(sizeElem));
+				inventory.init(getItemXYVal(sizeElem));
 				wasInitialized = true;
 			}
 		}
@@ -163,6 +163,8 @@ namespace Parser
 
 		auto player = std::make_shared<Player>(class_);
 
+		player->applyDefaults();
+
 		player->MapPosition(mapPos);
 		mapCell.object = player;
 
@@ -174,36 +176,24 @@ namespace Parser
 
 		player->Id(id);
 		player->Name(getStringKey(elem, "name"));
-		player->Level_(getIntKey(elem, "level"));
+		player->CurrentLevel(getIntKey(elem, "level"));
 		player->Experience(getIntKey(elem, "experience"));
 		player->ExpNextLevel(getIntKey(elem, "expNextLevel"));
 		player->Points(getIntKey(elem, "points"));
 		player->Gold(getIntKey(elem, "gold"));
-		auto strength = getIntKey(elem, "strengthBase");
-		player->StrengthBase(strength);
-		player->StrengthNow(getIntKey(elem, "strengthNow", strength));
-		auto magic = getIntKey(elem, "magicBase");
-		player->MagicBase(magic);
-		player->MagicNow(getIntKey(elem, "magicNow", magic));
-		auto dexterity = getIntKey(elem, "dexterityBase");
-		player->DexterityBase(dexterity);
-		player->DexterityNow(getIntKey(elem, "dexterityNow", dexterity));
-		auto vitality = getIntKey(elem, "vitalityBase");
-		player->VitalityBase(vitality);
-		player->VitalityNow(getIntKey(elem, "vitalityNow", vitality));
-		auto life = getIntKey(elem, "lifeBase");
-		player->LifeBase(life);
-		player->LifeNow(getIntKey(elem, "lifeNow", life));
-		auto mana = getIntKey(elem, "manaBase");
-		player->ManaBase(mana);
-		player->ManaNow(getIntKey(elem, "manaNow", mana));
-		player->ArmorClass(getIntKey(elem, "armorClass"));
-		player->ToHit(getIntKey(elem, "toHit"));
-		player->DamageMin(getIntKey(elem, "damageMin"));
-		player->DamageMax(getIntKey(elem, "damageMax"));
-		player->ResistMagic(getIntKey(elem, "resistMagic"));
-		player->ResistFire(getIntKey(elem, "resistFire"));
-		player->ResistLightning(getIntKey(elem, "resistLightning"));
+
+		if (elem.HasMember("properties") == true)
+		{
+			const auto& props = elem["properties"];
+			if (props.IsObject() == true)
+			{
+				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
+				{
+					player->setPlayerProperty(it->name.GetString(),
+						getMinMaxIntVal<int16_t>(it->value));
+				}
+			}
+		}
 
 		if (elem.HasMember("action") == true)
 		{
@@ -225,6 +215,8 @@ namespace Parser
 				parsePlayerInventory(game, *level, *player, invElem);
 			}
 		}
+
+		player->updatePlayerProperties(PlayerInventory::Body);
 
 		level->addPlayer(player);
 

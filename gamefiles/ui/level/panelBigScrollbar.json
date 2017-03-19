@@ -1,0 +1,85 @@
+{
+  "image": [
+    {
+      "id": "sb_bg",
+      "position": [601, 93],
+      "anchor": "none",
+      "textureRect": [0, 0, 12, 180],
+      "texture": "textslidBackground"
+    },
+    {
+      "id": "sb_arrowTop",
+      "position": [601, 81],
+      "anchor": "none",
+      "textureRect": [0, 108, 12, 12],
+      "texture": "textslid"
+    },
+    {
+      "id": "sb_arrowBottom",
+      "position": [601, 273],
+      "anchor": "none",
+      "textureRect": [0, 96, 12, 12],
+      "texture": "textslid"
+    },
+    {
+      "id": "sb_thumb",
+      "position": [601, 93],
+      "anchor": "none",
+      "textureRect": [0, 144, 12, 12],
+      "texture": "textslid"
+    }
+  ],
+  "button": [
+    {
+      "id": "btnUp",
+      "texture": "empty",
+      "position": [601, 81],
+      "anchor": "none",
+      "textureRect": [12, 12],
+      "onClick": [
+        "focus.moveUp",
+        "mainMenu.moveScrollbar"
+      ],
+      "onClickIn": { "name": "image.setTextureRect", "id": "sb_arrowTop", "rect": [0, 132, 12, 12] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "sb_arrowTop", "rect": [0, 108, 12, 12] }
+    },
+    {
+      "id": "btnDrag",
+      "texture": "empty",
+      "position": [601, 93],
+      "anchor": "none",
+      "textureRect": [12, 180],
+      "onClick": [
+        {
+          "name": "drawable.centerOnMouseY",
+          "id": "sb_thumb",
+          "idAnchorTo": "btnDrag",
+          "range": 180,
+          "steps": "|mainMenu|itemCount|"
+        },
+        {
+          "name": "menu.moveScrollbar",
+          "idMenu": "mainMenu",
+          "idScrollbar": "sb_thumb",
+          "idAnchorTo": "btnDrag",
+          "range": 180,
+          "focus": true
+        }
+      ],
+      "onClickDrag": { "name": "button.click", "id": "btnDrag" }
+    },
+    {
+      "id": "btnDown",
+      "texture": "empty",
+      "position": [601, 273],
+      "anchor": "none",
+      "textureRect": [12, 12],
+      "onClick": [
+        "focus.moveDown",
+        "mainMenu.moveScrollbar"
+      ],
+      "onClickIn": { "name": "image.setTextureRect", "id": "sb_arrowBottom", "rect": [0, 120, 12, 12] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "sb_arrowBottom", "rect": [0, 96, 12, 12] }
+    }
+  ]
+}

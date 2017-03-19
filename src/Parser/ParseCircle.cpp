@@ -51,8 +51,8 @@ namespace Parser
 		circle->Position(pos);
 		circle->Visible(getBoolKey(elem, "visible", true));
 
-		circle->setFillColor(getColorVar(game, elem, "color", sf::Color::White));
-		circle->setOutlineColor(getColorVar(game, elem, "outlineColor", sf::Color::White));
+		circle->setFillColor(getColorKey(elem, "color", sf::Color::White));
+		circle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		circle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
 		game.Resources().addDrawable(id, circle);

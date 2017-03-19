@@ -48,7 +48,7 @@ namespace Parser
 		image->Position(pos);
 		image->Visible(getBoolKey(elem, "visible", true));
 
-		image->setColor(getColorVar(game, elem, "color", sf::Color::White));
+		image->setColor(getColorKey(elem, "color", sf::Color::White));
 
 		game.Resources().addDrawable(id, image);
 	}

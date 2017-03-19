@@ -76,10 +76,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getLevel(id);
-		if (item != nullptr)
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
 		{
-			item->move(pos);
+			level->move(pos);
 		}
 		return true;
 	}
@@ -95,10 +95,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getLevel(id);
-		if (item != nullptr)
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
 		{
-			item->move(game);
+			level->move(game);
 		}
 		return true;
 	}
@@ -140,10 +140,38 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getLevel(id);
-		if (item != nullptr)
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
 		{
-			item->Pause(pause);
+			level->Pause(pause);
+		}
+		return true;
+	}
+};
+
+class ActLevelZoom : public Action
+{
+private:
+	std::string id;
+	int percentage;
+	bool relative;
+	bool smooth;
+
+public:
+	ActLevelZoom(const std::string& id_, int percentage_, bool relative_, bool smooth_)
+		: id(id_), percentage(percentage_), relative(relative_), smooth(smooth_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			float perc = percentage / 100.f;
+			if (relative == true)
+			{
+				perc += level->Zoom();
+			}
+			level->Zoom(perc, smooth);
 		}
 		return true;
 	}

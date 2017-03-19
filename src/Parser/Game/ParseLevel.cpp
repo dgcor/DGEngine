@@ -10,14 +10,13 @@
 namespace Parser
 {
 	using namespace rapidjson;
-	using Utils::str2int;
 
 	void parseDun(const Value& elem, LevelMap& map, const TileSet& til, const Sol& sol)
 	{
 		Dun dun(getStringKey(elem, "file"));
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
-			auto pos = getVector2uKey<sf::Vector2u>(elem, "position");
+			auto pos = getVector2uKey<MapCoord>(elem, "position");
 			map.setArea(pos.x, pos.y, dun, til, sol);
 		}
 	}
@@ -41,7 +40,7 @@ namespace Parser
 			return;
 		}
 
-		auto mapSize = getVector2uKey<sf::Vector2u>(elem, "mapSize");
+		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize");
 		LevelMap map(mapSize.x, mapSize.y);
 
 		const auto& dunElem = elem["dun"];
@@ -93,6 +92,7 @@ namespace Parser
 		}
 		level.Position(pos);
 		level.Size(size);
+		level.Zoom(((float)getIntKey(elem, "zoom", 100)) / 100.f);
 		level.Visible(getBoolKey(elem, "visible", true));
 	}
 
@@ -136,26 +136,31 @@ namespace Parser
 		}
 
 		level->resetView();
-		level->updateViewPort(game);
+		level->updateViewport(game);
 
 		if (elem.HasMember("onLeftClick"))
 		{
-			level->setLeftAction(parseAction(game, elem["onLeftClick"]));
+			level->setAction(str2int16("leftClick"), parseAction(game, elem["onLeftClick"]));
 		}
-
 		if (elem.HasMember("onRightClick"))
 		{
-			level->setRightAction(parseAction(game, elem["onRightClick"]));
+			level->setAction(str2int16("rightClick"), parseAction(game, elem["onRightClick"]));
 		}
-
 		if (elem.HasMember("onHoverEnter"))
 		{
-			level->setHoverEnterAction(parseAction(game, elem["onHoverEnter"]));
+			level->setAction(str2int16("hoverEnter"), parseAction(game, elem["onHoverEnter"]));
 		}
-
 		if (elem.HasMember("onHoverLeave"))
 		{
-			level->setHoverLeaveAction(parseAction(game, elem["onHoverLeave"]));
+			level->setAction(str2int16("hoverLeave"), parseAction(game, elem["onHoverLeave"]));
+		}
+		if (elem.HasMember("onScrollDown"))
+		{
+			level->setAction(str2int16("scrollDown"), parseAction(game, elem["onScrollDown"]));
+		}
+		if (elem.HasMember("onScrollUp"))
+		{
+			level->setAction(str2int16("scrollUp"), parseAction(game, elem["onScrollUp"]));
 		}
 	}
 }

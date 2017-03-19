@@ -23,6 +23,7 @@
       "action": "focus.moveDown"
     }
   ],
+  "action": { "name": "resource.add", "id": "userPanelFrame" },
   "load": "ui/level/panel.json",
   "load": "towners/cain/panelMain.json",
   "action": { "name": "sound.play", "id": "storytWelcome" }

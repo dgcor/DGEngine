@@ -2,6 +2,7 @@
 
 #include "Action.h"
 #include "Game.h"
+#include "Game/ItemLocation.h"
 
 template <class T>
 class ActSetTexture : public Action
@@ -32,27 +33,20 @@ public:
 };
 
 template <class T>
-class ActSetTextureFromInventory : public Action
+class ActSetTextureFromItem : public Action
 {
 private:
 	std::string id;
 	std::string idLevel;
-	std::string idPlayer;
-	size_t invIdx;
-	sf::Vector2u itemPos;
-	bool isCoordXY;
+	ItemLocation itemLocation;
+	bool equipable;
 	bool resetRect;
 
 public:
-	ActSetTextureFromInventory(const std::string& id_, const std::string& idLevel_,
-		const std::string& idPlayer_, size_t invIdx_, size_t itemIdx_,
-		bool resetRect_) : id(id_), idLevel(idLevel_), idPlayer(idPlayer_),
-		invIdx(invIdx_), itemPos(itemIdx_, 0), isCoordXY(false), resetRect(resetRect_) {}
-
-	ActSetTextureFromInventory(const std::string& id_, const std::string& idLevel_,
-		const std::string& idPlayer_, size_t invIdx_, const sf::Vector2u& itemPos_,
-		bool resetRect_) : id(id_), idLevel(idLevel_), idPlayer(idPlayer_),
-		invIdx(invIdx_), itemPos(itemPos_), isCoordXY(true), resetRect(resetRect_) {}
+	ActSetTextureFromItem(const std::string& id_, const std::string& idLevel_,
+		const ItemLocation& itemLocation_, bool equipable_, bool resetRect_)
+		: id(id_), idLevel(idLevel_), itemLocation(itemLocation_),
+		equipable(equipable_), resetRect(resetRect_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -62,20 +56,10 @@ public:
 			auto level = game.Resources().getLevel(idLevel);
 			if (level != nullptr)
 			{
-				auto player = level->getPlayerOrCurrent(idPlayer);
-				if (player != nullptr)
+				auto item = level->getItem(itemLocation);
+				if (item != nullptr)
 				{
-					const auto& inventory = player->getInventory(invIdx);
-					size_t itemIdx = itemPos.x;
-					if (isCoordXY == true)
-					{
-						itemIdx = inventory.getIndex(itemPos);
-					}
-					auto item = inventory.get(itemIdx).get();
-					if (item != nullptr)
-					{
-						resource->setTexture(item->Class()->getCelInventoryTexture(), resetRect);
-					}
+					resource->setTexture(item->Class()->getCelInventoryTexture(equipable), resetRect);
 				}
 			}
 		}

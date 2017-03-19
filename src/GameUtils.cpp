@@ -1,5 +1,6 @@
 #include "GameUtils.h"
 #include "Game.h"
+#include <regex>
 #include "Utils.h"
 
 namespace GameUtils
@@ -154,20 +155,28 @@ namespace GameUtils
 
 	Anchor getAnchor(const std::string& str, Anchor val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("none"):
+		case str2int16("none"):
 			return Anchor::None;
-		case str2int("top"):
+		case str2int16("top"):
 			return Anchor::Top;
-		case str2int("bottom"):
+		case str2int16("topleft"):
+			return Anchor::Top | Anchor::Left;
+		case str2int16("topright"):
+			return Anchor::Top | Anchor::Right;
+		case str2int16("bottom"):
 			return Anchor::Bottom;
-		case str2int("left"):
+		case str2int16("bottomleft"):
+			return Anchor::Bottom | Anchor::Left;
+		case str2int16("bottomright"):
+			return Anchor::Bottom | Anchor::Right;
+		case str2int16("left"):
 			return Anchor::Left;
-		case str2int("right"):
+		case str2int16("right"):
 			return Anchor::Right;
-		case str2int("all"):
-			return Anchor::Top | Anchor::Bottom | Anchor::Left | Anchor::Right;
+		case str2int16("all"):
+			return Anchor::All;
 		default:
 			return val;
 		}
@@ -175,28 +184,28 @@ namespace GameUtils
 
 	HorizontalAlign getHorizontalAlignment(const std::string& str)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("left"):
+		case str2int16("left"):
 		default:
 			return HorizontalAlign::Left;
-		case str2int("center"):
+		case str2int16("center"):
 			return HorizontalAlign::Center;
-		case str2int("right"):
+		case str2int16("right"):
 			return HorizontalAlign::Right;
 		}
 	}
 
 	VerticalAlign getVerticalAlignment(const std::string& str)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("bottom"):
+		case str2int16("bottom"):
 		default:
 			return VerticalAlign::Bottom;
-		case str2int("center"):
+		case str2int16("center"):
 			return VerticalAlign::Center;
-		case str2int("top"):
+		case str2int16("top"):
 			return VerticalAlign::Top;
 		}
 	}
@@ -236,71 +245,71 @@ namespace GameUtils
 			}
 			else
 			{
-				switch (str2int(toLower(str).c_str()))
+				switch (str2int16(toLower(str).c_str()))
 				{
-				case str2int("esc"):
-				case str2int("escape"):
+				case str2int16("esc"):
+				case str2int16("escape"):
 					return sf::Keyboard::Escape;
-				case str2int("space"):
+				case str2int16("space"):
 					return sf::Keyboard::Space;
-				case str2int("enter"):
-				case str2int("return"):
+				case str2int16("enter"):
+				case str2int16("return"):
 					return sf::Keyboard::Return;
-				case str2int("backspace"):
+				case str2int16("backspace"):
 					return sf::Keyboard::BackSpace;
-				case str2int("tab"):
+				case str2int16("tab"):
 					return sf::Keyboard::Tab;
-				case str2int("pageup"):
+				case str2int16("pageup"):
 					return sf::Keyboard::PageUp;
-				case str2int("pagedown"):
+				case str2int16("pagedown"):
 					return sf::Keyboard::PageDown;
-				case str2int("end"):
+				case str2int16("end"):
 					return sf::Keyboard::End;
-				case str2int("home"):
+				case str2int16("home"):
 					return sf::Keyboard::Home;
-				case str2int("insert"):
+				case str2int16("insert"):
 					return sf::Keyboard::Insert;
-				case str2int("delete"):
+				case str2int16("delete"):
 					return sf::Keyboard::Delete;
-				case str2int("left"):
+				case str2int16("left"):
 					return sf::Keyboard::Left;
-				case str2int("right"):
+				case str2int16("right"):
 					return sf::Keyboard::Right;
-				case str2int("up"):
+				case str2int16("up"):
 					return sf::Keyboard::Up;
-				case str2int("down"):
+				case str2int16("down"):
 					return sf::Keyboard::Down;
-				case str2int("f1"):
+				case str2int16("f1"):
 					return sf::Keyboard::F1;
-				case str2int("f2"):
+				case str2int16("f2"):
 					return sf::Keyboard::F2;
-				case str2int("f3"):
+				case str2int16("f3"):
 					return sf::Keyboard::F3;
-				case str2int("f4"):
+				case str2int16("f4"):
 					return sf::Keyboard::F4;
-				case str2int("f5"):
+				case str2int16("f5"):
 					return sf::Keyboard::F5;
-				case str2int("f6"):
+				case str2int16("f6"):
 					return sf::Keyboard::F6;
-				case str2int("f7"):
+				case str2int16("f7"):
 					return sf::Keyboard::F7;
-				case str2int("f8"):
+				case str2int16("f8"):
 					return sf::Keyboard::F8;
-				case str2int("f9"):
+				case str2int16("f9"):
 					return sf::Keyboard::F9;
-				case str2int("f10"):
+				case str2int16("f10"):
 					return sf::Keyboard::F10;
-				case str2int("f11"):
+				case str2int16("f11"):
 					return sf::Keyboard::F11;
-				case str2int("f12"):
+				case str2int16("f12"):
 					return sf::Keyboard::F12;
-				case str2int("f13"):
+				case str2int16("f13"):
 					return sf::Keyboard::F13;
-				case str2int("f14"):
+				case str2int16("f14"):
 					return sf::Keyboard::F14;
-				case str2int("f15"):
+				case str2int16("f15"):
 					return sf::Keyboard::F15;
-				case str2int("pause"):
+				case str2int16("pause"):
 					return sf::Keyboard::Pause;
 				default:
 					return val;
@@ -312,13 +321,13 @@ namespace GameUtils
 
 	IgnoreResource getIgnoreResource(const std::string& str, IgnoreResource val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("none"):
+		case str2int16("none"):
 			return IgnoreResource::None;
-		case str2int("drawandupdate"):
+		case str2int16("drawandupdate"):
 			return IgnoreResource::DrawAndUpdate;
-		case str2int("update"):
+		case str2int16("update"):
 			return IgnoreResource::Update;
 		}
 		return val;
@@ -326,15 +335,15 @@ namespace GameUtils
 
 	InventoryPosition getInventoryPosition(const std::string& str, InventoryPosition val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("topleft"):
+		case str2int16("topleft"):
 			return InventoryPosition::TopLeft;
-		case str2int("topright"):
+		case str2int16("topright"):
 			return InventoryPosition::TopRight;
-		case str2int("bottomleft"):
+		case str2int16("bottomleft"):
 			return InventoryPosition::BottomLeft;
-		case str2int("bottomright"):
+		case str2int16("bottomright"):
 			return InventoryPosition::BottomRight;
 		}
 		return val;
@@ -342,25 +351,25 @@ namespace GameUtils
 
 	PlayerDirection getPlayerDirection(const std::string& str, PlayerDirection val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("all"):
+		case str2int16("all"):
 			return PlayerDirection::All;
-		case str2int("front"):
+		case str2int16("front"):
 			return PlayerDirection::Front;
-		case str2int("frontleft"):
+		case str2int16("frontleft"):
 			return PlayerDirection::FrontLeft;
-		case str2int("left"):
+		case str2int16("left"):
 			return PlayerDirection::Left;
-		case str2int("backleft"):
+		case str2int16("backleft"):
 			return PlayerDirection::BackLeft;
-		case str2int("back"):
+		case str2int16("back"):
 			return PlayerDirection::Back;
-		case str2int("backright"):
+		case str2int16("backright"):
 			return PlayerDirection::BackRight;
-		case str2int("right"):
+		case str2int16("right"):
 			return PlayerDirection::Right;
-		case str2int("frontright"):
+		case str2int16("frontright"):
 			return PlayerDirection::FrontRight;
 		default:
 			return val;
@@ -369,13 +378,13 @@ namespace GameUtils
 
 	PlayerInventory getPlayerInventory(const std::string& str, PlayerInventory val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("body"):
+		case str2int16("body"):
 			return PlayerInventory::Body;
-		case str2int("belt"):
+		case str2int16("belt"):
 			return PlayerInventory::Belt;
-		case str2int("stash"):
+		case str2int16("stash"):
 			return PlayerInventory::Stash;
 		default:
 			return val;
@@ -395,21 +404,21 @@ namespace GameUtils
 
 	PlayerItemMount getPlayerItemMount(const std::string& str, PlayerItemMount val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("lefthand"):
+		case str2int16("lefthand"):
 			return PlayerItemMount::LeftHand;
-		case str2int("righthand"):
+		case str2int16("righthand"):
 			return PlayerItemMount::RightHand;
-		case str2int("armor"):
+		case str2int16("armor"):
 			return PlayerItemMount::Armor;
-		case str2int("helmet"):
+		case str2int16("helmet"):
 			return PlayerItemMount::Helmet;
-		case str2int("amulet"):
+		case str2int16("amulet"):
 			return PlayerItemMount::Amulet;
-		case str2int("leftring"):
+		case str2int16("leftring"):
 			return PlayerItemMount::LeftRing;
-		case str2int("rightring"):
+		case str2int16("rightring"):
 			return PlayerItemMount::RightRing;
 		default:
 			return val;
@@ -430,51 +439,51 @@ namespace GameUtils
 
 	PlayerStatus getPlayerStatus(const std::string& str, PlayerStatus val)
 	{
-		switch (str2int(toLower(str).c_str()))
+		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int("stand1"):
+		case str2int16("stand1"):
 			return PlayerStatus::Stand1;
-		case str2int("stand2"):
+		case str2int16("stand2"):
 			return PlayerStatus::Stand2;
-		case str2int("walk1"):
+		case str2int16("walk1"):
 			return PlayerStatus::Walk1;
-		case str2int("walk2"):
+		case str2int16("walk2"):
 			return PlayerStatus::Walk2;
-		case str2int("attack1"):
+		case str2int16("attack1"):
 			return PlayerStatus::Attack1;
-		case str2int("attack2"):
+		case str2int16("attack2"):
 			return PlayerStatus::Attack2;
-		case str2int("attack3"):
+		case str2int16("attack3"):
 			return PlayerStatus::Attack3;
-		case str2int("attack4"):
+		case str2int16("attack4"):
 			return PlayerStatus::Attack4;
-		case str2int("defend1"):
+		case str2int16("defend1"):
 			return PlayerStatus::Defend1;
-		case str2int("defend2"):
+		case str2int16("defend2"):
 			return PlayerStatus::Defend2;
-		case str2int("defend3"):
+		case str2int16("defend3"):
 			return PlayerStatus::Defend3;
-		case str2int("defend4"):
+		case str2int16("defend4"):
 			return PlayerStatus::Defend4;
-		case str2int("hit1"):
+		case str2int16("hit1"):
 			return PlayerStatus::Hit1;
-		case str2int("hit2"):
+		case str2int16("hit2"):
 			return PlayerStatus::Hit2;
-		case str2int("die1"):
+		case str2int16("die1"):
 			return PlayerStatus::Die1;
-		case str2int("die2"):
+		case str2int16("die2"):
 			return PlayerStatus::Die2;
 		default:
 			return val;
 		}
 	}
 
-	bool getUIObjProp(const UIObject& uiObject, const unsigned int propHash,
+	bool getUIObjProp(const UIObject& uiObject, const uint32_t propHash,
 		const std::string& prop, Variable& var)
 	{
 		switch (propHash)
 		{
-		case str2int("position"):
+		case str2int32("position"):
 		{
 			auto movePos = uiObject.Position();
 			if (prop == "x")
@@ -487,7 +496,7 @@ namespace GameUtils
 			}
 		}
 		break;
-		case str2int("size"):
+		case str2int32("size"):
 		{
 			auto moveSize = uiObject.Size();
 			if (prop == "x")
@@ -500,6 +509,9 @@ namespace GameUtils
 			}
 		}
 		break;
+		case str2int32("visible"):
+			var = Variable((bool)uiObject.Visible());
+			break;
 		default:
 			return false;
 		}
@@ -539,5 +551,26 @@ namespace GameUtils
 			}
 		}
 		return false;
+	}
+
+	std::regex regexPercent(R"((\%[\w.]+\%))");
+
+	std::string replaceStringWithQueryable(const std::string& str, const Queryable& obj)
+	{
+		std::string str1(str);
+		std::string str2(str1);
+		std::smatch match;
+		while (std::regex_search(str1, match, regexPercent) == true)
+		{
+			auto strProp = match[1].str();
+			Variable var;
+			if (obj.getProperty(strProp.substr(1, strProp.size() - 2), var) == true)
+			{
+				Utils::replaceStringInPlace(
+					str2, strProp, VarUtils::toString(var));
+			}
+			str1 = match.suffix().str();
+		}
+		return str2;
 	}
 }

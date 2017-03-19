@@ -40,6 +40,8 @@ public:
 
 	virtual std::string getText() const { return text; }
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+
 	virtual void setAnchor(const Anchor anchor_)
 	{
 		if (anchor != anchor_)
@@ -69,7 +71,7 @@ public:
 		calcDrawPos();
 	}
 	virtual sf::Vector2f Size() const { return size; }
-	virtual void Size(const sf::Vector2f& size) {}
+	virtual void Size(const sf::Vector2f& size_) {}
 
 	virtual sf::FloatRect getLocalBounds() const { return sf::FloatRect(drawPos, size); }
 	virtual sf::FloatRect getGlobalBounds() const { return sf::FloatRect(drawPos, size); }
@@ -118,4 +120,5 @@ public:
 	void update(Game& game) {}
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

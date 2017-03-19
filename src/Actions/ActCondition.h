@@ -7,8 +7,6 @@
 #include "Parser/ParseVariable.h"
 #include "Utils.h"
 
-using Utils::str2int;
-
 static Variable getVariable(Game& game, const Variable& var)
 {
 	if (var.is<std::string>() == true)
@@ -65,19 +63,19 @@ public:
 		switch (conditionHash)
 		{
 		default:
-		case str2int("=="):
+		case str2int32("=="):
 			return ifCondition(game, var1 == var2);
-		case str2int("!="):
+		case str2int32("!="):
 			return ifCondition(game, var1 != var2);
-		case str2int(">"):
+		case str2int32(">"):
 			return ifCondition(game, var1 > var2);
-		case str2int(">="):
+		case str2int32(">="):
 			return ifCondition(game, var1 >= var2);
-		case str2int("<"):
+		case str2int32("<"):
 			return ifCondition(game, var1 < var2);
-		case str2int("<="):
+		case str2int32("<="):
 			return ifCondition(game, var1 <= var2);
-		case str2int("fileExists"):
+		case str2int32("fileExists"):
 			return ifCondition(game,
 				var1.is<std::string>() ?
 				FileUtils::exists(var1.get<std::string>().c_str()) :

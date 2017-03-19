@@ -1,7 +1,6 @@
 #include "ScrollableText.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "SFMLUtils.h"
 #include "Utils.h"
 
 ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_) :
@@ -12,35 +11,30 @@ ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Ti
 	text->Visible(true);
 }
 
+void ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("complete"):
+		completeAction = action;
+		return;
+	}
+}
+
 void ScrollableText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == true)
 	{
 		auto origView = target.getView();
-		target.setView(view);
+		target.setView(view.getView());
 		target.draw(*text);
 		target.setView(origView);
 	}
 }
 
-void ScrollableText::updateViewPort(const Game& game)
-{
-	view.setViewport(game);
-}
-
 void ScrollableText::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		view.setViewport(game);
-		return;
-	}
-	auto pos = view.getPosition();
-	auto size = view.getSize();
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
-	view.setPosition(pos);
-	view.setSize(size);
-	view.setViewport(game);
+	view.updateSize(game);
 }
 
 void ScrollableText::update(Game& game)
@@ -74,7 +68,7 @@ void ScrollableText::update(Game& game)
 				pause = true;
 			}
 
-			game.Events().addBack(action);
+			game.Events().addBack(completeAction);
 		}
 
 		view.setCenter(rect);
@@ -88,5 +82,5 @@ bool ScrollableText::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, Utils::str2int(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int32(props.first.c_str()), props.second, var);
 }

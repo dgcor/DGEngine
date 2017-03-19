@@ -8,7 +8,16 @@
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 120,
       "name": "Short Staff",
-      "type": "Weapon",
+      "shortName": "Staff",
+      "type": "Staff",
+      "defaults": {
+        "twoHanded": true,
+        "damageMin": 2,
+        "damageMax": 4,
+        "durability": 25,
+        "durabilityMax": 25
+      },
+      "description4": "requiredStrMag",
       "inventorySize": [2, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipstaf" },
@@ -16,19 +25,70 @@
       "actionPickInventory": "pickItemInInventory"
     },
     {
-      "id": "staff",
+      "id": "longStaff",
+      "fromId": "shortStaff",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 39,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 134,
+      "name": "Long Staff",
+      "defaults": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "durability": 35,
+        "durabilityMax": 35
+      }
+    },
+    {
+      "id": "compositeStaff",
+      "fromId": "shortStaff",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 39,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {1},
+      "name": "Composite Staff",
+      "defaults": {
+        "damageMin": 5,
+        "damageMax": 10,
+        "durability": 45,
+        "durabilityMax": 45
+      }
+    },
+    {
+      "id": "quarterStaff",
+      "fromId": "shortStaff",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 39,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 120,
-      "name": "Staff",
-      "type": "Weapon",
-      "inventorySize": [2, 3],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flipstaf" },
-      "actionDropInventory": { "name": "sound.play", "id": "invstaf" },
-      "actionPickInventory": "pickItemInInventory"
+      "name": "Quarter Staff",
+      "defaults": {
+        "damageMin": 6,
+        "damageMax": 12,
+        "durability": 55,
+        "durabilityMax": 55,
+        "requiredStrength": 20
+      }
+    },
+    {
+      "id": "warStaff",
+      "fromId": "shortStaff",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 39,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 135,
+      "name": "War Staff",
+      "defaults": {
+        "damageMin": 8,
+        "damageMax": 16,
+        "durability": 75,
+        "durabilityMax": 75,
+        "requiredStrength": 30
+      }
     }
   ]
 }

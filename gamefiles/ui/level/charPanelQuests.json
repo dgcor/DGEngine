@@ -69,12 +69,13 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "%QUESTS%": null,
+        "load": "currentLevel|quests",
+        "text": "%name%",
         "onClick": [
           { "name": "game.clearPlayingSounds" },
           { "name": "sound.play", "id": "titlslct" },
           { "name": "button.click", "id": "quest" },
-          { "name": "load", "file": "texts/quests/%ID%.json" }
+          { "name": "load", "file": "texts/quests/%id%.json" }
         ],
         "onFocus": [
           "anchorLeftPentagram",

@@ -2,10 +2,9 @@
 #include <cstdlib>
 #include "Game.h"
 #include "GameUtils.h"
+#include "ItemProperties.h"
 #include "Level.h"
 #include "Utils.h"
-
-using Utils::str2int;
 
 sf::Vector2f Player::getBasePosition() const
 {
@@ -60,7 +59,7 @@ void Player::updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSiz
 		walkPath.pop();
 	}
 
-	auto drawPos = level.Map().getCoords(mapPosition);
+	auto drawPos = level.Map().getCoord(mapPosition);
 	drawPos.x += (float)(-((int)texSize.x / 2)) + LevelMap::TileSize();
 	drawPos.y += (float)(224 - ((int)texSize.y - LevelMap::TileSize()));
 	sprite.setPosition(drawPos);
@@ -96,7 +95,7 @@ void Player::update(Game& game, Level& level)
 	}
 	if (rect.width > 0 && rect.height > 0)
 	{
-		updateWalkPath(game, level, sf::Vector2u(rect.width, rect.height));
+		updateWalkPath(game, level, sf::Vector2u((unsigned)rect.width, (unsigned)rect.height));
 	}
 
 	if (celTexture == nullptr
@@ -134,93 +133,63 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int(props.first.c_str()))
+	switch (str2int32(props.first.c_str()))
 	{
-	case str2int("type"):
-		var = Variable("player");
+	case str2int32("type"):
+		var = Variable(std::string("player"));
 		break;
-	case str2int("id"):
+	case str2int32("id"):
 		var = Variable(id);
 		break;
-	case str2int("name"):
+	case str2int32("name"):
 		var = Variable(name);
 		break;
-	case str2int("class"):
+	case str2int32("class"):
 		var = Variable(class_->Name());
 		break;
-	case str2int("level"):
-		var = Variable((int64_t)level);
+	case str2int32("level"):
+		var = Variable((int64_t)currentLevel);
 		break;
-	case str2int("experience"):
+	case str2int32("experience"):
 		var = Variable((int64_t)experience);
 		break;
-	case str2int("expNextLevel"):
+	case str2int32("expNextLevel"):
 		var = Variable((int64_t)expNextLevel);
 		break;
-	case str2int("points"):
+	case str2int32("points"):
 		var = Variable((int64_t)points);
 		break;
-	case str2int("gold"):
+	case str2int32("gold"):
 		var = Variable((int64_t)gold);
 		break;
-	case str2int("strengthBase"):
-		var = Variable((int64_t)strengthBase);
+	case str2int32("canEquipSelectedItem"):
+	{
+		if (selectedItem == nullptr)
+		{
+			return false;
+		}
+		var = Variable(canEquipItem(*selectedItem));
 		break;
-	case str2int("strengthNow"):
-		var = Variable((int64_t)strengthNow);
+	}
+	case str2int32("canEquipItem"):
+	{
+		std::string props2;
+		size_t invIdx;
+		size_t itemIdx;
+		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		{
+			if (inventories[invIdx][itemIdx] != nullptr)
+			{
+				var = Variable(canEquipItem(*inventories[invIdx][itemIdx]));
+				break;
+			}
+		}
+		return false;
+	}
+	case str2int32("hasSelectedItem"):
+		var = Variable(selectedItem != nullptr);
 		break;
-	case str2int("magicBase"):
-		var = Variable((int64_t)magicBase);
-		break;
-	case str2int("magicNow"):
-		var = Variable((int64_t)magicNow);
-		break;
-	case str2int("dexterityBase"):
-		var = Variable((int64_t)dexterityBase);
-		break;
-	case str2int("dexterityNow"):
-		var = Variable((int64_t)dexterityNow);
-		break;
-	case str2int("vitalityBase"):
-		var = Variable((int64_t)vitalityBase);
-		break;
-	case str2int("vitalityNow"):
-		var = Variable((int64_t)vitalityNow);
-		break;
-	case str2int("lifeBase"):
-		var = Variable((int64_t)lifeBase);
-		break;
-	case str2int("lifeNow"):
-		var = Variable((int64_t)lifeNow);
-		break;
-	case str2int("manaBase"):
-		var = Variable((int64_t)manaBase);
-		break;
-	case str2int("manaNow"):
-		var = Variable((int64_t)manaNow);
-		break;
-	case str2int("armorClass"):
-		var = Variable((int64_t)armorClass);
-		break;
-	case str2int("toHit"):
-		var = Variable((int64_t)toHit);
-		break;
-	case str2int("damageMin"):
-		var = Variable((int64_t)damageMin);
-		break;
-	case str2int("damageMax"):
-		var = Variable((int64_t)damageMax);
-		break;
-	case str2int("resistMagic"):
-		var = Variable((int64_t)resistMagic);
-		break;
-	case str2int("resistFire"):
-		var = Variable((int64_t)resistFire);
-		break;
-	case str2int("resistLightning"):
-		var = Variable((int64_t)resistLightning);
-		break;
-	case str2int("hasItem"):
+	case str2int32("hasItem"):
 	{
 		std::string props2;
 		size_t invIdx;
@@ -232,7 +201,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		}
 		return false;
 	}
-	case str2int("isItemSlotInUse"):
+	case str2int32("isItemSlotInUse"):
 	{
 		std::string props2;
 		size_t invIdx;
@@ -244,7 +213,16 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		}
 		return false;
 	}
-	case str2int("item"):
+	case str2int32("selectedItem"):
+	{
+		if (selectedItem != nullptr)
+		{
+			return selectedItem->getProperty(props.second, var);
+		}
+		return false;
+	}
+	break;
+	case str2int32("item"):
 	{
 		std::string props2;
 		size_t invIdx;
@@ -259,7 +237,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		}
 		return false;
 	}
-	case str2int("inventory"):
+	case str2int32("inventory"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
 		auto invIdx = GameUtils::getPlayerInventoryIndex(props2.first);
@@ -270,7 +248,18 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	default:
-		return false;
+	{
+		int32_t value;
+		if (getPlayerProperty(prop.c_str(), value) == true)
+		{
+			var = Variable((int64_t)value);
+			break;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	}
 	return true;
 }
@@ -281,9 +270,9 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 	{
 		return;
 	}
-	switch (str2int(prop.c_str()))
+	switch (str2int32(prop.c_str()))
 	{
-	case str2int("lifeBase"):
+	case str2int32("lifeBase"):
 	{
 		if (val.is<int64_t>() == true)
 		{
@@ -291,7 +280,7 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 		}
 	}
 	break;
-	case str2int("manaBase"):
+	case str2int32("manaBase"):
 	{
 		if (val.is<int64_t>() == true)
 		{
@@ -300,6 +289,186 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 	}
 	break;
 	}
+}
+
+const Queryable* Player::getQueryable(const std::string& prop) const
+{
+	if (prop.empty() == true)
+	{
+		return this;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int32(props.first.c_str());
+	const Queryable* queryable = nullptr;
+	switch (propHash)
+	{
+	case str2int32("selectedItem"):
+	{
+		queryable = selectedItem.get();
+		break;
+	}
+	break;
+	case str2int32("item"):
+	{
+		size_t invIdx;
+		size_t itemIdx;
+		if (parseInventoryAndItem(props.second, props.second, invIdx, itemIdx) == true)
+		{
+			queryable = inventories[invIdx][itemIdx].get();
+			break;
+		}
+	}
+	break;
+	default:
+		break;
+	}
+	if (queryable != nullptr &&
+		props.second.empty() == false)
+	{
+		return queryable->getQueryable(props.second);
+	}
+	return queryable;
+}
+
+bool Player::getPlayerPropertyByHash(uint16_t propHash, int32_t& value) const
+{
+	switch (propHash)
+	{
+	case str2int16("strengthBase"):
+		value = strengthBase;
+		break;
+	case str2int16("strengthNow"):
+		value = strengthNow;
+		break;
+	case str2int16("magicBase"):
+		value = magicBase;
+		break;
+	case str2int16("magicNow"):
+		value = magicNow;
+		break;
+	case str2int16("dexterityBase"):
+		value = dexterityBase;
+		break;
+	case str2int16("dexterityNow"):
+		value = dexterityNow;
+		break;
+	case str2int16("vitalityBase"):
+		value = vitalityBase;
+		break;
+	case str2int16("vitalityNow"):
+		value = vitalityNow;
+		break;
+	case str2int16("lifeBase"):
+		value = lifeBase;
+		break;
+	case str2int16("lifeNow"):
+		value = lifeNow;
+		break;
+	case str2int16("manaBase"):
+		value = manaBase;
+		break;
+	case str2int16("manaNow"):
+		value = manaNow;
+		break;
+	case str2int16("armorClass"):
+		value = armorClass;
+		break;
+	case str2int16("toHit"):
+		value = toHit;
+		break;
+	case str2int16("damageMin"):
+		value = damageMin;
+		break;
+	case str2int16("damageMax"):
+		value = damageMax;
+		break;
+	case str2int16("resistMagic"):
+		value = resistMagic;
+		break;
+	case str2int16("resistFire"):
+		value = resistFire;
+		break;
+	case str2int16("resistLightning"):
+		value = resistLightning;
+		break;
+	default:
+		return false;
+	}
+	return true;
+}
+
+bool Player::getPlayerProperty(const char* prop, int32_t& value) const
+{
+	return getPlayerPropertyByHash(str2int16(prop), value);
+}
+
+void Player::setPlayerPropertyByHash(uint16_t propHash, int32_t value)
+{
+	switch (propHash)
+	{
+	case str2int16("strengthBase"):
+		strengthBase = value;
+		break;
+	case str2int16("strengthNow"):
+		strengthNow = value;
+		break;
+	case str2int16("magicBase"):
+		magicBase = value;
+		break;
+	case str2int16("magicNow"):
+		magicNow = value;
+		break;
+	case str2int16("dexterityBase"):
+		dexterityBase = value;
+		break;
+	case str2int16("dexterityNow"):
+		dexterityNow = value;
+		break;
+	case str2int16("vitalityBase"):
+		vitalityBase = value;
+		break;
+	case str2int16("vitalityNow"):
+		vitalityNow = value;
+		break;
+	case str2int16("lifeBase"):
+		lifeBase = value;
+		break;
+	case str2int16("lifeNow"):
+		lifeNow = value;
+		break;
+	case str2int16("manaBase"):
+		manaBase = value;
+		break;
+	case str2int16("manaNow"):
+		manaNow = value;
+		break;
+	case str2int16("armorClass"):
+		armorClass = value;
+		break;
+	case str2int16("toHit"):
+		toHit = value;
+		break;
+	case str2int16("damageMin"):
+		damageMin = value;
+		break;
+	case str2int16("damageMax"):
+		damageMax = value;
+		break;
+	case str2int16("resistMagic"):
+		resistMagic = value;
+		break;
+	case str2int16("resistFire"):
+		resistFire = value;
+		break;
+	case str2int16("resistLightning"):
+		resistLightning = value;
+		break;
+	}
+}
+
+void Player::setPlayerProperty(const char* prop, int32_t value)
+{
+	setPlayerPropertyByHash(str2int16(prop), value);
 }
 
 bool Player::parseInventoryAndItem(const std::string& str,
@@ -336,4 +505,46 @@ bool Player::parseInventoryAndItem(const std::string& str,
 		}
 	}
 	return false;
+}
+
+void Player::updatePlayerProperties(size_t idx)
+{
+	strengthNow = strengthBase;
+	magicNow = magicBase;
+	dexterityNow = dexterityBase;
+	vitalityNow = vitalityBase;
+	lifeNow = lifeBase;
+	manaNow = manaBase;
+
+	if (idx < inventories.size())
+	{
+		for (const auto& item : inventories[idx])
+		{
+			if (item != nullptr)
+			{
+				setPlayerPropertyByHash(str2int16("damageMin"), item->getItemProperty("damageMin"));
+				setPlayerPropertyByHash(str2int16("damageMax"), item->getItemProperty("damageMax"));
+				for (const auto& itemProp : (*item))
+				{
+					setPlayerPropertyByHash(itemProp.first, itemProp.second);
+				}
+			}
+		}
+	}
+}
+
+void Player::applyDefaults()
+{
+	for (const auto& prop : class_->Defaults())
+	{
+		setPlayerPropertyByHash(prop.first, prop.second);
+	}
+}
+
+bool Player::canEquipItem(const Item& item) const
+{
+	return (item.getItemPropertyByHash(ItemProp::RequiredStrength) <= strengthNow &&
+		item.getItemPropertyByHash(ItemProp::RequiredMagic) <= magicNow &&
+		item.getItemPropertyByHash(ItemProp::RequiredDexterity) <= dexterityNow &&
+		item.getItemPropertyByHash(ItemProp::RequiredVitality) <= vitalityNow);
 }

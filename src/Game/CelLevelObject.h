@@ -59,6 +59,7 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val) {}
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }

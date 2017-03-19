@@ -42,6 +42,8 @@ public:
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+
 	virtual void click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
 	virtual void focus(Game& game);
@@ -52,21 +54,12 @@ public:
 	virtual void Position(const sf::Vector2f& position) { text->Position(position); }
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }
-	virtual void setClickAction(const std::shared_ptr<Action>& action) { clickAction = action; }
-	virtual void setClickDragAction(const std::shared_ptr<Action>& action) { clickDragAction = action; }
-	virtual void setClickInAction(const std::shared_ptr<Action>& action) { clickInAction = action; }
-	virtual void setClickOutAction(const std::shared_ptr<Action>& action) { clickOutAction = action; }
 	virtual void setClickSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { clickSound = buffer; }
 	virtual void setClickUp(bool clickUp_) { clickUp = clickUp_; }
 	virtual void setColor(const sf::Color& color_) { text->setColor(color_); }
-	virtual void setDoubleClickAction(const std::shared_ptr<Action>& action) { doubleClickAction = action; }
-	virtual void setFocusAction(const std::shared_ptr<Action>& action) { focusAction = action; }
 	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { focusSound = buffer; }
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
-	virtual void setHoverEnterAction(const std::shared_ptr<Action>& action) { hoverEnterAction = action; }
-	virtual void setHoverLeaveAction(const std::shared_ptr<Action>& action) { hoverLeaveAction = action; }
 	virtual void setToggle(bool toggle) { toggled = toggle; }
-	virtual void setToggleAction(const std::shared_ptr<Action>& action) { toggleAction = action; }
 	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }
 	virtual sf::Vector2f Size() const { return text->Size(); }
 	virtual void Size(const sf::Vector2f& size) {}
@@ -82,4 +75,5 @@ public:
 	{
 		return text->getProperty(prop, var);
 	}
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

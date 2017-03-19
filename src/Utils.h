@@ -18,10 +18,25 @@ namespace Utils
 
 	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter);
 
-	constexpr unsigned int str2int(const char* str, int h = 0)
+#if (_MSC_VER == 1900)
+	template <class T>
+	constexpr T str2intT(const char* str, T h = 0)
 	{
-		return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
+		return !str[h] ? 5381 : (str2intT(str, h + 1) * 33) ^ str[h];
 	}
+#else
+	template <class T>
+	constexpr T str2intT(const char* str)
+	{
+		T hash = 5381;
+		char c = 0;
+		while ((c = *str++) != 0)
+		{
+			hash = ((hash << 5) + hash) + c;
+		}
+		return hash;
+	}
+#endif
 
 	std::string toLower(const std::string& str);
 	std::string toUpper(const std::string& str);
@@ -29,6 +44,8 @@ namespace Utils
 	std::string trimStart(const std::string& str, const std::string& chars = " \t");
 	std::string trimEnd(const std::string& str, const std::string& chars = " \t");
 	std::string trim(const std::string& str, const std::string& chars = " \t");
+
+	std::string removeEmptyLines(const std::string& str);
 
 	class Random
 	{
@@ -73,3 +90,6 @@ namespace Utils
 		}
 	};
 }
+
+#define str2int16 Utils::str2intT<uint16_t>
+#define str2int32 Utils::str2intT<uint32_t>

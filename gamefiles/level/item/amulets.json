@@ -8,12 +8,24 @@
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 56,
       "name": "Amulet",
+      "shortName": "Amulet",
       "type": "Amulet",
+      "defaults": {
+        "magic": true,
+        "durability": "max",
+        "durabilityMax": "max"
+      },
+      "description1": "indestructible",
+      "description2": "magic1",
+      "description3": "magic2",
+      "description4": "noAttributes",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipring" },
       "actionDropInventory": { "name": "sound.play", "id": "invring" },
-      "actionPickInventory": "pickItemInInventory"
+      "actionPickInventory": "pickItemInInventory",
+      "prefix": "jewelleryPrefixes",
+      "suffix": "jewellerySuffixes"
     }
   ]
 }

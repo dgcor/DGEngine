@@ -35,6 +35,7 @@ namespace Parser
 			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 		button->setResizable(getBoolKey(elem, "resizable"));
+		button->setCaptureScrollEvent(getBoolKey(elem, "captureScrollEvent"));
 
 		return button;
 	}
@@ -92,7 +93,7 @@ namespace Parser
 			}
 			button->Visible(getBoolKey(elem, "visible", true));
 
-			button->setColor(getColorVar(game, elem, "color", sf::Color::White));
+			button->setColor(getColorKey(elem, "color", sf::Color::White));
 		}
 		else
 		{
@@ -108,54 +109,44 @@ namespace Parser
 
 		if (elem.HasMember("onClick"))
 		{
-			button->setClickAction(parseAction(game, elem["onClick"]));
+			button->setAction(str2int16("click"), parseAction(game, elem["onClick"]));
 		}
-
 		if (elem.HasMember("onDoubleClick"))
 		{
-			button->setDoubleClickAction(parseAction(game, elem["onDoubleClick"]));
+			button->setAction(str2int16("doubleClick"), parseAction(game, elem["onDoubleClick"]));
 		}
-
 		if (elem.HasMember("onToggle"))
 		{
-			button->setToggleAction(parseAction(game, elem["onToggle"]));
+			button->setAction(str2int16("toggle"), parseAction(game, elem["onToggle"]));
 		}
-
 		if (elem.HasMember("onClickDrag"))
 		{
-			button->setClickDragAction(parseAction(game, elem["onClickDrag"]));
+			button->setAction(str2int16("clickDrag"), parseAction(game, elem["onClickDrag"]));
 		}
-
 		if (elem.HasMember("onClickIn"))
 		{
-			button->setClickInAction(parseAction(game, elem["onClickIn"]));
+			button->setAction(str2int16("clickIn"), parseAction(game, elem["onClickIn"]));
 		}
-
 		if (elem.HasMember("onClickOut"))
 		{
-			button->setClickOutAction(parseAction(game, elem["onClickOut"]));
+			button->setAction(str2int16("clickOut"), parseAction(game, elem["onClickOut"]));
 		}
-
 		if (elem.HasMember("onFocus"))
 		{
-			button->setFocusAction(parseAction(game, elem["onFocus"]));
+			button->setAction(str2int16("focus"), parseAction(game, elem["onFocus"]));
 		}
-
 		if (elem.HasMember("onHoverEnter"))
 		{
-			button->setHoverEnterAction(parseAction(game, elem["onHoverEnter"]));
+			button->setAction(str2int16("hoverEnter"), parseAction(game, elem["onHoverEnter"]));
 		}
-
 		if (elem.HasMember("onHoverLeave"))
 		{
-			button->setHoverLeaveAction(parseAction(game, elem["onHoverLeave"]));
+			button->setAction(str2int16("hoverLeave"), parseAction(game, elem["onHoverLeave"]));
 		}
-
 		if (elem.HasMember("sound"))
 		{
 			button->setClickSound(game.Resources().getSound(elem["sound"].GetString()));
 		}
-
 		if (elem.HasMember("focusSound"))
 		{
 			button->setFocusSound(game.Resources().getSound(elem["focusSound"].GetString()));

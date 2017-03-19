@@ -12,6 +12,8 @@ private:
 public:
 	Rectangle(const sf::Vector2f& size = sf::Vector2f(0, 0)) : sf::RectangleShape(size) {}
 
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 
@@ -35,4 +37,5 @@ public:
 	virtual void update(Game& game) {}
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

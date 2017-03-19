@@ -1,19 +1,111 @@
 {
   "itemClass": [
     {
+      "id": "smallAxe",
+      "fromId": "baseWeapon",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 123,
+      "name": "Small Axe",
+      "shortName": "Axe",
+      "type": "Axe",
+      "defaults": {
+        "twoHanded": true,
+        "damageMin": 2,
+        "damageMax": 10,
+        "durability": 24,
+        "durabilityMax": 24
+      },
+      "inventorySize": [2, 3],
+      "actionDropLevel": { "name": "sound.play", "id": "flipaxe" },
+      "actionDropInventory": { "name": "sound.play", "id": "invaxe" }
+    },
+    {
       "id": "axe",
+      "fromId": "smallAxe",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 1,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 155,
       "name": "Axe",
-      "type": "Weapon",
-      "inventorySize": [2, 3],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flipaxe" },
-      "actionDropInventory": { "name": "sound.play", "id": "invaxe" },
-      "actionPickInventory": "pickItemInInventory"
+      "defaults": {
+        "damageMin": 4,
+        "damageMax": 12,
+        "durability": 32,
+        "durabilityMax": 32,
+        "requiredStrength": 22
+      }
+    },
+    {
+      "id": "largeAxe",
+      "fromId": "smallAxe",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 153,
+      "name": "Large Axe",
+      "defaults": {
+        "damageMin": 6,
+        "damageMax": 16,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 30
+      }
+    },
+    {
+      "id": "broadAxe",
+      "fromId": "smallAxe",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 152,
+      "name": "Broad Axe",
+      "defaults": {
+        "damageMin": 8,
+        "damageMax": 20,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 50
+      }
+    },
+    {
+      "id": "battleAxe",
+      "fromId": "smallAxe",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 112,
+      "name": "Battle Axe",
+      "defaults": {
+        "damageMin": 10,
+        "damageMax": 25,
+        "durability": 60,
+        "durabilityMax": 60,
+        "requiredStrength": 65
+      }
+    },
+    {
+      "id": "greatAxe",
+      "fromId": "smallAxe",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 1,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 154,
+      "name": "Great Axe",
+      "defaults": {
+        "damageMin": 12,
+        "damageMax": 30,
+        "durability": 75,
+        "durabilityMax": 75,
+        "requiredStrength": 80
+      }
     }
   ]
 }

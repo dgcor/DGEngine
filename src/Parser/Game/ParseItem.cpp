@@ -8,7 +8,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	std::shared_ptr<Item> parseItemObj(Game& game,
-		const Level& level, const rapidjson::Value& elem)
+		const Level& level, const Value& elem)
 	{
 		if (isValidString(elem, "class") == false)
 		{
@@ -23,12 +23,34 @@ namespace Parser
 
 		auto item = std::make_shared<Item>(class_);
 
+		item->applyDefaults();
+
 		item->Hoverable(getBoolKey(elem, "enableHover", true));
 
-		item->Name(getStringKey(elem, "name"));
-		item->Description1(getStringKey(elem, "description1"));
-		item->Description2(getStringKey(elem, "description2"));
-		item->Description3(getStringKey(elem, "description3"));
+		if (isValidString(elem, "name") == true)
+		{
+			item->Name(elem["name"].GetString());
+		}
+		else
+		{
+			item->Name(class_->Name());
+		}
+
+		if (elem.HasMember("properties") == true)
+		{
+			const auto& props = elem["properties"];
+			if (props.IsObject() == true)
+			{
+				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
+				{
+					item->setItemProperty(it->name.GetString(),
+						getMinMaxIntVal<int16_t>(it->value));
+				}
+			}
+		}
+
+		item->updateFullName();
+		item->updateDescriptions();
 
 		return item;
 	}
@@ -41,57 +63,14 @@ namespace Parser
 			return;
 		}
 
-		bool isMapItem = (elem.HasMember("mapPosition") == true);
-		bool isPlayerItem = (elem.HasMember("bodyPary") == true);
-
-		if (isMapItem == false && isPlayerItem == false)
-		{
-			return;
-		}
-
-		MapCoord mapPos;
-		Player* player = nullptr;
-
-		if (isMapItem == true)
-		{
-			mapPos = getVector2uKey<MapCoord>(elem, "mapPosition");
-			auto mapSize = level->Map().MapSize();
-			if (mapPos.x >= mapSize.x || mapPos.y >= mapSize.y)
-			{
-				return;
-			}
-			if (level->Map()[mapPos.x][mapPos.y].object != nullptr)
-			{
-				return;
-			}
-		}
-		else if (isPlayerItem == true)
-		{
-			player = level->getPlayerOrCurrent(getStringKey(elem, "idPlayer"));
-			if (player != nullptr)
-			{
-				return;
-			}
-		}
-
 		auto item = parseItemObj(game, *level, elem);
 		if (item == nullptr)
 		{
 			return;
 		}
 
-		if (isMapItem == true)
-		{
-			item->MapPosition(mapPos);
-			level->Map()[mapPos.x][mapPos.y].object = item;
+		auto itemLocation = getItemLocationVal(elem);
 
-			level->addLevelObject(item);
-		}
-		else if (isPlayerItem == true)
-		{
-			// TODO: change
-			auto& inventory = player->getInventory((size_t)PlayerInventory::Body);
-			inventory.set((size_t)getPlayerItemMountKey(elem, "bodyPart"), item);
-		}
+		level->setItem(itemLocation, item);
 	}
 }

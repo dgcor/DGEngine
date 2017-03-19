@@ -36,7 +36,7 @@ namespace Parser
 			}
 		}
 		loadingScreen->setPosition(pos);
-		loadingScreen->setProgressBarColor(getColorVar(game, elem, "color"));
+		loadingScreen->setProgressBarColor(getColorKey(elem, "color"));
 		loadingScreen->setProgressBarPositionOffset(getVector2fKey<sf::Vector2f>(elem, "progressBarOffset"));
 		loadingScreen->setProgressBarSize(getVector2fKey<sf::Vector2f>(elem, "size"));
 

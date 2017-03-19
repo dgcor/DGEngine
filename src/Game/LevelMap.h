@@ -4,6 +4,7 @@
 #include "Dun.h"
 #include "Helper2D.h"
 #include "LevelObject.h"
+#include "MapCoord.h"
 #include <queue>
 #include "TileSet.h"
 #include "Sol.h"
@@ -39,43 +40,42 @@ private:
 
 	std::vector<LevelCell> cells;
 
-	sf::Vector2u mapSize;
-	sf::Vector2u size;
+	MapCoord mapSize;
 
-	static const LevelCell& get(size_t x, size_t y, const LevelMap& map)
+	using Coord = decltype(mapSize.x);
+
+	static const LevelCell& get(Coord x, Coord y, const LevelMap& map)
 	{
 		return map.cells[x + y * map.Width()];
 	}
-	static LevelCell& get(size_t x, size_t y, LevelMap& map)
+	static LevelCell& get(Coord x, Coord y, LevelMap& map)
 	{
 		return map.cells[x + y * map.Width()];
 	}
 
 public:
 	LevelMap() {}
-	LevelMap(size_t width_, size_t height_);
+	LevelMap(Coord width_, Coord height_);
 
-	void setArea(size_t x, size_t y, const Dun& dun, const TileSet& til, const Sol& sol);
+	void setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol);
 
-	Misc::Helper2D<LevelMap, LevelCell&> operator[] (size_t x)
+	Misc::Helper2D<LevelMap, LevelCell&, Coord> operator[] (Coord x)
 	{
-		return Misc::Helper2D<LevelMap, LevelCell&>(*this, x, get);
+		return Misc::Helper2D<LevelMap, LevelCell&, Coord>(*this, x, get);
 	}
-	Misc::Helper2D<const LevelMap, const LevelCell&> operator[] (size_t x) const
+	Misc::Helper2D<const LevelMap, const LevelCell&, Coord> operator[] (Coord x) const
 	{
-		return Misc::Helper2D<const LevelMap, const LevelCell&>(*this, x, get);
+		return Misc::Helper2D<const LevelMap, const LevelCell&, Coord>(*this, x, get);
 	}
 
-	size_t Width() const { return mapSize.x; }
-	size_t Height() const { return mapSize.y; }
+	Coord Width() const { return mapSize.x; }
+	Coord Height() const { return mapSize.y; }
 
-	const sf::Vector2u& MapSize() const { return mapSize; }
-
-	const sf::Vector2u& Size() const { return size; }
+	const MapCoord& MapSize() const { return mapSize; }
 
 	static int TileSize() { return tileSize; }
 
-	sf::Vector2f getCoords(const MapCoord& tile) const;
+	sf::Vector2f getCoord(const MapCoord& tile) const;
 	MapCoord getTile(const sf::Vector2f& coords) const;
 
 	std::queue<MapCoord> getPath(const MapCoord& a, const MapCoord& b) const;

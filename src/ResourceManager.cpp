@@ -31,7 +31,7 @@ void ResourceManager::popResource(const std::string& id)
 				currentLevel = nullptr;
 				currentLevelResourceIdx = 0;
 			}
-			else if(idx < (int)currentLevelResourceIdx)
+			else if (idx < (int)currentLevelResourceIdx)
 			{
 				currentLevelResourceIdx--;
 			}
@@ -465,7 +465,12 @@ void ResourceManager::stopSongs()
 
 void ResourceManager::addFocused(const std::shared_ptr<Button>& obj)
 {
-	resources.back().focusButtons.push_back(obj);
+	if (std::find(resources.back().focusButtons.begin(),
+		resources.back().focusButtons.end(), obj)
+		== resources.back().focusButtons.end())
+	{
+		resources.back().focusButtons.push_back(obj);
+	}
 }
 
 void ResourceManager::clickFocused(Game& game, bool playSound)

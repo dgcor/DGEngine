@@ -39,6 +39,7 @@ public:
 			color_.a = 255;
 		}
 		setFillColor(color_);
+		setAnchor(Anchor::All);
 	}
 
 	void Reset(bool isFadeOut_, bool enableInput_, sf::Color color_, uint8_t fadeOffset_,

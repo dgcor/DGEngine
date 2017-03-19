@@ -1,6 +1,4 @@
 #include "Dun.h"
-#include <cstdio>
-#include <iostream>
 #include "PhysFSStream.h"
 
 Dun::Dun(const std::string& filename)
@@ -44,12 +42,12 @@ const int16_t& get(size_t x, size_t y, const Dun& dun)
 	return dun.blocks[x + y * dun.Width()];
 }
 
-Misc::Helper2D<Dun, int16_t&> Dun::operator[] (size_t x)
+Misc::Helper2D<Dun, int16_t&, size_t> Dun::operator[] (size_t x)
 {
-	return Misc::Helper2D<Dun, int16_t&>(*this, x, get);
+	return Misc::Helper2D<Dun, int16_t&, size_t>(*this, x, get);
 }
 
-Misc::Helper2D<const Dun, const int16_t&> Dun::operator[] (size_t x) const
+Misc::Helper2D<const Dun, const int16_t&, size_t> Dun::operator[] (size_t x) const
 {
-	return Misc::Helper2D<const Dun, const int16_t&>(*this, x, get);
+	return Misc::Helper2D<const Dun, const int16_t&, size_t>(*this, x, get);
 }

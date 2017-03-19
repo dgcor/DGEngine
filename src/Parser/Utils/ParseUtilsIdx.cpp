@@ -2,101 +2,82 @@
 
 namespace Parser
 {
-	bool getBoolIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, bool val)
+	using namespace rapidjson;
+
+	bool getBoolIdx(const Value& elem, SizeType idx, bool val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsBool() == true)
 		{
 			return elem[idx].GetBool();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	double getDoubleIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, double val)
+	double getDoubleIdx(const Value& elem, SizeType idx, double val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsDouble() == true)
 		{
 			return elem[idx].GetDouble();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	int getIntIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, int val)
+	int getIntIdx(const Value& elem, SizeType idx, int val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsInt() == true)
 		{
 			return elem[idx].GetInt();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	int64_t getInt64Idx(const rapidjson::Value& elem, rapidjson::SizeType idx, int64_t val)
+	int64_t getInt64Idx(const Value& elem, SizeType idx, int64_t val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsInt64() == true)
 		{
 			return elem[idx].GetInt64();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	const char* getStringCharIdx(const rapidjson::Value& elem,
-		rapidjson::SizeType idx, const char* val)
+	const char* getStringCharIdx(const Value& elem,
+		SizeType idx, const char* val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsString() == true)
 		{
 			return elem[idx].GetString();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	std::string getStringIdx(const rapidjson::Value& elem,
-		rapidjson::SizeType idx, const std::string& val)
+	std::string getStringIdx(const Value& elem,
+		SizeType idx, const std::string& val)
 	{
 		return getStringCharIdx(elem, idx, val.c_str());
 	}
 
-	unsigned getUIntIdx(const rapidjson::Value& elem, rapidjson::SizeType idx, unsigned val)
+	unsigned getUIntIdx(const Value& elem, SizeType idx, unsigned val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsUint() == true)
 		{
 			return elem[idx].GetUint();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 
-	uint64_t getUInt64Idx(const rapidjson::Value& elem, rapidjson::SizeType idx, uint64_t val)
+	uint64_t getUInt64Idx(const Value& elem, SizeType idx, uint64_t val)
 	{
 		if (idx < elem.Size()
 			&& elem[idx].IsUint64() == true)
 		{
 			return elem[idx].GetUint64();
 		}
-		else
-		{
-			return val;
-		}
+		return val;
 	}
 }

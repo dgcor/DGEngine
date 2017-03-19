@@ -30,9 +30,9 @@ namespace Parser
 				return nullptr;
 			}
 
-			auto size = getUIntKey(elem, "fontSize", 12);
-			auto text = std::make_unique<StringText>(displayText, *font, size);
-			text->setColor(getColorVar(game, elem, "color", sf::Color::White));
+			auto fontSize = getUIntKey(elem, "fontSize", 12);
+			auto text = std::make_unique<StringText>(displayText, *font, fontSize);
+			text->setColor(getColorKey(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
 			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 
@@ -65,7 +65,7 @@ namespace Parser
 			auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
 
 			auto text = std::make_unique<BitmapText>(displayText, font, horizSpaceOffset, vertSpaceOffset);
-			text->setColor(getColorVar(game, elem, "color", sf::Color::White));
+			text->setColor(getColorKey(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
 			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
 

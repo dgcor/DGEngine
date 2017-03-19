@@ -37,12 +37,14 @@ private:
 	bool enableHover{ true };
 	bool hovered{ false };
 
+	std::shared_ptr<Item> selectedItem;
+
 	std::array<ItemCollection, (size_t)PlayerInventory::Size> inventories;
 
 	std::string id;
 	std::string name;
 
-	int32_t level{ 0 };
+	int32_t currentLevel{ 0 };
 	int32_t experience{ 0 };
 	int32_t expNextLevel{ 0 };
 	int32_t points{ 0 };
@@ -139,6 +141,20 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
+	virtual const Queryable* getQueryable(const std::string& prop) const;
+
+	bool getPlayerPropertyByHash(uint16_t propHash, int32_t& value) const;
+	bool getPlayerProperty(const char* prop, int32_t& value) const;
+	bool getPlayerProperty(const std::string& prop, int32_t& value) const
+	{
+		return getPlayerProperty(prop.c_str(), value);
+	}
+	void setPlayerPropertyByHash(uint16_t propHash, int32_t value);
+	void setPlayerProperty(const char* prop, int32_t value);
+	void setPlayerProperty(const std::string& prop, int32_t value) const
+	{
+		return setPlayerProperty(prop.c_str(), value);
+	}
 
 	void setWalkPath(const std::queue<MapCoord> walkPath_)
 	{
@@ -178,6 +194,9 @@ public:
 		}
 	}
 
+	const std::shared_ptr<Item>& SelectedItem() const { return selectedItem; }
+	void SelectedItem(const std::shared_ptr<Item>& item) { selectedItem = item; }
+
 	ItemCollection& getInventory(PlayerInventory inv) { return inventories[(size_t)inv]; }
 	const ItemCollection& getInventory(PlayerInventory inv) const { return inventories[(size_t)inv]; }
 
@@ -186,11 +205,18 @@ public:
 
 	size_t getInventorySize() { return inventories.size(); }
 
+	void updatePlayerProperties(PlayerInventory inv) { updatePlayerProperties((size_t)inv); }
+	void updatePlayerProperties(size_t idx);
+
+	void applyDefaults();
+
+	bool canEquipItem(const Item& item) const;
+
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
 	const std::string& Class() const { return class_->Name(); }
 
-	int32_t Level_() const { return level; }
+	int32_t CurrentLevel() const { return currentLevel; }
 	int32_t Experience() const { return experience; }
 	int32_t ExpNextLevel() const { return expNextLevel; }
 	int32_t Points() const { return points; }
@@ -222,7 +248,7 @@ public:
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
 
-	void Level_(int32_t level_) { level = level_; }
+	void CurrentLevel(int32_t level_) { currentLevel = level_; }
 	void Experience(int32_t experience_) { experience = experience_; }
 	void ExpNextLevel(int32_t expNextLevel_) { expNextLevel = expNextLevel_; }
 	void Points(int32_t points_) { points = points_; }

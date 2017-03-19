@@ -17,10 +17,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Menu>(id);
-		if (item != nullptr)
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
 		{
-			auto button = item->getItem(idx);
+			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
 				button->click(game, true);
@@ -58,7 +58,7 @@ public:
 			if (focus == true)
 			{
 				auto offset = scrollBar->DrawPosition().y - pos.y;
-				auto menuIdx = std::round((offset * (float)(itemCount - 1)) / (float)newRange);
+				auto menuIdx = (size_t)std::round((offset * (float)(itemCount - 1)) / (float)newRange);
 				auto btn = menu->getItem(menuIdx + 1);
 				if (btn != nullptr)
 				{
@@ -81,44 +81,6 @@ public:
 	}
 };
 
-class ActMenuSetBitmapFont : public Action
-{
-private:
-	std::string id;
-	size_t idx;
-	std::string idFont;
-
-public:
-	ActMenuSetBitmapFont(const std::string& id_, size_t idx_, const std::string& idFont_)
-		: id(id_), idx(idx_), idFont(idFont_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<Menu>(id);
-		if (item != nullptr)
-		{
-			auto button = item->getItem(idx);
-			if (button != nullptr)
-			{
-				auto text = button->getDrawableText();
-				if (text != nullptr)
-				{
-					auto fontText = dynamic_cast<BitmapText*>(text);
-					if (fontText != nullptr)
-					{
-						auto newFont = game.Resources().getBitmapFont(idFont);
-						if (newFont != nullptr)
-						{
-							fontText->setFont(newFont);
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
-};
-
 class ActMenuSetColor : public Action
 {
 private:
@@ -132,10 +94,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Menu>(id);
-		if (item != nullptr)
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
 		{
-			auto button = item->getItem(idx);
+			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
 				button->setColor(color);
@@ -158,22 +120,32 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Menu>(id);
-		if (item != nullptr)
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
 		{
-			auto button = item->getItem(idx);
+			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
 				auto text = button->getDrawableText();
 				if (text != nullptr)
 				{
-					auto fontText = dynamic_cast<StringText*>(text);
-					if (fontText != nullptr)
+					auto bitmapText = dynamic_cast<BitmapText*>(text);
+					if (bitmapText != nullptr)
+					{
+						auto newFont = game.Resources().getBitmapFont(idFont);
+						if (newFont != nullptr)
+						{
+							bitmapText->setFont(newFont);
+						}
+						return true;
+					}
+					auto stringText = dynamic_cast<StringText*>(text);
+					if (stringText != nullptr)
 					{
 						auto newFont = game.Resources().getFont(idFont);
 						if (newFont != nullptr)
 						{
-							fontText->setFont(*newFont);
+							stringText->setFont(*newFont);
 						}
 					}
 				}
@@ -196,10 +168,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<Menu>(id);
-		if (item != nullptr)
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
 		{
-			auto button = item->getItem(idx);
+			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
 				button->setText(game.getVariableString(text));

@@ -6,8 +6,8 @@
       "action": {
         "name": "drawable.anchorToFocused",
         "id": "pent1",
-        "anchor": "left",
-        "offset": [-6, 2]
+        "anchor": "topLeft",
+        "offset": [-8, 12]
       }
     },
     {
@@ -16,16 +16,11 @@
       "action": {
         "name": "drawable.anchorToFocused",
         "id": "pent2",
-        "anchor": "right",
-        "offset": [6, 2]
+        "anchor": "topRight",
+        "offset": [5, 12]
       }
     }
   ],
-  "texture": {
-    "id": "textbox2",
-    "file": "data/textbox2.cel",
-    "palette": "town"
-  },
   "image": [
     {
       "id": "textWallBackground",
@@ -53,6 +48,7 @@
     "texture": "empty",
     "anchor": "all",
     "textureRect": [640, 480],
-    "resizable": true
+    "resizable": true,
+    "captureScrollEvent": true
   }
 }

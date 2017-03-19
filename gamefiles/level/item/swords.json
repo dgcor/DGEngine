@@ -1,14 +1,23 @@
 {
   "itemClass": [
     {
-      "id": "shortSword",
+      "id": "dagger",
+      "fromId": "baseWeapon",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 40,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 75,
-      "name": "Short Sword",
-      "type": "Weapon",
+      "celIndexInventory": 62,
+      "name": "Dagger",
+      "shortName": "Dagger",
+      "type": "Sword",
+      "defaults": {
+        "damageMin": 1,
+        "damageMax": 4,
+        "durability": 16,
+        "durabilityMax": 16
+      },
+      "description4": "requiredStrDex",
       "inventorySize": [1, 2],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
@@ -16,19 +25,204 @@
       "actionPickInventory": "pickItemInInventory"
     },
     {
-      "id": "sword",
+      "id": "shortSword",
+      "fromId": "dagger",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 75,
+      "name": "Short Sword",
+      "shortName": "Sword",
+      "defaults": {
+        "damageMin": 2,
+        "damageMax": 6,
+        "durability": 24,
+        "durabilityMax": 24,
+        "requiredStrength": 18
+      },
+      "inventorySize": [1, 3]
+    },
+    {
+      "id": "sabre",
+      "fromId": "shortSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 78,
+      "name": "Sabre",
+      "shortName": "Sabre",
+      "defaults": {
+        "damageMin": 1,
+        "damageMax": 8,
+        "durability": 45,
+        "durabilityMax": 45,
+        "requiredStrength": 18
+      }
+    },
+    {
+      "id": "scimitar",
+      "fromId": "shortSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 83,
+      "name": "Scimitar",
+      "shortName": "Scimitar",
+      "defaults": {
+        "damageMin": 3,
+        "damageMax": 7,
+        "durability": 28,
+        "durabilityMax": 28,
+        "requiredStrength": 23,
+        "requiredDexterity": 23
+      }
+    },
+    {
+      "id": "blade",
+      "fromId": "shortSword",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 40,
       "celTextureInventory": "itemIcons",
       "celTextureInventoryUnusable": "itemIconsInfra",
       "celIndexInventory": 67,
-      "name": "Sword",
-      "type": "Weapon",
-      "inventorySize": [1, 3],
-      "action": "pickItemInLevel",
-      "actionDropLevel": { "name": "sound.play", "id": "flipswor" },
-      "actionDropInventory": { "name": "sound.play", "id": "invsword" },
-      "actionPickInventory": "pickItemInInventory"
+      "name": "Blade",
+      "shortName": "Blade",
+      "defaults": {
+        "damageMin": 3,
+        "damageMax": 8,
+        "durability": 30,
+        "durabilityMax": 30,
+        "requiredStrength": 25,
+        "requiredDexterity": 30
+      }
+    },
+    {
+      "id": "falchion",
+      "fromId": "shortSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 73,
+      "name": "Falchion",
+      "shortName": "Falchion",
+      "defaults": {
+        "damageMin": 4,
+        "damageMax": 8,
+        "durability": 20,
+        "durabilityMax": 20,
+        "requiredStrength": 30
+      }
+    },
+    {
+      "id": "longSword",
+      "fromId": "shortSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 71,
+      "name": "Long Sword",
+      "shortName": "Sword",
+      "defaults": {
+        "damageMin": 2,
+        "damageMax": 10,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 30,
+        "requiredDexterity": 30
+      }
+    },
+    {
+      "id": "claymore",
+      "fromId": "longSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 76,
+      "name": "Claymore",
+      "defaults": {
+        "damageMin": 1,
+        "damageMax": 12,
+        "durability": 36,
+        "durabilityMax": 36,
+        "requiredStrength": 30,
+        "requiredDexterity": 0
+      }
+    },
+    {
+      "id": "broadSword",
+      "fromId": "claymore",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 72,
+      "name": "Broad Sword",
+      "defaults": {
+        "damageMin": 4,
+        "damageMax": 12,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 40
+      }
+    },
+    {
+      "id": "bastardSword",
+      "fromId": "claymore",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 68,
+      "name": "Bastard Sword",
+      "defaults": {
+        "damageMin": 6,
+        "damageMax": 15,
+        "durability": 60,
+        "durabilityMax": 60,
+        "requiredStrength": 50
+      }
+    },
+    {
+      "id": "twoHandedSword",
+      "fromId": "claymore",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 121,
+      "name": "Two-Handed Sword",
+      "defaults": {
+        "twoHanded": true,
+        "damageMin": 8,
+        "damageMax": 16,
+        "durability": 75,
+        "durabilityMax": 75,
+        "requiredStrength": 65
+      },
+      "inventorySize": [2, 3]
+    },
+    {
+      "id": "greatSword",
+      "fromId": "twoHandedSword",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 145,
+      "name": "Great Sword",
+      "defaults": {
+        "damageMin": 10,
+        "damageMax": 20,
+        "durability": 100,
+        "durabilityMax": 100,
+        "requiredStrength": 75
+      }
     }
   ]
 }

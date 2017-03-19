@@ -1,5 +1,4 @@
 {
-  "load": "res/level/levelHoverAction.json",
   "level": {
     "id": "level",
     "anchor": "all",
@@ -8,14 +7,10 @@
     "playerClearIndex": 1,
     "onHoverEnter": "levelHoverAction",
     "onHoverLeave": "clearPanelText",
-    "onLeftClick": {
-      "name": "if.equal",
-      "param1": "|currentLevel|hasSelectedItem|",
-      "param2": true,
-      "then": { "name": "item.drop" },
-      "else": { "name": "player.moveToClick", "id": "hero" }
-    },
-    "onRightClick": null
+    "onLeftClick": "levelLeftClickAction",
+    "onRightClick": "levelRightClickAction",
+    "onScrollDown": "levelScrollDownAction",
+    "onScrollUp": "levelScrollUpAction"
   },
   "load": "ui/level/gamePanel.json",
   "load": "level/quests.json"
