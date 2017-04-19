@@ -1,0 +1,31 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": {
+      "name": "player.hasFreeItemSlot",
+      "item": { "playerId": "wirt", "inventory": {1}, "item": {2} }
+    },
+    "param2": true,
+    "then": {
+      "name": ">=",
+      "param1": "|currentLevel|currentPlayer.gold|",
+      "param2": "|currentLevel|player.wirt.item.{1}.{2}.price|",
+      "then": {
+        "name": "load",
+        "file": [ "towners/wirt/buy/confirm2.json", "{1}", "{2}" ]
+      },
+      "else": [
+        { "name": "resource.ignore", "id": "userPanelBuy", "ignore": true },
+        { "name": "load", "file": "ui/level/panel/big/noGold.json" },
+        { "name": "load", "file": "ui/level/panel/big/upperSeparator.json" },
+        {
+          "name": "drawable.setAction",
+          "id": "back",
+          "event": "click",
+          "action": { "name": "resource.popAll", "id": "panelBigNoGold" }
+        }
+      ]
+    },
+    "else": "inventoryFull"
+  }
+}

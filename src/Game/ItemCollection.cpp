@@ -34,7 +34,7 @@ void ItemCollection::init(const ItemXY& size_)
 
 void ItemCollection::allowType(const std::string& type)
 {
-	auto typeHash = str2int32(type.c_str());
+	auto typeHash = str2int16(type.c_str());
 	if (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) == allowedTypes.end())
 	{
 		allowedTypes.push_back(typeHash);
@@ -43,16 +43,16 @@ void ItemCollection::allowType(const std::string& type)
 
 bool ItemCollection::isTypeAllowed(const std::string& type) const
 {
-	return isTypeAllowed(str2int32(type.c_str()));
+	return isTypeAllowed(str2int16(type.c_str()));
 }
 
-bool ItemCollection::isTypeAllowed(uint32_t typeHash) const
+bool ItemCollection::isTypeAllowed(uint16_t typeHash16) const
 {
 	if (allowedTypes.empty() == true)
 	{
 		return true;
 	}
-	return (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash) != allowedTypes.end());
+	return (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash16) != allowedTypes.end());
 }
 
 bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item)
@@ -67,7 +67,7 @@ bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item,
 	if (idx < items.size())
 	{
 		if (item != nullptr &&
-			isTypeAllowed(item->Class()->TypeHash()) == false)
+			isTypeAllowed(item->Class()->TypeHash16()) == false)
 		{
 			return false;
 		}
@@ -99,7 +99,7 @@ bool ItemCollection::set(const ItemXY& position,
 	if (idx < items.size())
 	{
 		if (item != nullptr &&
-			isTypeAllowed(item->Class()->TypeHash()) == false)
+			isTypeAllowed(item->Class()->TypeHash16()) == false)
 		{
 			return false;
 		}
@@ -266,9 +266,16 @@ bool ItemCollection::isItemSlotEmpty(int x, int y,
 	return true;
 }
 
-bool ItemCollection::getItemSlot(const ItemXY& itemSize,
+bool ItemCollection::getItemSlot(const Item& item,
 	size_t& itemIdx, InventoryPosition invPos) const
 {
+	if (isTypeAllowed(item.Class()->TypeHash16()) == false)
+	{
+		return false;
+	}
+
+	const auto& itemSize = item.Class()->InventorySize();
+
 	if (itemSize.x > size.x || itemSize.y > size.y)
 	{
 		return false;
@@ -340,6 +347,52 @@ bool ItemCollection::getItemSlot(const ItemXY& itemSize,
 	return false;
 }
 
+bool ItemCollection::hasItemSlot(const Item& item) const
+{
+	size_t itemIdx;
+	return getItemSlot(item, itemIdx);
+}
+
+bool ItemCollection::find(uint16_t itemTypeHash16,
+	size_t& idx, std::shared_ptr<Item>& item) const
+{
+	auto size = items.size();
+	if (idx < size)
+	{
+		for (size_t i = idx; i < size; i++)
+		{
+			if (isItemSlotInUse(i) == true)
+			{
+				if (items[i]->Class()->TypeHash16() == itemTypeHash16)
+				{
+					idx = i;
+					item = items[i];
+					return true;
+				}
+			}
+		}
+	}
+	idx = size;
+	return false;
+}
+
+unsigned ItemCollection::countFreeSlots(const ItemClass& itemClass) const
+{
+	// only for items whose size is 1
+	unsigned count = 0;
+	if (isTypeAllowed(itemClass.TypeHash16()) == true)
+	{
+		for (const auto& item : items)
+		{
+			if (item == nullptr)
+			{
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 bool ItemCollection::getProperty(const std::string& prop, Variable& var) const
 {
 	if (prop.empty() == true)
@@ -347,18 +400,18 @@ bool ItemCollection::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int32(props.first.c_str()))
+	switch (str2int16(props.first.c_str()))
 	{
-	case str2int32("capacity"):
+	case str2int16("capacity"):
 		var = Variable((int64_t)items.size());
 		break;
-	case str2int32("enforceItemSize"):
+	case str2int16("enforceItemSize"):
 		var = Variable((bool)enforceItemSize);
 		break;
-	case str2int32("isFull"):
+	case str2int16("isFull"):
 		var = Variable((bool)isFull());
 		break;
-	case str2int32("size"):
+	case str2int16("size"):
 	{
 		if (props.second == "x")
 		{

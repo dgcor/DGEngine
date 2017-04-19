@@ -3,7 +3,7 @@
     "name": "resource.add",
     "id": "{1}"
   },
-  "load": "ui/level/disableGamePanelKeys.json",
+  "load": "ui/level/char/disableKeys.json",
   "keyboard": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "textWallButton" }
@@ -29,9 +29,10 @@
     "textureRect": [640, 480],
     "texture": "empty",
     "resizable": true,
-    "onClick": {
-      "name": "resource.pop"
-    }
+    "onClick": [
+      { "name": "resource.pop" },
+      "afterShowText"
+    ]
   },
   "scrollableText": {
     "id": "textBox",
@@ -44,8 +45,9 @@
     "position": [48, 49],
     "anchor": "none",
     "boxSize": [550, 257],
-    "onComplete": {
-      "name": "resource.pop"
-    }
+    "onComplete": [
+      { "name": "resource.pop" },
+      "afterShowText"
+    ]
   }
 }

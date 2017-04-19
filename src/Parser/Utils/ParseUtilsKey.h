@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Anchor.h"
 #include "Game/GameProperties.h"
 #include "Json/JsonParser.h"
+#include "Parser/ParserProperties.h"
 #include "ParseUtilsVal.h"
-#include "ResourceManager.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Variable.h"
@@ -110,6 +111,8 @@ namespace Parser
 
 	ItemCoordInventory getItemCoordInventoryKey(const rapidjson::Value& elem, const char* key);
 
+	ItemLocation getItemLocationKey(const rapidjson::Value& elem, const char* key);
+
 	ItemXY getItemXYKey(const rapidjson::Value& elem, const char* key, const ItemXY& val = {});
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
@@ -124,5 +127,11 @@ namespace Parser
 	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
 		const char* key, PlayerStatus val = PlayerStatus::Stand1);
 
+	ReplaceVars getReplaceVarsKey(const rapidjson::Value& elem,
+		const char* key, ReplaceVars val = ReplaceVars::None);
+
 	Variable getVariableKey(const rapidjson::Value& elem, const char* key);
+
+	VarOrPredicate getVarOrPredicateKey(Game& game,
+		const rapidjson::Value& elem, const char* key);
 }

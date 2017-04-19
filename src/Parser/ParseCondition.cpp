@@ -7,25 +7,15 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	std::shared_ptr<Action> getIfCondition(unsigned conditionHash,
+	std::shared_ptr<Action> getIfCondition(uint16_t conditionHash16,
 		Game& game, const Value& elem)
 	{
-		std::shared_ptr<Action> actThen;
-		std::shared_ptr<Action> actElse;
-		if (elem.HasMember("then"))
-		{
-			actThen = parseAction(game, elem["then"]);
-		}
-		if (elem.HasMember("else"))
-		{
-			actElse = parseAction(game, elem["else"]);
-		}
 		return std::make_shared<ActIfCondition>(
-			conditionHash,
-			getVariableKey(elem, "param1"),
-			getVariableKey(elem, "param2"),
-			actThen,
-			actElse);
+			conditionHash16,
+			getVarOrPredicateKey(game, elem, "param1"),
+			getVarOrPredicateKey(game, elem, "param2"),
+			getActionKey(game, elem, "then"),
+			getActionKey(game, elem, "else"));
 	}
 
 	std::shared_ptr<Action> getInListCondition(Game& game, const Value& elem)
@@ -38,21 +28,11 @@ namespace Parser
 				list.push_back(getVariableVal(val));
 			}
 		}
-		std::shared_ptr<Action> actThen;
-		std::shared_ptr<Action> actElse;
-		if (elem.HasMember("then"))
-		{
-			actThen = parseAction(game, elem["then"]);
-		}
-		if (elem.HasMember("else"))
-		{
-			actElse = parseAction(game, elem["else"]);
-		}
 		return std::make_shared<ActInListCondition>(
-			getVariableKey(elem, "param"),
+			getVarOrPredicateKey(game, elem, "param"),
 			list,
-			actThen,
-			actElse);
+			getActionKey(game, elem, "then"),
+			getActionKey(game, elem, "else"));
 	}
 
 	std::shared_ptr<Action> getSwitchCondition(Game& game, const Value& elem)
@@ -65,28 +45,16 @@ namespace Parser
 				if (val.IsObject() == true &&
 					val.HasMember("value") == true)
 				{
-					if (val.HasMember("action") == true)
-					{
-						cases.push_back(
-							std::make_pair(getVariableKey(val, "value"),
-								parseAction(game, val["action"]))
-						);
-					}
-					else
-					{
-						cases.push_back(std::make_pair(getVariableKey(val, "value"), nullptr));
-					}
+					cases.push_back(
+						std::make_pair(getVariableKey(val, "value"),
+							getActionKey(game, val, "action"))
+					);
 				}
 			}
 		}
-		std::shared_ptr<Action> actDefault;
-		if (elem.HasMember("default"))
-		{
-			actDefault = parseAction(game, elem["default"]);
-		}
 		return std::make_shared<ActSwitchCondition>(
-			getVariableKey(elem, "param"),
+			getVarOrPredicateKey(game, elem, "param"),
 			cases,
-			actDefault);
+			getActionKey(game, elem, "default"));
 	}
 }

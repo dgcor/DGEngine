@@ -9,8 +9,10 @@ namespace Parser
 	NameValue parseNameValue(const Value& elem)
 	{
 		NameValue value;
-		value.min = getMinMaxIntKey<int32_t>(elem, "min", std::numeric_limits<int32_t>::min());
-		value.max = getMinMaxIntKey<int32_t>(elem, "max", std::numeric_limits<int32_t>::max());
+		value.min = getMinMaxIntKey<LevelObjValue>(elem, "min",
+			std::numeric_limits<LevelObjValue>::min());
+		value.max = getMinMaxIntKey<LevelObjValue>(elem, "max",
+			std::numeric_limits<LevelObjValue>::max());
 		value.text = getStringKey(elem, "text");
 		return value;
 	}
@@ -25,8 +27,8 @@ namespace Parser
 				if (elemValues.IsObject() == true)
 				{
 					NameValue nameValue;
-					nameValue.min = std::numeric_limits<int32_t>::min();
-					nameValue.max = std::numeric_limits<int32_t>::max();
+					nameValue.min = std::numeric_limits<LevelObjValue>::min();
+					nameValue.max = std::numeric_limits<LevelObjValue>::max();
 					nameValue.text = getStringKey(elemValues, "text");
 					value.values.push_back(nameValue);
 					return true;
@@ -86,8 +88,8 @@ namespace Parser
 		{
 			NameValueInterval value;
 			NameValue nameValue;
-			nameValue.min = std::numeric_limits<int32_t>::min();
-			nameValue.max = std::numeric_limits<int32_t>::max();
+			nameValue.min = std::numeric_limits<LevelObjValue>::min();
+			nameValue.max = std::numeric_limits<LevelObjValue>::max();
 			nameValue.text = elem.GetString();
 			value.values.push_back(nameValue);
 			values.push_back(value);

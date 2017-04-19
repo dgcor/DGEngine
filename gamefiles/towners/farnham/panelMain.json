@@ -59,10 +59,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Farnham",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/farnham/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/farnham/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

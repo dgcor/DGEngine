@@ -1,8 +1,16 @@
 {
-  "action": {
-    "name": "resource.add",
-    "id": "userPanelTalk"
-  },
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "userPanelTalk",
+      "ignorePrevious": true
+    },
+    {
+      "name": "action.set",
+      "id": "afterShowText",
+      "action": { "name": "resource.ignore", "id": "userPanel", "ignore": false }
+    }
+  ],
   "animation": [
     {
       "texture": "pentspn2",
@@ -51,12 +59,10 @@
     "items": [
       {
         "text": "Gossip",
-        "onClick": [
-          { "name": "game.clearPlayingSounds" },
-          { "name": "sound.play", "id": "titlslct" },
-          { "name": "resource.popAll", "id": "userPanel" },
-          { "name": "loadRandom", "file": "texts/pepin/gossip" }
-        ],
+        "onClick": {
+          "name": "load",
+          "file": ["towners/common/loadRandom.json", "pepin"]
+        },
         "onFocus": [
           "anchorLeftPentagram",
           "anchorRightPentagram"
@@ -69,12 +75,10 @@
           "value": ["diablo", "gharbadTheWeak", "zharTheMad"]
         },
         "text": "%name%",
-        "onClick": [
-          { "name": "game.clearPlayingSounds" },
-          { "name": "sound.play", "id": "titlslct" },
-          { "name": "resource.popAll", "id": "userPanel" },
-          { "name": "load", "file": "texts/pepin/quests/%id%.json" }
-        ],
+        "onClick": {
+          "name": "load",
+          "file": ["towners/common/loadQuest.json", "texts/pepin/quests/%id%.json"]
+        },
         "onFocus": [
           "anchorLeftPentagram",
           "anchorRightPentagram"
@@ -93,10 +97,7 @@
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
     "text": "Back",
-    "onClick": [
-      { "name": "resource.pop" },
-      { "name": "load", "file": "towners/pepin/panelMain.json" }
-    ],
+    "onClick": { "name": "resource.pop" },
     "onFocus": [
       "anchorLeftPentagram",
       "anchorRightPentagram"
@@ -105,6 +106,6 @@
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram",
-    { "name": "menu.setColor", "id": "panelQuests", "index": 1, "color": "%textBlue%", "replaceVars": true }
+    { "name": "menu.setColor", "id": "panelQuests", "index": 0, "color": "%textBlue%", "replaceVars": true }
   ]
 }

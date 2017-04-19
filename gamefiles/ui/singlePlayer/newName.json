@@ -12,8 +12,9 @@
     "maxSize": 15,
     "regex": "[\\w ]*",
     "onClick": {
-      "name": "if.fileExists",
-      "param1": "|heroName|text|",
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "|heroName|text|" },
+      "param2": true,
       "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "|heroName|text|"] },
       "else": { "name": "load", "file": "level/newGame.json" }
     },

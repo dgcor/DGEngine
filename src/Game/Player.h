@@ -44,34 +44,34 @@ private:
 	std::string id;
 	std::string name;
 
-	int32_t currentLevel{ 0 };
-	int32_t experience{ 0 };
-	int32_t expNextLevel{ 0 };
-	int32_t points{ 0 };
-	int32_t gold{ 0 };
+	uint32_t currentLevel{ 0 };
+	uint32_t experience{ 0 };
+	uint32_t expNextLevel{ 0 };
+	uint32_t points{ 0 };
+	uint32_t gold{ 0 };
 
-	int32_t strengthBase{ 0 };
-	int32_t strengthNow{ 0 };
-	int32_t magicBase{ 0 };
-	int32_t magicNow{ 0 };
-	int32_t dexterityBase{ 0 };
-	int32_t dexterityNow{ 0 };
-	int32_t vitalityBase{ 0 };
-	int32_t vitalityNow{ 0 };
+	LevelObjValue strengthBase{ 0 };
+	LevelObjValue strengthNow{ 0 };
+	LevelObjValue magicBase{ 0 };
+	LevelObjValue magicNow{ 0 };
+	LevelObjValue dexterityBase{ 0 };
+	LevelObjValue dexterityNow{ 0 };
+	LevelObjValue vitalityBase{ 0 };
+	LevelObjValue vitalityNow{ 0 };
 
-	int32_t lifeBase{ 0 };
-	int32_t lifeNow{ 0 };
-	int32_t manaBase{ 0 };
-	int32_t manaNow{ 0 };
+	LevelObjValue lifeBase{ 0 };
+	LevelObjValue lifeNow{ 0 };
+	LevelObjValue manaBase{ 0 };
+	LevelObjValue manaNow{ 0 };
 
-	int32_t armorClass{ 0 };
-	int32_t toHit{ 0 };
-	int32_t damageMin{ 0 };
-	int32_t damageMax{ 0 };
+	LevelObjValue armorClass{ 0 };
+	LevelObjValue toHit{ 0 };
+	LevelObjValue damageMin{ 0 };
+	LevelObjValue damageMax{ 0 };
 
-	int32_t resistMagic{ 0 };
-	int32_t resistFire{ 0 };
-	int32_t resistLightning{ 0 };
+	LevelObjValue resistMagic{ 0 };
+	LevelObjValue resistFire{ 0 };
+	LevelObjValue resistLightning{ 0 };
 
 	void calculateRange()
 	{
@@ -143,15 +143,15 @@ public:
 	virtual void setProperty(const std::string& prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string& prop) const;
 
-	bool getPlayerPropertyByHash(uint16_t propHash, int32_t& value) const;
-	bool getPlayerProperty(const char* prop, int32_t& value) const;
-	bool getPlayerProperty(const std::string& prop, int32_t& value) const
+	bool getPlayerPropertyByHash(uint16_t propHash, LevelObjValue& value) const;
+	bool getPlayerProperty(const char* prop, LevelObjValue& value) const;
+	bool getPlayerProperty(const std::string& prop, LevelObjValue& value) const
 	{
 		return getPlayerProperty(prop.c_str(), value);
 	}
-	void setPlayerPropertyByHash(uint16_t propHash, int32_t value);
-	void setPlayerProperty(const char* prop, int32_t value);
-	void setPlayerProperty(const std::string& prop, int32_t value) const
+	void setPlayerPropertyByHash(uint16_t propHash, LevelObjValue value);
+	void setPlayerProperty(const char* prop, LevelObjValue value);
+	void setPlayerProperty(const std::string& prop, LevelObjValue value) const
 	{
 		return setPlayerProperty(prop.c_str(), value);
 	}
@@ -205,6 +205,16 @@ public:
 
 	size_t getInventorySize() { return inventories.size(); }
 
+	bool getItemSlot(const Item& item, size_t& invIdx, size_t& itemIdx,
+		InventoryPosition invPos = InventoryPosition::TopLeft) const;
+
+	bool hasItemSlot(const Item& item) const;
+
+	bool findItem(uint16_t itemTypeHash16, size_t& invIdx,
+		size_t& itemIdx, std::shared_ptr<Item>& item) const;
+
+	unsigned countFreeSlots(const ItemClass& itemClass) const;
+
 	void updatePlayerProperties(PlayerInventory inv) { updatePlayerProperties((size_t)inv); }
 	void updatePlayerProperties(size_t idx);
 
@@ -212,68 +222,44 @@ public:
 
 	bool canEquipItem(const Item& item) const;
 
+	bool addGold(const Level& level, LevelObjValue amount);
+	void updateGoldAdd(const std::shared_ptr<Item>& item);
+	void updateGoldRemove(const std::shared_ptr<Item>& item);
+
+	uint32_t getMaxGoldCapacity(const Level& level) const;
+
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
 	const std::string& Class() const { return class_->Name(); }
 
-	int32_t CurrentLevel() const { return currentLevel; }
-	int32_t Experience() const { return experience; }
-	int32_t ExpNextLevel() const { return expNextLevel; }
-	int32_t Points() const { return points; }
-	int32_t Gold() const { return gold; }
-
-	int32_t StrengthBase() const { return strengthBase; }
-	int32_t StrengthNow() const { return strengthNow; }
-	int32_t MagicBase() const { return magicBase; }
-	int32_t MagicNow() const { return magicNow; }
-	int32_t DexterityBase() const { return dexterityBase; }
-	int32_t DexterityNow() const { return dexterityNow; }
-	int32_t VitalityBase() const { return vitalityBase; }
-	int32_t VitalityNow() const { return vitalityNow; }
-
-	int32_t LifeBase() const { return lifeBase; }
-	int32_t LifeNow() const { return lifeNow; }
-	int32_t ManaBase() const { return manaBase; }
-	int32_t ManaNow() const { return manaNow; }
-
-	int32_t ArmorClass() const { return armorClass; }
-	int32_t ToHit() const { return toHit; }
-	int32_t DamageMin() const { return damageMin; }
-	int32_t DamageMax() const { return damageMax; }
-
-	int32_t ResistMagic() const { return resistMagic; }
-	int32_t ResistFire() const { return resistFire; }
-	int32_t ResistLightning() const { return resistLightning; }
-
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
 
-	void CurrentLevel(int32_t level_) { currentLevel = level_; }
-	void Experience(int32_t experience_) { experience = experience_; }
-	void ExpNextLevel(int32_t expNextLevel_) { expNextLevel = expNextLevel_; }
-	void Points(int32_t points_) { points = points_; }
-	void Gold(int32_t gold_) { gold = gold_; }
+	void CurrentLevel(uint32_t level_) { currentLevel = level_; }
+	void Experience(uint32_t experience_) { experience = experience_; }
+	void ExpNextLevel(uint32_t expNextLevel_) { expNextLevel = expNextLevel_; }
+	void Points(uint32_t points_) { points = points_; }
 
-	void StrengthBase(int32_t strengthBase_) { strengthBase = strengthBase_; }
-	void StrengthNow(int32_t strengthNow_) { strengthNow = strengthNow_; }
-	void MagicBase(int32_t magicBase_) { magicBase = magicBase_; }
-	void MagicNow(int32_t magicNow_) { magicNow = magicNow_; }
-	void DexterityBase(int32_t dexterityBase_) { dexterityBase = dexterityBase_; }
-	void DexterityNow(int32_t dexterityNow_) { dexterityNow = dexterityNow_; }
-	void VitalityBase(int32_t vitalityBase_) { vitalityBase = vitalityBase_; }
-	void VitalityNow(int32_t vitalityNow_) { vitalityNow = vitalityNow_; }
+	void StrengthBase(LevelObjValue strengthBase_) { strengthBase = strengthBase_; }
+	void StrengthNow(LevelObjValue strengthNow_) { strengthNow = strengthNow_; }
+	void MagicBase(LevelObjValue magicBase_) { magicBase = magicBase_; }
+	void MagicNow(LevelObjValue magicNow_) { magicNow = magicNow_; }
+	void DexterityBase(LevelObjValue dexterityBase_) { dexterityBase = dexterityBase_; }
+	void DexterityNow(LevelObjValue dexterityNow_) { dexterityNow = dexterityNow_; }
+	void VitalityBase(LevelObjValue vitalityBase_) { vitalityBase = vitalityBase_; }
+	void VitalityNow(LevelObjValue vitalityNow_) { vitalityNow = vitalityNow_; }
 
-	void LifeBase(int32_t lifeBase_) { lifeBase = lifeBase_; }
-	void LifeNow(int32_t lifeNow_) { lifeNow = lifeNow_; }
-	void ManaBase(int32_t manaBase_) { manaBase = manaBase_; }
-	void ManaNow(int32_t manaNow_) { manaNow = manaNow_; }
+	void LifeBase(LevelObjValue lifeBase_) { lifeBase = lifeBase_; }
+	void LifeNow(LevelObjValue lifeNow_) { lifeNow = lifeNow_; }
+	void ManaBase(LevelObjValue manaBase_) { manaBase = manaBase_; }
+	void ManaNow(LevelObjValue manaNow_) { manaNow = manaNow_; }
 
-	void ArmorClass(int32_t armorClass_) { armorClass = armorClass_; }
-	void ToHit(int32_t toHit_) { toHit = toHit_; }
-	void DamageMin(int32_t damage_) { damageMin = damage_; }
-	void DamageMax(int32_t damage_) { damageMax = damage_; }
+	void ArmorClass(LevelObjValue armorClass_) { armorClass = armorClass_; }
+	void ToHit(LevelObjValue toHit_) { toHit = toHit_; }
+	void DamageMin(LevelObjValue damage_) { damageMin = damage_; }
+	void DamageMax(LevelObjValue damage_) { damageMax = damage_; }
 
-	void ResistMagic(int32_t resistMagic_) { resistMagic = resistMagic_; }
-	void ResistFire(int32_t resistFire_) { resistFire = resistFire_; }
-	void ResistLightning(int32_t resistLightning_) { resistLightning = resistLightning_; }
+	void ResistMagic(LevelObjValue resistMagic_) { resistMagic = resistMagic_; }
+	void ResistFire(LevelObjValue resistFire_) { resistFire = resistFire_; }
+	void ResistLightning(LevelObjValue resistLightning_) { resistLightning = resistLightning_; }
 };

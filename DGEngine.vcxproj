@@ -51,6 +51,7 @@
     <ClCompile Include="src\Game\ItemClass.cpp" />
     <ClCompile Include="src\Game\ItemCollection.cpp" />
     <ClCompile Include="src\Game\Level.cpp" />
+    <ClCompile Include="src\Game\LevelCell.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
     <ClCompile Include="src\Game\LevelMap.cpp" />
     <ClCompile Include="src\Game\Namer.cpp" />
@@ -101,6 +102,7 @@
     <ClCompile Include="src\Parser\ParseMountFile.cpp" />
     <ClCompile Include="src\Parser\ParseMovie.cpp" />
     <ClCompile Include="src\Parser\ParsePalette.cpp" />
+    <ClCompile Include="src\Parser\ParsePredicate.cpp" />
     <ClCompile Include="src\Parser\Parser.cpp" />
     <ClCompile Include="src\Parser\ParseRectangle.cpp" />
     <ClCompile Include="src\Parser\ParseScrollableText.cpp" />
@@ -176,8 +178,10 @@
     <ClInclude Include="src\Game\ItemCollection.h" />
     <ClInclude Include="src\Game\ItemLocation.h" />
     <ClInclude Include="src\Game\ItemProperties.h" />
+    <ClInclude Include="src\Game\ItemTypes.h" />
     <ClInclude Include="src\Game\ItemXY.h" />
     <ClInclude Include="src\Game\Level.h" />
+    <ClInclude Include="src\Game\LevelCell.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
@@ -228,8 +232,10 @@
     <ClInclude Include="src\Parser\ParseMountFile.h" />
     <ClInclude Include="src\Parser\ParseMovie.h" />
     <ClInclude Include="src\Parser\ParsePalette.h" />
+    <ClInclude Include="src\Parser\ParsePredicate.h" />
     <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Parser\ParseRectangle.h" />
+    <ClInclude Include="src\Parser\ParserProperties.h" />
     <ClInclude Include="src\Parser\ParseScrollableText.h" />
     <ClInclude Include="src\Parser\ParseSound.h" />
     <ClInclude Include="src\Parser\ParseText.h" />
@@ -239,6 +245,9 @@
     <ClInclude Include="src\Parser\Utils\ParseUtilsIdx.h" />
     <ClInclude Include="src\Parser\Utils\ParseUtilsKey.h" />
     <ClInclude Include="src\Parser\Utils\ParseUtilsVal.h" />
+    <ClInclude Include="src\Predicates\Predicate.h" />
+    <ClInclude Include="src\Predicates\PredIO.h" />
+    <ClInclude Include="src\Predicates\PredPlayer.h" />
     <ClInclude Include="src\Queryable.h" />
     <ClInclude Include="src\Rectangle.h" />
     <ClInclude Include="src\ReverseIterable.h" />
@@ -274,6 +283,7 @@
     <ClInclude Include="src\Utils.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\Variant.h" />
+    <ClInclude Include="src\VarOrPredicate.h" />
     <ClInclude Include="src\View2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

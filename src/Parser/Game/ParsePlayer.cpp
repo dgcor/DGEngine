@@ -10,7 +10,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	void parsePlayerItem(Game& game, const Level& level,
-		ItemCollection& inventory, const Value& elem)
+		ItemCollection& inventory, Player& player, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
 		{
@@ -37,7 +37,12 @@ namespace Parser
 		auto item = parseItemObj(game, level, elem);
 		if (itemIdx < inventory.Size())
 		{
-			inventory.set(itemIdx, item);
+			std::shared_ptr<Item> oldItem;
+			if (inventory.set(itemIdx, item, oldItem) == true)
+			{
+				player.updateGoldRemove(oldItem);
+				player.updateGoldAdd(item);
+			}
 		}
 	}
 
@@ -113,12 +118,12 @@ namespace Parser
 			{
 				for (const auto& val : itemsElem)
 				{
-					parsePlayerItem(game, level, inventory, val);
+					parsePlayerItem(game, level, inventory, player, val);
 				}
 			}
 			else if (itemsElem.IsObject() == true)
 			{
-				parsePlayerItem(game, level, inventory, itemsElem);
+				parsePlayerItem(game, level, inventory, player, itemsElem);
 			}
 		}
 	}
@@ -150,7 +155,7 @@ namespace Parser
 		}
 		auto& mapCell = level->Map()[mapPos.x][mapPos.y];
 
-		if (mapCell.object != nullptr)
+		if (mapCell.Passable() == false)
 		{
 			return;
 		}
@@ -166,7 +171,7 @@ namespace Parser
 		player->applyDefaults();
 
 		player->MapPosition(mapPos);
-		mapCell.object = player;
+		mapCell.addBack(player);
 
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
 
@@ -176,11 +181,10 @@ namespace Parser
 
 		player->Id(id);
 		player->Name(getStringKey(elem, "name"));
-		player->CurrentLevel(getIntKey(elem, "level"));
-		player->Experience(getIntKey(elem, "experience"));
-		player->ExpNextLevel(getIntKey(elem, "expNextLevel"));
-		player->Points(getIntKey(elem, "points"));
-		player->Gold(getIntKey(elem, "gold"));
+		player->CurrentLevel(getUIntKey(elem, "level"));
+		player->Experience(getUIntKey(elem, "experience"));
+		player->ExpNextLevel(getUIntKey(elem, "expNextLevel"));
+		player->Points(getUIntKey(elem, "points"));
 
 		if (elem.HasMember("properties") == true)
 		{
@@ -189,8 +193,11 @@ namespace Parser
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
 				{
-					player->setPlayerProperty(it->name.GetString(),
-						getMinMaxIntVal<int16_t>(it->value));
+					if (it->name.GetStringLength() > 0)
+					{
+						player->setPlayerProperty(it->name.GetString(),
+							getMinMaxIntVal<LevelObjValue>(it->value));
+					}
 				}
 			}
 		}

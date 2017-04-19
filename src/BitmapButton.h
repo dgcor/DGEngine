@@ -14,7 +14,6 @@ private:
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	std::shared_ptr<Action> clickAction;
 	std::shared_ptr<Action> doubleClickAction;
-	std::shared_ptr<Action> toggleAction;
 	std::shared_ptr<Action> clickDragAction;
 	std::shared_ptr<Action> clickInAction;
 	std::shared_ptr<Action> clickOutAction;
@@ -25,7 +24,6 @@ private:
 	std::shared_ptr<sf::SoundBuffer> focusSound;
 	bool focusEnable{ false };
 	bool focusOnClick{ false };
-	bool toggled{ false };
 	bool hovered{ false };
 	bool clickUp{ false };
 	bool beingDragged{ false };
@@ -50,9 +48,9 @@ public:
 
 	virtual void click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
-	virtual void focus(Game& game);
+	virtual void focus(Game& game) const;
 	virtual void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }
-	virtual bool isEnabled() { return enabled; }
+	virtual bool isEnabled() const { return enabled; }
 	virtual const sf::Vector2f& DrawPosition() const { return sprite.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
@@ -63,7 +61,6 @@ public:
 	virtual void setColor(const sf::Color& color_) { sprite.setColor(color_); }
 	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { focusSound = buffer; }
 	virtual void setOrigin(float x, float y) { sprite.setOrigin(x, y); }
-	virtual void setToggle(bool toggle) { toggled = toggle; }
 	virtual sf::Vector2f Size() const { return sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height); }
 	virtual void Size(const sf::Vector2f& size) { sprite.setTextureRect(sf::IntRect(0, 0, (int)size.x, (int)size.y)); }
 

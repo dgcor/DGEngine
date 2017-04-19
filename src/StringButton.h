@@ -14,7 +14,6 @@ private:
 	bool enabled{ true };
 	std::shared_ptr<Action> clickAction;
 	std::shared_ptr<Action> doubleClickAction;
-	std::shared_ptr<Action> toggleAction;
 	std::shared_ptr<Action> clickDragAction;
 	std::shared_ptr<Action> clickInAction;
 	std::shared_ptr<Action> clickOutAction;
@@ -25,12 +24,10 @@ private:
 	std::shared_ptr<sf::SoundBuffer> focusSound;
 	bool focusEnable{ false };
 	bool focusOnClick{ false };
-	bool toggled{ false };
 	bool hovered{ false };
 	bool clickUp{ false };
 	bool beingDragged{ false };
 	bool wasClicked{ false };
-	bool visible{ true };
 
 public:
 	std::string getText() const { return text->getText(); }
@@ -46,9 +43,9 @@ public:
 
 	virtual void click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
-	virtual void focus(Game& game);
+	virtual void focus(Game& game) const;
 	virtual void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }
-	virtual bool isEnabled() { return enabled; }
+	virtual bool isEnabled() const { return enabled; }
 	virtual const sf::Vector2f& DrawPosition() const { return text->DrawPosition(); }
 	virtual const sf::Vector2f& Position() const { return text->Position(); }
 	virtual void Position(const sf::Vector2f& position) { text->Position(position); }
@@ -59,13 +56,12 @@ public:
 	virtual void setColor(const sf::Color& color_) { text->setColor(color_); }
 	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { focusSound = buffer; }
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
-	virtual void setToggle(bool toggle) { toggled = toggle; }
 	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }
 	virtual sf::Vector2f Size() const { return text->Size(); }
 	virtual void Size(const sf::Vector2f& size) {}
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const { return text->Visible(); }
+	virtual void Visible(bool visible_) { text->Visible(visible_); }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 

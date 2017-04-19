@@ -16,7 +16,6 @@ private:
 	std::shared_ptr<Action> actionMinSize;
 	unsigned minSize;
 	unsigned maxSize;
-	bool visible{ true };
 	bool hasRegex{ false };
 	std::regex regex;
 
@@ -53,15 +52,12 @@ public:
 
 	void click(Game& game);
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const { return text->Visible(); }
+	virtual void Visible(bool visible_) { text->Visible(visible_); }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		if (visible == true)
-		{
-			target.draw(*text, states);
-		}
+		target.draw(*text, states);
 	}
 
 	virtual void update(Game& game);

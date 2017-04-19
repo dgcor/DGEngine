@@ -49,7 +49,8 @@ private:
 	Variable val;
 
 public:
-	ActVariableSet(const std::string& key_, const Variable& val_) : key(key_), val(val_) {}
+	ActVariableSet(const std::string& key_, const Variable& val_)
+		: key(key_), val(val_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -84,6 +85,30 @@ public:
 				{
 					game.setVariable(key, var);
 				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActVariableSetIfNull : public Action
+{
+private:
+	std::string key;
+	Variable val;
+
+public:
+	ActVariableSetIfNull(const std::string& key_, const Variable& val_)
+		: key(key_), val(val_) {}
+
+	virtual bool execute(Game& game)
+	{
+		if (key.size() > 0)
+		{
+			Variable var;
+			if (game.getVariableNoPercentage(key, var) == false)
+			{
+				game.setVariable(key, val);
 			}
 		}
 		return true;

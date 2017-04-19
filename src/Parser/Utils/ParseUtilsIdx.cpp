@@ -1,4 +1,5 @@
 #include "ParseUtilsIdx.h"
+#include "ParseUtilsVal.h"
 
 namespace Parser
 {
@@ -58,7 +59,11 @@ namespace Parser
 	std::string getStringIdx(const Value& elem,
 		SizeType idx, const std::string& val)
 	{
-		return getStringCharIdx(elem, idx, val.c_str());
+		if (idx < elem.Size())
+		{
+			return getStringVal(elem[idx], val);
+		}
+		return val;
 	}
 
 	unsigned getUIntIdx(const Value& elem, SizeType idx, unsigned val)

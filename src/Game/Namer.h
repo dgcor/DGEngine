@@ -1,13 +1,14 @@
 #pragma once
 
+#include "GameProperties.h"
 #include "Queryable.h"
 #include <string>
 #include <vector>
 
 struct NameValue
 {
-	int32_t min;
-	int32_t max;
+	LevelObjValue min;
+	LevelObjValue max;
 	std::string text;
 };
 

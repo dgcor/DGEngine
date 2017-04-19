@@ -1,7 +1,7 @@
 {
   "itemClass": [
     {
-      "id": "healthPotion",
+      "id": "potionOfHealing",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 13,
       "celTextureInventory": "itemIcons",
@@ -11,8 +11,8 @@
       "shortName": "Potion",
       "type": "Potion",
       "defaults": {
+        "price": 50,
         "identified": true,
-        "magic": false,
         "toLife": 50,
         "toMana": 0
       },
@@ -25,8 +25,8 @@
       "actionPickInventory": "pickItemInInventory"
     },
     {
-      "id": "manaPotion",
-      "fromId": "healthPotion",
+      "id": "potionOfMana",
+      "fromId": "potionOfHealing",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 13,
       "celTextureInventory": "itemIcons",
@@ -34,14 +34,14 @@
       "celIndexInventory": 50,
       "name": "Potion of Mana",
       "defaults": {
-        "identified": true,
+        "price": 50,
         "toLife": 0,
         "toMana": 50
       }
     },
     {
-      "id": "fullHealthPotion",
-      "fromId": "healthPotion",
+      "id": "potionOfFullHealing",
+      "fromId": "potionOfHealing",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 16,
       "celTextureInventory": "itemIcons",
@@ -49,14 +49,14 @@
       "celIndexInventory": 46,
       "name": "Potion of Full Healing",
       "defaults": {
-        "identified": true,
+        "price": 150,
         "toLife": "max",
         "toMana": 0
       }
     },
     {
-      "id": "fullManaPotion",
-      "fromId": "healthPotion",
+      "id": "potionOfFullMana",
+      "fromId": "potionOfHealing",
       "celTextureDrop": "itemDrop",
       "celIndexDrop": 14,
       "celTextureInventory": "itemIcons",
@@ -64,9 +64,41 @@
       "celIndexInventory": 11,
       "name": "Potion of Full Mana",
       "defaults": {
-        "identified": true,
+        "price": 150,
         "toLife": 0,
         "toMana": "max"
+      }
+    },
+    {
+      "id": "potionOfRejuvenation",
+      "fromId": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 17,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 48,
+      "name": "Potion of Rejuvenation",
+      "defaults": {
+        "price": 120,
+        "toLife": 0,
+        "toMana": 0,
+        "toLifeAndMana": 50
+      }
+    },
+    {
+      "id": "potionOfFullRejuvenation",
+      "fromId": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 17,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 44,
+      "name": "Potion of Full Rejuvenation",
+      "defaults": {
+        "price": 600,
+        "toLife": 0,
+        "toMana": 0,
+        "toLifeAndMana": "max"
       }
     }
   ]

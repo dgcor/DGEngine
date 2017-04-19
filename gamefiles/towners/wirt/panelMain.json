@@ -81,10 +81,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Wirt",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/wirt/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/wirt/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -101,6 +98,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "What Have you Got?",
+      "onClick": { "name": "load", "file": "towners/wirt/buy/showItem.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -125,6 +123,20 @@
     }
   ],
   "action": [
+    {
+      "name": "if.equal",
+      "param1": "|currentLevel|player.wirt.hasItem.0.0|",
+      "param2": true,
+      "else": [
+        { "name": "drawable.visible", "id": "panelText1", "visible": false },
+        { "name": "drawable.visible", "id": "panelText2", "visible": false },
+        { "name": "drawable.visible", "id": "panelText3", "visible": false },
+        { "name": "drawable.visible", "id": "ShowItem", "visible": false },
+        { "name": "button.enable", "id": "ShowItem", "enable": false },
+        { "name": "drawable.addPositionOffset", "id": "talk", "offset": [0, 48] },
+        { "name": "drawable.addPositionOffset", "id": "back", "offset": [0, -24] }
+      ]
+    },
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

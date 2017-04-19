@@ -59,6 +59,6 @@ bool Movie2::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int32(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
 }
 #endif	// USE_SFML_MOVIE_STUB

@@ -12,6 +12,7 @@
       "shortName": "Buckler",
       "type": "Shield",
       "defaults": {
+        "price": 30,
         "armor": 5,
         "durability": 16,
         "durabilityMax": 16
@@ -21,6 +22,11 @@
       "actionDropLevel": { "name": "sound.play", "id": "flipshld" },
       "actionDropInventory": { "name": "sound.play", "id": "invshiel" },
       "actionPickInventory": "pickItemInInventory"
+    },
+    {
+      "id": "bucklerShield",
+      "fromId": "buckler",
+      "shortName": "Shield"
     },
     {
       "id": "smallShield",
@@ -33,6 +39,7 @@
       "name": "Small Shield",
       "shortName": "Shield",
       "defaults": {
+        "price": 90,
         "armor": 8,
         "durability": 24,
         "durabilityMax": 24,
@@ -50,6 +57,7 @@
       "celIndexInventory": 158,
       "name": "Large Shield",
       "defaults": {
+        "price": 200,
         "armor": 10,
         "durability": 32,
         "durabilityMax": 32,
@@ -66,6 +74,7 @@
       "celIndexInventory": 124,
       "name": "Kite Shield",
       "defaults": {
+        "price": 400,
         "armor": 15,
         "durability": 40,
         "durabilityMax": 40,
@@ -82,6 +91,7 @@
       "celIndexInventory": 143,
       "name": "Tower Shield",
       "defaults": {
+        "price": 850,
         "armor": 20,
         "durability": 50,
         "durabilityMax": 50,
@@ -98,6 +108,7 @@
       "celIndexInventory": 159,
       "name": "Gothic Shield",
       "defaults": {
+        "price": 2300,
         "armor": 18,
         "durability": 60,
         "durabilityMax": 60,

@@ -2,11 +2,6 @@
   "action": [
     {
       "name": "action.set",
-      "id": "clearPanelText",
-      "action": { "name": "text.setText", "id": "txtPanel", "text": "" }
-    },
-    {
-      "name": "action.set",
       "replaceVars": true,
       "id": "setPanelTextColorBlue",
       "action": { "name": "text.setColor", "id": "txtPanel", "color": "%textBlue%" }
@@ -27,6 +22,36 @@
       "name": "action.set",
       "id": "setPanelTextColorWhite",
       "action": { "name": "text.setColor", "id": "txtPanel" }
+    },
+    {
+      "name": "action.set",
+      "id": "hideItemInfo",
+      "action": [
+        { "name": "drawable.visible", "id": "itemInfoBk", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoSp", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoBr", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoTitle", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoDescr", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showItemInfo",
+      "action": [
+        { "name": "drawable.visible", "id": "itemInfoBk", "visible": true },
+        { "name": "drawable.visible", "id": "itemInfoSp", "visible": true },
+        { "name": "drawable.visible", "id": "itemInfoBr", "visible": true },
+        { "name": "drawable.visible", "id": "itemInfoTitle", "visible": true },
+        { "name": "drawable.visible", "id": "itemInfoDescr", "visible": true }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "clearPanelText",
+      "action": [
+        { "name": "text.setText", "id": "txtPanel", "text": "" },
+        "hideItemInfo"
+      ]
     },
     {
       "name": "action.set",
@@ -58,218 +83,210 @@
     {
       "name": "action.set",
       "id": "updateBeltItem1",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.0|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt1", "inventory": "belt", "item": 0, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt1", "inventory": "belt", "item": 0 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt1" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.0|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt1", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt1", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt1", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt1", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt1", "inventory": "belt", "item": 0, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt1", "inventory": "belt", "item": 0 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt1" },
+          { "name": "button.setTexture", "id": "playerBelt1", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt1", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt1", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt1", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt1", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem2",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.1|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt2", "inventory": "belt", "item": 1, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt2", "inventory": "belt", "item": 1 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt2" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.1|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt2", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt2", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt2", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt2", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt2", "inventory": "belt", "item": 1, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt2", "inventory": "belt", "item": 1 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt2" },
+          { "name": "button.setTexture", "id": "playerBelt2", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt2", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt2", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt2", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt2", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem3",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.2|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt3", "inventory": "belt", "item": 2, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt3", "inventory": "belt", "item": 2 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt3" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.2|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt3", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt3", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt3", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt3", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt3", "inventory": "belt", "item": 2, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt3", "inventory": "belt", "item": 2 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt3" },
+          { "name": "button.setTexture", "id": "playerBelt3", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt3", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt3", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt3", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt3", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem4",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.3|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt4", "inventory": "belt", "item": 3, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt4", "inventory": "belt", "item": 3 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt4" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.3|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt4", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt4", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt4", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt4", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt4", "inventory": "belt", "item": 3, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt4", "inventory": "belt", "item": 3 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt4" },
+          { "name": "button.setTexture", "id": "playerBelt4", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt4", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt4", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt4", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt4", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem5",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.4|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt5", "inventory": "belt", "item": 4, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt5", "inventory": "belt", "item": 4 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt5" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.4|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt5", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt5", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt5", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt5", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.4|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.4|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt5", "inventory": "belt", "item": 4, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt5", "inventory": "belt", "item": 4 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt5" },
+          { "name": "button.setTexture", "id": "playerBelt5", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt5", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt5", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt5", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt5", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem6",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.5|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt6", "inventory": "belt", "item": 5, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt6", "inventory": "belt", "item": 5 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt6" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.5|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt6", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt6", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt6", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt6", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.5|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.5|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt6", "inventory": "belt", "item": 5, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt6", "inventory": "belt", "item": 5 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt6" },
+          { "name": "button.setTexture", "id": "playerBelt6", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt6", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt6", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt6", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt6", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem7",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.6|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt7", "inventory": "belt", "item": 6, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt7", "inventory": "belt", "item": 6 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt7" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.6|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt7", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt7", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt7", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt7", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.6|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.6|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt7", "inventory": "belt", "item": 6, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt7", "inventory": "belt", "item": 6 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt7" },
+          { "name": "button.setTexture", "id": "playerBelt7", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt7", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt7", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt7", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt7", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
       "id": "updateBeltItem8",
-      "action": [
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.7|",
-          "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgBelt8", "inventory": "belt", "item": 7, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgBelt8", "inventory": "belt", "item": 7 }
-        },
-        { "name": "image.centerTexture", "id": "imgBelt8" },
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasItem.belt.7|",
-          "param2": true,
-          "then": [
-            { "name": "button.setTexture", "id": "playerBelt8", "texture": "red" },
-            { "name": "drawable.visible", "id": "txtBelt8", "visible": true }
-          ],
-          "else": [
-            { "name": "button.setTexture", "id": "playerBelt8", "texture": "empty" },
-            { "name": "drawable.visible", "id": "txtBelt8", "visible": false }
-          ]
-        }
-      ]
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.belt.7|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.belt.7|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgBelt8", "inventory": "belt", "item": 7, "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgBelt8", "inventory": "belt", "item": 7 }
+          },
+          { "name": "image.centerTexture", "id": "imgBelt8" },
+          { "name": "button.setTexture", "id": "playerBelt8", "texture": "red" },
+          { "name": "drawable.visible", "id": "txtBelt8", "visible": true }
+        ],
+        "else": [
+          { "name": "image.setTexture", "id": "imgBelt8", "texture": "empty" },
+          { "name": "button.setTexture", "id": "playerBelt8", "texture": "empty" },
+          { "name": "drawable.visible", "id": "txtBelt8", "visible": false }
+        ]
+      }
     },
     {
       "name": "action.set",
@@ -322,7 +339,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -366,7 +410,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -410,7 +481,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -454,7 +552,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -498,7 +623,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.4.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.4.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.4.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.4",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.4",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -542,7 +694,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.5.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.5.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.5.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.5",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.5",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -586,7 +765,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.6.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.6.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.6.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.6",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.6",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -630,7 +836,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.belt.7.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.belt.7.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.belt.7.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.belt.7",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.belt.7",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -782,6 +1015,19 @@
           "then": { "name": "button.setTexture", "id": "playerRightRing", "texture": "red" },
           "else": { "name": "button.setTexture", "id": "playerRightRing", "texture": "empty" }
         }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateBodyItems",
+      "action": [
+        "updateInventoryLeftHand",
+        "updateInventoryRightHand",
+        "updateInventoryArmor",
+        "updateInventoryHelmet",
+        "updateInventoryAmulet",
+        "updateInventoryLeftRing",
+        "updateInventoryRightRing"
       ]
     },
     {
@@ -1627,7 +1873,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.LeftHand.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.LeftHand.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.LeftHand.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.LeftHand",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.LeftHand",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1671,7 +1944,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.RightHand.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.RightHand.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.RightHand.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.RightHand",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.RightHand",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1715,7 +2015,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.Armor.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.Armor.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.Armor.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.Armor",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.Armor",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1759,7 +2086,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.Helmet.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.Helmet.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.Helmet.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.Helmet",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.Helmet",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1803,7 +2157,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.Amulet.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.Amulet.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.Amulet.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.Amulet",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.Amulet",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1847,7 +2228,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.LeftRing.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.LeftRing.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.LeftRing.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.LeftRing",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.LeftRing",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -1891,7 +2299,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.body.RightRing.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.RightRing.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.RightRing.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.RightRing",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.RightRing",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2138,7 +2573,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.0,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2182,7 +2644,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.0,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2226,7 +2715,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.0,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2270,7 +2786,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.0,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2314,7 +2857,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.1,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2358,7 +2928,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.1,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2402,7 +2999,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.1,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2446,7 +3070,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.1,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2490,7 +3141,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.2,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2534,7 +3212,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.2,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2578,7 +3283,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.2,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2622,7 +3354,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.2,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2666,7 +3425,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.3,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2710,7 +3496,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.3,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2754,7 +3567,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.3,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2798,7 +3638,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.3,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2842,7 +3709,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.4,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2886,7 +3780,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.4,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2930,7 +3851,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.4,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -2974,7 +3922,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.4,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3018,7 +3993,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.5,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3062,7 +4064,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.5,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3106,7 +4135,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.5,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3150,7 +4206,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.5,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3194,7 +4277,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.6,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3238,7 +4348,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.6,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3282,7 +4419,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.6,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3326,7 +4490,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.6,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3370,7 +4561,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.7,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3414,7 +4632,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.7,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3458,7 +4703,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.7,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3502,7 +4774,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.7,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3546,7 +4845,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.8,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3590,7 +4916,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.8,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3634,7 +4987,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.8,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3678,7 +5058,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.8,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3722,7 +5129,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.9,0.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3766,7 +5200,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.9,1.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3810,7 +5271,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.9,2.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }
@@ -3854,7 +5342,34 @@
               "name": "if.equal",
               "param1": "|currentLevel|currentPlayer.item.stash.9,3.unique|",
               "param2": 1,
-              "then": "setPanelTextColorGold",
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
               "else": "setPanelTextColorWhite"
             }
           }

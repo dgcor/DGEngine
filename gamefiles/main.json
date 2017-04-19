@@ -14,8 +14,9 @@
     { "file": "DIABDAT.MPQ", "append": true }
   ],
   "action": {
-    "name": "if.fileExists",
-    "param1": "ui_art/title.pcx",
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "ui_art/title.pcx" },
+    "param2": true,
     "then": { "name": "load", "file": "ui/loadMain.json" },
     "else": { "name": "load", "file": "ui/dataMissing.json" }
   }

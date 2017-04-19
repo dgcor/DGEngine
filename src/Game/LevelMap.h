@@ -3,35 +3,12 @@
 #include <cstdint>
 #include "Dun.h"
 #include "Helper2D.h"
-#include "LevelObject.h"
+#include "LevelCell.h"
 #include "MapCoord.h"
 #include <queue>
 #include "TileSet.h"
 #include "Sol.h"
 #include <vector>
-
-struct LevelCell
-{
-	int16_t minIndex{ -1 };
-	std::shared_ptr<LevelObject> object;
-	int8_t sol{ 0 };
-
-	bool PassableIgnoreObject() const
-	{
-		return !(sol & 0x01);
-	}
-
-	bool Passable() const
-	{
-		// Temporary logic
-		bool passable = PassableIgnoreObject();
-		if (object != nullptr)
-		{
-			return object->Passable();
-		}
-		return passable;
-	}
-};
 
 class LevelMap
 {
@@ -39,7 +16,6 @@ private:
 	static int tileSize;
 
 	std::vector<LevelCell> cells;
-
 	MapCoord mapSize;
 
 	using Coord = decltype(mapSize.x);

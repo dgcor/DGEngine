@@ -1,7 +1,7 @@
 #include "ItemClass.h"
 #include "GameUtils.h"
 
-void ItemClass::setDefault(const char* prop, int16_t val)
+void ItemClass::setDefault(const char* prop, LevelObjValue val)
 {
 	auto propertyHash = str2int16(prop);
 	if (propertyHash == str2int16(""))
@@ -17,6 +17,42 @@ void ItemClass::setDefault(const char* prop, int16_t val)
 		}
 	}
 	defaults.push_back(std::make_pair(propertyHash, val));
+}
+
+LevelObjValue ItemClass::getDefaultByHash(uint16_t propHash) const
+{
+	LevelObjValue value = 0;
+	getDefaultByHash(propHash, value);
+	return value;
+}
+
+LevelObjValue ItemClass::getDefault(const char* prop) const
+{
+	LevelObjValue value = 0;
+	getDefault(prop, value);
+	return value;
+}
+
+bool ItemClass::getDefault(const char* prop, LevelObjValue& value) const
+{
+	if (defaults.empty() == false)
+	{
+		return getDefaultByHash(str2int16(prop), value);
+	}
+	return false;
+}
+
+bool ItemClass::getDefaultByHash(uint16_t propHash, LevelObjValue& value) const
+{
+	for (const auto& prop : defaults)
+	{
+		if (prop.first == propHash)
+		{
+			value = prop.second;
+			return true;
+		}
+	}
+	return false;
 }
 
 bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
@@ -40,7 +76,11 @@ bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
 	}
 	if (hasPrefix == true)
 	{
-		fullName = strPrefix + ' ';
+		fullName = GameUtils::replaceStringWithQueryable(strPrefix, item) + ' ';
+	}
+	else
+	{
+		fullName.clear();
 	}
 	if (shortName.empty() == false)
 	{
@@ -52,7 +92,7 @@ bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
 	}
 	if (hasSuffix == true)
 	{
-		fullName += ' ' + strSuffix;
+		fullName += ' ' + GameUtils::replaceStringWithQueryable(strSuffix, item);
 	}
 	return true;
 }
@@ -76,11 +116,10 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	{
 		return false;
 	}
-	std::string str = namer->getName(item);
-	if (str.empty() == true)
+	description = namer->getName(item);
+	if (description.empty() == false)
 	{
-		return false;
+		description = GameUtils::replaceStringWithQueryable(description, item);
 	}
-	description = GameUtils::replaceStringWithQueryable(str, item);
 	return true;
 }

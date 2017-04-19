@@ -2,6 +2,7 @@
 #include "BitmapText.h"
 #include "FileUtils.h"
 #include "GameUtils.h"
+#include "Json/JsonUtils.h"
 #include "ParseAction.h"
 #include "ParseMenuButton.h"
 #include "StringButton.h"
@@ -11,10 +12,10 @@
 
 namespace Parser
 {
-	typedef std::tuple<unsigned, std::string, Variable> ExcludeObject;
+	typedef std::tuple<uint16_t, std::string, Variable> FilterObject;
 	using namespace rapidjson;
 
-	void parseExcludeObj(const Value& elem, std::vector<ExcludeObject>& list)
+	void parseFilterObj(const Value& elem, std::vector<FilterObject>& list)
 	{
 		if (elem.HasMember("value") == false)
 		{
@@ -22,7 +23,7 @@ namespace Parser
 		}
 		const auto& valElem = elem["value"];
 
-		auto conditionHash = str2int32(getStringCharKey(elem, "if"));
+		auto conditionHash = str2int16(getStringCharKey(elem, "if"));
 		auto property = getStringKey(elem, "property");
 
 		if (valElem.IsArray() == false)
@@ -42,12 +43,12 @@ namespace Parser
 		}
 	}
 
-	std::vector<ExcludeObject> parseExcludeList(const Value& elem)
+	std::vector<FilterObject> parseFilterList(const Value& elem)
 	{
-		std::vector<ExcludeObject> list;
+		std::vector<FilterObject> list;
 		if (elem.IsObject() == true)
 		{
-			parseExcludeObj(elem, list);
+			parseFilterObj(elem, list);
 		}
 		else if (elem.IsArray() == true)
 		{
@@ -55,38 +56,84 @@ namespace Parser
 			{
 				if (val.IsObject() == true)
 				{
-					parseExcludeObj(val, list);
+					parseFilterObj(val, list);
 				}
 			}
 		}
 		return list;
 	}
 
-	bool compareVariables(unsigned conditionHash,
+	void parseAndExecuteMenuAction(Game& game, const Value& elem)
+	{
+		auto action = getActionKey(game, elem, "executeAction");
+		if (action != nullptr)
+		{
+			game.Events().addBack(action);
+		}
+	}
+
+	bool compareVariables(uint16_t conditionHash16,
 		const Variable& var1, const Variable& var2)
 	{
-		switch (conditionHash)
+		switch (conditionHash16)
 		{
 		default:
-		case str2int32("=="):
+		case str2int16("=="):
 			return var1 == var2;
-		case str2int32("!="):
+		case str2int16("!="):
 			return var1 != var2;
-		case str2int32(">"):
+		case str2int16(">"):
 			return var1 > var2;
-		case str2int32(">="):
+		case str2int16(">="):
 			return var1 >= var2;
-		case str2int32("<"):
+		case str2int16("<"):
 			return var1 < var2;
-		case str2int32("<="):
+		case str2int16("<="):
 			return var1 <= var2;
 		}
 	}
 
+	bool getFilterResult(const std::vector<FilterObject>& filterList,
+		const Variable& varToCheck, bool includedOrExcluded)
+	{
+		bool skip = includedOrExcluded;
+		for (const auto& filterObj : filterList)
+		{
+			if (compareVariables(std::get<0>(filterObj),
+				varToCheck,
+				std::get<2>(filterObj)) == true)
+			{
+				skip = !includedOrExcluded;
+				break;
+			}
+		}
+		return skip;
+	}
+
+	bool getFilterResult(const std::vector<FilterObject>& filterList,
+		const Queryable& queryable, bool includedOrExcluded)
+	{
+		bool skip = includedOrExcluded;
+		for (const auto& filterObj : filterList)
+		{
+			Variable varToCheck;
+			if (queryable.getProperty(std::get<1>(filterObj), varToCheck) == true)
+			{
+				if (compareVariables(std::get<0>(filterObj),
+					varToCheck,
+					std::get<2>(filterObj)) == true)
+				{
+					skip = !includedOrExcluded;
+					break;
+				}
+			}
+		}
+		return skip;
+	}
+
 	void parseMenu(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false ||
-			isValidArray(elem, "items") == false)
+		if (isValidString(elem, "id") == false)
 		{
 			return;
 		}
@@ -154,7 +201,9 @@ namespace Parser
 			}
 		}
 
-		for (const auto& val : elem["items"])
+		size_t menuIdx = 0;
+
+		auto processMenuItem = [&](const Value& val)
 		{
 			if (isValidString(val, "load") == true)
 			{
@@ -164,11 +213,17 @@ namespace Parser
 				const auto& uiObjId = props.first;
 				const auto& uiElemProps = props.second;
 
-				std::vector<ExcludeObject> excludeList;
+				std::vector<FilterObject> filterList;
+				bool include = true;
 
 				if (val.HasMember("exclude") == true)
 				{
-					excludeList = parseExcludeList(val["exclude"]);
+					filterList = parseFilterList(val["exclude"]);
+					include = false;
+				}
+				else if (val.HasMember("include") == true)
+				{
+					filterList = parseFilterList(val["include"]);
 				}
 
 				if (uiObjId == "game" && uiElemProps == "saves")
@@ -177,29 +232,23 @@ namespace Parser
 
 					for (const auto& dir : FileUtils::getSaveDirList())
 					{
-						bool skip = false;
-						for (const auto& excludeObj : excludeList)
-						{
-							if (compareVariables(std::get<0>(excludeObj),
-								Variable(dir),
-								std::get<2>(excludeObj)) == true)
-							{
-								skip = true;
-								break;
-							}
-						}
-						if (skip == true)
+						if (filterList.empty() == false &&
+							getFilterResult(filterList, Variable(dir), include) == true)
 						{
 							continue;
 						}
 
 						Value valCopy(val, allocator);
-						replaceValWithString(valCopy, allocator, "%save%", dir);
+						JsonUtils::replaceValueWithString(valCopy, allocator, "%save%", dir);
 
 						parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
 							horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 							fontSize, bitmapFont, sound, focusSound, clickUp,
 							hasFocus, focusOnClick, relativePos, origPos);
+
+						parseAndExecuteMenuAction(game, valCopy);
+
+						menuIdx++;
 					}
 				}
 				else
@@ -214,42 +263,42 @@ namespace Parser
 					}
 					if (level == nullptr)
 					{
-						continue;
+						return;
 					}
-
 					if (uiElemProps == "quests")
 					{
 						MemoryPoolAllocator<CrtAllocator> allocator;
 
-						for (const auto& quest : level->Quests())
+						const auto& quests = level->Quests();
+						for (size_t i = 0; i < quests.size(); i++)
 						{
-							bool skip = false;
-							for (const auto& excludeObj : excludeList)
-							{
-								Variable ignorePropVar;
-								if (quest.getProperty(std::get<1>(excludeObj), ignorePropVar) == true)
-								{
-									if (compareVariables(std::get<0>(excludeObj),
-										ignorePropVar,
-										std::get<2>(excludeObj)) == true)
-									{
-										skip = true;
-										break;
-									}
-								}
-							}
-							if (skip == true)
+							const auto& quest = quests[i];
+
+							if (filterList.empty() == false &&
+								getFilterResult(filterList, quest, include) == true)
 							{
 								continue;
 							}
 
 							Value valCopy(val, allocator);
-							replaceValWithQueryable(valCopy, allocator, quest);
+							JsonUtils::replaceValueWithQueryable(valCopy, allocator, quest,
+								[i, menuIdx, &allocator](Value& valFunc)
+							{
+								JsonUtils::replaceStringWithVariable(
+									valFunc, allocator, "%idx%", Variable((int64_t)i), true);
+
+								JsonUtils::replaceStringWithVariable(
+									valFunc, allocator, "%menuIdx%", Variable((int64_t)menuIdx), true);
+							});
 
 							parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
 								horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 								fontSize, bitmapFont, sound, focusSound, clickUp,
 								hasFocus, focusOnClick, relativePos, origPos);
+
+							parseAndExecuteMenuAction(game, valCopy);
+
+							menuIdx++;
 						}
 					}
 					else
@@ -262,7 +311,7 @@ namespace Parser
 						}
 						if (player == nullptr)
 						{
-							continue;
+							return;
 						}
 						auto props3 = Utils::splitStringIn2(props2.second, '.');
 						auto invIdx = GameUtils::getPlayerInventoryIndex(props3.second);
@@ -277,33 +326,32 @@ namespace Parser
 									continue;
 								}
 								const auto& item = itemCollection[i];
-								bool skip = false;
-								for (const auto& excludeObj : excludeList)
-								{
-									Variable ignorePropVar;
-									if (item->getProperty(std::get<1>(excludeObj), ignorePropVar) == true)
-									{
-										if (compareVariables(std::get<0>(excludeObj),
-											ignorePropVar,
-											std::get<2>(excludeObj)) == true)
-										{
-											skip = true;
-											break;
-										}
-									}
-								}
-								if (skip == true)
+
+								if (filterList.empty() == false &&
+									getFilterResult(filterList, *item, include) == true)
 								{
 									continue;
 								}
 
 								Value valCopy(val, allocator);
-								replaceValWithQueryable(valCopy, allocator, *item);
+								JsonUtils::replaceValueWithQueryable(valCopy, allocator, *item,
+									[i, menuIdx, &allocator](Value& valFunc)
+								{
+									JsonUtils::replaceStringWithVariable(
+										valFunc, allocator, "%idx%", Variable((int64_t)i), true);
+
+									JsonUtils::replaceStringWithVariable(
+										valFunc, allocator, "%menuIdx%", Variable((int64_t)menuIdx), true);
+								});
 
 								parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
 									horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 									fontSize, bitmapFont, sound, focusSound, clickUp,
 									hasFocus, focusOnClick, relativePos, origPos);
+
+								parseAndExecuteMenuAction(game, valCopy);
+
+								menuIdx++;
 							}
 						}
 					}
@@ -315,6 +363,26 @@ namespace Parser
 					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
 					fontSize, bitmapFont, sound, focusSound, clickUp,
 					hasFocus, focusOnClick, relativePos, origPos);
+
+				parseAndExecuteMenuAction(game, val);
+
+				menuIdx++;
+			}
+		};
+
+		if (elem.HasMember("items") == true)
+		{
+			const auto& items = elem["items"];
+			if (items.IsObject() == true)
+			{
+				processMenuItem(items);
+			}
+			else if (items.IsArray() == true)
+			{
+				for (const auto& val : elem["items"])
+				{
+					processMenuItem(val);
+				}
 			}
 		}
 
@@ -336,6 +404,7 @@ namespace Parser
 			menu->setAction(str2int16("scrollUp"), parseAction(game, elem["onScrollUp"]));
 		}
 
+		menu->updateVisibleItems();
 		menu->calculatePositions();
 
 		game.Resources().addDrawable(id, menu);

@@ -59,10 +59,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Cain",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/cain/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/cain/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -80,11 +77,12 @@
       "horizontalSpaceOffset": 1,
       "text": "Identify an Item",
       "onClick": [
-        { "name": "resource.popAll", "id": "userPanelFrame" },
-        { "name": "resource.add", "id": "userPanelFrame" },
-        { "name": "load", "file": "ui/level/panelBig.json" },
-        { "name": "load", "file": "towners/cain/panelIdentifyCommon.json" },
-        { "name": "load", "file": "towners/cain/panelIdentify.json" }
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/cain/identify/common.json" },
+        { "name": "load", "file": "towners/cain/identify/panel.json" }
       ],
       "onFocus": [
         "anchorLeftPentagram",

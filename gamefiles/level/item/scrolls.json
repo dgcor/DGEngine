@@ -10,6 +10,7 @@
       "name": "Scroll",
       "type": "Scroll",
       "defaults": {
+        "price": 50,
         "identified": true
       },
       "description1": "rightClickToRead2",

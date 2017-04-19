@@ -26,6 +26,7 @@ private:
 	bool visible{ true };
 
 public:
+	void updateVisibleItems();
 	void calculatePositions();
 
 	void addItem(const std::shared_ptr<StringButton>& item)
@@ -38,11 +39,15 @@ public:
 	}
 	StringButton* getItem(size_t idx) const
 	{
-		if (idx > 0 && idx <= items.size())
+		if (idx < items.size())
 		{
-			return items[idx - 1].get();
+			return items[idx].get();
 		}
 		return nullptr;
+	}
+	StringButton* getVisibleItem(size_t idx) const
+	{
+		return getItem(start + idx);
 	}
 	size_t getItemCount() const { return items.size(); }
 	size_t getItemPosition(const Button* item) const
@@ -119,6 +124,18 @@ public:
 			{
 				visibleItems = newVal;
 				recalculatePos = true;
+			}
+		}
+	}
+
+	void setCurrentIdx(size_t idx)
+	{
+		if (idx < items.size())
+		{
+			currentIdx = idx;
+			if (idx < start || idx >= end)
+			{
+				recalculateVisiblePos = true;
 			}
 		}
 	}

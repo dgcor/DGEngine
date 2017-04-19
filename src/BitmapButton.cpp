@@ -13,9 +13,6 @@ void BitmapButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 	case str2int16("doubleClick"):
 		doubleClickAction = action;
 		return;
-	case str2int16("toggle"):
-		toggleAction = action;
-		return;
 	case str2int16("clickDrag"):
 		clickDragAction = action;
 		return;
@@ -57,30 +54,14 @@ void BitmapButton::click(Game& game, bool playSound)
 		{
 			game.addPlayingSound(clickSound.get());
 		}
-		if (toggleAction == nullptr)
-		{
-			game.Events().addBack(clickAction);
-		}
-		else
-		{
-			if (toggled == false)
-			{
-				toggled = true;
-				game.Events().addBack(clickAction);
-			}
-			else
-			{
-				toggled = false;
-				game.Events().addBack(toggleAction);
-			}
-		}
+		game.Events().addBack(clickAction);
 	}
 }
 
-void BitmapButton::focus(Game& game)
+void BitmapButton::focus(Game& game) const
 {
 	game.addPlayingSound(focusSound.get());
-	game.Events().addBack(focusAction);
+	game.Events().addFront(focusAction);
 }
 
 void BitmapButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -207,5 +188,5 @@ bool BitmapButton::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int32(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
 }

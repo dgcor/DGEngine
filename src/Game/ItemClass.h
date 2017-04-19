@@ -30,7 +30,7 @@ private:
 	std::string name;
 	std::string shortName;
 	std::string type;
-	unsigned typeHash;
+	uint16_t typeHash16;
 
 	std::vector<LevelObjProperty> defaults;
 
@@ -103,12 +103,26 @@ public:
 	void setActionPickInventory(const std::shared_ptr<Action>& action_) { actionPickInventory = action_; }
 
 	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
-	void setDefault(const char* prop, int16_t val);
+	void setDefault(const char* prop, LevelObjValue val);
+
+	LevelObjValue getDefaultByHash(uint16_t propHash) const;
+	LevelObjValue getDefault(const char* prop) const;
+	LevelObjValue getDefault(const std::string& prop) const
+	{
+		return getDefault(prop.c_str());
+	}
+
+	bool getDefaultByHash(uint16_t propHash, LevelObjValue& value) const;
+	bool getDefault(const char* prop, LevelObjValue& value) const;
+	bool getDefault(const std::string& prop, LevelObjValue& value) const
+	{
+		return getDefault(prop.c_str(), value);
+	}
 
 	const std::string& Name() const { return name; }
 	const std::string& ShortName() const { return shortName; }
 	const std::string& Type() const { return type; }
-	unsigned TypeHash() const { return typeHash; }
+	uint16_t TypeHash16() const { return typeHash16; }
 	const ItemXY& InventorySize() const { return inventorySize; }
 
 	void Name(const std::string& name_) { name = name_; }
@@ -116,7 +130,7 @@ public:
 	void Type(const std::string& type_)
 	{
 		type = type_;
-		typeHash = str2int32(Utils::toLower(type_).c_str());
+		typeHash16 = str2int16(Utils::toLower(type_).c_str());
 	}
 	void InventorySize(const ItemXY& inventorySize_) { inventorySize = inventorySize_; }
 

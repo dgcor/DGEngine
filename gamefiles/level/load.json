@@ -25,6 +25,7 @@
               "param2": "positionPlayer",
               "then": { "name": "load", "file": ["level/positionPlayer.json", "{4}"] }
             },
+            { "name": "load", "file": "ui/level/char/updateVisiblePanels.json" },
             { "name": "load", "file": "level/playOrStopMusic.json" },
             { "name": "load", "file": ["level/setMapAction.json", "{2}"] }
           ]

@@ -1,0 +1,113 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "charPanelQuests" },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent1", "anchor": "left", "offset": [-6, 1] }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right", "offset": [6, 1] }
+    }
+  ],
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "closeQuestLog" }
+    }
+  ],
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "left",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "left",
+      "refresh": 50
+    }
+  ],
+  "menu": {
+    "id": "menuQuests",
+    "bitmapFont": "smaltext",
+    "position": [160, 130],
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "anchor": "left",
+    "focus": true,
+    "focusSound": "titlemov",
+    "visibleItems": 7,
+    "size": [270, 164],
+    "verticalPad": 14,
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": {
+      "load": "currentLevel|quests",
+      "text": "%name%",
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": { "name": "file.exists", "file": "texts/quests/%id%.json" },
+          "param2": true,
+          "then": [
+            { "name": "game.clearPlayingSounds" },
+            { "name": "button.click", "id": "quest" },
+            { "name": "load", "file": "texts/quests/%id%.json" }
+          ]
+        },
+        { "name": "sound.play", "id": "titlslct" }
+      ],
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram"
+      ]
+    }
+  },
+  "button": {
+    "id": "closeQuestLog",
+    "anchor": "left",
+    "bitmapFont": "smaltext",
+    "focus": true,
+    "focusSound": "titlemov",
+    "position": [160, 298],
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "sound": "titlslct",
+    "text": "Close Quest Log",
+    "onClick": { "name": "button.click", "id": "quest" },
+    "onFocus": [
+      "anchorLeftPentagram",
+      "anchorRightPentagram"
+    ]
+  },
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
+  ]
+}

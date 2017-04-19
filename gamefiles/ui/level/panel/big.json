@@ -1,0 +1,40 @@
+{
+  "button": {
+    "id": "background",
+    "texture": "empty",
+    "anchor": "all",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "captureScrollEvent": true
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "position": [27, 28],
+      "anchor": "none",
+      "textureRect": [585, 300],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder1",
+      "position": [24, 25],
+      "anchor": "none",
+      "textureRect": [195, 303],
+      "texture": "textbox2"
+    },
+    {
+      "id": "textWallBorder2",
+      "position": [219, 25],
+      "anchor": "none",
+      "textureRect": [3, 0, 201, 303],
+      "texture": "textbox2"
+    },
+    {
+      "id": "textWallBorder3",
+      "position": [420, 25],
+      "anchor": "none",
+      "textureRect": [76, 0, 195, 303],
+      "texture": "textbox2"
+    }
+  ]
+}

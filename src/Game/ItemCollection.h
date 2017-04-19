@@ -11,7 +11,7 @@ class ItemCollection
 private:
 	std::vector<std::shared_ptr<Item>> items;
 	ItemXY size;
-	std::vector<uint32_t> allowedTypes;
+	std::vector<uint16_t> allowedTypes;
 	bool enforceItemSize{ false };
 
 	bool setAndDontEnforceItemSize(size_t idx,
@@ -58,16 +58,23 @@ public:
 	void allowType(const std::string& type);
 
 	bool isTypeAllowed(const std::string& type) const;
-	bool isTypeAllowed(uint32_t typeHash) const;
+	bool isTypeAllowed(uint16_t typeHash16) const;
 
 	size_t getIndex(size_t x, size_t y) const { return x + y * size.x; }
 	size_t getIndex(const ItemXY& pos) const { return getIndex(pos.x, pos.y); }
 
 	const std::shared_ptr<Item>& operator[] (size_t idx) const { return items[idx]; }
 
-	const std::shared_ptr<Item>& get(size_t idx) const { return items[idx]; }
-	const std::shared_ptr<Item>& get(size_t x, size_t y) const { return items[x + y * size.x]; }
-	const std::shared_ptr<Item>& get(const ItemXY& pos) const { return get(pos.x, pos.y); }
+	std::shared_ptr<Item> get(size_t idx) const
+	{
+		if (idx < items.size())
+		{
+			return items[idx];
+		}
+		return nullptr;
+	}
+	std::shared_ptr<Item> get(size_t x, size_t y) const { return get(x + y * size.x); }
+	std::shared_ptr<Item> get(const ItemXY& pos) const { return get(pos.x, pos.y); }
 
 	bool set(size_t idx, const std::shared_ptr<Item>& item);
 	bool set(size_t idx, const std::shared_ptr<Item>& item,
@@ -82,8 +89,15 @@ public:
 	bool isItemSlotInUse(size_t idx) const;
 	bool isItemSlotInUse(const ItemXY& position) const;
 
-	bool getItemSlot(const ItemXY& itemSize, size_t& itemIdx,
+	bool getItemSlot(const Item& item, size_t& itemIdx,
 		InventoryPosition invPos = InventoryPosition::TopLeft) const;
+
+	bool hasItemSlot(const Item& item) const;
+
+	bool find(uint16_t itemTypeHash16,
+		size_t& idx, std::shared_ptr<Item>& item) const;
+
+	unsigned countFreeSlots(const ItemClass& itemClass) const;
 
 	bool getProperty(const std::string& prop, Variable& var) const;
 };

@@ -2,10 +2,9 @@
   "item": [
     {
       "class": "shortSword",
-      "name": "Short Sword",
       "properties": {
         "requiredStrength": 5,
-        "strength": 5,
+        "toStrength": 5,
         "toDamage": 120,
         "identified": false,
         "magic": true
@@ -18,27 +17,33 @@
     },
     {
       "class": "ring",
-      "mapPosition": [58, 73]
+      "mapPosition": [58, 73],
+      "properties": {
+        "toStrength": 5
+      }
     },
     {
-      "class": "manaPotion",
+      "class": "potionOfMana",
       "mapPosition": [59, 73]
     },
     {
-      "class": "manaPotion",
+      "class": "potionOfRejuvenation",
       "mapPosition": [56, 70]
     },
     {
-      "class": "manaPotion",
+      "class": "potionOfFullRejuvenation",
       "mapPosition": [57, 70]
     },
     {
-      "class": "manaPotion",
+      "class": "potionOfMana",
       "mapPosition": [58, 70]
     },
     {
       "class": "amulet",
-      "mapPosition": [60, 73]
+      "mapPosition": [60, 73],
+      "properties": {
+        "resistAll": 10
+      }
     },
     {
       "class": "gothicPlate",
@@ -46,11 +51,17 @@
     },
     {
       "class": "cap",
-      "mapPosition": [62, 73]
+      "mapPosition": [62, 73],
+      "properties": {
+        "durability": 12
+      }
     },
     {
       "class": "cape",
-      "mapPosition": [63, 73]
+      "mapPosition": [63, 73],
+      "properties": {
+        "durability": 8
+      }
     },
     {
       "class": "valorArmor",
@@ -78,16 +89,32 @@
       "mapPosition": [60, 74]
     },
     {
-      "class": "fullHealthPotion",
+      "class": "potionOfFullHealing",
       "mapPosition": [61, 74]
     },
     {
-      "class": "fullManaPotion",
+      "class": "potionOfFullMana",
       "mapPosition": [62, 74]
     },
     {
       "class": "scroll",
       "mapPosition": [63, 74]
+    },
+    {
+      "class": "shortStaff",
+      "mapPosition": [59, 75],
+      "properties": {
+        "price": 120,
+        "charges": 12,
+        "chargesMax": 35
+      }
+    },
+    {
+      "class": "gold",
+      "mapPosition": [60, 75],
+      "properties": {
+        "gold": 4800
+      }
     }
   ]
 }

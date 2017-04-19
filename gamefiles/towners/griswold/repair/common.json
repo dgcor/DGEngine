@@ -1,0 +1,60 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "userPanelRepairCommon" },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram2",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent1",
+        "anchor": "topLeft",
+        "offset": [-8, 12]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram2",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent2",
+        "anchor": "topRight",
+        "offset": [5, 12]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": "anchorLeftPentagram2"
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": "anchorRightPentagram2"
+    },
+    {
+      "name": "action.set",
+      "id": "inventoryFull",
+      "action": [
+        { "name": "resource.ignore", "id": "userPanelRepair", "ignore": true },
+        { "name": "load", "file": "ui/level/panel/big/inventoryFull.json" },
+        { "name": "load", "file": "ui/level/panel/big/upperSeparator.json" },
+        {
+          "name": "drawable.setAction",
+          "id": "back",
+          "event": "click",
+          "action": { "name": "resource.popAll", "id": "panelBigInventoryFull" }
+        }
+      ]
+    }
+  ],
+  "text": {
+    "id": "panelTitle",
+    "replaceVars": true,
+    "bitmapFont": "smaltext",
+    "color": "%textGold%",
+    "position": [320, 46],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1
+  }
+}

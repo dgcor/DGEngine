@@ -13,7 +13,8 @@ enum class InventoryPosition : size_t
 	Size
 };
 
-typedef std::pair<uint16_t, int16_t> LevelObjProperty;
+typedef int32_t LevelObjValue;
+typedef std::pair<uint16_t, LevelObjValue> LevelObjProperty;
 
 enum class PlayerDirection : size_t
 {

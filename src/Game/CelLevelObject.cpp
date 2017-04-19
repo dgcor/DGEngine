@@ -72,15 +72,15 @@ bool CelLevelObject::getProperty(const std::string& prop, Variable& var) const
 	{
 		return false;
 	}
-	switch (str2int32(prop.c_str()))
+	switch (str2int16(prop.c_str()))
 	{
-	case str2int32("type"):
+	case str2int16("type"):
 		var = Variable(std::string("levelObject"));
 		break;
-	case str2int32("id"):
+	case str2int16("id"):
 		var = Variable(id);
 		break;
-	case str2int32("name"):
+	case str2int16("name"):
 		var = Variable(name);
 		break;
 	default:

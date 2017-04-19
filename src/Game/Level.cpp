@@ -2,7 +2,6 @@
 #include "Game.h"
 #include "Game/LevelHelper.h"
 #include "GameUtils.h"
-#include <iostream>
 #include "Utils.h"
 
 void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
@@ -165,7 +164,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (Coord y = 0; y < map.Height(); y++)
 		{
-			size_t index = map[x][y].minIndex;
+			size_t index = map[x][y].MinIndex();
 			auto coords = map.getCoord(MapCoord(x, y));
 
 			if (drawRect.contains(coords) == true &&
@@ -182,15 +181,17 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (Coord y = 0; y < map.Height(); y++)
 		{
-			size_t index = map[x][y].minIndex;
+			size_t index = map[x][y].MinIndex();
 			auto coords = map.getCoord(MapCoord(x, y));
 
 			if (drawRect.contains(coords) == true)
 			{
-				auto drawObj = map[x][y].object.get();
-				if (drawObj != nullptr)
+				for (const auto& drawObj : map[x][y])
 				{
-					target.draw(*drawObj, states);
+					if (drawObj != nullptr)
+					{
+						target.draw(*drawObj, states);
+					}
 				}
 				if (index < tiles2.size())
 				{
@@ -297,17 +298,17 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int32(props.first.c_str());
+	auto propHash = str2int16(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int32("clickedObject"):
+	case str2int16("clickedObject"):
 	{
 		if (clickedObject != nullptr)
 		{
 			return clickedObject->getProperty(props.second, var);
 		}
 	}
-	case str2int32("currentPlayer"):
+	case str2int16("currentPlayer"):
 	{
 		if (currentPlayer != nullptr)
 		{
@@ -315,7 +316,7 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int32("hoverObject"):
+	case str2int16("hoverObject"):
 	{
 		if (hoverObject != nullptr)
 		{
@@ -323,11 +324,11 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int32("name"):
+	case str2int16("name"):
 		var = Variable(name);
 		return true;
 		break;
-	case str2int32("player"):
+	case str2int16("player"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
 		for (const auto& player : players)
@@ -339,7 +340,7 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
-	case str2int32("quest"):
+	case str2int16("quest"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
 		for (const auto& quest : quests)
@@ -350,11 +351,11 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 			}
 		}
 	}
-	case str2int32("zoom"):
+	case str2int16("zoom"):
 		var = Variable((double)stopZoomFactor);
 		return true;
 		break;
-	case str2int32("zoomPercentage"):
+	case str2int16("zoomPercentage"):
 		var = Variable((int64_t)(std::roundf(stopZoomFactor * 100.f)));
 		return true;
 		break;
@@ -371,28 +372,28 @@ const Queryable* Level::getQueryable(const std::string& prop) const
 		return this;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int32(props.first.c_str());
+	auto propHash = str2int16(props.first.c_str());
 	const Queryable* queryable = nullptr;
 	switch (propHash)
 	{
-	case str2int32("clickedObject"):
+	case str2int16("clickedObject"):
 	{
 		queryable = clickedObject;
 		break;
 	}
-	case str2int32("currentPlayer"):
+	case str2int16("currentPlayer"):
 	{
 		queryable = currentPlayer;
 		break;
 	}
 	break;
-	case str2int32("hoverObject"):
+	case str2int16("hoverObject"):
 	{
 		queryable = hoverObject;
 		break;
 	}
 	break;
-	case str2int32("player"):
+	case str2int16("player"):
 	{
 		props = Utils::splitStringIn2(props.second, '.');
 		for (const auto& player : players)
@@ -405,7 +406,7 @@ const Queryable* Level::getQueryable(const std::string& prop) const
 		}
 	}
 	break;
-	case str2int32("quest"):
+	case str2int16("quest"):
 	{
 		props = Utils::splitStringIn2(props.second, '.');
 		for (const auto& quest : quests)
@@ -476,16 +477,7 @@ void Level::clearPlayers(size_t clearIdx)
 
 std::shared_ptr<Item> Level::getItem(const MapCoord& mapCoord) const
 {
-	auto mapObj = map[mapCoord.x][mapCoord.y].object;
-	if (mapObj != nullptr)
-	{
-		std::shared_ptr<Item> item = std::dynamic_pointer_cast<Item>(mapObj);
-		if (item != nullptr)
-		{
-			return item;
-		}
-	}
-	return nullptr;
+	return map[mapCoord.x][mapCoord.y].getObject<Item>();
 }
 
 std::shared_ptr<Item> Level::getItem(const ItemCoordInventory& itemCoord) const
@@ -525,22 +517,22 @@ std::shared_ptr<Item> Level::getItem(const ItemLocation& location) const
 bool Level::setItem(const MapCoord& mapCoord, const std::shared_ptr<Item>& item)
 {
 	auto& mapCel = map[mapCoord.x][mapCoord.y];
+	auto oldItem = mapCel.getObject<Item>();
 	if (item == nullptr)
 	{
-		if (mapCel.object != nullptr &&
-			dynamic_cast<Item*>(mapCel.object.get()) != nullptr)
+		if (oldItem != nullptr)
 		{
-			deleteLevelObject(mapCel.object.get());
+			deleteLevelObject(oldItem.get());
+			mapCel.deleteObject(oldItem.get());
 		}
-		mapCel.object = nullptr;
 		return true;
 	}
 	if (mapCel.Passable() == true
-		&& mapCel.object == nullptr)
+		&& oldItem == nullptr)
 	{
 		item->MapPosition(mapCoord);
 		item->updateDrawPosition(*this);
-		mapCel.object = item;
+		mapCel.addFront(item);
 		addLevelObject(item);
 		return true;
 	}
@@ -571,7 +563,10 @@ bool Level::setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<I
 				itemIdx = itemCoord.getItemIdx();
 			}
 			std::shared_ptr<Item> oldItem;
-			return inventory.set(itemIdx, item, oldItem);
+			auto ret = inventory.set(itemIdx, item, oldItem);
+			player->updateGoldRemove(oldItem);
+			player->updateGoldAdd(item);
+			return ret;
 		}
 	}
 	return false;
@@ -630,11 +625,11 @@ void Level::updateLevelObjectPositions()
 	for (auto& obj : levelObjects)
 	{
 		const auto& mapPosition = obj->MapPosition();
-		map[mapPosition.x][mapPosition.y].object = obj;
+		map[mapPosition.x][mapPosition.y].addBack(obj);
 	}
 	for (auto& obj : players)
 	{
 		const auto& mapPosition = obj->MapPosition();
-		map[mapPosition.x][mapPosition.y].object = obj;
+		map[mapPosition.x][mapPosition.y].addBack(obj);
 	}
 }

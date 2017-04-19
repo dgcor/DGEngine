@@ -70,10 +70,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Pepin",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/pepin/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/pepin/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -110,6 +107,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Buy Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/pepin/buy/common.json" },
+        { "name": "load", "file": "towners/pepin/buy/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

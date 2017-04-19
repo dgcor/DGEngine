@@ -6,8 +6,9 @@
     "show": false
   },
   "action": {
-    "name": "if.fileExists",
-    "param1": "ui_art/cursor.pcx",
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "ui_art/cursor.pcx" },
+    "param2": true,
     "else": { "name": "variable.set", "key": "beta", "val": true }
   },
   "load": "res/actions.json",

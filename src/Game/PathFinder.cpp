@@ -4,7 +4,10 @@
 
 bool MapSearchNode::IsPassableIgnoreObject()
 {
-	if (x < map->Width() && y < map->Height())
+	if (x >= 0 &&
+		x < map->Width() &&
+		y >= 0 &&
+		y < map->Height())
 	{
 		return (*map)[(Coord)x][(Coord)y].PassableIgnoreObject();
 	}
@@ -13,7 +16,10 @@ bool MapSearchNode::IsPassableIgnoreObject()
 
 bool MapSearchNode::IsPassable(int16_t x_, int16_t y_)
 {
-	if (x_ < map->Width() && y_ < map->Height())
+	if (x_ >= 0 &&
+		x_ < map->Width() &&
+		y_ >= 0 &&
+		y_ < map->Height())
 	{
 		return (*map)[(Coord)x_][(Coord)y_].Passable();
 	}
@@ -95,15 +101,7 @@ float MapSearchNode::GetCost(MapSearchNode& successor)
 {
 	if (IsPassable(x, y) == true)
 	{
-		auto obj = (*map)[(Coord)x][(Coord)y].object.get();
-		if (obj == nullptr)
-		{
-			return 1.f;
-		}
-		//else if (obj->Passable() == true)
-		//{
-		//	return 1.f;
-		//}
+		return 1.f;
 	}
 	return 9.f;
 }

@@ -1,0 +1,25 @@
+{
+  "load": "ui/level/panel/big/upperSeparator.json",
+  "load": "ui/level/panel/big/lowerSeparator.json",
+  "action": [
+    {
+      "name": "focus.add",
+      "id": "back",
+      "focus": true
+    },
+    {
+      "name": "drawable.anchor",
+      "id": "pent1",
+      "idAnchor": "back",
+      "anchor": "left",
+      "offset": [-8, 1]
+    },
+    {
+      "name": "drawable.anchor",
+      "id": "pent2",
+      "idAnchor": "back",
+      "anchor": "right",
+      "offset": [5, 1]
+    }
+  ]
+}

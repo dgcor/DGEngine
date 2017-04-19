@@ -5,15 +5,18 @@
 #include "Game.h"
 #include "Menu.h"
 #include <string>
+#include "Variable.h"
 
 class ActMenuClick : public Action
 {
 private:
 	std::string id;
 	size_t idx;
+	bool playSound;
 
 public:
-	ActMenuClick(const std::string& id_, size_t idx_) : id(id_), idx(idx_) {}
+	ActMenuClick(const std::string& id_, size_t idx_, bool playSound_)
+		: id(id_), idx(idx_), playSound(playSound_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -23,7 +26,33 @@ public:
 			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
-				button->click(game, true);
+				button->click(game, playSound);
+			}
+		}
+		return true;
+	}
+};
+
+class ActMenuClickVisible : public Action
+{
+private:
+	std::string id;
+	size_t idx;
+	bool playSound;
+
+public:
+	ActMenuClickVisible(const std::string& id_, size_t idx_, bool playSound_)
+		: id(id_), idx(idx_), playSound(playSound_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
+		{
+			auto button = menu->getVisibleItem(idx);
+			if (button != nullptr)
+			{
+				button->click(game, playSound);
 			}
 		}
 		return true;
@@ -59,7 +88,7 @@ public:
 			{
 				auto offset = scrollBar->DrawPosition().y - pos.y;
 				auto menuIdx = (size_t)std::round((offset * (float)(itemCount - 1)) / (float)newRange);
-				auto btn = menu->getItem(menuIdx + 1);
+				auto btn = menu->getItem(menuIdx);
 				if (btn != nullptr)
 				{
 					auto focused = game.Resources().getFocused();
@@ -150,6 +179,43 @@ public:
 					}
 				}
 			}
+		}
+		return true;
+	}
+};
+
+class ActMenuSetIndex : public Action
+{
+private:
+	std::string id;
+	Variable idxVar;
+
+public:
+	ActMenuSetIndex(const std::string& id_, const Variable& idxVar_)
+		: id(id_), idxVar(idxVar_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
+		{
+			size_t idx = 0;
+			if (idxVar.is<int64_t>() == true)
+			{
+				idx = (size_t)idxVar.get<int64_t>();
+			}
+			else if (idxVar.is<std::string>() == true)
+			{
+				Variable var;
+				if (game.getVarOrProp(idxVar.get<std::string>(), var) == true)
+				{
+					if (var.is<int64_t>() == true)
+					{
+						idx = (size_t)var.get<int64_t>();
+					}
+				}
+			}
+			menu->setCurrentIdx(idx);
 		}
 		return true;
 	}

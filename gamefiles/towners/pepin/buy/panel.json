@@ -1,0 +1,170 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "userPanelBuy" },
+    {
+      "name": "action.set",
+      "id": "mainMenu.moveScrollbar",
+      "action": [
+        {
+          "name": "menu.moveScrollbar",
+          "idMenu": "mainMenu",
+          "idScrollbar": "sb_thumb",
+          "idAnchorTo": "btnDrag",
+          "range": 180
+        },
+        {
+          "name": "menu.setIndex",
+          "id": "menuPrices",
+          "index": "|mainMenu|currentIdx|"
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": {
+        "name": "drawable.verticalAnchorToFocused",
+        "id": "pent1"
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": {
+        "name": "drawable.verticalAnchorToFocused",
+        "id": "pent2"
+      }
+    }
+  ],
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [32, 94],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [575, 94],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "menu": {
+    "id": "mainMenu",
+    "replaceVars": true,
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "position": [52, 94],
+    "horizontalSpaceOffset": 1,
+    "verticalSpaceOffset": 2,
+    "anchor": "none",
+    "focus": true,
+    "focusOnClick": false,
+    "focusSound": "titlemov",
+    "visibleItems": 4,
+    "size": [518, 186],
+    "verticalPad": 26,
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": {
+      "load": "currentLevel|pepin.inventory.0",
+      "text": "%name%\n  %d.0%,  %d.3%",
+      "onClick": {
+        "name": "load",
+        "file": ["towners/pepin/buy/confirm.json", 0, "%idx%"]
+      },
+      "onFocus": [
+        "anchorLeftPentagram",
+        "anchorRightPentagram",
+        "mainMenu.moveScrollbar"
+      ],
+      "executeAction": {
+        "name": "if.equal",
+        "param1": {
+          "name": "player.canEquipItem",
+          "item": { "playerId": "pepin", "inventory": 0, "item": "%idx%" }
+        },
+        "param2": false,
+        "then": {
+          "name": "menu.setColor",
+          "id": "mainMenu",
+          "index": "%menuIdx%",
+          "color": "%textRed%"
+        },
+        "else": {
+          "name": "if.equal",
+          "param1": "|currentLevel|player.pepin.item.0.%idx%.unique|",
+          "param2": 1,
+          "then": {
+            "name": "menu.setColor",
+            "id": "mainMenu",
+            "index": "%menuIdx%",
+            "color": "%textGold%"
+          },
+          "else": {
+            "name": "if.equal",
+            "param1": "|currentLevel|player.pepin.item.0.%idx%.magic|",
+            "param2": 1,
+            "then": {
+              "name": "menu.setColor",
+              "id": "mainMenu",
+              "index": "%menuIdx%",
+              "color": "%textBlue%"
+            },
+            "else": {
+              "name": "menu.setColor",
+              "id": "mainMenu",
+              "index": "%menuIdx%"
+            }
+          }
+        }
+      }
+    }
+  },
+  "button": {
+    "id": "back",
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "position": [320, 304],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "Back",
+    "onClick": [
+      { "name": "resource.popAll", "id": "userPanelBigFrame" },
+      { "name": "resource.ignore", "id": "userPanel", "ignore": false }
+    ],
+    "onFocus": [
+      "anchorLeftPentagram",
+      "anchorRightPentagram"
+    ]
+  },
+  "action": {
+    "name": "if.notEqual",
+    "param1": "|mainMenu|itemCount|",
+    "param2": 0,
+    "then": [
+      {
+        "name": "text.setText",
+        "id": "panelTitle",
+        "binding": "|currentLevel|currentPlayer.gold|",
+        "format": "I have these items for sale :           Your gold : [1]"
+      },
+      { "name": "load", "file": "towners/pepin/buy/listItems.json" }
+    ],
+    "else": [
+      {
+        "name": "text.setText",
+        "id": "panelTitle",
+        "binding": "|currentLevel|currentPlayer.gold|",
+        "format": "I have no more items for sale.          Your gold : [1]"
+      },
+      { "name": "load", "file": "towners/pepin/buy/noItems.json" }
+    ]
+  }
+}

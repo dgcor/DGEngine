@@ -1,0 +1,46 @@
+{
+  "action": { "name": "resource.add", "id": "panelBigNoGold" },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": {
+    "id": "back",
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "position": [320, 202],
+    "anchor": "none",
+    "focus": true,
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "You do not have enough gold"
+  },
+  "action": [
+    {
+      "name": "drawable.anchor",
+      "id": "pent1",
+      "idAnchor": "back",
+      "anchor": "left",
+      "offset": [-8, 1]
+    },
+    {
+      "name": "drawable.anchor",
+      "id": "pent2",
+      "idAnchor": "back",
+      "anchor": "right",
+      "offset": [5, 1]
+    }
+  ]
+}

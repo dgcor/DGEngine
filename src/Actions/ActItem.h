@@ -15,6 +15,27 @@ static void updateCursorWithItemImage(Game& game, const Item& item, bool equiped
 	game.updateCursorPosition();
 }
 
+class ActItemDelete : public Action
+{
+private:
+	std::string idLevel;
+	ItemLocation itemLocation;
+
+public:
+	ActItemDelete(const std::string& idLevel_, const ItemLocation& itemLocation_)
+		: idLevel(idLevel_), itemLocation(itemLocation_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			level->setItem(itemLocation, nullptr);
+		}
+		return true;
+	}
+};
+
 class ActItemDrop : public Action
 {
 private:
@@ -157,12 +178,12 @@ public:
 						else if (itemCoord.getInventoryIdx() < player->getInventorySize())
 						{
 							auto& inventory = player->getInventory(itemCoord.getInventoryIdx());
-							auto itemSize = item->Class()->InventorySize();
 							size_t itemIdx = 0;
-							if (inventory.getItemSlot(itemSize, itemIdx, invPos) == true)
+							if (inventory.getItemSlot(*item, itemIdx, invPos) == true)
 							{
 								level->setItem(mapPos, nullptr);
 								inventory.set(itemIdx, item);
+								player->updateGoldAdd(item);
 								executePickFromLevelAction(game, *item);
 							}
 							else
@@ -172,6 +193,127 @@ public:
 									game.Events().addBack(inventoryFullAction);
 								}
 							}
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActItemMove : public Action
+{
+private:
+	std::string idLevel;
+	ItemLocation from;
+	ItemLocation to;
+
+public:
+	ActItemMove(const std::string& idLevel_, const ItemLocation& from_,
+		const ItemLocation& to_) : idLevel(idLevel_), from(from_), to(to_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto item = level->getItem(from);
+			if (item != nullptr)
+			{
+				level->setItem(from, nullptr);
+			}
+			level->setItem(to, item);
+		}
+		return true;
+	}
+};
+
+class ActItemSetProperty : public Action
+{
+private:
+	ItemLocation itemLocation;
+	std::string idLevel;
+	std::string prop;
+	Variable value;
+
+public:
+	ActItemSetProperty(const ItemLocation& itemLocation_, const std::string& idLevel_,
+		const std::string& prop_, const Variable& value_) : itemLocation(itemLocation_),
+		idLevel(idLevel_), prop(prop_), value(value_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto item = level->getItem(itemLocation);
+			if (item != nullptr)
+			{
+				Variable prop2(prop);
+				game.getVarOrProp(prop, prop2);
+				if (prop2.is<std::string>() == true)
+				{
+					const auto& propVal = prop2.get<std::string>();
+					auto value2 = value;
+					if (value2.is<std::string>() == true)
+					{
+						game.getVarOrProp(value2.get<std::string>(), value2);
+					}
+					item->setProperty(propVal, value2);
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActItemTrade : public Action
+{
+private:
+	std::string idLevel;
+	std::string idPlayer;
+	ItemCoordInventory itemCoord;
+	InventoryPosition invPos;
+	std::shared_ptr<Action> inventoryFullAction;
+
+public:
+	ActItemTrade(const std::string& idLevel_, const std::string& idPlayer_,
+		const ItemCoordInventory& itemCoord_, InventoryPosition invPos_)
+		: idLevel(idLevel_), idPlayer(idPlayer_), itemCoord(itemCoord_),
+		invPos(invPos_) {}
+
+	void setInventoryFullAction(const std::shared_ptr<Action>& action_)
+	{
+		inventoryFullAction = action_;
+	}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto buyer = level->getPlayerOrCurrent(idPlayer);
+			auto seller = level->getPlayerOrCurrent(itemCoord.getPlayerId());
+			if (buyer != nullptr &&
+				seller != nullptr &&
+				buyer != seller)
+			{
+				auto item = level->getItem(itemCoord);
+				if (item != nullptr)
+				{
+					size_t invIdx = 0;
+					size_t itemIdx = 0;
+					if (buyer->getItemSlot(*item, invIdx, itemIdx, invPos) == true)
+					{
+						level->setItem(ItemCoordInventory(idPlayer, invIdx, itemIdx), item);
+						level->setItem(itemCoord, nullptr);
+					}
+					else
+					{
+						if (inventoryFullAction != nullptr)
+						{
+							game.Events().addBack(inventoryFullAction);
 						}
 					}
 				}
@@ -219,6 +361,8 @@ public:
 						std::shared_ptr<Item> oldItem;
 						if (inventory.set(itemIdx, selectedItem, oldItem) == true)
 						{
+							player->updateGoldAdd(selectedItem);
+							player->updateGoldRemove(oldItem);
 							player->SelectedItem(oldItem);
 							if (game.Resources().cursorCount() > 1)
 							{
@@ -246,6 +390,7 @@ public:
 						if (oldItem != nullptr)
 						{
 							inventory.set(itemIdx, nullptr);
+							player->updateGoldRemove(oldItem);
 							player->SelectedItem(oldItem);
 							updateCursorWithItemImage(game, *oldItem,
 								player->canEquipItem(*oldItem));

@@ -12,6 +12,7 @@
       "shortName": "Dagger",
       "type": "Sword",
       "defaults": {
+        "price": 60,
         "damageMin": 1,
         "damageMax": 4,
         "durability": 16,
@@ -35,6 +36,7 @@
       "name": "Short Sword",
       "shortName": "Sword",
       "defaults": {
+        "price": 120,
         "damageMin": 2,
         "damageMax": 6,
         "durability": 24,
@@ -54,6 +56,7 @@
       "name": "Sabre",
       "shortName": "Sabre",
       "defaults": {
+        "price": 170,
         "damageMin": 1,
         "damageMax": 8,
         "durability": 45,
@@ -72,6 +75,7 @@
       "name": "Scimitar",
       "shortName": "Scimitar",
       "defaults": {
+        "price": 200,
         "damageMin": 3,
         "damageMax": 7,
         "durability": 28,
@@ -91,6 +95,7 @@
       "name": "Blade",
       "shortName": "Blade",
       "defaults": {
+        "price": 280,
         "damageMin": 3,
         "damageMax": 8,
         "durability": 30,
@@ -110,6 +115,7 @@
       "name": "Falchion",
       "shortName": "Falchion",
       "defaults": {
+        "price": 250,
         "damageMin": 4,
         "damageMax": 8,
         "durability": 20,
@@ -128,6 +134,7 @@
       "name": "Long Sword",
       "shortName": "Sword",
       "defaults": {
+        "price": 350,
         "damageMin": 2,
         "damageMax": 10,
         "durability": 40,
@@ -146,6 +153,7 @@
       "celIndexInventory": 76,
       "name": "Claymore",
       "defaults": {
+        "price": 450,
         "damageMin": 1,
         "damageMax": 12,
         "durability": 36,
@@ -164,6 +172,7 @@
       "celIndexInventory": 72,
       "name": "Broad Sword",
       "defaults": {
+        "price": 750,
         "damageMin": 4,
         "damageMax": 12,
         "durability": 50,
@@ -181,6 +190,7 @@
       "celIndexInventory": 68,
       "name": "Bastard Sword",
       "defaults": {
+        "price": 1000,
         "damageMin": 6,
         "damageMax": 15,
         "durability": 60,
@@ -198,6 +208,7 @@
       "celIndexInventory": 121,
       "name": "Two-Handed Sword",
       "defaults": {
+        "price": 1800,
         "twoHanded": true,
         "damageMin": 8,
         "damageMax": 16,
@@ -217,6 +228,7 @@
       "celIndexInventory": 145,
       "name": "Great Sword",
       "defaults": {
+        "price": 3000,
         "damageMin": 10,
         "damageMax": 20,
         "durability": 100,

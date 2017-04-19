@@ -8,7 +8,7 @@
 #include "LevelObject.h"
 #include <memory>
 
-typedef std::array<LevelObjProperty, 12> ItemProperties;
+typedef std::array<LevelObjProperty, 10> ItemProperties;
 
 class Item : public LevelObject
 {
@@ -28,13 +28,17 @@ private:
 	bool enableHover{ true };
 	bool hovered{ false };
 
-	std::string name;
-	std::array<std::string, 5> descriptions;
+	mutable bool updateNameAndDescr{ true };
+
+	mutable std::string name;
+	mutable std::array<std::string, 5> descriptions;
 
 	size_t propertiesSize{ 0 };
 	ItemProperties properties;
 
 	bool identified{ false };
+
+	void updateNameAndDescriptions() const;
 
 public:
 	using iterator = ItemProperties::iterator;
@@ -61,6 +65,7 @@ public:
 		frameRange.first = 0;
 		frameRange.second = class_->getCelDropTextureSize() - 1;
 		currentFrame = frameRange.second;
+		applyDefaults();
 	}
 
 	void resetDropAnimation();
@@ -91,7 +96,7 @@ public:
 	void updateDrawPosition(const Level& level);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual void setProperty(const std::string& prop, const Variable& val) {};
+	virtual void setProperty(const std::string& prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
 	ItemClass* Class() const { return class_.get(); }
@@ -102,45 +107,34 @@ public:
 		return hasItemProperty(prop.c_str());
 	}
 
-	int16_t getItemPropertyByHash(uint16_t propHash) const;
-	int16_t getItemProperty(const char* prop) const;
-	int16_t getItemProperty(const std::string& prop) const
+	LevelObjValue getItemPropertyByHash(uint16_t propHash) const;
+	LevelObjValue getItemProperty(const char* prop) const;
+	LevelObjValue getItemProperty(const std::string& prop) const
 	{
 		return getItemProperty(prop.c_str());
 	}
 
-	bool getItemPropertyByHash(uint16_t propHash, int16_t& value) const;
-	bool getItemProperty(const char* prop, int16_t& value) const;
-	bool getItemProperty(const std::string& prop, int16_t& value) const
+	bool getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const;
+	bool getItemProperty(const char* prop, LevelObjValue& value) const;
+	bool getItemProperty(const std::string& prop, LevelObjValue& value) const
 	{
 		return getItemProperty(prop.c_str(), value);
 	}
-	void setItemPropertyByHash(uint16_t propHash, int16_t value);
-	void setItemProperty(const char* prop, int16_t value);
-	void setItemProperty(const std::string& prop, int16_t value) const
+	void setItemPropertyByHash(uint16_t propHash, LevelObjValue value);
+	void setItemProperty(const char* prop, LevelObjValue value);
+	void setItemProperty(const std::string& prop, LevelObjValue value) const
 	{
 		return setItemProperty(prop.c_str(), value);
 	}
 
-	void updateFullName();
-
-	void updateDescriptions();
-
 	void applyDefaults();
 
-	const std::string& Name() const
-	{
-		if (identified == false)
-		{
-			return SimpleName();
-		}
-		return name;
-	}
+	bool needsRecharge() const;
+	bool needsRepair() const;
+
+	const std::string& Name() const { return name; }
 	const std::string& ShortName() const { return class_->ShortName(); }
 	const std::string& SimpleName() const { return class_->Name(); }
 	const std::string& ItemType() const { return class_->Type(); }
 	bool Identified() const { return identified; }
-
-	void Name(const std::string& val) { name = val; }
-	void Identified(bool val) { identified = val; }
 };

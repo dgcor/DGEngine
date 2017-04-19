@@ -55,7 +55,7 @@ namespace GameUtils
 
 	PlayerStatus getPlayerStatus(const std::string& str, PlayerStatus val);
 
-	bool getUIObjProp(const UIObject& uiObject, const uint32_t propHash,
+	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
 		const std::string& prop, Variable& var);
 
 	bool getObjectProperty(const Game& game, const std::string& str, Variable& var);

@@ -1,9 +1,22 @@
 {
-  "action": {
-    "name": "if.equal",
-    "param1": "%beta%",
-    "param2": true,
-    "then": { "name": "load", "file": "level/town/players2Beta.json" },
-    "else": { "name": "load", "file": "level/town/players2.json" }
-  }
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": { "name": "load", "file": "level/town/playerCelFilesBeta.json" },
+      "else": { "name": "load", "file": "level/town/playerCelFiles.json" }
+    },
+    { "name": "load", "file": "level/town/playerClasses.json" },
+    { "name": "load", "file": "level/town/players2.json" },
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": [
+        { "name": "player.setDirection", "id": "griswold", "direction": "FrontLeft" },
+        { "name": "player.setDirection", "id": "ogden", "direction": "FrontLeft" }
+      ]
+    }
+  ]
 }

@@ -1,0 +1,22 @@
+{
+  "action": {
+    "name": ">=",
+    "param1": "|currentLevel|currentPlayer.gold|",
+    "param2": "%identifyPrice%",
+    "then": {
+      "name": "load",
+      "file": [ "towners/cain/identify/confirm2.json", "{1}", "{2}" ]
+    },
+    "else": [
+      { "name": "resource.ignore", "id": "userPanelIdentify", "ignore": true },
+      { "name": "load", "file": "ui/level/panel/big/noGold.json" },
+      { "name": "load", "file": "ui/level/panel/big/upperSeparator.json" },
+      {
+        "name": "drawable.setAction",
+        "id": "back",
+        "event": "click",
+        "action": { "name": "resource.popAll", "id": "panelBigNoGold" }
+      }
+    ]
+  }
+}

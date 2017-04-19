@@ -13,9 +13,6 @@ void StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 	case str2int16("doubleClick"):
 		doubleClickAction = action;
 		return;
-	case str2int16("toggle"):
-		toggleAction = action;
-		return;
 	case str2int16("clickDrag"):
 		clickDragAction = action;
 		return;
@@ -57,43 +54,24 @@ void StringButton::click(Game& game, bool playSound)
 		{
 			game.addPlayingSound(clickSound.get());
 		}
-		if (toggleAction == nullptr)
-		{
-			game.Events().addBack(clickAction);
-		}
-		else
-		{
-			if (toggled == false)
-			{
-				toggled = true;
-				game.Events().addBack(clickAction);
-			}
-			else
-			{
-				toggled = false;
-				game.Events().addBack(toggleAction);
-			}
-		}
+		game.Events().addBack(clickAction);
 	}
 }
 
-void StringButton::focus(Game& game)
+void StringButton::focus(Game& game) const
 {
 	game.addPlayingSound(focusSound.get());
-	game.Events().addBack(focusAction);
+	game.Events().addFront(focusAction);
 }
 
 void StringButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	if (visible == true)
-	{
-		target.draw(*text, states);
-	}
+	target.draw(*text, states);
 }
 
 void StringButton::update(Game& game)
 {
-	if (visible == false)
+	if (text->Visible() == false)
 	{
 		return;
 	}

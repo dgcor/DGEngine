@@ -127,8 +127,11 @@ namespace Parser
 			{
 				for (auto it = defaults.MemberBegin(); it != defaults.MemberEnd(); ++it)
 				{
-					itemClass->setDefault(it->name.GetString(),
-						getMinMaxIntVal<int16_t>(it->value));
+					if (it->name.GetStringLength() > 0)
+					{
+						itemClass->setDefault(it->name.GetString(),
+							getMinMaxIntVal<LevelObjValue>(it->value));
+					}
 				}
 			}
 		}

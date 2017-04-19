@@ -1,106 +1,65 @@
 {
-  "celTexturePack": [
-    {
-      "file": "towners/animals/cow.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/strytell/strytell.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/healer/healer.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/twnf/twnfn.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/smith/smithn.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/townboy/pegkid1.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/drunk/twndrunk.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/townwmn1/witch.cel",
-      "palette": "town"
-    },
-    {
-      "file": "towners/townwmn1/wmnn.cel",
-      "palette": "town"
-    }
-  ],
-  "playerClass": [
-    {
-      "id": "healer",
-      "name": "Healer",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "healer" }
-    },
-    {
-      "id": "storyTeller",
-      "name": "Story teller",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "strytell" }
-    },
-    {
-      "id": "blacksmith",
-      "name": "Blacksmith",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "smithn" }
-    },
-    {
-      "id": "tavernOwner",
-      "name": "Tavern owner",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "twnfn" }
-    },
-    {
-      "id": "drunk",
-      "name": "Drunk",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "twndrunk" }
-    },
-    {
-      "id": "barmaid",
-      "name": "Barmaid",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "wmnn" }
-    },
-    {
-      "id": "boy",
-      "name": "Boy",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "pegkid1" }
-    },
-    {
-      "id": "witch",
-      "name": "Witch",
-      "type": "Human",
-      "celTextures": { "palette": 0, "name": "witch" }
-    },
-    {
-      "id": "cow",
-      "name": "Cow",
-      "type": "Animal",
-      "description": "Cow",
-      "celTextures": { "palette": 0, "name": "cow" }
-    }
-  ],
   "player": [
     {
       "id": "pepin",
       "class": "healer",
       "name": "Pepin the healer",
       "mapPosition": [55, 79],
-      "action": { "name": "load", "file": "towners/pepin/panel.json" }
+      "action": { "name": "load", "file": "towners/pepin/panel.json" },
+      "inventory": {
+        "index": 0,
+        "size": 16,
+        "item": [
+          {
+            "index": 0,
+            "class": "potionOfHealing"
+          },
+          {
+            "index": 1,
+            "class": "potionOfFullHealing"
+          },
+          {
+            "index": 2,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 3,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 4,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 5,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 6,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 7,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 8,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 9,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 10,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 11,
+            "class": "scrollOfHealing"
+          }
+        ]
+      }
     },
     {
       "id": "cain",
@@ -114,7 +73,166 @@
       "class": "blacksmith",
       "name": "Griswold the blacksmith",
       "mapPosition": [62, 64],
-      "action": { "name": "load", "file": "towners/griswold/panel.json" }
+      "action": { "name": "load", "file": "towners/griswold/panel.json" },
+      "inventory": [
+        {
+          "index": 0,
+          "size": 20,
+          "item": [
+            {
+              "index": 0,
+              "class": "cap"
+            },
+            {
+              "index": 1,
+              "class": "cape",
+              "properties": {
+                "armor": 4
+              }
+            },
+            {
+              "index": 2,
+              "class": "cape",
+              "properties": {
+                "armor": 3
+              }
+            },
+            {
+              "index": 3,
+              "class": "rags"
+            },
+            {
+              "index": 4,
+              "class": "quiltedArmor"
+            },
+            {
+              "index": 5,
+              "class": "buckler",
+              "properties": {
+                "armor": 3
+              }
+            },
+            {
+              "index": 6,
+              "class": "shortSword"
+            },
+            {
+              "index": 7,
+              "class": "falchion"
+            },
+            {
+              "index": 8,
+              "class": "claymore"
+            },
+            {
+              "index": 9,
+              "class": "blade"
+            },
+            {
+              "index": 10,
+              "class": "sabre"
+            },
+            {
+              "index": 11,
+              "class": "axe"
+            },
+            {
+              "index": 12,
+              "class": "mace"
+            },
+            {
+              "index": 13,
+              "class": "mace"
+            },
+            {
+              "index": 14,
+              "class": "morningStar"
+            },
+            {
+              "index": 15,
+              "class": "warHammer"
+            },
+            {
+              "index": 16,
+              "class": "warHammer"
+            },
+            {
+              "index": 17,
+              "class": "spikedClub"
+            },
+            {
+              "index": 18,
+              "class": "spikedClub"
+            },
+            {
+              "index": 19,
+              "class": "club"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "size": 6,
+          "item": [
+            {
+              "index": 0,
+              "class": "club",
+              "properties": {
+                "toHit": 5,
+                "price": 540,
+                "magic": true
+              }
+            },
+            {
+              "index": 1,
+              "class": "bucklerShield",
+              "properties": {
+                "armor": 4,
+                "toStrength": 4,
+                "price": 860,
+                "magic": true
+              }
+            },
+            {
+              "index": 2,
+              "class": "bucklerShield",
+              "properties": {
+                "armor": 2,
+                "toArmor": 21,
+                "price": 648,
+                "magic": true
+              }
+            },
+            {
+              "index": 3,
+              "class": "dagger",
+              "properties": {
+                "toDexterity": 4,
+                "price": 920,
+                "magic": true
+              }
+            },
+            {
+              "index": 4,
+              "class": "cape",
+              "properties": {
+                "hitPoints": 12,
+                "price": 850,
+                "magic": true
+              }
+            },
+            {
+              "index": 5,
+              "class": "morningStar",
+              "properties": {
+                "toHit": 5,
+                "price": 1100,
+                "magic": true
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "ogden",
@@ -142,14 +260,62 @@
       "class": "boy",
       "name": "Wirt the peg-legged boy",
       "mapPosition": [11, 53],
-      "action": { "name": "load", "file": "towners/wirt/panel.json" }
+      "action": { "name": "load", "file": "towners/wirt/panel.json" },
+      "inventory": {
+        "index": 0,
+        "size": 1,
+        "item": {
+          "index": 0,
+          "class": "dagger",
+          "properties": {
+            "toMagic": 1,
+            "price": 480,
+            "magic": true
+          }
+        }
+      }
     },
     {
       "id": "adria",
       "class": "witch",
       "name": "Adria the witch",
       "mapPosition": [80, 20],
-      "action": { "name": "load", "file": "towners/adria/panel.json" }
+      "action": { "name": "load", "file": "towners/adria/panel.json" },
+      "inventory": {
+        "index": 0,
+        "size": 16,
+        "item": [
+          {
+            "index": 0,
+            "class": "potionOfMana"
+          },
+          {
+            "index": 1,
+            "class": "potionOfFullMana"
+          },
+          {
+            "index": 2,
+            "class": "scroll"
+          },
+          {
+            "index": 3,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 6,
+            "class": "book"
+          },
+          {
+            "index": 7,
+            "class": "shortStaff",
+            "properties": {
+              "toMagic": 5,
+              "price": 650,
+              "magic": true
+            }
+          }
+        ]
+      }
     },
     {
       "id": "cow1",
