@@ -478,12 +478,12 @@ namespace GameUtils
 		}
 	}
 
-	bool getUIObjProp(const UIObject& uiObject, const uint32_t propHash,
+	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
 		const std::string& prop, Variable& var)
 	{
-		switch (propHash)
+		switch (propHash16)
 		{
-		case str2int32("position"):
+		case str2int16("position"):
 		{
 			auto movePos = uiObject.Position();
 			if (prop == "x")
@@ -496,7 +496,7 @@ namespace GameUtils
 			}
 		}
 		break;
-		case str2int32("size"):
+		case str2int16("size"):
 		{
 			auto moveSize = uiObject.Size();
 			if (prop == "x")
@@ -509,7 +509,7 @@ namespace GameUtils
 			}
 		}
 		break;
-		case str2int32("visible"):
+		case str2int16("visible"):
 			var = Variable((bool)uiObject.Visible());
 			break;
 		default:

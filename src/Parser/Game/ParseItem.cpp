@@ -23,19 +23,6 @@ namespace Parser
 
 		auto item = std::make_shared<Item>(class_);
 
-		item->applyDefaults();
-
-		item->Hoverable(getBoolKey(elem, "enableHover", true));
-
-		if (isValidString(elem, "name") == true)
-		{
-			item->Name(elem["name"].GetString());
-		}
-		else
-		{
-			item->Name(class_->Name());
-		}
-
 		if (elem.HasMember("properties") == true)
 		{
 			const auto& props = elem["properties"];
@@ -43,14 +30,14 @@ namespace Parser
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
 				{
-					item->setItemProperty(it->name.GetString(),
-						getMinMaxIntVal<int16_t>(it->value));
+					if (it->name.GetStringLength() > 0)
+					{
+						item->setItemProperty(it->name.GetString(),
+							getMinMaxIntVal<LevelObjValue>(it->value));
+					}
 				}
 			}
 		}
-
-		item->updateFullName();
-		item->updateDescriptions();
 
 		return item;
 	}

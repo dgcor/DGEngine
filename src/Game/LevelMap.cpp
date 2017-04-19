@@ -73,13 +73,13 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 
 			if (dunIndex == -1)
 			{
-				cell.minIndex = -1;
-				cell.sol = 0;
+				cell.MinIndex(-1);
+				cell.Sol(0);
 			}
 			else
 			{
-				cell.minIndex = til[dunIndex][tilIndex];
-				cell.sol = sol.get(cell.minIndex);
+				cell.MinIndex(til[dunIndex][tilIndex]);
+				cell.Sol(sol.get(cell.MinIndex()));
 			}
 		}
 	}

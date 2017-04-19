@@ -10,7 +10,10 @@
       "celIndexInventory": 23,
       "name": "Ring",
       "shortName": "Ring",
-      "type": "Ring"
+      "type": "Ring",
+      "defaults": {
+        "price": 1000
+      }
     }
   ]
 }

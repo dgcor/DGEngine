@@ -144,23 +144,3 @@ public:
 		return true;
 	}
 };
-
-class ActButtonSetToggle : public Action
-{
-private:
-	std::string id;
-	bool toggle;
-
-public:
-	ActButtonSetToggle(const std::string& id_, bool toggle_) : id(id_), toggle(toggle_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto button = game.Resources().getResource<Button>(id);
-		if (button != nullptr)
-		{
-			button->setToggle(toggle);
-		}
-		return true;
-	}
-};

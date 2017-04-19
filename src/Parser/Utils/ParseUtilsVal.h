@@ -2,10 +2,13 @@
 
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
+#include "IgnoreResource.h"
 #include "Json/JsonParser.h"
+#include "Parser/ParserProperties.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Variable.h"
+#include "VarOrPredicate.h"
 
 namespace Parser
 {
@@ -75,6 +78,9 @@ namespace Parser
 	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem,
 		sf::Keyboard::Key val = sf::Keyboard::Unknown);
 
+	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem,
+		IgnoreResource val = IgnoreResource::None);
+
 	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
 		PlayerInventory inv);
 
@@ -115,5 +121,10 @@ namespace Parser
 	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
 		PlayerInventory val = PlayerInventory::Body);
 
+	ReplaceVars getReplaceVarsVal(const rapidjson::Value& elem,
+		ReplaceVars val = ReplaceVars::None);
+
 	Variable getVariableVal(const rapidjson::Value& elem);
+
+	VarOrPredicate getVarOrPredicateVal(Game& game, const rapidjson::Value& elem);
 }

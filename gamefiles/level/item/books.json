@@ -10,6 +10,7 @@
       "name": "Book",
       "type": "Book",
       "defaults": {
+        "price": 1000,
         "identified": true
       },
       "description1": "rightClickToRead",

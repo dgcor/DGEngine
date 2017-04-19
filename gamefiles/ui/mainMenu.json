@@ -29,7 +29,7 @@
     },
     {
       "key": "esc",
-      "action": { "name": "menu.click", "id": "menu", "index": 5 }
+      "action": { "name": "menu.click", "id": "menu", "index": 4 }
     }
   ],
   "texture": [
@@ -110,8 +110,6 @@
         "enable": false,
         "onFocus": [
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
         ]
       },
@@ -180,7 +178,7 @@
     }
   },
   "action": [
-    { "name": "menu.setBitmapFont", "id": "menu", "index": 2, "idFont": "font42y" },
+    { "name": "menu.setFont", "id": "menu", "index": 1, "idFont": "font42y" },
     {
       "name": "button.setText",
       "id": "versionInfo",

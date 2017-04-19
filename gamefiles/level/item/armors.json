@@ -12,6 +12,7 @@
       "shortName": "Rags",
       "type": "Armor",
       "defaults": {
+        "price": 5,
         "armor": 6,
         "durability": 6,
         "durabilityMax": 6
@@ -33,6 +34,7 @@
       "name": "Cape",
       "shortName": "Cape",
       "defaults": {
+        "price": 10,
         "armor": 5,
         "durability": 12,
         "durabilityMax": 12
@@ -49,6 +51,7 @@
       "name": "Cloak",
       "shortName": "Cloak",
       "defaults": {
+        "price": 40,
         "armor": 7,
         "durability": 18,
         "durabilityMax": 18
@@ -65,6 +68,7 @@
       "name": "Robe",
       "shortName": "Robe",
       "defaults": {
+        "price": 75,
         "armor": 7,
         "durability": 24,
         "durabilityMax": 24
@@ -81,6 +85,7 @@
       "name": "Quilted Armor",
       "shortName": "Armor",
       "defaults": {
+        "price": 200,
         "armor": 10,
         "durability": 30,
         "durabilityMax": 30
@@ -96,6 +101,7 @@
       "celIndexInventory": 146,
       "name": "Leather Armor",
       "defaults": {
+        "price": 300,
         "armor": 13,
         "durability": 35,
         "durabilityMax": 35
@@ -111,6 +117,7 @@
       "celIndexInventory": 138,
       "name": "Hard Leather Armor",
       "defaults": {
+        "price": 450,
         "armor": 14,
         "durability": 40,
         "durabilityMax": 40
@@ -126,6 +133,7 @@
       "celIndexInventory": 118,
       "name": "Studded Leather Armor",
       "defaults": {
+        "price": 700,
         "armor": 17,
         "durability": 45,
         "durabilityMax": 45,
@@ -143,6 +151,7 @@
       "name": "Ring Mail",
       "shortName": "Mail",
       "defaults": {
+        "price": 900,
         "armor": 20,
         "durability": 50,
         "durabilityMax": 50,
@@ -161,6 +170,7 @@
       "celIndexInventory": 122,
       "name": "Chain Mail",
       "defaults": {
+        "price": 1250,
         "armor": 22,
         "durability": 55,
         "durabilityMax": 55,
@@ -177,6 +187,7 @@
       "celIndexInventory": 125,
       "name": "Scale Mail",
       "defaults": {
+        "price": 2300,
         "armor": 22,
         "durability": 55,
         "durabilityMax": 55,
@@ -194,6 +205,7 @@
       "name": "Breast Plate",
       "shortName": "Plate",
       "defaults": {
+        "price": 2800,
         "armor": 24,
         "durability": 80,
         "durabilityMax": 80,
@@ -210,6 +222,7 @@
       "celIndexInventory": 147,
       "name": "Splint Mail",
       "defaults": {
+        "price": 3250,
         "armor": 35,
         "durability": 65,
         "durabilityMax": 65,
@@ -226,6 +239,7 @@
       "celIndexInventory": 114,
       "name": "Field Plate",
       "defaults": {
+        "price": 5800,
         "armor": 45,
         "durability": 80,
         "durabilityMax": 80,
@@ -242,6 +256,7 @@
       "celIndexInventory": {2},
       "name": "Gothic Plate",
       "defaults": {
+        "price": 8000,
         "armor": 60,
         "durability": 100,
         "durabilityMax": 100,
@@ -258,6 +273,7 @@
       "celIndexInventory": 162,
       "name": "Full Plate Mail",
       "defaults": {
+        "price": 6500,
         "armor": 75,
         "durability": 90,
         "durabilityMax": 90,
@@ -274,12 +290,18 @@
       "celIndexInventory": {3},
       "name": "Arkaine's Valor",
       "shortName": "Arkaine's Valor",
+      "description2": "unique",
+      "description3": null,
+      "description5": "arkanesValor",
       "defaults": {
+        "price": 42000,
         "armor": 25,
         "durability": 40,
         "durabilityMax": 40,
         "requiredStrength": 0,
         "toVitality": 10,
+        "damageFromEnemies": -3,
+        "identified": false,
         "unique": true
       }
     }

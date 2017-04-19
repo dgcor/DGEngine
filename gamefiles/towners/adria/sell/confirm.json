@@ -1,0 +1,12 @@
+{
+  "action": {
+    "name": ">=",
+    "param1": { "name": "player.getMaxGoldCapacity" },
+    "param2": "|currentLevel|currentPlayer.item.{1}.{2}.price|",
+    "then": {
+      "name": "load",
+      "file": [ "towners/adria/sell/confirm2.json", "{1}", "{2}" ]
+    },
+    "else": "inventoryFull"
+  }
+}

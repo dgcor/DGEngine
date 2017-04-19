@@ -10,7 +10,6 @@
     "level": 1,
     "experience": 0,
     "expNextLevel": 2000,
-    "gold": 100,
     "points": 0,
     "inventory": [
       {
@@ -30,18 +29,25 @@
         "item": [
           {
             "index": 0,
-            "class": "manaPotion"
+            "class": "potionOfMana"
           },
           {
             "index": 1,
-            "class": "manaPotion"
+            "class": "potionOfMana"
           }
         ]
       },
       {
         "index": "Stash",
         "enforceItemSize": true,
-        "size": [10, 4]
+        "size": [10, 4],
+        "item": {
+          "index": [0, 3],
+          "class": "gold",
+          "properties": {
+            "gold": 100
+          }
+        }
       }
     ]
   }

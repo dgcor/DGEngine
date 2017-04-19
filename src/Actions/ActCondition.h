@@ -6,6 +6,16 @@
 #include "Image.h"
 #include "Parser/ParseVariable.h"
 #include "Utils.h"
+#include "VarOrPredicate.h"
+
+static Variable getVariable(Game& game, const Predicate* predicate)
+{
+	if (predicate != nullptr)
+	{
+		return predicate->getResult(game);
+	}
+	return {};
+}
 
 static Variable getVariable(Game& game, const Variable& var)
 {
@@ -18,12 +28,24 @@ static Variable getVariable(Game& game, const Variable& var)
 	return var;
 }
 
+static Variable getVariable(Game& game, const VarOrPredicate& varOrPred)
+{
+	if (varOrPred.is<Variable>() == true)
+	{
+		return getVariable(game, varOrPred.get<Variable>());
+	}
+	else
+	{
+		return getVariable(game, varOrPred.get<std::shared_ptr<Predicate>>().get());
+	}
+}
+
 class ActIfCondition : public Action
 {
 private:
-	unsigned conditionHash;
-	Variable param1;
-	Variable param2;
+	uint16_t conditionHash16;
+	VarOrPredicate param1;
+	VarOrPredicate param2;
 	std::shared_ptr<Action> condThen;
 	std::shared_ptr<Action> condElse;
 
@@ -47,12 +69,12 @@ private:
 	}
 
 public:
-	ActIfCondition(unsigned conditionHash_,
-		const Variable& param1_,
-		const Variable& param2_,
+	ActIfCondition(unsigned conditionHash16_,
+		const VarOrPredicate& param1_,
+		const VarOrPredicate& param2_,
 		const std::shared_ptr<Action>& then_,
 		const std::shared_ptr<Action>& else_)
-		: conditionHash(conditionHash_), param1(param1_),
+		: conditionHash16(conditionHash16_), param1(param1_),
 		param2(param2_), condThen(then_), condElse(else_) {}
 
 	virtual bool execute(Game& game)
@@ -60,26 +82,21 @@ public:
 		auto var1 = getVariable(game, param1);
 		auto var2 = getVariable(game, param2);
 
-		switch (conditionHash)
+		switch (conditionHash16)
 		{
 		default:
-		case str2int32("=="):
+		case str2int16("=="):
 			return ifCondition(game, var1 == var2);
-		case str2int32("!="):
+		case str2int16("!="):
 			return ifCondition(game, var1 != var2);
-		case str2int32(">"):
+		case str2int16(">"):
 			return ifCondition(game, var1 > var2);
-		case str2int32(">="):
+		case str2int16(">="):
 			return ifCondition(game, var1 >= var2);
-		case str2int32("<"):
+		case str2int16("<"):
 			return ifCondition(game, var1 < var2);
-		case str2int32("<="):
+		case str2int16("<="):
 			return ifCondition(game, var1 <= var2);
-		case str2int32("fileExists"):
-			return ifCondition(game,
-				var1.is<std::string>() ?
-				FileUtils::exists(var1.get<std::string>().c_str()) :
-				false);
 		}
 		return true;
 	}
@@ -88,13 +105,13 @@ public:
 class ActInListCondition : public Action
 {
 private:
-	Variable var;
+	VarOrPredicate var;
 	std::vector<Variable> list;
 	std::shared_ptr<Action> condThen;
 	std::shared_ptr<Action> condElse;
 
 public:
-	ActInListCondition(Variable var_, const std::vector<Variable>& list_,
+	ActInListCondition(VarOrPredicate var_, const std::vector<Variable>& list_,
 		const std::shared_ptr<Action>& then_, const std::shared_ptr<Action>& else_)
 		: var(var_), list(list_), condThen(then_), condElse(else_) {}
 
@@ -126,12 +143,12 @@ public:
 class ActSwitchCondition : public Action
 {
 private:
-	Variable var;
+	VarOrPredicate var;
 	std::vector<std::pair<Variable, std::shared_ptr<Action>>> conditions;
 	std::shared_ptr<Action> defaultAction;
 
 public:
-	ActSwitchCondition(Variable var_,
+	ActSwitchCondition(VarOrPredicate var_,
 		const std::vector<std::pair<Variable, std::shared_ptr<Action>>>& conditions_,
 		const std::shared_ptr<Action>& defaultAction_)
 		: var(var_), conditions(conditions_), defaultAction(defaultAction_) {}

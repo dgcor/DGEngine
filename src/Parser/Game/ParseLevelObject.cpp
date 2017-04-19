@@ -34,7 +34,7 @@ namespace Parser
 		}
 		auto& mapCell = level->Map()[mapPos.x][mapPos.y];
 
-		if (mapCell.object != nullptr)
+		if (mapCell.getObject<ImageLevelObject>() != nullptr)
 		{
 			return;
 		}
@@ -48,7 +48,7 @@ namespace Parser
 		auto levelObj = std::make_shared<ImageLevelObject>(*texture);
 
 		levelObj->MapPosition(mapPos);
-		mapCell.object = levelObj;
+		mapCell.addFront(levelObj);
 
 		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
 

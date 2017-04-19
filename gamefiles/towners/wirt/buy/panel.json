@@ -1,0 +1,126 @@
+{
+  "action": { "name": "resource.add", "id": "userPanelBuy" },
+  "animation": [
+    {
+      "texture": "pentspn2",
+      "id": "pent1",
+      "frames": 8,
+      "position": [32, 94],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texture": "pentspn2",
+      "id": "pent2",
+      "frames": 8,
+      "position": [575, 94],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "menu": {
+    "id": "mainMenu",
+    "replaceVars": true,
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "position": [52, 154],
+    "horizontalSpaceOffset": 1,
+    "verticalSpaceOffset": 2,
+    "anchor": "none",
+    "visibleItems": 1,
+    "size": [518, 186],
+    "verticalPad": 26,
+    "items": {
+      "load": "currentLevel|wirt.inventory.0",
+      "text": "%name%\n  %d.0%,  %d.3%",
+      "onClick": {
+        "name": "load",
+        "file": ["towners/wirt/buy/confirm.json", 0, "%idx%"]
+      },
+      "executeAction": {
+        "name": "if.equal",
+        "param1": {
+          "name": "player.canEquipItem",
+          "item": { "playerId": "wirt", "inventory": 0, "item": "%idx%" }
+        },
+        "param2": false,
+        "then": {
+          "name": "menu.setColor",
+          "id": "mainMenu",
+          "index": "%menuIdx%",
+          "color": "%textRed%"
+        },
+        "else": {
+          "name": "if.equal",
+          "param1": "|currentLevel|player.wirt.item.0.%idx%.unique|",
+          "param2": 1,
+          "then": {
+            "name": "menu.setColor",
+            "id": "mainMenu",
+            "index": "%menuIdx%",
+            "color": "%textGold%"
+          },
+          "else": {
+            "name": "if.equal",
+            "param1": "|currentLevel|player.wirt.item.0.%idx%.magic|",
+            "param2": 1,
+            "then": {
+              "name": "menu.setColor",
+              "id": "mainMenu",
+              "index": "%menuIdx%",
+              "color": "%textBlue%"
+            },
+            "else": {
+              "name": "menu.setColor",
+              "id": "mainMenu",
+              "index": "%menuIdx%"
+            }
+          }
+        }
+      }
+    }
+  },
+  "button": {
+    "id": "back",
+    "bitmapFont": "smaltext",
+    "sound": "titlslct",
+    "position": [320, 304],
+    "anchor": "none",
+    "focus": true,
+    "focusSound": "titlemov",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "Leave",
+    "onClick": [
+      { "name": "resource.popAll", "id": "userPanelBigFrame" },
+      { "name": "resource.ignore", "id": "userPanel", "ignore": false }
+    ],
+    "onFocus": [
+      "anchorLeftPentagram",
+      "anchorRightPentagram"
+    ]
+  },
+  "action": {
+    "name": "if.notEqual",
+    "param1": "|mainMenu|itemCount|",
+    "param2": 0,
+    "then": [
+      {
+        "name": "text.setText",
+        "id": "panelTitle",
+        "binding": "|currentLevel|currentPlayer.gold|",
+        "format": "I have this item for sale :           Your gold : [1]"
+      },
+      { "name": "load", "file": "towners/wirt/buy/listItems.json" }
+    ],
+    "else": [
+      {
+        "name": "text.setText",
+        "id": "panelTitle",
+        "binding": "|currentLevel|currentPlayer.gold|",
+        "format": "I have no more items for sale.          Your gold : [1]"
+      },
+      { "name": "load", "file": "towners/wirt/buy/noItems.json" }
+    ]
+  }
+}

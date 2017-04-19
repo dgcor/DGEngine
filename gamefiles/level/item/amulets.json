@@ -11,6 +11,7 @@
       "shortName": "Amulet",
       "type": "Amulet",
       "defaults": {
+        "price": 1200,
         "magic": true,
         "durability": "max",
         "durabilityMax": "max"

@@ -6,6 +6,60 @@
 #include "Game/Level.h"
 #include <string>
 
+class ActPlayerAddGold : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	Variable gold;
+	bool remove;
+
+public:
+	ActPlayerAddGold(const std::string& idPlayer_, const std::string& idLevel_,
+		const Variable& gold_, bool remove_) : idPlayer(idPlayer_), idLevel(idLevel_),
+		gold(gold_), remove(remove_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				LevelObjValue goldVal = 0;
+				if (gold.is<std::string>() == true)
+				{
+					Variable prop2;
+					if (game.getVarOrProp(gold.get<std::string>(), prop2) == true)
+					{
+						if (prop2.is<int64_t>() == true)
+						{
+							goldVal = (LevelObjValue)prop2.get<int64_t>();
+						}
+					}
+				}
+				else if (gold.is<int64_t>() == true)
+				{
+					goldVal = (LevelObjValue)gold.get<int64_t>();
+				}
+				if (goldVal != 0)
+				{
+					if (remove == true)
+					{
+						player->addGold(*level, -std::abs(goldVal));
+					}
+					else
+					{
+						player->addGold(*level, goldVal);
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
 class ActPlayerMove : public Action
 {
 private:
@@ -16,7 +70,7 @@ private:
 
 public:
 	ActPlayerMove(const std::string& idPlayer_, const std::string& idLevel_,
-		const MapCoord pos_, bool resetDirection_)
+		const MapCoord& pos_, bool resetDirection_)
 		: idPlayer(idPlayer_), idLevel(idLevel_),
 		position(pos_), resetDirection(resetDirection_) {}
 
@@ -69,6 +123,33 @@ public:
 					b = level->getMapCoordOverMouse();
 				}
 				player->setWalkPath(level->Map().getPath(a, b));
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerSetDirection : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	PlayerDirection direction;
+
+public:
+	ActPlayerSetDirection(const std::string& idPlayer_,
+		const std::string& idLevel_, PlayerDirection direction_)
+		: idPlayer(idPlayer_), idLevel(idLevel_), direction(direction_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->setDirection(direction);
 			}
 		}
 		return true;

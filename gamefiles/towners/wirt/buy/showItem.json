@@ -1,0 +1,28 @@
+{
+  "action": [
+    { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+    { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+    { "name": "resource.add", "id": "userPanelBigFrame" },
+    { "name": "load", "file": "ui/level/panel/big.json" },
+    {
+      "name": "if.equal",
+      "param1": "|currentLevel|player.wirt.hasItem.0.0|",
+      "param2": true,
+      "then": {
+        "name": ">=",
+        "param1": "|currentLevel|currentPlayer.gold|",
+        "param2": "%WirtSeePrice%",
+        "then": [
+          { "name": "player.removeGold", "gold": "%WirtSeePrice%" },
+          { "name": "load", "file": "towners/wirt/buy/common.json" },
+          { "name": "load", "file": "towners/wirt/buy/panel.json" }
+        ],
+        "else": { "name": "load", "file": "towners/wirt/buy/noGold.json" }
+      },
+      "else": [
+        { "name": "resource.popAll", "id": "userPanelMain" },
+        { "name": "load", "file": "towners/wirt/panelMain.json" }
+      ]
+    }
+  ]
+}

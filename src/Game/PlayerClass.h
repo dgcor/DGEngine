@@ -65,7 +65,7 @@ public:
 	}
 
 	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
-	void setDefault(const char* prop, int16_t val);
+	void setDefault(const char* prop, LevelObjValue val);
 
 	const std::string& Name() const { return name; }
 	const std::string& Type() const { return type; }

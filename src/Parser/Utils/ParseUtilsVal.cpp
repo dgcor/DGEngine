@@ -1,4 +1,6 @@
 #include "ParseUtilsVal.h"
+#include "Parser/ParsePredicate.h"
+#include "ParseUtils.h"
 #include <cctype>
 #include "FileUtils.h"
 #include "GameUtils.h"
@@ -66,7 +68,19 @@ namespace Parser
 
 	std::string getStringVal(const Value& elem, const std::string& val)
 	{
-		return getStringCharVal(elem, val.c_str());
+		if (elem.IsString() == true)
+		{
+			return elem.GetString();
+		}
+		else if (elem.IsInt64() == true)
+		{
+			return std::to_string(elem.GetInt64());
+		}
+		else if (elem.IsDouble() == true)
+		{
+			return std::to_string(elem.GetDouble());
+		}
+		return val;
 	}
 
 	unsigned getUIntVal(const Value& elem, unsigned val)
@@ -128,6 +142,27 @@ namespace Parser
 		else if (elem.IsString() == true)
 		{
 			return GameUtils::getKeyCode(elem.GetString(), val);
+		}
+		return val;
+	}
+
+	IgnoreResource getIgnoreResourceVal(const Value& elem,
+		IgnoreResource val)
+	{
+		if (elem.IsBool() == true)
+		{
+			if (elem.GetBool() == true)
+			{
+				return IgnoreResource::DrawAndUpdate;
+			}
+			else
+			{
+				return IgnoreResource::None;
+			}
+		}
+		else if (elem.IsString() == true)
+		{
+			return GameUtils::getIgnoreResource(elem.GetString(), val);
 		}
 		return val;
 	}
@@ -240,6 +275,26 @@ namespace Parser
 		return val;
 	}
 
+	ReplaceVars getReplaceVarsVal(const Value& elem, ReplaceVars val)
+	{
+		if (elem.IsBool() == true)
+		{
+			if (elem.GetBool() == false)
+			{
+				return ReplaceVars::None;
+			}
+			else
+			{
+				return ReplaceVars::String;
+			}
+		}
+		else if (elem.IsString() == true)
+		{
+			return getReplaceVars(elem.GetString(), val);
+		}
+		return val;
+	}
+
 	Variable getVariableVal(const Value& elem)
 	{
 		Variable var;
@@ -260,5 +315,14 @@ namespace Parser
 			var.set<bool>(elem.GetBool());
 		}
 		return var;
+	}
+
+	VarOrPredicate getVarOrPredicateVal(Game& game, const rapidjson::Value& elem)
+	{
+		if (elem.IsObject() == true)
+		{
+			return VarOrPredicate(parsePredicateObj(game, elem));
+		}
+		return VarOrPredicate(getVariableVal(elem));
 	}
 }

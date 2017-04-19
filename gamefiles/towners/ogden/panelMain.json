@@ -70,10 +70,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Ogden",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/ogden/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/ogden/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

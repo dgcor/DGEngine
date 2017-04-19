@@ -70,10 +70,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Griswold",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/griswold/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/griswold/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -90,6 +87,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Buy Basic Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/griswold/buy/common.json" },
+        { "name": "load", "file": "towners/griswold/buy/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -106,6 +111,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Buy Premium Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/griswold/buyPremium/common.json" },
+        { "name": "load", "file": "towners/griswold/buyPremium/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -122,6 +135,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Sell Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/griswold/sell/common.json" },
+        { "name": "load", "file": "towners/griswold/sell/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -138,6 +159,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Repair Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/griswold/repair/common.json" },
+        { "name": "load", "file": "towners/griswold/repair/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

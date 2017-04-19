@@ -41,13 +41,13 @@ bool StringText::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int32(props.first.c_str());
+	auto propHash = str2int16(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int32("lineCount"):
+	case str2int16("lineCount"):
 		var = Variable((int64_t)lineCount);
 		break;
-	case str2int32("text"):
+	case str2int16("text"):
 		var = Variable(text.getString().toAnsiString());
 		break;
 	default:

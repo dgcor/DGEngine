@@ -10,7 +10,6 @@
     "level": 1,
     "experience": 0,
     "expNextLevel": 2000,
-    "gold": 100,
     "points": 0,
     "inventory": [
       {
@@ -34,11 +33,11 @@
         "item": [
           {
             "index": 0,
-            "class": "healthPotion"
+            "class": "potionOfHealing"
           },
           {
             "index": 1,
-            "class": "healthPotion"
+            "class": "potionOfHealing"
           }
         ]
       },
@@ -50,6 +49,13 @@
           {
             "index": [0, 0],
             "class": "club"
+          },
+          {
+            "index": [0, 3],
+            "class": "gold",
+            "properties": {
+              "gold": 100
+            }
           }
         ]
       }

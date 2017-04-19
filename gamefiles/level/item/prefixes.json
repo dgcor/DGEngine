@@ -57,6 +57,10 @@
       ]
     },
     {
+      "id": "goldPrefix",
+      "names": "%gold%"
+    },
+    {
       "id": "weaponPrefixes",
       "names": [
         {

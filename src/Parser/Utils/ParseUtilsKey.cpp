@@ -1,6 +1,7 @@
 #include "ParseUtilsKey.h"
 #include <cctype>
 #include "FileUtils.h"
+#include "Json/JsonUtils.h"
 #include "Game.h"
 #include "GameUtils.h"
 #include "SFMLUtils.h"
@@ -97,7 +98,11 @@ namespace Parser
 	std::string getStringKey(const Value& elem,
 		const char* key, const std::string& val)
 	{
-		return getStringCharKey(elem, key, val.c_str());
+		if (elem.HasMember(key) == true)
+		{
+			return getStringVal(elem[key], val);
+		}
+		return val;
 	}
 
 	unsigned getUIntKey(const Value& elem, const char* key, unsigned val)
@@ -164,7 +169,7 @@ namespace Parser
 			{
 				for (const auto& val : elemVal)
 				{
-					vec.push_back(val.GetString());
+					vec.push_back(JsonUtils::toString(val));
 				}
 			}
 			else if (elemVal.IsString() == true)
@@ -180,22 +185,7 @@ namespace Parser
 	{
 		if (elem.HasMember(key) == true)
 		{
-			const auto& keyElem = elem[key];
-			if (keyElem.IsBool() == true)
-			{
-				if (keyElem.GetBool() == true)
-				{
-					return IgnoreResource::DrawAndUpdate;
-				}
-				else
-				{
-					return IgnoreResource::None;
-				}
-			}
-			else if (keyElem.IsString() == true)
-			{
-				return GameUtils::getIgnoreResource(keyElem.GetString(), val);
-			}
+			return getIgnoreResourceVal(elem[key], val);
 		}
 		return val;
 	}
@@ -225,6 +215,15 @@ namespace Parser
 		if (elem.HasMember(key) == true)
 		{
 			return getItemCoordInventoryVal(elem[key]);
+		}
+		return{};
+	}
+
+	ItemLocation getItemLocationKey(const Value& elem, const char* key)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getItemLocationVal(elem[key]);
 		}
 		return{};
 	}
@@ -290,6 +289,15 @@ namespace Parser
 		return val;
 	}
 
+	ReplaceVars getReplaceVarsKey(const Value& elem, const char* key, ReplaceVars val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getReplaceVarsVal(elem[key]);
+		}
+		return val;
+	}
+
 	Variable getVariableKey(const Value& elem, const char* key)
 	{
 		if (elem.HasMember(key) == true)
@@ -297,5 +305,14 @@ namespace Parser
 			return getVariableVal(elem[key]);
 		}
 		return Variable();
+	}
+
+	VarOrPredicate getVarOrPredicateKey(Game& game, const Value& elem, const char* key)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getVarOrPredicateVal(game, elem[key]);
+		}
+		return VarOrPredicate();
 	}
 }

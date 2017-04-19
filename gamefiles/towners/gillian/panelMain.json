@@ -59,10 +59,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Gillian",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/gillian/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/gillian/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

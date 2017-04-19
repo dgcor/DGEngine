@@ -7,7 +7,7 @@ std::string Namer::getName(const Queryable& obj) const
 	for (const auto& nameVal : nameValues)
 	{
 		bool hasValue = false;
-		int32_t value = 0;
+		LevelObjValue value = 0;
 		if (nameVal.property.empty() == true)
 		{
 			hasValue = true;
@@ -19,12 +19,12 @@ std::string Namer::getName(const Queryable& obj) const
 			{
 				if (var.is<int64_t>() == true)
 				{
-					value = (int32_t)var.get<int64_t>();
+					value = (LevelObjValue)var.get<int64_t>();
 					hasValue = true;
 				}
 				else if (var.is<bool>() == true)
 				{
-					value = (int32_t)var.get<bool>();
+					value = (LevelObjValue)var.get<bool>();
 					hasValue = true;
 				}
 			}

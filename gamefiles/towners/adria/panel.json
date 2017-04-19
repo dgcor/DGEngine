@@ -1,10 +1,10 @@
 {
-  "load": "ui/level/closeCharPanels.json",
+  "load": "ui/level/char/closePanels.json",
   "action": [
     { "name": "resource.add", "id": "userPanel" },
     { "name": "game.clearPlayingSounds" }
   ],
-  "load": "ui/level/disableGamePanelKeys.json",
+  "load": "ui/level/char/disableKeys.json",
   "keyboard": [
     {
       "key": "esc",
@@ -23,7 +23,7 @@
       "action": "focus.moveDown"
     }
   ],
-  "load": "ui/level/panel.json",
+  "load": "ui/level/panel/small.json",
   "load": "towners/adria/panelMain.json",
   "action": { "name": "sound.play", "id": "witchWelcome" }
 }

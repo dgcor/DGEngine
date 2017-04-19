@@ -1,0 +1,16 @@
+{
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "{1}" },
+      "param2": true,
+      "then": [
+        { "name": "game.clearPlayingSounds" },
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelTalk", "ignore": true },
+        { "name": "load", "file": "{1}" }
+      ]
+    },
+    { "name": "sound.play", "id": "titlslct" }
+  ]
+}

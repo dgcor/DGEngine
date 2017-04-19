@@ -1,0 +1,45 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "userPanelIdentifyCommon" },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram2",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent1",
+        "anchor": "topLeft",
+        "offset": [-8, 12]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram2",
+      "action": {
+        "name": "drawable.anchorToFocused",
+        "id": "pent2",
+        "anchor": "topRight",
+        "offset": [5, 12]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": "anchorLeftPentagram2"
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": "anchorRightPentagram2"
+    }
+  ],
+  "text": {
+    "id": "panelTitle",
+    "replaceVars": true,
+    "bitmapFont": "smaltext",
+    "color": "%textGold%",
+    "position": [320, 46],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1
+  }
+}

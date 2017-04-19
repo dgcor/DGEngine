@@ -26,10 +26,10 @@ void Item::executeAction(Game& game) const
 
 void Item::MapPosition(Level& level, const MapCoord& pos)
 {
-	auto oldObj = level.Map()[mapPosition.x][mapPosition.y].object;
-	level.Map()[mapPosition.x][mapPosition.y].object = nullptr;
+	auto oldObj = level.Map()[mapPosition.x][mapPosition.y].getObject(this);
+	level.Map()[mapPosition.x][mapPosition.y].deleteObject(this);
 	mapPosition = pos;
-	level.Map()[mapPosition.x][mapPosition.y].object = oldObj;
+	level.Map()[mapPosition.x][mapPosition.y].addFront(oldObj);
 }
 
 void Item::update(Game& game, Level& level)
@@ -120,20 +120,25 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int32(props.first.c_str()))
+	auto propHash = str2int16(props.first.c_str());
+	switch (propHash)
 	{
-	case str2int32("shortName"):
+	case str2int16("shortName"):
 		var = Variable(ShortName());
 		break;
-	case str2int32("name"):
+	case str2int16("name"):
+	{
+		updateNameAndDescriptions();
 		var = Variable(Name());
 		break;
-	case str2int32("simpleName"):
+	}
+	case str2int16("simpleName"):
 		var = Variable(SimpleName());
 		break;
-	case str2int32("d"):
-	case str2int32("description"):
+	case str2int16("d"):
+	case str2int16("description"):
 	{
+		updateNameAndDescriptions();
 		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
 		if (idx >= descriptions.size())
 		{
@@ -142,25 +147,43 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		var = Variable(descriptions[idx]);
 		break;
 	}
-	case str2int32("identified"):
+	case str2int16("hasDescription"):
+	{
+		updateNameAndDescriptions();
+		bool hasDescr = false;
+		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
+		if (idx < descriptions.size())
+		{
+			hasDescr = descriptions[idx].empty() == false;
+		}
+		var = Variable((bool)hasDescr);
+		break;
+	}
+	case str2int16("identified"):
 		var = Variable((bool)identified);
 		break;
-	case str2int32("type"):
+	case str2int16("type"):
 		var = Variable(std::string("item"));
 		break;
-	case str2int32("itemType"):
+	case str2int16("itemType"):
 		var = Variable(ItemType());
 		break;
-	case str2int32("propertyCount"):
+	case str2int16("needsRecharge"):
+		var = Variable(needsRecharge());
+		break;
+	case str2int16("needsRepair"):
+		var = Variable(needsRepair());
+		break;
+	case str2int16("propertyCount"):
 		var = Variable((int64_t)propertiesSize);
 		break;
-	case str2int32("hasProperty"):
+	case str2int16("hasProperty"):
 		var = Variable(hasItemProperty(props.second));
 		break;
 	default:
 	{
-		int16_t value;
-		if (getItemProperty(props.first.c_str(), value) == true)
+		LevelObjValue value;
+		if (getItemPropertyByHash(propHash, value) == true)
 		{
 			var = Variable((int64_t)value);
 			break;
@@ -172,6 +195,24 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	}
 	}
 	return true;
+}
+
+void Item::setProperty(const std::string& prop, const Variable& val)
+{
+	if (prop.empty() == true)
+	{
+		return;
+	}
+	LevelObjValue val2 = 0;
+	if (val.is<bool>() == true)
+	{
+		val2 = val.get<bool>() ? 1 : 0;
+	}
+	else if (val.is<int64_t>() == true)
+	{
+		val2 = (LevelObjValue)val.get<int64_t>();
+	}
+	setItemPropertyByHash(str2int16(prop.c_str()), val2);
 }
 
 bool Item::hasItemProperty(const char* prop) const
@@ -190,32 +231,34 @@ bool Item::hasItemProperty(const char* prop) const
 	return false;
 }
 
-int16_t Item::getItemPropertyByHash(uint16_t propHash) const
+LevelObjValue Item::getItemPropertyByHash(uint16_t propHash) const
 {
-	int16_t value = 0;
+	LevelObjValue value = 0;
 	getItemPropertyByHash(propHash, value);
 	return value;
 }
 
-int16_t Item::getItemProperty(const char* prop) const
+LevelObjValue Item::getItemProperty(const char* prop) const
 {
-	int16_t value = 0;
+	LevelObjValue value = 0;
 	getItemProperty(prop, value);
 	return value;
 }
 
-bool Item::getItemPropertyByHash(uint16_t propHash, int16_t& value) const
+bool Item::getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const
 {
 	switch (propHash)
 	{
 	case str2int16("identified"):
-		value = (int16_t)identified;
+		value = (LevelObjValue)identified;
 		break;
 	case str2int16("indestructible"):
-		value = (int16_t)(getItemPropertyByHash(ItemProp::DurabilityMax) == std::numeric_limits<int16_t>::max());
+		value = (LevelObjValue)(getItemPropertyByHash(ItemProp::DurabilityMax)
+			== std::numeric_limits<LevelObjValue>::max());
 		break;
 	case str2int16("unlimitedCharges"):
-		value = (int16_t)(getItemPropertyByHash(ItemProp::ChargesMax) == std::numeric_limits<int16_t>::max());
+		value = (LevelObjValue)(getItemPropertyByHash(ItemProp::ChargesMax)
+			== std::numeric_limits<LevelObjValue>::max());
 		break;
 	default:
 	{
@@ -236,7 +279,7 @@ bool Item::getItemPropertyByHash(uint16_t propHash, int16_t& value) const
 	return true;
 }
 
-bool Item::getItemProperty(const char* prop, int16_t& value) const
+bool Item::getItemProperty(const char* prop, LevelObjValue& value) const
 {
 	if (propertiesSize > 0)
 	{
@@ -245,50 +288,66 @@ bool Item::getItemProperty(const char* prop, int16_t& value) const
 	return false;
 }
 
-void Item::setItemPropertyByHash(uint16_t propHash, int16_t value)
+void Item::setItemPropertyByHash(uint16_t propHash, LevelObjValue value)
 {
 	switch (propHash)
 	{
 	case str2int16("identified"):
 		identified = value != 0;
-		return;
+		break;
 	default:
 	{
+		bool noUpdate = true;
 		for (size_t i = 0; i < propertiesSize; i++)
 		{
 			if (properties[i].first == propHash)
 			{
 				properties[i].second = value;
-				return;
+				noUpdate = false;
+				break;
 			}
 		}
-		if (propertiesSize < properties.size())
+		if (noUpdate == true &&
+			propertiesSize < properties.size())
 		{
 			properties[propertiesSize] = std::make_pair(propHash, value);
 			propertiesSize++;
+			noUpdate = false;
+		}
+		if (noUpdate == true)
+		{
+			return;
 		}
 	}
 	}
+	updateNameAndDescr = true;
 }
 
-void Item::setItemProperty(const char* prop, int16_t value)
+void Item::setItemProperty(const char* prop, LevelObjValue value)
 {
 	setItemPropertyByHash(str2int16(prop), value);
 }
 
-void Item::updateFullName()
+void Item::updateNameAndDescriptions() const
 {
-	if (class_->getFullName(*this, name) == false)
+	if (updateNameAndDescr == true)
 	{
-		name = class_->Name();
-	}
-}
-
-void Item::updateDescriptions()
-{
-	for (size_t i = 0; i < descriptions.size(); i++)
-	{
-		class_->getDescription(i, *this, descriptions[i]);
+		updateNameAndDescr = false;
+		if (identified == false)
+		{
+			name = SimpleName();
+		}
+		else
+		{
+			if (class_->getFullName(*this, name) == false)
+			{
+				name = SimpleName();
+			}
+		}
+		for (size_t i = 0; i < descriptions.size(); i++)
+		{
+			class_->getDescription(i, *this, descriptions[i]);
+		}
 	}
 }
 
@@ -298,4 +357,30 @@ void Item::applyDefaults()
 	{
 		setItemPropertyByHash(prop.first, prop.second);
 	}
+}
+
+bool Item::needsRecharge() const
+{
+	LevelObjValue charges = 0;
+	if (getItemPropertyByHash(ItemProp::ChargesMax, charges) == true)
+	{
+		if (charges < std::numeric_limits<LevelObjValue>::max())
+		{
+			return getItemPropertyByHash(ItemProp::Charges) < charges;
+		}
+	}
+	return false;
+}
+
+bool Item::needsRepair() const
+{
+	LevelObjValue durability = 0;
+	if (getItemPropertyByHash(ItemProp::DurabilityMax, durability) == true)
+	{
+		if (durability < std::numeric_limits<LevelObjValue>::max())
+		{
+			return getItemPropertyByHash(ItemProp::Durability) < durability;
+		}
+	}
+	return false;
 }

@@ -1,7 +1,10 @@
 {
   "action": {
     "name": "file.copy",
-    "file": ["ui/level/gameSettings.json", "|game|musicVolume|", "|game|soundVolume|"],
+    "file": ["ui/level/gameSettings.json",
+      "|game|musicVolume|",
+      "|game|soundVolume|",
+      "%colorCycling%"],
     "writeFile": "gameSettings.json"
   }
 }

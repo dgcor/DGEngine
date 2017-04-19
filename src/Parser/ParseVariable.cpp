@@ -51,7 +51,7 @@ namespace Parser
 		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
 		{
 			auto key = getStringVal(it->name);
-			if (key.size() > 0)
+			if (isValidId(key) == true)
 			{
 				const auto& value = it->value;
 				Variable var;

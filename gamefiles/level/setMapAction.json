@@ -1,7 +1,8 @@
 {
   "action": {
-    "name": "if.fileExists",
-    "param1": "level/{1}/map.json",
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "level/{1}/map.json" },
+    "param2": true,
     "then": [
       { "name": "drawable.setAction",
         "id": "map",

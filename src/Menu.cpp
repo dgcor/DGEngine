@@ -16,6 +16,49 @@ void Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 	}
 }
 
+void Menu::updateVisibleItems()
+{
+	if (items.empty() == true ||
+		visibleItems == 0)
+	{
+		start = 0;
+		end = items.size();
+		return;
+	}
+
+	if (start == 0 && end == 0)
+	{
+		end = std::min(visibleItems, items.size());
+	}
+	else if (currentIdx == 0)
+	{
+		start = 0;
+		end = std::min(visibleItems, items.size());
+	}
+	else if (currentIdx == items.size() - 1)
+	{
+		if (visibleItems < items.size())
+		{
+			start = items.size() - visibleItems;
+		}
+		else
+		{
+			start = 0;
+		}
+		end = items.size();
+	}
+	else if (currentIdx == end && end < items.size())
+	{
+		start++;
+		end++;
+	}
+	else if (currentIdx < start && start > 0)
+	{
+		start--;
+		end--;
+	}
+}
+
 void Menu::calculatePositions()
 {
 	if (recalculatePos == false)
@@ -23,48 +66,12 @@ void Menu::calculatePositions()
 		return;
 	}
 	recalculatePos = false;
+
+	updateVisibleItems();
+
 	if (items.empty() == true)
 	{
 		return;
-	}
-	if (visibleItems == 0)
-	{
-		start = 0;
-		end = items.size();
-	}
-	else
-	{
-		if (start == 0 && end == 0)
-		{
-			end = std::min(visibleItems, items.size());
-		}
-		else if (currentIdx == 0)
-		{
-			start = 0;
-			end = std::min(visibleItems, items.size());
-		}
-		else if (currentIdx == items.size() - 1)
-		{
-			if (visibleItems < items.size())
-			{
-				start = items.size() - visibleItems;
-			}
-			else
-			{
-				start = 0;
-			}
-			end = items.size();
-		}
-		else if (currentIdx == end && end < items.size())
-		{
-			start++;
-			end++;
-		}
-		else if (currentIdx < start && start > 0)
-		{
-			start--;
-			end--;
-		}
 	}
 
 	auto currPos = pos;
@@ -111,19 +118,9 @@ void Menu::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		return;
 	}
-	if (visibleItems > 0)
+	for (size_t i = start; i < end; i++)
 	{
-		for (size_t i = start; i < end; i++)
-		{
-			target.draw(*items[i].get(), states);
-		}
-	}
-	else
-	{
-		for (const auto& item : items)
-		{
-			target.draw(*item, states);
-		}
+		target.draw(*items[i].get(), states);
 	}
 }
 
@@ -140,9 +137,9 @@ void Menu::updateSize(const Game& game)
 	scrollRect.left = (int)scrollPosition.x;
 	scrollRect.top = (int)scrollPosition.y;
 
-	for (size_t i = 0; i < items.size(); i++)
+	for (const auto& item : items)
 	{
-		items[i]->updateSize(game);
+		item->updateSize(game);
 	}
 }
 
@@ -164,12 +161,10 @@ void Menu::update(Game& game)
 			}
 			currentIdx = i;
 		}
-		if (visibleItems == 0 ||
-			(visibleItems > 0 && i >= start && i < end))
+		if (i >= start && i < end)
 		{
 			button->update(game);
 		}
-		button->update(game);
 	}
 	if ((recalculatePos == true ||
 		recalculateVisiblePos == true) &&
@@ -211,11 +206,17 @@ bool Menu::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int32(props.first.c_str());
+	auto propHash = str2int16(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int32("itemCount"):
-		var = Variable((int64_t)this->getItemCount());
+	case str2int16("itemCount"):
+		var = Variable((int64_t)getItemCount());
+		break;
+	case str2int16("currentIdx"):
+		var = Variable((int64_t)currentIdx);
+		break;
+	case str2int16("visibleItems"):
+		var = Variable((int64_t)visibleItems);
 		break;
 	default:
 		return GameUtils::getUIObjProp(*this, propHash, props.second, var);

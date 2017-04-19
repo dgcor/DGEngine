@@ -12,6 +12,6 @@
     "onScrollDown": "levelScrollDownAction",
     "onScrollUp": "levelScrollUpAction"
   },
-  "load": "ui/level/gamePanel.json",
+  "load": "ui/level/char/panel.json",
   "load": "level/quests.json"
 }

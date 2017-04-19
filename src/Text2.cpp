@@ -42,6 +42,10 @@ void Text2::setBinding(const std::vector<std::string>& bindings_)
 
 void Text2::update(Game& game)
 {
+	if (text->Visible() == false)
+	{
+		return;
+	}
 	if (bindings.size() > 0)
 	{
 		text->setText(Text2::getFormatString(game, bindings, format));

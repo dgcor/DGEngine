@@ -78,10 +78,10 @@ bool InputText::getProperty(const std::string& prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int32(props.first.c_str());
+	auto propHash = str2int16(props.first.c_str());
 	switch (propHash)
 	{
-	case str2int32("text"):
+	case str2int16("text"):
 		var = Variable(this->getText());
 		break;
 	default:

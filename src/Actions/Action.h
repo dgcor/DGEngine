@@ -6,5 +6,5 @@ class Action
 {
 public:
 	virtual ~Action() {}
-	virtual bool execute(Game& game) { return true; }
+	virtual bool execute(Game& game) = 0;
 };

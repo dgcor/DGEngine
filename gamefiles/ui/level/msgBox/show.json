@@ -1,0 +1,12 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "|game|hasResource.msgBox|",
+    "param2": true,
+    "then": [
+      { "name": "event.resetTime", "id": "closeMsgBox" },
+      { "name": "text.setText", "id": "textMsg", "text": "{1}" }
+    ],
+    "else": { "name": "load", "file": ["ui/level/msgBox/show2.json", "{1}"] }
+  }
+}

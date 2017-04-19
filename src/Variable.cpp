@@ -20,11 +20,11 @@ namespace VarUtils
 		{
 			if (var.get<bool>() == true)
 			{
-				return std::string("true");
+				return { "true" };
 			}
 			else
 			{
-				return std::string("false");
+				return { "false" };
 			}
 		}
 		return defVal;

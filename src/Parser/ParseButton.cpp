@@ -115,10 +115,6 @@ namespace Parser
 		{
 			button->setAction(str2int16("doubleClick"), parseAction(game, elem["onDoubleClick"]));
 		}
-		if (elem.HasMember("onToggle"))
-		{
-			button->setAction(str2int16("toggle"), parseAction(game, elem["onToggle"]));
-		}
 		if (elem.HasMember("onClickDrag"))
 		{
 			button->setAction(str2int16("clickDrag"), parseAction(game, elem["onClickDrag"]));

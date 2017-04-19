@@ -1,0 +1,59 @@
+{
+  "playerClass": [
+    {
+      "id": "healer",
+      "name": "Healer",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "healer" }
+    },
+    {
+      "id": "storyTeller",
+      "name": "Story teller",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "strytell" }
+    },
+    {
+      "id": "blacksmith",
+      "name": "Blacksmith",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "smithn" }
+    },
+    {
+      "id": "tavernOwner",
+      "name": "Tavern owner",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "twnfn" }
+    },
+    {
+      "id": "drunk",
+      "name": "Drunk",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "twndrunk" }
+    },
+    {
+      "id": "barmaid",
+      "name": "Barmaid",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "wmnn" }
+    },
+    {
+      "id": "boy",
+      "name": "Boy",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "pegkid1" }
+    },
+    {
+      "id": "witch",
+      "name": "Witch",
+      "type": "Human",
+      "celTextures": { "palette": 0, "name": "witch" }
+    },
+    {
+      "id": "cow",
+      "name": "Cow",
+      "type": "Animal",
+      "description": "Cow",
+      "celTextures": { "palette": 0, "name": "cow" }
+    }
+  ]
+}

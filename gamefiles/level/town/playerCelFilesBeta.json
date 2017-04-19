@@ -1,0 +1,40 @@
+{
+  "celTexturePack": [
+    {
+      "file": "towners/animals/cow.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/strytell/strytell.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/healer/healer.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/twnf/twnfn.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/smith/smithn.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/townboy/pegkid1.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/drunk/twndrunk.cel",
+      "palette": "town"
+    },
+    {
+      "file": "towners/townwmn1/wmnn.cel",
+      "palette": "town"
+    },
+    {
+      "id": "witch",
+      "fromId": "wmnn"
+    }
+  ]
+}

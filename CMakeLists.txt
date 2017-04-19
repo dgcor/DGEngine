@@ -92,6 +92,7 @@ set(SOURCE_FILES
     src/Variable.cpp
     src/Variable.h
     src/Variant.h
+    src/VarOrPredicate.h
     src/View2.cpp
     src/View2.h
     src/Actions/ActAction.h
@@ -139,9 +140,12 @@ set(SOURCE_FILES
     src/Game/ItemCollection.h
     src/Game/ItemLocation.h
     src/Game/ItemProperties.h
+    src/Game/ItemTypes.h
     src/Game/ItemXY.h
     src/Game/Level.cpp
     src/Game/Level.h
+    src/Game/LevelCell.cpp
+    src/Game/LevelCell.h
     src/Game/LevelHelper.cpp
     src/Game/LevelHelper.h
     src/Game/LevelMap.cpp
@@ -211,10 +215,13 @@ set(SOURCE_FILES
     src/Parser/ParseMovie.h
     src/Parser/ParsePalette.cpp
     src/Parser/ParsePalette.h
+    src/Parser/ParsePredicate.cpp
+    src/Parser/ParsePredicate.h
     src/Parser/Parser.cpp
     src/Parser/Parser.h
     src/Parser/ParseRectangle.cpp
     src/Parser/ParseRectangle.h
+    src/Parser/ParserProperties.h
     src/Parser/ParseScrollableText.cpp
     src/Parser/ParseScrollableText.h
     src/Parser/ParseSound.cpp
@@ -249,6 +256,9 @@ set(SOURCE_FILES
     src/Parser/Utils/ParseUtilsKey.h
     src/Parser/Utils/ParseUtilsVal.cpp
     src/Parser/Utils/ParseUtilsVal.h
+    src/Predicates/Predicate.h
+    src/Predicates/PredIO.h
+    src/Predicates/PredPlayer.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
     src/rapidjson/encodedstream.h

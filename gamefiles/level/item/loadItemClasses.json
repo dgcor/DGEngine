@@ -156,5 +156,6 @@
   "load": "level/item/prefixes.json",
   "load": "level/item/suffixes.json",
   "load": "level/item/descriptions.json",
+  "load": "level/item/descriptionsUnique.json",
   "load": "level/item/loadItemClasses2.json"
 }

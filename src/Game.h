@@ -267,6 +267,8 @@ public:
 	}
 
 	bool getVarOrProp(const std::string& key, Variable& var) const;
+
+	bool getVariableNoPercentage(const std::string& key, Variable& var) const;
 	bool getVariable(const std::string& key, Variable& var) const;
 	bool getVariableBool(const std::string& key) const;
 	double getVariableDouble(const std::string& key) const;

@@ -10,14 +10,23 @@ class ActResourceAdd : public Action
 private:
 	std::string id;
 	IgnoreResource ignorePrevious;
+	bool hasIgnore{ false };
 
 public:
-	ActResourceAdd(const std::string& id_, IgnoreResource ignorePrevious_)
-		: id(id_), ignorePrevious(ignorePrevious_) {}
+	ActResourceAdd(const std::string& id_) : id(id_) {}
+
+	void setIgnorePrevious(IgnoreResource ignore)
+	{
+		ignorePrevious = ignore;
+		hasIgnore = true;
+	}
 
 	virtual bool execute(Game& game)
 	{
-		game.Resources().ignoreTopResource(ignorePrevious);
+		if (hasIgnore == true)
+		{
+			game.Resources().ignoreTopResource(ignorePrevious);
+		}
 		game.Resources().addResource(id);
 		return true;
 	}

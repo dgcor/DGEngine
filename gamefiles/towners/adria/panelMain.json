@@ -59,10 +59,7 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Talk to Adria",
-      "onClick": [
-        { "name": "resource.pop" },
-        { "name": "load", "file": "towners/adria/panelTalk.json" }
-      ],
+      "onClick": { "name": "load", "file": "towners/adria/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -79,6 +76,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Buy Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/adria/buy/common.json" },
+        { "name": "load", "file": "towners/adria/buy/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -95,6 +100,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Sell Items",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/adria/sell/common.json" },
+        { "name": "load", "file": "towners/adria/sell/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -111,6 +124,14 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "text": "Recharge Staves",
+      "onClick": [
+        { "name": "resource.ignore", "id": "userPanel", "ignore": true },
+        { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
+        { "name": "resource.add", "id": "userPanelBigFrame" },
+        { "name": "load", "file": "ui/level/panel/big.json" },
+        { "name": "load", "file": "towners/adria/recharge/common.json" },
+        { "name": "load", "file": "towners/adria/recharge/panel.json" }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
