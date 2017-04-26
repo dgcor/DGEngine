@@ -2,19 +2,24 @@
 #include <cmath>
 #include "LevelMap.h"
 
-bool MapSearchNode::IsPassableIgnoreObject()
+bool MapSearchNode::IsValid() const
 {
-	if (x >= 0 &&
+	return (x >= 0 &&
 		x < map->Width() &&
 		y >= 0 &&
-		y < map->Height())
+		y < map->Height());
+}
+
+bool MapSearchNode::IsPassableIgnoreObject() const
+{
+	if (IsValid() == true)
 	{
 		return (*map)[(Coord)x][(Coord)y].PassableIgnoreObject();
 	}
 	return false;
 }
 
-bool MapSearchNode::IsPassable(int16_t x_, int16_t y_)
+bool MapSearchNode::IsPassable(int16_t x_, int16_t y_) const
 {
 	if (x_ >= 0 &&
 		x_ < map->Width() &&
@@ -31,9 +36,14 @@ bool MapSearchNode::IsSameState(MapSearchNode& rhs)
 	return ((x == rhs.x) && (y == rhs.y));
 }
 
-float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal)
+float MapSearchNode::GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const
 {
 	return (float)(std::abs(x - nodeGoal.x) + std::abs(y - nodeGoal.y));
+}
+
+float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal)
+{
+	return GoalDistanceEstimateC(nodeGoal);
 }
 
 bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
@@ -97,11 +107,82 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode>* astarsearch, MapSe
 	return true;
 }
 
-float MapSearchNode::GetCost(MapSearchNode& successor)
+float MapSearchNode::GetCost() const
 {
 	if (IsPassable(x, y) == true)
 	{
 		return 1.f;
 	}
 	return 9.f;
+}
+
+float MapSearchNode::GetCost(MapSearchNode& successor)
+{
+	return GetCost();
+}
+
+const bool addNearestSuccessor(std::vector<MapSearchNode>& neighbours,
+	int16_t x_, int16_t y_, MapSearchNode parent)
+{
+	MapSearchNode neighbour(parent);
+	neighbour.x = x_;
+	neighbour.y = y_;
+	if ((neighbour.IsPassable() == true) && !((parent.x == x_) && (parent.y == y_)))
+	{
+		neighbours.push_back(neighbour);
+		return true;
+	}
+	return false;
+}
+
+bool getNearestPassableEndNode(const MapSearchNode& start, MapSearchNode& end)
+{
+	std::vector<MapSearchNode> neighbours;
+
+	bool canWalkLeft = addNearestSuccessor(neighbours, end.x - 1, end.y, end);
+	bool canWalkRight = addNearestSuccessor(neighbours, end.x + 1, end.y, end);
+	bool canWalkUp = addNearestSuccessor(neighbours, end.x, end.y - 1, end);
+	bool canWalkDown = addNearestSuccessor(neighbours, end.x, end.y + 1, end);
+
+	if (canWalkLeft == true)
+	{
+		if (canWalkUp == true)
+		{
+			addNearestSuccessor(neighbours, end.x - 1, end.y - 1, end);
+		}
+		if (canWalkDown == true)
+		{
+			addNearestSuccessor(neighbours, end.x - 1, end.y + 1, end);
+		}
+	}
+	if (canWalkRight == true)
+	{
+		if (canWalkUp == true)
+		{
+			addNearestSuccessor(neighbours, end.x + 1, end.y - 1, end);
+		}
+		if (canWalkDown == true)
+		{
+			addNearestSuccessor(neighbours, end.x + 1, end.y + 1, end);
+		}
+	}
+
+	std::sort(neighbours.begin(), neighbours.end(),
+		[&start](const MapSearchNode& lhs, const MapSearchNode& rhs)
+	{
+		float costA = lhs.GetCost() + lhs.GoalDistanceEstimateC(start);
+		float costB = rhs.GetCost() + rhs.GoalDistanceEstimateC(start);
+		return costA < costB;
+	});
+
+	if (neighbours.empty() == true)
+	{
+		return false;
+	}
+	if (neighbours.front().IsPassable() == false)
+	{
+		return false;
+	}
+	end = neighbours.front();
+	return true;
 }

@@ -154,29 +154,53 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 	return MapCoord((Coord)isoPosX, (Coord)isoPosY);
 }
 
-std::queue<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const
+std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const
 {
-	std::queue<MapCoord> path;
+	std::vector<MapCoord> path;
+
+	if (a == b)
+	{
+		path.push_back(a);
+		return path;
+	}
 
 	MapSearchNode start(this, a.x, a.y, PlayerDirection::All);
 	MapSearchNode end(this, b.x, b.y, PlayerDirection::All);
+	MapSearchNode endOrig(end);
 
-	if (end.IsPassableIgnoreObject() == false)
+	if (end.IsValid() == false)
 	{
 		return path;
+	}
+	if (end.IsPassable() == false)
+	{
+		if (((*this)[b]).hasObjects() == true)
+		{
+			if (start.GoalDistanceEstimateC(end) == 1.f ||
+				getNearestPassableEndNode(start, end) == false)
+			{
+				path.push_back(b);
+				return path;
+			}
+			if (end.IsPassableIgnoreObject() == false)
+			{
+				return path;
+			}
+		}
+		else
+		{
+			return path;
+		}
 	}
 
 	PathFinder pathFinder(PATH_FINDER_MAX);
 	pathFinder.SetStartAndGoalStates(start, end);
 
 	unsigned int SearchState;
-
 	do
 	{
 		SearchState = pathFinder.SearchStep();
-
-		auto StepCount = pathFinder.GetStepCount();
-		if (StepCount == PATH_FINDER_MAX)
+		if (pathFinder.GetStepCount() == PATH_FINDER_MAX)
 		{
 			pathFinder.CancelSearch();
 		}
@@ -184,16 +208,19 @@ std::queue<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) con
 
 	if (SearchState == PathFinder::SEARCH_STATE_SUCCEEDED)
 	{
-		auto node = pathFinder.GetSolutionStart();
-
+		if (endOrig.IsPassable() == false)
+		{
+			path.push_back(MapCoord(endOrig.x, endOrig.y));
+		}
+		auto node = pathFinder.GetSolutionEnd();
 		while (true)
 		{
 			if (node == nullptr)
 			{
 				break;
 			}
-			path.push(MapCoord(node->x, node->y));
-			node = pathFinder.GetSolutionNext();
+			path.push_back(MapCoord(node->x, node->y));
+			node = pathFinder.GetSolutionPrev();
 		};
 		pathFinder.FreeSolutionNodes();
 	}

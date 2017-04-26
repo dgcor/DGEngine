@@ -82,6 +82,7 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
+				player->clearWalkPath();
 				player->MapPosition(*level, position);
 				if (resetDirection == true)
 				{
@@ -216,6 +217,32 @@ public:
 					}
 					player->setProperty(propVal, value2);
 				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerSetSpeed : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	int speed;
+
+public:
+	ActPlayerSetSpeed(const std::string& idPlayer_, const std::string& idLevel_,
+		int speed_) : idPlayer(idPlayer_), idLevel(idLevel_), speed(speed_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->setWalkSpeed(speed);
 			}
 		}
 		return true;
