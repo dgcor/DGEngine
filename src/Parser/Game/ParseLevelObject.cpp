@@ -32,7 +32,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto& mapCell = level->Map()[mapPos.x][mapPos.y];
+		auto& mapCell = level->Map()[mapPos];
 
 		if (mapCell.getObject<ImageLevelObject>() != nullptr)
 		{

@@ -72,7 +72,7 @@
       "id": "griswold",
       "class": "blacksmith",
       "name": "Griswold the blacksmith",
-      "mapPosition": [62, 64],
+      "mapPosition": [62, 63],
       "action": { "name": "load", "file": "towners/griswold/panel.json" },
       "inventory": [
         {

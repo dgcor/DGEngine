@@ -26,10 +26,10 @@ void Item::executeAction(Game& game) const
 
 void Item::MapPosition(Level& level, const MapCoord& pos)
 {
-	auto oldObj = level.Map()[mapPosition.x][mapPosition.y].getObject(this);
-	level.Map()[mapPosition.x][mapPosition.y].deleteObject(this);
+	auto oldObj = level.Map()[mapPosition].getObject(this);
+	level.Map()[mapPosition].deleteObject(this);
 	mapPosition = pos;
-	level.Map()[mapPosition.x][mapPosition.y].addFront(oldObj);
+	level.Map()[mapPosition].addFront(oldObj);
 }
 
 void Item::update(Game& game, Level& level)

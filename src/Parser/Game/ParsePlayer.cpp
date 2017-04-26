@@ -153,9 +153,9 @@ namespace Parser
 		{
 			return;
 		}
-		auto& mapCell = level->Map()[mapPos.x][mapPos.y];
+		auto& mapCell = level->Map()[mapPos];
 
-		if (mapCell.Passable() == false)
+		if (mapCell.getObject<Player>() != nullptr)
 		{
 			return;
 		}
@@ -170,10 +170,16 @@ namespace Parser
 
 		player->applyDefaults();
 
-		player->MapPosition(mapPos);
 		mapCell.addBack(player);
+		player->MapPosition(mapPos);
+		player->MapPosition(*level, mapPos);
+
+		player->updateTexture();
+		player->updateDrawPosition();
 
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
+
+		player->setWalkSpeed(getIntKey(elem, "speed", 15));
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
 		player->setStatus(getPlayerStatusKey(elem, "status"));

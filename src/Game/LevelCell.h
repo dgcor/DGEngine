@@ -41,6 +41,8 @@ public:
 	std::shared_ptr<LevelObject> back() const;
 	std::shared_ptr<LevelObject> front() const;
 
+	bool hasObjects() const { return objects.empty() == false; }
+
 	std::shared_ptr<LevelObject> getObject(LevelObject* obj) const;
 
 	template <class T>

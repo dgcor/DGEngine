@@ -27,7 +27,7 @@
     {
       "id": "l15",
       "name": "Down to hell",
-      "mapPosition": [41, 80],
+      "mapPosition": [41, 79],
       "texture": "empty",
       "textureRect": [32, 32],
       "action": { "name": "load", "file": ["level/l15/load.json", "positionPlayer", "[7, 7]"] }

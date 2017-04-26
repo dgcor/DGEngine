@@ -7,6 +7,136 @@
 #include "Level.h"
 #include "Utils.h"
 
+void Player::calculateRange()
+{
+	celTexture = class_->getCelTexture(palette);
+	if (celTexture != nullptr
+		&& direction < PlayerDirection::Size)
+	{
+		celIdx = class_->getStatusCelIndex(status);
+		auto numFrames = celTexture->size(celIdx);
+		if (direction == PlayerDirection::All)
+		{
+			frameRange.first = 0;
+			frameRange.second = numFrames;
+		}
+		else
+		{
+			auto period = (numFrames / 8);
+			frameRange.first = (size_t)direction * period;
+			frameRange.second = frameRange.first + period;
+		}
+	}
+	else
+	{
+		celIdx = 0;
+		frameRange.first = 0;
+		frameRange.second = 0;
+	}
+}
+
+void Player::updateDrawPosition(sf::Vector2f pos)
+{
+	pos.x += (float)(-(sprite.getTextureRect().width / 2)) + LevelMap::TileSize();
+	pos.y += (float)(224 - (sprite.getTextureRect().height - LevelMap::TileSize()));
+	sprite.setPosition(pos);
+}
+
+void Player::updateTexture()
+{
+	if (currentFrame < frameRange.first || currentFrame >= frameRange.second)
+	{
+		currentFrame = frameRange.first;
+	}
+	if (currentFrame < celTexture->size(celIdx))
+	{
+		sprite.setTexture(celTexture->get(celIdx, currentFrame), true);
+	}
+	currentFrame++;
+}
+
+void Player::updateWalkPath(Game& game, Level& level)
+{
+	auto newDrawPos = drawPosA;
+
+	beginning:
+	if (drawPosA == drawPosB)
+	{
+		if (walkPath.empty() == true)
+		{
+			setStatus(PlayerStatus::Stand1);
+		}
+		while (walkPath.empty() == false)
+		{
+			const auto& nextMapPos = walkPath.back();
+			if (walkPath.size() == 1)
+			{
+				const auto levelObj = level.Map()[nextMapPos.x][nextMapPos.y].front();
+				if (levelObj != nullptr)
+				{
+					levelObj->executeAction(game);
+					walkPath.pop_back();
+					return;
+				}
+			}
+			if (nextMapPos == mapPosition)
+			{
+				walkPath.pop_back();
+				continue;
+			}
+			setStatus(PlayerStatus::Walk1);
+			setDirection(getPlayerDirection(mapPosition, nextMapPos));
+			MapPosition(level, nextMapPos);
+
+			currPositionStep = 0.125f;
+			goto beginning;
+		}
+	}
+	else
+	{
+		newDrawPos.x -= std::round((drawPosA.x - drawPosB.x) * currPositionStep);
+		newDrawPos.y -= std::round((drawPosA.y - drawPosB.y) * currPositionStep);
+
+		if (currPositionStep >= 1.f)
+		{
+			if (walkPath.empty() == false)
+			{
+				walkPath.pop_back();
+			}
+			else
+			{
+				setStatus(PlayerStatus::Stand1);
+			}
+			drawPosA = drawPosB;
+			newDrawPos = drawPosB;
+		}
+		else
+		{
+			currPositionStep += 0.125f;
+		}
+	}
+	updateDrawPosition(newDrawPos);
+}
+
+void Player::setWalkSpeed(int fps)
+{
+	fps = std::max(std::min(fps, 1000), 1);
+	walkTime = sf::seconds(1.f / (float)fps);
+}
+
+void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
+{
+	if (walkPath_.empty() == true)
+	{
+		return;
+	}
+	walkPath = walkPath_;
+	if (walkPath.empty() == false)
+	{
+		mapPositionMoveTo = walkPath.front();
+	}
+}
+
 sf::Vector2f Player::getBasePosition() const
 {
 	return sf::Vector2f(
@@ -24,77 +154,16 @@ void Player::executeAction(Game& game) const
 
 void Player::MapPosition(Level& level, const MapCoord& pos)
 {
-	auto oldObj = level.Map()[mapPosition.x][mapPosition.y].getObject(this);
-	level.Map()[mapPosition.x][mapPosition.y].deleteObject(this);
+	auto oldObj = level.Map()[mapPosition].getObject(this);
+	level.Map()[mapPosition].deleteObject(this);
+	drawPosA = level.Map().getCoord(mapPosition);
 	mapPosition = pos;
-	level.Map()[mapPosition.x][mapPosition.y].addBack(oldObj);
-}
-
-void Player::updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSize)
-{
-	if (walkPath.empty() == true)
-	{
-		setStatus(PlayerStatus::Stand1);
-	}
-	else
-	{
-		setStatus(PlayerStatus::Walk1);
-	}
-
-	if (walkPath.empty() == false)
-	{
-		const auto& nextMapPos = walkPath.front();
-		if (walkPath.size() == 1)
-		{
-			const auto levelObj = level.Map()[nextMapPos.x][nextMapPos.y].front();
-			if (levelObj != nullptr)
-			{
-				levelObj->executeAction(game);
-				walkPath.pop();
-				return;
-			}
-		}
-
-		setDirection(getPlayerDirection(mapPosition, nextMapPos));
-		MapPosition(level, nextMapPos);
-		walkPath.pop();
-	}
-
-	auto drawPos = level.Map().getCoord(mapPosition);
-	drawPos.x += (float)(-((int)texSize.x / 2)) + LevelMap::TileSize();
-	drawPos.y += (float)(224 - ((int)texSize.y - LevelMap::TileSize()));
-	sprite.setPosition(drawPos);
+	drawPosB = level.Map().getCoord(mapPosition);
+	level.Map()[mapPosition].addBack(oldObj);
 }
 
 void Player::update(Game& game, Level& level)
 {
-	auto rect = sprite.getGlobalBounds();
-	if (enableHover == true)
-	{
-		if (level.HasMouseInside() == true &&
-			rect.contains(level.MousePositionf()) == true)
-		{
-			if (hovered == false)
-			{
-				hovered = true;
-				level.setHoverObject(this);
-				level.executeHoverEnterAction(game);
-			}
-		}
-		else
-		{
-			if (hovered == true)
-			{
-				hovered = false;
-				if (level.getHoverObject() == this)
-				{
-					level.setHoverObject(nullptr);
-					level.executeHoverLeaveAction(game);
-				}
-			}
-		}
-	}
-
 	if (celTexture == nullptr
 		|| frameRange.first > frameRange.second)
 	{
@@ -102,28 +171,51 @@ void Player::update(Game& game, Level& level)
 	}
 
 	// add delta time
-	currentTime += game.getElapsedTime();
+	currentFrameTime += game.getElapsedTime();
 
 	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
+	if (currentFrameTime >= frameTime)
 	{
 		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
+		currentFrameTime = sf::microseconds(currentFrameTime.asMicroseconds() % frameTime.asMicroseconds());
 
-		if (rect.width > 0 && rect.height > 0)
+		updateTexture();
+	}
+
+	currentWalkTime += game.getElapsedTime();
+
+	// if current time is bigger then the frame time advance one frame
+	if (currentWalkTime >= walkTime)
+	{
+		// reset time, but keep the remainder
+		currentWalkTime = sf::microseconds(currentFrameTime.asMicroseconds() % walkTime.asMicroseconds());
+
+		updateWalkPath(game, level);
+	}
+	if (enableHover == false)
+	{
+		return;
+	}
+	if (level.HasMouseInside() == true &&
+		sprite.getGlobalBounds().contains(level.MousePositionf()) == true)
+	{
+		if (hovered == false)
 		{
-			updateWalkPath(game, level, sf::Vector2u((unsigned)rect.width, (unsigned)rect.height));
+			hovered = true;
+			level.setHoverObject(this);
+			level.executeHoverEnterAction(game);
 		}
-
-		currentFrame++;
-		if (currentFrame < frameRange.first || currentFrame >= frameRange.second)
+	}
+	else
+	{
+		if (hovered == true)
 		{
-			currentFrame = frameRange.first;
-		}
-
-		if (currentFrame < celTexture->size(celIdx))
-		{
-			sprite.setTexture(celTexture->get(celIdx, currentFrame), true);
+			hovered = false;
+			if (level.getHoverObject() == this)
+			{
+				level.setHoverObject(nullptr);
+				level.executeHoverLeaveAction(game);
+			}
 		}
 	}
 }
@@ -591,11 +683,11 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 			}
 			newItem->setItemPropertyByHash(ItemProp::Gold, goldVal);
 
-			size_t invIdx = 0;
-			size_t itemIdx = 0;
-			if (getItemSlot(*newItem, invIdx, itemIdx) == true)
+			size_t invIdx2 = 0;
+			size_t itemIdx2 = 0;
+			if (getItemSlot(*newItem, invIdx2, itemIdx2) == true)
 			{
-				inventories[invIdx].set(itemIdx, newItem);
+				inventories[invIdx2].set(itemIdx2, newItem);
 				amount -= goldVal;
 				gold += goldVal;
 			}

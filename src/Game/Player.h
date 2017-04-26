@@ -6,7 +6,6 @@
 #include "LevelObject.h"
 #include <memory>
 #include "PlayerClass.h"
-#include <queue>
 
 class Player : public LevelObject
 {
@@ -14,8 +13,11 @@ private:
 	sf::Sprite sprite;
 	MapCoord mapPosition;
 	MapCoord mapPositionMoveTo;
+	sf::Vector2f drawPosA;
+	sf::Vector2f drawPosB;
+	float currPositionStep = 0.f;
 
-	std::queue<MapCoord> walkPath;
+	std::vector<MapCoord> walkPath;
 
 	std::shared_ptr<PlayerClass> class_;
 
@@ -30,7 +32,10 @@ private:
 	size_t currentFrame{ 0 };
 
 	sf::Time frameTime{ sf::milliseconds(50) };
-	sf::Time currentTime;
+	sf::Time currentFrameTime;
+
+	sf::Time walkTime{ sf::milliseconds(66) };
+	sf::Time currentWalkTime;
 
 	std::shared_ptr<Action> action;
 
@@ -73,35 +78,9 @@ private:
 	LevelObjValue resistFire{ 0 };
 	LevelObjValue resistLightning{ 0 };
 
-	void calculateRange()
-	{
-		celTexture = class_->getCelTexture(palette);
-		if (celTexture != nullptr
-			&& direction < PlayerDirection::Size)
-		{
-			celIdx = class_->getStatusCelIndex(status);
-			auto numFrames = celTexture->size(celIdx);
-			if (direction == PlayerDirection::All)
-			{
-				frameRange.first = 0;
-				frameRange.second = numFrames;
-			}
-			else
-			{
-				auto period = (numFrames / 8);
-				frameRange.first = (size_t)direction * period;
-				frameRange.second = frameRange.first + period;
-			}
-		}
-		else
-		{
-			celIdx = 0;
-			frameRange.first = 0;
-			frameRange.second = 0;
-		}
-	}
+	void calculateRange();
 
-	void updateWalkPath(Game& game, Level& level, const sf::Vector2u& texSize);
+	void updateWalkPath(Game& game, Level& level);
 
 	bool parseInventoryAndItem(const std::string& str,
 		std::string& props, size_t& invIdx, size_t& itemIdx) const;
@@ -120,14 +99,21 @@ public:
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
 
-	virtual const MapCoord& MapPosition() const { return mapPosition; }
+	virtual const MapCoord& MapPosition() const
+	{
+		if (walkPath.empty() == false)
+		{
+			return walkPath.back();
+		}
+		return mapPosition;
+	}
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 	void MapPosition(Level& level, const MapCoord& pos);
 
 	const MapCoord& MapPositionMoveTo() const { return mapPositionMoveTo; }
 
 	virtual void executeAction(Game& game) const;
-	virtual bool Passable() const { return true; }
+	virtual bool Passable() const { return false; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 
 	virtual bool Hoverable() const { return enableHover; }
@@ -156,14 +142,14 @@ public:
 		return setPlayerProperty(prop.c_str(), value);
 	}
 
-	void setWalkPath(const std::queue<MapCoord> walkPath_)
-	{
-		walkPath = walkPath_;
-		if (walkPath.empty() == false)
-		{
-			mapPositionMoveTo = walkPath.back();
-		}
-	}
+	void updateDrawPosition(sf::Vector2f pos);
+	void updateDrawPosition() { updateDrawPosition(drawPosA); }
+
+	void updateTexture();
+
+	void setWalkSpeed(int fps);
+	void clearWalkPath() { walkPath = {}; }
+	void setWalkPath(const std::vector<MapCoord>& walkPath_);
 
 	void setDirection(PlayerDirection direction_)
 	{

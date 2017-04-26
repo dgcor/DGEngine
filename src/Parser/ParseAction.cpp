@@ -847,6 +847,13 @@ namespace Parser
 				getStringKey(elem, "property"),
 				getVariableKey(elem, "value"));
 		}
+		case str2int16("player.setSpeed"):
+		{
+			return std::make_shared<ActPlayerSetSpeed>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idLevel"),
+				getIntKey(elem, "speed", 30));
+		}
 		case str2int16("quest.add"):
 		{
 			auto quest = parseQuestObj(game, elem);

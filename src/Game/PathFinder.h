@@ -23,9 +23,14 @@ public:
 	MapSearchNode(const LevelMap* map_, int16_t x_, int16_t y_,
 		const PlayerDirection& direction_) : map(map_), x(x_), y(y_), direction(direction_) {}
 
-	bool IsPassableIgnoreObject();
-	bool IsPassable() { return IsPassable(x, y); }
-	bool IsPassable(int16_t x_, int16_t y_);
+	bool IsValid() const;
+
+	bool IsPassableIgnoreObject() const;
+	bool IsPassable() const { return IsPassable(x, y); }
+	bool IsPassable(int16_t x_, int16_t y_) const;
+
+	float GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const;
+	float GetCost() const;
 
 	float GoalDistanceEstimate(MapSearchNode& nodeGoal);
 	bool IsGoal(MapSearchNode& nodeGoal);
@@ -33,5 +38,7 @@ public:
 	float GetCost(MapSearchNode& successor);
 	bool IsSameState(MapSearchNode& rhs);
 };
+
+bool getNearestPassableEndNode(const MapSearchNode& start, MapSearchNode& end);
 
 typedef AStarSearch<MapSearchNode> PathFinder;
