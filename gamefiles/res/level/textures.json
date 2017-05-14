@@ -1,6 +1,11 @@
 {
   "texture": [
     {
+      "id": "p8bulbs",
+      "file": "ctrlpan/p8bulbs.cel",
+      "palette": "town"
+    },
+    {
       "id": "panel8",
       "file": "ctrlpan/panel8.cel",
       "palette": "town"

@@ -32,7 +32,7 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						item->setItemProperty(it->name.GetString(),
+						item->setInt(it->name.GetString(),
 							getMinMaxIntVal<LevelObjValue>(it->value));
 					}
 				}
@@ -44,7 +44,7 @@ namespace Parser
 
 	void parseItem(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;

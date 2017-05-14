@@ -60,11 +60,19 @@ namespace Parser
 		{
 			return;
 		}
+		if (game.Resources().hasCelTextureCache(id) == true)
+		{
+			return;
+		}
 
 		const CelFile* celObj = nullptr;
 
 		if (elem.HasMember("file") == true)
 		{
+			if (game.Resources().hasCelFile(id) == true)
+			{
+				return;
+			}
 			auto cel = parseCelFileObj(game, elem);
 			if (cel != nullptr)
 			{

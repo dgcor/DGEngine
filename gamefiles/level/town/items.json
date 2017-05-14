@@ -4,10 +4,10 @@
       "class": "shortSword",
       "properties": {
         "requiredStrength": 5,
-        "toStrength": 5,
+        "strength": 5,
         "toDamage": 120,
         "identified": false,
-        "magic": true
+        "magical": true
       },
       "mapPosition": [56, 73]
     },
@@ -19,7 +19,7 @@
       "class": "ring",
       "mapPosition": [58, 73],
       "properties": {
-        "toStrength": 5
+        "strength": 5
       }
     },
     {
@@ -72,7 +72,7 @@
       "properties": {
         "toDamage": 120,
         "identified": false,
-        "magic": true
+        "magical": true
       },
       "mapPosition": [57, 74]
     },

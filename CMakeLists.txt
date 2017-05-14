@@ -127,6 +127,8 @@ set(SOURCE_FILES
     src/Actions/ActVisibility.h
     src/Game/CelLevelObject.cpp
     src/Game/CelLevelObject.h
+    src/Game/Formula.cpp
+    src/Game/Formula.h
     src/Game/fsa.h
     src/Game/GameProperties.cpp
     src/Game/GameProperties.h
@@ -154,6 +156,7 @@ set(SOURCE_FILES
     src/Game/MapCoord.h
     src/Game/Namer.cpp
     src/Game/Namer.h
+    src/Game/Number.h
     src/Game/PairXY.h
     src/Game/PathFinder.cpp
     src/Game/PathFinder.h

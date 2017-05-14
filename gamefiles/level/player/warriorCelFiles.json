@@ -1,13 +1,13 @@
 {
   "celFile": [
-    { "id": "wlsas", "file": "plrgfx/warrior/wls/wlsas.cl2" },
-    { "id": "wlsat", "file": "plrgfx/warrior/wls/wlsat.cl2" },
-    { "id": "wlsaw", "file": "plrgfx/warrior/wls/wlsaw.cl2" },
-    { "id": "wlsfm", "file": "plrgfx/warrior/wls/wlsfm.cl2" },
-    { "id": "wlsht", "file": "plrgfx/warrior/wls/wlsht.cl2" },
-    { "id": "wlslm", "file": "plrgfx/warrior/wls/wlslm.cl2" },
-    { "id": "wlsqm", "file": "plrgfx/warrior/wls/wlsqm.cl2" },
-    { "id": "wlsst", "file": "plrgfx/warrior/wls/wlsst.cl2" },
-    { "id": "wlswl", "file": "plrgfx/warrior/wls/wlswl.cl2" }
+    { "id": "wlnas", "file": "plrgfx/warrior/wln/wlnas.cl2" },
+    { "id": "wlnat", "file": "plrgfx/warrior/wln/wlnat.cl2" },
+    { "id": "wlnaw", "file": "plrgfx/warrior/wln/wlnaw.cl2" },
+    { "id": "wlnfm", "file": "plrgfx/warrior/wln/wlnfm.cl2" },
+    { "id": "wlnht", "file": "plrgfx/warrior/wln/wlnht.cl2" },
+    { "id": "wlnlm", "file": "plrgfx/warrior/wln/wlnlm.cl2" },
+    { "id": "wlnqm", "file": "plrgfx/warrior/wln/wlnqm.cl2" },
+    { "id": "wlnst", "file": "plrgfx/warrior/wln/wlnst.cl2" },
+    { "id": "wlnwl", "file": "plrgfx/warrior/wln/wlnwl.cl2" }
   ]
 }

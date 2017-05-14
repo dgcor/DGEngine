@@ -89,7 +89,7 @@
       "text": "Receive Healing",
       "onClick": [
         { "name": "sound.loadPlay", "file": "sfx/misc/cast8.wav" },
-        { "name": "player.setProperty", "property": "lifeBase", "value": "|currentLevel|currentPlayer.lifeBase|" }
+        { "name": "player.setProperty", "property": "lifeDamage", "value": 0 }
       ],
       "onFocus": [
         "anchorLeftPentagram",

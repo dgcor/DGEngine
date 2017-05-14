@@ -109,7 +109,7 @@
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magic|",
+            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
             "param2": 1,
             "then": {
               "name": "menu.setColor",

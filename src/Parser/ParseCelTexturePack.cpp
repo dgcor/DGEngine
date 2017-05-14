@@ -60,11 +60,19 @@ namespace Parser
 		{
 			return;
 		}
+		if (game.Resources().hasCelTextureCacheVec(id) == true)
+		{
+			return;
+		}
 
 		std::vector<const CelFile*> celVec;
 
 		if (elem.HasMember("file") == true)
 		{
+			if (game.Resources().hasCelFile(id) == true)
+			{
+				return;
+			}
 			auto cel = parseCelFileObj(game, elem);
 			if (cel != nullptr)
 			{

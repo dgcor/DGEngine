@@ -8,7 +8,7 @@
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
         "param2": true,
         "then": { "name": "item.drop" },
-        "else": { "name": "player.moveToClick", "id": "hero" }
+        "else": { "name": "player.moveToClick", "player": "hero" }
       }
     },
     {
@@ -23,7 +23,7 @@
           "param2": "item",
           "then": {
             "name": "if.equal",
-            "param1": "|currentLevel|hoverObject.magic|",
+            "param1": "|currentLevel|hoverObject.magical|",
             "param2": 1,
             "then": "setPanelTextColorBlue",
             "else": {

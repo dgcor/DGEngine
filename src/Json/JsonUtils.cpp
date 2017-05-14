@@ -215,7 +215,7 @@ namespace JsonUtils
 		}
 		else if (elem.IsDouble() == true)
 		{
-			return std::to_string(elem.GetDouble());
+			return Utils::toString(elem.GetDouble());
 		}
 		else if (elem.IsBool() == true)
 		{

@@ -6,34 +6,29 @@
 class ItemCoordInventory
 {
 private:
-	union ItemXYOrIndex {
-		ItemXY itemXY;
-		uint16_t itemIdx;
-
-		ItemXYOrIndex() : ItemXYOrIndex(0) {}
-		ItemXYOrIndex(ItemXY itemXY_) : itemXY(itemXY_) {}
-		ItemXYOrIndex(uint16_t itemIdx_) : itemIdx(itemIdx_) {}
-	};
-
 	std::string playerId;
 	int16_t inventoryIdx{ 0 };
-	ItemXYOrIndex itemPos;
+	union {
+		ItemXY itemXY;
+		uint16_t itemIdx;
+	};
 
 public:
 	// inventoryIdx = -1 points to player's selected item
 	ItemCoordInventory() : inventoryIdx(-1) {};
 
-	ItemCoordInventory(const std::string& playerId_) : playerId(playerId_), inventoryIdx(-1) {};
+	ItemCoordInventory(const std::string& playerId_) :
+		playerId(playerId_), inventoryIdx(-1), itemIdx(0) {};
 
 	ItemCoordInventory(const std::string& playerId_, size_t inventoryIdx_, size_t itemIdx_)
 		: playerId(playerId_),
 		inventoryIdx(((int16_t)inventoryIdx_) & 0x7FFF),
-		itemPos((uint16_t)itemIdx_) {}
+		itemIdx(itemIdx_) {}
 
 	ItemCoordInventory(const std::string& playerId_, size_t inventoryIdx_, const ItemXY& itemXY_)
 		: playerId(playerId_),
 		inventoryIdx(((int16_t)inventoryIdx_) | 0x8000),
-		itemPos(itemXY_) {}
+		itemXY(itemXY_) {}
 
 	bool isSelectedItem() const
 	{
@@ -64,7 +59,7 @@ public:
 		{
 			return 0;
 		}
-		return itemPos.itemIdx;
+		return itemIdx;
 	}
 
 	ItemXY getItemXY() const
@@ -73,7 +68,7 @@ public:
 		{
 			return{};
 		}
-		return itemPos.itemXY;
+		return itemXY;
 	}
 
 	const std::string& getPlayerId() const { return playerId; }

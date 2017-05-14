@@ -41,6 +41,9 @@ namespace Utils
 	std::string toLower(const std::string& str);
 	std::string toUpper(const std::string& str);
 
+	// removes trailing zeroes from doubles
+	std::string toString(double d);
+
 	std::string trimStart(const std::string& str, const std::string& chars = " \t");
 	std::string trimEnd(const std::string& str, const std::string& chars = " \t");
 	std::string trim(const std::string& str, const std::string& chars = " \t");

@@ -8,7 +8,7 @@ class DrawableText : public UIObject
 {
 public:
 	virtual std::string getText() const = 0;
-	virtual void setText(const std::string& string) = 0;
+	virtual bool setText(const std::string& str) = 0;
 	virtual sf::FloatRect getLocalBounds() const = 0;
 	virtual sf::FloatRect getGlobalBounds() const = 0;
 	virtual unsigned getLineCount() const = 0;

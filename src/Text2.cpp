@@ -3,6 +3,16 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+void Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+{
+	switch (nameHash16)
+	{
+	case str2int16("change"):
+		changeAction = action;
+		return;
+	}
+}
+
 std::string Text2::getFormatString(const Game& game,
 	const std::vector<std::string>& bindings, const std::string& format)
 {
@@ -10,7 +20,7 @@ std::string Text2::getFormatString(const Game& game,
 	{
 		if (format == "[1]")
 		{
-			return game.getVariableString(bindings[0]);
+			return game.getVarOrPropString(bindings[0]);
 		}
 		else
 		{
@@ -19,7 +29,7 @@ std::string Text2::getFormatString(const Game& game,
 			{
 				for (size_t i = 0; i < bindings.size(); i++)
 				{
-					auto str = game.getVariableString(bindings[i]);
+					auto str = game.getVarOrPropString(bindings[i]);
 					Utils::replaceStringInPlace(displayText, "[" + std::to_string(i + 1) + "]", str);
 				}
 			}
@@ -48,6 +58,14 @@ void Text2::update(Game& game)
 	}
 	if (bindings.size() > 0)
 	{
-		text->setText(Text2::getFormatString(game, bindings, format));
+		triggerOnChange = text->setText(Text2::getFormatString(game, bindings, format));
+	}
+	if (triggerOnChange == true)
+	{
+		triggerOnChange = false;
+		if (changeAction != nullptr)
+		{
+			changeAction->execute(game);
+		}
 	}
 }

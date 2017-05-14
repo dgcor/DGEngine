@@ -8,93 +8,50 @@
   },
   "celTexturePack": [
     {
-      "id": "rls",
+      "id": "rln",
       "celFile": [
-        "rlsas",
-        "rlsat",
-        "rlsaw",
-        "rlsfm",
-        "rlsht",
-        "rlslm",
-        "rlsqm",
-        "rlsst",
-        "rlswl"
+        "rlnas",
+        "rlnat",
+        "rlnaw",
+        "rlnfm",
+        "rlnht",
+        "rlnlm",
+        "rlnqm",
+        "rlnst",
+        "rlnwl"
       ],
       "palette": "town"
     },
     {
-      "id": "rlsInfra",
+      "id": "rlnInfra",
       "celFile": [
-        "rlsas",
-        "rlsat",
-        "rlsaw",
-        "rlsfm",
-        "rlsht",
-        "rlslm",
-        "rlsqm",
-        "rlsst",
-        "rlswl"
+        "rlnas",
+        "rlnat",
+        "rlnaw",
+        "rlnfm",
+        "rlnht",
+        "rlnlm",
+        "rlnqm",
+        "rlnst",
+        "rlnwl"
       ],
       "palette": "infra"
     },
     {
-      "id": "rlsStone",
+      "id": "rlnStone",
       "celFile": [
-        "rlsas",
-        "rlsat",
-        "rlsaw",
-        "rlsfm",
-        "rlsht",
-        "rlslm",
-        "rlsqm",
-        "rlsst",
-        "rlswl"
+        "rlnas",
+        "rlnat",
+        "rlnaw",
+        "rlnfm",
+        "rlnht",
+        "rlnlm",
+        "rlnqm",
+        "rlnst",
+        "rlnwl"
       ],
       "palette": "stone"
     }
   ],
-  "playerClass": {
-    "id": "Rogue",
-    "name": "Rogue",
-    "type": "Human",
-    "description": "Rogue",
-    "defaults": {
-      "strengthBase": 20,
-      "magicBase": 15,
-      "dexterityBase": 30,
-      "vitalityBase": 20,
-      "lifeBase": 45,
-      "manaBase": 22,
-      "armor": 6,
-      "toHit": 65,
-      "damageMin": 1,
-      "damageMax": 4,
-      "resistMagic": 0,
-      "resistFire": 0,
-      "resistLightning": 0
-    },
-    "celTextures": [
-      { "palette": 0, "name": "rls" },
-      { "palette": 1, "name": "rlsInfra" },
-      { "palette": 2, "name": "rlsStone" }
-    ],
-    "celIndexes": [
-      { "name": "Stand1", "index": 7 },
-      { "name": "Stand2", "index": 0 },
-      { "name": "Walk1", "index": 8 },
-      { "name": "Walk2", "index": 2 },
-      { "name": "Attack1", "index": 1 },
-      { "name": "Attack2", "index": 3 },
-      { "name": "Attack3", "index": 5 },
-      { "name": "Attack4", "index": 6 },
-      { "name": "Defend1", "index": 4 },
-      { "name": "Defend2", "index": 4 },
-      { "name": "Defend3", "index": 4 },
-      { "name": "Defend4", "index": 4 },
-      { "name": "Hit1", "index": 4 },
-      { "name": "Hit2", "index": 4 },
-      { "name": "Die1", "index": 4 },
-      { "name": "Die2", "index": 4 }
-    ]
-  }
+  "load": "level/player/rogueClass.json"
 }

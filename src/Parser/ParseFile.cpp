@@ -78,7 +78,7 @@ namespace Parser
 		auto json = FileUtils::readText(fileName.c_str());
 		for (size_t i = 1; i < params.size(); i++)
 		{
-			auto param = game.getVariableString(params[i]);
+			auto param = game.getVarOrPropString(params[i]);
 			Utils::replaceStringInPlace(json, "{" + std::to_string(i) + "}", param);
 		}
 		parseJson(game, json);
@@ -104,7 +104,7 @@ namespace Parser
 		auto json = FileUtils::readText(fileName.c_str());
 		for (size_t i = 1; i < params.Size(); i++)
 		{
-			auto param = game.getVariableString(getStringVal(params[i]));
+			auto param = game.getVarOrPropString(getStringVal(params[i]));
 			Utils::replaceStringInPlace(json, "{" + std::to_string(i) + "}", param);
 		}
 		parseJson(game, json);

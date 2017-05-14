@@ -45,6 +45,7 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
     <ClCompile Include="src\Game\CelLevelObject.cpp" />
+    <ClCompile Include="src\Game\Formula.cpp" />
     <ClCompile Include="src\Game\GameProperties.cpp" />
     <ClCompile Include="src\Game\ImageLevelObject.cpp" />
     <ClCompile Include="src\Game\Item.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\GameUtils.h" />
     <ClInclude Include="src\Game\CelLevelObject.h" />
+    <ClInclude Include="src\Game\Formula.h" />
     <ClInclude Include="src\Game\fsa.h" />
     <ClInclude Include="src\Game\GameProperties.h" />
     <ClInclude Include="src\Game\ImageLevelObject.h" />
@@ -187,6 +189,7 @@
     <ClInclude Include="src\Game\LevelObject.h" />
     <ClInclude Include="src\Game\MapCoord.h" />
     <ClInclude Include="src\Game\Namer.h" />
+    <ClInclude Include="src\Game\Number.h" />
     <ClInclude Include="src\Game\PairXY.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />

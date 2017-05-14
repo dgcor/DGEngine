@@ -52,11 +52,16 @@ public:
 	}
 	virtual void updateSize(const Game& game);
 
-	virtual void setText(const std::string& string)
+	virtual bool setText(const std::string& str)
 	{
-		text = string;
+		if (text == str)
+		{
+			return false;
+		}
+		text = str;
 		calcSize();
 		calcDrawPos();
+		return true;
 	}
 
 	virtual unsigned getLineCount() const { return lineCount; }

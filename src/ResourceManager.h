@@ -95,6 +95,25 @@ private:
 		}
 	}
 
+	void addFont(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<Font2>& obj);
+	void addBitmapFont(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<BitmapFont>& obj);
+	void addTexture(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<sf::Texture>& obj);
+	void addSong(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<Music2>& obj);
+	void addSound(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj);
+	void addPalette(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<Palette>& obj);
+	void addCelFile(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<CelFile>& obj);
+	void addCelTextureCache(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<CelTextureCache>& obj);
+	void addCelTextureCacheVec(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj);
+
 public:
 	using iterator = std::vector<ResourceBundle>::iterator;
 	using const_iterator = std::vector<ResourceBundle>::const_iterator;
@@ -147,15 +166,43 @@ public:
 
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
-	void addFont(const std::string& key, const std::shared_ptr<Font2>& obj);
-	void addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj);
-	void addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj);
-	void addSong(const std::string& key, const std::shared_ptr<Music2>& obj);
-	void addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj);
-	void addPalette(const std::string& key, const std::shared_ptr<Palette>& obj);
-	void addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj);
-	void addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj);
-	void addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj);
+
+	void addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
+	{
+		addFont(resources.back(), key, obj);
+	}
+	void addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
+	{
+		addBitmapFont(resources.back(), key, obj);
+	}
+	void addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
+	{
+		addTexture(resources.back(), key, obj);
+	}
+	void addSong(const std::string& key, const std::shared_ptr<Music2>& obj)
+	{
+		addSong(resources.back(), key, obj);
+	}
+	void addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
+	{
+		addSound(resources.back(), key, obj);
+	}
+	void addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
+	{
+		addPalette(resources.back(), key, obj);
+	}
+	void addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj)
+	{
+		addCelFile(resources.back(), key, obj);
+	}
+	void addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
+	{
+		addCelTextureCache(resources.back(), key, obj);
+	}
+	void addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
+	{
+		addCelTextureCacheVec(resources.back(), key, obj);
+	}
 
 	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj);
 
@@ -177,6 +224,11 @@ public:
 	std::shared_ptr<CelFile> getCelFile(const std::string& key) const;
 	std::shared_ptr<CelTextureCache> getCelTextureCache(const std::string& key) const;
 	std::shared_ptr<CelTextureCacheVector> getCelTextureCacheVec(const std::string& key) const;
+
+	bool hasPalette(const std::string& key) const;
+	bool hasCelFile(const std::string& key) const;
+	bool hasCelTextureCache(const std::string& key) const;
+	bool hasCelTextureCacheVec(const std::string& key) const;
 
 	UIObject* getDrawable(const std::string& key) const;
 

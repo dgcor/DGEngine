@@ -107,6 +107,10 @@ namespace Parser
 		button->enable(getBoolKey(elem, "enable", true));
 		button->setClickUp(getBoolKey(elem, "clickUp"));
 
+		if (elem.HasMember("onChange"))
+		{
+			button->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
+		}
 		if (elem.HasMember("onClick"))
 		{
 			button->setAction(str2int16("click"), parseAction(game, elem["onClick"]));

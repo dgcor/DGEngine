@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "Anchor.h"
 #include "MapCoord.h"
 #include <memory>
+#include "Number.h"
 #include "Queryable.h"
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/System/Vector2.hpp>
@@ -26,6 +26,7 @@ public:
 
 	// Game
 	virtual void executeAction(Game& game) const = 0;
+	virtual bool getNumberProp(const std::string& prop, Number32& value) const = 0;
 	virtual bool Hoverable() const = 0;
 	virtual void Hoverable(bool hoverable) = 0;
 	virtual bool Passable() const = 0;

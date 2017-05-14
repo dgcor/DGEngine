@@ -159,6 +159,12 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		var = Variable((bool)hasDescr);
 		break;
 	}
+	case str2int16("prices"):
+	{
+		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
+		var = Variable((int64_t)class_->getPrice(idx, *this));
+		break;
+	}
 	case str2int16("identified"):
 		var = Variable((bool)identified);
 		break;
@@ -178,12 +184,12 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		var = Variable((int64_t)propertiesSize);
 		break;
 	case str2int16("hasProperty"):
-		var = Variable(hasItemProperty(props.second));
+		var = Variable(hasInt(props.second));
 		break;
 	default:
 	{
 		LevelObjValue value;
-		if (getItemPropertyByHash(propHash, value) == true)
+		if (getIntByHash(propHash, value) == true)
 		{
 			var = Variable((int64_t)value);
 			break;
@@ -212,10 +218,10 @@ void Item::setProperty(const std::string& prop, const Variable& val)
 	{
 		val2 = (LevelObjValue)val.get<int64_t>();
 	}
-	setItemPropertyByHash(str2int16(prop.c_str()), val2);
+	setIntByHash(str2int16(prop.c_str()), val2);
 }
 
-bool Item::hasItemProperty(const char* prop) const
+bool Item::hasInt(const char* prop) const
 {
 	if (propertiesSize > 0)
 	{
@@ -231,21 +237,21 @@ bool Item::hasItemProperty(const char* prop) const
 	return false;
 }
 
-LevelObjValue Item::getItemPropertyByHash(uint16_t propHash) const
+LevelObjValue Item::getIntByHash(uint16_t propHash) const
 {
 	LevelObjValue value = 0;
-	getItemPropertyByHash(propHash, value);
+	getIntByHash(propHash, value);
 	return value;
 }
 
-LevelObjValue Item::getItemProperty(const char* prop) const
+LevelObjValue Item::getInt(const char* prop) const
 {
 	LevelObjValue value = 0;
-	getItemProperty(prop, value);
+	getInt(prop, value);
 	return value;
 }
 
-bool Item::getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const
+bool Item::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 {
 	switch (propHash)
 	{
@@ -253,11 +259,11 @@ bool Item::getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const
 		value = (LevelObjValue)identified;
 		break;
 	case str2int16("indestructible"):
-		value = (LevelObjValue)(getItemPropertyByHash(ItemProp::DurabilityMax)
+		value = (LevelObjValue)(getIntByHash(ItemProp::DurabilityMax)
 			== std::numeric_limits<LevelObjValue>::max());
 		break;
 	case str2int16("unlimitedCharges"):
-		value = (LevelObjValue)(getItemPropertyByHash(ItemProp::ChargesMax)
+		value = (LevelObjValue)(getIntByHash(ItemProp::ChargesMax)
 			== std::numeric_limits<LevelObjValue>::max());
 		break;
 	default:
@@ -279,16 +285,16 @@ bool Item::getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const
 	return true;
 }
 
-bool Item::getItemProperty(const char* prop, LevelObjValue& value) const
+bool Item::getInt(const char* prop, LevelObjValue& value) const
 {
 	if (propertiesSize > 0)
 	{
-		return getItemPropertyByHash(str2int16(prop), value);
+		return getIntByHash(str2int16(prop), value);
 	}
 	return false;
 }
 
-void Item::setItemPropertyByHash(uint16_t propHash, LevelObjValue value)
+void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
 {
 	switch (propHash)
 	{
@@ -323,9 +329,9 @@ void Item::setItemPropertyByHash(uint16_t propHash, LevelObjValue value)
 	updateNameAndDescr = true;
 }
 
-void Item::setItemProperty(const char* prop, LevelObjValue value)
+void Item::setInt(const char* prop, LevelObjValue value)
 {
-	setItemPropertyByHash(str2int16(prop), value);
+	setIntByHash(str2int16(prop), value);
 }
 
 void Item::updateNameAndDescriptions() const
@@ -355,18 +361,18 @@ void Item::applyDefaults()
 {
 	for (const auto& prop : class_->Defaults())
 	{
-		setItemPropertyByHash(prop.first, prop.second);
+		setIntByHash(prop.first, prop.second);
 	}
 }
 
 bool Item::needsRecharge() const
 {
 	LevelObjValue charges = 0;
-	if (getItemPropertyByHash(ItemProp::ChargesMax, charges) == true)
+	if (getIntByHash(ItemProp::ChargesMax, charges) == true)
 	{
 		if (charges < std::numeric_limits<LevelObjValue>::max())
 		{
-			return getItemPropertyByHash(ItemProp::Charges) < charges;
+			return getIntByHash(ItemProp::Charges) < charges;
 		}
 	}
 	return false;
@@ -375,11 +381,11 @@ bool Item::needsRecharge() const
 bool Item::needsRepair() const
 {
 	LevelObjValue durability = 0;
-	if (getItemPropertyByHash(ItemProp::DurabilityMax, durability) == true)
+	if (getIntByHash(ItemProp::DurabilityMax, durability) == true)
 	{
 		if (durability < std::numeric_limits<LevelObjValue>::max())
 		{
-			return getItemPropertyByHash(ItemProp::Durability) < durability;
+			return getIntByHash(ItemProp::Durability) < durability;
 		}
 	}
 	return false;

@@ -1,0 +1,31 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "hideItemInfo",
+      "action": [
+        { "name": "drawable.visible", "id": "itemInfoBk", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoSp", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoBr", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoTitle", "visible": false },
+        { "name": "drawable.visible", "id": "itemInfoDescr", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showItemInfo",
+      "action": {
+        "name": "if.equal",
+        "param1": "|charPanel|visible|",
+        "param2": true,
+        "else": [
+          { "name": "drawable.visible", "id": "itemInfoBk", "visible": true },
+          { "name": "drawable.visible", "id": "itemInfoSp", "visible": true },
+          { "name": "drawable.visible", "id": "itemInfoBr", "visible": true },
+          { "name": "drawable.visible", "id": "itemInfoTitle", "visible": true },
+          { "name": "drawable.visible", "id": "itemInfoDescr", "visible": true }
+        ]
+      }
+    }
+  ]
+}

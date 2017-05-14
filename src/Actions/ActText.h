@@ -114,7 +114,7 @@ public:
 			}
 			if (bindings.empty() == true)
 			{
-				text->setText(game.getVariableString(textFormat));
+				text->setText(game.getVarOrPropString(textFormat));
 			}
 			else
 			{

@@ -65,7 +65,7 @@
         "property": "itemType",
         "value": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Sword"]
       },
-      "text": "%price%",
+      "text": "%prices.0%",
       "executeAction": {
         "name": "if.equal",
         "param1": "|currentLevel|currentPlayer.canEquipItem.stash.%idx%|",
@@ -88,7 +88,7 @@
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magic|",
+            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
             "param2": 1,
             "then": {
               "name": "menu.setColor",

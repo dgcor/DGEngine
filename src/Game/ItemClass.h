@@ -2,6 +2,7 @@
 
 #include "Actions/Action.h"
 #include "CelCache.h"
+#include "Formula.h"
 #include "GameProperties.h"
 #include "ItemXY.h"
 #include <memory>
@@ -40,6 +41,8 @@ private:
 	std::shared_ptr<Namer> suffix;
 
 	std::array<std::shared_ptr<Namer>, 5> descriptions;
+
+	std::array<Formula, 4> priceFormulas;
 
 public:
 	ItemClass(const std::shared_ptr<CelTextureCacheVector>& celTextureDrop_,
@@ -142,4 +145,8 @@ public:
 	void setDescription(size_t idx, const std::shared_ptr<Namer>& namer);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
+
+	void setPriceFormula(size_t idx, const Formula& formula);
+
+	LevelObjValue getPrice(size_t idx, const LevelObject& item) const;
 };

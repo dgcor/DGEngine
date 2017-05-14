@@ -22,20 +22,20 @@
           "value": { "min": false, "max": false, "text": "Not Identified" }
         },
         {
-          "property": "toStrength",
-          "value": { "text": "+%toStrength% to Strength" }
+          "property": "strength",
+          "value": { "text": "+%strength% to Strength" }
         },
         {
-          "property": "toMagic",
-          "value": { "text": "+%toMagic% to Magic" }
+          "property": "magic",
+          "value": { "text": "+%magic% to Magic" }
         },
         {
-          "property": "toDexterity",
-          "value": { "text": "+%toDexterity% to Dexterity" }
+          "property": "dexterity",
+          "value": { "text": "+%dexterity% to Dexterity" }
         },
         {
-          "property": "toVitality",
-          "value": { "text": "+%toVitality% to Vitality" }
+          "property": "vitality",
+          "value": { "text": "+%vitality% to Vitality" }
         }
       ]
     },
@@ -43,7 +43,7 @@
       "id": "magic2",
       "names": [
         {
-          "property": "magic",
+          "property": "magical",
           "value": { "min": false, "max": false, "text": "" }
         },
         {
@@ -64,7 +64,7 @@
       "id": "potion",
       "names": [
         {
-          "property": "toLife",
+          "property": "life",
           "value": [
             { "min": "min", "max": -1000, "text": "Kill Player" },
             { "min": -1000, "max": -1, "text": "Steal Life" },
@@ -73,7 +73,7 @@
           ]
         },
         {
-          "property": "toMana",
+          "property": "mana",
           "value": [
             { "min": "min", "max": -1000, "text": "Remove All Mana" },
             { "min": -1000, "max": -1, "text": "Steal Mana" },
@@ -82,7 +82,7 @@
           ]
         },
         {
-          "property": "toLifeAndMana",
+          "property": "lifeAndMana",
           "value": [
             { "min": "min", "max": -1000, "text": "Remove All Life And Mana" },
             { "min": -1000, "max": -1, "text": "Steal Life And Mana" },

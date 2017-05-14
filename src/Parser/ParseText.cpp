@@ -2,6 +2,7 @@
 #include "BitmapText.h"
 #include "FileUtils.h"
 #include "GameUtils.h"
+#include "ParseAction.h"
 #include "StringText.h"
 #include "Utils/ParseUtils.h"
 
@@ -104,6 +105,11 @@ namespace Parser
 			text->setBinding(getStringVectorKey(elem, "binding"));
 		}
 		text->setFormat(getStringKey(elem, "format", "[1]"));
+
+		if (elem.HasMember("onChange"))
+		{
+			text->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
+		}
 		if (hasBinding == true)
 		{
 			text->update(game);

@@ -19,6 +19,10 @@ namespace Parser
 		{
 			return nullptr;
 		}
+		if (level.hasItemClass(id) == true)
+		{
+			return nullptr;
+		}
 
 		std::shared_ptr<ItemClass> itemClass;
 
@@ -91,7 +95,7 @@ namespace Parser
 
 	void parseItemClass(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -191,6 +195,27 @@ namespace Parser
 		{
 			auto namer = level->getNamer(getStringVal(elem["description5"]));
 			itemClass->setDescription(4, namer);
+		}
+
+		if (elem.HasMember("price1") == true)
+		{
+			itemClass->setPriceFormula(0, getStringVal(elem["price1"]));
+		}
+		if (elem.HasMember("price2") == true)
+		{
+			itemClass->setPriceFormula(1, getStringVal(elem["price2"]));
+		}
+		if (elem.HasMember("price3") == true)
+		{
+			itemClass->setPriceFormula(2, getStringVal(elem["price3"]));
+		}
+		if (elem.HasMember("price4") == true)
+		{
+			itemClass->setPriceFormula(3, getStringVal(elem["price4"]));
+		}
+		if (elem.HasMember("price5") == true)
+		{
+			itemClass->setPriceFormula(4, getStringVal(elem["price5"]));
 		}
 
 		level->addItemClass(id, itemClass);

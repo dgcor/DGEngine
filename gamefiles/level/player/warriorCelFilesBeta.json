@@ -1,13 +1,13 @@
 {
   "celFile": [
-    { "id": "wlsas", "file": "plrgfx/warrior/wls/wlsas.cel" },
-    { "id": "wlsat", "file": "plrgfx/warrior/wls/wlsat.cel" },
-    { "id": "wlsaw", "file": "plrgfx/warrior/wls/wlsaw.cel" },
-    { "id": "wlsfm", "file": "plrgfx/warrior/wls/wlsfm.cel" },
-    { "id": "wlsht", "file": "plrgfx/warrior/wls/wlsht.cel" },
-    { "id": "wlslm", "file": "plrgfx/warrior/wls/wlslm.cel" },
-    { "id": "wlsqm", "file": "plrgfx/warrior/wls/wlsqm.cel" },
-    { "id": "wlsst", "file": "plrgfx/warrior/wls/wlsst.cel" },
-    { "id": "wlswl", "file": "plrgfx/warrior/wls/wlswl.cel" }
+    { "id": "wlnas", "file": "plrgfx/warrior/wln/wlnas.cel" },
+    { "id": "wlnat", "file": "plrgfx/warrior/wln/wlnat.cel" },
+    { "id": "wlnaw", "file": "plrgfx/warrior/wln/wlnaw.cel" },
+    { "id": "wlnfm", "file": "plrgfx/warrior/wln/wlnfm.cel" },
+    { "id": "wlnht", "file": "plrgfx/warrior/wln/wlnht.cel" },
+    { "id": "wlnlm", "file": "plrgfx/warrior/wln/wlnlm.cel" },
+    { "id": "wlnqm", "file": "plrgfx/warrior/wln/wlnqm.cel" },
+    { "id": "wlnst", "file": "plrgfx/warrior/wln/wlnst.cel" },
+    { "id": "wlnwl", "file": "plrgfx/warrior/wln/wlnwl.cel" }
   ]
 }

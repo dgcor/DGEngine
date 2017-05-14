@@ -245,6 +245,9 @@ public:
 
 	const std::map<std::string, Variable>& getVariables() { return variables; }
 
+	bool getVariableNoPercentage(const std::string& key, Variable& var) const;
+	bool getVariable(const std::string& key, Variable& var) const;
+
 	template <class T, class U>
 	U getVarOrProp(const Variable& var, U defVal = U())
 	{
@@ -267,13 +270,15 @@ public:
 	}
 
 	bool getVarOrProp(const std::string& key, Variable& var) const;
-
-	bool getVariableNoPercentage(const std::string& key, Variable& var) const;
-	bool getVariable(const std::string& key, Variable& var) const;
-	bool getVariableBool(const std::string& key) const;
-	double getVariableDouble(const std::string& key) const;
-	int64_t getVariableLong(const std::string& key) const;
-	std::string getVariableString(const std::string& key) const;
+	Variable getVarOrProp(const Variable& var) const;
+	bool getVarOrPropBool(const std::string& key) const;
+	bool getVarOrPropBool(const Variable& var) const;
+	double getVarOrPropDouble(const std::string& key) const;
+	double getVarOrPropDouble(const Variable& var) const;
+	int64_t getVarOrPropLong(const std::string& key) const;
+	int64_t getVarOrPropLong(const Variable& var) const;
+	std::string getVarOrPropString(const std::string& key) const;
+	std::string getVarOrPropString(const Variable& var) const;
 
 	void clearVariable(const std::string& key);
 

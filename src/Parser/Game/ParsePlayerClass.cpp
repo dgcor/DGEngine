@@ -24,6 +24,20 @@ namespace Parser
 		playerClass.setCelTexture(getUIntKey(elem, "palette"), celTexture);
 	}
 
+	sf::Time getTime(int fps)
+	{
+		fps = std::max(std::min(fps, 1000), 1);
+		return sf::seconds(1.f / (float)fps);
+	}
+
+	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
+	{
+		AnimationSpeed speed;
+		speed.animation = getTime(getIntKey(elem, "animation", 5));
+		speed.walk = getTime(getIntKey(elem, "walk", 25));
+		playerClass.setSpeed(getPlayerStatusKey(elem, "name"), speed);
+	}
+
 	void parsePlayerClass(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false ||
@@ -37,8 +51,12 @@ namespace Parser
 			return;
 		}
 
-		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
+		{
+			return;
+		}
+		if (level->getPlayerClass(id) != nullptr)
 		{
 			return;
 		}
@@ -99,6 +117,52 @@ namespace Parser
 					}
 				}
 			}
+		}
+
+		if (elem.HasMember("animationSpeeds") == true)
+		{
+			const auto& speeds = elem["animationSpeeds"];
+			if (speeds.IsObject() == true)
+			{
+				parsePlayerAnimationSpeed(*playerClass, speeds);
+			}
+			else if (speeds.IsArray() == true)
+			{
+				for (const auto& val : speeds)
+				{
+					parsePlayerAnimationSpeed(*playerClass, val);
+				}
+			}
+		}
+
+		playerClass->MaxStrength(getIntKey(elem, "maxStrength", 250));
+		playerClass->MaxMagic(getIntKey(elem, "maxMagic", 250));
+		playerClass->MaxDexterity(getIntKey(elem, "maxDexterity", 250));
+		playerClass->MaxVitality(getIntKey(elem, "maxVitality", 250));
+
+		playerClass->MaxResistMagic(getIntKey(elem, "maxResistMagic", 100));
+		playerClass->MaxResistFire(getIntKey(elem, "maxResistFire", 100));
+		playerClass->MaxResistLightning(getIntKey(elem, "maxResistLightning", 100));
+
+		if (elem.HasMember("lifeFormula") == true)
+		{
+			playerClass->setLifeFormula(getStringVal(elem["lifeFormula"]));
+		}
+		if (elem.HasMember("manaFormula") == true)
+		{
+			playerClass->setManaFormula(getStringVal(elem["manaFormula"]));
+		}
+		if (elem.HasMember("armorFormula") == true)
+		{
+			playerClass->setArmorFormula(getStringVal(elem["armorFormula"]));
+		}
+		if (elem.HasMember("toHitFormula") == true)
+		{
+			playerClass->setToHitFormula(getStringVal(elem["toHitFormula"]));
+		}
+		if (elem.HasMember("damageFormula") == true)
+		{
+			playerClass->setDamageFormula(getStringVal(elem["damageFormula"]));
 		}
 
 		level->addPlayerClass(id, playerClass);

@@ -53,6 +53,10 @@ namespace Parser
 			{
 				return;
 			}
+			if (game.Resources().hasPalette(id) == true)
+			{
+				return;
+			}
 
 			auto palette = std::make_shared<Palette>(file);
 			game.Resources().addPalette(id, palette);
@@ -72,6 +76,10 @@ namespace Parser
 				return;
 			}
 			if (isValidId(id) == false)
+			{
+				return;
+			}
+			if (game.Resources().hasPalette(id) == true)
 			{
 				return;
 			}

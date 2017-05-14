@@ -10,6 +10,8 @@ private:
 	std::unique_ptr<DrawableText> text;
 	std::string format;
 	std::vector<std::string> bindings;
+	std::shared_ptr<Action> changeAction;
+	bool triggerOnChange{ false };
 
 public:
 	Text2(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
@@ -21,7 +23,7 @@ public:
 
 	std::string getText() const { return text->getText(); }
 	void setText(std::unique_ptr<DrawableText> text_) { text = std::move(text_); }
-	void setText(const std::string& text_) { text->setText(text_); }
+	void setText(const std::string& text_) { triggerOnChange = text->setText(text_); }
 
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
@@ -35,7 +37,7 @@ public:
 	void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
 	void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }

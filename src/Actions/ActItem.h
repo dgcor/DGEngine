@@ -175,22 +175,22 @@ public:
 							level->setItem(mapPos, nullptr);
 							level->setItem(itemCoord, item);
 						}
-						else if (itemCoord.getInventoryIdx() < player->getInventorySize())
+						else
 						{
-							auto& inventory = player->getInventory(itemCoord.getInventoryIdx());
-							size_t itemIdx = 0;
-							if (inventory.getItemSlot(*item, itemIdx, invPos) == true)
+							size_t invIdx = itemCoord.getInventoryIdx();
+							if (invIdx < player->getInventorySize())
 							{
-								level->setItem(mapPos, nullptr);
-								inventory.set(itemIdx, item);
-								player->updateGoldAdd(item);
-								executePickFromLevelAction(game, *item);
-							}
-							else
-							{
-								if (inventoryFullAction != nullptr)
+								if (player->setItemInFreeSlot(invIdx, item, invPos) == true)
 								{
-									game.Events().addBack(inventoryFullAction);
+									level->setItem(mapPos, nullptr);
+									executePickFromLevelAction(game, *item);
+								}
+								else
+								{
+									if (inventoryFullAction != nullptr)
+									{
+										game.Events().addBack(inventoryFullAction);
+									}
 								}
 							}
 						}
@@ -250,17 +250,11 @@ public:
 			auto item = level->getItem(itemLocation);
 			if (item != nullptr)
 			{
-				Variable prop2(prop);
-				game.getVarOrProp(prop, prop2);
-				if (prop2.is<std::string>() == true)
+				auto prop2 = game.getVarOrPropString(prop);
+				if (prop2.empty() == false)
 				{
-					const auto& propVal = prop2.get<std::string>();
-					auto value2 = value;
-					if (value2.is<std::string>() == true)
-					{
-						game.getVarOrProp(value2.get<std::string>(), value2);
-					}
-					item->setProperty(propVal, value2);
+					auto value2 = game.getVarOrProp(value);
+					item->setProperty(prop2, value2);
 				}
 			}
 		}
@@ -359,10 +353,8 @@ public:
 					if (selectedItem != nullptr)
 					{
 						std::shared_ptr<Item> oldItem;
-						if (inventory.set(itemIdx, selectedItem, oldItem) == true)
+						if (player->setItem(invIdx, itemIdx, selectedItem, oldItem) == true)
 						{
-							player->updateGoldAdd(selectedItem);
-							player->updateGoldRemove(oldItem);
 							player->SelectedItem(oldItem);
 							if (game.Resources().cursorCount() > 1)
 							{
@@ -389,8 +381,7 @@ public:
 						auto oldItem = inventory.get(itemIdx);
 						if (oldItem != nullptr)
 						{
-							inventory.set(itemIdx, nullptr);
-							player->updateGoldRemove(oldItem);
+							player->setItem(invIdx, itemIdx, nullptr);
 							player->SelectedItem(oldItem);
 							updateCursorWithItemImage(game, *oldItem,
 								player->canEquipItem(*oldItem));

@@ -87,7 +87,7 @@
         "name": "if.equal",
         "param1": {
           "name": "player.canEquipItem",
-          "item": { "playerId": "griswold", "inventory": 1, "item": "%idx%" }
+          "item": { "player": "griswold", "inventory": 1, "item": "%idx%" }
         },
         "param2": false,
         "then": {
@@ -108,7 +108,7 @@
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|player.griswold.item.1.%idx%.magic|",
+            "param1": "|currentLevel|player.griswold.item.1.%idx%.magical|",
             "param2": 1,
             "then": {
               "name": "menu.setColor",

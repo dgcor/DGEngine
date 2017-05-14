@@ -14,8 +14,8 @@
       "param1": "%beta%",
       "param2": true,
       "then": [
-        { "name": "player.setDirection", "id": "griswold", "direction": "FrontLeft" },
-        { "name": "player.setDirection", "id": "ogden", "direction": "FrontLeft" }
+        { "name": "player.setDirection", "player": "griswold", "direction": "FrontLeft" },
+        { "name": "player.setDirection", "player": "ogden", "direction": "FrontLeft" }
       ]
     }
   ]

@@ -1,0 +1,412 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateCharLabels",
+      "action": {
+        "name": "if.equal",
+        "param1": "|game|hasResource.charPanelLabels|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "charName", "text": "|currentLevel|currentPlayer.name|" },
+          { "name": "text.setText", "id": "charClass", "text": "|currentLevel|currentPlayer.class|" },
+          { "name": "text.setText", "id": "charLevel", "text": "|currentLevel|currentPlayer.level|" },
+          { "name": "text.setText", "id": "charExp", "text": "|currentLevel|currentPlayer.experience|" },
+          { "name": "text.setText", "id": "charExpNext", "text": "|currentLevel|currentPlayer.expNextLevel|" },
+          { "name": "text.setText", "id": "charGold", "text": "|currentLevel|currentPlayer.gold|" },
+          { "name": "text.setText", "id": "charStr", "text": "|currentLevel|currentPlayer.strength|" },
+          { "name": "text.setText", "id": "charStrNow", "text": "|currentLevel|currentPlayer.strengthNow|" },
+          { "name": "text.setText", "id": "charMag", "text": "|currentLevel|currentPlayer.magic|" },
+          { "name": "text.setText", "id": "charMagNow", "text": "|currentLevel|currentPlayer.magicNow|" },
+          { "name": "text.setText", "id": "charDex", "text": "|currentLevel|currentPlayer.dexterity|" },
+          { "name": "text.setText", "id": "charDexNow", "text": "|currentLevel|currentPlayer.dexterityNow|" },
+          { "name": "text.setText", "id": "charVit", "text": "|currentLevel|currentPlayer.vitality|" },
+          { "name": "text.setText", "id": "charVitNow", "text": "|currentLevel|currentPlayer.vitalityNow|" },
+          { "name": "text.setText", "id": "charLife", "text": "|currentLevel|currentPlayer.life|" },
+          { "name": "text.setText", "id": "charLifeNow", "text": "|currentLevel|currentPlayer.lifeNow|" },
+          { "name": "text.setText", "id": "charMana", "text": "|currentLevel|currentPlayer.mana|" },
+          { "name": "text.setText", "id": "charManaNow", "text": "|currentLevel|currentPlayer.manaNow|" },
+          { "name": "text.setText", "id": "charArmor", "text": "|currentLevel|currentPlayer.armor|" },
+          {
+            "name": "text.setText",
+            "id": "charToHit",
+            "binding": "|currentLevel|currentPlayer.toHit|",
+            "format": "[1]%"
+          },
+          {
+            "name": "text.setText",
+            "id": "charDamage",
+            "binding": ["|currentLevel|currentPlayer.damageMinNow|", "|currentLevel|currentPlayer.damageMaxNow|"],
+            "format": "[1]-[2]"
+          },
+          {
+            "name": ">=",
+            "param1": "|currentLevel|currentPlayer.resistMagic|",
+            "param2": "|currentLevel|currentPlayer.maxResistMagic|",
+            "then": { "name": "text.setText", "id": "charResMagic", "text": "Max" },
+            "else": {
+              "name": "text.setText",
+              "id": "charResMagic",
+              "binding": "|currentLevel|currentPlayer.resistMagic|",
+              "format": "[1]%"
+            }
+          },
+          {
+            "name": ">=",
+            "param1": "|currentLevel|currentPlayer.resistFire|",
+            "param2": "|currentLevel|currentPlayer.maxResistFire|",
+            "then": { "name": "text.setText", "id": "charResFire", "text": "Max" },
+            "else": {
+              "name": "text.setText",
+              "id": "charResFire",
+              "binding": "|currentLevel|currentPlayer.resistFire|",
+              "format": "[1]%"
+            }
+          },
+          {
+            "name": ">=",
+            "param1": "|currentLevel|currentPlayer.resistLightning|",
+            "param2": "|currentLevel|currentPlayer.maxResistLightning|",
+            "then": { "name": "text.setText", "id": "charResLight", "text": "Max" },
+            "else": {
+              "name": "text.setText",
+              "id": "charResLight",
+              "binding": "|currentLevel|currentPlayer.resistLightning|",
+              "format": "[1]%"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharStrengthColor",
+      "action": {
+        "name": ">=",
+        "param1": "|currentLevel|currentPlayer.strength|",
+        "param2": "|currentLevel|currentPlayer.maxStrength|",
+        "then": { "name": "text.setColor", "id": "charStr", "color": "%textGold%" },
+        "else": { "name": "text.setColor", "id": "charStr" }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharStrengthNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.strengthItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charStrNow", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.strengthItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charStrNow", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charStrNow" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharMagicColor",
+      "action": {
+        "name": ">=",
+        "param1": "|currentLevel|currentPlayer.magic|",
+        "param2": "|currentLevel|currentPlayer.maxMagic|",
+        "then": { "name": "text.setColor", "id": "charMag", "color": "%textGold%" },
+        "else": { "name": "text.setColor", "id": "charMag" }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharMagicNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.magicItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charMagNow", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.magicItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charMagNow", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charMagNow" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharDexterityColor",
+      "action": {
+        "name": ">=",
+        "param1": "|currentLevel|currentPlayer.dexterity|",
+        "param2": "|currentLevel|currentPlayer.maxDexterity|",
+        "then": { "name": "text.setColor", "id": "charDex", "color": "%textGold%" },
+        "else": { "name": "text.setColor", "id": "charDex" }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharDexterityNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.dexterityItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charDexNow", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.dexterityItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charDexNow", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charDexNow" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharVitalityColor",
+      "action": {
+        "name": ">=",
+        "param1": "|currentLevel|currentPlayer.vitality|",
+        "param2": "|currentLevel|currentPlayer.maxVitality|",
+        "then": { "name": "text.setColor", "id": "charVit", "color": "%textGold%" },
+        "else": { "name": "text.setColor", "id": "charVit" }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharVitalityNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.vitalityItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charVitNow", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.vitalityItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charVitNow", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charVitNow" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharLifeColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.vitalityItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charLife", "color": "%textBlue%" },
+        "else": {
+          "name": "if.greater",
+          "param1": "|currentLevel|currentPlayer.lifeItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charLife", "color": "%textBlue%" },
+          "else": { "name": "text.setColor", "id": "charLife" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharLifeNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.lifeDamage|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charLifeNow", "color": "%textRed%" },
+        "else": {
+          "name": "if.greater",
+          "param1": "|currentLevel|currentPlayer.vitalityItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charLifeNow", "color": "%textBlue%" },
+          "else": {
+            "name": "if.greater",
+            "param1": "|currentLevel|currentPlayer.lifeItems|",
+            "param2": 0,
+            "then": { "name": "text.setColor", "id": "charLifeNow", "color": "%textBlue%" },
+            "else": { "name": "text.setColor", "id": "charLifeNow" }
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharManaColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.magicItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charMana", "color": "%textBlue%" },
+        "else": {
+          "name": "if.greater",
+          "param1": "|currentLevel|currentPlayer.manaItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charMana", "color": "%textBlue%" },
+          "else": { "name": "text.setColor", "id": "charMana" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharManaNowColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.manaDamage|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charManaNow", "color": "%textRed%" },
+        "else": {
+          "name": "if.greater",
+          "param1": "|currentLevel|currentPlayer.magicItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charManaNow", "color": "%textBlue%" },
+          "else": {
+            "name": "if.greater",
+            "param1": "|currentLevel|currentPlayer.manaItems|",
+            "param2": 0,
+            "then": { "name": "text.setColor", "id": "charManaNow", "color": "%textBlue%" },
+            "else": { "name": "text.setColor", "id": "charManaNow" }
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharArmorColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.armorItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charArmor", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.armorItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charArmor", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charArmor" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharToHitColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.toHitItems|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charToHit", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.toHitItems|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charToHit", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charToHit" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharDamageColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.toDamage|",
+        "param2": 0,
+        "then": { "name": "text.setColor", "id": "charDamage", "color": "%textBlue%" },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.toDamage|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charDamage", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charDamage" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharResistMagicColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.resistMagic|",
+        "param2": 0,
+        "then": {
+          "name": ">=",
+          "param1": "|currentLevel|currentPlayer.resistMagic|",
+          "param2": "|currentLevel|currentPlayer.maxResistMagic|",
+          "then": { "name": "text.setColor", "id": "charResMagic", "color": "%textGold%" },
+          "else": { "name": "text.setColor", "id": "charResMagic", "color": "%textBlue%" }
+        },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.resistMagic|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charResMagic", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charResMagic" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharResistFireColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.resistFire|",
+        "param2": 0,
+        "then": {
+          "name": ">=",
+          "param1": "|currentLevel|currentPlayer.resistFire|",
+          "param2": "|currentLevel|currentPlayer.maxResistFire|",
+          "then": { "name": "text.setColor", "id": "charResFire", "color": "%textGold%" },
+          "else": { "name": "text.setColor", "id": "charResFire", "color": "%textBlue%" }
+        },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.resistFire|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charResFire", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charResFire" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "replaceVars": true,
+      "id": "updateCharResistLightningColor",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.resistLightning|",
+        "param2": 0,
+        "then": {
+          "name": ">=",
+          "param1": "|currentLevel|currentPlayer.resistLightning|",
+          "param2": "|currentLevel|currentPlayer.maxResistLightning|",
+          "then": { "name": "text.setColor", "id": "charResLight", "color": "%textGold%" },
+          "else": { "name": "text.setColor", "id": "charResLight", "color": "%textBlue%" }
+        },
+        "else": {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.resistLightning|",
+          "param2": 0,
+          "then": { "name": "text.setColor", "id": "charResLight", "color": "%textRed%" },
+          "else": { "name": "text.setColor", "id": "charResLight" }
+        }
+      }
+    }
+  ]
+}

@@ -7,13 +7,10 @@
     "direction": "Front",
     "mapPosition": [64, 73],
     "enableHover": false,
-    "level": 1,
-    "experience": 0,
-    "expNextLevel": 2000,
-    "points": 0,
     "inventory": [
       {
         "index": "Body",
+        "bodyInventory": true,
         "allowedClassTypes": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Staff", "Sword"],
         "item": [
           {

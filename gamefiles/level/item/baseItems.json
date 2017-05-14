@@ -11,12 +11,13 @@
       "type": "Armor",
       "defaults": {
         "identified": true,
-        "magic": false
+        "magical": false
       },
       "description1": "armor",
       "description2": "magic1",
       "description3": "magic2",
       "description4": "required",
+      "price1": "price*0.25",
       "inventorySize": [2, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "fliplarm" },
@@ -36,12 +37,13 @@
       "type": "Weapon",
       "defaults": {
         "identified": true,
-        "magic": false
+        "magical": false
       },
       "description1": "weapon",
       "description2": "magic1",
       "description3": "magic2",
       "description4": "required",
+      "price1": "price*0.25",
       "inventorySize": [2, 3],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "fliplarm" },

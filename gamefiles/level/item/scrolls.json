@@ -15,6 +15,7 @@
       },
       "description1": "rightClickToRead2",
       "description2": "required",
+      "price1": "price*0.25",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipscrl" },

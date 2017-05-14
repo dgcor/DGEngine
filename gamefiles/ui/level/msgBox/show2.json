@@ -1,11 +1,18 @@
 {
-  "action": { "name": "resource.add", "id": "msgBox" },
+  "action": [
+    { "name": "resource.add", "id": "msgBox" },
+    {
+      "name": "action.set",
+      "id": "closeMsgBox",
+      "action": [
+        { "name": "resource.pop", "id": "msgBox" },
+        { "name": "event.delete", "id": "closeMsgBox" }
+      ]
+    }
+  ],
   "keyboard": {
     "key": "esc",
-    "action": [
-      { "name": "resource.pop", "id": "msgBox" },
-      { "name": "event.delete", "id": "closeMsgBox" }
-    ]
+    "action": "closeMsgBox"
   },
   "image": [
     {

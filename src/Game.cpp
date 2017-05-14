@@ -542,26 +542,6 @@ void Game::addPlayingSound(const sf::SoundBuffer* obj)
 	}
 }
 
-std::map<std::string, Variable>::const_iterator Game::findVariable(const std::string& key) const
-{
-	if ((key.size() > 2) &&
-		(key.front() == '%') &&
-		(key.back() == '%'))
-	{
-		return variables.find(key.substr(1, key.size() - 2));
-	}
-	return variables.end();
-}
-
-bool Game::getVarOrProp(const std::string& key, Variable& var) const
-{
-	if (getVariable(key, var) == true)
-	{
-		return true;
-	}
-	return GameUtils::getObjectProperty(*this, key, var);
-}
-
 bool Game::getVariableNoPercentage(const std::string& key, Variable& var) const
 {
 	auto it = variables.find(key);
@@ -584,133 +564,120 @@ bool Game::getVariable(const std::string& key, Variable& var) const
 	return false;
 }
 
-bool Game::getVariableBool(const std::string& key) const
+std::map<std::string, Variable>::const_iterator Game::findVariable(const std::string& key) const
 {
-	auto it = findVariable(key);
-	if (it == variables.cend())
+	if ((key.size() > 2) &&
+		(key.front() == '%') &&
+		(key.back() == '%'))
 	{
-		return false;
+		return variables.find(key.substr(1, key.size() - 2));
 	}
-	const auto& var = it->second;
-	if (var.is<bool>())
+	return variables.end();
+}
+
+bool Game::getVarOrProp(const std::string& key, Variable& var) const
+{
+	if (getVariable(key, var) == true)
 	{
-		return var.get<bool>();
+		return true;
 	}
-	else if (var.is<int64_t>())
+	return GameUtils::getObjectProperty(*this, key, var);
+}
+
+Variable Game::getVarOrProp(const Variable& var) const
+{
+	if (var.is<std::string>())
 	{
-		return var.get<int64_t>() != 0;
+		Variable var2;
+		if (getVarOrProp(var.get<std::string>(), var2) == true)
+		{
+			return var2;
+		}
 	}
-	else if (var.is<double>())
+	return var;
+}
+
+bool Game::getVarOrPropBool(const std::string& key) const
+{
+	Variable var;
+	if (getVarOrProp(key, var) == true)
 	{
-		return var.get<double>() != 0.0;
-	}
-	else if (var.is<std::string>())
-	{
-		return var.get<std::string>().empty() == false;
+		return VarUtils::toBool(var);
 	}
 	return false;
 }
 
-double Game::getVariableDouble(const std::string& key) const
+bool Game::getVarOrPropBool(const Variable& var) const
 {
-	auto it = findVariable(key);
-	if (it == variables.cend())
+	if (var.is<std::string>())
 	{
-		return false;
+		return getVarOrPropBool(var.get<std::string>());
 	}
-	const auto& var = it->second;
-	if (var.is<int64_t>())
+	return VarUtils::toBool(var);
+}
+
+double Game::getVarOrPropDouble(const std::string& key) const
+{
+	Variable var;
+	if (getVarOrProp(key, var) == true)
 	{
-		return (double)var.get<int64_t>();
-	}
-	else if (var.is<double>())
-	{
-		return (long)var.get<double>();
-	}
-	else if (var.is<bool>())
-	{
-		return (var.get<bool>() ? 1.0 : 0.0);
-	}
-	else if (var.is<std::string>())
-	{
-		return std::atof(var.get<std::string>().c_str());
+		return VarUtils::toDouble(var);
 	}
 	return 0.0;
 }
 
-int64_t Game::getVariableLong(const std::string& key) const
+double Game::getVarOrPropDouble(const Variable& var) const
 {
-	auto it = findVariable(key);
-	if (it == variables.cend())
+	if (var.is<std::string>())
 	{
-		return false;
+		return getVarOrPropDouble(var.get<std::string>());
 	}
-	const auto& var = it->second;
-	if (var.is<int64_t>())
-	{
-		return var.get<int64_t>();
-	}
-	else if (var.is<double>())
-	{
-		return (long)var.get<double>();
-	}
-	else if (var.is<bool>())
-	{
-		return (var.get<bool>() ? 1L : 0L);
-	}
-	else if (var.is<std::string>())
-	{
-		return std::atol(var.get<std::string>().c_str());
-	}
-	return 0L;
+	return VarUtils::toDouble(var);
 }
 
-std::string Game::getVariableString(const std::string& key) const
+int64_t Game::getVarOrPropLong(const std::string& key) const
 {
-	if (key.size() <= 2)
+	Variable var;
+	if (getVarOrProp(key, var) == true)
+	{
+		return VarUtils::toLong(var);
+	}
+	return 0;
+}
+
+int64_t Game::getVarOrPropLong(const Variable& var) const
+{
+	if (var.is<std::string>())
+	{
+		return getVarOrPropLong(var.get<std::string>());
+	}
+	return VarUtils::toLong(var);
+}
+
+std::string Game::getVarOrPropString(const std::string& key) const
+{
+	Variable var;
+	if (getVariable(key, var) == true)
+	{
+		if (var.is<std::string>())
+		{
+			GameUtils::getObjectProperty(*this, var.get<std::string>(), var);
+		}
+	}
+	else if (GameUtils::getObjectProperty(*this, key, var) == false)
 	{
 		return key;
 	}
-	else
+	return VarUtils::toString(var);
+}
+
+std::string Game::getVarOrPropString(const Variable& var) const
+{
+	if (var.is<std::string>())
 	{
-		if ((key.front() == '%') && (key.back() == '%'))
-		{
-			auto it = variables.find(key.substr(1, key.size() - 2));
-			if (it != variables.end())
-			{
-				const auto& var = it->second;
-				if (var.is<std::string>())
-				{
-					auto str = var.get<std::string>();
-					Variable var2(var);
-					GameUtils::getObjectProperty(*this, str, var2);
-					return VarUtils::toString(var2);
-				}
-				else if (var.is<int64_t>())
-				{
-					return std::to_string(var.get<int64_t>());
-				}
-				else if (var.is<double>())
-				{
-					return std::to_string(var.get<double>());
-				}
-				else if (var.is<bool>())
-				{
-					if (var.get<bool>() == true)
-					{
-						return { "true" };
-					}
-					else
-					{
-						return { "false" };
-					}
-				}
-			}
-		}
-		Variable var2(key);
-		GameUtils::getObjectProperty(*this, key, var2);
-		return VarUtils::toString(var2);
+		return getVarOrPropString(var.get<std::string>());
 	}
+	return VarUtils::toString(var);
 }
 
 void Game::clearVariable(const std::string& key)

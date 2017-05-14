@@ -61,7 +61,7 @@ void ResourceManager::popAllResources(bool popBaseResources)
 	resources.resize(1);
 	if (popBaseResources)
 	{
-		resources[0] = ResourceBundle();
+		resources.front() = ResourceBundle();
 		currentLevel = nullptr;
 		currentLevelResourceIdx = 0;
 	}
@@ -139,49 +139,85 @@ void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Ac
 	resources.back().actions[key] = obj;
 }
 
-void ResourceManager::addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
+void ResourceManager::addFont(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<Font2>& obj)
 {
-	resources.back().fonts[key] = obj;
+	if (res.fonts.find(key) == res.fonts.cend())
+	{
+		res.fonts[key] = obj;
+	}
 }
 
-void ResourceManager::addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
+void ResourceManager::addBitmapFont(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<BitmapFont>& obj)
 {
-	resources.back().bitmapFonts[key] = obj;
+	if (res.bitmapFonts.find(key) == res.bitmapFonts.cend())
+	{
+		res.bitmapFonts[key] = obj;
+	}
 }
 
-void ResourceManager::addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
+void ResourceManager::addTexture(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<sf::Texture>& obj)
 {
-	resources.back().textures[key] = obj;
+	if (res.textures.find(key) == res.textures.cend())
+	{
+		res.textures[key] = obj;
+	}
 }
 
-void ResourceManager::addSong(const std::string& key, const std::shared_ptr<Music2>& obj)
+void ResourceManager::addSong(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<Music2>& obj)
 {
-	resources.back().songs[key] = obj;
+	if (res.songs.find(key) == res.songs.cend())
+	{
+		res.songs[key] = obj;
+	}
 }
 
-void ResourceManager::addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
+void ResourceManager::addSound(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
 {
-	resources.back().sounds[key] = obj;
+	if (res.sounds.find(key) == res.sounds.cend())
+	{
+		res.sounds[key] = obj;
+	}
 }
 
-void ResourceManager::addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
+void ResourceManager::addPalette(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<Palette>& obj)
 {
-	resources.back().palettes[key] = obj;
+	if (hasPalette(key) == false)
+	{
+		res.palettes[key] = obj;
+	}
 }
 
-void ResourceManager::addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj)
+void ResourceManager::addCelFile(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<CelFile>& obj)
 {
-	resources.back().celFiles[key] = obj;
+	if (hasCelFile(key) == false)
+	{
+		res.celFiles[key] = obj;
+	}
 }
 
-void ResourceManager::addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
+void ResourceManager::addCelTextureCache(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
 {
-	resources.back().celCaches[key] = obj;
+	if (hasCelTextureCache(key) == false)
+	{
+		res.celCaches[key] = obj;
+	}
 }
 
-void ResourceManager::addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
+void ResourceManager::addCelTextureCacheVec(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
 {
-	resources.back().celCachesVec[key] = obj;
+	if (hasCelTextureCacheVec(key) == false)
+	{
+		res.celCachesVec[key] = obj;
+	}
 }
 
 void ResourceManager::addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)
@@ -376,6 +412,54 @@ std::shared_ptr<CelTextureCacheVector> ResourceManager::getCelTextureCacheVec(co
 		}
 	}
 	return nullptr;
+}
+
+bool ResourceManager::hasPalette(const std::string& key) const
+{
+	for (const auto& resource : resources)
+	{
+		if (resource.palettes.find(key) != resource.palettes.cend())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ResourceManager::hasCelFile(const std::string& key) const
+{
+	for (const auto& resource : resources)
+	{
+		if (resource.celFiles.find(key) != resource.celFiles.cend())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ResourceManager::hasCelTextureCache(const std::string& key) const
+{
+	for (const auto& resource : resources)
+	{
+		if (resource.celCaches.find(key) != resource.celCaches.cend())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool ResourceManager::hasCelTextureCacheVec(const std::string& key) const
+{
+	for (const auto& resource : resources)
+	{
+		if (resource.celCachesVec.find(key) != resource.celCachesVec.cend())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 UIObject* ResourceManager::getDrawable(const std::string& key) const

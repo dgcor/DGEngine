@@ -38,11 +38,16 @@ public:
 	}
 	virtual void updateSize(const Game& game);
 
-	virtual void setText(const std::string& string)
+	virtual bool setText(const std::string& str)
 	{
-		text.setString(string);
+		if (text.getString() == str)
+		{
+			return false;
+		}
+		text.setString(str);
 		calcLineCount();
 		calculateDrawPosition();
+		return true;
 	}
 
 	virtual unsigned getLineCount() const { return lineCount; }

@@ -14,7 +14,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::createDir(game.getVariableString(dir).c_str());
+		FileUtils::createDir(game.getVarOrPropString(dir).c_str());
 		return true;
 	}
 };
@@ -37,7 +37,7 @@ public:
 		if (filesRead.size() > 0)
 		{
 			const auto& fileRead = filesRead[0];
-			auto str = FileUtils::readText(game.getVariableString(fileRead).c_str());
+			auto str = FileUtils::readText(game.getVarOrPropString(fileRead).c_str());
 
 			std::string param;
 			Variable var2;
@@ -79,7 +79,7 @@ public:
 				Utils::replaceStringInPlace(str, "{" + std::to_string(i) + "}", param);
 			}
 
-			auto writePath = game.getVariableString(dir);
+			auto writePath = game.getVarOrPropString(dir);
 			if (writePath.size() > 0 && Utils::endsWith(writePath, "/") == false)
 			{
 				writePath += '/';
@@ -87,11 +87,11 @@ public:
 			}
 			if (fileWrite.size() > 0)
 			{
-				writePath += game.getVariableString(fileWrite);
+				writePath += game.getVarOrPropString(fileWrite);
 			}
 			else
 			{
-				writePath += game.getVariableString(FileUtils::getFileFromPath(fileRead));
+				writePath += game.getVarOrPropString(FileUtils::getFileFromPath(fileRead));
 			}
 			FileUtils::saveText(writePath.c_str(), str);
 		}
@@ -109,7 +109,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::deleteFile(game.getVariableString(dir).c_str());
+		FileUtils::deleteFile(game.getVarOrPropString(dir).c_str());
 		return true;
 	}
 };
@@ -124,7 +124,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::deleteAll(game.getVariableString(dir).c_str());
+		FileUtils::deleteAll(game.getVarOrPropString(dir).c_str());
 		return true;
 	}
 };

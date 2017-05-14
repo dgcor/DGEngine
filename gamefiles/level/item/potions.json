@@ -18,6 +18,7 @@
       },
       "description1": "potion",
       "description2": "rightClickToUse",
+      "price1": "price*0.25",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flippot" },
