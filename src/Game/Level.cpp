@@ -10,6 +10,7 @@ void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 	currentMapPosition = MapCoord(map.Width() / 2, map.Height() / 2);
 	tiles = LevelHelper::loadTilesetSprite(cel_, min_, false);
 	tiles2 = LevelHelper::loadTilesetSprite(cel_, min_, true);
+	hoverObject = nullptr;
 }
 
 void Level::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
@@ -455,7 +456,18 @@ void Level::clearPlayerClasses(size_t clearIdx)
 {
 	if (clearIdx < playerClasses.size())
 	{
-		playerClasses.erase(playerClasses.begin() + clearIdx, playerClasses.end());
+		auto removeIfFunc = [&](const auto& cls) {
+			auto it = std::find_if(players.begin(), players.end(), [&](const auto& plr) {
+				return plr->getPlayerClass() == cls.second.get();
+			});
+			return it == players.end();
+		};
+
+		playerClasses.erase(
+			std::remove_if(playerClasses.begin() + clearIdx,
+				playerClasses.end(),
+				removeIfFunc),
+			playerClasses.end());
 	}
 }
 
@@ -552,21 +564,17 @@ bool Level::setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<I
 		auto invIdx = itemCoord.getInventoryIdx();
 		if (invIdx < player->getInventorySize())
 		{
-			auto& inventory = player->getInventory(invIdx);
 			size_t itemIdx;
 			if (itemCoord.isCoordXY() == true)
 			{
-				itemIdx = inventory.getIndex(itemCoord.getItemXY());
+				itemIdx = player->getInventory(invIdx)
+					.getIndex(itemCoord.getItemXY());
 			}
 			else
 			{
 				itemIdx = itemCoord.getItemIdx();
 			}
-			std::shared_ptr<Item> oldItem;
-			auto ret = inventory.set(itemIdx, item, oldItem);
-			player->updateGoldRemove(oldItem);
-			player->updateGoldAdd(item);
-			return ret;
+			return player->setItem(invIdx, itemIdx, item);
 		}
 	}
 	return false;

@@ -1,13 +1,13 @@
 {
   "celFile": [
-    { "id": "rlsas", "file": "plrgfx/rogue/rls/rlsas.cl2" },
-    { "id": "rlsat", "file": "plrgfx/rogue/rls/rlsat.cl2" },
-    { "id": "rlsaw", "file": "plrgfx/rogue/rls/rlsaw.cl2" },
-    { "id": "rlsfm", "file": "plrgfx/rogue/rls/rlsfm.cl2" },
-    { "id": "rlsht", "file": "plrgfx/rogue/rls/rlsht.cl2" },
-    { "id": "rlslm", "file": "plrgfx/rogue/rls/rlslm.cl2" },
-    { "id": "rlsqm", "file": "plrgfx/rogue/rls/rlsqm.cl2" },
-    { "id": "rlsst", "file": "plrgfx/rogue/rls/rlsst.cl2" },
-    { "id": "rlswl", "file": "plrgfx/rogue/rls/rlswl.cl2" }
+    { "id": "rlnas", "file": "plrgfx/rogue/rln/rlnas.cl2" },
+    { "id": "rlnat", "file": "plrgfx/rogue/rln/rlnat.cl2" },
+    { "id": "rlnaw", "file": "plrgfx/rogue/rln/rlnaw.cl2" },
+    { "id": "rlnfm", "file": "plrgfx/rogue/rln/rlnfm.cl2" },
+    { "id": "rlnht", "file": "plrgfx/rogue/rln/rlnht.cl2" },
+    { "id": "rlnlm", "file": "plrgfx/rogue/rln/rlnlm.cl2" },
+    { "id": "rlnqm", "file": "plrgfx/rogue/rln/rlnqm.cl2" },
+    { "id": "rlnst", "file": "plrgfx/rogue/rln/rlnst.cl2" },
+    { "id": "rlnwl", "file": "plrgfx/rogue/rln/rlnwl.cl2" }
   ]
 }

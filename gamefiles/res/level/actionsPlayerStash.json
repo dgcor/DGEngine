@@ -1,0 +1,3970 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.0,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv11", "inventory": "stash", "item": [0, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv11", "inventory": "stash", "item": [0, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv11", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.0,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv12", "inventory": "stash", "item": [0, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv12", "inventory": "stash", "item": [0, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv12", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.0,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv13", "inventory": "stash", "item": [0, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv13", "inventory": "stash", "item": [0, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv13", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.0,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.0,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv14", "inventory": "stash", "item": [0, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv14", "inventory": "stash", "item": [0, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv14", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.1,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv21", "inventory": "stash", "item": [1, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv21", "inventory": "stash", "item": [1, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv21", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.1,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv22", "inventory": "stash", "item": [1, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv22", "inventory": "stash", "item": [1, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv22", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.1,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv23", "inventory": "stash", "item": [1, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv23", "inventory": "stash", "item": [1, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv23", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.1,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.1,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv24", "inventory": "stash", "item": [1, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv24", "inventory": "stash", "item": [1, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv24", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.2,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv31", "inventory": "stash", "item": [2, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv31", "inventory": "stash", "item": [2, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv31", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.2,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv32", "inventory": "stash", "item": [2, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv32", "inventory": "stash", "item": [2, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv32", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.2,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv33", "inventory": "stash", "item": [2, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv33", "inventory": "stash", "item": [2, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv33", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.2,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.2,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv34", "inventory": "stash", "item": [2, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv34", "inventory": "stash", "item": [2, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv34", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.3,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv41", "inventory": "stash", "item": [3, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv41", "inventory": "stash", "item": [3, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv41", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.3,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv42", "inventory": "stash", "item": [3, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv42", "inventory": "stash", "item": [3, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv42", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.3,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv43", "inventory": "stash", "item": [3, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv43", "inventory": "stash", "item": [3, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv43", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.3,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.3,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv44", "inventory": "stash", "item": [3, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv44", "inventory": "stash", "item": [3, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv44", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.4,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv51", "inventory": "stash", "item": [4, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv51", "inventory": "stash", "item": [4, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv51", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.4,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv52", "inventory": "stash", "item": [4, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv52", "inventory": "stash", "item": [4, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv52", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.4,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv53", "inventory": "stash", "item": [4, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv53", "inventory": "stash", "item": [4, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv53", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.4,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.4,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv54", "inventory": "stash", "item": [4, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv54", "inventory": "stash", "item": [4, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv54", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.5,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv61", "inventory": "stash", "item": [5, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv61", "inventory": "stash", "item": [5, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv61", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.5,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv62", "inventory": "stash", "item": [5, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv62", "inventory": "stash", "item": [5, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv62", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.5,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv63", "inventory": "stash", "item": [5, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv63", "inventory": "stash", "item": [5, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv63", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.5,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.5,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv64", "inventory": "stash", "item": [5, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv64", "inventory": "stash", "item": [5, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv64", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.6,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv71", "inventory": "stash", "item": [6, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv71", "inventory": "stash", "item": [6, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv71", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.6,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv72", "inventory": "stash", "item": [6, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv72", "inventory": "stash", "item": [6, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv72", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.6,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv73", "inventory": "stash", "item": [6, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv73", "inventory": "stash", "item": [6, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv73", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.6,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.6,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv74", "inventory": "stash", "item": [6, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv74", "inventory": "stash", "item": [6, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv74", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.7,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv81", "inventory": "stash", "item": [7, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv81", "inventory": "stash", "item": [7, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv81", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.7,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv82", "inventory": "stash", "item": [7, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv82", "inventory": "stash", "item": [7, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv82", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.7,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv83", "inventory": "stash", "item": [7, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv83", "inventory": "stash", "item": [7, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv83", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.7,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.7,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv84", "inventory": "stash", "item": [7, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv84", "inventory": "stash", "item": [7, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv84", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.8,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv91", "inventory": "stash", "item": [8, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv91", "inventory": "stash", "item": [8, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv91", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.8,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv92", "inventory": "stash", "item": [8, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv92", "inventory": "stash", "item": [8, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv92", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.8,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv93", "inventory": "stash", "item": [8, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv93", "inventory": "stash", "item": [8, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv93", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.8,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.8,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv94", "inventory": "stash", "item": [8, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv94", "inventory": "stash", "item": [8, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv94", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,0|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.9,0|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv101", "inventory": "stash", "item": [9, 0], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv101", "inventory": "stash", "item": [9, 0] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv101", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,1|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.9,1|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv102", "inventory": "stash", "item": [9, 1], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv102", "inventory": "stash", "item": [9, 1] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv102", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,2|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.9,2|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv103", "inventory": "stash", "item": [9, 2], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv103", "inventory": "stash", "item": [9, 2] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv103", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.isItemSlotInUse.stash.9,3|",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipItem.stash.9,3|",
+            "param2": false,
+            "then": { "name": "image.setTextureFromItem", "id": "imgInv104", "inventory": "stash", "item": [9, 3], "equipable": false },
+            "else": { "name": "image.setTextureFromItem", "id": "imgInv104", "inventory": "stash", "item": [9, 3] }
+          },
+          "else": { "name": "image.setTexture", "id": "imgInv104", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv11", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv11", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv12", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv12", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv13", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv13", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.0,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv14", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv14", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv21", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv21", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv22", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv22", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv23", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv23", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.1,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv24", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv24", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv31", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv31", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv32", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv32", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv33", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv33", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.2,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv34", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv34", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv41", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv41", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv42", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv42", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv43", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv43", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.3,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv44", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv44", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv51", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv51", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv52", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv52", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv53", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv53", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.4,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv54", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv54", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv61", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv61", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv62", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv62", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv63", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv63", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.5,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv64", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv64", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv71", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv71", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv72", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv72", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv73", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv73", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.6,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv74", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv74", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv81", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv81", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv82", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv82", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv83", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv83", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.7,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv84", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv84", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv91", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv91", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv92", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv92", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv93", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv93", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.8,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv94", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv94", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,0|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv101", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv101", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,1|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv102", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv102", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,2|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv103", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv103", "texture": "empty" }
+        },
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasItem.stash.9,3|",
+          "param2": true,
+          "then": { "name": "button.setTexture", "id": "btnInv104", "texture": "red" },
+          "else": { "name": "button.setTexture", "id": "btnInv104", "texture": "empty" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash11Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.0,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.0,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.0,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash12Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.0,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.0,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.0,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash13Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.0,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.0,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.0,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash14Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.0,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.0,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.0,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.0,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.0,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.0,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.0,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.0,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.0,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash21Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.1,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.1,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.1,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash22Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.1,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.1,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.1,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash23Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.1,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.1,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.1,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash24Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.1,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.1,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.1,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.1,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.1,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.1,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.1,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.1,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.1,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash31Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.2,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.2,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.2,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash32Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.2,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.2,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.2,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash33Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.2,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.2,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.2,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash34Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.2,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.2,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.2,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.2,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.2,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.2,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.2,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.2,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.2,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash41Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.3,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.3,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.3,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash42Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.3,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.3,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.3,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash43Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.3,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.3,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.3,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash44Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.3,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.3,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.3,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.3,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.3,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.3,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.3,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.3,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.3,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash51Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.4,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.4,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.4,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash52Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.4,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.4,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.4,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash53Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.4,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.4,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.4,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash54Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.4,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.4,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.4,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.4,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.4,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.4,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.4,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.4,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.4,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash61Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.5,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.5,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.5,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash62Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.5,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.5,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.5,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash63Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.5,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.5,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.5,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash64Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.5,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.5,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.5,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.5,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.5,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.5,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.5,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.5,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.5,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash71Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.6,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.6,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.6,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash72Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.6,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.6,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.6,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash73Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.6,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.6,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.6,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash74Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.6,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.6,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.6,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.6,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.6,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.6,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.6,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.6,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.6,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash81Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.7,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.7,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.7,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash82Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.7,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.7,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.7,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash83Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.7,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.7,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.7,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash84Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.7,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.7,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.7,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.7,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.7,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.7,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.7,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.7,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.7,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash91Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.8,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.8,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.8,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash92Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.8,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.8,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.8,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash93Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.8,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.8,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.8,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash94Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.8,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.8,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.8,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.8,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.8,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.8,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.8,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.8,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.8,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash101Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,0|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.9,0.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,0",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,0",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.9,0.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.9,0.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,0.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,0.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,0",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,0",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash102Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,1|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.9,1.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,1",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,1",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.9,1.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.9,1.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,1.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,1.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,1",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,1",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash103Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,2|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.9,2.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,2",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,2",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.9,2.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.9,2.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,2.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,2.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,2",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,2",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash104Text",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.stash.9,3|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.stash.9,3.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,3",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.stash.9,3",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.stash.9,3.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.stash.9,3.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.stash.9,3.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.stash.9,3.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.stash.9,3",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.stash.9,3",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash11Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash12Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash13Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash14Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [0, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash21Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash22Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash23Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash24Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [1, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash31Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash32Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash33Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash34Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [2, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash41Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash42Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash43Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash44Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [3, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash51Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash52Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash53Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash54Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [4, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash61Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash62Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash63Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash64Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [5, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash71Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash72Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash73Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash74Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [6, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash81Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash82Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash83Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash84Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [7, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash91Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash92Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash93Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash94Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [8, 3] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash101Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 0] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash102Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 1] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash103Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 2] },
+        "updateInventoryStash"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateInventoryStash104Click",
+      "action": [
+        { "name": "item.update", "inventory": "stash", "item": [9, 3] },
+        "updateInventoryStash"
+      ]
+    }
+  ]
+}

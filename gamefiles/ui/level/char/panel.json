@@ -131,7 +131,8 @@
           { "name": "resource.pop", "id": "charPanelQuests" },
           { "name": "load", "file": "ui/level/char/panelLabels.json" },
           { "name": "drawable.visible", "id": "charPanel", "visible": true },
-          { "name": "drawable.visible", "id": "questPanel", "visible": false }
+          { "name": "drawable.visible", "id": "questPanel", "visible": false },
+          "hideItemInfo"
         ],
         "else": [
           { "name": "resource.pop", "id": "charPanelLabels" },
@@ -356,6 +357,50 @@
     {
       "key": "tab",
       "action": { "name": "button.click", "id": "map" }
+    },
+    {
+      "key": "f1",
+      "action": [
+        { "name": "player.addGold", "gold": -4000 },
+        "updateInventoryStash",
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f2",
+      "action": [
+        { "name": "player.addGold", "gold": 4000 },
+        "updateInventoryStash",
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f3",
+      "action": [
+        { "name": "player.addToProperty", "property": "lifeDamage", "value": 10 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f4",
+      "action": [
+        { "name": "player.addToProperty", "property": "lifeDamage", "value": -10 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f5",
+      "action": [
+        { "name": "player.addToProperty", "property": "manaDamage", "value": 10 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f6",
+      "action": [
+        { "name": "player.addToProperty", "property": "manaDamage", "value": -10 },
+        "updateCharLabels"
+      ]
     }
   ],
   "load": "ui/level/char/beltInventory.json"

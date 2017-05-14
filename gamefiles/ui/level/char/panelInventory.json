@@ -804,13 +804,7 @@
     }
   ],
   "action": [
-    "updateInventoryLeftHand",
-    "updateInventoryRightHand",
-    "updateInventoryArmor",
-    "updateInventoryHelmet",
-    "updateInventoryAmulet",
-    "updateInventoryLeftRing",
-    "updateInventoryRightRing",
+    "updateBodyItems",
     "updateInventoryStash"
   ]
 }

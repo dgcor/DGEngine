@@ -4,12 +4,12 @@
     "param1": "|currentLevel|currentPlayer.id|",
     "param2": "hero",
     "then": [
-      { "name": "level.clearPlayerClasses", "index": 1 },
-      { "name": "level.clearPlayers", "index": 1 }
+      { "name": "level.clearPlayers", "index": 1 },
+      { "name": "level.clearPlayerClasses", "index": 1 }
     ],
     "else": [
-      { "name": "level.clearPlayerClasses" },
-      { "name": "level.clearPlayers" }
+      { "name": "level.clearPlayers" },
+      { "name": "level.clearPlayerClasses" }
     ]
   }
 }

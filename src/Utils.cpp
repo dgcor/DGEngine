@@ -97,6 +97,18 @@ namespace Utils
 		return ret;
 	}
 
+	std::string toString(double d)
+	{
+		std::string str{ std::to_string(d) };
+		int offset{ 1 };
+		if (str.find_last_not_of('0') == str.find('.'))
+		{
+			offset = 2;
+		}
+		str.erase(str.find_last_not_of('0') + offset, std::string::npos);
+		return str;
+	}
+
 	std::string trimStart(const std::string& str, const std::string& chars)
 	{
 		auto startPos = str.find_first_not_of(chars);

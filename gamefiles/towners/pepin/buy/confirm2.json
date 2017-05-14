@@ -79,7 +79,7 @@
         },
         {
           "name": "item.trade",
-          "item": { "playerId": "pepin", "inventory": {1}, "item": {2} },
+          "item": { "player": "pepin", "inventory": {1}, "item": {2} },
           "position": "BottomLeft",
           "onInventoryFull": "inventoryFull"
         },
@@ -131,7 +131,7 @@
       "name": "if.equal",
       "param1": {
         "name": "player.canEquipItem",
-        "item": { "playerId": "pepin", "inventory": {1}, "item": {2} }
+        "item": { "player": "pepin", "inventory": {1}, "item": {2} }
       },
       "param2": false,
       "then": [
@@ -148,7 +148,7 @@
         ],
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|player.pepin.item.{1}.{2}.magic|",
+          "param1": "|currentLevel|player.pepin.item.{1}.{2}.magical|",
           "param2": 1,
           "then": [
             { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },

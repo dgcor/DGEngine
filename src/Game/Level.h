@@ -117,17 +117,22 @@ public:
 		return nullptr;
 	}
 
+	bool hasItemClass(const std::string& key) const
+	{
+		return itemClasses.find(key) != itemClasses.end();
+	}
+
 	void addItemClass(const std::string& key, const std::shared_ptr<ItemClass>& obj)
 	{
 		itemClasses.insert(std::make_pair(key, obj));
 	}
 
-	std::shared_ptr<ItemClass> getItemClass(const std::string& key) const
+	ItemClass* getItemClass(const std::string& key) const
 	{
 		auto it = itemClasses.find(key);
 		if (it != itemClasses.end())
 		{
-			return it->second;
+			return it->second.get();
 		}
 		return nullptr;
 	}
@@ -137,13 +142,13 @@ public:
 		playerClasses.push_back(std::make_pair(key, obj));
 	}
 
-	std::shared_ptr<PlayerClass> getPlayerClass(const std::string& key) const
+	PlayerClass* getPlayerClass(const std::string& key) const
 	{
 		for (const auto& player : playerClasses)
 		{
 			if (player.first == key)
 			{
-				return player.second;
+				return player.second.get();
 			}
 		}
 		return nullptr;
@@ -155,6 +160,7 @@ public:
 	Player* getPlayer(const std::string& id) const;
 	Player* getPlayerOrCurrent(const std::string& id) const;
 
+	// doesn't clear currently used player classes
 	void clearPlayerClasses(size_t clearIdx);
 	void clearPlayers(size_t clearIdx);
 

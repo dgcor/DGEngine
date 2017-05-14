@@ -8,15 +8,15 @@
 #include "LevelObject.h"
 #include <memory>
 
-typedef std::array<LevelObjProperty, 10> ItemProperties;
-
 class Item : public LevelObject
 {
 private:
+	typedef std::array<LevelObjProperty, 10> ItemProperties;
+
+	const ItemClass* class_;
+
 	sf::Sprite sprite;
 	MapCoord mapPosition;
-
-	std::shared_ptr<ItemClass> class_;
 
 	std::pair<size_t, size_t> frameRange;
 	size_t currentFrame{ 0 };
@@ -60,7 +60,7 @@ public:
 	const_reverse_iterator crend() const { return properties.crend(); }
 
 	Item() {}
-	Item(const std::shared_ptr<ItemClass>& class__) : class_(class__)
+	Item(const ItemClass* class__) : class_(class__)
 	{
 		frameRange.first = 0;
 		frameRange.second = class_->getCelDropTextureSize() - 1;
@@ -81,6 +81,16 @@ public:
 	void MapPosition(Level& level, const MapCoord& pos);
 
 	virtual void executeAction(Game& game) const;
+	virtual bool getNumberProp(const std::string& prop, Number32& value) const
+	{
+		LevelObjValue val;
+		bool ret = getInt(prop, val);
+		if (ret == true)
+		{
+			value.setInt32(val);
+		}
+		return ret;
+	}
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) {}
 
@@ -99,32 +109,32 @@ public:
 	virtual void setProperty(const std::string& prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
-	ItemClass* Class() const { return class_.get(); }
+	const ItemClass* Class() const { return class_; }
 
-	bool hasItemProperty(const char* prop) const;
-	bool hasItemProperty(const std::string& prop) const
+	bool hasInt(const char* prop) const;
+	bool hasInt(const std::string& prop) const
 	{
-		return hasItemProperty(prop.c_str());
+		return hasInt(prop.c_str());
 	}
 
-	LevelObjValue getItemPropertyByHash(uint16_t propHash) const;
-	LevelObjValue getItemProperty(const char* prop) const;
-	LevelObjValue getItemProperty(const std::string& prop) const
+	LevelObjValue getIntByHash(uint16_t propHash) const;
+	LevelObjValue getInt(const char* prop) const;
+	LevelObjValue getInt(const std::string& prop) const
 	{
-		return getItemProperty(prop.c_str());
+		return getInt(prop.c_str());
 	}
 
-	bool getItemPropertyByHash(uint16_t propHash, LevelObjValue& value) const;
-	bool getItemProperty(const char* prop, LevelObjValue& value) const;
-	bool getItemProperty(const std::string& prop, LevelObjValue& value) const
+	bool getIntByHash(uint16_t propHash, LevelObjValue& value) const;
+	bool getInt(const char* prop, LevelObjValue& value) const;
+	bool getInt(const std::string& prop, LevelObjValue& value) const
 	{
-		return getItemProperty(prop.c_str(), value);
+		return getInt(prop.c_str(), value);
 	}
-	void setItemPropertyByHash(uint16_t propHash, LevelObjValue value);
-	void setItemProperty(const char* prop, LevelObjValue value);
-	void setItemProperty(const std::string& prop, LevelObjValue value) const
+	void setIntByHash(uint16_t propHash, LevelObjValue value);
+	void setInt(const char* prop, LevelObjValue value);
+	void setInt(const std::string& prop, LevelObjValue value)
 	{
-		return setItemProperty(prop.c_str(), value);
+		return setInt(prop.c_str(), value);
 	}
 
 	void applyDefaults();

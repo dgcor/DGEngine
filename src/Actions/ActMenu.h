@@ -199,22 +199,7 @@ public:
 		auto menu = game.Resources().getResource<Menu>(id);
 		if (menu != nullptr)
 		{
-			size_t idx = 0;
-			if (idxVar.is<int64_t>() == true)
-			{
-				idx = (size_t)idxVar.get<int64_t>();
-			}
-			else if (idxVar.is<std::string>() == true)
-			{
-				Variable var;
-				if (game.getVarOrProp(idxVar.get<std::string>(), var) == true)
-				{
-					if (var.is<int64_t>() == true)
-					{
-						idx = (size_t)var.get<int64_t>();
-					}
-				}
-			}
+			auto idx = (size_t)game.getVarOrPropLong(idxVar);
 			menu->setCurrentIdx(idx);
 		}
 		return true;
@@ -240,7 +225,7 @@ public:
 			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
-				button->setText(game.getVariableString(text));
+				button->setText(game.getVarOrPropString(text));
 			}
 		}
 		return true;

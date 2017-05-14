@@ -12,7 +12,7 @@
       "type": "Amulet",
       "defaults": {
         "price": 1200,
-        "magic": true,
+        "magical": true,
         "durability": "max",
         "durabilityMax": "max"
       },
@@ -20,6 +20,7 @@
       "description2": "magic1",
       "description3": "magic2",
       "description4": "noAttributes",
+      "price1": "price*0.25",
       "inventorySize": [1, 1],
       "action": "pickItemInLevel",
       "actionDropLevel": { "name": "sound.play", "id": "flipring" },

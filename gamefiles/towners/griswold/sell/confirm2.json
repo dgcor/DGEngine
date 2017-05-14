@@ -73,7 +73,7 @@
       "horizontalSpaceOffset": 1,
       "text": "Yes",
       "onClick": [
-        { "name": "player.addGold", "gold": "|currentLevel|currentPlayer.item.{1}.{2}.price|" },
+        { "name": "player.addGold", "gold": "|currentLevel|currentPlayer.item.{1}.{2}.prices.0|" },
         { "name": "item.delete", "inventory": "{1}", "item": {2} },
         { "name": "resource.popAll", "id": "userPanelSell" },
         { "name": "load", "file": "towners/griswold/sell/panel.json" }
@@ -115,7 +115,7 @@
       "name": "text.setTextFromQuery",
       "id": "itemPrice",
       "query": "currentLevel.currentPlayer.item.{1}.{2}",
-      "text": "%price%"
+      "text": "%prices.0%"
     },
     {
       "replaceVars": true,
@@ -136,7 +136,7 @@
         ],
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.item.{1}.{2}.magic|",
+          "param1": "|currentLevel|currentPlayer.item.{1}.{2}.magical|",
           "param2": 1,
           "then": [
             { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },

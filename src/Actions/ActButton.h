@@ -134,7 +134,7 @@ public:
 		{
 			if (bindings.empty() == true)
 			{
-				button->setText(game.getVariableString(textFormat));
+				button->setText(game.getVarOrPropString(textFormat));
 			}
 			else
 			{

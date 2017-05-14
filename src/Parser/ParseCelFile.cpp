@@ -74,6 +74,10 @@ namespace Parser
 		{
 			return;
 		}
+		if (game.Resources().hasCelFile(id) == true)
+		{
+			return;
+		}
 		auto celFile = parseCelFileObj(game, elem);
 		if (celFile == nullptr)
 		{

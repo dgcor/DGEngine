@@ -13,11 +13,10 @@ public:
 
 	virtual Variable getResult(const Game& game) const
 	{
-		Variable var(file);
-		game.getVarOrProp(file, var);
-		if (var.is<std::string>() == true)
+		auto file2 = game.getVarOrPropString(file);
+		if (file2.empty() == false)
 		{
-			return { FileUtils::exists(var.get<std::string>().c_str()) };
+			return { FileUtils::exists(file2.c_str()) };
 		}
 		return { false };
 	}

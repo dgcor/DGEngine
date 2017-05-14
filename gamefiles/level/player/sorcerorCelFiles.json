@@ -1,13 +1,13 @@
 {
   "celFile": [
-    { "id": "slsas", "file": "plrgfx/sorceror/sls/slsas.cl2" },
-    { "id": "slsat", "file": "plrgfx/sorceror/sls/slsat.cl2" },
-    { "id": "slsaw", "file": "plrgfx/sorceror/sls/slsaw.cl2" },
-    { "id": "slsfm", "file": "plrgfx/sorceror/sls/slsfm.cl2" },
-    { "id": "slsht", "file": "plrgfx/sorceror/sls/slsht.cl2" },
-    { "id": "slslm", "file": "plrgfx/sorceror/sls/slslm.cl2" },
-    { "id": "slsqm", "file": "plrgfx/sorceror/sls/slsqm.cl2" },
-    { "id": "slsst", "file": "plrgfx/sorceror/sls/slsst.cl2" },
-    { "id": "slswl", "file": "plrgfx/sorceror/sls/slswl.cl2" }
+    { "id": "slnas", "file": "plrgfx/sorceror/sln/slnas.cl2" },
+    { "id": "slnat", "file": "plrgfx/sorceror/sln/slnat.cl2" },
+    { "id": "slnaw", "file": "plrgfx/sorceror/sln/slnaw.cl2" },
+    { "id": "slnfm", "file": "plrgfx/sorceror/sln/slnfm.cl2" },
+    { "id": "slnht", "file": "plrgfx/sorceror/sln/slnht.cl2" },
+    { "id": "slnlm", "file": "plrgfx/sorceror/sln/slnlm.cl2" },
+    { "id": "slnqm", "file": "plrgfx/sorceror/sln/slnqm.cl2" },
+    { "id": "slnst", "file": "plrgfx/sorceror/sln/slnst.cl2" },
+    { "id": "slnwl", "file": "plrgfx/sorceror/sln/slnwl.cl2" }
   ]
 }

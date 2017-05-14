@@ -45,6 +45,7 @@ public:
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
+	virtual bool getNumberProp(const std::string& prop, Number32& value) const { return false; }
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 

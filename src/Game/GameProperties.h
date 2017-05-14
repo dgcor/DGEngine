@@ -2,7 +2,17 @@
 
 #include <cstddef>
 #include "MapCoord.h"
+#include <SFML/System/Time.hpp>
 #include <utility>
+
+struct AnimationSpeed
+{
+	sf::Time animation;
+	sf::Time walk;
+
+	AnimationSpeed() : animation(sf::microseconds(200000)), walk(sf::microseconds(40000)) {}
+	AnimationSpeed(sf::Time animation_, sf::Time walk_) : animation(animation_), walk(walk_) {}
+};
 
 enum class InventoryPosition : size_t
 {

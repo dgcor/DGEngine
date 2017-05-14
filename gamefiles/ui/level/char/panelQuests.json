@@ -29,10 +29,6 @@
     {
       "key": ["down", "s", "tab"],
       "action": "focus.moveDown"
-    },
-    {
-      "key": "esc",
-      "action": { "name": "button.click", "id": "closeQuestLog" }
     }
   ],
   "animation": [

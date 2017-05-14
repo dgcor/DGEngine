@@ -27,22 +27,7 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				LevelObjValue goldVal = 0;
-				if (gold.is<std::string>() == true)
-				{
-					Variable prop2;
-					if (game.getVarOrProp(gold.get<std::string>(), prop2) == true)
-					{
-						if (prop2.is<int64_t>() == true)
-						{
-							goldVal = (LevelObjValue)prop2.get<int64_t>();
-						}
-					}
-				}
-				else if (gold.is<int64_t>() == true)
-				{
-					goldVal = (LevelObjValue)gold.get<int64_t>();
-				}
+				auto goldVal = (LevelObjValue)game.getVarOrPropLong(gold);
 				if (goldVal != 0)
 				{
 					if (remove == true)
@@ -52,6 +37,52 @@ public:
 					else
 					{
 						player->addGold(*level, goldVal);
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerAddToProperty : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	std::string prop;
+	Variable value;
+	bool remove;
+
+public:
+	ActPlayerAddToProperty(const std::string& idPlayer_, const std::string& idLevel_,
+		const std::string& prop_, const Variable& value_, bool remove_) : idPlayer(idPlayer_),
+		idLevel(idLevel_), prop(prop_), value(value_), remove(remove_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				auto propVal = game.getVarOrPropString(prop);
+				if (propVal.empty() == false)
+				{
+					LevelObjValue currVal;
+					if (player->getInt(propVal, currVal) == true)
+					{
+						auto addToVal = game.getVarOrPropLong(value);
+						if (remove == true)
+						{
+							currVal -= addToVal;
+						}
+						else
+						{
+							currVal += addToVal;
+						}
+						player->setInt(propVal, currVal);
 					}
 				}
 			}
@@ -82,8 +113,7 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				player->clearWalkPath();
-				player->MapPosition(*level, position);
+				player->move(*level, position);
 				if (resetDirection == true)
 				{
 					player->setDirection(PlayerDirection::Front);
@@ -205,17 +235,11 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				Variable prop2(prop);
-				game.getVarOrProp(prop, prop2);
-				if (prop2.is<std::string>() == true)
+				auto prop2 = game.getVarOrPropString(prop);
+				if (prop2.empty() == false)
 				{
-					const auto& propVal = prop2.get<std::string>();
-					auto value2 = value;
-					if (value2.is<std::string>() == true)
-					{
-						game.getVarOrProp(value2.get<std::string>(), value2);
-					}
-					player->setProperty(propVal, value2);
+					auto value2 = game.getVarOrProp(value);
+					player->setProperty(prop2, value2);
 				}
 			}
 		}
@@ -223,16 +247,16 @@ public:
 	}
 };
 
-class ActPlayerSetSpeed : public Action
+class ActPlayerSetRestStatus : public Action
 {
 private:
 	std::string idPlayer;
 	std::string idLevel;
-	int speed;
+	uint8_t status;
 
 public:
-	ActPlayerSetSpeed(const std::string& idPlayer_, const std::string& idLevel_,
-		int speed_) : idPlayer(idPlayer_), idLevel(idLevel_), speed(speed_) {}
+	ActPlayerSetRestStatus(const std::string& idPlayer_, const std::string& idLevel_,
+		uint8_t status_) : idPlayer(idPlayer_), idLevel(idLevel_), status(status_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -242,7 +266,8 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				player->setWalkSpeed(speed);
+				player->setRestStatus(status);
+				player->updateTexture();
 			}
 		}
 		return true;

@@ -123,3 +123,21 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	}
 	return true;
 }
+
+void ItemClass::setPriceFormula(size_t idx, const Formula& formula)
+{
+	if (idx < priceFormulas.size())
+	{
+		priceFormulas[idx] = formula;
+	}
+}
+
+LevelObjValue ItemClass::getPrice(size_t idx, const LevelObject& item) const
+{
+	LevelObjValue val = 0;
+	if (idx < priceFormulas.size())
+	{
+		val = (LevelObjValue)priceFormulas[idx].eval(item);
+	}
+	return val;
+}

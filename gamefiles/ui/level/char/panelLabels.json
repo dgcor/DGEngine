@@ -4,233 +4,222 @@
     {
       "id": "charName",
       "bitmapFont": "smaltext",
-      "position": [84, 20],
+      "position": [86, 22],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.name|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charClass",
       "bitmapFont": "smaltext",
-      "position": [236, 20],
+      "position": [234, 22],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.class|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charLevel",
       "bitmapFont": "smaltext",
-      "position": [85, 56],
+      "position": [88, 59],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.level|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charExp",
       "bitmapFont": "smaltext",
-      "position": [256, 56],
+      "position": [258, 59],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.experience|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charExpNext",
       "bitmapFont": "smaltext",
-      "position": [256, 84],
+      "position": [258, 87],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.expNextLevel|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charGold",
       "bitmapFont": "smaltext",
-      "position": [256, 134],
+      "position": [258, 136],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.gold|"
-    },
-    {
-      "id": "charStrBase",
-      "bitmapFont": "smaltext",
-      "position": [108, 144],
-      "anchor": "left",
-      "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.strengthBase|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charStr",
       "bitmapFont": "smaltext",
-      "position": [156, 144],
+      "position": [110, 145],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.strengthNow|"
+      "onChange": "updateCharStrengthColor"
     },
     {
-      "id": "charMagBase",
+      "id": "charStrNow",
       "bitmapFont": "smaltext",
-      "position": [108, 172],
+      "position": [158, 145],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.magicBase|"
+      "onChange": "updateCharStrengthNowColor"
     },
     {
       "id": "charMag",
       "bitmapFont": "smaltext",
-      "position": [156, 172],
+      "position": [111, 173],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.magicNow|"
+      "onChange": "updateCharMagicColor"
     },
     {
-      "id": "charDexBase",
+      "id": "charMagNow",
       "bitmapFont": "smaltext",
-      "position": [108, 200],
+      "position": [158, 173],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.dexterityBase|"
+      "onChange": "updateCharMagicNowColor"
     },
     {
       "id": "charDex",
       "bitmapFont": "smaltext",
-      "position": [156, 200],
+      "position": [110, 201],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.dexterityNow|"
+      "onChange": "updateCharDexterityColor"
     },
     {
-      "id": "charVitBase",
+      "id": "charDexNow",
       "bitmapFont": "smaltext",
-      "position": [108, 228],
+      "position": [158, 201],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.vitalityBase|"
+      "onChange": "updateCharDexterityNowColor"
     },
     {
       "id": "charVit",
       "bitmapFont": "smaltext",
-      "position": [156, 228],
+      "position": [110, 229],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.vitalityNow|"
+      "onChange": "updateCharVitalityColor"
+    },
+    {
+      "id": "charVitNow",
+      "bitmapFont": "smaltext",
+      "position": [158, 229],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharVitalityNowColor"
     },
     {
       "id": "charPoints",
+      "replaceVars": true,
       "bitmapFont": "smaltext",
-      "position": [108, 256],
+      "color": "%textRed%",
+      "position": [111, 256],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.points|",
-      "format": ""
-    },
-    {
-      "id": "charLifeBase",
-      "bitmapFont": "smaltext",
-      "position": [108, 292],
-      "anchor": "left",
-      "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.lifeBase|"
+      "horizontalSpaceOffset": 1
     },
     {
       "id": "charLife",
       "bitmapFont": "smaltext",
-      "position": [156, 292],
+      "position": [110, 294],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.lifeNow|"
+      "onChange": "updateCharLifeColor"
     },
     {
-      "id": "charManaBase",
+      "id": "charLifeNow",
       "bitmapFont": "smaltext",
-      "position": [108, 320],
+      "position": [158, 294],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.manaBase|"
+      "onChange": "updateCharLifeNowColor"
     },
     {
       "id": "charMana",
       "bitmapFont": "smaltext",
-      "position": [156, 320],
+      "position": [111, 322],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.manaNow|"
+      "onChange": "updateCharManaColor"
+    },
+    {
+      "id": "charManaNow",
+      "bitmapFont": "smaltext",
+      "position": [159, 322],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharManaNowColor"
     },
     {
       "id": "charArmor",
       "bitmapFont": "smaltext",
-      "position": [278, 172],
+      "position": [280, 173],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.armorClass|"
+      "onChange": "updateCharArmorColor"
     },
     {
       "id": "charToHit",
       "bitmapFont": "smaltext",
-      "position": [278, 200],
+      "position": [279, 201],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.toHit|",
-      "format": "[1]%"
+      "onChange": "updateCharToHitColor"
     },
     {
       "id": "charDamage",
       "bitmapFont": "smaltext",
-      "position": [278, 228],
+      "position": [280, 229],
       "anchor": "left",
       "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "binding": ["|currentLevel|currentPlayer.damageMin|", "|currentLevel|currentPlayer.damageMax|"],
-      "format": "[1]-[2]"
+      "onChange": "updateCharDamageColor"
     },
     {
       "id": "charResMagic",
       "bitmapFont": "smaltext",
-      "position": [278, 266],
+      "position": [279, 266],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.resistMagic|",
-      "format": "[1]%"
+      "onChange": "updateCharResistMagicColor"
     },
     {
       "id": "charResFire",
       "bitmapFont": "smaltext",
-      "position": [278, 292],
+      "position": [279, 294],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.resistFire|",
-      "format": "[1]%"
+      "onChange": "updateCharResistFireColor"
     },
     {
       "id": "charResLight",
       "bitmapFont": "smaltext",
-      "position": [278, 320],
+      "position": [279, 322],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.resistLightning|",
-      "format": "[1]%"
+      "onChange": "updateCharResistLightningColor"
     }
-  ]
+  ],
+  "action": "updateCharLabels"
 }

@@ -10,7 +10,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	void parsePlayerItem(Game& game, const Level& level,
-		ItemCollection& inventory, Player& player, const Value& elem)
+		ItemCollection& inventory, Player& player, size_t invIdx, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
 		{
@@ -34,16 +34,12 @@ namespace Parser
 		{
 			return;
 		}
-		auto item = parseItemObj(game, level, elem);
-		if (itemIdx < inventory.Size())
+		if (itemIdx >= inventory.Size())
 		{
-			std::shared_ptr<Item> oldItem;
-			if (inventory.set(itemIdx, item, oldItem) == true)
-			{
-				player.updateGoldRemove(oldItem);
-				player.updateGoldAdd(item);
-			}
+			return;
 		}
+		auto item = parseItemObj(game, level, elem);
+		player.setItem(invIdx, itemIdx, item);
 	}
 
 	void parsePlayerInventory(Game& game, const Level& level,
@@ -96,6 +92,10 @@ namespace Parser
 
 		inventory.setEnforceItemSize(getBoolKey(elem, "enforceItemSize"));
 
+		if (getBoolKey(elem, "bodyInventory") == true)
+		{
+			player.setBodyInventoryIdx(invIdx);
+		}
 		if (elem.HasMember("allowedClassTypes") == true)
 		{
 			const auto& classesElem = elem["allowedClassTypes"];
@@ -118,12 +118,12 @@ namespace Parser
 			{
 				for (const auto& val : itemsElem)
 				{
-					parsePlayerItem(game, level, inventory, player, val);
+					parsePlayerItem(game, level, inventory, player, invIdx, val);
 				}
 			}
 			else if (itemsElem.IsObject() == true)
 			{
-				parsePlayerItem(game, level, inventory, player, itemsElem);
+				parsePlayerItem(game, level, inventory, player, invIdx, itemsElem);
 			}
 		}
 	}
@@ -141,7 +141,7 @@ namespace Parser
 			return;
 		}
 
-		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -174,23 +174,15 @@ namespace Parser
 		player->MapPosition(mapPos);
 		player->MapPosition(*level, mapPos);
 
-		player->updateTexture();
-		player->updateDrawPosition();
-
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
-
-		player->setWalkSpeed(getIntKey(elem, "speed", 15));
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
 		player->setStatus(getPlayerStatusKey(elem, "status"));
+		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));
 		player->setPalette(getUIntKey(elem, "palette"));
 
 		player->Id(id);
 		player->Name(getStringKey(elem, "name"));
-		player->CurrentLevel(getUIntKey(elem, "level"));
-		player->Experience(getUIntKey(elem, "experience"));
-		player->ExpNextLevel(getUIntKey(elem, "expNextLevel"));
-		player->Points(getUIntKey(elem, "points"));
 
 		if (elem.HasMember("properties") == true)
 		{
@@ -201,7 +193,7 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						player->setPlayerProperty(it->name.GetString(),
+						player->setNumber(it->name.GetString(),
 							getMinMaxIntVal<LevelObjValue>(it->value));
 					}
 				}
@@ -229,7 +221,9 @@ namespace Parser
 			}
 		}
 
-		player->updatePlayerProperties(PlayerInventory::Body);
+		player->updatePlayerProperties();
+		player->updateTexture();
+		player->updateDrawPosition();
 
 		level->addPlayer(player);
 

@@ -90,9 +90,13 @@ namespace Parser
 	template <class T>
 	T getMinMaxIntVal(const rapidjson::Value& elem, T val = {})
 	{
+		if (elem.IsUint() == true)
+		{
+			return (T)elem.GetUint();
+		}
 		if (elem.IsInt() == true)
 		{
-			return elem.GetInt();
+			return (T)elem.GetInt();
 		}
 		else if (elem.IsBool() == true)
 		{

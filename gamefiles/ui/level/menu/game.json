@@ -1,5 +1,8 @@
 {
-  "action": { "name": "resource.add", "id": "gameMenu" },
+  "action": [
+    "closeMsgBox",
+    { "name": "resource.add", "id": "gameMenu" }
+  ],
   "button": [
     {
       "id": "saveGame",

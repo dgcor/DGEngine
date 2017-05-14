@@ -7,6 +7,9 @@ void StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 {
 	switch (nameHash16)
 	{
+	case str2int16("change"):
+		text->setAction(nameHash16, action);
+		return;
 	case str2int16("click"):
 		clickAction = action;
 		return;

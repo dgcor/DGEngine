@@ -78,7 +78,7 @@ namespace Parser
 		}
 		else if (elem.IsDouble() == true)
 		{
-			return std::to_string(elem.GetDouble());
+			return Utils::toString(elem.GetDouble());
 		}
 		return val;
 	}
@@ -215,10 +215,10 @@ namespace Parser
 	ItemCoordInventory getItemCoordInventoryVal(const Value& elem)
 	{
 		std::string playerId;
-		if (elem.HasMember("playerId") == true &&
-			elem["playerId"].IsString() == true)
+		if (elem.HasMember("player") == true &&
+			elem["player"].IsString() == true)
 		{
-			playerId = elem["playerId"].GetString();
+			playerId = elem["player"].GetString();
 		}
 		PlayerInventory inv = PlayerInventory::Body;
 		if (elem.HasMember("inventory") == true)

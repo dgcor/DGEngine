@@ -38,7 +38,7 @@
           ]
         },
         {
-          "property": "toArmor",
+          "property": "armor",
           "value": [
             { "min": "min", "max": -51, "text": "Vulnerable" },
             { "min": -50, "max": -25, "text": "Rusted" },
@@ -154,7 +154,7 @@
           ]
         },
         {
-          "property": "toMana",
+          "property": "mana",
           "value": [
             { "min": "min", "max": -11, "text": "Hyena's" },
             { "min": -10, "max": -1, "text": "Frog's" },
@@ -246,7 +246,7 @@
           ]
         },
         {
-          "property": "toMana",
+          "property": "mana",
           "value": [
             { "min": "min", "max": -11, "text": "Hyena's" },
             { "min": -10, "max": -1, "text": "Frog's" },

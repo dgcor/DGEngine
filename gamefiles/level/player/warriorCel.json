@@ -8,93 +8,50 @@
   },
   "celTexturePack": [
     {
-      "id": "wls",
+      "id": "wln",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "wlnas",
+        "wlnat",
+        "wlnaw",
+        "wlnfm",
+        "wlnht",
+        "wlnlm",
+        "wlnqm",
+        "wlnst",
+        "wlnwl"
       ],
       "palette": "town"
     },
     {
-      "id": "wlsInfra",
+      "id": "wlnInfra",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "wlnas",
+        "wlnat",
+        "wlnaw",
+        "wlnfm",
+        "wlnht",
+        "wlnlm",
+        "wlnqm",
+        "wlnst",
+        "wlnwl"
       ],
       "palette": "infra"
     },
     {
-      "id": "wlsStone",
+      "id": "wlnStone",
       "celFile": [
-        "wlsas",
-        "wlsat",
-        "wlsaw",
-        "wlsfm",
-        "wlsht",
-        "wlslm",
-        "wlsqm",
-        "wlsst",
-        "wlswl"
+        "wlnas",
+        "wlnat",
+        "wlnaw",
+        "wlnfm",
+        "wlnht",
+        "wlnlm",
+        "wlnqm",
+        "wlnst",
+        "wlnwl"
       ],
       "palette": "stone"
     }
   ],
-  "playerClass": {
-    "id": "Warrior",
-    "name": "Warrior",
-    "type": "Human",
-    "description": "Warrior",
-    "defaults": {
-      "strengthBase": 30,
-      "magicBase": 10,
-      "dexterityBase": 20,
-      "vitalityBase": 25,
-      "lifeBase": 70,
-      "manaBase": 10,
-      "armor": 7,
-      "toHit": 60,
-      "damageMin": 2,
-      "damageMax": 6,
-      "resistMagic": 0,
-      "resistFire": 0,
-      "resistLightning": 0
-    },
-    "celTextures": [
-      { "palette": 0, "name": "wls" },
-      { "palette": 1, "name": "wlsInfra" },
-      { "palette": 2, "name": "wlsStone" }
-    ],
-    "celIndexes": [
-      { "name": "Stand1", "index": 7 },
-      { "name": "Stand2", "index": 0 },
-      { "name": "Walk1", "index": 8 },
-      { "name": "Walk2", "index": 2 },
-      { "name": "Attack1", "index": 1 },
-      { "name": "Attack2", "index": 3 },
-      { "name": "Attack3", "index": 5 },
-      { "name": "Attack4", "index": 6 },
-      { "name": "Defend1", "index": 4 },
-      { "name": "Defend2", "index": 4 },
-      { "name": "Defend3", "index": 4 },
-      { "name": "Defend4", "index": 4 },
-      { "name": "Hit1", "index": 4 },
-      { "name": "Hit2", "index": 4 },
-      { "name": "Die1", "index": 4 },
-      { "name": "Die2", "index": 4 }
-    ]
-  }
+  "load": "level/player/warriorClass.json"
 }

@@ -66,7 +66,7 @@
         "name": "if.equal",
         "param1": {
           "name": "player.canEquipItem",
-          "item": { "playerId": "pepin", "inventory": 0, "item": "%idx%" }
+          "item": { "player": "pepin", "inventory": 0, "item": "%idx%" }
         },
         "param2": false,
         "then": {
@@ -87,7 +87,7 @@
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|player.pepin.item.0.%idx%.magic|",
+            "param1": "|currentLevel|player.pepin.item.0.%idx%.magical|",
             "param2": 1,
             "then": {
               "name": "menu.setColor",

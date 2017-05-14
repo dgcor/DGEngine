@@ -139,7 +139,7 @@
         ],
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.item.{1}.{2}.magic|",
+          "param1": "|currentLevel|currentPlayer.item.{1}.{2}.magical|",
           "param2": 1,
           "then": [
             { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },

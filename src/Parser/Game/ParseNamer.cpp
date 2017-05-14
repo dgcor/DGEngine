@@ -108,7 +108,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto level = game.Resources().getLevel(getStringKey(elem, "idLevel"));
+		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;

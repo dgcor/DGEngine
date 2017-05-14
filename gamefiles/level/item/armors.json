@@ -299,7 +299,7 @@
         "durability": 40,
         "durabilityMax": 40,
         "requiredStrength": 0,
-        "toVitality": 10,
+        "vitality": 10,
         "damageFromEnemies": -3,
         "identified": false,
         "unique": true

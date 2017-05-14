@@ -8,35 +8,20 @@
 #include "Utils.h"
 #include "VarOrPredicate.h"
 
-static Variable getVariable(Game& game, const Predicate* predicate)
-{
-	if (predicate != nullptr)
-	{
-		return predicate->getResult(game);
-	}
-	return {};
-}
-
-static Variable getVariable(Game& game, const Variable& var)
-{
-	if (var.is<std::string>() == true)
-	{
-		Variable var2(var);
-		game.getVarOrProp(var.get<std::string>(), var2);
-		return var2;
-	}
-	return var;
-}
-
 static Variable getVariable(Game& game, const VarOrPredicate& varOrPred)
 {
 	if (varOrPred.is<Variable>() == true)
 	{
-		return getVariable(game, varOrPred.get<Variable>());
+		return game.getVarOrProp(varOrPred.get<Variable>());
 	}
 	else
 	{
-		return getVariable(game, varOrPred.get<std::shared_ptr<Predicate>>().get());
+		auto predicate = varOrPred.get<std::shared_ptr<Predicate>>().get();
+		if (predicate != nullptr)
+		{
+			return predicate->getResult(game);
+		}
+		return {};
 	}
 }
 

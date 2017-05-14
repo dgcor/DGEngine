@@ -3,7 +3,7 @@
     "name": "if.equal",
     "param1": {
       "name": "player.hasFreeItemSlot",
-      "item": { "playerId": "adria", "inventory": {1}, "item": {2} }
+      "item": { "player": "adria", "inventory": {1}, "item": {2} }
     },
     "param2": true,
     "then": {

@@ -10,6 +10,8 @@
 class Player : public LevelObject
 {
 private:
+	const PlayerClass* class_{ nullptr };
+
 	sf::Sprite sprite;
 	MapCoord mapPosition;
 	MapCoord mapPositionMoveTo;
@@ -19,10 +21,10 @@ private:
 
 	std::vector<MapCoord> walkPath;
 
-	std::shared_ptr<PlayerClass> class_;
-
 	PlayerDirection direction{ PlayerDirection::All };
-	PlayerStatus status{ PlayerStatus::Stand1 };
+	PlayerStatus status{ PlayerStatus::Size };
+
+	uint8_t restStatus{ 0 };
 
 	size_t celIdx{ 0 };
 	size_t palette{ 0 };
@@ -31,10 +33,9 @@ private:
 	std::pair<size_t, size_t> frameRange;
 	size_t currentFrame{ 0 };
 
-	sf::Time frameTime{ sf::milliseconds(50) };
-	sf::Time currentFrameTime;
+	AnimationSpeed speed;
 
-	sf::Time walkTime{ sf::milliseconds(66) };
+	sf::Time currentAnimationTime;
 	sf::Time currentWalkTime;
 
 	std::shared_ptr<Action> action;
@@ -45,6 +46,7 @@ private:
 	std::shared_ptr<Item> selectedItem;
 
 	std::array<ItemCollection, (size_t)PlayerInventory::Size> inventories;
+	size_t bodyInventoryIdx{ (size_t)PlayerInventory::Size };
 
 	std::string id;
 	std::string name;
@@ -55,24 +57,32 @@ private:
 	uint32_t points{ 0 };
 	uint32_t gold{ 0 };
 
-	LevelObjValue strengthBase{ 0 };
-	LevelObjValue strengthNow{ 0 };
-	LevelObjValue magicBase{ 0 };
-	LevelObjValue magicNow{ 0 };
-	LevelObjValue dexterityBase{ 0 };
-	LevelObjValue dexterityNow{ 0 };
-	LevelObjValue vitalityBase{ 0 };
-	LevelObjValue vitalityNow{ 0 };
+	LevelObjValue strength{ 0 };
+	LevelObjValue strengthItems{ 0 };
+	LevelObjValue magic{ 0 };
+	LevelObjValue magicItems{ 0 };
+	LevelObjValue dexterity{ 0 };
+	LevelObjValue dexterityItems{ 0 };
+	LevelObjValue vitality{ 0 };
+	LevelObjValue vitalityItems{ 0 };
 
-	LevelObjValue lifeBase{ 0 };
-	LevelObjValue lifeNow{ 0 };
-	LevelObjValue manaBase{ 0 };
-	LevelObjValue manaNow{ 0 };
+	LevelObjValue life{ 0 };
+	LevelObjValue lifeItems{ 0 };
+	LevelObjValue lifeDamage{ 0 };
+	LevelObjValue mana{ 0 };
+	LevelObjValue manaItems{ 0 };
+	LevelObjValue manaDamage{ 0 };
 
-	LevelObjValue armorClass{ 0 };
+	LevelObjValue armor{ 0 };
+	LevelObjValue armorItems{ 0 };
 	LevelObjValue toHit{ 0 };
+	LevelObjValue toHitItems{ 0 };
 	LevelObjValue damageMin{ 0 };
+	LevelObjValue damageMinItems{ 0 };
 	LevelObjValue damageMax{ 0 };
+	LevelObjValue damageMaxItems{ 0 };
+	LevelObjValue toDamage{ 0 };
+	float toDamagePercentage{ 0.f };
 
 	LevelObjValue resistMagic{ 0 };
 	LevelObjValue resistFire{ 0 };
@@ -80,13 +90,21 @@ private:
 
 	void calculateRange();
 
+	void updateMapPosition(Level& level, const MapCoord& pos);
+
+	void updateWalkPathStep(sf::Vector2f& newDrawPos);
 	void updateWalkPath(Game& game, Level& level);
 
 	bool parseInventoryAndItem(const std::string& str,
 		std::string& props, size_t& invIdx, size_t& itemIdx) const;
 
+	void updateGoldAdd(const std::shared_ptr<Item>& item);
+	void updateGoldRemove(const std::shared_ptr<Item>& item);
+
+	void updateBodyItemValues();
+
 public:
-	Player(const std::shared_ptr<PlayerClass>& class__) : class_(class__)
+	Player(const PlayerClass* class__) : class_(class__)
 	{
 		calculateRange();
 	}
@@ -99,20 +117,16 @@ public:
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
 
-	virtual const MapCoord& MapPosition() const
-	{
-		if (walkPath.empty() == false)
-		{
-			return walkPath.back();
-		}
-		return mapPosition;
-	}
+	virtual const MapCoord& MapPosition() const { return mapPosition; }
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 	void MapPosition(Level& level, const MapCoord& pos);
+
+	void move(Level& level, const MapCoord& pos);
 
 	const MapCoord& MapPositionMoveTo() const { return mapPositionMoveTo; }
 
 	virtual void executeAction(Game& game) const;
+	virtual bool getNumberProp(const std::string& prop, Number32& value) const;
 	virtual bool Passable() const { return false; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 
@@ -129,17 +143,35 @@ public:
 	virtual void setProperty(const std::string& prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string& prop) const;
 
-	bool getPlayerPropertyByHash(uint16_t propHash, LevelObjValue& value) const;
-	bool getPlayerProperty(const char* prop, LevelObjValue& value) const;
-	bool getPlayerProperty(const std::string& prop, LevelObjValue& value) const
+	bool getIntByHash(uint16_t propHash, LevelObjValue& value) const;
+	bool getInt(const char* prop, LevelObjValue& value) const;
+	bool getInt(const std::string& prop, LevelObjValue& value) const
 	{
-		return getPlayerProperty(prop.c_str(), value);
+		return getInt(prop.c_str(), value);
 	}
-	void setPlayerPropertyByHash(uint16_t propHash, LevelObjValue value);
-	void setPlayerProperty(const char* prop, LevelObjValue value);
-	void setPlayerProperty(const std::string& prop, LevelObjValue value) const
+	bool getUIntByHash(uint16_t propHash, uint32_t& value) const;
+	bool getUInt(const char* prop, uint32_t& value) const;
+	bool getUInt(const std::string& prop, uint32_t& value) const
 	{
-		return setPlayerProperty(prop.c_str(), value);
+		return getUInt(prop.c_str(), value);
+	}
+	bool setIntByHash(uint16_t propHash, LevelObjValue value);
+	bool setInt(const char* prop, LevelObjValue value);
+	bool setInt(const std::string& prop, LevelObjValue value)
+	{
+		return setInt(prop.c_str(), value);
+	}
+	bool setUIntByHash(uint16_t propHash, uint32_t value);
+	bool setUInt(const char* prop, uint32_t value);
+	bool setUInt(const std::string& prop, uint32_t value)
+	{
+		return setUInt(prop.c_str(), value);
+	}
+	void setNumberByHash(uint16_t propHash, LevelObjValue value);
+	void setNumber(const char* prop, LevelObjValue value);
+	void setNumber(const std::string& prop, LevelObjValue value)
+	{
+		return setNumber(prop.c_str(), value);
 	}
 
 	void updateDrawPosition(sf::Vector2f pos);
@@ -147,8 +179,7 @@ public:
 
 	void updateTexture();
 
-	void setWalkSpeed(int fps);
-	void clearWalkPath() { walkPath = {}; }
+	void clearWalkPath() { walkPath.clear(); }
 	void setWalkPath(const std::vector<MapCoord>& walkPath_);
 
 	void setDirection(PlayerDirection direction_)
@@ -164,6 +195,7 @@ public:
 		if (status != status_)
 		{
 			status = status_;
+			speed = class_->getSpeed(status);
 			calculateRange();
 		}
 	}
@@ -180,6 +212,23 @@ public:
 		}
 	}
 
+	void setRestStatus(uint16_t restStatus_) { restStatus = std::min(restStatus_, (uint16_t)1); }
+
+	void setStandStatus()
+	{
+		setStatus((PlayerStatus)((size_t)PlayerStatus::Stand1 + restStatus));
+	}
+	void setWalkStatus()
+	{
+		setStatus((PlayerStatus)((size_t)PlayerStatus::Walk1 + restStatus));
+	}
+	bool hasWalkingStatus()
+	{
+		return status >= PlayerStatus::Walk1 && status <= PlayerStatus::Walk2;
+	}
+
+	void resetAnimationTime() { currentAnimationTime = speed.animation; }
+
 	const std::shared_ptr<Item>& SelectedItem() const { return selectedItem; }
 	void SelectedItem(const std::shared_ptr<Item>& item) { selectedItem = item; }
 
@@ -189,7 +238,12 @@ public:
 	ItemCollection& getInventory(size_t idx) { return inventories[idx]; }
 	const ItemCollection& getInventory(size_t idx) const { return inventories[idx]; }
 
-	size_t getInventorySize() { return inventories.size(); }
+	size_t getInventorySize() const { return inventories.size(); }
+
+	void setBodyInventoryIdx(size_t idx)
+	{
+		bodyInventoryIdx = std::min(idx, (size_t)PlayerInventory::Size);
+	}
 
 	bool getItemSlot(const Item& item, size_t& invIdx, size_t& itemIdx,
 		InventoryPosition invPos = InventoryPosition::TopLeft) const;
@@ -201,22 +255,61 @@ public:
 
 	unsigned countFreeSlots(const ItemClass& itemClass) const;
 
-	void updatePlayerProperties(PlayerInventory inv) { updatePlayerProperties((size_t)inv); }
-	void updatePlayerProperties(size_t idx);
+	bool setItem(PlayerInventory inv, size_t itemIdx, const std::shared_ptr<Item>& item)
+	{
+		return setItem((size_t)inv, itemIdx, item);
+	}
+	bool setItem(PlayerInventory inv, size_t itemIdx, const std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem)
+	{
+		return setItem((size_t)inv, itemIdx, item, oldItem);
+	}
+	bool setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>& item);
+	bool setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem);
+
+	bool setItemInFreeSlot(PlayerInventory inv, const std::shared_ptr<Item>& item,
+		InventoryPosition invPos = InventoryPosition::TopLeft)
+	{
+		return setItemInFreeSlot((size_t)inv, item, invPos);
+	}
+	bool setItemInFreeSlot(size_t invIdx, const std::shared_ptr<Item>& item,
+		InventoryPosition invPos = InventoryPosition::TopLeft);
+
+	void updatePlayerProperties();
 
 	void applyDefaults();
 
 	bool canEquipItem(const Item& item) const;
 
 	bool addGold(const Level& level, LevelObjValue amount);
-	void updateGoldAdd(const std::shared_ptr<Item>& item);
-	void updateGoldRemove(const std::shared_ptr<Item>& item);
 
 	uint32_t getMaxGoldCapacity(const Level& level) const;
+
+	const PlayerClass* getPlayerClass() const { return class_; }
 
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }
 	const std::string& Class() const { return class_->Name(); }
+
+	LevelObjValue StrengthNow() const { return strength + strengthItems; }
+	LevelObjValue MagicNow() const { return magic + magicItems; }
+	LevelObjValue DexterityNow() const { return dexterity + dexterityItems; }
+	LevelObjValue VitalityNow() const { return vitality + vitalityItems; }
+
+	LevelObjValue LifeNow() const { return life + lifeItems - lifeDamage; }
+	LevelObjValue ManaNow() const { return mana + manaItems - manaDamage; }
+
+	LevelObjValue DamageMinNow() const
+	{
+		auto damg = damageMin + damageMinItems;
+		return damg + (LevelObjValue)(damg * toDamagePercentage);
+	}
+	LevelObjValue DamageMaxNow() const
+	{
+		auto damg = damageMax + damageMaxItems;
+		return damg + (LevelObjValue)(damg * toDamagePercentage);
+	}
 
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
@@ -226,21 +319,17 @@ public:
 	void ExpNextLevel(uint32_t expNextLevel_) { expNextLevel = expNextLevel_; }
 	void Points(uint32_t points_) { points = points_; }
 
-	void StrengthBase(LevelObjValue strengthBase_) { strengthBase = strengthBase_; }
-	void StrengthNow(LevelObjValue strengthNow_) { strengthNow = strengthNow_; }
-	void MagicBase(LevelObjValue magicBase_) { magicBase = magicBase_; }
-	void MagicNow(LevelObjValue magicNow_) { magicNow = magicNow_; }
-	void DexterityBase(LevelObjValue dexterityBase_) { dexterityBase = dexterityBase_; }
-	void DexterityNow(LevelObjValue dexterityNow_) { dexterityNow = dexterityNow_; }
-	void VitalityBase(LevelObjValue vitalityBase_) { vitalityBase = vitalityBase_; }
-	void VitalityNow(LevelObjValue vitalityNow_) { vitalityNow = vitalityNow_; }
+	void Strength(LevelObjValue strength_) { strength = strength_; }
+	void Magic(LevelObjValue magic_) { magic = magic_; }
+	void Dexterity(LevelObjValue dexterity_) { dexterity = dexterity_; }
+	void Vitality(LevelObjValue vitality_) { vitality = vitality_; }
 
-	void LifeBase(LevelObjValue lifeBase_) { lifeBase = lifeBase_; }
-	void LifeNow(LevelObjValue lifeNow_) { lifeNow = lifeNow_; }
-	void ManaBase(LevelObjValue manaBase_) { manaBase = manaBase_; }
-	void ManaNow(LevelObjValue manaNow_) { manaNow = manaNow_; }
+	void Life(LevelObjValue life_) { life = life_; }
+	void LifeDamage(LevelObjValue lifeDamage_) { lifeDamage = lifeDamage_; }
+	void Mana(LevelObjValue manaBase_) { mana = manaBase_; }
+	void ManaDamage(LevelObjValue manaDamage_) { manaDamage = manaDamage_; }
 
-	void ArmorClass(LevelObjValue armorClass_) { armorClass = armorClass_; }
+	void Armor(LevelObjValue armor_) { armor = armor_; }
 	void ToHit(LevelObjValue toHit_) { toHit = toHit_; }
 	void DamageMin(LevelObjValue damage_) { damageMin = damage_; }
 	void DamageMax(LevelObjValue damage_) { damageMax = damage_; }
