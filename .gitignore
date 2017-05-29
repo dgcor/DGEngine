@@ -4,6 +4,7 @@
 /*.dll
 /*.exe
 /*.layout
+/*.mpq
 /*.MPQ
 /*.opendb
 /*.vcxproj.filters
@@ -21,7 +22,18 @@
 /DIABDAT
 /DIABDAT.*
 /gamefiles.zip
-/gamefiles/res/icon.png
+/gamefilesd.zip
+/gamefilesd/res/icon.png
+/gamefileshf.zip
+/gamefileshf/res/icon.png
+/hellfire
+/hellfire.*
+/hfmonk
+/hfmonk.*
+/hfmusic
+/hfmusic.*
+/hfvoice
+/hfvoice.*
 /Makefile
 /obj
 /PhysicsFS

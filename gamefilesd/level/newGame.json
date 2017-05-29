@@ -1,0 +1,53 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "variable.setId", "key": "charName", "id": "heroName", "property": "text" },
+      { "name": "dir.create", "file": "%charName%" },
+      { "name": "resource.popAll" },
+      { "name": "load", "file": "loadingScreens/cutstart.json" },
+      { "name": "load", "file": "gameSettings.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "loadingScreen.setProgress", "progress": 10 },
+          { "name": "resource.add", "id": "level", "ignorePrevious": true },
+          { "name": "loadingScreen.setProgress", "progress": 15 },
+          { "name": "load", "file": "level/variables.json" },
+          { "name": "load", "file": "res/level/actions.json" },
+          { "name": "load", "file": "res/level/baseLevelActions.json" },
+          { "name": "loadingScreen.setProgress", "progress": 20 },
+          { "name": "load", "file": "res/level/fonts.json" },
+          { "name": "loadingScreen.setProgress", "progress": 25 },
+          { "name": "load", "file": "res/level/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 30 },
+          { "name": "load", "file": "res/level/textures.json" },
+          { "name": "loadingScreen.setProgress", "progress": 35 },
+          { "name": "load", "file": "level/loadBaseLevel.json" },
+          { "name": "loadingScreen.setProgress", "progress": 45 },
+          { "name": "load", "file": "level/item/loadItemClasses.json" },
+          { "name": "loadingScreen.setProgress", "progress": 50},
+          { "name": "load", "file": ["level/player/save.json", "%charName%", "%charClass%"] },
+          { "name": "load", "file": ["level/player/loadCel.json", "%charName%"] },
+          { "name": "loadingScreen.setProgress", "progress": 55 },
+          { "name": "load", "file": "res/player/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 60 },
+          { "name": "resource.add", "id": "currentLevel" },
+          { "name": "load", "file": "level/town/level.json" },
+          { "name": "loadingScreen.setProgress", "progress": 75 },
+          { "name": "load", "file": ["level/player/load.json", "%charName%"] },
+          { "name": "load", "file": ["level/player/saveInfo.json", "%charName%"] },
+          { "name": "loadingScreen.setProgress", "progress": 85 },
+          { "name": "load", "file": "level/town/players.json" },
+          { "name": "loadingScreen.setProgress", "progress": 95 },
+          { "name": "load", "file": "level/town/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 100 },
+          { "name": "load", "file": "level/afterLevelLoad.json" },
+          { "name": "load", "file": "ui/level/char/updateVisiblePanels.json" },
+          { "name": "load", "file": "level/town/music.json" },
+          { "name": "load", "file": "level/playOrStopMusic.json" },
+          { "name": "load", "file": ["level/setMapAction.json", "town"] }
+        ]
+      }
+    ]
+  }
+}

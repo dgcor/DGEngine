@@ -1,0 +1,37 @@
+{
+  "itemClass": [
+    {
+      "id": "amulet",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 35,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 56,
+      "name": "Amulet",
+      "shortName": "Amulet",
+      "type": "Amulet",
+      "defaults": {
+        "price": 1200,
+        "magical": true,
+        "durability": "max",
+        "durabilityMax": "max"
+      },
+      "formulas": {
+        "sell": "price * 0.25"
+      },
+      "description1": "indestructible",
+      "description2": "magic1",
+      "description3": "magic2",
+      "description4": "noAttributes",
+      "inventorySize": [1, 1],
+      "actions": {
+        "action": "pickItemInLevel",
+        "levelDrop": { "name": "sound.play", "id": "flipring" },
+        "inventoryDrop": { "name": "sound.play", "id": "invring" },
+        "inventoryPick": "pickItemInInventory"
+      },
+      "prefix": "jewelleryPrefixes",
+      "suffix": "jewellerySuffixes"
+    }
+  ]
+}

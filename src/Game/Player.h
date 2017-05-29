@@ -34,6 +34,7 @@ private:
 	size_t currentFrame{ 0 };
 
 	AnimationSpeed speed;
+	AnimationSpeed defaultSpeed{ sf::Time::Zero, sf::Time::Zero };
 
 	sf::Time currentAnimationTime;
 	sf::Time currentWalkTime;
@@ -75,22 +76,27 @@ private:
 
 	LevelObjValue armor{ 0 };
 	LevelObjValue armorItems{ 0 };
+	LevelObjValue toArmor{ 0 };
 	LevelObjValue toHit{ 0 };
 	LevelObjValue toHitItems{ 0 };
 	LevelObjValue damageMin{ 0 };
-	LevelObjValue damageMinItems{ 0 };
 	LevelObjValue damageMax{ 0 };
+	LevelObjValue damageMinItems{ 0 };
 	LevelObjValue damageMaxItems{ 0 };
 	LevelObjValue toDamage{ 0 };
-	float toDamagePercentage{ 0.f };
 
 	LevelObjValue resistMagic{ 0 };
 	LevelObjValue resistFire{ 0 };
 	LevelObjValue resistLightning{ 0 };
 
+	std::array<std::pair<uint16_t, Number32>, 4> customProperties;
+	size_t customPropsSize{ 0 };
+
 	void calculateRange();
 
 	void updateMapPosition(Level& level, const MapCoord& pos);
+
+	void updateSpeed();
 
 	void updateWalkPathStep(sf::Vector2f& newDrawPos);
 	void updateWalkPath(Game& game, Level& level);
@@ -126,7 +132,7 @@ public:
 	const MapCoord& MapPositionMoveTo() const { return mapPositionMoveTo; }
 
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const std::string& prop, Number32& value) const;
+	virtual bool getNumberProp(const char* prop, Number32& value) const;
 	virtual bool Passable() const { return false; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 
@@ -167,9 +173,16 @@ public:
 	{
 		return setUInt(prop.c_str(), value);
 	}
-	void setNumberByHash(uint16_t propHash, LevelObjValue value);
-	void setNumber(const char* prop, LevelObjValue value);
-	void setNumber(const std::string& prop, LevelObjValue value)
+	bool getNumberByHash(uint16_t propHash, Number32& value) const;
+	bool setNumberByHash(uint16_t propHash, LevelObjValue value);
+	bool setNumberByHash(uint16_t propHash, const Number32& value);
+	bool setNumber(const char* prop, LevelObjValue value);
+	bool setNumber(const char* prop, const Number32& value);
+	bool setNumber(const std::string& prop, LevelObjValue value)
+	{
+		return setNumber(prop.c_str(), value);
+	}
+	bool setNumber(const std::string& prop, const Number32& value)
 	{
 		return setNumber(prop.c_str(), value);
 	}
@@ -181,6 +194,13 @@ public:
 
 	void clearWalkPath() { walkPath.clear(); }
 	void setWalkPath(const std::vector<MapCoord>& walkPath_);
+
+	void setDefaultSpeed(const AnimationSpeed& speed_)
+	{
+		defaultSpeed = speed_;
+		speed = class_->getSpeed(status);
+		updateSpeed();
+	}
 
 	void setDirection(PlayerDirection direction_)
 	{
@@ -196,6 +216,7 @@ public:
 		{
 			status = status_;
 			speed = class_->getSpeed(status);
+			updateSpeed();
 			calculateRange();
 		}
 	}
@@ -300,17 +321,6 @@ public:
 	LevelObjValue LifeNow() const { return life + lifeItems - lifeDamage; }
 	LevelObjValue ManaNow() const { return mana + manaItems - manaDamage; }
 
-	LevelObjValue DamageMinNow() const
-	{
-		auto damg = damageMin + damageMinItems;
-		return damg + (LevelObjValue)(damg * toDamagePercentage);
-	}
-	LevelObjValue DamageMaxNow() const
-	{
-		auto damg = damageMax + damageMaxItems;
-		return damg + (LevelObjValue)(damg * toDamagePercentage);
-	}
-
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
 
@@ -331,8 +341,6 @@ public:
 
 	void Armor(LevelObjValue armor_) { armor = armor_; }
 	void ToHit(LevelObjValue toHit_) { toHit = toHit_; }
-	void DamageMin(LevelObjValue damage_) { damageMin = damage_; }
-	void DamageMax(LevelObjValue damage_) { damageMax = damage_; }
 
 	void ResistMagic(LevelObjValue resistMagic_) { resistMagic = resistMagic_; }
 	void ResistFire(LevelObjValue resistFire_) { resistFire = resistFire_; }

@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "game.setMusicVolume", "volume": {1} },
+    { "name": "game.setSoundVolume", "volume": {2} },
+    { "name": "variable.set", "key": "jog", "val": {3} }
+  ]
+}

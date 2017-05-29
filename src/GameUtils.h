@@ -55,6 +55,8 @@ namespace GameUtils
 
 	PlayerStatus getPlayerStatus(const std::string& str, PlayerStatus val);
 
+	sf::Time getTime(int fps);
+
 	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
 		const std::string& prop, Variable& var);
 

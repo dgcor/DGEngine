@@ -1,0 +1,10 @@
+{
+  "load": "res/level/actionsItemPanel.json",
+  "load": "res/level/actionsBasePanel.json",
+  "load": "res/level/actionsCharPanel.json",
+  "load": "res/level/actionsPlayerBelt.json",
+  "load": "res/level/actionsPlayerStash.json",
+  "load": "res/level/actionsPlayerBody.json",
+  "load": "res/level/actionsPlayerBeltUse.json",
+  "load": "res/level/actionsPlayerStashUse.json"
+}

@@ -13,6 +13,9 @@ void StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 	case str2int16("click"):
 		clickAction = action;
 		return;
+	case str2int16("rightClick"):
+		rightClickAction = action;
+		return;
 	case str2int16("doubleClick"):
 		doubleClickAction = action;
 		return;
@@ -126,6 +129,30 @@ void StringButton::update(Game& game)
 					click(game, true);
 				}
 				beingDragged = false;
+			}
+		}
+		else if (game.getMouseButton() == sf::Mouse::Right)
+		{
+			if (game.wasMouseClicked() == true)
+			{
+				game.clearMouseClicked();
+				if (clickUp == false)
+				{
+					if (rightClickAction != nullptr)
+					{
+						game.Events().addFront(rightClickAction);
+					}
+				}
+			}
+			else if (game.wasMouseReleased() == true)
+			{
+				if (clickUp == true)
+				{
+					if (rightClickAction != nullptr)
+					{
+						game.Events().addFront(rightClickAction);
+					}
+				}
 			}
 		}
 	}

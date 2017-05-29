@@ -1,0 +1,240 @@
+{
+  "button": [
+    {
+      "id": "playerBelt1",
+      "texture": "red",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [205, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 0 },
+        "updateBeltItem1"
+      ],
+      "onRightClick": "useBeltItem1",
+      "onHoverEnter": "updateInventoryBelt1Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt2",
+      "texture": "red",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [234, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 1 },
+        "updateBeltItem2"
+      ],
+      "onRightClick": "useBeltItem2",
+      "onHoverEnter": "updateInventoryBelt2Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt3",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [263, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 2 },
+        "updateBeltItem3"
+      ],
+      "onRightClick": "useBeltItem3",
+      "onHoverEnter": "updateInventoryBelt3Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt4",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [292, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 3 },
+        "updateBeltItem4"
+      ],
+      "onRightClick": "useBeltItem4",
+      "onHoverEnter": "updateInventoryBelt4Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt5",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [321, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 4 },
+        "updateBeltItem5"
+      ],
+      "onRightClick": "useBeltItem5",
+      "onHoverEnter": "updateInventoryBelt5Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt6",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [350, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 5 },
+        "updateBeltItem6"
+      ],
+      "onRightClick": "useBeltItem6",
+      "onHoverEnter": "updateInventoryBelt6Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt7",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [379, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 6 },
+        "updateBeltItem7"
+      ],
+      "onRightClick": "useBeltItem7",
+      "onHoverEnter": "updateInventoryBelt7Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerBelt8",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [408, 357],
+      "onClick": [
+        { "name": "item.update", "inventory": "belt", "item": 7 },
+        "updateBeltItem8"
+      ],
+      "onRightClick": "useBeltItem8",
+      "onHoverEnter": "updateInventoryBelt8Text",
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
+  "image": [
+    {
+      "id": "imgBelt1",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [205, 357]
+    },
+    {
+      "id": "imgBelt2",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [234, 357]
+    },
+    {
+      "id": "imgBelt3",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [263, 357]
+    },
+    {
+      "id": "imgBelt4",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [292, 357]
+    },
+    {
+      "id": "imgBelt5",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [321, 357]
+    },
+    {
+      "id": "imgBelt6",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [350, 357]
+    },
+    {
+      "id": "imgBelt7",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [379, 357]
+    },
+    {
+      "id": "imgBelt8",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "bottom",
+      "position": [408, 357]
+    }
+  ],
+  "text": [
+    {
+      "id": "txtBelt1",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [228, 374],
+      "visible": false,
+      "text": "1"
+    },
+    {
+      "id": "txtBelt2",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [255, 374],
+      "visible": false,
+      "text": "2"
+    },
+    {
+      "id": "txtBelt3",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [284, 374],
+      "visible": false,
+      "text": "3"
+    },
+    {
+      "id": "txtBelt4",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [312, 374],
+      "visible": false,
+      "text": "4"
+    },
+    {
+      "id": "txtBelt5",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [342, 374],
+      "visible": false,
+      "text": "5"
+    },
+    {
+      "id": "txtBelt6",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [371, 374],
+      "visible": false,
+      "text": "6"
+    },
+    {
+      "id": "txtBelt7",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [400, 374],
+      "visible": false,
+      "text": "7"
+    },
+    {
+      "id": "txtBelt8",
+      "bitmapFont": "smaltext",
+      "anchor": "bottom",
+      "position": [429, 374],
+      "visible": false,
+      "text": "8"
+    }
+  ]
+}

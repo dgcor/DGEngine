@@ -1,0 +1,307 @@
+{
+  "itemClass": [
+    {
+      "id": "rags",
+      "fromId": "baseArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 139,
+      "name": "Rags",
+      "shortName": "Rags",
+      "type": "Armor",
+      "defaults": {
+        "price": 5,
+        "armor": 6,
+        "durability": 6,
+        "durabilityMax": 6
+      },
+      "inventorySize": [2, 3]
+    },
+    {
+      "id": "cape",
+      "fromId": "rags",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 161,
+      "name": "Cape",
+      "shortName": "Cape",
+      "defaults": {
+        "price": 10,
+        "armor": 5,
+        "durability": 12,
+        "durabilityMax": 12
+      }
+    },
+    {
+      "id": "cloak",
+      "fromId": "rags",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 160,
+      "name": "Cloak",
+      "shortName": "Cloak",
+      "defaults": {
+        "price": 40,
+        "armor": 7,
+        "durability": 18,
+        "durabilityMax": 18
+      }
+    },
+    {
+      "id": "robe",
+      "fromId": "rags",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 148,
+      "name": "Robe",
+      "shortName": "Robe",
+      "defaults": {
+        "price": 75,
+        "armor": 7,
+        "durability": 24,
+        "durabilityMax": 24
+      }
+    },
+    {
+      "id": "quiltedArmor",
+      "fromId": "rags",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 140,
+      "name": "Quilted Armor",
+      "shortName": "Armor",
+      "defaults": {
+        "price": 200,
+        "armor": 10,
+        "durability": 30,
+        "durabilityMax": 30
+      }
+    },
+    {
+      "id": "leatherArmor",
+      "fromId": "quiltedArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 146,
+      "name": "Leather Armor",
+      "defaults": {
+        "price": 300,
+        "armor": 13,
+        "durability": 35,
+        "durabilityMax": 35
+      }
+    },
+    {
+      "id": "hardLeatherArmor",
+      "fromId": "quiltedArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 138,
+      "name": "Hard Leather Armor",
+      "defaults": {
+        "price": 450,
+        "armor": 14,
+        "durability": 40,
+        "durabilityMax": 40
+      }
+    },
+    {
+      "id": "studdedLeatherArmor",
+      "fromId": "quiltedArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 32,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 118,
+      "name": "Studded Leather Armor",
+      "defaults": {
+        "price": 700,
+        "armor": 17,
+        "durability": 45,
+        "durabilityMax": 45,
+        "requiredStrength": 20
+      }
+    },
+    {
+      "id": "ringMail",
+      "fromId": "quiltedArmor",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {1},
+      "name": "Ring Mail",
+      "shortName": "Mail",
+      "defaults": {
+        "price": 900,
+        "armor": 20,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 25
+      },
+      "actions": {
+        "levelDrop": { "name": "sound.play", "id": "flipharm" },
+        "inventoryDrop": { "name": "sound.play", "id": "invharm" }
+      }
+    },
+    {
+      "id": "chainMail",
+      "fromId": "ringMail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 122,
+      "name": "Chain Mail",
+      "defaults": {
+        "price": 1250,
+        "armor": 22,
+        "durability": 55,
+        "durabilityMax": 55,
+        "requiredStrength": 30
+      }
+    },
+    {
+      "id": "scaleMail",
+      "fromId": "ringMail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 125,
+      "name": "Scale Mail",
+      "defaults": {
+        "price": 2300,
+        "armor": 22,
+        "durability": 55,
+        "durabilityMax": 55,
+        "requiredStrength": 30
+      }
+    },
+    {
+      "id": "breastPlate",
+      "fromId": "ringMail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 164,
+      "name": "Breast Plate",
+      "shortName": "Plate",
+      "defaults": {
+        "price": 2800,
+        "armor": 24,
+        "durability": 80,
+        "durabilityMax": 80,
+        "requiredStrength": 40
+      }
+    },
+    {
+      "id": "splintMail",
+      "fromId": "ringMail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 147,
+      "name": "Splint Mail",
+      "defaults": {
+        "price": 3250,
+        "armor": 35,
+        "durability": 65,
+        "durabilityMax": 65,
+        "requiredStrength": 40
+      }
+    },
+    {
+      "id": "fieldPlate",
+      "fromId": "breastPlate",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 114,
+      "name": "Field Plate",
+      "defaults": {
+        "price": 5800,
+        "armor": 45,
+        "durability": 80,
+        "durabilityMax": 80,
+        "requiredStrength": 65
+      }
+    },
+    {
+      "id": "gothicPlate",
+      "fromId": "breastPlate",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {2},
+      "name": "Gothic Plate",
+      "defaults": {
+        "price": 8000,
+        "armor": 60,
+        "durability": 100,
+        "durabilityMax": 100,
+        "requiredStrength": 80
+      }
+    },
+    {
+      "id": "fullPlateMail",
+      "fromId": "breastPlate",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 28,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 162,
+      "name": "Full Plate Mail",
+      "defaults": {
+        "price": 6500,
+        "armor": 75,
+        "durability": 90,
+        "durabilityMax": 90,
+        "requiredStrength": 90
+      }
+    },
+    {
+      "id": "valorArmor",
+      "fromId": "ringMail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 0,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {3},
+      "name": "Arkaine's Valor",
+      "shortName": "Arkaine's Valor",
+      "description2": "unique",
+      "description3": null,
+      "description5": "arkanesValor",
+      "defaults": {
+        "price": 42000,
+        "armor": 25,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 0,
+        "vitality": 10,
+        "damageFromEnemies": -3,
+        "identified": false,
+        "unique": true
+      }
+    }
+  ]
+}

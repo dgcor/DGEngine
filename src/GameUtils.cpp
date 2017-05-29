@@ -478,6 +478,12 @@ namespace GameUtils
 		}
 	}
 
+	sf::Time getTime(int fps)
+	{
+		fps = std::max(std::min(fps, 1000), 1);
+		return sf::seconds(1.f / (float)fps);
+	}
+
 	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
 		const std::string& prop, Variable& var)
 	{

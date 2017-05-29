@@ -24,7 +24,7 @@ private:
 
 	std::vector<FormulaElement> elements;
 
-	double eval(size_t& idx, const LevelObject& query) const;
+	double eval(size_t& idx, const LevelObject& queryA, const LevelObject& queryB) const;
 
 public:
 	Formula() {}
@@ -33,6 +33,7 @@ public:
 	bool empty() const { return elements.empty(); }
 
 	double eval(const LevelObject& query) const;
+	double eval(const LevelObject& queryA, const LevelObject& queryB) const;
 
 	std::string toString() const;
 };

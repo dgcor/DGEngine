@@ -1,4 +1,5 @@
 #include "ParseUtilsVal.h"
+#include "ParseUtilsKey.h"
 #include "Parser/ParsePredicate.h"
 #include "ParseUtils.h"
 #include <cctype>
@@ -194,6 +195,39 @@ namespace Parser
 		return val;
 	}
 
+	Number32 getMinMaxNumber32Val(const Value& elem)
+	{
+		Number32 num;
+		if (elem.IsInt() == true)
+		{
+			num.setInt32(elem.GetInt());
+		}
+		if (elem.IsUint() == true)
+		{
+			num.setUInt32(elem.GetUint());
+		}
+		if (elem.IsFloat() == true)
+		{
+			num.setFloat(elem.GetFloat());
+		}
+		else if (elem.IsBool() == true)
+		{
+			num.setInt32((int32_t)elem.GetBool());
+		}
+		else if (elem.IsString() == true)
+		{
+			if (elem.GetString() == std::string("min"))
+			{
+				num.setInt32(std::numeric_limits<int32_t>::min());
+			}
+			else if (elem.GetString() == std::string("max"))
+			{
+				num.setInt32(std::numeric_limits<int32_t>::max());
+			}
+		}
+		return num;
+	}
+
 	ItemXY getItemXYVal(const Value& elem, const ItemXY& val)
 	{
 		if (elem.IsArray() == true
@@ -240,6 +274,14 @@ namespace Parser
 			return ItemCoordInventory(playerId, (size_t)inv, 0);
 		}
 		return ItemCoordInventory(playerId);
+	}
+
+	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem)
+	{
+		AnimationSpeed speed;
+		speed.animation = GameUtils::getTime(getIntKey(elem, "animation", 5));
+		speed.walk = GameUtils::getTime(getIntKey(elem, "walk", 25));
+		return speed;
 	}
 
 	ItemLocation getItemLocationVal(const Value& elem)

@@ -1,0 +1,9 @@
+{
+  "action": {
+    "name": "if.notEqual",
+    "param1": "|currentLevel|name|",
+    "param2": "Town Center",
+    "then": { "name": "player.setRestStatus", "status": 1 },
+    "else": { "name": "player.setRestStatus", "status": 0 }
+  }
+}

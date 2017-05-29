@@ -1,0 +1,68 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "useBeltItem1",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 0 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem2",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 1 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem3",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 2 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem4",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 3 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem5",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 4 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem6",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 5 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem7",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 6 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useBeltItem8",
+      "action": [
+        { "name": "item.use", "inventory": "belt", "item": 7 },
+        "updateAllPlayerStats"
+      ]
+    }
+  ]
+}

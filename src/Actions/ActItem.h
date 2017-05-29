@@ -65,11 +65,7 @@ public:
 					}
 					game.updateCursorPosition();
 
-					auto action = item->Class()->getActionDropLevel();
-					if (action != nullptr)
-					{
-						game.Events().addBack(action);
-					}
+					item->Class()->executeAction(game, str2int16("levelDrop"));
 				}
 			}
 		}
@@ -101,11 +97,7 @@ public:
 				if (item != nullptr)
 				{
 					item->resetDropAnimation();
-					auto action = item->Class()->getActionDropLevel();
-					if (action != nullptr)
-					{
-						game.Events().addBack(action);
-					}
+					item->Class()->executeAction(game, str2int16("levelDrop"));
 				}
 			}
 		}
@@ -121,15 +113,6 @@ private:
 	InventoryPosition invPos;
 	bool useInvPos{ false };
 	std::shared_ptr<Action> inventoryFullAction;
-
-	void executePickFromLevelAction(Game& game, Item& item)
-	{
-		auto action = item.Class()->getActionPickLevel();
-		if (action != nullptr)
-		{
-			game.Events().addBack(action);
-		}
-	}
 
 public:
 	ActItemLoadFromLevel(const std::string& idLevel_,
@@ -166,7 +149,7 @@ public:
 						player->SelectedItem(item);
 						updateCursorWithItemImage(game, *item,
 							player->canEquipItem(*item));
-						executePickFromLevelAction(game, *item);
+						item->Class()->executeAction(game, str2int16("levelPick"));
 					}
 					else
 					{
@@ -183,7 +166,7 @@ public:
 								if (player->setItemInFreeSlot(invIdx, item, invPos) == true)
 								{
 									level->setItem(mapPos, nullptr);
-									executePickFromLevelAction(game, *item);
+									item->Class()->executeAction(game, str2int16("levelPick"));
 								}
 								else
 								{
@@ -247,7 +230,8 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto item = level->getItem(itemLocation);
+			Player* player = nullptr;
+			auto item = level->getItem(itemLocation, player);
 			if (item != nullptr)
 			{
 				auto prop2 = game.getVarOrPropString(prop);
@@ -255,6 +239,11 @@ public:
 				{
 					auto value2 = game.getVarOrProp(value);
 					item->setProperty(prop2, value2);
+
+					if (player != nullptr)
+					{
+						player->updatePlayerProperties();
+					}
 				}
 			}
 		}
@@ -369,11 +358,7 @@ public:
 							{
 								game.updateCursorPosition();
 							}
-							auto action = selectedItem->Class()->getActionDropInventory();
-							if (action != nullptr)
-							{
-								game.Events().addBack(action);
-							}
+							selectedItem->Class()->executeAction(game, str2int16("inventoryDrop"));
 						}
 					}
 					else
@@ -386,13 +371,40 @@ public:
 							updateCursorWithItemImage(game, *oldItem,
 								player->canEquipItem(*oldItem));
 
-							auto action = oldItem->Class()->getActionPickInventory();
-							if (action != nullptr)
-							{
-								game.Events().addBack(action);
-							}
+							oldItem->Class()->executeAction(game, str2int16("inventoryPick"));
 						}
 					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActItemUse : public Action
+{
+private:
+	std::string idLevel;
+	ItemCoordInventory itemCoord;
+
+public:
+	ActItemUse(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+		: idLevel(idLevel_), itemCoord(itemCoord_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			Player* player;
+			auto item = level->getItem(itemCoord, player);
+			if (item != nullptr &&
+				player != nullptr)
+			{
+				if (item->use(*player) == true)
+				{
+					level->setItem(itemCoord, nullptr);
+					item->Class()->executeAction(game, str2int16("use"));
 				}
 			}
 		}

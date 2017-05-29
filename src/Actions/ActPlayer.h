@@ -82,7 +82,10 @@ public:
 						{
 							currVal += addToVal;
 						}
-						player->setInt(propVal, currVal);
+						if (player->setNumber(propVal, currVal) == true)
+						{
+							player->updatePlayerProperties();
+						}
 					}
 				}
 			}
@@ -154,6 +157,33 @@ public:
 					b = level->getMapCoordOverMouse();
 				}
 				player->setWalkPath(level->Map().getPath(a, b));
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerSetDefaultSpeed : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	AnimationSpeed speed;
+
+public:
+	ActPlayerSetDefaultSpeed(const std::string& idPlayer_,
+		const std::string& idLevel_, const AnimationSpeed& speed_)
+		: idPlayer(idPlayer_), idLevel(idLevel_), speed(speed_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->setDefaultSpeed(speed);
 			}
 		}
 		return true;

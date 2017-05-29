@@ -8,6 +8,8 @@
 #include "LevelObject.h"
 #include <memory>
 
+class Player;
+
 class Item : public LevelObject
 {
 private:
@@ -39,6 +41,12 @@ private:
 	bool identified{ false };
 
 	void updateNameAndDescriptions() const;
+
+	bool useHelper(uint16_t propHash, uint16_t useOpHash,
+		LevelObjValue value, Player& player) const;
+
+	bool useHelper(uint16_t propHash, uint16_t useOpHash,
+		uint16_t valueHash, uint16_t valueMaxHash, Player& player) const;
 
 public:
 	using iterator = ItemProperties::iterator;
@@ -81,7 +89,7 @@ public:
 	void MapPosition(Level& level, const MapCoord& pos);
 
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const std::string& prop, Number32& value) const
+	virtual bool getNumberProp(const char* prop, Number32& value) const
 	{
 		LevelObjValue val;
 		bool ret = getInt(prop, val);
@@ -141,6 +149,8 @@ public:
 
 	bool needsRecharge() const;
 	bool needsRepair() const;
+
+	bool use(Player& player) const;
 
 	const std::string& Name() const { return name; }
 	const std::string& ShortName() const { return class_->ShortName(); }

@@ -24,18 +24,9 @@ namespace Parser
 		playerClass.setCelTexture(getUIntKey(elem, "palette"), celTexture);
 	}
 
-	sf::Time getTime(int fps)
-	{
-		fps = std::max(std::min(fps, 1000), 1);
-		return sf::seconds(1.f / (float)fps);
-	}
-
 	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
 	{
-		AnimationSpeed speed;
-		speed.animation = getTime(getIntKey(elem, "animation", 5));
-		speed.walk = getTime(getIntKey(elem, "walk", 25));
-		playerClass.setSpeed(getPlayerStatusKey(elem, "name"), speed);
+		playerClass.setSpeed(getPlayerStatusKey(elem, "name"), getPlayerAnimationSpeedVal(elem));
 	}
 
 	void parsePlayerClass(Game& game, const Value& elem)
@@ -113,7 +104,7 @@ namespace Parser
 					if (it->name.GetStringLength() > 0)
 					{
 						playerClass->setDefault(it->name.GetString(),
-							getMinMaxIntVal<LevelObjValue>(it->value));
+							getMinMaxNumber32Val(it->value));
 					}
 				}
 			}

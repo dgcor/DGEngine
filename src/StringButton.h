@@ -13,6 +13,7 @@ private:
 	std::unique_ptr<Text2> text;
 	bool enabled{ true };
 	std::shared_ptr<Action> clickAction;
+	std::shared_ptr<Action> rightClickAction;
 	std::shared_ptr<Action> doubleClickAction;
 	std::shared_ptr<Action> clickDragAction;
 	std::shared_ptr<Action> clickInAction;

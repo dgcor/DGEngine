@@ -1,0 +1,21 @@
+{
+  "level": {
+    "id": "level",
+    "name": "Town Center",
+    "palette": "town",
+    "cel": "Nlevels/TownData/Town.CEL",
+    "mapSize": [96, 96],
+    "dun": [
+      { "file": "levels/towndata/sector1s.dun", "position": [46, 46] },
+      { "file": "levels/towndata/sector2s.dun", "position": [46, 0] },
+      { "file": "levels/towndata/sector3s.dun", "position": [0, 46] },
+      { "file": "levels/towndata/sector4s.dun", "position": [0, 0] }
+    ],
+    "til": "Nlevels/TownData/Town.TIL",
+    "min": "Nlevels/TownData/Town.MIN",
+    "minBlocks": 16,
+    "sol": "Nlevels/TownData/Town.SOL"
+  },
+  "load": "level/town/levelObjects.json",
+  "load": "level/town/items.json"
+}

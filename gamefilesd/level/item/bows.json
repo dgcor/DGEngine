@@ -1,0 +1,162 @@
+{
+  "itemClass": [
+    {
+      "id": "shortBow",
+      "fromId": "baseWeapon",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 129,
+      "name": "Short Bow",
+      "shortName": "Bow",
+      "type": "Bow",
+      "defaults": {
+        "price": 100,
+        "damageMin": 1,
+        "damageMax": 4,
+        "durability": 30,
+        "durabilityMax": 30
+      },
+      "description4": "requiredStrDex",
+      "inventorySize": [2, 3],
+      "actions": {
+        "levelDrop": { "name": "sound.play", "id": "flipbow" },
+        "inventoryDrop": { "name": "sound.play", "id": "invbow" }
+      }
+    },
+    {
+      "id": "longBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 113,
+      "name": "Long Bow",
+      "defaults": {
+        "price": 250,
+        "damageMin": 1,
+        "damageMax": 6,
+        "durability": 35,
+        "durabilityMax": 35,
+        "requiredStrength": 25,
+        "requiredDexterity": 30
+      }
+    },
+    {
+      "id": "huntersBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 113,
+      "name": "Hunter's Bow",
+      "defaults": {
+        "price": 350,
+        "damageMin": 2,
+        "damageMax": 5,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 20,
+        "requiredDexterity": 35
+      }
+    },
+    {
+      "id": "compositeBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 144,
+      "name": "Composite Bow",
+      "defaults": {
+        "price": 600,
+        "damageMin": 3,
+        "damageMax": 6,
+        "durability": 45,
+        "durabilityMax": 45,
+        "requiredStrength": 25,
+        "requiredDexterity": 40
+      }
+    },
+    {
+      "id": "shortBattleBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {1},
+      "name": "Short Battle Bow",
+      "defaults": {
+        "price": 750,
+        "damageMin": 3,
+        "damageMax": 7,
+        "durability": 45,
+        "durabilityMax": 45,
+        "requiredStrength": 30,
+        "requiredDexterity": 50
+      }
+    },
+    {
+      "id": "longBattleBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 130,
+      "name": "Long Battle Bow",
+      "defaults": {
+        "price": 1000,
+        "damageMin": 1,
+        "damageMax": 10,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 30,
+        "requiredDexterity": 60
+      }
+    },
+    {
+      "id": "shortWarBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {2},
+      "name": "Short War Bow",
+      "defaults": {
+        "price": 1500,
+        "damageMin": 4,
+        "damageMax": 8,
+        "durability": 55,
+        "durabilityMax": 55,
+        "requiredStrength": 35,
+        "requiredDexterity": 70
+      }
+    },
+    {
+      "id": "longWarBow",
+      "fromId": "shortBow",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 11,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 130,
+      "name": "Long War Bow",
+      "defaults": {
+        "price": 2000,
+        "damageMin": 1,
+        "damageMax": 14,
+        "durability": 60,
+        "durabilityMax": 60,
+        "requiredStrength": 45,
+        "requiredDexterity": 80
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Rogue",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "texture": { "id": "inv", "file": "data/inv/inv_rog.cel", "palette": "town" }
+          }
+        }
+      },
+      {
+        "value": "Sorceror",
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "texture": { "id": "inv", "file": "data/inv/inv_sor.cel", "palette": "town" }
+          }
+        }
+      }
+    ],
+    "default": {
+      "name": "loadJson",
+      "json": {
+        "texture": { "id": "inv", "file": "data/inv/inv.cel", "palette": "town" }
+      }
+    }
+  }
+}

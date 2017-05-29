@@ -100,54 +100,15 @@ public:
 		auto value2 = game.getVarOrProp(value);
 		if (value2.is<int64_t>() == true)
 		{
-			if (hasPropRange == false && hasValueRange == false)
+			if (hasPropRange == true &&
+				hasValueRange == true)
 			{
-				game.setProperty(prop2, value2);
-			}
-			else
-			{
-				auto val = (long)value2.get<int64_t>();
-				if (hasValueRange == true)
-				{
-					if (val < (long)valueRange.x)
-					{
-						val = (long)valueRange.x;
-					}
-					else if (val > (long)valueRange.y)
-					{
-						val = (long)valueRange.y;
-					}
-				}
-				else if (hasPropRange == true)
-				{
-					if (val < (long)propRange.x)
-					{
-						val = (long)propRange.x;
-					}
-					else if (val >(long)propRange.y)
-					{
-						val = (long)propRange.y;
-					}
-				}
-				if (hasPropRange == true)
-				{
-					auto x = valueRange.x;
-					auto y = valueRange.y;
-					auto valueDiff = x > y ? x - y : y - x;
-					x = propRange.x;
-					y = propRange.y;
-					auto PropDiff = x > y ? x - y : y - x;
-
-					val -= valueRange.x;
-					val = std::lround(val * PropDiff / (double)valueDiff) + propRange.x;
-				}
-				game.setProperty(prop2, Variable((int64_t)val));
+				auto val = value2.get<int64_t>();
+				val = (int64_t)Utils::normalizeNumber<sf::Vector2i>((long)val, valueRange, propRange);
+				value2.set<int64_t>(val);
 			}
 		}
-		else
-		{
-			game.setProperty(prop2, value2);
-		}
+		game.setProperty(prop2, value2);
 		return true;
 	}
 };

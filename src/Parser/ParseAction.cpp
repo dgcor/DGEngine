@@ -224,17 +224,19 @@ namespace Parser
 		}
 		case str2int16("drawable.anchorSizeX"):
 		{
-			return std::make_shared<ActDrawableAnchorSizeX>(
+			return std::make_shared<ActDrawableAnchorSizeXY>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idAnchorTo"),
-				(float)getIntKey(elem, "offset"));
+				(float)getIntKey(elem, "offset"),
+				false);
 		}
 		case str2int16("drawable.anchorSizeY"):
 		{
-			return std::make_shared<ActDrawableAnchorSizeY>(
+			return std::make_shared<ActDrawableAnchorSizeXY>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idAnchorTo"),
-				(float)getIntKey(elem, "offset"));
+				(float)getIntKey(elem, "offset"),
+				true);
 		}
 		case str2int16("drawable.anchorToFocused"):
 		{
@@ -308,6 +310,26 @@ namespace Parser
 				getVariableKey(elem, "steps"),
 				getIntKey(elem, "stepOffset"));
 		}
+		case str2int16("drawable.resizeX"):
+		{
+			return std::make_shared<ActDrawableResizeXY>(
+				getStringKey(elem, "id"),
+				getVariableKey(elem, "size"),
+				getVariableKey(elem, "inputRangeMin"),
+				getVariableKey(elem, "inputRangeMax"),
+				getVector2iKey<sf::Vector2i>(elem, "range"),
+				false);
+		}
+		case str2int16("drawable.resizeY"):
+		{
+			return std::make_shared<ActDrawableResizeXY>(
+				getStringKey(elem, "id"),
+				getVariableKey(elem, "size"),
+				getVariableKey(elem, "inputRangeMin"),
+				getVariableKey(elem, "inputRangeMax"),
+				getVector2iKey<sf::Vector2i>(elem, "range"),
+				true);
+		}
 		case str2int16("drawable.resizeOnMouseX"):
 		{
 			return std::make_shared<ActDrawableResizeOnMouseX>(
@@ -350,15 +372,17 @@ namespace Parser
 		}
 		case str2int16("drawable.setPositionX"):
 		{
-			return std::make_shared<ActDrawableSetPositionX>(
+			return std::make_shared<ActDrawableSetPositionXY>(
 				getStringKey(elem, "id"),
-				(float)getIntKey(elem, "position"));
+				(float)getIntKey(elem, "position"),
+				false);
 		}
 		case str2int16("drawable.setPositionY"):
 		{
-			return std::make_shared<ActDrawableSetPositionY>(
+			return std::make_shared<ActDrawableSetPositionXY>(
 				getStringKey(elem, "id"),
-				(float)getIntKey(elem, "position"));
+				(float)getIntKey(elem, "position"),
+				true);
 		}
 		case str2int16("drawable.setSize"):
 		{
@@ -368,15 +392,17 @@ namespace Parser
 		}
 		case str2int16("drawable.setSizeX"):
 		{
-			return std::make_shared<ActDrawableSetSizeX>(
+			return std::make_shared<ActDrawableSetSizeXY>(
 				getStringKey(elem, "id"),
-				(float)getIntKey(elem, "size"));
+				(float)getIntKey(elem, "size"),
+				false);
 		}
 		case str2int16("drawable.setSizeY"):
 		{
-			return std::make_shared<ActDrawableSetSizeY>(
+			return std::make_shared<ActDrawableSetSizeXY>(
 				getStringKey(elem, "id"),
-				(float)getIntKey(elem, "size"));
+				(float)getIntKey(elem, "size"),
+				true);
 		}
 		case str2int16("drawable.toggleVisible"):
 		{
@@ -540,6 +566,26 @@ namespace Parser
 		{
 			return std::make_shared<ActImageCenterTexture>(getStringKey(elem, "id"));
 		}
+		case str2int16("image.inverseResizeX"):
+		{
+			return std::make_shared<ActImageInverseResizeXY>(
+				getStringKey(elem, "id"),
+				getVariableKey(elem, "size"),
+				getVariableKey(elem, "inputRangeMin"),
+				getVariableKey(elem, "inputRangeMax"),
+				getVector2iKey<sf::Vector2i>(elem, "range"),
+				false);
+		}
+		case str2int16("image.inverseResizeY"):
+		{
+			return std::make_shared<ActImageInverseResizeXY>(
+				getStringKey(elem, "id"),
+				getVariableKey(elem, "size"),
+				getVariableKey(elem, "inputRangeMin"),
+				getVariableKey(elem, "inputRangeMax"),
+				getVector2iKey<sf::Vector2i>(elem, "range"),
+				true);
+		}
 		case str2int16("image.setTexture"):
 		{
 			return std::make_shared<ActSetTexture<Image>>(
@@ -642,7 +688,7 @@ namespace Parser
 		}
 		case str2int16("item.trade"):
 		{
-			auto action =  std::make_shared<ActItemTrade>(
+			auto action = std::make_shared<ActItemTrade>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "player"),
 				getItemCoordInventoryKey(elem, "item"),
@@ -657,6 +703,12 @@ namespace Parser
 		case str2int16("item.update"):
 		{
 			return std::make_shared<ActItemUpdate>(
+				getStringKey(elem, "level"),
+				getItemCoordInventoryVal(elem));
+		}
+		case str2int16("item.use"):
+		{
+			return std::make_shared<ActItemUse>(
 				getStringKey(elem, "level"),
 				getItemCoordInventoryVal(elem));
 		}
@@ -825,6 +877,22 @@ namespace Parser
 			return std::make_shared<ActPlayerMoveToClick>(
 				getStringKey(elem, "player"),
 				getStringKey(elem, "level"));
+		}
+		case str2int16("player.setDefaultSpeed"):
+		{
+			auto speed = getPlayerAnimationSpeedVal(elem);
+			if (elem.HasMember("animation") == false)
+			{
+				speed.animation = sf::Time::Zero;
+			}
+			if (elem.HasMember("walk") == false)
+			{
+				speed.walk = sf::Time::Zero;
+			}
+			return std::make_shared<ActPlayerSetDefaultSpeed>(
+				getStringKey(elem, "player"),
+				getStringKey(elem, "level"),
+				speed);
 		}
 		case str2int16("player.removeGold"):
 		{

@@ -1,0 +1,67 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "splashScreen"
+  },
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "skip" }
+  },
+  "texture": [
+    {
+      "id": "hf_logo2",
+      "file": "ui_art/hf_logo2.pcx",
+      "mask": "0x000000"
+    },
+    {
+      "id": "hf_title",
+      "file":"ui_art/hf_title.pcx"
+    }
+  ],
+  "image": {
+    "id": "title",
+    "texture": "hf_title",
+    "anchor": "none"
+  },
+  "button": {
+    "id": "skip",
+    "texture": "empty",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": [
+      { "name": "event.delete", "id": "load" },
+      {
+        "name": "game.fadeOut",
+        "action": [
+          { "name": "resource.pop" },
+          { "name": "load", "file": "ui/mainMenu.json" },
+          { "name": "game.fadeIn" }
+        ]
+      }
+    ]
+  },
+  "animation": {
+    "id": "logo",
+    "texture": "hf_logo2",
+    "frames": 16,
+    "position": [0, 280],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "event": {
+    "id": "load",
+    "action": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/mainMenu.json" },
+        { "name": "game.fadeIn" }
+      ]
+    },
+    "seconds": 6
+  },
+  "action": {
+    "name": "game.fadeIn"
+  }
+}

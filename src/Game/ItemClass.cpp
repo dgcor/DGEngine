@@ -1,5 +1,44 @@
 #include "ItemClass.h"
+#include <algorithm>
+#include "Game.h"
 #include "GameUtils.h"
+
+void ItemClass::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_)
+{
+	if (nameHash16 == str2int16("") ||
+		action_ == nullptr)
+	{
+		return;
+	}
+	for (auto& elem : actions)
+	{
+		if (elem.first == nameHash16)
+		{
+			elem.second = action_;
+			return;
+		}
+	}
+	actions.push_back(std::make_pair(nameHash16, action_));
+}
+
+void ItemClass::executeAction(Game& game, uint16_t nameHash16, bool executeNow) const
+{
+	for (const auto& elem : actions)
+	{
+		if (elem.first == nameHash16)
+		{
+			if (executeNow == true)
+			{
+				elem.second->execute(game);
+			}
+			else
+			{
+				game.Events().addBack(elem.second);
+			}
+			return;
+		}
+	}
+}
 
 void ItemClass::setDefault(const char* prop, LevelObjValue val)
 {
@@ -124,20 +163,78 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	return true;
 }
 
-void ItemClass::setPriceFormula(size_t idx, const Formula& formula)
+void ItemClass::setFormula(uint16_t nameHash, const Formula& formula)
 {
-	if (idx < priceFormulas.size())
+	if (nameHash == str2int16(""))
 	{
-		priceFormulas[idx] = formula;
+		return;
+	}
+	size_t i = 0;
+	for (; i < formulasSize; i++)
+	{
+		auto& elem = formulas[i];
+		if (elem.first == nameHash)
+		{
+			elem.second = formula;
+			return;
+		}
+	}
+	if (i < formulas.size())
+	{
+		formulas[i] = std::make_pair(nameHash, formula);
+		formulasSize++;
 	}
 }
 
-LevelObjValue ItemClass::getPrice(size_t idx, const LevelObject& item) const
+void ItemClass::deleteFormula(uint16_t nameHash)
+{
+	if (nameHash == str2int16(""))
+	{
+		return;
+	}
+	for (size_t i = 0; i < formulasSize; i++)
+	{
+		if (formulas[i].first == nameHash)
+		{
+			formulas[i].second = {};
+			std::move(formulas.begin() + i + 1,
+				formulas.begin() + formulasSize,
+				formulas.begin() + i);
+			formulasSize--;
+			return;
+		}
+	}
+}
+
+bool ItemClass::evalFormula(uint16_t nameHash, const LevelObject& obj, LevelObjValue& val) const
+{
+	return evalFormula(nameHash, obj, obj, val);
+}
+
+bool ItemClass::evalFormula(uint16_t nameHash, const LevelObject& objA,
+	const LevelObject& objB, LevelObjValue& val) const
+{
+	for (size_t i = 0; i < formulasSize; i++)
+	{
+		const auto& formula = formulas[i];
+		if (formula.first == nameHash)
+		{
+			val = (LevelObjValue)formula.second.eval(objA, objB);
+			return true;
+		}
+	}
+	return false;
+}
+
+LevelObjValue ItemClass::evalFormula(uint16_t nameHash, LevelObject& obj) const
+{
+	return evalFormula(nameHash, obj, obj);
+}
+
+LevelObjValue ItemClass::evalFormula(uint16_t nameHash, LevelObject& objA,
+	const LevelObject& objB) const
 {
 	LevelObjValue val = 0;
-	if (idx < priceFormulas.size())
-	{
-		val = (LevelObjValue)priceFormulas[idx].eval(item);
-	}
+	evalFormula(nameHash, objA, objB, val);
 	return val;
 }

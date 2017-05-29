@@ -1,0 +1,75 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "support",
+    "ignorePrevious": true
+  },
+  "cursor": null,
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "back" }
+  },
+  "texture": {
+    "id": "support",
+    "file":"ui_art/support.pcx"
+  },
+  "image": {
+    "id": "support",
+    "texture": "support",
+    "anchor": "none"
+  },
+  "button": {
+    "id": "back",
+    "texture": "empty",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": {
+      "name": "game.fadeOut",
+      "action": [
+        {
+          "name": "resource.pop",
+          "ignorePrevious": false
+        },
+        {
+          "name": "cursor.pop"
+        },
+        {
+          "name": "game.fadeIn"
+        }
+      ]
+    }
+  },
+  "font": {
+    "id": "liberationSerif",
+    "file": "res/LiberationSerif-Regular.ttf"
+  },
+  "scrollableText": {
+    "id": "supportText",
+    "font": "liberationSerif",
+    "fontSize": 16,
+    "refresh": 50,
+    "file": "ui/support.txt",
+    "anchor": "none",
+    "position": [30, 115],
+    "boxSize": [580, 250],
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        {
+          "name": "resource.pop",
+          "ignorePrevious": false
+        },
+        {
+          "name": "cursor.pop"
+        },
+        {
+          "name": "game.fadeIn"
+        }
+      ]
+    }
+  },
+  "action": {
+    "name": "game.fadeIn"
+  }
+}

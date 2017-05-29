@@ -1,0 +1,29 @@
+{
+  "itemClass": [
+    {
+      "id": "book",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 10,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 97,
+      "name": "Book",
+      "type": "Book",
+      "defaults": {
+        "price": 1000,
+        "identified": true
+      },
+      "formulas": {
+        "sell": "price * 0.25"
+      },
+      "description1": "rightClickToRead",
+      "inventorySize": [2, 2],
+      "actions": {
+        "action": "pickItemInLevel",
+        "levelDrop": { "name": "sound.play", "id": "flipbook" },
+        "inventoryDrop": { "name": "sound.play", "id": "invbook" },
+        "inventoryPick": "pickItemInInventory"
+      }
+    }
+  ]
+}

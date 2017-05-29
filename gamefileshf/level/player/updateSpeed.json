@@ -1,0 +1,15 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "|currentLevel|name|",
+    "param2": "Town Center",
+    "then": {
+      "name": "if.equal",
+      "param1": "%jog%",
+      "param2": true,
+      "then": { "name": "player.setDefaultSpeed", "animation": 35, "walk": 50 },
+      "else": { "name": "player.setDefaultSpeed" }
+    },
+    "else": { "name": "player.setDefaultSpeed" }
+  }
+}

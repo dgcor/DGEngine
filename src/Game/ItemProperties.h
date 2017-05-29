@@ -7,6 +7,7 @@ namespace ItemProp
 	const uint16_t Gold = str2int16("gold");
 	const uint16_t GoldMax = str2int16("goldMax");
 
+	const uint16_t LifeAndManaDamage = str2int16("lifeAndManaDamage");
 	const uint16_t AllAttributes = str2int16("allAttributes");
 
 	const uint16_t Strength = str2int16("strength");
@@ -15,7 +16,9 @@ namespace ItemProp
 	const uint16_t Vitality = str2int16("vitality");
 
 	const uint16_t Life = str2int16("life");
+	const uint16_t LifeDamage = str2int16("lifeDamage");
 	const uint16_t Mana = str2int16("mana");
+	const uint16_t ManaDamage = str2int16("manaDamage");
 
 	const uint16_t ResistAll = str2int16("resistAll");
 
@@ -24,8 +27,10 @@ namespace ItemProp
 	const uint16_t ResistLightning = str2int16("resistLightning");
 
 	const uint16_t Armor = str2int16("armor");
+	const uint16_t ToArmor = str2int16("toArmor");
 	const uint16_t ToHit = str2int16("toHit");
 
+	const uint16_t Damage = str2int16("damage");
 	const uint16_t DamageMin = str2int16("damageMin");
 	const uint16_t DamageMax = str2int16("damageMax");
 	const uint16_t ToDamage = str2int16("toDamage");
@@ -40,4 +45,11 @@ namespace ItemProp
 	const uint16_t RequiredMagic = str2int16("requiredMagic");
 	const uint16_t RequiredDexterity = str2int16("requiredDexterity");
 	const uint16_t RequiredVitality = str2int16("requiredVitality");
+
+	const uint16_t UseOn = str2int16("useOn");
+	const uint16_t UseOp = str2int16("useOp");
+	const uint16_t Value = str2int16("value");
+	const uint16_t Value2 = str2int16("value2");
+	const uint16_t ValueMax = str2int16("valueMax");
+	const uint16_t Value2Max = str2int16("value2Max");
 }
