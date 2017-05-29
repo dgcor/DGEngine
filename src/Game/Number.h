@@ -35,11 +35,46 @@ public:
 		floatNum = num;
 	}
 
-	constexpr int32_t getInt32() { return intNum; }
-	constexpr uint32_t getUInt32() { return uintNum; }
-	constexpr float getFloat() { return floatNum; }
-
-	constexpr int64_t getInt64()
+	constexpr int32_t getInt32() const
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			return intNum;
+		case 1:
+			return (int32_t)uintNum;
+		case 2:
+			return (int32_t)floatNum;
+		}
+	}
+	constexpr uint32_t getUInt32() const
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			return (uint32_t)intNum;
+		case 1:
+			return uintNum;
+		case 2:
+			return (uint32_t)floatNum;
+		}
+	}
+	constexpr float getFloat() const
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			return (float)intNum;
+		case 1:
+			return (float)uintNum;
+		case 2:
+			return floatNum;
+		}
+	}
+	constexpr int64_t getInt64() const
 	{
 		switch (type)
 		{
@@ -52,8 +87,7 @@ public:
 			return (int64_t)floatNum;
 		}
 	}
-
-	constexpr double getDouble()
+	constexpr double getDouble() const
 	{
 		switch (type)
 		{

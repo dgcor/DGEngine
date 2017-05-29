@@ -16,7 +16,7 @@ namespace Parser
 		}
 		file = game.getPath() + file;
 		auto mount = getStringCharKey(elem, "mount");
-		auto append = getBoolKey(elem, "append");
+		int append = (int)getBoolKey(elem, "append", true);
 		if (PHYSFS_mount(file.c_str(), mount, append) != 0)
 		{
 			return;

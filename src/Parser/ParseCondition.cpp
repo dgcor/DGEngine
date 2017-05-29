@@ -45,10 +45,28 @@ namespace Parser
 				if (val.IsObject() == true &&
 					val.HasMember("value") == true)
 				{
-					cases.push_back(
-						std::make_pair(getVariableKey(val, "value"),
-							getActionKey(game, val, "action"))
-					);
+					std::shared_ptr<Action> caseAction;
+					bool hasAction = false;
+
+					if (val.HasMember("action") == true &&
+						val["action"].IsObject() == false)
+					{
+						auto actionRef = getVariableKey(val, "action");
+						for (const auto& caseObj : cases)
+						{
+							if (caseObj.first == actionRef)
+							{
+								caseAction = caseObj.second;
+								hasAction = true;
+								break;
+							}
+						}
+					}
+					if (hasAction == false)
+					{
+						caseAction = getActionKey(game, val, "action");
+					}
+					cases.push_back(std::make_pair(getVariableKey(val, "value"), caseAction));
 				}
 			}
 		}

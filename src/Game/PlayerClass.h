@@ -16,7 +16,7 @@ private:
 	std::string type;
 	std::string description;
 
-	std::vector<LevelObjProperty> defaults;
+	std::vector<std::pair<uint16_t, Number32>> defaults;
 
 	LevelObjValue maxStrength{ 0 };
 	LevelObjValue maxMagic{ 0 };
@@ -79,8 +79,8 @@ public:
 		return celTextures;
 	}
 
-	const std::vector<LevelObjProperty>& Defaults() const { return defaults; }
-	void setDefault(const char* prop, LevelObjValue val);
+	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const { return defaults; }
+	void setDefault(const char* prop, const Number32& val);
 
 	AnimationSpeed getSpeed(PlayerStatus status) const;
 	void setSpeed(PlayerStatus status, const AnimationSpeed& speed);

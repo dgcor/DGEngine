@@ -55,6 +55,21 @@ void Player::updateTexture()
 	currentFrame++;
 }
 
+void Player::updateSpeed()
+{
+	if (hasWalkingStatus() == true)
+	{
+		if (defaultSpeed.animation != sf::Time::Zero)
+		{
+			speed.animation = defaultSpeed.animation;
+		}
+		if (defaultSpeed.walk != sf::Time::Zero)
+		{
+			speed.walk = defaultSpeed.walk;
+		}
+	}
+}
+
 void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
 {
 	newDrawPos.x -= std::round((drawPosA.x - drawPosB.x) * currPositionStep);
@@ -354,21 +369,25 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 	{
 		return;
 	}
-	switch (str2int16(prop.c_str()))
+	auto propHash16 = str2int16(prop.c_str());
+	switch (propHash16)
 	{
-	case str2int16("lifeDamage"):
+	case str2int16("name"):
 	{
-		if (val.is<int64_t>() == true)
+		if (val.is<std::string>() == true)
 		{
-			LifeDamage((LevelObjValue)val.get<int64_t>());
+			Name(val.get<std::string>());
 		}
 	}
 	break;
-	case str2int16("manaDamage"):
+	default:
 	{
 		if (val.is<int64_t>() == true)
 		{
-			ManaDamage((LevelObjValue)val.get<int64_t>());
+			if (setNumberByHash(propHash16, (LevelObjValue)val.get<int64_t>()))
+			{
+				updatePlayerProperties();
+			}
 		}
 	}
 	break;
@@ -414,24 +433,35 @@ const Queryable* Player::getQueryable(const std::string& prop) const
 	return queryable;
 }
 
-bool Player::getNumberProp(const std::string& prop, Number32& value) const
+bool Player::getNumberProp(const char* prop, Number32& value) const
+{
+	return getNumberByHash(str2int16(prop), value);
+}
+
+bool Player::getNumberByHash(uint16_t propHash, Number32& value) const
 {
 	LevelObjValue iVal;
-	bool ret = getInt(prop, iVal);
-	if (ret == true)
+	if (getIntByHash(propHash, iVal) == true)
 	{
 		value.setInt32(iVal);
+		return true;
 	}
-	else
+	uint32_t uVal;
+	if (getUIntByHash(propHash, uVal) == true)
 	{
-		uint32_t uVal;
-		ret = getUInt(prop, uVal);
-		if (ret == true)
+		value.setUInt32(uVal);
+		return true;
+	}
+	for (size_t i = 0; i < customPropsSize; i++)
+	{
+		const auto& customProp = customProperties[i];
+		if (customProp.first == propHash)
 		{
-			value.setUInt32(uVal);
+			value = customProp.second;
+			return true;
 		}
 	}
-	return ret;
+	return false;
 }
 
 bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
@@ -504,6 +534,9 @@ bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 	case str2int16("armorItems"):
 		value = armorItems;
 		break;
+	case str2int16("toArmor"):
+		value = toArmor;
+		break;
 	case str2int16("toHit"):
 		value = toHit;
 		break;
@@ -514,19 +547,13 @@ bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 		value = damageMin;
 		break;
 	case str2int16("damageMinItems"):
-		value = damageMin;
-		break;
-	case str2int16("damageMinNow"):
-		value = DamageMinNow();
+		value = damageMinItems;
 		break;
 	case str2int16("damageMax"):
 		value = damageMax;
 		break;
 	case str2int16("damageMaxItems"):
-		value = damageMax;
-		break;
-	case str2int16("damageMaxNow"):
-		value = DamageMaxNow();
+		value = damageMaxItems;
 		break;
 	case str2int16("toDamage"):
 		value = toDamage;
@@ -624,12 +651,6 @@ bool Player::setIntByHash(uint16_t propHash, LevelObjValue value)
 	case str2int16("manaDamage"):
 		manaDamage = std::max(value, 0);
 		break;
-	case str2int16("damageMin"):
-		damageMin = value;
-		break;
-	case str2int16("damageMax"):
-		damageMax = value;
-		break;
 	default:
 		return false;
 	}
@@ -668,17 +689,90 @@ bool Player::setUInt(const char* prop, uint32_t value)
 	return setUIntByHash(str2int16(prop), value);
 }
 
-void Player::setNumberByHash(uint16_t propHash, LevelObjValue value)
+bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value)
 {
 	if (setIntByHash(propHash, value) == false)
 	{
-		setUIntByHash(propHash, (uint32_t)value);
+		return setUIntByHash(propHash, (uint32_t)value);
 	}
+	return true;
 }
 
-void Player::setNumber(const char* prop, LevelObjValue value)
+bool Player::setNumber(const char* prop, LevelObjValue value)
 {
 	return setNumberByHash(str2int16(prop), value);
+}
+
+bool Player::setNumber(const char* prop, const Number32& value)
+{
+	return setNumberByHash(str2int16(prop), value);
+}
+
+bool Player::setNumberByHash(uint16_t propHash, const Number32& value)
+{
+	if (setNumberByHash(propHash, value.getInt32()) == true)
+	{
+		return true;
+	}
+	switch (propHash)
+	{
+	case str2int16(""):
+	case str2int16("strengthItems"):
+	case str2int16("strengthNow"):
+	case str2int16("magicItems"):
+	case str2int16("magicNow"):
+	case str2int16("dexterityItems"):
+	case str2int16("dexterityNow"):
+	case str2int16("vitalityItems"):
+	case str2int16("vitalityNow"):
+	case str2int16("life"):
+	case str2int16("lifeItems"):
+	case str2int16("lifeNow"):
+	case str2int16("mana"):
+	case str2int16("manaItems"):
+	case str2int16("manaNow"):
+	case str2int16("armor"):
+	case str2int16("armorItems"):
+	case str2int16("toArmor"):
+	case str2int16("toHit"):
+	case str2int16("toHitItems"):
+	case str2int16("damageMin"):
+	case str2int16("damageMinItems"):
+	case str2int16("damageMax"):
+	case str2int16("damageMaxItems"):
+	case str2int16("toDamage"):
+	case str2int16("resistMagic"):
+	case str2int16("resistFire"):
+	case str2int16("resistLightning"):
+	case str2int16("maxStrength"):
+	case str2int16("maxMagic"):
+	case str2int16("maxDexterity"):
+	case str2int16("maxVitality"):
+	case str2int16("maxResistMagic"):
+	case str2int16("maxResistFire"):
+	case str2int16("maxResistLightning"):
+		return false;
+	default:
+	{
+		size_t i = 0;
+		for (; i < customPropsSize; i++)
+		{
+			auto& elem = customProperties[i];
+			if (elem.first == propHash)
+			{
+				elem.second = value;
+				return true;
+			}
+		}
+		if (i < customProperties.size())
+		{
+			customProperties[i] = std::make_pair(propHash, value);
+			customPropsSize++;
+			return true;
+		}
+		return false;
+	}
+	}
 }
 
 bool Player::parseInventoryAndItem(const std::string& str,
@@ -982,24 +1076,29 @@ bool Player::setItemInFreeSlot(size_t invIdx,
 
 void Player::updateBodyItemValues()
 {
-	if (bodyInventoryIdx >= inventories.size())
-	{
-		return;
-	}
 	strengthItems = 0;
 	magicItems = 0;
 	dexterityItems = 0;
 	vitalityItems = 0;
 	lifeItems = 0;
 	manaItems = 0;
+	armor = 0;
 	armorItems = 0;
+	toArmor = 0;
 	toHitItems = 0;
+	damageMin = 1;
+	damageMax = 1;
 	damageMinItems = 0;
 	damageMaxItems = 0;
 	toDamage = 0;
 	resistMagic = 0;
 	resistFire = 0;
 	resistLightning = 0;
+
+	if (bodyInventoryIdx >= inventories.size())
+	{
+		return;
+	}
 	for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
 	{
 		if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
@@ -1024,18 +1123,36 @@ void Player::updateBodyItemValues()
 			resistFire += resistAll + item->getIntByHash(ItemProp::ResistFire);
 			resistLightning += resistAll + item->getIntByHash(ItemProp::ResistLightning);
 
+			toArmor += item->getIntByHash(ItemProp::ToArmor);
 			toDamage += item->getIntByHash(ItemProp::ToDamage);
 
 			resistMagic = std::min(std::max(resistMagic, 0), class_->MaxResistMagic());
 			resistFire = std::min(std::max(resistFire, 0), class_->MaxResistFire());
 			resistLightning = std::min(std::max(resistLightning, 0), class_->MaxResistLightning());
+
+			auto damage = item->getIntByHash(ItemProp::Damage);
+			damageMin += damage;
+			damageMax += damage;
 		}
 		armorItems += item->getIntByHash(ItemProp::Armor);
 		toHitItems += item->getIntByHash(ItemProp::ToHit);
 		damageMinItems += item->getIntByHash(ItemProp::DamageMin);
 		damageMaxItems += item->getIntByHash(ItemProp::DamageMax);
 	}
-	toDamagePercentage = (float)toDamage * 0.01f;
+	auto toArmorPercentage = (float)toArmor * 0.01f;
+	armor += (LevelObjValue)(armorItems * toArmorPercentage);
+
+	auto toDamagePercentage = 1.f + ((float)toDamage * 0.01f);
+	if (damageMinItems > 0)
+	{
+		damageMin--;
+		damageMin += (LevelObjValue)(damageMinItems * toDamagePercentage);
+	}
+	if (damageMaxItems > 0)
+	{
+		damageMax--;
+		damageMax += (LevelObjValue)(damageMaxItems * toDamagePercentage);
+	}
 }
 
 void Player::updatePlayerProperties()
@@ -1044,17 +1161,11 @@ void Player::updatePlayerProperties()
 
 	life = class_->getActualLife(*this, 0);
 	mana = class_->getActualMana(*this, 0);
-	armor = class_->getActualArmor(*this, 0);
+	armor += class_->getActualArmor(*this, 0);
 	toHit = class_->getActualToHit(*this, 0);
-	damageMin = damageMax = class_->getActualDamage(*this, 0);
-	if (DamageMinNow() <= 0)
-	{
-		damageMin = 1;
-	}
-	if (DamageMaxNow() <= 0)
-	{
-		damageMax = 1;
-	}
+	auto damage = class_->getActualDamage(*this, 0);
+	damageMin += damage;
+	damageMax += damage;
 }
 
 void Player::applyDefaults()

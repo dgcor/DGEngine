@@ -3,6 +3,7 @@
 #include "GameUtils.h"
 #include "Game/Level.h"
 #include "ItemProperties.h"
+#include "Player.h"
 #include "Utils.h"
 
 void Item::resetDropAnimation()
@@ -17,11 +18,7 @@ void Item::resetDropAnimation()
 
 void Item::executeAction(Game& game) const
 {
-	auto& action = class_->getAction();
-	if (action != nullptr)
-	{
-		game.Events().addBack(action);
-	}
+	class_->executeAction(game, str2int16("action"));
 }
 
 void Item::MapPosition(Level& level, const MapCoord& pos)
@@ -161,8 +158,15 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	}
 	case str2int16("prices"):
 	{
-		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
-		var = Variable((int64_t)class_->getPrice(idx, *this));
+		LevelObjValue value;
+		if (class_->evalFormula(str2int16(props.second.c_str()), *this, value) == false)
+		{
+			if (getIntByHash(propHash, value) == false)
+			{
+				return false;
+			}
+		}
+		var = Variable((int64_t)value);
 		break;
 	}
 	case str2int16("identified"):
@@ -389,4 +393,100 @@ bool Item::needsRepair() const
 		}
 	}
 	return false;
+}
+
+bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
+	LevelObjValue value, Player& player) const
+{
+	Number32 origValue2;
+	if (player.getNumberByHash(propHash, origValue2) == false)
+	{
+		return false;
+	}
+	auto origValue = origValue2.getInt64();
+
+	switch (useOpHash)
+	{
+	default:
+	case str2int16("+"):
+		origValue += value;
+		break;
+	case str2int16("-"):
+		origValue -= value;
+		break;
+	case str2int16("="):
+		origValue = value;
+		break;
+	}
+	return player.setNumberByHash(propHash, (LevelObjValue)origValue);
+}
+
+bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
+	uint16_t valueHash, uint16_t valueMaxHash, Player& player) const
+{
+	LevelObjValue value;
+	if (class_->evalFormula(valueHash, *this, player, value) == false)
+	{
+		return false;
+	}
+	LevelObjValue valueMax;
+	if (class_->evalFormula(valueMaxHash, *this, player, valueMax) == true)
+	{
+		value = Utils::Random::get<LevelObjValue>(value, valueMax);
+	}
+	return useHelper(propHash, useOpHash, value, player);
+}
+
+bool Item::use(Player& player) const
+{
+	LevelObjValue useOn;
+	if (getIntByHash(ItemProp::UseOn, useOn) == false ||
+		useOn == str2int16(""))
+	{
+		return false;
+	}
+
+	auto propHash = (uint16_t)useOn;
+	auto useOp = getIntByHash(ItemProp::UseOp);
+	bool ret = false;
+
+	switch (propHash)
+	{
+	case ItemProp::LifeAndManaDamage:
+	{
+		ret |= useHelper(ItemProp::LifeDamage, useOp,
+			ItemProp::Value, ItemProp::ValueMax, player);
+		ret |= useHelper(ItemProp::ManaDamage, useOp,
+			ItemProp::Value2, ItemProp::Value2Max, player);
+		break;
+	}
+	case ItemProp::AllAttributes:
+	{
+		LevelObjValue value;
+		if (class_->evalFormula(ItemProp::Value, *this, player, value) == false)
+		{
+			break;
+		}
+		LevelObjValue valueMax;
+		if (class_->evalFormula(ItemProp::ValueMax, *this, player, valueMax) == true)
+		{
+			value = Utils::Random::get<LevelObjValue>(value, valueMax);
+		}
+		ret |= useHelper(ItemProp::Strength, useOp, value, player);
+		ret |= useHelper(ItemProp::Magic, useOp, value, player);
+		ret |= useHelper(ItemProp::Dexterity, useOp, value, player);
+		ret |= useHelper(ItemProp::Vitality, useOp, value, player);
+		break;
+	}
+	default:
+	{
+		ret = useHelper(propHash, useOp, ItemProp::Value, ItemProp::ValueMax, player);
+		break;
+	}
+	}
+	if (ret == true)
+	{
+		player.updatePlayerProperties();
+	}
+	return ret;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <random>
 #include <string>
 #include <vector>
@@ -18,13 +19,6 @@ namespace Utils
 
 	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter);
 
-#if (_MSC_VER == 1900)
-	template <class T>
-	constexpr T str2intT(const char* str, T h = 0)
-	{
-		return !str[h] ? 5381 : (str2intT(str, h + 1) * 33) ^ str[h];
-	}
-#else
 	template <class T>
 	constexpr T str2intT(const char* str)
 	{
@@ -36,7 +30,6 @@ namespace Utils
 		}
 		return hash;
 	}
-#endif
 
 	std::string toLower(const std::string& str);
 	std::string toUpper(const std::string& str);
@@ -49,6 +42,29 @@ namespace Utils
 	std::string trim(const std::string& str, const std::string& chars = " \t");
 
 	std::string removeEmptyLines(const std::string& str);
+
+	template <class T>
+	long normalizeNumber(long val, const T& inputRange, const T& outputRange)
+	{
+		if (val < (long)inputRange.x)
+		{
+			val = (long)inputRange.x;
+		}
+		else if (val > (long)inputRange.y)
+		{
+			val = (long)inputRange.y;
+		}
+		auto x = inputRange.x;
+		auto y = inputRange.y;
+		auto inputDiff = x > y ? x - y : y - x;
+		x = outputRange.x;
+		y = outputRange.y;
+		auto outputDiff = x > y ? x - y : y - x;
+
+		val -= inputRange.x;
+		val = std::lround((double)val * (double)outputDiff / (double)inputDiff) + (double)outputRange.x;
+		return val;
+	}
 
 	class Random
 	{

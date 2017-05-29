@@ -1,0 +1,29 @@
+{
+  "itemClass": [
+    {
+      "id": "gold",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 29,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 17,
+      "name": "Gold",
+      "shortName": "Gold",
+      "type": "Gold",
+      "defaults": {
+        "identified": true,
+        "gold": 1,
+        "goldMax": 5000
+      },
+      "inventorySize": [1, 1],
+      "actions": {
+        "action": "pickItemInLevel",
+        "levelDrop": { "name": "sound.play", "id": "gold" },
+        "inventoryDrop": { "name": "sound.play", "id": "gold" },
+        "inventoryPick": "pickItemInInventory"
+      },
+      "prefix": "goldPrefix",
+      "suffix": "goldSuffix"
+    }
+  ]
+}

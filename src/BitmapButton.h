@@ -13,6 +13,7 @@ private:
 	bool enabled{ true };
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	std::shared_ptr<Action> clickAction;
+	std::shared_ptr<Action> rightClickAction;
 	std::shared_ptr<Action> doubleClickAction;
 	std::shared_ptr<Action> clickDragAction;
 	std::shared_ptr<Action> clickInAction;

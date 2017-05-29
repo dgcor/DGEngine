@@ -1,0 +1,146 @@
+{
+  "itemClass": [
+    {
+      "id": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 13,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 43,
+      "name": "Potion of Healing",
+      "shortName": "Potion",
+      "type": "Potion",
+      "defaults": {
+        "price": 50,
+        "identified": true,
+        "useOn": "lifeDamage",
+        "useOp": "-"
+      },
+      "formulas": {
+        "sell": "price * 0.25",
+        "value": "$bonusLife * $life * 0.125",
+        "valueMax": "$bonusLife * 3 * $life * 0.125"
+      },
+      "description1": "potion",
+      "description2": "rightClickToUse",
+      "inventorySize": [1, 1],
+      "actions": {
+        "action": "pickItemInLevel",
+        "levelDrop": { "name": "sound.play", "id": "flippot" },
+        "inventoryDrop": { "name": "sound.play", "id": "invpot" },
+        "inventoryPick": "pickItemInInventory",
+        "use": { "name": "sound.play", "id": "invpot" }
+      }
+    },
+    {
+      "id": "potionOfMana",
+      "fromId": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 13,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 50,
+      "name": "Potion of Mana",
+      "defaults": {
+        "price": 50,
+        "useOn": "manaDamage",
+        "useOp": "-"
+      },
+      "formulas": {
+        "value": "$bonusMana * $mana * 0.125",
+        "valueMax": "$bonusMana * 3 * $mana * 0.125"
+      }
+    },
+    {
+      "id": "potionOfFullHealing",
+      "fromId": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 16,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 46,
+      "name": "Potion of Full Healing",
+      "defaults": {
+        "price": 150,
+        "useOn": "lifeDamage",
+        "useOp": "="
+      },
+      "formulas": {
+        "value": 0,
+        "valueMax": null
+      }
+    },
+    {
+      "id": "potionOfFullMana",
+      "fromId": "potionOfFullHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 14,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 11,
+      "name": "Potion of Full Mana",
+      "defaults": {
+        "price": 150,
+        "useOn": "manaDamage",
+        "useOp": "="
+      }
+    },
+    {
+      "id": "potionOfRejuvenation",
+      "fromId": "potionOfHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 17,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 48,
+      "name": "Potion of Rejuvenation",
+      "defaults": {
+        "price": 120,
+        "useOn": "lifeAndManaDamage"
+      },
+      "formulas": {
+        "value": "$bonusLife * $life * 0.125",
+        "valueMax": "$bonusLife * 3 * $life * 0.125",
+        "value2": "$bonusMana * $mana * 0.125",
+        "value2Max": "$bonusMana * 3 * $mana * 0.125"
+      }
+    },
+    {
+      "id": "potionOfFullRejuvenation",
+      "fromId": "potionOfFullHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 17,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 44,
+      "name": "Potion of Full Rejuvenation",
+      "defaults": {
+        "price": 600,
+        "useOn": "lifeAndManaDamage"
+      },
+      "formulas": {
+        "value2": 0
+      }
+    },
+    {
+      "id": "spectralElixir",
+      "fromId": "potionOfFullHealing",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 19,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": {1},
+      "name": "Spectral Elixir",
+      "defaults": {
+        "price": 10000,
+        "useOn": "allAttributes",
+        "useOp": "+"
+      },
+      "formulas": {
+        "value": 3
+      },
+      "description1": "",
+      "description2": ""
+    }
+  ]
+}

@@ -1,0 +1,324 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "useStashItem11",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [0, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem12",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [0, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem13",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [0, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem14",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [0, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem21",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [1, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem22",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [1, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem23",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [1, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem24",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [1, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem31",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [2, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem32",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [2, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem33",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [2, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem34",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [2, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem41",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [3, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem42",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [3, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem43",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [3, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem44",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [3, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem51",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [4, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem52",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [4, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem53",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [4, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem54",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [4, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem61",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [5, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem62",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [5, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem63",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [5, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem64",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [5, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem71",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [6, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem72",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [6, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem73",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [6, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem74",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [6, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem81",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [7, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem82",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [7, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem83",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [7, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem84",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [7, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem91",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [8, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem92",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [8, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem93",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [8, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem94",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [8, 3] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem101",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [9, 0] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem102",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [9, 1] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem103",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [9, 2] },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "useStashItem104",
+      "action": [
+        { "name": "item.use", "inventory": "stash", "item": [9, 3] },
+        "updateAllPlayerStats"
+      ]
+    }
+  ]
+}

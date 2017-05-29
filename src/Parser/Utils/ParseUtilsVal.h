@@ -2,6 +2,7 @@
 
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
+#include "Game/Number.h"
 #include "IgnoreResource.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
@@ -116,11 +117,15 @@ namespace Parser
 		return val;
 	}
 
+	Number32 getMinMaxNumber32Val(const rapidjson::Value& elem);
+
 	ItemXY getItemXYVal(const rapidjson::Value& elem, const ItemXY& val = {});
 
 	ItemCoordInventory getItemCoordInventoryVal(const rapidjson::Value& elem);
 
 	ItemLocation getItemLocationVal(const rapidjson::Value& elem);
+
+	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem);
 
 	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
 		PlayerInventory val = PlayerInventory::Body);

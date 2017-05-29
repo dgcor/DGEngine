@@ -1,0 +1,10 @@
+{
+  "animation": {
+    "id": "smlogo",
+    "texture": "smlogo",
+    "frames": 16,
+    "position": [0, 0],
+    "anchor": "none",
+    "refresh": 50
+  }
+}

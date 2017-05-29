@@ -1,0 +1,174 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "gameMenuCommon" },
+    { "name": "resource.ignore", "id": "level", "ignore": "update" },
+    { "name": "level.pause", "pause": true },
+    {
+      "name": "action.set",
+      "id": "anchorLeftPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent1", "anchor": "left", "offset": [-1, 0] }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorRightPentagram",
+      "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right", "offset": [1, 0] }
+    }
+  ],
+  "load": "ui/level/char/disableKeys.json",
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "menu" }
+    }
+  ],
+  "texture": [
+    {
+      "id": "hf_logo3",
+      "file": "data/hf_logo3.CEL",
+      "palette": "town"
+    },
+    {
+      "id": "PentSpin",
+      "file":"data/PentSpin.cel",
+      "palette": "town"
+    }
+  ],
+  "animation": [
+    {
+      "id": "smlogo",
+      "texture": "hf_logo3",
+      "frames": 16,
+      "position": [105, 3],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent1",
+      "texture": "PentSpin",
+      "frames": 8,
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent2",
+      "texture": "PentSpin",
+      "frames": 8,
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": [
+    {
+      "id": "char2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 361],
+      "textureRect": [71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "button.click", "id": "char", "playSound": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "char2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "char2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "quest2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 387],
+      "textureRect": [0, 19, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "button.click", "id": "quest", "playSound": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "quest2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "quest2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "inv2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [560, 361],
+      "textureRect": [0, 76, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "button.click", "id": "inv", "playSound": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "inv2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "inv2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "spell2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [560, 387],
+      "textureRect": [0, 95, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "button.click", "id": "spell", "playSound": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "spell2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "spell2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "map2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 427],
+      "textureRect": [0, 38, 71, 19],
+      "clickUp": true,
+      "onClick": [
+        { "name": "button.click", "id": "map", "playSound": false }
+      ],
+      "onClickIn": { "name": "button.setTexture", "id": "map2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "map2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "menu2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [9, 453],
+      "textureRect": [0, 57, 71, 19],
+      "clickUp": true,
+      "onClickIn": { "name": "button.setTexture", "id": "menu2", "texture": "panel8bu" },
+      "onClickOut": [
+        { "name": "button.setTexture", "id": "menu2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    }
+  ]
+}

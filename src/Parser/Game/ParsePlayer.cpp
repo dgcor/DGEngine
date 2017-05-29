@@ -194,7 +194,7 @@ namespace Parser
 					if (it->name.GetStringLength() > 0)
 					{
 						player->setNumber(it->name.GetString(),
-							getMinMaxIntVal<LevelObjValue>(it->value));
+							getMinMaxNumber32Val(it->value));
 					}
 				}
 			}

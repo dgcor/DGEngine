@@ -494,7 +494,13 @@ std::shared_ptr<Item> Level::getItem(const MapCoord& mapCoord) const
 
 std::shared_ptr<Item> Level::getItem(const ItemCoordInventory& itemCoord) const
 {
-	auto player = getPlayerOrCurrent(itemCoord.getPlayerId());
+	Player* player;
+	return getItem(itemCoord, player);
+}
+
+std::shared_ptr<Item> Level::getItem(const ItemCoordInventory& itemCoord, Player*& player) const
+{
+	player = getPlayerOrCurrent(itemCoord.getPlayerId());
 	if (player != nullptr)
 	{
 		if (itemCoord.isSelectedItem() == true)
@@ -516,13 +522,20 @@ std::shared_ptr<Item> Level::getItem(const ItemCoordInventory& itemCoord) const
 
 std::shared_ptr<Item> Level::getItem(const ItemLocation& location) const
 {
+	Player* player;
+	return getItem(location, player);
+}
+
+std::shared_ptr<Item> Level::getItem(const ItemLocation& location, Player*& player) const
+{
 	if (location.is<MapCoord>() == true)
 	{
+		player = nullptr;
 		return getItem(location.get<MapCoord>());
 	}
 	else
 	{
-		return getItem(location.get<ItemCoordInventory>());
+		return getItem(location.get<ItemCoordInventory>(), player);
 	}
 }
 

@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include <string>
+#include "Utils.h"
 
 class ActDrawableAddPositionOffset : public Action
 {
@@ -80,17 +81,18 @@ public:
 	}
 };
 
-class ActDrawableAnchorSizeX : public Action
+class ActDrawableAnchorSizeXY : public Action
 {
 private:
 	std::string id;
 	std::string idAnchorTo;
 	float offset;
+	bool applyToY;
 
 public:
-	ActDrawableAnchorSizeX(const std::string& id_,
-		const std::string& idAnchorTo_, float offset_)
-		: id(id_), idAnchorTo(idAnchorTo_), offset(offset_) {}
+	ActDrawableAnchorSizeXY(const std::string& id_,
+		const std::string& idAnchorTo_, float offset_, bool applyToY_)
+		: id(id_), idAnchorTo(idAnchorTo_), offset(offset_), applyToY(applyToY_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -99,45 +101,30 @@ public:
 
 		if (item != nullptr && itemAnchorTo != nullptr)
 		{
-			auto newSize = (itemAnchorTo->Position().x - item->Position().x) + offset;
-			auto size = item->Size();
+			const auto& posA = itemAnchorTo->Position();
+			const auto& posB = item->Position();
+			float newSize;
+			if (applyToY == false)
+			{
+				newSize = (posA.x - posB.x) + offset;
+			}
+			else
+			{
+				newSize = (posA.y - posB.y) + offset;
+			}
 			if (newSize < 0.f)
 			{
 				newSize = 0.f;
 			}
-			size.x = newSize;
-			item->Size(size);
-		}
-		return true;
-	}
-};
-
-class ActDrawableAnchorSizeY : public Action
-{
-private:
-	std::string id;
-	std::string idAnchorTo;
-	float offset;
-
-public:
-	ActDrawableAnchorSizeY(const std::string& id_,
-		const std::string& idAnchorTo_, float offset_)
-		: id(id_), idAnchorTo(idAnchorTo_), offset(offset_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchorTo = game.Resources().getResource<UIObject>(idAnchorTo);
-
-		if (item != nullptr && itemAnchorTo != nullptr)
-		{
-			auto newSize = (itemAnchorTo->Position().y - item->Position().y) + offset;
 			auto size = item->Size();
-			if (newSize < 0.f)
+			if (applyToY == false)
 			{
-				newSize = 0.f;
+				size.x = newSize;
 			}
-			size.y = newSize;
+			else
+			{
+				size.y = newSize;
+			}
 			item->Size(size);
 		}
 		return true;
@@ -518,6 +505,57 @@ public:
 	}
 };
 
+class ActDrawableResizeXY : public Action
+{
+private:
+	std::string id;
+	Variable size;
+	Variable inputRangeMin;
+	Variable inputRangeMax;
+	sf::Vector2i sizeRange;
+	bool applyToY;
+
+public:
+	ActDrawableResizeXY(const std::string& id_, const Variable& size_,
+		const Variable& inputRangeMin_, const Variable& inputRangeMax_,
+		const sf::Vector2i& sizeRange_, bool applyToY_) : id(id_), size(size_),
+		inputRangeMin(inputRangeMin_), inputRangeMax(inputRangeMax_),
+		sizeRange(sizeRange_), applyToY(applyToY_) {}
+
+	virtual bool execute(Game& game)
+	{
+		if (sizeRange.y > sizeRange.x)
+		{
+			auto item = game.Resources().getResource<UIObject>(id);
+			if (item != nullptr)
+			{
+				sf::Vector2i inputRange(
+					(int)game.getVarOrPropLong(inputRangeMin),
+					(int)game.getVarOrPropLong(inputRangeMax));
+
+				if (inputRange.y > inputRange.x)
+				{
+					auto newSize = game.getVarOrPropLong(size);
+					newSize = (int64_t)Utils::normalizeNumber<sf::Vector2i>(
+						(long)newSize, inputRange, sizeRange);
+
+					auto itemSize = item->Size();
+					if (applyToY == false)
+					{
+						itemSize.x = (float)newSize;
+					}
+					else
+					{
+						itemSize.y = (float)newSize;
+					}
+					item->Size(itemSize);
+				}
+			}
+		}
+		return true;
+	}
+};
+
 class ActDrawableResizeOnMouseX : public Action
 {
 private:
@@ -679,14 +717,16 @@ public:
 	}
 };
 
-class ActDrawableSetPositionX : public Action
+class ActDrawableSetPositionXY : public Action
 {
 private:
 	std::string id;
 	float pos;
+	bool applyToY;
 
 public:
-	ActDrawableSetPositionX(const std::string& id_, const float pos_) : id(id_), pos(pos_) {}
+	ActDrawableSetPositionXY(const std::string& id_, float pos_,
+		bool applyToY_) : id(id_), pos(pos_), applyToY(applyToY_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -694,29 +734,14 @@ public:
 		if (item != nullptr)
 		{
 			auto pos_ = item->Position();
-			pos_.x = pos;
-			item->Position(pos_);
-		}
-		return true;
-	}
-};
-
-class ActDrawableSetPositionY : public Action
-{
-private:
-	std::string id;
-	float pos;
-
-public:
-	ActDrawableSetPositionY(const std::string& id_, const float pos_) : id(id_), pos(pos_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		if (item != nullptr)
-		{
-			auto pos_ = item->Position();
-			pos_.y = pos;
+			if (applyToY == false)
+			{
+				pos_.x = pos;
+			}
+			else
+			{
+				pos_.y = pos;
+			}
 			item->Position(pos_);
 		}
 		return true;
@@ -743,14 +768,16 @@ public:
 	}
 };
 
-class ActDrawableSetSizeX : public Action
+class ActDrawableSetSizeXY : public Action
 {
 private:
 	std::string id;
 	float size;
+	bool applyToY;
 
 public:
-	ActDrawableSetSizeX(const std::string& id_, float size_) : id(id_), size(size_) {}
+	ActDrawableSetSizeXY(const std::string& id_, float size_,
+		bool applyToY_) : id(id_), size(size_), applyToY(applyToY_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -758,29 +785,14 @@ public:
 		if (item != nullptr)
 		{
 			auto size_ = item->Size();
-			size_.x = size;
-			item->Size(size_);
-		}
-		return true;
-	}
-};
-
-class ActDrawableSetSizeY : public Action
-{
-private:
-	std::string id;
-	float size;
-
-public:
-	ActDrawableSetSizeY(const std::string& id_, float size_) : id(id_), size(size_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		if (item != nullptr)
-		{
-			auto size_ = item->Size();
-			size_.y = size;
+			if (applyToY == false)
+			{
+				size_.x = size;
+			}
+			else
+			{
+				size_.y = size;
+			}
 			item->Size(size_);
 		}
 		return true;

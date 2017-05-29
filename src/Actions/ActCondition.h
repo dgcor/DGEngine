@@ -54,7 +54,7 @@ private:
 	}
 
 public:
-	ActIfCondition(unsigned conditionHash16_,
+	ActIfCondition(uint16_t conditionHash16_,
 		const VarOrPredicate& param1_,
 		const VarOrPredicate& param2_,
 		const std::shared_ptr<Action>& then_,

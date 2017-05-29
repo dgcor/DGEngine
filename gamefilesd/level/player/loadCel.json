@@ -1,0 +1,26 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Rogue",
+        "action": [
+          { "name": "load", "file": "level/player/rogueCel.json" },
+          { "name": "load", "file": "level/player/rogueClass.json" }
+        ]
+      },
+      {
+        "value": "Sorceror",
+        "action": [
+          { "name": "load", "file": "level/player/sorcerorCel.json" },
+          { "name": "load", "file": "level/player/sorcerorClass.json" }
+        ]
+      }
+    ],
+    "default": [
+      { "name": "load", "file": "level/player/warriorCel.json" },
+      { "name": "load", "file": "level/player/warriorClass.json" }
+    ]
+  }
+}

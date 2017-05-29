@@ -1,0 +1,137 @@
+{
+  "itemClass": [
+    {
+      "id": "club",
+      "fromId": "baseWeapon",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 77,
+      "name": "Club",
+      "shortName": "Club",
+      "type": "Club",
+      "defaults": {
+        "price": 20,
+        "damageMin": 1,
+        "damageMax": 6,
+        "durability": 20,
+        "durabilityMax": 20
+      },
+      "inventorySize": [1, 3]
+    },
+    {
+      "id": "spikedClub",
+      "fromId": "club",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 81,
+      "name": "Spiked Club",
+      "defaults": {
+        "price": 225,
+        "damageMin": 3,
+        "damageMax": 6,
+        "durability": 20,
+        "durabilityMax": 20,
+        "requiredStrength": 18
+      }
+    },
+    {
+      "id": "mace",
+      "fromId": "club",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 70,
+      "name": "Mace",
+      "shortName": "Mace",
+      "defaults": {
+        "price": 200,
+        "damageMin": 1,
+        "damageMax": 8,
+        "durability": 32,
+        "durabilityMax": 32,
+        "requiredStrength": 16
+      }
+    },
+    {
+      "id": "morningStar",
+      "fromId": "mace",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 74,
+      "name": "Morning Star",
+      "defaults": {
+        "price": 300,
+        "damageMin": 1,
+        "damageMax": 10,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 26
+      }
+    },
+    {
+      "id": "flail",
+      "fromId": "mace",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 142,
+      "name": "Flail",
+      "shortName": "Flail",
+      "defaults": {
+        "price": 500,
+        "damageMin": 2,
+        "damageMax": 12,
+        "durability": 36,
+        "durabilityMax": 36,
+        "requiredStrength": 30
+      },
+      "inventorySize": [2, 3]
+    },
+    {
+      "id": "warHammer",
+      "fromId": "flail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 132,
+      "name": "War Hammer",
+      "shortName": "Hammer",
+      "defaults": {
+        "price": 600,
+        "damageMin": 5,
+        "damageMax": 9,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 40
+      }
+    },
+    {
+      "id": "maul",
+      "fromId": "flail",
+      "celTextureDrop": "itemDrop",
+      "celIndexDrop": 40,
+      "celTextureInventory": "itemIcons",
+      "celTextureInventoryUnusable": "itemIconsInfra",
+      "celIndexInventory": 133,
+      "name": "Maul",
+      "shortName": "Maul",
+      "defaults": {
+        "price": 900,
+        "damageMin": 6,
+        "damageMax": 20,
+        "durability": 50,
+        "durabilityMax": 50,
+        "requiredStrength": 55
+      }
+    }
+  ]
+}

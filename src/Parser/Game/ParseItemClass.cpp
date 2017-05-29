@@ -1,4 +1,5 @@
 #include "ParseItemClass.h"
+#include "Game/ItemProperties.h"
 #include "Game/ItemClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
@@ -133,33 +134,63 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						itemClass->setDefault(it->name.GetString(),
-							getMinMaxIntVal<LevelObjValue>(it->value));
+						auto nameStr = it->name.GetString();
+						LevelObjValue val;
+						switch (str2int16(nameStr))
+						{
+						case ItemProp::UseOn:
+						case ItemProp::UseOp:
+							val = str2int16(getStringCharVal(it->value));
+							break;
+						default:
+							val = getMinMaxIntVal<LevelObjValue>(it->value);
+							break;
+						}
+						itemClass->setDefault(nameStr, val);
 					}
 				}
 			}
 		}
 
-		if (elem.HasMember("action") == true)
+		if (elem.HasMember("actions") == true)
 		{
-			itemClass->setAction(parseAction(game, elem["action"]));
+			const auto& actions = elem["actions"];
+			if (actions.IsObject() == true)
+			{
+				for (auto it = actions.MemberBegin(); it != actions.MemberEnd(); ++it)
+				{
+					if (it->name.GetStringLength() > 0)
+					{
+						itemClass->setAction(str2int16(it->name.GetString()),
+							parseAction(game, it->value));
+					}
+				}
+			}
 		}
-		if (elem.HasMember("actionDropLevel") == true)
+
+		if (elem.HasMember("formulas") == true)
 		{
-			itemClass->setActionDropLevel(parseAction(game, elem["actionDropLevel"]));
+			const auto& formulas = elem["formulas"];
+			if (formulas.IsObject() == true)
+			{
+				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
+				{
+					auto nameHash = str2int16(it->name.GetString());
+					if (nameHash != str2int16(""))
+					{
+						if (it->value.IsNull() == true)
+						{
+							itemClass->deleteFormula(nameHash);
+						}
+						else
+						{
+							itemClass->setFormula(nameHash, getStringVal(it->value));
+						}
+					}
+				}
+			}
 		}
-		if (elem.HasMember("actionPickLevel") == true)
-		{
-			itemClass->setActionPickLevel(parseAction(game, elem["actionPickLevel"]));
-		}
-		if (elem.HasMember("actionDropInventory") == true)
-		{
-			itemClass->setActionDropInventory(parseAction(game, elem["actionDropInventory"]));
-		}
-		if (elem.HasMember("actionPickInventory") == true)
-		{
-			itemClass->setActionPickInventory(parseAction(game, elem["actionPickInventory"]));
-		}
+
 		if (elem.HasMember("prefix") == true)
 		{
 			auto namer = level->getNamer(getStringVal(elem["prefix"]));
@@ -195,27 +226,6 @@ namespace Parser
 		{
 			auto namer = level->getNamer(getStringVal(elem["description5"]));
 			itemClass->setDescription(4, namer);
-		}
-
-		if (elem.HasMember("price1") == true)
-		{
-			itemClass->setPriceFormula(0, getStringVal(elem["price1"]));
-		}
-		if (elem.HasMember("price2") == true)
-		{
-			itemClass->setPriceFormula(1, getStringVal(elem["price2"]));
-		}
-		if (elem.HasMember("price3") == true)
-		{
-			itemClass->setPriceFormula(2, getStringVal(elem["price3"]));
-		}
-		if (elem.HasMember("price4") == true)
-		{
-			itemClass->setPriceFormula(3, getStringVal(elem["price4"]));
-		}
-		if (elem.HasMember("price5") == true)
-		{
-			itemClass->setPriceFormula(4, getStringVal(elem["price5"]));
 		}
 
 		level->addItemClass(id, itemClass);

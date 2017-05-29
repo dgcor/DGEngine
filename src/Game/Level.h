@@ -239,7 +239,9 @@ public:
 
 	std::shared_ptr<Item> getItem(const MapCoord& mapCoord) const;
 	std::shared_ptr<Item> getItem(const ItemCoordInventory& itemCoord) const;
+	std::shared_ptr<Item> getItem(const ItemCoordInventory& itemCoord, Player*& player) const;
 	std::shared_ptr<Item> getItem(const ItemLocation& location) const;
+	std::shared_ptr<Item> getItem(const ItemLocation& location, Player*& player) const;
 	bool setItem(const MapCoord& mapCoord, const std::shared_ptr<Item>& item);
 	bool setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<Item>& item);
 	bool setItem(const ItemLocation& location, const std::shared_ptr<Item>& item);

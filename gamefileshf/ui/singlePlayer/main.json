@@ -1,0 +1,170 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayer", "ignorePrevious": true },
+    { "name": "game.fadeIn" }
+  ],
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "cancel" }
+    },
+    {
+      "key": "enter",
+      "action": { "name": "button.click", "id": "ok" }
+    }
+  ],
+  "texture": [
+    {
+      "id": "selhero",
+      "file":"ui_art/selhero.pcx"
+    },
+    {
+      "id": "heros",
+      "file":"ui_art/heros.pcx"
+    },
+    {
+      "id": "focus16",
+      "file":"ui_art/focus16.pcx",
+      "mask": "0x00FF00"
+    },
+    {
+      "id": "focus",
+      "file":"ui_art/focus.pcx",
+      "mask": "0x00FF00"
+    },
+    {
+      "id": "sb_arrow",
+      "file":"ui_art/sb_arrow.pcx",
+      "mask": "0xFFFFFF"
+    },
+    {
+      "id": "sb_bg",
+      "file":"ui_art/sb_bg.pcx",
+      "mask": "0xFFFFFF"
+    },
+    {
+      "id": "sb_thumb",
+      "file":"ui_art/sb_thumb.pcx",
+      "mask": "0xFFFFFF"
+    }
+  ],
+  "image": [
+    {
+      "id": "selhero",
+      "texture": "selhero",
+      "anchor": "none"
+    },
+    {
+      "id": "heros",
+      "position": [30, 211],
+      "anchor": "none",
+      "texture": "heros",
+      "textureRect": [0, 228, 180, 76]
+    }
+  ],
+  "animation": {
+    "id": "smlogo",
+    "texture":"smlogo",
+    "frames": 16,
+    "position": [0, 0],
+    "anchor": "none",
+    "refresh": 50
+  },
+  "text": [
+    {
+      "id": "label1",
+      "bitmapFont": "font30s",
+      "position": [320, 161],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "label2",
+      "bitmapFont": "font30s",
+      "position": [425, 211],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "level",
+      "bitmapFont": "font16s",
+      "text": "Level:",
+      "position": [149, 323],
+      "anchor": "none",
+      "horizontalAlign": "right"
+    },
+    {
+      "id": "strength",
+      "bitmapFont": "font16s",
+      "text": "Strength:",
+      "position": [149, 358],
+      "anchor": "none",
+      "horizontalAlign": "right"
+    },
+    {
+      "id": "magic",
+      "bitmapFont": "font16s",
+      "text": "Magic:",
+      "position": [149, 380],
+      "anchor": "none",
+      "horizontalAlign": "right"
+    },
+    {
+      "id": "dexterity",
+      "bitmapFont": "font16s",
+      "text": "Dexterity:",
+      "position": [149, 401],
+      "anchor": "none",
+      "horizontalAlign": "right"
+    },
+    {
+      "id": "vitality",
+      "bitmapFont": "font16s",
+      "text": "Vitality:",
+      "position": [149, 422],
+      "anchor": "none",
+      "horizontalAlign": "right"
+    },
+    {
+      "id": "txtLevel",
+      "bitmapFont": "font16s",
+      "text": "--",
+      "position": [179, 323],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "txtStrength",
+      "bitmapFont": "font16s",
+      "text": "--",
+      "position": [179, 358],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "txtMagic",
+      "bitmapFont": "font16s",
+      "text": "--",
+      "position": [179, 380],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "txtDexterity",
+      "bitmapFont": "font16s",
+      "text": "--",
+      "position": [179, 401],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "txtVitality",
+      "bitmapFont": "font16s",
+      "text": "--",
+      "position": [179, 422],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    }
+  ],
+  "load": "ui/singlePlayer/select.json"
+}

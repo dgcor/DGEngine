@@ -1,0 +1,850 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelInventory" },
+  "button": [
+    {
+      "id": "playerLeftHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 76],
+      "onClick": "updateInventoryLeftHandClick",
+      "onHoverEnter": "updateInventoryLeftHandText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerRightHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [569, 76],
+      "onClick": "updateInventoryRightHandClick",
+      "onHoverEnter": "updateInventoryRightHandText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerArmor",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, 76],
+      "onClick": "updateInventoryArmorClick",
+      "onHoverEnter": "updateInventoryArmorText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerHelmet",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [453, 2],
+      "onClick": "updateInventoryHelmetClick",
+      "onHoverEnter": "updateInventoryHelmetText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerAmulet",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [525, 32],
+      "onClick": "updateInventoryAmuletClick",
+      "onHoverEnter": "updateInventoryAmuletText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerLeftRing",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [368, 180],
+      "onClick": "updateInventoryLeftRingClick",
+      "onHoverEnter": "updateInventoryLeftRingText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "playerRightRing",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [569, 180],
+      "onClick": "updateInventoryRightRingClick",
+      "onHoverEnter": "updateInventoryRightRingText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv11",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 222],
+      "onClick": "updateInventoryStash11Click",
+      "onRightClick": "useStashItem11",
+      "onHoverEnter": "updateInventoryStash11Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv12",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 251],
+      "onClick": "updateInventoryStash12Click",
+      "onRightClick": "useStashItem12",
+      "onHoverEnter": "updateInventoryStash12Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv13",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 280],
+      "onClick": "updateInventoryStash13Click",
+      "onRightClick": "useStashItem13",
+      "onHoverEnter": "updateInventoryStash13Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv14",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 308],
+      "onClick": "updateInventoryStash14Click",
+      "onRightClick": "useStashItem14",
+      "onHoverEnter": "updateInventoryStash14Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv21",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 222],
+      "onClick": "updateInventoryStash21Click",
+      "onRightClick": "useStashItem21",
+      "onHoverEnter": "updateInventoryStash21Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv22",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 251],
+      "onClick": "updateInventoryStash22Click",
+      "onRightClick": "useStashItem22",
+      "onHoverEnter": "updateInventoryStash22Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv23",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 280],
+      "onClick": "updateInventoryStash23Click",
+      "onRightClick": "useStashItem23",
+      "onHoverEnter": "updateInventoryStash23Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv24",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 308],
+      "onClick": "updateInventoryStash24Click",
+      "onRightClick": "useStashItem24",
+      "onHoverEnter": "updateInventoryStash24Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv31",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 222],
+      "onClick": "updateInventoryStash31Click",
+      "onRightClick": "useStashItem31",
+      "onHoverEnter": "updateInventoryStash31Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv32",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 251],
+      "onClick": "updateInventoryStash32Click",
+      "onRightClick": "useStashItem32",
+      "onHoverEnter": "updateInventoryStash32Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv33",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 280],
+      "onClick": "updateInventoryStash33Click",
+      "onRightClick": "useStashItem33",
+      "onHoverEnter": "updateInventoryStash33Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv34",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 308],
+      "onClick": "updateInventoryStash34Click",
+      "onRightClick": "useStashItem34",
+      "onHoverEnter": "updateInventoryStash34Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv41",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 222],
+      "onClick": "updateInventoryStash41Click",
+      "onRightClick": "useStashItem41",
+      "onHoverEnter": "updateInventoryStash41Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv42",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 251],
+      "onClick": "updateInventoryStash42Click",
+      "onRightClick": "useStashItem42",
+      "onHoverEnter": "updateInventoryStash42Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv43",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 280],
+      "onClick": "updateInventoryStash43Click",
+      "onRightClick": "useStashItem43",
+      "onHoverEnter": "updateInventoryStash43Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv44",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 308],
+      "onClick": "updateInventoryStash44Click",
+      "onRightClick": "useStashItem44",
+      "onHoverEnter": "updateInventoryStash44Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv51",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 222],
+      "onClick": "updateInventoryStash51Click",
+      "onRightClick": "useStashItem51",
+      "onHoverEnter": "updateInventoryStash51Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv52",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 251],
+      "onClick": "updateInventoryStash52Click",
+      "onRightClick": "useStashItem52",
+      "onHoverEnter": "updateInventoryStash52Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv53",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 280],
+      "onClick": "updateInventoryStash53Click",
+      "onRightClick": "useStashItem53",
+      "onHoverEnter": "updateInventoryStash53Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv54",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 308],
+      "onClick": "updateInventoryStash54Click",
+      "onRightClick": "useStashItem54",
+      "onHoverEnter": "updateInventoryStash54Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv61",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 222],
+      "onClick": "updateInventoryStash61Click",
+      "onRightClick": "useStashItem61",
+      "onHoverEnter": "updateInventoryStash61Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv62",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 251],
+      "onClick": "updateInventoryStash62Click",
+      "onRightClick": "useStashItem62",
+      "onHoverEnter": "updateInventoryStash62Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv63",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 280],
+      "onClick": "updateInventoryStash63Click",
+      "onRightClick": "useStashItem63",
+      "onHoverEnter": "updateInventoryStash63Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv64",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 308],
+      "onClick": "updateInventoryStash64Click",
+      "onRightClick": "useStashItem64",
+      "onHoverEnter": "updateInventoryStash64Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv71",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 222],
+      "onClick": "updateInventoryStash71Click",
+      "onRightClick": "useStashItem71",
+      "onHoverEnter": "updateInventoryStash71Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv72",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 251],
+      "onClick": "updateInventoryStash72Click",
+      "onRightClick": "useStashItem72",
+      "onHoverEnter": "updateInventoryStash72Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv73",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 280],
+      "onClick": "updateInventoryStash73Click",
+      "onRightClick": "useStashItem73",
+      "onHoverEnter": "updateInventoryStash73Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv74",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 308],
+      "onClick": "updateInventoryStash74Click",
+      "onRightClick": "useStashItem74",
+      "onHoverEnter": "updateInventoryStash74Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv81",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 222],
+      "onClick": "updateInventoryStash81Click",
+      "onRightClick": "useStashItem81",
+      "onHoverEnter": "updateInventoryStash81Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv82",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 251],
+      "onClick": "updateInventoryStash82Click",
+      "onRightClick": "useStashItem82",
+      "onHoverEnter": "updateInventoryStash82Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv83",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 280],
+      "onClick": "updateInventoryStash83Click",
+      "onRightClick": "useStashItem83",
+      "onHoverEnter": "updateInventoryStash83Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv84",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 308],
+      "onClick": "updateInventoryStash84Click",
+      "onRightClick": "useStashItem84",
+      "onHoverEnter": "updateInventoryStash84Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv91",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 222],
+      "onClick": "updateInventoryStash91Click",
+      "onRightClick": "useStashItem91",
+      "onHoverEnter": "updateInventoryStash91Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv92",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 251],
+      "onClick": "updateInventoryStash92Click",
+      "onRightClick": "useStashItem92",
+      "onHoverEnter": "updateInventoryStash92Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv93",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 280],
+      "onClick": "updateInventoryStash93Click",
+      "onRightClick": "useStashItem93",
+      "onHoverEnter": "updateInventoryStash93Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv94",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 308],
+      "onClick": "updateInventoryStash94Click",
+      "onRightClick": "useStashItem94",
+      "onHoverEnter": "updateInventoryStash94Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv101",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 222],
+      "onClick": "updateInventoryStash101Click",
+      "onRightClick": "useStashItem101",
+      "onHoverEnter": "updateInventoryStash101Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv102",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 251],
+      "onClick": "updateInventoryStash102Click",
+      "onRightClick": "useStashItem102",
+      "onHoverEnter": "updateInventoryStash102Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv103",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 280],
+      "onClick": "updateInventoryStash103Click",
+      "onRightClick": "useStashItem103",
+      "onHoverEnter": "updateInventoryStash103Text",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "btnInv104",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 308],
+      "onClick": "updateInventoryStash104Click",
+      "onRightClick": "useStashItem104",
+      "onHoverEnter": "updateInventoryStash104Text",
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
+  "image": [
+    {
+      "id": "imgLeftHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 77]
+    },
+    {
+      "id": "imgRightHand",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [569, 77]
+    },
+    {
+      "id": "imgArmor",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, 77]
+    },
+    {
+      "id": "imgHelmet",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [453, -10]
+    },
+    {
+      "id": "imgAmulet",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [511, 5]
+    },
+    {
+      "id": "imgLeftRing",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [354, 150]
+    },
+    {
+      "id": "imgRightRing",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [555, 150]
+    },
+    {
+      "id": "imgInv11",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 222]
+    },
+    {
+      "id": "imgInv12",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [337, 251]
+    },
+    {
+      "id": "imgInv13",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [337, 280]
+    },
+    {
+      "id": "imgInv14",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [337, 308]
+    },
+    {
+      "id": "imgInv21",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [366, 222]
+    },
+    {
+      "id": "imgInv22",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [366, 251]
+    },
+    {
+      "id": "imgInv23",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [366, 280]
+    },
+    {
+      "id": "imgInv24",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [366, 308]
+    },
+    {
+      "id": "imgInv31",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [394, 222]
+    },
+    {
+      "id": "imgInv32",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [394, 251]
+    },
+    {
+      "id": "imgInv33",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [394, 280]
+    },
+    {
+      "id": "imgInv34",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [394, 308]
+    },
+    {
+      "id": "imgInv41",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [423, 222]
+    },
+    {
+      "id": "imgInv42",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [423, 251]
+    },
+    {
+      "id": "imgInv43",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [423, 280]
+    },
+    {
+      "id": "imgInv44",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [423, 308]
+    },
+    {
+      "id": "imgInv51",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [451, 222]
+    },
+    {
+      "id": "imgInv52",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [451, 251]
+    },
+    {
+      "id": "imgInv53",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [451, 280]
+    },
+    {
+      "id": "imgInv54",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [451, 308]
+    },
+    {
+      "id": "imgInv61",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [480, 222]
+    },
+    {
+      "id": "imgInv62",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [480, 251]
+    },
+    {
+      "id": "imgInv63",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [480, 280]
+    },
+    {
+      "id": "imgInv64",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [480, 308]
+    },
+    {
+      "id": "imgInv71",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [509, 222]
+    },
+    {
+      "id": "imgInv72",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [509, 251]
+    },
+    {
+      "id": "imgInv73",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [509, 280]
+    },
+    {
+      "id": "imgInv74",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [509, 308]
+    },
+    {
+      "id": "imgInv81",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [538, 222]
+    },
+    {
+      "id": "imgInv82",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [538, 251]
+    },
+    {
+      "id": "imgInv83",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [538, 280]
+    },
+    {
+      "id": "imgInv84",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [538, 308]
+    },
+    {
+      "id": "imgInv91",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [567, 222]
+    },
+    {
+      "id": "imgInv92",
+      "texture": "empty",
+      "textureRect": [56, 84],
+      "anchor": "right",
+      "position": [567, 251]
+    },
+    {
+      "id": "imgInv93",
+      "texture": "empty",
+      "textureRect": [56, 56],
+      "anchor": "right",
+      "position": [567, 280]
+    },
+    {
+      "id": "imgInv94",
+      "texture": "empty",
+      "textureRect": [56, 28],
+      "anchor": "right",
+      "position": [567, 308]
+    },
+    {
+      "id": "imgInv101",
+      "texture": "empty",
+      "textureRect": [28, 84],
+      "anchor": "right",
+      "position": [596, 222]
+    },
+    {
+      "id": "imgInv102",
+      "texture": "empty",
+      "textureRect": [28, 84],
+      "anchor": "right",
+      "position": [596, 251]
+    },
+    {
+      "id": "imgInv103",
+      "texture": "empty",
+      "textureRect": [28, 56],
+      "anchor": "right",
+      "position": [596, 280]
+    },
+    {
+      "id": "imgInv104",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 308]
+    }
+  ],
+  "action": [
+    "updateBodyItems",
+    "updateInventoryStash"
+  ]
+}

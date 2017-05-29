@@ -20,13 +20,7 @@ private:
 	std::shared_ptr<CelTextureCache> celTextureInventoryUnusable;
 	size_t celInventoryIdx;
 
-	std::shared_ptr<Action> action;
-
-	std::shared_ptr<Action> actionDropLevel;
-	std::shared_ptr<Action> actionPickLevel;
-
-	std::shared_ptr<Action> actionDropInventory;
-	std::shared_ptr<Action> actionPickInventory;
+	std::vector<std::pair<uint16_t, std::shared_ptr<Action>>> actions;
 
 	std::string name;
 	std::string shortName;
@@ -42,7 +36,8 @@ private:
 
 	std::array<std::shared_ptr<Namer>, 5> descriptions;
 
-	std::array<Formula, 4> priceFormulas;
+	std::array<std::pair<uint16_t, Formula>, 6> formulas;
+	size_t formulasSize{ 0 };
 
 public:
 	ItemClass(const std::shared_ptr<CelTextureCacheVector>& celTextureDrop_,
@@ -89,21 +84,8 @@ public:
 		}
 	}
 
-	const std::shared_ptr<Action>& getAction() const { return action; }
-
-	const std::shared_ptr<Action>& getActionDropLevel() const { return actionDropLevel; }
-	const std::shared_ptr<Action>& getActionPickLevel() const { return actionPickLevel; }
-
-	const std::shared_ptr<Action>& getActionDropInventory() const { return actionDropInventory; }
-	const std::shared_ptr<Action>& getActionPickInventory() const { return actionPickInventory; }
-
-	void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
-
-	void setActionDropLevel(const std::shared_ptr<Action>& action_) { actionDropLevel = action_; }
-	void setActionPickLevel(const std::shared_ptr<Action>& action_) { actionPickLevel = action_; }
-
-	void setActionDropInventory(const std::shared_ptr<Action>& action_) { actionDropInventory = action_; }
-	void setActionPickInventory(const std::shared_ptr<Action>& action_) { actionPickInventory = action_; }
+	void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_);
+	void executeAction(Game& game, uint16_t nameHash16, bool executeNow = false) const;
 
 	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
 	void setDefault(const char* prop, LevelObjValue val);
@@ -146,7 +128,14 @@ public:
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
 
-	void setPriceFormula(size_t idx, const Formula& formula);
+	void setFormula(uint16_t nameHash, const Formula& formula);
+	void deleteFormula(uint16_t nameHash);
 
-	LevelObjValue getPrice(size_t idx, const LevelObject& item) const;
+	bool evalFormula(uint16_t nameHash, const LevelObject& obj, LevelObjValue& val) const;
+	bool evalFormula(uint16_t nameHash, const LevelObject& objA,
+		const LevelObject& objB, LevelObjValue& val) const;
+
+	LevelObjValue evalFormula(uint16_t nameHash, LevelObject& obj) const;
+	LevelObjValue evalFormula(uint16_t nameHash, LevelObject& objA,
+		const LevelObject& objB) const;
 };

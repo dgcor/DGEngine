@@ -20,6 +20,8 @@ public:
 
 	void centerTexture();
 
+	const sf::IntRect& getTextureRect() const { return sprite.getTextureRect(); }
+
 	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
@@ -38,7 +40,13 @@ public:
 	{
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
-	virtual void Size(const sf::Vector2f& size) {}
+	virtual void Size(const sf::Vector2f& size)
+	{
+		auto rect = sprite.getTextureRect();
+		rect.width = (int)size.x;
+		rect.height = (int)size.y;
+		sprite.setTextureRect(rect);
+	}
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		if (visible)

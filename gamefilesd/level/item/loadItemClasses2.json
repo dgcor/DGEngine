@@ -1,0 +1,40 @@
+{
+  "load": "level/item/baseItems.json",
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": [
+      { "name": "load", "file": "level/item/amulets.json" },
+      { "name": "load", "file": ["level/item/armors.json", "150", "114", "162"] },
+      { "name": "load", "file": "level/item/axes.json" },
+      { "name": "load", "file": "level/item/books.json" },
+      { "name": "load", "file": ["level/item/bows.json", "119", "119"] },
+      { "name": "load", "file": "level/item/clubs.json" },
+      { "name": "load", "file": "level/item/helmets.json" },
+      { "name": "load", "file": "level/item/misc.json" },
+      { "name": "load", "file": ["level/item/potions.json", "40"] },
+      { "name": "load", "file": "level/item/rings.json" },
+      { "name": "load", "file": "level/item/scrolls.json" },
+      { "name": "load", "file": "level/item/shields.json" },
+      { "name": "load", "file": ["level/item/staffs.json", "135"] },
+      { "name": "load", "file": "level/item/swords.json" }
+    ],
+    "else": [
+      { "name": "load", "file": "level/item/amulets.json" },
+      { "name": "load", "file": ["level/item/armors.json", "165", "163", "168"] },
+      { "name": "load", "file": "level/item/axes.json" },
+      { "name": "load", "file": "level/item/books.json" },
+      { "name": "load", "file": ["level/item/bows.json", "178", "176"] },
+      { "name": "load", "file": "level/item/clubs.json" },
+      { "name": "load", "file": "level/item/helmets.json" },
+      { "name": "load", "file": "level/item/misc.json" },
+      { "name": "load", "file": ["level/item/potions.json", "26"] },
+      { "name": "load", "file": "level/item/rings.json" },
+      { "name": "load", "file": "level/item/scrolls.json" },
+      { "name": "load", "file": "level/item/shields.json" },
+      { "name": "load", "file": ["level/item/staffs.json", "177"] },
+      { "name": "load", "file": "level/item/swords.json" }
+    ]
+  }
+}

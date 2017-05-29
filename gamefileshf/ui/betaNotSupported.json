@@ -1,0 +1,22 @@
+{
+  "keyboard": {
+    "key": ["enter", " ", "esc"],
+    "action": { "name": "game.close" }
+  },
+  "font": {
+    "id": "liberationSerif",
+    "file": "res/LiberationSerif-Regular.ttf"
+  },
+  "button": {
+    "id": "quit",
+    "font": "liberationSerif",
+    "fontSize": 28,
+    "color": "0xFFFFFF",
+    "position": [320, 240],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "text": "The beta version of Diablo\ncan't be used with Hellfire.",
+    "onClick": "game.close"
+  }
+}

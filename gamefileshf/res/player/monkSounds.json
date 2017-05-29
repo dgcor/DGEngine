@@ -1,0 +1,7 @@
+{
+  "sound": [
+    { "id": "inventoryFull1", "file": "Sfx/Monk/Monk14.wav" },
+    { "id": "inventoryFull2", "file": "Sfx/Monk/Monk15.wav" },
+    { "id": "inventoryFull3", "file": "Sfx/Monk/Monk16.wav" }
+  ]
+}
