@@ -61,11 +61,8 @@
       }
     },
     {
-      "class": "cape",
-      "mapPosition": [63, 73],
-      "properties": {
-        "durability": 8
-      }
+      "class": "leatherArmor",
+      "mapPosition": [63, 73]
     },
     {
       "class": "valorArmor",

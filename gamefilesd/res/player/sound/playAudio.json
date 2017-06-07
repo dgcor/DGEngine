@@ -1,0 +1,8 @@
+{
+  "audio": {
+    "id": "{1}",
+    "file": "{2}/{3}.wav",
+    "play": true,
+    "volume": "|game|soundVolume|"
+  }
+}

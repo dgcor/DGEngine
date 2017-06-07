@@ -173,11 +173,16 @@
       },
       "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -207,11 +212,16 @@
       },
       "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -241,11 +251,16 @@
       },
       "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -275,11 +290,16 @@
       },
       "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -291,11 +311,16 @@
       "clickUp": true,
       "onClickIn": { "name": "button.setTexture", "id": "map", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "map", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -318,11 +343,16 @@
       },
       "onClickIn": { "name": "button.setTexture", "id": "menu", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "menu", "texture": "empty" },
-      "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
-        "setPanelTextColorWhite",
-        "updatePanelTextSpacing"
-      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
       "onHoverLeave": "clearPanelText"
     }
   ],
@@ -363,14 +393,14 @@
     }
   ],
   "keyboard": [
-    { "key": "1", "action": "useBeltItem1" },
-    { "key": "2", "action": "useBeltItem2" },
-    { "key": "3", "action": "useBeltItem3" },
-    { "key": "4", "action": "useBeltItem4" },
-    { "key": "5", "action": "useBeltItem5" },
-    { "key": "6", "action": "useBeltItem6" },
-    { "key": "7", "action": "useBeltItem7" },
-    { "key": "8", "action": "useBeltItem8" },
+    { "key": "1", "action": "useBelt1Item" },
+    { "key": "2", "action": "useBelt2Item" },
+    { "key": "3", "action": "useBelt3Item" },
+    { "key": "4", "action": "useBelt4Item" },
+    { "key": "5", "action": "useBelt5Item" },
+    { "key": "6", "action": "useBelt6Item" },
+    { "key": "7", "action": "useBelt7Item" },
+    { "key": "8", "action": "useBelt8Item" },
     { "key": "b", "action": { "name": "button.click", "id": "spell" } },
     { "key": "c", "action": { "name": "button.click", "id": "char" } },
     { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
@@ -381,7 +411,7 @@
       "key": "f1",
       "action": [
         { "name": "player.addGold", "gold": -4000 },
-        "updateInventoryStash",
+        "updateStashItems",
         "updateCharLabels"
       ]
     },
@@ -389,7 +419,7 @@
       "key": "f2",
       "action": [
         { "name": "player.addGold", "gold": 4000 },
-        "updateInventoryStash",
+        "updateStashItems",
         "updateCharLabels"
       ]
     },

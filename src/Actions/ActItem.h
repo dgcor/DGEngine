@@ -242,7 +242,7 @@ public:
 
 					if (player != nullptr)
 					{
-						player->updatePlayerProperties();
+						player->updateProperties();
 					}
 				}
 			}

@@ -80,6 +80,7 @@
       "celIndexInventory": 140,
       "name": "Quilted Armor",
       "shortName": "Armor",
+      "subType": "Leather",
       "defaults": {
         "price": 200,
         "armor": 10,
@@ -146,6 +147,7 @@
       "celIndexInventory": {1},
       "name": "Ring Mail",
       "shortName": "Mail",
+      "subType": "Plate",
       "defaults": {
         "price": 900,
         "armor": 20,
@@ -301,7 +303,9 @@
         "damageFromEnemies": -3,
         "identified": false,
         "unique": true
-      }
+      },
+      "prefix": null,
+      "suffix": null
     }
   ]
 }

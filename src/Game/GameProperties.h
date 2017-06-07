@@ -60,8 +60,6 @@ enum class PlayerItemMount : size_t
 	Size
 };
 
-const size_t PlayerPaletteSize = 8;
-
 enum class PlayerStatus : size_t
 {
 	Stand1,

@@ -1,0 +1,17 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{1}Click",
+    "action": [
+      { "name": "item.update", "inventory": "belt", "item": {2} },
+      "update{1}Item",
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": "updateSelectedItemText",
+        "else": "update{1}Text"
+      }
+    ]
+  }
+}

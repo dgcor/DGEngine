@@ -4,56 +4,56 @@
       "id": "healer",
       "name": "Healer",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "healer" }
+      "celTextures": "healer"
     },
     {
       "id": "storyTeller",
       "name": "Story teller",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "strytell" }
+      "celTextures": "strytell"
     },
     {
       "id": "blacksmith",
       "name": "Blacksmith",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "smithn" }
+      "celTextures": "smithn"
     },
     {
       "id": "tavernOwner",
       "name": "Tavern owner",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "twnfn" }
+      "celTextures": "twnfn"
     },
     {
       "id": "drunk",
       "name": "Drunk",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "twndrunk" }
+      "celTextures": "twndrunk"
     },
     {
       "id": "barmaid",
       "name": "Barmaid",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "wmnn" }
+      "celTextures": "wmnn"
     },
     {
       "id": "boy",
       "name": "Boy",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "pegkid1" }
+      "celTextures": "pegkid1"
     },
     {
       "id": "witch",
       "name": "Witch",
       "type": "Human",
-      "celTextures": { "palette": 0, "name": "witch" }
+      "celTextures": "witch"
     },
     {
       "id": "cow",
       "name": "Cow",
       "type": "Animal",
       "description": "Cow",
-      "celTextures": { "palette": 0, "name": "cow" }
+      "celTextures": "cow"
     }
   ]
 }

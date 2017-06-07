@@ -1,7 +1,11 @@
 {
   "sound": [
-    { "id": "inventoryFull1", "file": "sfx/Warrior/Warior14.wav" },
-    { "id": "inventoryFull2", "file": "sfx/Warrior/Warior15.wav" },
-    { "id": "inventoryFull3", "file": "sfx/Warrior/Warior16.wav" }
+    { "id": "cantUseThisYet", "file": "sfx/Warrior/Warior13.wav" },
+    { "id": "cantCarryAnymore", "file": "sfx/Warrior/Warior14.wav" },
+    { "id": "haveNoRoom", "file": "sfx/Warrior/Warior15.wav" },
+    { "id": "whereWouldIPutThis", "file": "sfx/Warrior/Warior16.wav" },
+    { "id": "cantCastThatHere", "file": "sfx/Warrior/warior27.wav" },
+    { "id": "dontHaveASpellReady", "file": "sfx/Warrior/warior34.wav" },
+    { "id": "notEnoughMana", "file": "sfx/Warrior/Warior35.wav" }
   ]
 }

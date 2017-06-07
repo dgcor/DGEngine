@@ -5,46 +5,10 @@
     "50",
     "texts/quests/hallsOfTheBlind.txt"
   ],
-  "action": {
-    "name": "switch",
-    "param": "|currentLevel|currentPlayer.class|",
-    "case": [
-      {
-        "value": "Rogue",
-        "action": {
-          "name": "loadJson",
-          "json": {
-            "audio": {
-              "file": "sfx/rogue/rogue11.wav",
-              "play": true,
-              "volume": "|game|soundVolume|"
-            }
-          }
-        }
-      },
-      {
-        "value": "Sorceror",
-        "action": {
-          "name": "loadJson",
-          "json": {
-            "audio": {
-              "file": "sfx/sorceror/mage11.wav",
-              "play": true,
-              "volume": "|game|soundVolume|"
-            }
-          }
-        }
-      }
-    ],
-    "default": {
-      "name": "loadJson",
-      "json": {
-        "audio": {
-          "file": "sfx/Warrior/warior11.wav",
-          "play": true,
-          "volume": "|game|soundVolume|"
-        }
-      }
-    }
-  }
+  "load": [
+    "res/player/sound/load.json",
+    "|currentLevel|currentPlayer.class|",
+    11,
+    "playAudio"
+  ]
 }

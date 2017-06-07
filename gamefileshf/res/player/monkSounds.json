@@ -1,7 +1,11 @@
 {
   "sound": [
-    { "id": "inventoryFull1", "file": "Sfx/Monk/Monk14.wav" },
-    { "id": "inventoryFull2", "file": "Sfx/Monk/Monk15.wav" },
-    { "id": "inventoryFull3", "file": "Sfx/Monk/Monk16.wav" }
+    { "id": "cantUseThisYet", "file": "Sfx/Monk/Monk13.wav" },
+    { "id": "cantCarryAnymore", "file": "Sfx/Monk/Monk14.wav" },
+    { "id": "haveNoRoom", "file": "Sfx/Monk/Monk15.wav" },
+    { "id": "whereWouldIPutThis", "file": "Sfx/Monk/Monk16.wav" },
+    { "id": "cantCastThatHere", "file": "Sfx/Monk/Monk27.wav" },
+    { "id": "dontHaveASpellReady", "file": "Sfx/Monk/Monk34.wav" },
+    { "id": "notEnoughMana", "file": "Sfx/Monk/Monk35.wav" }
   ]
 }

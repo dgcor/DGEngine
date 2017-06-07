@@ -9,7 +9,7 @@
 
 void Player::calculateRange()
 {
-	celTexture = class_->getCelTexture(palette);
+	celTexture = class_->getCelTexture(textureIdx);
 	if (celTexture != nullptr
 		&& direction < PlayerDirection::Size)
 	{
@@ -288,6 +288,12 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		}
 		return false;
 	}
+	case str2int16("hasEquipedItemType"):
+		var = Variable(hasEquipedItemType(props.second));
+		break;
+	case str2int16("hasEquipedItemSubType"):
+		var = Variable(hasEquipedItemSubType(props.second));
+		break;
 	case str2int16("hasSelectedItem"):
 		var = Variable(selectedItem != nullptr);
 		break;
@@ -386,7 +392,7 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 		{
 			if (setNumberByHash(propHash16, (LevelObjValue)val.get<int64_t>()))
 			{
-				updatePlayerProperties();
+				updateProperties();
 			}
 		}
 	}
@@ -1053,7 +1059,7 @@ bool Player::setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>&
 		updateGoldAdd(item);
 		if (bodyInventoryIdx == invIdx)
 		{
-			updatePlayerProperties();
+			updateProperties();
 		}
 	}
 	return ret;
@@ -1114,7 +1120,22 @@ void Player::updateBodyItemValues()
 			magicItems += allAttributes + item->getIntByHash(ItemProp::Magic);
 			dexterityItems += allAttributes + item->getIntByHash(ItemProp::Dexterity);
 			vitalityItems += allAttributes + item->getIntByHash(ItemProp::Vitality);
+		}
+	}
+	for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+	{
+		if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
+		{
+			continue;
+		}
+		const auto& item = inventories[bodyInventoryIdx].get(i);
 
+		if (canEquipItem(*item) == false)
+		{
+			continue;
+		}
+		if (item->Identified() == true)
+		{
 			lifeItems += item->getIntByHash(ItemProp::Life);
 			manaItems += item->getIntByHash(ItemProp::Mana);
 
@@ -1155,7 +1176,7 @@ void Player::updateBodyItemValues()
 	}
 }
 
-void Player::updatePlayerProperties()
+void Player::updateProperties()
 {
 	updateBodyItemValues();
 
@@ -1182,4 +1203,42 @@ bool Player::canEquipItem(const Item& item) const
 		item.getIntByHash(ItemProp::RequiredMagic) <= MagicNow() &&
 		item.getIntByHash(ItemProp::RequiredDexterity) <= DexterityNow() &&
 		item.getIntByHash(ItemProp::RequiredVitality) <= VitalityNow());
+}
+
+bool Player::hasEquipedItemType(const std::string& type) const
+{
+	if (bodyInventoryIdx < inventories.size())
+	{
+		for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+		{
+			if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
+			{
+				continue;
+			}
+			if (inventories[bodyInventoryIdx].get(i)->ItemType() == type)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::hasEquipedItemSubType(const std::string& type) const
+{
+	if (bodyInventoryIdx >= inventories.size())
+	{
+		for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+		{
+			if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
+			{
+				continue;
+			}
+			if (inventories[bodyInventoryIdx].get(i)->ItemSubType() == type)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }

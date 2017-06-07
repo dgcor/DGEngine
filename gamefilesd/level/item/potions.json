@@ -29,7 +29,7 @@
         "levelDrop": { "name": "sound.play", "id": "flippot" },
         "inventoryDrop": { "name": "sound.play", "id": "invpot" },
         "inventoryPick": "pickItemInInventory",
-        "use": { "name": "sound.play", "id": "invpot" }
+        "use": "inventoryDrop"
       }
     },
     {

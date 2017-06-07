@@ -1,0 +1,40 @@
+{
+  "load": ["res/level/actions/beltItem.json", "Belt1", "belt", 0],
+  "load": ["res/level/actions/beltItem.json", "Belt2", "belt", 1],
+  "load": ["res/level/actions/beltItem.json", "Belt3", "belt", 2],
+  "load": ["res/level/actions/beltItem.json", "Belt4", "belt", 3],
+  "load": ["res/level/actions/beltItem.json", "Belt5", "belt", 4],
+  "load": ["res/level/actions/beltItem.json", "Belt6", "belt", 5],
+  "load": ["res/level/actions/beltItem.json", "Belt7", "belt", 6],
+  "load": ["res/level/actions/beltItem.json", "Belt8", "belt", 7],
+  "action": {
+    "name": "action.set",
+    "id": "updateBeltItems",
+    "action": [
+      "updateBelt1Item",
+      "updateBelt2Item",
+      "updateBelt3Item",
+      "updateBelt4Item",
+      "updateBelt5Item",
+      "updateBelt6Item",
+      "updateBelt7Item",
+      "updateBelt8Item"
+    ]
+  },
+  "load": ["res/level/actions/inventoryText.json", "Belt1", "belt", 0],
+  "load": ["res/level/actions/inventoryText.json", "Belt2", "belt", 1],
+  "load": ["res/level/actions/inventoryText.json", "Belt3", "belt", 2],
+  "load": ["res/level/actions/inventoryText.json", "Belt4", "belt", 3],
+  "load": ["res/level/actions/inventoryText.json", "Belt5", "belt", 4],
+  "load": ["res/level/actions/inventoryText.json", "Belt6", "belt", 5],
+  "load": ["res/level/actions/inventoryText.json", "Belt7", "belt", 6],
+  "load": ["res/level/actions/inventoryText.json", "Belt8", "belt", 7],
+  "load": ["res/level/actions/beltClick.json", "Belt1", 0],
+  "load": ["res/level/actions/beltClick.json", "Belt2", 1],
+  "load": ["res/level/actions/beltClick.json", "Belt3", 2],
+  "load": ["res/level/actions/beltClick.json", "Belt4", 3],
+  "load": ["res/level/actions/beltClick.json", "Belt5", 4],
+  "load": ["res/level/actions/beltClick.json", "Belt6", 5],
+  "load": ["res/level/actions/beltClick.json", "Belt7", 6],
+  "load": ["res/level/actions/beltClick.json", "Belt8", 7]
+}

@@ -1,0 +1,24 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "sCantUseThisYet",
+      "action": { "name": "sound.play", "id": "cantUseThisYet", "unique": true }
+    },
+    {
+      "name": "action.set",
+      "id": "sCantCastThatHere",
+      "action": { "name": "sound.play", "id": "cantCastThatHere", "unique": true }
+    },
+    {
+      "name": "action.set",
+      "id": "sDontHaveASpellReady",
+      "action": { "name": "sound.play", "id": "dontHaveASpellReady", "unique": true }
+    },
+    {
+      "name": "action.set",
+      "id": "sNotEnoughMana",
+      "action": { "name": "sound.play", "id": "notEnoughMana", "unique": true }
+    }
+  ]
+}

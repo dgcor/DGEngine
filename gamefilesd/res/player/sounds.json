@@ -1,24 +1,6 @@
 {
-  "action": {
-    "name": "if.equal",
-    "param1": "%beta%",
-    "param2": true,
-    "then": {
-      "name": "switch",
-      "param": "%charClass%",
-      "case": [
-        {
-          "value": "Rogue",
-          "action": { "name": "load", "file": "res/player/rogueSoundsBeta.json" }
-        },
-        {
-          "value": "Sorceror",
-          "action": { "name": "load", "file": "res/player/sorcerorSoundsBeta.json" }
-        }
-      ],
-      "default": { "name": "load", "file": "res/player/warriorSoundsBeta.json" }
-    },
-    "else": {
+  "action": [
+    {
       "name": "switch",
       "param": "%charClass%",
       "case": [
@@ -32,6 +14,26 @@
         }
       ],
       "default": { "name": "load", "file": "res/player/warriorSounds.json" }
+    },
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": {
+        "name": "switch",
+        "param": "%charClass%",
+        "case": [
+          {
+            "value": "Rogue",
+            "action": { "name": "load", "file": "res/player/rogueSoundsBeta.json" }
+          },
+          {
+            "value": "Sorceror",
+            "action": { "name": "load", "file": "res/player/sorcerorSoundsBeta.json" }
+          }
+        ],
+        "default": { "name": "load", "file": "res/player/warriorSoundsBeta.json" }
+      }
     }
-  }
+  ]
 }

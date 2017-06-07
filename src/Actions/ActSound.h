@@ -12,10 +12,11 @@ private:
 	std::string file;
 	std::string id;
 	Variable volume;
+	bool unique;
 
 public:
-	ActSoundLoadPlay(const std::string& file_, const Variable& volume_)
-		: file(file_), volume(volume_)
+	ActSoundLoadPlay(const std::string& file_, const Variable& volume_,
+		bool unique_) : file(file_), volume(volume_), unique(unique_)
 	{
 		id = FileUtils::getFileWithoutExt(FileUtils::getFileFromPath(file));
 	}
@@ -39,7 +40,7 @@ public:
 					vol = 100;
 				}
 				sound.setVolume((float)vol);
-				game.Resources().addPlayingSound(sound);
+				game.Resources().addPlayingSound(sound, unique);
 			}
 		}
 		return true;
@@ -51,10 +52,11 @@ class ActSoundPlay : public Action
 private:
 	std::string id;
 	Variable volume;
+	bool unique;
 
 public:
-	ActSoundPlay(const std::string& id_, const Variable& volume_)
-		: id(id_), volume(volume_) {}
+	ActSoundPlay(const std::string& id_, const Variable& volume_,
+		bool unique_) : id(id_), volume(volume_), unique(unique_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -70,7 +72,7 @@ public:
 					vol = 100;
 				}
 				sound.setVolume((float)vol);
-				game.Resources().addPlayingSound(sound);
+				game.Resources().addPlayingSound(sound, unique);
 			}
 		}
 		return true;

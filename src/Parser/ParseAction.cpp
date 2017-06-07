@@ -909,13 +909,6 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getPlayerDirectionKey(elem, "direction"));
 		}
-		case str2int16("player.setPalette"):
-		{
-			return std::make_shared<ActPlayerSetPalette>(
-				getStringKey(elem, "player"),
-				getStringKey(elem, "level"),
-				getUIntKey(elem, "palette"));
-		}
 		case str2int16("player.setProperty"):
 		{
 			return std::make_shared<ActPlayerSetProperty>(
@@ -930,6 +923,13 @@ namespace Parser
 				getStringKey(elem, "player"),
 				getStringKey(elem, "level"),
 				(uint8_t)getUIntKey(elem, "status"));
+		}
+		case str2int16("player.setTextureIndex"):
+		{
+			return std::make_shared<ActPlayerSetTextureIndex>(
+				getStringKey(elem, "player"),
+				getStringKey(elem, "level"),
+				getUIntKey(elem, "index"));
 		}
 		case str2int16("quest.add"):
 		{
@@ -1023,13 +1023,15 @@ namespace Parser
 		{
 			return std::make_shared<ActSoundLoadPlay>(
 				getStringKey(elem, "file"),
-				getVariableKey(elem, "volume"));
+				getVariableKey(elem, "volume"),
+				getBoolKey(elem, "unique"));
 		}
 		case str2int16("sound.play"):
 		{
 			return std::make_shared<ActSoundPlay>(
 				getStringKey(elem, "id"),
-				getVariableKey(elem, "volume"));
+				getVariableKey(elem, "volume"),
+				getBoolKey(elem, "unique"));
 		}
 		case str2int16("switch"):
 		{

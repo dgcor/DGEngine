@@ -74,6 +74,21 @@ namespace Parser
 			return;
 		}
 
-		parseSoundObj(game, id, file);
+		auto sndBuffer = parseSoundObj(game, id, file);
+
+		if (getBoolKey(elem, "play") == true)
+		{
+			sf::Sound sound(*sndBuffer.get());
+
+			auto volume = getVariableKey(elem, "volume");
+			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
+			if (vol > 100)
+			{
+				vol = 100;
+			}
+			sound.setVolume((float)vol);
+
+			game.Resources().addPlayingSound(sound);
+		}
 	}
 }

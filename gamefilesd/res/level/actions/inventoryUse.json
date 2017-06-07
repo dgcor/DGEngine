@@ -1,0 +1,10 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "use{1}Item",
+    "action": [
+      { "name": "item.use", "inventory": "{2}", "item": {3} },
+      "updateAllPlayerStats"
+    ]
+  }
+}

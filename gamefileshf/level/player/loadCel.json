@@ -6,42 +6,42 @@
       {
         "value": "Rogue",
         "action": [
-          { "name": "load", "file": "level/player/rogueCel.json" },
-          { "name": "load", "file": "level/player/rogueClass.json" }
+          { "name": "load", "file": "level/player/Rogue/cel.json" },
+          { "name": "load", "file": "level/player/Rogue/class.json" }
         ]
       },
       {
         "value": "Sorceror",
         "action": [
-          { "name": "load", "file": "level/player/sorcerorCel.json" },
-          { "name": "load", "file": "level/player/sorcerorCelClass.json" }
+          { "name": "load", "file": "level/player/Sorceror/cel.json" },
+          { "name": "load", "file": "level/player/Sorceror/class.json" }
         ]
       },
       {
         "value": "Monk",
         "action": [
-          { "name": "load", "file": "level/player/monkCel.json" },
-          { "name": "load", "file": "level/player/monkClass.json" }
+          { "name": "load", "file": "level/player/Monk/cel.json" },
+          { "name": "load", "file": "level/player/Monk/class.json" }
         ]
       },
       {
         "value": "Bard",
         "action": [
-          { "name": "load", "file": "level/player/rogueCel.json" },
-          { "name": "load", "file": "level/player/bardClass.json" }
+          { "name": "load", "file": "level/player/Rogue/cel.json" },
+          { "name": "load", "file": "level/player/Bard/class.json" }
         ]
       },
       {
         "value": "Barbarian",
         "action": [
-          { "name": "load", "file": "level/player/warriorCel.json" },
-          { "name": "load", "file": "level/player/barbarianClass.json" }
+          { "name": "load", "file": "level/player/Warrior/cel.json" },
+          { "name": "load", "file": "level/player/Barbarian/class.json" }
         ]
       }
     ],
     "default": [
-      { "name": "load", "file": "level/player/warriorCel.json" },
-      { "name": "load", "file": "level/player/warriorClass.json" }
+      { "name": "load", "file": "level/player/Warrior/cel.json" },
+      { "name": "load", "file": "level/player/Warrior/class.json" }
     ]
   }
 }

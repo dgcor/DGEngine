@@ -19,9 +19,9 @@
         {
           "name": "randomList",
           "actions": [
-            { "name": "sound.play", "id": "inventoryFull1" },
-            { "name": "sound.play", "id": "inventoryFull2" },
-            { "name": "sound.play", "id": "inventoryFull3" }
+            { "name": "sound.play", "id": "cantCarryAnymore" },
+            { "name": "sound.play", "id": "haveNoRoom" },
+            { "name": "sound.play", "id": "whereWouldIPutThis" }
           ]
         },
         { "name": "item.executeDropAction" }

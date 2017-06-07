@@ -1,0 +1,78 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{1}Text",
+    "action": {
+      "name": "if.equal",
+      "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+      "param2": false,
+      "then": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.{2}.{3}.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.{2}.{3}",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.{2}.{3}",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.{2}.{3}.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.{2}.{3}.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.{2}.{3}.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.{2}.{3}.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

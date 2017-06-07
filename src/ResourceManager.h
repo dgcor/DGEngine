@@ -206,9 +206,7 @@ public:
 
 	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj);
 
-	void addPlayingSound(sf::Sound obj);
-	void addPlayingSound(const sf::SoundBuffer& obj);
-	void addPlayingSound(const sf::SoundBuffer* obj);
+	void addPlayingSound(const sf::Sound& obj, bool unique = false);
 
 	void clearFinishedSounds();
 	void clearPlayingSounds() { playingSounds.clear(); }

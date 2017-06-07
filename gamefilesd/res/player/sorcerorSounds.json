@@ -1,7 +1,11 @@
 {
   "sound": [
-    { "id": "inventoryFull1", "file": "sfx/sorceror/mage14.wav" },
-    { "id": "inventoryFull2", "file": "sfx/sorceror/mage15.wav" },
-    { "id": "inventoryFull3", "file": "sfx/sorceror/mage16.wav" }
+    { "id": "cantUseThisYet", "file": "sfx/sorceror/mage13.wav" },
+    { "id": "cantCarryAnymore", "file": "sfx/sorceror/mage14.wav" },
+    { "id": "haveNoRoom", "file": "sfx/sorceror/mage15.wav" },
+    { "id": "whereWouldIPutThis", "file": "sfx/sorceror/mage16.wav" },
+    { "id": "cantCastThatHere", "file": "sfx/sorceror/mage27.wav" },
+    { "id": "dontHaveASpellReady", "file": "sfx/sorceror/mage34.wav" },
+    { "id": "notEnoughMana", "file": "sfx/sorceror/mage35.wav" }
   ]
 }
