@@ -179,7 +179,7 @@ namespace Parser
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
 		player->setStatus(getPlayerStatusKey(elem, "status"));
 		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));
-		player->setPalette(getUIntKey(elem, "palette"));
+		player->setTextureIdx(getUIntKey(elem, "textureIndex"));
 
 		player->Id(id);
 		player->Name(getStringKey(elem, "name"));
@@ -221,7 +221,7 @@ namespace Parser
 			}
 		}
 
-		player->updatePlayerProperties();
+		player->updateProperties();
 		player->updateTexture();
 		player->updateDrawPosition();
 

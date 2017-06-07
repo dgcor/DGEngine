@@ -1,0 +1,35 @@
+{
+  "load": "res/level/actions/playerBodyHands.json",
+  "load": ["res/level/actions/bodyItem.json", "Armor"],
+  "load": ["res/level/actions/bodyItem.json", "Helmet"],
+  "load": ["res/level/actions/bodyItem.json", "Amulet"],
+  "load": ["res/level/actions/bodyItem.json", "LeftRing"],
+  "load": ["res/level/actions/bodyItem.json", "RightRing"],
+  "action": {
+    "name": "action.set",
+    "id": "updateBodyItems",
+    "action": [
+      "updateLeftHandItem",
+      "updateRightHandItem",
+      "updateArmorItem",
+      "updateHelmetItem",
+      "updateAmuletItem",
+      "updateLeftRingItem",
+      "updateRightRingItem"
+    ]
+  },
+  "load": "res/level/actions/playerUpdate.json",
+  "load": "res/level/actions/playerBodyHands2.json",
+  "load": ["res/level/actions/inventoryText.json", "LeftHand", "body", "LeftHand"],
+  "load": ["res/level/actions/inventoryText.json", "RightHand", "body", "RightHand"],
+  "load": ["res/level/actions/inventoryText.json", "Armor", "body", "Armor"],
+  "load": ["res/level/actions/inventoryText.json", "Helmet", "body", "Helmet"],
+  "load": ["res/level/actions/inventoryText.json", "Amulet", "body", "Amulet"],
+  "load": ["res/level/actions/inventoryText.json", "LeftRing", "body", "LeftRing"],
+  "load": ["res/level/actions/inventoryText.json", "RightRing", "body", "RightRing"],
+  "load": ["res/level/actions/bodyClick.json", "Armor", "Armor"],
+  "load": ["res/level/actions/bodyClick.json", "Helmet", "Helmet"],
+  "load": ["res/level/actions/bodyClick.json", "Amulet", "Amulet"],
+  "load": ["res/level/actions/bodyClick.json", "LeftRing", "Ring"],
+  "load": ["res/level/actions/bodyClick.json", "RightRing", "Ring"]
+}

@@ -70,21 +70,39 @@ public:
 				auto propVal = game.getVarOrPropString(prop);
 				if (propVal.empty() == false)
 				{
-					LevelObjValue currVal;
-					if (player->getInt(propVal, currVal) == true)
+					auto value2 = game.getVarOrProp(value);
+					Number32 currVal;
+					if (player->getNumberProp(propVal.c_str(), currVal) == true)
 					{
-						auto addToVal = game.getVarOrPropLong(value);
-						if (remove == true)
+						if (value2.is<int64_t>() == true)
 						{
-							currVal -= addToVal;
+							if (remove == true)
+							{
+								currVal -= value2.get<int64_t>();
+							}
+							else
+							{
+								currVal += value2.get<int64_t>();
+							}
+						}
+						else if (value2.is<double>() == true)
+						{
+							if (remove == true)
+							{
+								currVal -= value2.get<double>();
+							}
+							else
+							{
+								currVal += value2.get<double>();
+							}
 						}
 						else
 						{
-							currVal += addToVal;
+							return true;
 						}
 						if (player->setNumber(propVal, currVal) == true)
 						{
-							player->updatePlayerProperties();
+							player->updateProperties();
 						}
 					}
 				}
@@ -217,33 +235,6 @@ public:
 	}
 };
 
-class ActPlayerSetPalette : public Action
-{
-private:
-	std::string idPlayer;
-	std::string idLevel;
-	size_t palette;
-
-public:
-	ActPlayerSetPalette(const std::string& idPlayer_,
-		const std::string& idLevel_, size_t palette_)
-		: idPlayer(idPlayer_), idLevel(idLevel_), palette(palette_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto level = game.Resources().getLevel(idLevel);
-		if (level != nullptr)
-		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr)
-			{
-				player->setPalette(palette);
-			}
-		}
-		return true;
-	}
-};
-
 class ActPlayerSetProperty : public Action
 {
 private:
@@ -298,6 +289,33 @@ public:
 			{
 				player->setRestStatus(status);
 				player->updateTexture();
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerSetTextureIndex : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	size_t idx;
+
+public:
+	ActPlayerSetTextureIndex(const std::string& idPlayer_,
+		const std::string& idLevel_, size_t idx_)
+		: idPlayer(idPlayer_), idLevel(idLevel_), idx(idx_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->setTextureIdx(idx);
 			}
 		}
 		return true;

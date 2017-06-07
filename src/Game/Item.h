@@ -156,5 +156,6 @@ public:
 	const std::string& ShortName() const { return class_->ShortName(); }
 	const std::string& SimpleName() const { return class_->Name(); }
 	const std::string& ItemType() const { return class_->Type(); }
+	const std::string& ItemSubType() const { return class_->SubType(); }
 	bool Identified() const { return identified; }
 };

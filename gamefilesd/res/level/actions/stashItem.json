@@ -1,0 +1,28 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{1}Item",
+    "action": [
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.isItemSlotInUse.{2}.{3}|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.canEquipItem.{2}.{3}|",
+          "param2": false,
+          "then": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "{2}", "item": [{3}], "equipable": false },
+          "else": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "{2}", "item": [{3}] }
+        },
+        "else": { "name": "image.setTexture", "id": "img{1}", "texture": "empty" }
+      },
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
+        "param2": true,
+        "then": { "name": "button.setTexture", "id": "btn{1}", "texture": "red" },
+        "else": { "name": "button.setTexture", "id": "btn{1}", "texture": "empty" }
+      }
+    ]
+  }
+}

@@ -27,7 +27,7 @@ private:
 	uint8_t restStatus{ 0 };
 
 	size_t celIdx{ 0 };
-	size_t palette{ 0 };
+	size_t textureIdx{ 0 };
 
 	CelTextureCacheVector* celTexture{ nullptr };
 	std::pair<size_t, size_t> frameRange;
@@ -220,15 +220,11 @@ public:
 			calculateRange();
 		}
 	}
-	void setPalette(size_t palette_)
+	void setTextureIdx(size_t idx_)
 	{
-		if (palette_ >= PlayerPaletteSize)
+		if (textureIdx != idx_)
 		{
-			palette_ = 0;
-		}
-		if (palette != palette_)
-		{
-			palette = palette_;
+			textureIdx = idx_;
 			calculateRange();
 		}
 	}
@@ -266,6 +262,9 @@ public:
 		bodyInventoryIdx = std::min(idx, (size_t)PlayerInventory::Size);
 	}
 
+	bool hasEquipedItemType(const std::string& type) const;
+	bool hasEquipedItemSubType(const std::string& type) const;
+
 	bool getItemSlot(const Item& item, size_t& invIdx, size_t& itemIdx,
 		InventoryPosition invPos = InventoryPosition::TopLeft) const;
 
@@ -297,7 +296,7 @@ public:
 	bool setItemInFreeSlot(size_t invIdx, const std::shared_ptr<Item>& item,
 		InventoryPosition invPos = InventoryPosition::TopLeft);
 
-	void updatePlayerProperties();
+	void updateProperties();
 
 	void applyDefaults();
 

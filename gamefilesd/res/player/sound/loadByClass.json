@@ -1,0 +1,57 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "{1}",
+    "case": [
+      {
+        "value": "Warrior",
+        "action": {
+          "name": "if.equal",
+          "param1": "{3}",
+          "param2": ".",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadWarrior.json", "{2}", "warrior{2}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadWarrior.json", "{2}", "{3}", "{4}"]
+          }
+        }
+      },
+      {
+        "value": "Rogue",
+        "action": {
+          "name": "if.equal",
+          "param1": "{3}",
+          "param2": ".",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadRogue.json", "{2}", "rogue{2}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadRogue.json", "{2}", "{3}", "{4}"]
+          }
+        }
+      },
+      {
+        "value": "Sorceror",
+        "action": {
+          "name": "if.equal",
+          "param1": "{3}",
+          "param2": ".",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadSorceror.json", "{2}", "sorceror{2}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadSorceror.json", "{2}", "{3}", "{4}"]
+          }
+        }
+      }
+    ],
+    "default": "Warrior"
+  }
+}

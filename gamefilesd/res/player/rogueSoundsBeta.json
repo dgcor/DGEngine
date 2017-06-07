@@ -1,7 +1,0 @@
-{
-  "sound": [
-    { "id": "inventoryFull1", "file": "sfx/rogue/rogue14.wav" },
-    { "id": "inventoryFull2", "file": "sfx/rogue/rogue15.wav" },
-    { "id": "inventoryFull3", "file": "sfx/rogue/rogue16.wav" }
-  ]
-}

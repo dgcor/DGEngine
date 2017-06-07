@@ -35,6 +35,25 @@ namespace Parser
 			getActionKey(game, elem, "else"));
 	}
 
+	std::shared_ptr<Action> getSwitchConditionHelper(
+		Game& game, const Value& elem, const char* actionName,
+		const std::vector<std::pair<Variable, std::shared_ptr<Action>>>& cases)
+	{
+		if (elem.HasMember(actionName) == true &&
+			elem[actionName].IsObject() == false)
+		{
+			auto actionRef = getVariableKey(elem, actionName);
+			for (const auto& caseObj : cases)
+			{
+				if (caseObj.first == actionRef)
+				{
+					return caseObj.second;
+				}
+			}
+		}
+		return getActionKey(game, elem, actionName);
+	}
+
 	std::shared_ptr<Action> getSwitchCondition(Game& game, const Value& elem)
 	{
 		std::vector<std::pair<Variable, std::shared_ptr<Action>>> cases;
@@ -45,34 +64,18 @@ namespace Parser
 				if (val.IsObject() == true &&
 					val.HasMember("value") == true)
 				{
-					std::shared_ptr<Action> caseAction;
-					bool hasAction = false;
-
-					if (val.HasMember("action") == true &&
-						val["action"].IsObject() == false)
-					{
-						auto actionRef = getVariableKey(val, "action");
-						for (const auto& caseObj : cases)
-						{
-							if (caseObj.first == actionRef)
-							{
-								caseAction = caseObj.second;
-								hasAction = true;
-								break;
-							}
-						}
-					}
-					if (hasAction == false)
-					{
-						caseAction = getActionKey(game, val, "action");
-					}
-					cases.push_back(std::make_pair(getVariableKey(val, "value"), caseAction));
+					cases.push_back(
+						std::make_pair(
+							getVariableKey(val, "value"),
+							getSwitchConditionHelper(game, val, "action", cases)
+						)
+					);
 				}
 			}
 		}
 		return std::make_shared<ActSwitchCondition>(
 			getVarOrPredicateKey(game, elem, "param"),
 			cases,
-			getActionKey(game, elem, "default"));
+			getSwitchConditionHelper(game, elem, "default", cases));
 	}
 }

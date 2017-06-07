@@ -1,0 +1,44 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{1}Click",
+    "action": [
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.selectedItem.itemType|",
+          "param2": "{2}",
+          "then": {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+            "param2": true,
+            "then": [
+              { "name": "image.setTexture", "id": "img{1}", "texture": "empty" },
+              { "name": "item.update", "inventory": "body", "item": "{1}" },
+              "updateInventory{1}",
+              "updatePlayerTexture"
+            ],
+            "else": "sCantUseThisYet"
+          }
+        },
+        "else": [
+          { "name": "image.setTexture", "id": "img{1}", "texture": "empty" },
+          { "name": "item.update", "inventory": "body", "item": "{1}" },
+          "updateInventory{1}",
+          "updatePlayerTexture"
+        ]
+      },
+      "updateAllPlayerStats",
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": "updateSelectedItemText",
+        "else": "update{1}Text"
+      }
+    ]
+  }
+}

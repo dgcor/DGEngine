@@ -19,6 +19,19 @@ public:
 	constexpr explicit Number32(uint32_t num) : type(1), uintNum(num) {}
 	constexpr explicit Number32(float num) : type(2), floatNum(num) {}
 
+	constexpr bool isInt32() const
+	{
+		return type == 0;
+	}
+	constexpr bool isUInt32() const
+	{
+		return type == 1;
+	}
+	constexpr bool isFloat() const
+	{
+		return type == 2;
+	}
+
 	constexpr void setInt32(int32_t num)
 	{
 		type = 0;
@@ -99,5 +112,74 @@ public:
 		case 2:
 			return (double)floatNum;
 		}
+	}
+
+	constexpr Number32& operator+=(const int64_t& right)
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum + right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum + right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum + (double)right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& operator+=(const double& right)
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum + (int64_t)right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum + (int64_t)right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum + right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& operator-=(const int64_t& right)
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum - right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum - right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum - (double)right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& operator-=(const double& right)
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum - (int64_t)right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum - (int64_t)right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum - right));
+			break;
+		}
+		return *this;
 	}
 };

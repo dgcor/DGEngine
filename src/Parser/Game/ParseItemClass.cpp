@@ -120,6 +120,10 @@ namespace Parser
 		{
 			itemClass->Type(getStringVal(elem["type"]));
 		}
+		if (elem.HasMember("subType") == true)
+		{
+			itemClass->SubType(getStringVal(elem["subType"]));
+		}
 		if (elem.HasMember("inventorySize") == true)
 		{
 			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], ItemXY(1, 1)));
@@ -161,8 +165,16 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						itemClass->setAction(str2int16(it->name.GetString()),
-							parseAction(game, it->value));
+						std::shared_ptr<Action> action;
+						if (it->value.IsString() == true)
+						{
+							action = itemClass->getAction(str2int16(it->value.GetString()));
+						}
+						if (action == nullptr)
+						{
+							action = parseAction(game, it->value);
+						}
+						itemClass->setAction(str2int16(it->name.GetString()), action);
 					}
 				}
 			}

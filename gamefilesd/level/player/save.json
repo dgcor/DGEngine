@@ -2,7 +2,7 @@
   "action": {
     "name": "file.copy",
     "dir": "{1}",
-    "file": ["level/player/{2}Defaults.json", "{1}"],
+    "file": ["level/player/{2}/defaults.json", "{1}"],
     "writeFile": "loadPlayer.json"
   }
 }

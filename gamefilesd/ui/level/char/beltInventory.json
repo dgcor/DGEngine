@@ -6,12 +6,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [205, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 0 },
-        "updateBeltItem1"
-      ],
-      "onRightClick": "useBeltItem1",
-      "onHoverEnter": "updateInventoryBelt1Text",
+      "onClick": "updateBelt1Click",
+      "onRightClick": "useBelt1Item",
+      "onHoverEnter": "updateBelt1Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -20,12 +17,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [234, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 1 },
-        "updateBeltItem2"
-      ],
-      "onRightClick": "useBeltItem2",
-      "onHoverEnter": "updateInventoryBelt2Text",
+      "onClick": "updateBelt2Click",
+      "onRightClick": "useBelt2Item",
+      "onHoverEnter": "updateBelt2Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -34,12 +28,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [263, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 2 },
-        "updateBeltItem3"
-      ],
-      "onRightClick": "useBeltItem3",
-      "onHoverEnter": "updateInventoryBelt3Text",
+      "onClick": "updateBelt3Click",
+      "onRightClick": "useBelt3Item",
+      "onHoverEnter": "updateBelt3Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -48,12 +39,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [292, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 3 },
-        "updateBeltItem4"
-      ],
-      "onRightClick": "useBeltItem4",
-      "onHoverEnter": "updateInventoryBelt4Text",
+      "onClick": "updateBelt4Click",
+      "onRightClick": "useBelt4Item",
+      "onHoverEnter": "updateBelt4Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -62,12 +50,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [321, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 4 },
-        "updateBeltItem5"
-      ],
-      "onRightClick": "useBeltItem5",
-      "onHoverEnter": "updateInventoryBelt5Text",
+      "onClick": "updateBelt5Click",
+      "onRightClick": "useBelt5Item",
+      "onHoverEnter": "updateBelt5Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -76,12 +61,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [350, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 5 },
-        "updateBeltItem6"
-      ],
-      "onRightClick": "useBeltItem6",
-      "onHoverEnter": "updateInventoryBelt6Text",
+      "onClick": "updateBelt6Click",
+      "onRightClick": "useBelt6Item",
+      "onHoverEnter": "updateBelt6Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -90,12 +72,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [379, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 6 },
-        "updateBeltItem7"
-      ],
-      "onRightClick": "useBeltItem7",
-      "onHoverEnter": "updateInventoryBelt7Text",
+      "onClick": "updateBelt7Click",
+      "onRightClick": "useBelt7Item",
+      "onHoverEnter": "updateBelt7Text",
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -104,12 +83,9 @@
       "textureRect": [28, 28],
       "anchor": "bottom",
       "position": [408, 357],
-      "onClick": [
-        { "name": "item.update", "inventory": "belt", "item": 7 },
-        "updateBeltItem8"
-      ],
-      "onRightClick": "useBeltItem8",
-      "onHoverEnter": "updateInventoryBelt8Text",
+      "onClick": "updateBelt8Click",
+      "onRightClick": "useBelt8Item",
+      "onHoverEnter": "updateBelt8Text",
       "onHoverLeave": "clearPanelText"
     }
   ],

@@ -3,6 +3,18 @@
 #include "Game.h"
 #include "GameUtils.h"
 
+std::shared_ptr<Action> ItemClass::getAction(uint16_t nameHash16) const
+{
+	for (const auto& elem : actions)
+	{
+		if (elem.first == nameHash16)
+		{
+			return elem.second;
+		}
+	}
+	return nullptr;
+}
+
 void ItemClass::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_)
 {
 	if (nameHash16 == str2int16("") ||

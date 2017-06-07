@@ -1,0 +1,230 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateLeftHandText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.LeftHand|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.body.LeftHand.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.body.LeftHand",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.body.LeftHand",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.body.LeftHand.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.body.LeftHand.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.LeftHand.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.LeftHand.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.LeftHand",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.LeftHand",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateRightHandText",
+      "action": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.RightHand|",
+        "param2": true,
+        "then": [
+          {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.item.body.RightHand.itemType|",
+            "list": ["Amulet", "Ring"],
+            "then": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.body.RightHand",
+              "text": "%name%\n%d.1%\n%d.2%",
+              "removeEmptyLines": true
+            },
+            "else": {
+              "name": "text.setTextFromQuery",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.item.body.RightHand",
+              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.body.RightHand.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.body.RightHand.unique|",
+              "param2": 1,
+              "then": [
+                "setPanelTextColorGold",
+                {
+                  "name": "if.equal",
+                  "param1": "|currentLevel|currentPlayer.item.body.RightHand.identified|",
+                  "param2": true,
+                  "then": {
+                    "name": "if.equal",
+                    "param1": "|currentLevel|currentPlayer.item.body.RightHand.hasDescription.4|",
+                    "param2": true,
+                    "then": [
+                      "showItemInfo",
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoTitle",
+                        "query": "currentLevel.currentPlayer.item.body.RightHand",
+                        "text": "%name%"
+                      },
+                      {
+                        "name": "text.setTextFromQuery",
+                        "id": "itemInfoDescr",
+                        "query": "currentLevel.currentPlayer.item.body.RightHand",
+                        "text": "%d.4%"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "else": "setPanelTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateLeftHandClick",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+          "param2": true,
+          "then": {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.selectedItem.itemType|",
+            "list": ["Axe", "Bow", "Club", "Shield", "Staff", "Sword"],
+            "then": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+              "param2": true,
+              "then": [
+                { "name": "image.setTexture", "id": "imgLeftHand", "texture": "empty" },
+                { "name": "item.update", "inventory": "body", "item": "LeftHand" },
+                "updateLeftHandItem",
+                "updatePlayerTexture"
+              ],
+              "else": "sCantUseThisYet"
+            }
+          },
+          "else": [
+            { "name": "image.setTexture", "id": "imgLeftHand", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "LeftHand" },
+            "updateLeftHandItem",
+            "updatePlayerTexture"
+          ]
+        },
+        "updateAllPlayerStats",
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+          "param2": true,
+          "then": "updateSelectedItemText",
+          "else": "updateLeftHandText"
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateRightHandClick",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+          "param2": true,
+          "then": {
+            "name": "if.inList",
+            "param": "|currentLevel|currentPlayer.selectedItem.itemType|",
+            "list": ["Axe", "Bow", "Club", "Shield", "Staff", "Sword"],
+            "then": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+              "param2": true,
+              "then": [
+                { "name": "image.setTexture", "id": "imgRightHand", "texture": "empty" },
+                { "name": "item.update", "inventory": "body", "item": "RightHand" },
+                "updateRightHandItem",
+                "updatePlayerTexture"
+              ],
+              "else": "sCantUseThisYet"
+            }
+          },
+          "else": [
+            { "name": "image.setTexture", "id": "imgRightHand", "texture": "empty" },
+            { "name": "item.update", "inventory": "body", "item": "RightHand" },
+            "updateRightHandItem",
+            "updatePlayerTexture"
+          ]
+        },
+        "updateAllPlayerStats",
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+          "param2": true,
+          "then": "updateSelectedItemText",
+          "else": "updateRightHandText"
+        }
+      ]
+    }
+  ]
+}

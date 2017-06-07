@@ -1,0 +1,15 @@
+{
+  "action": {
+    "name": "<",
+    "param1": {1},
+    "param2": 10,
+    "then": {
+      "name": "load",
+      "file": ["res/player/sound/{3}.json", "{2}", "sfx/rogue", "rogue0{1}"]
+    },
+    "else": {
+      "name": "load",
+      "file": ["res/player/sound/{3}.json", "{2}", "sfx/rogue", "rogue{1}"]
+    }
+  }
+}

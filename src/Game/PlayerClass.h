@@ -9,7 +9,7 @@
 class PlayerClass
 {
 private:
-	std::array<std::shared_ptr<CelTextureCacheVector>, PlayerPaletteSize> celTextures;
+	std::vector<std::shared_ptr<CelTextureCacheVector>> celTextures;
 	std::array<size_t, (size_t)PlayerStatus::Size> statusCelIndexes;
 
 	std::string name;
@@ -39,20 +39,20 @@ public:
 
 	CelTextureCacheVector* getCelTexture(size_t paletteIdx) const
 	{
-		if (paletteIdx < PlayerPaletteSize)
+		if (paletteIdx < celTextures.size())
 		{
 			return celTextures[paletteIdx].get();
+		}
+		else if (celTextures.empty() == false)
+		{
+			return celTextures.front().get();
 		}
 		return nullptr;
 	}
 
-	void setCelTexture(size_t paletteIdx,
-		const std::shared_ptr<CelTextureCacheVector>& celTexture)
+	void addCelTexture(const std::shared_ptr<CelTextureCacheVector>& celTexture)
 	{
-		if (paletteIdx < PlayerPaletteSize)
-		{
-			celTextures[paletteIdx] = celTexture;
-		}
+		celTextures.push_back(celTexture);
 	}
 
 	void clearStatusCelIndexes() { statusCelIndexes.fill(0); }
@@ -74,7 +74,7 @@ public:
 		}
 	}
 
-	const std::array<std::shared_ptr<CelTextureCacheVector>, PlayerPaletteSize>& CelTextures() const
+	const std::vector<std::shared_ptr<CelTextureCacheVector>>& CelTextures() const
 	{
 		return celTextures;
 	}

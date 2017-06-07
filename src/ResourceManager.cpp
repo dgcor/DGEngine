@@ -226,23 +226,20 @@ void ResourceManager::addDrawable(const std::string& key, const std::shared_ptr<
 	clearCache();
 }
 
-void ResourceManager::addPlayingSound(sf::Sound obj)
+void ResourceManager::addPlayingSound(const sf::Sound& obj, bool unique)
 {
+	if (unique == true)
+	{
+		for (const auto& snd : playingSounds)
+		{
+			if (snd.getBuffer() == obj.getBuffer())
+			{
+				return;
+			}
+		}
+	}
 	playingSounds.push_back(obj);
 	playingSounds.back().play();
-}
-
-void ResourceManager::addPlayingSound(const sf::SoundBuffer& obj)
-{
-	addPlayingSound(sf::Sound(obj));
-}
-
-void ResourceManager::addPlayingSound(const sf::SoundBuffer* obj)
-{
-	if (obj != nullptr)
-	{
-		addPlayingSound(*obj);
-	}
 }
 
 void ResourceManager::clearFinishedSounds()

@@ -25,6 +25,7 @@ private:
 	std::string name;
 	std::string shortName;
 	std::string type;
+	std::string subType;
 	uint16_t typeHash16;
 
 	std::vector<LevelObjProperty> defaults;
@@ -84,6 +85,7 @@ public:
 		}
 	}
 
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const;
 	void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_);
 	void executeAction(Game& game, uint16_t nameHash16, bool executeNow = false) const;
 
@@ -107,6 +109,7 @@ public:
 	const std::string& Name() const { return name; }
 	const std::string& ShortName() const { return shortName; }
 	const std::string& Type() const { return type; }
+	const std::string& SubType() const { return subType; }
 	uint16_t TypeHash16() const { return typeHash16; }
 	const ItemXY& InventorySize() const { return inventorySize; }
 
@@ -117,6 +120,7 @@ public:
 		type = type_;
 		typeHash16 = str2int16(Utils::toLower(type_).c_str());
 	}
+	void SubType(const std::string& subType_) { subType = subType_; }
 	void InventorySize(const ItemXY& inventorySize_) { inventorySize = inventorySize_; }
 
 	void setPrefix(const std::shared_ptr<Namer>& namer) { prefix = namer; }

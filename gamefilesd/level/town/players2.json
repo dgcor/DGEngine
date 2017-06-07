@@ -1,4 +1,41 @@
 {
+  "action": {
+    "name": "action.set",
+    "id": "cow",
+    "action": {
+      "name": "random",
+      "action1": [
+        { "name": "sound.play", "id": "cow1", "unique": true },
+        {
+          "name": "random",
+          "percentage": 0.1,
+          "action1": {
+            "name": "randomList",
+            "actions": [
+              { "name": "sound.play", "id": "notThirsty", "unique": true },
+              { "name": "sound.play", "id": "noMilkmaid", "unique": true },
+              { "name": "sound.play", "id": "ThatsACowAlright", "unique": true }
+            ]
+          }
+        }
+      ],
+      "action2": [
+        { "name": "sound.play", "id": "cow2", "unique": true },
+        {
+          "name": "random",
+          "percentage": 0.1,
+          "action1": {
+            "name": "randomList",
+            "actions": [
+              { "name": "sound.play", "id": "notThirsty", "unique": true },
+              { "name": "sound.play", "id": "noMilkmaid", "unique": true },
+              { "name": "sound.play", "id": "ThatsACowAlright", "unique": true }
+            ]
+          }
+        }
+      ]
+    }
+  },
   "player": [
     {
       "id": "pepin",
@@ -323,11 +360,7 @@
       "name": "Cow",
       "direction": "BackLeft",
       "mapPosition": [55, 13],
-      "action": {
-        "name": "random",
-        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
-        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
-      }
+      "action": "cow"
     },
     {
       "id": "cow2",
@@ -335,11 +368,7 @@
       "name": "Cow",
       "direction": "FrontLeft",
       "mapPosition": [57, 15],
-      "action": {
-        "name": "random",
-        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
-        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
-      }
+      "action": "cow"
     },
     {
       "id": "cow3",
@@ -347,11 +376,7 @@
       "name": "Cow",
       "direction": "Back",
       "mapPosition": [58, 19],
-      "action": {
-        "name": "random",
-        "action1": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow1.wav" },
-        "action2": { "name": "sound.loadPlay", "file": "sfx/Towners/Cow2.wav" }
-      }
+      "action": "cow"
     }
   ]
 }

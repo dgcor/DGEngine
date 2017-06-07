@@ -1,0 +1,10 @@
+{
+  "load": ["res/level/actions/inventoryUse.json", "Belt1", "belt", 0],
+  "load": ["res/level/actions/inventoryUse.json", "Belt2", "belt", 1],
+  "load": ["res/level/actions/inventoryUse.json", "Belt3", "belt", 2],
+  "load": ["res/level/actions/inventoryUse.json", "Belt4", "belt", 3],
+  "load": ["res/level/actions/inventoryUse.json", "Belt5", "belt", 4],
+  "load": ["res/level/actions/inventoryUse.json", "Belt6", "belt", 5],
+  "load": ["res/level/actions/inventoryUse.json", "Belt7", "belt", 6],
+  "load": ["res/level/actions/inventoryUse.json", "Belt8", "belt", 7]
+}

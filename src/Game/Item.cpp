@@ -178,6 +178,9 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("itemType"):
 		var = Variable(ItemType());
 		break;
+	case str2int16("itemSubType"):
+		var = Variable(ItemSubType());
+		break;
 	case str2int16("needsRecharge"):
 		var = Variable(needsRecharge());
 		break;
@@ -486,7 +489,7 @@ bool Item::use(Player& player) const
 	}
 	if (ret == true)
 	{
-		player.updatePlayerProperties();
+		player.updateProperties();
 	}
 	return ret;
 }

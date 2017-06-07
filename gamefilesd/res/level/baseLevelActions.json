@@ -7,36 +7,49 @@
         "name": "if.equal",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
         "param2": true,
-        "then": { "name": "item.drop" },
+        "then": [
+          { "name": "item.drop" },
+          "clearPanelText"
+        ],
         "else": { "name": "player.moveToClick", "player": "hero" }
       }
     },
     {
       "name": "action.set",
+      "id": "levelRightClickAction",
+      "action": { "name": "sound.play", "id": "dontHaveASpellReady", "unique": true }
+    },
+    {
+      "name": "action.set",
       "id": "levelHoverAction",
-      "action": [
-        { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" },
-        "updatePanelTextSpacing",
-        {
-          "name": "if.equal",
-          "param1": "|currentLevel|hoverObject.type|",
-          "param2": "item",
-          "then": {
+      "action": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" },
+          "updatePanelTextSpacing",
+          {
             "name": "if.equal",
-            "param1": "|currentLevel|hoverObject.magical|",
-            "param2": 1,
-            "then": "setPanelTextColorBlue",
-            "else": {
+            "param1": "|currentLevel|hoverObject.type|",
+            "param2": "item",
+            "then": {
               "name": "if.equal",
-              "param1": "|currentLevel|hoverObject.hasProperty.unique|",
-              "param2": true,
-              "then": "setPanelTextColorGold",
-              "else": "setPanelTextColorWhite"
-            }
-          },
-          "else": "setPanelTextColorWhite"
-        }
-      ]
+              "param1": "|currentLevel|hoverObject.magical|",
+              "param2": 1,
+              "then": "setPanelTextColorBlue",
+              "else": {
+                "name": "if.equal",
+                "param1": "|currentLevel|hoverObject.hasProperty.unique|",
+                "param2": true,
+                "then": "setPanelTextColorGold",
+                "else": "setPanelTextColorWhite"
+              }
+            },
+            "else": "setPanelTextColorWhite"
+          }
+        ]
+      }
     },
     {
       "name": "action.set",

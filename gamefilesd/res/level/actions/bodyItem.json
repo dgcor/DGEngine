@@ -1,0 +1,23 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{1}Item",
+    "action": [
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.canEquipItem.body.{1}|",
+        "param2": false,
+        "then": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "body", "item": "{1}", "equipable": false },
+        "else": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "body", "item": "{1}" }
+      },
+      { "name": "image.centerTexture", "id": "img{1}" },
+      {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.hasItem.body.{1}|",
+        "param2": true,
+        "then": { "name": "button.setTexture", "id": "player{1}", "texture": "red" },
+        "else": { "name": "button.setTexture", "id": "player{1}", "texture": "empty" }
+      }
+    ]
+  }
+}

@@ -1,6 +1,5 @@
 #include "ParsePlayerClass.h"
 #include "Game/PlayerClass.h"
-#include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
@@ -16,12 +15,12 @@ namespace Parser
 	void parsePlayerClassCelTexture(Game& game,
 		PlayerClass& playerClass, const Value& elem)
 	{
-		auto celTexture = game.Resources().getCelTextureCacheVec(getStringKey(elem, "name"));
+		auto celTexture = game.Resources().getCelTextureCacheVec(getStringVal(elem));
 		if (celTexture == nullptr)
 		{
 			return;
 		}
-		playerClass.setCelTexture(getUIntKey(elem, "palette"), celTexture);
+		playerClass.addCelTexture(celTexture);
 	}
 
 	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
@@ -56,7 +55,7 @@ namespace Parser
 
 		const auto& celTextures = elem["celTextures"];
 
-		if (celTextures.IsObject() == true)
+		if (celTextures.IsString() == true)
 		{
 			parsePlayerClassCelTexture(game, *playerClass, celTextures);
 		}
