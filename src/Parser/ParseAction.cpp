@@ -26,6 +26,7 @@
 #include "Actions/ActSound.h"
 #include "Actions/ActText.h"
 #include "Actions/ActTexture.h"
+#include "Actions/ActUIText.h"
 #include "Actions/ActVariable.h"
 #include "Actions/ActVisibility.h"
 #include "GameUtils.h"
@@ -37,6 +38,100 @@
 namespace Parser
 {
 	using namespace rapidjson;
+
+	template <class T>
+	std::shared_ptr<Action> parseSetTextHelper(Game& game, const Value& elem)
+	{
+		std::shared_ptr<T> action;
+		if (elem.HasMember("binding") == true)
+		{
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "format"),
+				getStringVectorKey(elem, "binding"));
+		}
+		else if (elem.HasMember("query") == true)
+		{
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "text"),
+				getStringKey(elem, "query"));
+		}
+		else
+		{
+			auto textOp = TextUtils::TextOp::Replace;
+			if (getBoolKey(elem, "set") == true)
+			{
+				textOp = TextUtils::TextOp::Set;
+			}
+			else if (getBoolKey(elem, "replaceAll") == true)
+			{
+				textOp = TextUtils::TextOp::ReplaceAll;
+			}
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "text"),
+				textOp);
+		}
+		if (getBoolKey(elem, "removeEmptyLines") == true)
+		{
+			action->RemoveEmptyLines();
+		}
+		if (getBoolKey(elem, "trim") == true)
+		{
+			action->Trim();
+		}
+		return action;
+	}
+
+	template <class T>
+	std::shared_ptr<Action> parseSetMenuTextHelper(Game& game, const Value& elem)
+	{
+		auto index = getUIntKey(elem, "index");
+		std::shared_ptr<T> action;
+		if (elem.HasMember("binding") == true)
+		{
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				index,
+				getStringKey(elem, "format"),
+				getStringVectorKey(elem, "binding"));
+		}
+		else if (elem.HasMember("query") == true)
+		{
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				index,
+				getStringKey(elem, "text"),
+				getStringKey(elem, "query"));
+		}
+		else
+		{
+			auto textOp = TextUtils::TextOp::Replace;
+			if (getBoolKey(elem, "set") == true)
+			{
+				textOp = TextUtils::TextOp::Set;
+			}
+			else if (getBoolKey(elem, "replaceAll") == true)
+			{
+				textOp = TextUtils::TextOp::ReplaceAll;
+			}
+			action = std::make_shared<T>(
+				getStringKey(elem, "id"),
+				index,
+				getStringKey(elem, "text"),
+				textOp);
+		}
+		if (getBoolKey(elem, "removeEmptyLines") == true)
+		{
+			action->RemoveEmptyLines();
+		}
+		if (getBoolKey(elem, "trim") == true)
+		{
+			action->Trim();
+		}
+		return action;
+	}
 
 	std::shared_ptr<Action> parseActionElem(Game& game, const Value& elem)
 	{
@@ -145,22 +240,6 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idFont"));
 		}
-		case str2int16("button.setText"):
-		{
-			if (elem.HasMember("binding") == false)
-			{
-				return std::make_shared<ActButtonSetText>(
-					getStringKey(elem, "id"),
-					getStringKey(elem, "text"));
-			}
-			else
-			{
-				return std::make_shared<ActButtonSetText>(
-					getStringKey(elem, "id"),
-					getStringKey(elem, "format"),
-					getStringVectorKey(elem, "binding"));
-			}
-		}
 		case str2int16("button.setTexture"):
 		{
 			return std::make_shared<ActSetTexture<BitmapButton>>(
@@ -201,15 +280,15 @@ namespace Parser
 		{
 			return std::make_shared<ActDirCreate>(getStringKey(elem, "file"));
 		}
-		case str2int16("drawable.addPositionOffset"):
+		case str2int16("drawable.addToPosition"):
 		{
-			return std::make_shared<ActDrawableAddPositionOffset>(
+			return std::make_shared<ActDrawableAddToPosition>(
 				getStringKey(elem, "id"),
 				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
-		case str2int16("drawable.addSizeOffset"):
+		case str2int16("drawable.addToSize"):
 		{
-			return std::make_shared<ActDrawableAddSizeOffset>(
+			return std::make_shared<ActDrawableAddToSize>(
 				getStringKey(elem, "id"),
 				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
@@ -219,8 +298,7 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getStringKey(elem, "idAnchor"),
 				getAnchorKey(elem, "anchor"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"),
-				getBoolKey(elem, "addSize"));
+				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
 		case str2int16("drawable.anchorSizeX"):
 		{
@@ -243,8 +321,7 @@ namespace Parser
 			return std::make_shared<ActDrawableAnchorToFocused>(
 				getStringKey(elem, "id"),
 				getAnchorKey(elem, "anchor"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"),
-				getBoolKey(elem, "addSize"));
+				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
 		case str2int16("drawable.centerOnMouseX"):
 		{
@@ -265,6 +342,12 @@ namespace Parser
 		case str2int16("drawable.delete"):
 		{
 			return std::make_shared<ActDrawableDelete>(getStringKey(elem, "id"));
+		}
+		case str2int16("drawable.executeAction"):
+		{
+			return std::make_shared<ActDrawableExecuteAction>(
+				getStringKey(elem, "id"),
+				str2int16(getStringCharKey(elem, "action")));
 		}
 		case str2int16("drawable.horizontalAnchorToFocused"):
 		{
@@ -789,6 +872,10 @@ namespace Parser
 			}
 			return std::make_shared<ActLoadJson>(json);
 		}
+		case str2int16("menu.appendText"):
+		{
+			return parseSetMenuTextHelper<ActMenuAppendText>(game, elem);
+		}
 		case str2int16("menu.click"):
 		{
 			return std::make_shared<ActMenuClick>(
@@ -834,10 +921,7 @@ namespace Parser
 		}
 		case str2int16("menu.setText"):
 		{
-			return std::make_shared<ActMenuSetText>(
-				getStringKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getStringKey(elem, "text"));
+			return parseSetMenuTextHelper<ActMenuSetText>(game, elem);
 		}
 		case str2int16("movie.pause"):
 		{
@@ -1037,6 +1121,10 @@ namespace Parser
 		{
 			return getSwitchCondition(game, elem);
 		}
+		case str2int16("text.appendText"):
+		{
+			return parseSetTextHelper<ActUITextAppendText>(game, elem);
+		}
 		case str2int16("text.setColor"):
 		{
 			return std::make_shared<ActTextSetColor>(
@@ -1045,7 +1133,8 @@ namespace Parser
 		}
 		case str2int16("text.setSpacing"):
 		{
-			auto action = std::make_shared<ActTextSetSpacing>(getStringKey(elem, "id"));
+			auto action = std::make_shared<ActUITextSetSpacing>(
+				getStringKey(elem, "id"));
 			if (elem.HasMember("horizontal") == true)
 			{
 				action->setHorizontalSpaceOffset(getIntVal(elem["horizontal"]));
@@ -1058,47 +1147,7 @@ namespace Parser
 		}
 		case str2int16("text.setText"):
 		{
-			std::shared_ptr<ActTextSetText> action;
-			if (elem.HasMember("binding") == false)
-			{
-				action = std::make_shared<ActTextSetText>(
-					getStringKey(elem, "id"),
-					getStringKey(elem, "text"));
-			}
-			else
-			{
-				action = std::make_shared<ActTextSetText>(
-					getStringKey(elem, "id"),
-					getStringKey(elem, "format"),
-					getStringVectorKey(elem, "binding"));
-			}
-			if (elem.HasMember("horizontalSpaceOffset") == true)
-			{
-				action->setHorizontalSpaceOffset(getIntVal(elem["horizontalSpaceOffset"]));
-			}
-			if (elem.HasMember("verticalSpaceOffset") == true)
-			{
-				action->setVerticalSpaceOffset(getIntVal(elem["verticalSpaceOffset"]));
-			}
-			return action;
-		}
-		case str2int16("text.setTextFromQuery"):
-		{
-			auto action = std::make_shared<ActTextSetTextFromQuery>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "query"),
-				getStringKey(elem, "text"),
-				getBoolKey(elem, "trim"),
-				getBoolKey(elem, "removeEmptyLines"));
-			if (elem.HasMember("horizontalSpaceOffset") == true)
-			{
-				action->setHorizontalSpaceOffset(getIntVal(elem["horizontalSpaceOffset"]));
-			}
-			if (elem.HasMember("verticalSpaceOffset") == true)
-			{
-				action->setVerticalSpaceOffset(getIntVal(elem["verticalSpaceOffset"]));
-			}
-			return action;
+			return parseSetTextHelper<ActUITextSetText>(game, elem);
 		}
 		case str2int16("variable.clear"):
 		{

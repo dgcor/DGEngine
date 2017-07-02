@@ -138,6 +138,10 @@ namespace Parser
 		level->resetView();
 		level->updateViewport(game);
 
+		if (elem.HasMember("captureInputEvents"))
+		{
+			level->setCaptureInputEvents(getBoolVal(elem["captureInputEvents"]));
+		}
 		if (elem.HasMember("onLeftClick"))
 		{
 			level->setAction(str2int16("leftClick"), parseAction(game, elem["onLeftClick"]));

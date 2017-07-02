@@ -15,44 +15,126 @@
       "names": "Indestructible"
     },
     {
-      "id": "magic1",
+      "id": "magic",
       "names": [
         {
           "property": "identified",
           "value": { "min": false, "max": false, "text": "Not Identified" }
         },
         {
-          "property": "strength",
-          "value": { "text": "+%strength% to Strength" }
+          "property": "identified",
+          "value": { "min": false, "max": false, "text": "" }
         },
-        {
-          "property": "magic",
-          "value": { "text": "+%magic% to Magic" }
-        },
-        {
-          "property": "dexterity",
-          "value": { "text": "+%dexterity% to Dexterity" }
-        },
-        {
-          "property": "vitality",
-          "value": { "text": "+%vitality% to Vitality" }
-        }
-      ]
-    },
-    {
-      "id": "magic2",
-      "names": [
         {
           "property": "magical",
           "value": { "min": false, "max": false, "text": "" }
         },
         {
-          "property": "identified",
-          "value": { "min": false, "max": false, "text": "" }
+          "property": "resistAll",
+          "value": [
+            { "min": "min", "max": -1, "text": "Resist All : -%resistAll%%" },
+            { "min": 1, "max": "max", "text": "Resist All : +%resistAll%%" }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": "min", "max": -1, "text": "Resist Magic : -%resistMagic%%" },
+            { "min": 1, "max": "max", "text": "Resist Magic : +%resistMagic%%" }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": "min", "max": -1, "text": "Resist Fire : -%resistFire%%" },
+            { "min": 1, "max": "max", "text": "Resist Fire : +%resistFire%%" }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": "min", "max": -1, "text": "Resist Lightning : -%resistLightning%%" },
+            { "min": 1, "max": "max", "text": "Resist Lightning : +%resistLightning%%" }
+          ]
         },
         {
           "property": "toDamage",
-          "value": { "text": "+%toDamage% to Damage" }
+          "value": [
+            { "min": "min", "max": -1, "text": "-%toDamage%% to Damage" },
+            { "min": 1, "max": "max", "text": "+%toDamage%% to Damage" }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -1, "text": "Chance to Hit : -%toHit%%" },
+            { "min": 1, "max": "max", "text": "Chance to Hit : +%toHit%%" }
+          ]
+        },
+        {
+          "property": "toArmor",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%toArmor%% Armor" },
+            { "min": 1, "max": "max", "text": "+%toArmor%% Armor" }
+          ]
+        },
+        {
+          "property": "life",
+          "value": [
+            { "min": "min", "max": -1, "text": "Hit Points : -%life%" },
+            { "min": 1, "max": "max", "text": "Hit Points : +%life%" }
+          ]
+        },
+        {
+          "property": "mana",
+          "value": [
+            { "min": "min", "max": -1, "text": "Mana : -%mana%" },
+            { "min": 1, "max": "max", "text": "Mana : +%mana%" }
+          ]
+        },
+        {
+          "property": "damage",
+          "value": [
+            { "min": "min", "max": -2, "text": "Removes %damage% Points from Damage" },
+            { "min": -1, "max": -1, "text": "Removes %damage% Point from Damage" },
+            { "min": 1, "max": 1, "text": "Adds %damage% Point to Damage" },
+            { "min": 2, "max": "max", "text": "Adds %damage% Points to Damage" }
+          ]
+        },
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%allAttributes%% to All Attributes" },
+            { "min": 1, "max": "max", "text": "+%allAttributes%% to All Attributes" }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%strength% to Strength" },
+            { "min": 1, "max": "max", "text": "+%strength% to Strength" }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%magic% to Magic" },
+            { "min": 1, "max": "max", "text": "+%magic% to Magic" }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%dexterity% to Dexterity" },
+            { "min": 1, "max": "max", "text": "+%dexterity% to Dexterity" }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -1, "text": "-%vitality% to Vitality" },
+            { "min": 1, "max": "max", "text": "+%vitality% to Vitality" }
+          ]
         }
       ]
     },
@@ -61,36 +143,28 @@
       "names": "No Required Attributes"
     },
     {
-      "id": "potion",
-      "names": [
-        {
-          "property": "life",
-          "value": [
-            { "min": "min", "max": -1000, "text": "Kill Player" },
-            { "min": -1000, "max": -1, "text": "Steal Life" },
-            { "min": 1, "max": 1000, "text": "Recover Life" },
-            { "min": 1000, "max": "max", "text": "Fully Recover Life" }
-          ]
-        },
-        {
-          "property": "mana",
-          "value": [
-            { "min": "min", "max": -1000, "text": "Remove All Mana" },
-            { "min": -1000, "max": -1, "text": "Steal Mana" },
-            { "min": 1, "max": 1000, "text": "Recover Mana" },
-            { "min": 1000, "max": "max", "text": "Fully Recover Mana" }
-          ]
-        },
-        {
-          "property": "lifeAndMana",
-          "value": [
-            { "min": "min", "max": -1000, "text": "Remove All Life And Mana" },
-            { "min": -1000, "max": -1, "text": "Steal Life And Mana" },
-            { "min": 1, "max": 1000, "text": "Recover Life And Mana" },
-            { "min": 1000, "max": "max", "text": "Fully Recover Life And Mana" }
-          ]
-        }
-      ]
+      "id": "potionOfHealing",
+      "names": "Recover Life"
+    },
+    {
+      "id": "potionOfMana",
+      "names": "Recover Mana"
+    },
+    {
+      "id": "potionOfFullHealing",
+      "names": "Fully Recover Life"
+    },
+    {
+      "id": "potionOfFullMana",
+      "names": "Fully Recover Mana"
+    },
+    {
+      "id": "potionOfRejuvenation",
+      "names": "Recover Life And Mana"
+    },
+    {
+      "id": "potionOfFullRejuvenation",
+      "names": "Fully Recover Life And Mana"
     },
     {
       "id": "required",

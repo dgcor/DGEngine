@@ -119,6 +119,7 @@ public:
 
 	const ItemClass* Class() const { return class_; }
 
+	bool hasIntByHash(uint16_t propHash) const;
 	bool hasInt(const char* prop) const;
 	bool hasInt(const std::string& prop) const
 	{
@@ -149,6 +150,7 @@ public:
 
 	bool needsRecharge() const;
 	bool needsRepair() const;
+	bool isUsable() const;
 
 	bool use(Player& player) const;
 

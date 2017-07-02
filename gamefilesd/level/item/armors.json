@@ -290,9 +290,11 @@
       "celIndexInventory": {3},
       "name": "Arkaine's Valor",
       "shortName": "Arkaine's Valor",
-      "description2": "unique",
-      "description3": null,
-      "description5": "arkanesValor",
+      "descriptions": [
+        { "index": 1, "name": "unique" },
+        { "index": 2, "name": null },
+        { "index": 4, "name": "arkanesValor" }
+      ],
       "defaults": {
         "price": 42000,
         "armor": 25,

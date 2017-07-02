@@ -6,8 +6,9 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <string>
 #include "Text2.h"
+#include "UIText.h"
 
-class StringButton : public Button
+class StringButton : public Button, public UIText
 {
 private:
 	std::unique_ptr<Text2> text;
@@ -23,26 +24,43 @@ private:
 	std::shared_ptr<Action> hoverLeaveAction;
 	std::shared_ptr<sf::SoundBuffer> clickSound;
 	std::shared_ptr<sf::SoundBuffer> focusSound;
+	sf::Clock mouseDblClickClock;
 	bool focusEnable{ false };
 	bool focusOnClick{ false };
 	bool hovered{ false };
 	bool clickUp{ false };
 	bool beingDragged{ false };
-	bool wasClicked{ false };
+	bool wasLeftClicked{ false };
+	bool wasRightClicked{ false };
+	bool captureInputEvents{ false };
+
+	void onHover(Game& game, bool contains);
+	void onMouseButtonPressed(Game& game, bool contains);
+	void onMouseButtonReleased(Game& game, bool contains);
+	void onMouseMoved(Game& game);
+	void onTouchBegan(Game& game, bool contains);
+	void onTouchEnded(Game& game, bool contains);
 
 public:
-	std::string getText() const { return text->getText(); }
+	virtual std::string getText() const { return text->getText(); }
 	void setText(std::unique_ptr<Text2> text_) { text = std::move(text_); }
-	void setText(const std::string& text_) { text->setText(text_); }
+	virtual void setText(const std::string& text_) { text->setText(text_); }
+
+	virtual void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
+	virtual void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
 	DrawableText* getDrawableText() { return text->getDrawableText(); }
 
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
+	bool getCaptureInputEvents() const { return captureInputEvents; }
+	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
+
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
-	virtual void click(Game& game, bool playSound);
+	virtual bool click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
 	virtual void focus(Game& game) const;
 	virtual void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }

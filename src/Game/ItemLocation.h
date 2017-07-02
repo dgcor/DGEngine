@@ -23,7 +23,7 @@ public:
 	ItemCoordInventory(const std::string& playerId_, size_t inventoryIdx_, size_t itemIdx_)
 		: playerId(playerId_),
 		inventoryIdx(((int16_t)inventoryIdx_) & 0x7FFF),
-		itemIdx(itemIdx_) {}
+		itemIdx((int16_t)itemIdx_) {}
 
 	ItemCoordInventory(const std::string& playerId_, size_t inventoryIdx_, const ItemXY& itemXY_)
 		: playerId(playerId_),

@@ -23,15 +23,24 @@ private:
 	std::shared_ptr<Action> hoverLeaveAction;
 	std::shared_ptr<sf::SoundBuffer> clickSound;
 	std::shared_ptr<sf::SoundBuffer> focusSound;
+	sf::Clock mouseDblClickClock;
 	bool focusEnable{ false };
 	bool focusOnClick{ false };
 	bool hovered{ false };
 	bool clickUp{ false };
 	bool beingDragged{ false };
-	bool wasClicked{ false };
+	bool wasLeftClicked{ false };
+	bool wasRightClicked{ false };
 	bool visible{ true };
 	bool resizable{ false };
-	bool captureScrollEvent{ false };
+	bool captureInputEvents{ false };
+
+	void onHover(Game& game, bool contains);
+	void onMouseButtonPressed(Game& game, bool contains);
+	void onMouseButtonReleased(Game& game, bool contains);
+	void onMouseMoved(Game& game);
+	void onTouchBegan(Game& game, bool contains);
+	void onTouchEnded(Game& game, bool contains);
 
 public:
 	sf::FloatRect getLocalBounds() const { return sprite.getLocalBounds(); }
@@ -42,12 +51,13 @@ public:
 	bool getResizable() const { return resizable; }
 	void setResizable(bool resizable_) { resizable = resizable_; }
 
-	bool getCaptureScrollEvent() const { return resizable; }
-	void setCaptureScrollEvent(bool captureScroll) { captureScrollEvent = captureScroll; }
+	bool getCaptureInputEvents() const { return captureInputEvents; }
+	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
-	virtual void click(Game& game, bool playSound);
+	virtual bool click(Game& game, bool playSound);
 	virtual void enable(bool enable) { enabled = enable; }
 	virtual void focus(Game& game) const;
 	virtual void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }

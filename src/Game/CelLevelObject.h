@@ -15,7 +15,6 @@ private:
 	MapCoord mapPosition;
 
 	size_t celIdx{ 0 };
-	size_t palette{ 0 };
 
 	CelTextureCacheVector* celTexture{ nullptr };
 	std::pair<size_t, size_t> frameRange;
@@ -45,7 +44,7 @@ public:
 	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const std::string& prop, Number32& value) const { return false; }
+	virtual bool getNumberProp(const char* prop, Number32& value) const { return false; }
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
 

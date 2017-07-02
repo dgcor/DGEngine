@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Predicate.h"
+#include "Game.h"
 
 class PredPlayerCanEquip : public Predicate
 {

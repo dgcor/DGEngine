@@ -33,21 +33,24 @@
     {
       "name": "action.set",
       "id": "updateJog",
-      "action": {
-        "name": "if.equal",
-        "param1": "%jog%",
-        "param2": true,
-        "then": [
-          { "name": "button.setText", "id": "jog", "text": "Jog" },
-          { "name": "drawable.setSizeX", "id": "progressBar4", "size": 270 },
-          { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "right", "offset": [-29, 0] }
-        ],
-        "else": [
-          { "name": "button.setText", "id": "jog", "text": "Walk" },
-          { "name": "drawable.setSizeX", "id": "progressBar4", "size": 14 },
-          { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "left", "offset": [29, 0] }
-        ]
-      }
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "%jog%",
+          "param2": true,
+          "then": [
+            { "name": "text.setText", "id": "jog", "text": "Jog" },
+            { "name": "drawable.setSizeX", "id": "progressBar4", "size": 270 },
+            { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "right", "offset": [-29, 0] }
+          ],
+          "else": [
+            { "name": "text.setText", "id": "jog", "text": "Walk" },
+            { "name": "drawable.setSizeX", "id": "progressBar4", "size": 14 },
+            { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "left", "offset": [29, 0] }
+          ]
+        },
+        { "name": "load", "file": "level/player/updateSpeed.json" }
+      ]
     },
     {
       "name": "action.set",
@@ -275,7 +278,6 @@
           "then": { "name": "variable.set", "key": "jog", "val": true },
           "else": { "name": "variable.set", "key": "jog", "val": false }
         },
-        { "name": "load", "file": "level/player/updateSpeed.json" },
         "updateJog"
       ]
     },

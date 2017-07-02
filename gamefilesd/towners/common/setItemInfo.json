@@ -1,0 +1,105 @@
+{
+  "action": [
+    {
+      "name": "text.setText",
+      "id": "itemInfo",
+      "query": "currentLevel.player.{1}.item.{2}.{3}",
+      "text": "%name%\n"
+    },
+    {
+      "name": "if.inList",
+      "param": "|currentLevel|player.{1}.item.{2}.{3}.itemType|",
+      "list": ["Book", "Potion", "Scroll"],
+      "else": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|player.{1}.item.{2}.{3}.identified|",
+          "param2": true,
+          "then": {
+            "name": "if.notEqual",
+            "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.1|",
+            "param2": "",
+            "then": {
+              "name": "if.notEqual",
+              "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.2|",
+              "param2": "",
+              "then": {
+                "name": "text.appendText",
+                "id": "itemInfo",
+                "query": "currentLevel.player.{1}.item.{2}.{3}",
+                "text": "  %d.1%,  %d.2%\n"
+              },
+              "else": {
+                "name": "text.appendText",
+                "id": "itemInfo",
+                "query": "currentLevel.player.{1}.item.{2}.{3}",
+                "text": "  %d.1%\n"
+              }
+            },
+            "else": {
+              "name": "if.notEqual",
+              "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.2|",
+              "param2": "",
+              "then": {
+                "name": "text.appendText",
+                "id": "itemInfo",
+                "query": "currentLevel.player.{1}.item.{2}.{3}",
+                "text": "  %d.2%\n"
+              }
+            }
+          }
+        },
+        {
+          "name": "if.notEqual",
+          "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.0|",
+          "param2": "",
+          "then": {
+            "name": "text.appendText",
+            "id": "itemInfo",
+            "query": "currentLevel.player.{1}.item.{2}.{3}",
+            "text": "  %d.0%,"
+          }
+        }
+      ]
+    },
+    {
+      "name": "if.notEqual",
+      "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.3|",
+      "param2": "",
+      "then": {
+        "name": "text.appendText",
+        "id": "itemInfo",
+        "query": "currentLevel.player.{1}.item.{2}.{3}",
+        "text": "  %d.3%"
+      },
+      "else": {
+        "name": "text.appendText",
+        "id": "itemInfo",
+        "text": "  No Required Attributes"
+      }
+    },
+    {
+      "replaceVars": true,
+      "name": "if.equal",
+      "param1": {
+        "name": "player.canEquipItem",
+        "item": { "player": "{1}", "inventory": {2}, "item": {3} }
+      },
+      "param2": false,
+      "then": { "name": "text.setColor", "id": "itemInfo", "color": "%textRed%" },
+      "else": {
+        "name": "if.equal",
+        "param1": "|currentLevel|player.{1}.item.{2}.{3}.unique|",
+        "param2": 1,
+        "then": { "name": "text.setColor", "id": "itemInfo", "color": "%textGold%" },
+        "else": {
+          "name": "if.equal",
+          "param1": "|currentLevel|player.{1}.item.{2}.{3}.magical|",
+          "param2": 1,
+          "then": { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },
+          "else": { "name": "text.setColor", "id": "itemInfo" }
+        }
+      }
+    }
+  ]
+}

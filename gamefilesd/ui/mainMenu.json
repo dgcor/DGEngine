@@ -169,9 +169,9 @@
         "file": "ui/settings.json"
       }
     },
-    "onHoverEnter": { "name": "button.setText", "id": "versionInfo", "text": "Change Settings" },
+    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "Change Settings" },
     "onHoverLeave": {
-      "name": "button.setText",
+      "name": "text.setText",
       "id": "versionInfo",
       "binding": ["|game|title|", "|game|version|"],
       "format": "[1] v[2]"
@@ -180,7 +180,7 @@
   "action": [
     { "name": "menu.setFont", "id": "menu", "index": 1, "idFont": "font42y" },
     {
-      "name": "button.setText",
+      "name": "text.setText",
       "id": "versionInfo",
       "binding": ["|game|title|", "|game|version|"],
       "format": "[1] v[2]"

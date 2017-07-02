@@ -31,23 +31,31 @@ private:
 	bool smoothScreen{ false };
 	bool stretchToFit{ false };
 	bool keepAR{ true };
-	bool disableInput{ false };
+	bool enableInput{ true };
 	bool pauseOnFocusLoss{ false };
 	bool paused{ false };
 
 	sf::Vector2i mousePositioni;
 	sf::Vector2f mousePositionf;
-	sf::Mouse::Button mouseButton;
-	sf::Event::MouseWheelScrollEvent mouseWheel;
-	sf::Clock mouseClickClock;
-	bool mouseClicked{ false };
-	bool mouseDoubleClicked{ false };
-	bool mouseMoved{ false };
+
+	sf::Event::MouseButtonEvent mousePressEvt;
+	sf::Event::MouseButtonEvent mouseReleaseEvt;
+	sf::Event::MouseMoveEvent mouseMoveEvt;
+	sf::Event::MouseWheelScrollEvent mouseScrollEvt;
+	sf::Event::KeyEvent keyPressEvt;
+	sf::Event::TextEvent textEnteredEvt;
+	sf::Event::TouchEvent touchBeganEvt;
+	sf::Event::TouchEvent touchMovedEvt;
+	sf::Event::TouchEvent touchEndedEvt;
 	bool mousePressed{ false };
 	bool mouseReleased{ false };
+	bool mouseMoved{ false };
 	bool mouseScrolled{ false };
-	char keyboardChar{ false };
-	sf::Event::KeyEvent keyPressed;
+	bool keyPressed{ false };
+	bool textEntered{ false };
+	bool touchBegan{ false };
+	bool touchMoved{ false };
+	bool touchEnded{ false };
 
 	unsigned musicVolume{ 100 };
 	unsigned soundVolume{ 100 };
@@ -71,20 +79,18 @@ private:
 	void onResized(const sf::Event::SizeEvent& evt);
 	void onLostFocus();
 	void onGainedFocus();
+
 	void onTextEntered(const sf::Event::TextEvent& evt);
 	void onKeyPressed(const sf::Event::KeyEvent& evt);
 	void onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt);
 	void onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt);
 	void onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt);
 	void onMouseMoved(const sf::Event::MouseMoveEvent& evt);
-#ifdef __ANDROID__
 	void onTouchBegan(const sf::Event::TouchEvent& evt);
 	void onTouchMoved(const sf::Event::TouchEvent& evt);
 	void onTouchEnded(const sf::Event::TouchEvent& evt);
-#endif
 
 	void updateMouse(const sf::Vector2i mousePos);
-	void checkKeyPress();
 	void updateEvents();
 	void drawCursor();
 	void drawAndUpdate();
@@ -153,18 +159,49 @@ public:
 
 	const sf::Vector2i& MousePositioni() const { return mousePositioni; }
 	const sf::Vector2f& MousePositionf() const { return mousePositionf; }
-	sf::Mouse::Button getMouseButton() { return mouseButton; }
-	const sf::Event::MouseWheelScrollEvent& getMouseWheelScroll() const { return mouseWheel; }
-	void clearMouseClicked() { mouseClicked = false; }
-	void clearMouseDoubleClicked() { mouseDoubleClicked = false; }
+
+	const sf::Event::MouseButtonEvent& MousePress() { return mousePressEvt; }
+	const sf::Event::MouseButtonEvent& MouseRelease() { return mouseReleaseEvt; }
+	const sf::Event::MouseMoveEvent& MouseMove() { return mouseMoveEvt; }
+	const sf::Event::MouseWheelScrollEvent& MouseScroll() { return mouseScrollEvt; }
+	const sf::Event::KeyEvent& KeyPress() { return keyPressEvt; }
+	const sf::Event::TextEvent& TextEntered() { return textEnteredEvt; }
+	const sf::Event::TouchEvent& TouchBegan() { return touchBeganEvt; }
+	const sf::Event::TouchEvent& TouchMoved() { return touchMovedEvt; }
+	const sf::Event::TouchEvent& TouchEnded() { return touchEndedEvt; }
+
+	bool wasMousePressed() { return mousePressed; }
+	bool wasMouseReleased() { return mouseReleased; }
+	bool wasMouseMoved() { return mouseMoved; }
+	bool wasMouseScrolled() { return mouseScrolled; }
+	bool wasKeyPressed() { return keyPressed; }
+	bool wasTextEntered() { return textEntered; }
+	bool hasTouchBegan() { return touchBegan; }
+	bool hasTouchMoved() { return touchMoved; }
+	bool hasTouchEnded() { return touchEnded; }
+
+	void clearMousePressed() { mousePressed = false; }
+	void clearMouseReleased() { mouseReleased = false; }
+	void clearMouseMoved() { mouseMoved = false; }
 	void clearMouseScrolled() { mouseScrolled = false; }
-	bool wasMouseClicked() const { return mouseClicked; }
-	bool wasMouseDoubleClicked() const { return mouseDoubleClicked; }
-	bool wasMouseMoved() const { return mouseMoved; }
-	bool isMousePressed() const { return mousePressed; }
-	bool wasMouseReleased() const { return mouseReleased; }
-	bool wasMouseScrolled() const { return mouseScrolled; }
-	char getKeyboardChar() const { return keyboardChar; }
+	void clearKeyPressed() { keyPressed = false; }
+	void clearTextEntered() { textEntered = false; }
+	void clearTouchBegan() { touchBegan = false; }
+	void clearTouchMoved() { touchMoved = false; }
+	void clearTouchEnded() { touchEnded = false; }
+
+	void clearInputEvents()
+	{
+		mousePressed = false;
+		mouseReleased = false;
+		mouseMoved = false;
+		mouseScrolled = false;
+		keyPressed = false;
+		textEntered = false;
+		touchBegan = false;
+		touchMoved = false;
+		touchEnded = false;
+	}
 
 	void MinWidth(unsigned width_) { size.x = width_; }
 	void MinHeight(unsigned height_) { size.y = height_; }
@@ -208,7 +245,8 @@ public:
 	const std::string& getTitle() const { return title; }
 	const std::string& getVersion() const { return version; }
 
-	void enableInput(bool enable) { disableInput = !enable; }
+	bool isInputEnabled() { return enableInput; }
+	void EnableInput(bool enable) { enableInput = enable; }
 
 	sf::RenderWindow& Window() { return window; }
 	const sf::RenderWindow& Window() const { return window; }

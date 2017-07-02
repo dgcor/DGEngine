@@ -16,7 +16,10 @@
       "formulas": {
         "sell": "price * 0.25"
       },
-      "description1": "rightClickToRead",
+      "descriptions": [
+        { "index": 0, "name": "rightClickToRead" },
+        { "index": 1, "name": "required" }
+      ],
       "inventorySize": [2, 2],
       "actions": {
         "action": "pickItemInLevel",

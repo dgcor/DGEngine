@@ -1,7 +1,7 @@
 Windows
 
-To compile in Windows, you need Visual Studio 2015, since this project
-uses C++ features that are present only in VS2015.
+To compile in Windows, you need Visual Studio 2017, since this project
+uses C++ features that are present only in VS2017.
 
 The provided project expects the following folders in the root of the
 project to build properly.
@@ -11,8 +11,11 @@ project to build properly.
 
 /SFML - http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
 
-/sfeMovie - https://github.com/Yalir/sfeMovie/tree/feature/OpenFromStream
-            Use this branch of sfeMovie that has OpenFromStream.
+/FFmpeg - http://ffmpeg.zeranoe.com/builds/
+          Get both 32 bit shared and dev packages (version 2.x or 3.x)
+
+DGEngine now bundles a modified version of sfeMovie (no subtitle support,
+FFmpeg 3.x API suport), so you only need FFmpeg >= 2.8 now.
 
 If you want to skip movie playback support, use the preprocessor define
 USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.
@@ -22,15 +25,13 @@ sfeMovie with OpenFromStream support installed. Use this to fix that.
 To prevent missing DLL errors when running from Visual Studio,
 place the following in the root of the project:
 
-avcodec-56.dll          (sfeMovie)
-avdevice-56.dll         (sfeMovie)
-avfilter-5.dll          (sfeMovie)
-avformat-56.dll         (sfeMovie)
-avutil-54.dll           (sfeMovie)
+avcodec-56.dll          (FFmpeg 2)
+avdevice-56.dll         (FFmpeg 2)
+avfilter-5.dll          (FFmpeg 2)
+avformat-56.dll         (FFmpeg 2)
+avutil-54.dll           (FFmpeg 2)
 openal32.dll            (SFML)
 physfs.dll              (PhysicsFS)
-sfeMovie-d.dll          (sfeMovie)
-sfeMovie.dll            (sfeMovie)
 sfml-audio-2.dll        (SFML)
 sfml-audio-d-2.dll      (SFML)
 sfml-graphics-2.dll     (SFML)
@@ -41,8 +42,8 @@ sfml-system-2.dll       (SFML)
 sfml-system-d-2.dll     (SFML)
 sfml-window-2.dll       (SFML)
 sfml-window-d-2.dll     (SFML)
-swresample-1.dll        (sfeMovie)
-swscale-3.dll           (sfeMovie)
+swresample-1.dll        (FFmpeg 2)
+swscale-3.dll           (FFmpeg 2)
 
 Linux
 
@@ -52,15 +53,20 @@ and to have both PhysicsFS and SFML installed.
 sudo apt-get install libphysfs-dev
 sudo apt-get install libsfml-dev
 
-You also need to use the preprocessor define USE_SFML_MOVIE_STUB to skip
-movie support. You can try to get it to use sfeMovie for Linux on your own.
-The provided CMake project does this by default.
+Optional (for movie support) FFmpeg:
+
+sudo apt-get install libavdevice-dev libavformat-dev libavfilter-dev libavcodec-dev libswscale-dev libavutil-dev
+
+Movie support is enabled by default (CMake), unless FFmpeg isn't found.
+In CMake, set DGENGINE_MOVIE_SUPPORT to FALSE to skip movie support.
 
 CMake
 
-A CMake project file is provided. It doesn't add video playback support.
+A CMake project file is provided. Movie support is enabled by default.
 It will generate a project to compile on the target platform.
 
 cmake CMakeLists.txt
+cmake CMakeLists.txt -DDGENGINE_MOVIE_SUPPORT:BOOL=FALSE
 
 Both PhysicsFS and SFML must be installed.
+FFmpeg is also required for movie support.

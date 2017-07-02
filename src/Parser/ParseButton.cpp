@@ -35,7 +35,7 @@ namespace Parser
 			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 		button->setResizable(getBoolKey(elem, "resizable"));
-		button->setCaptureScrollEvent(getBoolKey(elem, "captureScrollEvent"));
+		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 
 		return button;
 	}
@@ -49,6 +49,7 @@ namespace Parser
 		}
 		auto button = std::make_shared<StringButton>();
 		button->setText(std::move(text));
+		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 		return button;
 	}
 

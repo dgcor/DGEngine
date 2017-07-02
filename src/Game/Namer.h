@@ -26,5 +26,5 @@ private:
 public:
 	Namer(const std::vector<NameValueInterval>& nameValues_) : nameValues(nameValues_) {}
 
-	std::string getName(const Queryable& obj) const;
+	std::string getName(const Queryable& obj, uint16_t skipFirst = 0) const;
 };

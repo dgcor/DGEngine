@@ -1,17 +1,18 @@
 #pragma once
 
 #include <cstdint>
+#include "Cel.h"
 #include "Palette.h"
 
 namespace CelUtils
 {
-	sf::Image loadImage(const char* fileName, const Palette& pal, bool isCl2);
-	sf::Image loadImage(const char* fileName, const Palette& pal, bool isCl2,
+	sf::Image loadImage(const CelFile& celFile, const Palette& pal);
+	sf::Image loadImage(const CelFile& celFile, const Palette& pal,
 		size_t& frameCountX, size_t& frameCountY);
 
-	sf::Image loadImageFrame(const char* fileName, const Palette& pal, bool isCl2,
+	sf::Image loadImageFrame(const CelFile& celFile, const Palette& pal,
 		size_t frameIdx);
 
-	sf::Image loadBitmapFontImage(const char* fileName, const char* fileNameBin,
-		const Palette& pal, bool isCl2);
+	sf::Image loadBitmapFontImage(const CelFile& celFile, const char* fileNameBin,
+		const Palette& pal);
 }

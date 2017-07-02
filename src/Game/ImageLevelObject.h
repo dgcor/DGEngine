@@ -15,7 +15,6 @@ private:
 	MapCoord mapPosition;
 
 	std::pair<size_t, size_t> frameRange;
-	size_t currentFrame{ 0 };
 
 	sf::Time frameTime{ sf::milliseconds(50) };
 	sf::Time currentTime;

@@ -5,32 +5,78 @@
       "id": "updateLifeManaOrbs",
       "action": [
         {
-          "name": "drawable.resizeY",
-          "id": "lifeOrbEmpty",
-          "size": "|currentLevel|currentPlayer.lifeDamage|",
-          "inputRangeMax": "|currentLevel|currentPlayer.life|",
-          "range": [0, 88]
+          "name": "<=",
+          "param1": "|currentLevel|currentPlayer.life|",
+          "param2": 0,
+          "then": [
+            {
+              "name": "drawable.resizeY",
+              "id": "lifeOrbEmpty",
+              "size": 1,
+              "inputRangeMax": 1,
+              "range": [0, 88]
+            },
+            {
+              "name": "image.inverseResizeY",
+              "id": "lifeOrbFull",
+              "size": 1,
+              "inputRangeMax": 1,
+              "range": [0, 88]
+            }
+          ],
+          "else": [
+            {
+              "name": "drawable.resizeY",
+              "id": "lifeOrbEmpty",
+              "size": "|currentLevel|currentPlayer.lifeDamage|",
+              "inputRangeMax": "|currentLevel|currentPlayer.life|",
+              "range": [0, 88]
+            },
+            {
+              "name": "image.inverseResizeY",
+              "id": "lifeOrbFull",
+              "size": "|currentLevel|currentPlayer.lifeDamage|",
+              "inputRangeMax": "|currentLevel|currentPlayer.life|",
+              "range": [0, 88]
+            }
+          ]
         },
         {
-          "name": "image.inverseResizeY",
-          "id": "lifeOrbFull",
-          "size": "|currentLevel|currentPlayer.lifeDamage|",
-          "inputRangeMax": "|currentLevel|currentPlayer.life|",
-          "range": [0, 88]
-        },
-        {
-          "name": "drawable.resizeY",
-          "id": "manaOrbEmpty",
-          "size": "|currentLevel|currentPlayer.manaDamage|",
-          "inputRangeMax": "|currentLevel|currentPlayer.mana|",
-          "range": [0, 88]
-        },
-        {
-          "name": "image.inverseResizeY",
-          "id": "manaOrbFull",
-          "size": "|currentLevel|currentPlayer.manaDamage|",
-          "inputRangeMax": "|currentLevel|currentPlayer.mana|",
-          "range": [0, 88]
+          "name": "<=",
+          "param1": "|currentLevel|currentPlayer.mana|",
+          "param2": 0,
+          "then": [
+            {
+              "name": "drawable.resizeY",
+              "id": "manaOrbEmpty",
+              "size": 1,
+              "inputRangeMax": 1,
+              "range": [0, 88]
+            },
+            {
+              "name": "image.inverseResizeY",
+              "id": "manaOrbFull",
+              "size": 1,
+              "inputRangeMax": 1,
+              "range": [0, 88]
+            }
+          ],
+          "else": [
+            {
+              "name": "drawable.resizeY",
+              "id": "manaOrbEmpty",
+              "size": "|currentLevel|currentPlayer.manaDamage|",
+              "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+              "range": [0, 88]
+            },
+            {
+              "name": "image.inverseResizeY",
+              "id": "manaOrbFull",
+              "size": "|currentLevel|currentPlayer.manaDamage|",
+              "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+              "range": [0, 88]
+            }
+          ]
         }
       ]
     },

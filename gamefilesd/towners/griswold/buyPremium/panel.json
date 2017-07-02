@@ -56,7 +56,6 @@
   ],
   "menu": {
     "id": "mainMenu",
-    "replaceVars": true,
     "bitmapFont": "smaltext",
     "sound": "titlslct",
     "position": [52, 94],
@@ -68,12 +67,12 @@
     "focusSound": "titlemov",
     "visibleItems": 4,
     "size": [518, 186],
-    "verticalPad": 26,
+    "verticalPad": 14,
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": {
       "load": "currentLevel|griswold.inventory.1",
-      "text": "%name%\n  %d.0%,  %d.3%",
+      "text": "%name%\n",
       "onClick": {
         "name": "load",
         "file": ["towners/griswold/buyPremium/confirm.json", 1, "%idx%"]
@@ -84,45 +83,8 @@
         "mainMenu.moveScrollbar"
       ],
       "executeAction": {
-        "name": "if.equal",
-        "param1": {
-          "name": "player.canEquipItem",
-          "item": { "player": "griswold", "inventory": 1, "item": "%idx%" }
-        },
-        "param2": false,
-        "then": {
-          "name": "menu.setColor",
-          "id": "mainMenu",
-          "index": "%menuIdx%",
-          "color": "%textRed%"
-        },
-        "else": {
-          "name": "if.equal",
-          "param1": "|currentLevel|player.griswold.item.1.%idx%.unique|",
-          "param2": 1,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textGold%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|player.griswold.item.1.%idx%.magical|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textBlue%"
-            },
-            "else": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%"
-            }
-          }
-        }
+        "name": "load",
+        "file": ["towners/common/setMenuItemText.json", "griswold", 1, "%idx%", "%menuIdx%"]
       }
     }
   },

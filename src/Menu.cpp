@@ -3,6 +3,19 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16)
+{
+	switch (nameHash16)
+	{
+	case str2int16("scrollDown"):
+		return scrollDownAction;
+	case str2int16("scrollUp"):
+		return scrollUpAction;
+	default:
+		return nullptr;
+	}
+}
+
 void Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
@@ -177,7 +190,7 @@ void Menu::update(Game& game)
 
 	if (game.wasMouseScrolled() == true)
 	{
-		const auto& scroll = game.getMouseWheelScroll();
+		const auto& scroll = game.MouseScroll();
 		if (scrollRect.contains(scroll.x, scroll.y))
 		{
 			game.clearMouseScrolled();
@@ -218,6 +231,20 @@ bool Menu::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("visibleItems"):
 		var = Variable((int64_t)visibleItems);
 		break;
+	case str2int16("item"):
+	{
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		auto btnIdx = std::strtoul(props2.first.c_str(), NULL, 10);
+		if (btnIdx < items.size())
+		{
+			auto button = items[btnIdx].get();
+			if (button != nullptr)
+			{
+				return button->getProperty(props2.second, var);
+			}
+		}
+		return false;
+	}
 	default:
 		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
 	}

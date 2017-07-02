@@ -40,49 +40,54 @@
       "id": "charPanel",
       "anchor": "left",
       "texture": "char",
-      "captureScrollEvent": true,
+      "captureInputEvents": true,
+      "visible": false,
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
-      "visible": false
+      "onRightClick": "rightClickLevel"
     },
     {
       "id": "invPanel",
       "anchor": "right",
       "position": [320, 0],
       "texture": "inv",
-      "captureScrollEvent": true,
+      "captureInputEvents": true,
+      "visible": false,
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
-      "visible": false
+      "onRightClick": "rightClickLevel"
     },
     {
       "id": "questPanel",
       "anchor": "left",
       "texture": "quest",
-      "captureScrollEvent": true,
+      "captureInputEvents": true,
+      "visible": false,
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
-      "visible": false
+      "onRightClick": "rightClickLevel"
     },
     {
       "id": "spellPanel",
       "anchor": "right",
       "position": [320, 0],
       "texture": "spellbk",
-      "captureScrollEvent": true,
+      "captureInputEvents": true,
+      "visible": false,
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
-      "visible": false
-    }
-  ],
-  "image": [
+      "onRightClick": "rightClickLevel"
+    },
     {
       "id": "panel8",
       "texture": "panel8",
       "position": [0, 351],
       "textureRect": [0, 15, 640, 129],
-      "anchor": "bottom"
-    },
+      "anchor": "bottom",
+      "onRightClick": "rightClickLevel"
+    }
+  ],
+  "image": [
     {
       "id": "lifeOrbFull",
       "texture": "panel8",
@@ -139,38 +144,34 @@
       "onHoverLeave": "hideItemInfo"
     },
     {
-      "id": "panelBackground",
-      "texture": "empty",
-      "position": [0, 352],
-      "anchor": "bottom",
-      "textureRect": [640, 128]
-    },
-    {
       "id": "char",
       "texture": "empty",
       "anchor": "bottom",
       "position": [9, 361],
       "textureRect": [71, 19],
       "clickUp": true,
-      "onClick": {
-        "name": "if.equal",
-        "param1": "|charPanel|visible|",
-        "param2": false,
-        "then": [
-          { "name": "resource.pop", "id": "charPanelQuests" },
-          { "name": "load", "file": "ui/level/char/panelLabels.json" },
-          { "name": "drawable.visible", "id": "charPanel", "visible": true },
-          { "name": "drawable.visible", "id": "questPanel", "visible": false },
-          "hideItemInfo"
-        ],
-        "else": [
-          { "name": "resource.pop", "id": "charPanelLabels" },
-          { "name": "resource.pop", "id": "charPanelQuests" },
-          { "name": "drawable.visible", "id": "charPanel", "visible": false },
-          { "name": "drawable.visible", "id": "questPanel", "visible": false },
-          "setLevelHoverActions"
-        ]
-      },
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|charPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            { "name": "load", "file": "ui/level/char/panelLabels.json" },
+            { "name": "drawable.visible", "id": "charPanel", "visible": true },
+            { "name": "drawable.visible", "id": "questPanel", "visible": false },
+            "hideItemInfo"
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
+            { "name": "drawable.visible", "id": "questPanel", "visible": false },
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
       "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
       "onHoverEnter": {
@@ -192,24 +193,27 @@
       "position": [9, 387],
       "textureRect": [0, 19, 71, 19],
       "clickUp": true,
-      "onClick": {
-        "name": "if.equal",
-        "param1": "|questPanel|visible|",
-        "param2": false,
-        "then": [
-          { "name": "resource.pop", "id": "charPanelLabels" },
-          { "name": "load", "file": "ui/level/char/panelQuests.json" },
-          { "name": "drawable.visible", "id": "charPanel", "visible": false },
-          { "name": "drawable.visible", "id": "questPanel", "visible": true }
-        ],
-        "else": [
-          { "name": "resource.pop", "id": "charPanelLabels" },
-          { "name": "resource.pop", "id": "charPanelQuests" },
-          { "name": "drawable.visible", "id": "charPanel", "visible": false },
-          { "name": "drawable.visible", "id": "questPanel", "visible": false },
-          "setLevelHoverActions"
-        ]
-      },
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|questPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "load", "file": "ui/level/char/panelQuests.json" },
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
+            { "name": "drawable.visible", "id": "questPanel", "visible": true }
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
+            { "name": "drawable.visible", "id": "questPanel", "visible": false },
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
       "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
       "onHoverEnter": {
@@ -231,24 +235,27 @@
       "position": [560, 361],
       "textureRect": [0, 76, 71, 19],
       "clickUp": true,
-      "onClick": {
-        "name": "if.equal",
-        "param1": "|invPanel|visible|",
-        "param2": false,
-        "then": [
-          { "name": "resource.pop", "id": "charPanelSpells" },
-          { "name": "load", "file": "ui/level/char/panelInventory.json" },
-          { "name": "drawable.visible", "id": "invPanel", "visible": true },
-          { "name": "drawable.visible", "id": "spellPanel", "visible": false }
-        ],
-        "else": [
-          { "name": "resource.pop", "id": "charPanelInventory" },
-          { "name": "resource.pop", "id": "charPanelSpells" },
-          { "name": "drawable.visible", "id": "invPanel", "visible": false },
-          { "name": "drawable.visible", "id": "spellPanel", "visible": false },
-          "setLevelHoverActions"
-        ]
-      },
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|invPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "load", "file": "ui/level/char/panelInventory.json" },
+            { "name": "drawable.visible", "id": "invPanel", "visible": true },
+            { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
       "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
       "onHoverEnter": {
@@ -270,24 +277,27 @@
       "position": [560, 387],
       "textureRect": [0, 95, 71, 19],
       "clickUp": true,
-      "onClick": {
-        "name": "if.equal",
-        "param1": "|spellPanel|visible|",
-        "param2": false,
-        "then": [
-          { "name": "resource.pop", "id": "charPanelInventory" },
-          { "name": "load", "file": "ui/level/char/panelSpells.json" },
-          { "name": "drawable.visible", "id": "invPanel", "visible": false },
-          { "name": "drawable.visible", "id": "spellPanel", "visible": true }
-        ],
-        "else": [
-          { "name": "resource.pop", "id": "charPanelInventory" },
-          { "name": "resource.pop", "id": "charPanelSpells" },
-          { "name": "drawable.visible", "id": "invPanel", "visible": false },
-          { "name": "drawable.visible", "id": "spellPanel", "visible": false },
-          "setLevelHoverActions"
-        ]
-      },
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|spellPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "load", "file": "ui/level/char/panelSpells.json" },
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellPanel", "visible": true }
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
       "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
       "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
       "onHoverEnter": {

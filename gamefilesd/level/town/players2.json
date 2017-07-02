@@ -253,7 +253,7 @@
               "index": 4,
               "class": "cape",
               "properties": {
-                "hitPoints": 12,
+                "life": 12,
                 "price": 850,
                 "magical": true
               }

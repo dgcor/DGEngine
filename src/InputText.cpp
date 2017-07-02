@@ -3,6 +3,22 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16)
+{
+	switch (nameHash16)
+	{
+	case str2int16("change"):
+		return actionChange;
+	case str2int16("click"):
+	case str2int16("enter"):
+		return actionEnter;
+	case str2int16("minSize"):
+		return actionMinSize;
+	default:
+		return nullptr;
+	}
+}
+
 void InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
@@ -35,11 +51,17 @@ void InputText::click(Game& game)
 
 void InputText::update(Game& game)
 {
-	while (true)
+	if (text->Visible() == false)
 	{
-		auto ch = game.getKeyboardChar();
-		if (ch != 0)
+		return;
+	}
+	if (game.wasTextEntered() == true &&
+		game.TextEntered().unicode < 256 &&
+		game.TextEntered().unicode != 0)
+	{
+		while (true)
 		{
+			auto ch = static_cast<char>(game.TextEntered().unicode);
 			auto txt = text->getText();
 
 			if (ch == 8 && txt.size() > 0) // backspace
@@ -65,8 +87,8 @@ void InputText::update(Game& game)
 			{
 				game.Events().addBack(actionChange);
 			}
+			break;
 		}
-		break;
 	}
 	text->update(game);
 }

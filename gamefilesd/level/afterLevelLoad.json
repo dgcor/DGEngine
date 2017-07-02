@@ -2,11 +2,21 @@
   "action": [
     {
       "name": "if.notEqual",
-      "param1": "|currentLevel|name|",
-      "param2": "Town Center",
+      "param1": "{1}",
+      "param2": "town",
       "then": { "name": "player.setRestStatus", "status": 1 },
       "else": { "name": "player.setRestStatus", "status": 0 }
     },
-    "updatePlayerTexture"
-  ]
+    "updateLifeManaOrbs",
+    "updatePlayerTexture",
+    {
+      "name": "if.equal",
+      "param1": "{2}",
+      "param2": "positionPlayer",
+      "then": { "name": "load", "file": ["level/positionPlayer.json", "{3}"] }
+    }
+  ],
+  "load": "ui/level/char/updateVisiblePanels.json",
+  "load": "level/playOrStopMusic.json",
+  "load": ["level/setMapAction.json", "{1}"]
 }

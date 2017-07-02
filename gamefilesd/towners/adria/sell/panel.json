@@ -56,7 +56,6 @@
   ],
   "menu": {
     "id": "mainMenu",
-    "replaceVars": true,
     "bitmapFont": "smaltext",
     "sound": "titlslct",
     "position": [52, 94],
@@ -68,7 +67,7 @@
     "focusSound": "titlemov",
     "visibleItems": 4,
     "size": [518, 186],
-    "verticalPad": 26,
+    "verticalPad": 14,
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": [
@@ -78,10 +77,10 @@
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": ["towners/adria/sell/confirm.json", "stash", "%idx%"]
+          "file": ["towners/adria/sell/confirm.json", 2, "%idx%"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -89,42 +88,8 @@
           "mainMenu.moveScrollbar"
         ],
         "executeAction": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.stash.%idx%|",
-          "param2": false,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textRed%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.unique|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textGold%"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
-              "param2": 1,
-              "then": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "color": "%textBlue%"
-              },
-              "else": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%"
-              }
-            }
-          }
+          "name": "load",
+          "file": ["towners/common/setMenuItemText.json", "hero", 2, "%idx%", "%menuIdx%"]
         }
       },
       {
@@ -133,10 +98,10 @@
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": ["towners/adria/sell/confirm.json", "belt", "%idx%"]
+          "file": ["towners/adria/sell/confirm.json", 1, "%idx%"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -144,42 +109,8 @@
           "mainMenu.moveScrollbar"
         ],
         "executeAction": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.%idx%|",
-          "param2": false,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textRed%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.belt.%idx%.unique|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textGold%"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.belt.%idx%.magical|",
-              "param2": 1,
-              "then": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "color": "%textBlue%"
-              },
-              "else": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%"
-              }
-            }
-          }
+          "name": "load",
+          "file": ["towners/common/setMenuItemText.json", "hero", 1, "%idx%", "%menuIdx%"]
         }
       }
     ]

@@ -11,6 +11,17 @@ ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Ti
 	text->Visible(true);
 }
 
+std::shared_ptr<Action> ScrollableText::getAction(uint16_t nameHash16)
+{
+	switch (nameHash16)
+	{
+	case str2int16("complete"):
+		return completeAction;
+	default:
+		return nullptr;
+	}
+}
+
 void ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)

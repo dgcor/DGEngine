@@ -44,7 +44,7 @@ void FadeInOut::update(Game& game)
 	if (updateEnableInput == true)
 	{
 		updateEnableInput = false;
-		game.enableInput(enableInput);
+		game.EnableInput(enableInput);
 	}
 
 	currentTime += game.getElapsedTime();
@@ -63,7 +63,7 @@ void FadeInOut::update(Game& game)
 			}
 			if (enableInput == false)
 			{
-				game.enableInput(true);
+				game.EnableInput(true);
 			}
 			game.setFadeInOut(nullptr);
 		}

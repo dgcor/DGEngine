@@ -4,8 +4,8 @@
     "texture": "empty",
     "anchor": "all",
     "textureRect": [640, 480],
-    "resizable": true,
-    "captureScrollEvent": true
+    "captureInputEvents": true,
+    "resizable": true
   },
   "image": [
     {

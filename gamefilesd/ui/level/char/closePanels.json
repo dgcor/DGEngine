@@ -1,5 +1,6 @@
 {
   "action": [
+    { "name": "resource.popAll", "id": "userPanel" },
     { "name": "resource.pop", "id": "charPanelLabels" },
     { "name": "resource.pop", "id": "charPanelQuests" },
     { "name": "resource.pop", "id": "charPanelInventory" },
@@ -8,6 +9,7 @@
     { "name": "drawable.visible", "id": "questPanel", "visible": false },
     { "name": "drawable.visible", "id": "invPanel", "visible": false },
     { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+    "resizeLevel",
     "clearPanelText"
   ]
 }

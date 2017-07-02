@@ -1,0 +1,49 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "resizeLevel",
+    "action": {
+      "name": "if.equal",
+      "param1": "|game|stretchToFit|",
+      "param2": true,
+      "then": {
+        "name": "if.equal",
+        "param1": "|game|minSize.x|",
+        "param2": 640,
+        "then": {
+          "name": "if.equal",
+          "param1": "|game|minSize.y|",
+          "param2": 480,
+          "then": {
+            "name": "if.inList",
+            "param": true,
+            "list": ["|charPanel|visible|", "|questPanel|visible|"],
+            "then": {
+              "name": "if.inList",
+              "param": true,
+              "list": ["|invPanel|visible|", "|spellPanel|visible|"],
+              "then": { "name": "drawable.setSizeX", "id": "level", "size": 0 },
+              "else": [
+                { "name": "drawable.setPositionX", "id": "level", "position": 320 },
+                { "name": "drawable.setSizeX", "id": "level", "size": 320 }
+              ]
+            },
+            "else": {
+              "name": "if.inList",
+              "param": true,
+              "list": ["|invPanel|visible|", "|spellPanel|visible|"],
+              "then": [
+                { "name": "drawable.setPositionX", "id": "level", "position": 0 },
+                { "name": "drawable.setSizeX", "id": "level", "size": 320 }
+              ],
+              "else": [
+                { "name": "drawable.setPositionX", "id": "level", "position": 0 },
+                { "name": "drawable.setSizeX", "id": "level", "size": 640 }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

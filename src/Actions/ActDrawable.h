@@ -7,14 +7,14 @@
 #include <string>
 #include "Utils.h"
 
-class ActDrawableAddPositionOffset : public Action
+class ActDrawableAddToPosition : public Action
 {
 private:
 	std::string id;
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAddPositionOffset(const std::string& id_, const sf::Vector2f& offset_)
+	ActDrawableAddToPosition(const std::string& id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
 	virtual bool execute(Game& game)
@@ -28,14 +28,14 @@ public:
 	}
 };
 
-class ActDrawableAddSizeOffset : public Action
+class ActDrawableAddToSize : public Action
 {
 private:
 	std::string id;
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAddSizeOffset(const std::string& id_, const sf::Vector2f& offset_)
+	ActDrawableAddToSize(const std::string& id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
 	virtual bool execute(Game& game)
@@ -56,12 +56,11 @@ private:
 	std::string idAnchor;
 	Anchor anchor;
 	sf::Vector2f offset;
-	bool addSize;
 
 public:
-	ActDrawableAnchor(const std::string& id_, const std::string& idAnchor_, Anchor anchor_,
-		const sf::Vector2f& offset_, bool addSize_)
-		: id(id_), idAnchor(idAnchor_), anchor(anchor_), offset(offset_), addSize(addSize_) {}
+	ActDrawableAnchor(const std::string& id_, const std::string& idAnchor_,
+		Anchor anchor_, const sf::Vector2f& offset_)
+		: id(id_), idAnchor(idAnchor_), anchor(anchor_), offset(offset_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -137,11 +136,10 @@ private:
 	std::string id;
 	Anchor anchor;
 	sf::Vector2f offset;
-	bool addSize;
 
 public:
-	ActDrawableAnchorToFocused(const std::string& id_, Anchor anchor_, const sf::Vector2f& offset_,
-		bool addSize_) : id(id_), anchor(anchor_), offset(offset_), addSize(addSize_) {}
+	ActDrawableAnchorToFocused(const std::string& id_, Anchor anchor_,
+		const sf::Vector2f& offset_) : id(id_), anchor(anchor_), offset(offset_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -182,7 +180,7 @@ public:
 		{
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().x;
-			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
+			auto newRange = std::min(range - (unsigned)itemSize, range);
 			auto offset = std::max(0.f, std::min(game.MousePositionf().x - itemPos.x, (float)range));
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.x;
@@ -236,7 +234,7 @@ public:
 		{
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().y;
-			auto newRange = std::max(0u, std::min(range - (unsigned)itemSize, range));
+			auto newRange = std::min(range - (unsigned)itemSize, range);
 			auto offset = std::max(0.f, std::min(game.MousePositionf().y - itemPos.y, (float)range));
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.y;
@@ -280,6 +278,31 @@ public:
 	virtual bool execute(Game& game)
 	{
 		game.Resources().deleteDrawable(id);
+		return true;
+	}
+};
+
+class ActDrawableExecuteAction : public Action
+{
+private:
+	std::string id;
+	uint16_t actionHash16;
+
+public:
+	ActDrawableExecuteAction(const std::string& id_, uint16_t actionHash16_)
+		: id(id_), actionHash16(actionHash16_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<UIObject>(id);
+		if (item != nullptr)
+		{
+			auto action = item->getAction(actionHash16).get();
+			if (action != nullptr)
+			{
+				return action->execute(game);
+			}
+		}
 		return true;
 	}
 };

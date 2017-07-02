@@ -1,6 +1,6 @@
 #include "Namer.h"
 
-std::string Namer::getName(const Queryable& obj) const
+std::string Namer::getName(const Queryable& obj, uint16_t skipFirst) const
 {
 	std::string strName;
 	bool hasName = false;
@@ -35,8 +35,15 @@ std::string Namer::getName(const Queryable& obj) const
 			{
 				if (value >= itemElem.min && value <= itemElem.max)
 				{
-					strName = itemElem.text;
-					hasName = true;
+					if (skipFirst > 0)
+					{
+						skipFirst--;
+					}
+					else
+					{
+						strName = itemElem.text;
+						hasName = true;
+					}
 					break;
 				}
 			}

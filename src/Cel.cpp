@@ -499,8 +499,17 @@ CelFile::CelFile(const char* filename, bool isCl2_, bool isTileCel_)
 CelFrame CelFile::get(size_t index, const Palette& palette) const
 {
 	std::vector<sf::Color> rawImage;
-	auto width = getFrame(mFrames[index], palette, index, rawImage);
-	auto height = rawImage.size() / width;
+	size_t width = getFrame(mFrames[index], palette, index, rawImage);
+	size_t height;
+	if (defaultWidth > 0)
+	{
+		width = defaultWidth;
+		height = defaultHeight;
+	}
+	else
+	{
+		height = rawImage.size() / width;
+	}
 
 	return CelFrame(rawImage, width, height);
 }
@@ -573,7 +582,7 @@ size_t CelFile::readNormalFrames(sf::InputStream& file)
 	{
 		mFrames.push_back(std::vector<uint8_t>(frameOffsets[i + 1] - frameOffsets[i]));
 
-		file.read(&mFrames[mFrames.size() - 1][0], frameOffsets[i + 1] - frameOffsets[i]);
+		file.read(&mFrames.back()[0], frameOffsets[i + 1] - frameOffsets[i]);
 	}
 
 	return numFrames;

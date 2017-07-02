@@ -114,14 +114,14 @@
     "anchorLeftPentagram",
     "anchorRightPentagram",
     {
-      "name": "text.setTextFromQuery",
+      "name": "text.setText",
       "id": "itemInfo",
       "query": "currentLevel.currentPlayer.item.{1}.{2}",
       "text": "%name%\n  %d.0%,  %d.3%",
       "removeEmptyLines": true
     },
     {
-      "name": "text.setTextFromQuery",
+      "name": "text.setText",
       "id": "itemPrice",
       "query": "currentLevel.currentPlayer.item.{1}.{2}",
       "text": "%price%"

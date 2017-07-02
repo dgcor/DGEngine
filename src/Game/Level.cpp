@@ -13,6 +13,28 @@ void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
 	hoverObject = nullptr;
 }
 
+std::shared_ptr<Action> Level::getAction(uint16_t nameHash16)
+{
+	switch (nameHash16)
+	{
+	case str2int16("click"):
+	case str2int16("leftClick"):
+		return leftAction;
+	case str2int16("rightClick"):
+		return rightAction;
+	case str2int16("hoverEnter"):
+		return hoverEnterAction;
+	case str2int16("hoverLeave"):
+		return hoverLeaveAction;
+	case str2int16("scrollDown"):
+		return scrollDownAction;
+	case str2int16("scrollUp"):
+		return scrollUpAction;
+	default:
+		return nullptr;
+	}
+}
+
 void Level::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
@@ -218,56 +240,120 @@ void Level::updateMouse(const Game& game)
 	mapCoordOverMouse = map.getTile(mousePositionf);
 }
 
+void Level::onMouseButtonPressed(Game& game)
+{
+	game.clearMousePressed();
+	switch (game.MousePress().button)
+	{
+	case sf::Mouse::Left:
+	{
+		clickedMapPosition = getMapCoordOverMouse();
+		clickedObject = nullptr;
+		if (leftAction != nullptr)
+		{
+			game.Events().addBack(leftAction);
+		}
+	}
+	break;
+	case sf::Mouse::Right:
+	{
+		if (rightAction != nullptr)
+		{
+			game.Events().addBack(rightAction);
+		}
+	}
+	break;
+	default:
+		break;
+	}
+}
+
+void Level::onMouseScrolled(Game& game)
+{
+	game.clearMouseScrolled();
+	if (game.MouseScroll().delta < 0.f)
+	{
+		if (scrollDownAction != nullptr)
+		{
+			game.Events().addBack(scrollDownAction);
+		}
+	}
+	else
+	{
+		if (scrollUpAction != nullptr)
+		{
+			game.Events().addBack(scrollUpAction);
+		}
+	}
+}
+
+void Level::onTouchBegan(Game& game)
+{
+	game.clearTouchBegan();
+	switch (game.TouchBegan().finger)
+	{
+	case 0:
+	{
+		clickedMapPosition = getMapCoordOverMouse();
+		clickedObject = nullptr;
+		if (leftAction != nullptr)
+		{
+			game.Events().addBack(leftAction);
+		}
+	}
+	break;
+	case 1:
+	{
+		if (rightAction != nullptr)
+		{
+			game.Events().addBack(rightAction);
+		}
+	}
+	break;
+	default:
+		break;
+	}
+}
+
 void Level::update(Game& game)
 {
-	if (pause == true || visible == false)
+	if (visible == false)
+	{
+		return;
+	}
+	if (updateView == true)
+	{
+		updateView = false;
+		view.updateSize(game);
+	}
+	if (pause == true)
 	{
 		return;
 	}
 
 	updateZoom(game);
-
 	updateMouse(game);
 
 	sf::FloatRect rect(view.getPosition(), view.getSize());
 	if (rect.contains(game.MousePositionf()) == true)
 	{
 		hasMouseInside = true;
-		if (game.wasMouseClicked() == true &&
-			game.getMouseButton() == sf::Mouse::Left)
-		{
-			clickedMapPosition = getMapCoordOverMouse();
-			clickedObject = nullptr;
-			if (leftAction != nullptr)
-			{
-				game.Events().addBack(leftAction);
-			}
-		}
-		else if (game.wasMouseReleased() == true &&
-			game.getMouseButton() == sf::Mouse::Right &&
-			rightAction != nullptr)
-		{
-			game.Events().addBack(rightAction);
-		}
 
+		if (game.wasMousePressed() == true)
+		{
+			onMouseButtonPressed(game);
+		}
 		if (game.wasMouseScrolled() == true)
 		{
-			game.clearMouseScrolled();
-			const auto& scroll = game.getMouseWheelScroll();
-			if (scroll.delta < 0.f)
-			{
-				if (scrollDownAction != nullptr)
-				{
-					game.Events().addBack(scrollDownAction);
-				}
-			}
-			else
-			{
-				if (scrollUpAction != nullptr)
-				{
-					game.Events().addBack(scrollUpAction);
-				}
-			}
+			onMouseScrolled(game);
+		}
+		if (game.hasTouchBegan() == true)
+		{
+			onTouchBegan(game);
+		}
+		if (captureInputEvents == true)
+		{
+			game.clearInputEvents();
 		}
 	}
 	else

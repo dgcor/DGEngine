@@ -8,7 +8,7 @@
 class Button : public UIObject
 {
 public:
-	virtual void click(Game& game, bool playSound) = 0;
+	virtual bool click(Game& game, bool playSound) = 0;
 	virtual void enable(bool enable) = 0;
 	virtual void focus(Game& game) const = 0;
 	virtual void focusEnabled(bool focusOnClick) = 0;

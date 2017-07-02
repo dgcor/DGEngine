@@ -28,6 +28,7 @@
     "anchor": "all",
     "textureRect": [640, 480],
     "texture": "empty",
+    "captureInputEvents": true,
     "resizable": true,
     "onClick": [
       { "name": "resource.pop" },

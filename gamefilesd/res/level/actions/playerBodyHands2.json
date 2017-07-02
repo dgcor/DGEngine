@@ -13,14 +13,14 @@
             "param": "|currentLevel|currentPlayer.item.body.LeftHand.itemType|",
             "list": ["Amulet", "Ring"],
             "then": {
-              "name": "text.setTextFromQuery",
+              "name": "text.setText",
               "id": "txtPanel",
               "query": "currentLevel.currentPlayer.item.body.LeftHand",
               "text": "%name%\n%d.1%\n%d.2%",
               "removeEmptyLines": true
             },
             "else": {
-              "name": "text.setTextFromQuery",
+              "name": "text.setText",
               "id": "txtPanel",
               "query": "currentLevel.currentPlayer.item.body.LeftHand",
               "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
@@ -50,13 +50,13 @@
                     "then": [
                       "showItemInfo",
                       {
-                        "name": "text.setTextFromQuery",
+                        "name": "text.setText",
                         "id": "itemInfoTitle",
                         "query": "currentLevel.currentPlayer.item.body.LeftHand",
                         "text": "%name%"
                       },
                       {
-                        "name": "text.setTextFromQuery",
+                        "name": "text.setText",
                         "id": "itemInfoDescr",
                         "query": "currentLevel.currentPlayer.item.body.LeftHand",
                         "text": "%d.4%"
@@ -84,14 +84,14 @@
             "param": "|currentLevel|currentPlayer.item.body.RightHand.itemType|",
             "list": ["Amulet", "Ring"],
             "then": {
-              "name": "text.setTextFromQuery",
+              "name": "text.setText",
               "id": "txtPanel",
               "query": "currentLevel.currentPlayer.item.body.RightHand",
               "text": "%name%\n%d.1%\n%d.2%",
               "removeEmptyLines": true
             },
             "else": {
-              "name": "text.setTextFromQuery",
+              "name": "text.setText",
               "id": "txtPanel",
               "query": "currentLevel.currentPlayer.item.body.RightHand",
               "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
@@ -121,13 +121,13 @@
                     "then": [
                       "showItemInfo",
                       {
-                        "name": "text.setTextFromQuery",
+                        "name": "text.setText",
                         "id": "itemInfoTitle",
                         "query": "currentLevel.currentPlayer.item.body.RightHand",
                         "text": "%name%"
                       },
                       {
-                        "name": "text.setTextFromQuery",
+                        "name": "text.setText",
                         "id": "itemInfoDescr",
                         "query": "currentLevel.currentPlayer.item.body.RightHand",
                         "text": "%d.4%"

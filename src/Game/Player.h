@@ -24,7 +24,7 @@ private:
 	PlayerDirection direction{ PlayerDirection::All };
 	PlayerStatus status{ PlayerStatus::Size };
 
-	uint8_t restStatus{ 0 };
+	uint16_t restStatus{ 0 };
 
 	size_t celIdx{ 0 };
 	size_t textureIdx{ 0 };

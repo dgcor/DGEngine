@@ -1,4 +1,5 @@
 #include "ParseTexture.h"
+#include "ParseCelFile.h"
 #include "CelUtils.h"
 #include "ImageUtils.h"
 #include "Utils.h"
@@ -23,9 +24,6 @@ namespace Parser
 		{
 			return img;
 		}
-
-		std::string fileName = getStringVal(elem["file"]);
-
 		if (elem.HasMember("palette"))
 		{
 			auto pal = game.Resources().getPalette(getStringVal(elem["palette"]));
@@ -33,31 +31,36 @@ namespace Parser
 			{
 				return img;
 			}
-			bool isCl2 = Utils::endsWith(fileName, "cl2");
-
+			auto celFile = parseCelFileObj(game, elem);
+			if (celFile == nullptr)
+			{
+				return img;
+			}
 			if (elem.HasMember("charMapFile") == true)
 			{
-				img = CelUtils::loadBitmapFontImage(fileName.c_str(), elem["charMapFile"].GetString(), *pal, isCl2);
+				img = CelUtils::loadBitmapFontImage(*celFile, elem["charMapFile"].GetString(), *pal);
 			}
 			else if (elem.HasMember("frame") == true)
 			{
 				auto frameIdx = getUIntVal(elem["frame"]);
-				img = CelUtils::loadImageFrame(fileName.c_str(), *pal, isCl2, frameIdx);
+				img = CelUtils::loadImageFrame(*celFile, *pal, frameIdx);
 			}
 			else if (numFramesX != nullptr && numFramesY != nullptr)
 			{
 				// construct cel already vertically splitted, if pieces exists
 				(*numFramesX) = getUIntKey(elem, "pieces", 1);
-				img = CelUtils::loadImage(fileName.c_str(), *pal, isCl2, *numFramesX, *numFramesY);
+				img = CelUtils::loadImage(*celFile, *pal, *numFramesX, *numFramesY);
 			}
 			else
 			{
-				img = CelUtils::loadImage(fileName.c_str(), *pal, isCl2);
+				img = CelUtils::loadImage(*celFile, *pal);
 			}
 		}
 		else
 		{
-			img = ImageUtils::loadImage(fileName.c_str(), getColorKey(elem, "mask"));
+			img = ImageUtils::loadImage(
+				getStringCharVal(elem["file"]),
+				getColorKey(elem, "mask"));
 
 			if (elem.HasMember("split"))
 			{
@@ -82,7 +85,6 @@ namespace Parser
 				}
 			}
 		}
-
 		return img;
 	}
 

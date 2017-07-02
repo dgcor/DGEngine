@@ -3,9 +3,8 @@
 #include "FileUtils.h"
 #include "Utils.h"
 
-sf::Image CelUtils::loadImage(const char* fileName, const Palette& pal, bool isCl2)
+sf::Image CelUtils::loadImage(const CelFile& celFile, const Palette& pal)
 {
-	CelFile celFile(fileName, isCl2, false);
 	CelFrameCache cel(celFile, pal);
 
 	size_t imgWidth = 0;
@@ -40,10 +39,9 @@ sf::Image CelUtils::loadImage(const char* fileName, const Palette& pal, bool isC
 	return img;
 }
 
-sf::Image CelUtils::loadImage(const char* fileName, const Palette& pal, bool isCl2,
+sf::Image CelUtils::loadImage(const CelFile& celFile, const Palette& pal,
 	size_t& frameCountX, size_t& frameCountY)
 {
-	CelFile celFile(fileName, isCl2, false);
 	CelFrameCache cel(celFile, pal);
 
 	auto numFramesY = cel.size();
@@ -89,23 +87,19 @@ sf::Image CelUtils::loadImage(const char* fileName, const Palette& pal, bool isC
 	return img;
 }
 
-sf::Image CelUtils::loadImageFrame(const char* fileName, const Palette& pal, bool isCl2,
+sf::Image CelUtils::loadImageFrame(const CelFile& celFile, const Palette& pal,
 	size_t frameIdx)
 {
-	CelFile celFile(fileName, isCl2, false);
-
 	if (celFile.Size() > 0 && frameIdx < celFile.Size())
 	{
 		return celFile.get(frameIdx, pal);
 	}
-
 	return sf::Image();
 }
 
-sf::Image CelUtils::loadBitmapFontImage(const char* fileName, const char* fileNameBin,
-	const Palette& pal, bool isCl2)
+sf::Image CelUtils::loadBitmapFontImage(const CelFile& celFile,
+	const char* fileNameBin, const Palette& pal)
 {
-	CelFile celFile(fileName, isCl2, false);
 	CelFrameCache cel(celFile, pal);
 
 	auto celSize = cel.size();

@@ -18,17 +18,9 @@
             { "name": "load", "file": "level/{2}/sounds.json" },
             { "name": "loadingScreen.setProgress", "progress": 80 },
             { "name": "load", "file": "level/{2}/players.json" },
-            { "name": "loadingScreen.setProgress", "progress": 100 },
             { "name": "load", "file": "level/{2}/music.json" },
-            { "name": "if.equal",
-              "param1": "{3}",
-              "param2": "positionPlayer",
-              "then": { "name": "load", "file": ["level/positionPlayer.json", "{4}"] }
-            },
-            { "name": "load", "file": "level/afterLevelLoad.json" },
-            { "name": "load", "file": "ui/level/char/updateVisiblePanels.json" },
-            { "name": "load", "file": "level/playOrStopMusic.json" },
-            { "name": "load", "file": ["level/setMapAction.json", "{2}"] }
+            { "name": "load", "file": ["level/afterLevelLoad.json", "{2}", "{3}", "{4}"] },
+            { "name": "loadingScreen.setProgress", "progress": 100 }
           ]
         }
       ]
