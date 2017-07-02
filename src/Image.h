@@ -25,6 +25,7 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }

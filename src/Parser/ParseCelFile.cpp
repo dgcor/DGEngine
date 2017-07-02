@@ -22,6 +22,11 @@ namespace Parser
 		{
 			return nullptr;
 		}
+		if (elem.HasMember("celSize") == true)
+		{
+			auto size = getVector2uVal<sf::Vector2u>(elem["celSize"]);
+			celFile->setDefaultSize(size.x, size.y);
+		}
 		return celFile;
 	}
 

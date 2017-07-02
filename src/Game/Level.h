@@ -24,6 +24,7 @@ class Level : public UIObject
 {
 private:
 	View2 view;
+	bool updateView{ false };
 	float currentZoomFactor{ 1.f };
 	float startZoomFactor{ 1.f };
 	float stopZoomFactor{ 1.f };
@@ -69,6 +70,7 @@ private:
 
 	bool pause{ false };
 	bool visible{ true };
+	bool captureInputEvents{ true };
 
 	std::vector<Quest> quests;
 
@@ -80,6 +82,10 @@ private:
 	void updateZoom(const Game& game);
 
 	void updateMouse(const Game& game);
+
+	void onMouseButtonPressed(Game& game);
+	void onMouseScrolled(Game& game);
+	void onTouchBegan(Game& game);
 
 public:
 	void Init(const LevelMap& map, Min& min, CelFrameCache& cel);
@@ -177,6 +183,7 @@ public:
 	LevelObject* getHoverObject() const { return hoverObject; }
 	void setHoverObject(LevelObject* object) { hoverObject = object; }
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { view.setAnchor(anchor); }
@@ -184,9 +191,17 @@ public:
 
 	virtual const sf::Vector2f& DrawPosition() const { return view.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return view.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { view.setPosition(position); }
+	virtual void Position(const sf::Vector2f& position)
+	{
+		view.setPosition(position);
+		updateView = true;
+	}
 	virtual sf::Vector2f Size() const { return view.getSize(); }
-	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
+	virtual void Size(const sf::Vector2f& size)
+	{
+		view.setSize(size);
+		updateView = true;
+	}
 
 	float Zoom() const { return stopZoomFactor; }
 	void Zoom(float factor, bool smooth = false);
@@ -231,6 +246,9 @@ public:
 
 	virtual bool Visible() const { return visible; }
 	virtual void Visible(bool visible_) { visible = visible_; }
+
+	bool getCaptureInputEvents() const { return captureInputEvents; }
+	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);

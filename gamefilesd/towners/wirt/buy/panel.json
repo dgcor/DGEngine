@@ -20,7 +20,6 @@
   ],
   "menu": {
     "id": "mainMenu",
-    "replaceVars": true,
     "bitmapFont": "smaltext",
     "sound": "titlslct",
     "position": [52, 154],
@@ -29,54 +28,17 @@
     "anchor": "none",
     "visibleItems": 1,
     "size": [518, 186],
-    "verticalPad": 26,
+    "verticalPad": 14,
     "items": {
       "load": "currentLevel|wirt.inventory.0",
-      "text": "%name%\n  %d.0%,  %d.3%",
+      "text": "%name%\n",
       "onClick": {
         "name": "load",
         "file": ["towners/wirt/buy/confirm.json", 0, "%idx%"]
       },
       "executeAction": {
-        "name": "if.equal",
-        "param1": {
-          "name": "player.canEquipItem",
-          "item": { "player": "wirt", "inventory": 0, "item": "%idx%" }
-        },
-        "param2": false,
-        "then": {
-          "name": "menu.setColor",
-          "id": "mainMenu",
-          "index": "%menuIdx%",
-          "color": "%textRed%"
-        },
-        "else": {
-          "name": "if.equal",
-          "param1": "|currentLevel|player.wirt.item.0.%idx%.unique|",
-          "param2": 1,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textGold%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|player.wirt.item.0.%idx%.magical|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textBlue%"
-            },
-            "else": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%"
-            }
-          }
-        }
+        "name": "load",
+        "file": ["towners/common/setMenuItemText.json", "wirt", 0, "%idx%", "%menuIdx%"]
       }
     }
   },

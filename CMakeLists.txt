@@ -2,9 +2,27 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 
 project(DGEngine)
 
-include_directories(./src)
+if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
+        message(FATAL_ERROR "GCC 5.0+ is required")
+    endif()
 
-add_definitions(-DUSE_SFML_MOVIE_STUB)
+    if(NOT BEOS)
+        add_definitions(-Wall)
+    endif()
+endif()
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+option(DGENGINE_MOVIE_SUPPORT "Enable Movie support" TRUE)
+
+if(DGENGINE_MOVIE_SUPPORT)
+    find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
+endif()
+find_package(PhysFS REQUIRED)
+find_package(SFML 2.3 REQUIRED system window graphics network audio)
+
+include_directories(./src)
 
 set(SOURCE_FILES
     src/Main.cpp
@@ -84,11 +102,14 @@ set(SOURCE_FILES
     src/StringText.h
     src/Text2.cpp
     src/Text2.h
+    src/TextUtils.cpp
+    src/TextUtils.h
     src/TileSet.cpp
     src/TileSet.h
     src/UIObject.h
     src/Utils.cpp
     src/Utils.h
+    src/UIText.h
     src/Variable.cpp
     src/Variable.h
     src/Variant.h
@@ -123,6 +144,7 @@ set(SOURCE_FILES
     src/Actions/ActSound.h
     src/Actions/ActText.h
     src/Actions/ActTexture.h
+    src/Actions/ActUIText.h
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
     src/Game/CelLevelObject.cpp
@@ -261,6 +283,7 @@ set(SOURCE_FILES
     src/Parser/Utils/ParseUtilsVal.h
     src/Predicates/Predicate.h
     src/Predicates/PredIO.h
+    src/Predicates/PredItem.h
     src/Predicates/PredPlayer.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
@@ -304,28 +327,47 @@ set(SOURCE_FILES
     src/variant/variant_visitor.hpp
 )
 
+if(FFmpeg_FOUND)
+    SET(SOURCE_FILES ${SOURCE_FILES}
+        src/sfeMovie/AudioStream.cpp
+        src/sfeMovie/AudioStream.hpp
+        src/sfeMovie/Demuxer.cpp
+        src/sfeMovie/Demuxer.hpp
+        src/sfeMovie/Macros.cpp
+        src/sfeMovie/Macros.hpp
+        src/sfeMovie/Movie.cpp
+        src/sfeMovie/Movie.hpp
+        src/sfeMovie/MovieImpl.cpp
+        src/sfeMovie/MovieImpl.hpp
+        src/sfeMovie/Stream.cpp
+        src/sfeMovie/Stream.hpp
+        src/sfeMovie/StreamSelection.cpp
+        src/sfeMovie/StreamSelection.hpp
+        src/sfeMovie/Timer.cpp
+        src/sfeMovie/Timer.hpp
+        src/sfeMovie/TimerPriorities.cpp
+        src/sfeMovie/TimerPriorities.hpp
+        src/sfeMovie/Utilities.cpp
+        src/sfeMovie/Utilities.hpp
+        src/sfeMovie/VideoStream.cpp
+        src/sfeMovie/VideoStream.hpp
+    )
+else()
+    add_definitions(-DUSE_SFML_MOVIE_STUB)
+endif()
+
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
-        message(FATAL_ERROR "GCC 5.0+ is required")
-    endif()
-
-    if(NOT BEOS)
-        add_definitions(-Wall)
-    endif()
+if(FFmpeg_FOUND)
+    include_directories(${FFmpeg_INCLUDES})
+    target_link_libraries(${PROJECT_NAME} ${FFmpeg_LIBRARIES})
 endif()
 
-# Detect and add PhysFS
-find_package(PhysFS REQUIRED)
 if(PHYSFS_FOUND)
-   include_directories(${PHYSFS_INCLUDE_DIRS})
-   target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY})
+    include_directories(${PHYSFS_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY})
 endif()
 
-# Detect and add SFML
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-find_package(SFML 2.3 REQUIRED system window graphics network audio)
 if(SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})

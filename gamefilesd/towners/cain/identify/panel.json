@@ -56,7 +56,6 @@
   ],
   "menu": {
     "id": "mainMenu",
-    "replaceVars": true,
     "bitmapFont": "smaltext",
     "sound": "titlslct",
     "position": [52, 94],
@@ -68,7 +67,7 @@
     "focusSound": "titlemov",
     "visibleItems": 4,
     "size": [518, 186],
-    "verticalPad": 26,
+    "verticalPad": 14,
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": [
@@ -78,14 +77,10 @@
           "property": "identified",
           "value": true
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": [
-            "towners/cain/identify/confirm.json",
-            "body",
-            "%idx%"
-          ]
+          "file": ["towners/cain/identify/confirm.json", 0, "%idx%"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -93,42 +88,8 @@
           "mainMenu.moveScrollbar"
         ],
         "executeAction": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.body.%idx%|",
-          "param2": false,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textRed%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.body.%idx%.unique|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textGold%"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.body.%idx%.magical|",
-              "param2": 1,
-              "then": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "color": "%textBlue%"
-              },
-              "else": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%"
-              }
-            }
-          }
+          "name": "load",
+          "file": ["towners/common/setMenuItemText.json", "hero", 0, "%idx%", "%menuIdx%"]
         }
       },
       {
@@ -137,14 +98,10 @@
           "property": "identified",
           "value": true
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": [
-            "towners/cain/identify/confirm.json",
-            "belt",
-            "%idx%"
-          ]
+          "file": ["towners/cain/identify/confirm.json", 1, "%idx%"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -152,42 +109,8 @@
           "mainMenu.moveScrollbar"
         ],
         "executeAction": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.%idx%|",
-          "param2": false,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textRed%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.belt.%idx%.unique|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textGold%"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.belt.%idx%.magical|",
-              "param2": 1,
-              "then": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "color": "%textBlue%"
-              },
-              "else": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%"
-              }
-            }
-          }
+          "name": "load",
+          "file": ["towners/common/setMenuItemText.json", "hero", 1, "%idx%", "%menuIdx%"]
         }
       },
       {
@@ -196,14 +119,10 @@
           "property": "identified",
           "value": true
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": [
-            "towners/cain/identify/confirm.json",
-            "stash",
-            "%idx%"
-          ]
+          "file": ["towners/cain/identify/confirm.json", 2, "%idx%"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -211,42 +130,8 @@
           "mainMenu.moveScrollbar"
         ],
         "executeAction": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.stash.%idx%|",
-          "param2": false,
-          "then": {
-            "name": "menu.setColor",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "color": "%textRed%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.unique|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "color": "%textGold%"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
-              "param2": 1,
-              "then": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "color": "%textBlue%"
-              },
-              "else": {
-                "name": "menu.setColor",
-                "id": "mainMenu",
-                "index": "%menuIdx%"
-              }
-            }
-          }
+          "name": "load",
+          "file": ["towners/common/setMenuItemText.json", "hero", 2, "%idx%", "%menuIdx%"]
         }
       }
     ]

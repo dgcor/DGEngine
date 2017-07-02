@@ -19,7 +19,7 @@
         "durability": 25,
         "durabilityMax": 25
       },
-      "description4": "requiredStrMag",
+      "descriptions": { "index": 3, "name": "requiredStrMag" },
       "inventorySize": [2, 3],
       "actions": {
         "levelDrop": { "name": "sound.play", "id": "flipstaf" },

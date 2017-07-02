@@ -12,6 +12,7 @@ class UIObject : public sf::Drawable, public Queryable
 {
 public:
 	// Action
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) = 0;
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) = 0;
 
 	// Anchor

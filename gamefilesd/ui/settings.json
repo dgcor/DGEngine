@@ -107,11 +107,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "stretchToFit": true } },
-          { "name": "button.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" }
+          { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" }
         ],
         "else": [
           { "name": "loadJson", "json": { "stretchToFit": false } },
-          { "name": "button.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
+          { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
         ]
       },
       "onFocus": [
@@ -134,11 +134,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "keepAR": true } },
-          { "name": "button.setText", "id": "keepAR", "text": "Keep Ratio: On" }
+          { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: On" }
         ],
         "else": [
           { "name": "loadJson", "json": { "keepAR": false } },
-          { "name": "button.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
+          { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
         ]
       },
       "onFocus": [
@@ -161,11 +161,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "smoothScreen": true } },
-          { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: On" }
+          { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: On" }
         ],
         "else": [
           { "name": "loadJson", "json": { "smoothScreen": false } },
-          { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
+          { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
         ]
       },
       "onFocus": [
@@ -191,7 +191,7 @@
             "action": [
               { "name": "loadJson", "json": { "framerate": 50 } },
               {
-                "name": "button.setText",
+                "name": "text.setText",
                 "id": "framerate",
                 "binding": "|game|framerate|",
                 "format": "Framerate Limit: [1]"
@@ -203,7 +203,7 @@
             "action": [
               { "name": "loadJson", "json": { "framerate": 60 } },
               {
-                "name": "button.setText",
+                "name": "text.setText",
                 "id": "framerate",
                 "binding": "|game|framerate|",
                 "format": "Framerate Limit: [1]"
@@ -215,7 +215,7 @@
             "action": [
               { "name": "loadJson", "json": { "framerate": 0 } },
               {
-                "name": "button.setText",
+                "name": "text.setText",
                 "id": "framerate",
                 "text": "Framerate Limit: Off"
               }
@@ -258,29 +258,29 @@
       "name": "if.equal",
       "param1": "|game|stretchToFit|",
       "param2": true,
-      "then": { "name": "button.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" },
-      "else": { "name": "button.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
+      "then": { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" },
+      "else": { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
     },
     {
       "name": "if.equal",
       "param1": "|game|keepAR|",
       "param2": true,
-      "then": { "name": "button.setText", "id": "keepAR", "text": "Keep Ratio: On" },
-      "else": { "name": "button.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
+      "then": { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: On" },
+      "else": { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
     },
     {
       "name": "if.equal",
       "param1": "|game|smoothScreen|",
       "param2": true,
-      "then": { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: On" },
-      "else": { "name": "button.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
+      "then": { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: On" },
+      "else": { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
     },
     {
       "name": "if.equal",
       "param1": "|game|framerate|",
       "param2": 0,
-      "then": { "name": "button.setText", "id": "framerate", "text": "Framerate Limit: Off" },
-      "else": { "name": "button.setText", "id": "framerate", "binding": "|game|framerate|", "format": "Framerate Limit: [1]" }
+      "then": { "name": "text.setText", "id": "framerate", "text": "Framerate Limit: Off" },
+      "else": { "name": "text.setText", "id": "framerate", "binding": "|game|framerate|", "format": "Framerate Limit: [1]" }
     },
     "anchorLeftPentagram",
     "anchorRightPentagram"

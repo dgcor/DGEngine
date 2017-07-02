@@ -33,7 +33,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		game.enableInput(enable);
+		game.EnableInput(enable);
 		return true;
 	}
 };

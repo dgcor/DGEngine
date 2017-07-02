@@ -2,6 +2,7 @@
   "load": "ui/level/panel/big/upperSeparator.json",
   "load": "ui/level/panel/big/lowerSeparator.json",
   "load": "ui/level/panel/big/scrollbar.json",
+  "load": "towners/common/loadMenuButtons.json",
   "keyboard": [
     {
       "key": "tab",
@@ -13,43 +14,8 @@
       "action": "focus.moveDown"
     }
   ],
-  "button": [
-    {
-      "id": "btnItem1",
-      "texture": "empty",
-      "textureRect": [518, 44],
-      "position": [52, 94],
-      "anchor": "none",
-      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 0 }
-    },
-    {
-      "id": "btnItem2",
-      "texture": "empty",
-      "textureRect": [518, 44],
-      "position": [52, 142],
-      "anchor": "none",
-      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 1 }
-    },
-    {
-      "id": "btnItem3",
-      "texture": "empty",
-      "textureRect": [518, 44],
-      "position": [52, 190],
-      "anchor": "none",
-      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 2 }
-    },
-    {
-      "id": "btnItem4",
-      "texture": "empty",
-      "textureRect": [518, 44],
-      "position": [52, 238],
-      "anchor": "none",
-      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 3 }
-    }
-  ],
   "menu": {
     "id": "menuPrices",
-    "replaceVars": true,
     "bitmapFont": "smaltext",
     "sound": "titlslct",
     "position": [571, 94],
@@ -63,45 +29,8 @@
       "load": "currentLevel|pepin.inventory.0",
       "text": "%price%",
       "executeAction": {
-        "name": "if.equal",
-        "param1": {
-          "name": "player.canEquipItem",
-          "item": { "player": "pepin", "inventory": 0, "item": "%idx%" }
-        },
-        "param2": false,
-        "then": {
-          "name": "menu.setColor",
-          "id": "menuPrices",
-          "index": "%menuIdx%",
-          "color": "%textRed%"
-        },
-        "else": {
-          "name": "if.equal",
-          "param1": "|currentLevel|player.pepin.item.0.%idx%.unique|",
-          "param2": 1,
-          "then": {
-            "name": "menu.setColor",
-            "id": "menuPrices",
-            "index": "%menuIdx%",
-            "color": "%textGold%"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "|currentLevel|player.pepin.item.0.%idx%.magical|",
-            "param2": 1,
-            "then": {
-              "name": "menu.setColor",
-              "id": "menuPrices",
-              "index": "%menuIdx%",
-              "color": "%textBlue%"
-            },
-            "else": {
-              "name": "menu.setColor",
-              "id": "menuPrices",
-              "index": "%menuIdx%"
-            }
-          }
-        }
+        "name": "load",
+        "file": ["towners/common/setMenuPriceText.json", "pepin", 0, "%idx%", "%menuIdx%"]
       }
     }
   },

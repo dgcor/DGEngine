@@ -1,5 +1,6 @@
 #include "ParsePredicate.h"
 #include "Predicates/PredIO.h"
+#include "Predicates/PredItem.h"
 #include "Predicates/PredPlayer.h"
 #include "Utils.h"
 #include "Utils/ParseUtils.h"
@@ -20,6 +21,12 @@ namespace Parser
 		case str2int16("file.exists"):
 		{
 			return std::make_shared<PredFileExists>(getStringKey(elem, "file"));
+		}
+		case str2int16("item.hasRequiredStats"):
+		{
+			return std::make_shared<PredItemHasRequiredStats>(
+				getStringKey(elem, "level"),
+				getItemLocationKey(elem, "item"));
 		}
 		case str2int16("player.canEquipItem"):
 		{

@@ -65,62 +65,15 @@
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
     "text": "Done",
-    "onClick": [
-      {
-        "name": "item.setProperty",
-        "inventory": "{1}",
-        "item": {2},
-        "property": "identified",
-        "value": true
-      },
-      { "name": "resource.popAll", "id": "userPanelItem" }
-    ],
+    "onClick": { "name": "resource.popAll", "id": "userPanelItem" },
     "onFocus": [
       "anchorLeftPentagram",
       "anchorRightPentagram"
     ]
   },
+  "load": ["towners/common/setItemInfo.json", "hero", "{1}", "{2}"],
   "action": [
     "anchorLeftPentagram",
-    "anchorRightPentagram",
-    {
-      "name": "text.setTextFromQuery",
-      "id": "itemInfo",
-      "query": "currentLevel.currentPlayer.item.{1}.{2}",
-      "text": "%name%\n  %d.1%  %d.2%\n  %d.0%,  %d.3%",
-      "removeEmptyLines": true
-    },
-    {
-      "replaceVars": true,
-      "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.canEquipItem.{1}.{2}|",
-      "param2": false,
-      "then": [
-        { "name": "text.setColor", "id": "itemInfo", "color": "%textRed%" },
-        { "name": "text.setColor", "id": "itemPrice", "color": "%textRed%" }
-      ],
-      "else": {
-        "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.item.{1}.{2}.magical|",
-        "param2": 1,
-        "then": [
-          { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },
-          { "name": "text.setColor", "id": "itemPrice", "color": "%textBlue%" }
-        ],
-        "else": {
-          "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.item.{1}.{2}.unique|",
-          "param2": 1,
-          "then": [
-            { "name": "text.setColor", "id": "itemInfo", "color": "%textGold%" },
-            { "name": "text.setColor", "id": "itemPrice", "color": "%textGold%" }
-          ],
-          "else": [
-            { "name": "text.setColor", "id": "itemInfo" },
-            { "name": "text.setColor", "id": "itemPrice" }
-          ]
-        }
-      }
-    }
+    "anchorRightPentagram"
   ]
 }

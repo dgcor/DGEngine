@@ -1,0 +1,16 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "use{1}Item",
+    "action": {
+      "name": "if.equal",
+      "param1": "|currentLevel|currentPlayer.item.belt.{2}.isUsable|",
+      "param2": true,
+      "then": [
+        { "name": "item.use", "inventory": "belt", "item": {2} },
+        "updateAllPlayerStats"
+      ],
+      "else": "rightClickLevel"
+    }
+  }
+}

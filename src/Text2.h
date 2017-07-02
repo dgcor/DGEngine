@@ -3,8 +3,9 @@
 #include "DrawableText.h"
 #include <memory>
 #include "UIObject.h"
+#include "UIText.h"
 
-class Text2 : public UIObject
+class Text2 : public UIObject, public UIText
 {
 private:
 	std::unique_ptr<DrawableText> text;
@@ -16,14 +17,11 @@ private:
 public:
 	Text2(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
 
-	static std::string getFormatString(const Game& game,
-		const std::vector<std::string>& bindings, const std::string& format);
-
 	DrawableText* getDrawableText() { return text.get(); }
 
-	std::string getText() const { return text->getText(); }
+	virtual std::string getText() const { return text->getText(); }
 	void setText(std::unique_ptr<DrawableText> text_) { text = std::move(text_); }
-	void setText(const std::string& text_) { triggerOnChange = text->setText(text_); }
+	virtual void setText(const std::string& text_) { triggerOnChange = text->setText(text_); }
 
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
@@ -34,9 +32,10 @@ public:
 	void setFormat(const std::string& format_) { format = format_; }
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
 	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }
-	void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
-	void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
+	virtual void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
+	virtual void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }

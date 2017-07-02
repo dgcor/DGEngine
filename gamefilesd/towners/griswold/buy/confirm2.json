@@ -110,56 +110,11 @@
       ]
     }
   ],
+  "load": ["towners/common/setItemInfo.json", "griswold", "{1}", "{2}"],
+  "load": ["towners/common/setPriceInfo.json", "griswold", "{1}", "{2}",
+           "|currentLevel|player.griswold.item.{1}.{2}.price|"],
   "action": [
     "anchorLeftPentagram",
-    "anchorRightPentagram",
-    {
-      "name": "text.setTextFromQuery",
-      "id": "itemInfo",
-      "query": "currentLevel.player.griswold.item.{1}.{2}",
-      "text": "%name%\n  %d.0%,  %d.3%",
-      "removeEmptyLines": true
-    },
-    {
-      "name": "text.setTextFromQuery",
-      "id": "itemPrice",
-      "query": "currentLevel.player.griswold.item.{1}.{2}",
-      "text": "%price%"
-    },
-    {
-      "replaceVars": true,
-      "name": "if.equal",
-      "param1": {
-        "name": "player.canEquipItem",
-        "item": { "player": "griswold", "inventory": {1}, "item": {2} }
-      },
-      "param2": false,
-      "then": [
-        { "name": "text.setColor", "id": "itemInfo", "color": "%textRed%" },
-        { "name": "text.setColor", "id": "itemPrice", "color": "%textRed%" }
-      ],
-      "else": {
-        "name": "if.equal",
-        "param1": "|currentLevel|player.griswold.item.{1}.{2}.unique|",
-        "param2": 1,
-        "then": [
-          { "name": "text.setColor", "id": "itemInfo", "color": "%textGold%" },
-          { "name": "text.setColor", "id": "itemPrice", "color": "%textGold%" }
-        ],
-        "else": {
-          "name": "if.equal",
-          "param1": "|currentLevel|player.griswold.item.{1}.{2}.magical|",
-          "param2": 1,
-          "then": [
-            { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },
-            { "name": "text.setColor", "id": "itemPrice", "color": "%textBlue%" }
-          ],
-          "else": [
-            { "name": "text.setColor", "id": "itemInfo" },
-            { "name": "text.setColor", "id": "itemPrice" }
-          ]
-        }
-      }
-    }
+    "anchorRightPentagram"
   ]
 }

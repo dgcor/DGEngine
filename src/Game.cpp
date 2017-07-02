@@ -53,16 +53,7 @@ void Game::play()
 
 	while (window.isOpen() == true)
 	{
-		mouseClicked = false;
-		mouseDoubleClicked = false;
-		mouseMoved = false;
-		mouseReleased = false;
-		mouseScrolled = false;
-		keyboardChar = 0;
-		keyPressed.code = sf::Keyboard::Unknown;
-
 		processEvents();
-		checkKeyPress();
 
 		window.clear();
 		windowTex.clear();
@@ -85,6 +76,13 @@ void Game::play()
 
 void Game::processEvents()
 {
+	mousePressed = false;
+	mouseReleased = false;
+	mouseMoved = false;
+	mouseScrolled = false;
+	keyPressed = false;
+	textEntered = false;
+
 	sf::Event evt;
 	while (window.pollEvent(evt))
 	{
@@ -120,7 +118,6 @@ void Game::processEvents()
 		case sf::Event::MouseMoved:
 			onMouseMoved(evt.mouseMove);
 			break;
-#ifdef __ANDROID__
 		case sf::Event::TouchBegan:
 			onTouchBegan(evt.touch);
 			break;
@@ -130,7 +127,6 @@ void Game::processEvents()
 		case sf::Event::TouchEnded:
 			onTouchEnded(evt.touch);
 			break;
-#endif
 		default:
 			break;
 		}
@@ -233,117 +229,109 @@ void Game::onGainedFocus()
 
 void Game::onTextEntered(const sf::Event::TextEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	if (evt.unicode < 256)
-	{
-		keyboardChar = static_cast<char>(evt.unicode);
-	}
+	textEnteredEvt = evt;
+	textEntered = true;
 }
 
 void Game::onKeyPressed(const sf::Event::KeyEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	keyPressed = evt;
+	keyPressEvt = evt;
+	keyPressed = true;
 #ifdef __ANDROID__
-	keyPressed.system = false;
+	keyPressEvt.system = false;
 #endif
+	if (loadingScreen != nullptr)
+	{
+		return;
+	}
+	auto action = resourceManager.getKeyboardAction(keyPressEvt);
+	if (action != nullptr)
+	{
+		eventManager.addBack(action);
+	}
 }
 
 void Game::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	updateMouse();
-	mouseWheel = evt;
-	mouseWheel.x = mousePositioni.x;
-	mouseWheel.y = mousePositioni.y;
+	mouseScrollEvt = evt;
 	mouseScrolled = true;
+	updateMouse();
 }
 
 void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	mouseButton = evt.button;
-	mouseClicked = true;
+	mousePressEvt = evt;
 	mousePressed = true;
-
-	auto mouseClickElapsedTime = mouseClickClock.restart();
-	if (mouseClickElapsedTime.asMilliseconds() <= GameUtils::DoubleClickDelay)
-	{
-		mouseDoubleClicked = true;
-	}
 }
 
 void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	mouseButton = evt.button;
-	mousePressed = false;
+	mouseReleaseEvt = evt;
 	mouseReleased = true;
 }
 
 void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
 {
 	updateMouse(sf::Vector2i(evt.x, evt.y));
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
+	mouseMoveEvt = evt;
 	mouseMoved = true;
 }
-#ifdef __ANDROID__
+
 void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	updateMouse(sf::Vector2i(evt.x, evt.y));
-	sf::Event::MouseButtonEvent mouseEvt;
-	mouseEvt.button = sf::Mouse::Left;
-	mouseEvt.x = evt.x;
-	mouseEvt.y = evt.y;
-	onMouseButtonPressed(mouseEvt);
+	touchBeganEvt = evt;
+	touchBegan = true;
 }
 
 void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
 {
 	updateMouse(sf::Vector2i(evt.x, evt.y));
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	mouseMoved = true;
+	touchMovedEvt = evt;
+	touchMoved = true;
 }
 
 void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
 {
-	if (disableInput == true)
+	if (enableInput == false)
 	{
 		return;
 	}
-	updateMouse(sf::Vector2i(evt.x, evt.y));
-	sf::Event::MouseButtonEvent mouseEvt;
-	mouseEvt.button = sf::Mouse::Left;
-	mouseEvt.x = evt.x;
-	mouseEvt.y = evt.y;
-	onMouseButtonReleased(mouseEvt);
+	touchEndedEvt = evt;
+	touchEnded = true;
 }
-#endif
+
 void Game::updateMouse()
 {
 	updateMouse(sf::Mouse::getPosition(window));
@@ -365,18 +353,6 @@ void Game::updateCursorPosition()
 	if (cursor != nullptr)
 	{
 		cursor->Position(mousePositionf);
-	}
-}
-
-void Game::checkKeyPress()
-{
-	if (loadingScreen == nullptr && keyPressed.code != sf::Keyboard::Unknown)
-	{
-		auto action = resourceManager.getKeyboardAction(keyPressed);
-		if (action != nullptr)
-		{
-			eventManager.addBack(action);
-		}
 	}
 }
 

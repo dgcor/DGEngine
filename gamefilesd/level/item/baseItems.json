@@ -16,10 +16,12 @@
       "formulas": {
         "sell": "price * 0.25"
       },
-      "description1": "armor",
-      "description2": "magic1",
-      "description3": "magic2",
-      "description4": "required",
+      "descriptions": [
+        { "index": 0, "name": "armor" },
+        { "index": 1, "name": "magic" },
+        { "index": 2, "name": "magic", "skip": 1 },
+        { "index": 3, "name": "required" }
+      ],
       "inventorySize": [2, 3],
       "actions": {
         "action": "pickItemInLevel",
@@ -46,10 +48,12 @@
       "formulas": {
         "sell": "price * 0.25"
       },
-      "description1": "weapon",
-      "description2": "magic1",
-      "description3": "magic2",
-      "description4": "required",
+      "descriptions": [
+        { "index": 0, "name": "weapon" },
+        { "index": 1, "name": "magic" },
+        { "index": 2, "name": "magic", "skip": 1 },
+        { "index": 3, "name": "required" }
+      ],
       "inventorySize": [2, 3],
       "actions": {
         "action": "pickItemInLevel",

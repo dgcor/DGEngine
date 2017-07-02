@@ -111,36 +111,3 @@ public:
 		return true;
 	}
 };
-
-class ActButtonSetText : public Action
-{
-private:
-	std::string id;
-	std::string textFormat;
-	std::vector<std::string> bindings;
-
-public:
-	ActButtonSetText(const std::string& id_, const std::string& text_)
-		: id(id_), textFormat(text_) {}
-
-	ActButtonSetText(const std::string& id_, const std::string& format_,
-		const std::vector<std::string>& bindings_) : id(id_),
-		textFormat(format_), bindings(bindings_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto button = game.Resources().getResource<StringButton>(id);
-		if (button != nullptr)
-		{
-			if (bindings.empty() == true)
-			{
-				button->setText(game.getVarOrPropString(textFormat));
-			}
-			else
-			{
-				button->setText(Text2::getFormatString(game, bindings, textFormat));
-			}
-		}
-		return true;
-	}
-};

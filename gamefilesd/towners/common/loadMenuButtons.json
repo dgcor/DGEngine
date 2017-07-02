@@ -1,0 +1,40 @@
+{
+  "button": [
+    {
+      "id": "btnItem1",
+      "texture": "empty",
+      "textureRect": [518, 44],
+      "position": [52, 94],
+      "anchor": "none",
+      "captureInputEvents": false,
+      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 0 }
+    },
+    {
+      "id": "btnItem2",
+      "texture": "empty",
+      "textureRect": [518, 44],
+      "position": [52, 142],
+      "anchor": "none",
+      "captureInputEvents": false,
+      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 1 }
+    },
+    {
+      "id": "btnItem3",
+      "texture": "empty",
+      "textureRect": [518, 44],
+      "position": [52, 190],
+      "anchor": "none",
+      "captureInputEvents": false,
+      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 2 }
+    },
+    {
+      "id": "btnItem4",
+      "texture": "empty",
+      "textureRect": [518, 44],
+      "position": [52, 238],
+      "anchor": "none",
+      "captureInputEvents": false,
+      "onClick": { "name": "menu.clickVisible", "id": "mainMenu", "index": 3 }
+    }
+  ]
+}

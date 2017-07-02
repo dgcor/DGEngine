@@ -26,6 +26,7 @@ public:
 
 	virtual ~StringText() {}
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
 
 	virtual void setAnchor(const Anchor anchor_)
@@ -55,13 +56,17 @@ public:
 	void setFont(const sf::Font& font) { text.setFont(font); }
 	void setCharacterSize(unsigned int size) { text.setCharacterSize(size); }
 	void setStyle(sf::Uint32 style) { text.setStyle(style); }
-	virtual void setColor(const sf::Color& color) { text.setColor(color); }
+	virtual void setColor(const sf::Color& color) { text.setFillColor(color); }
+	void setOutlineColor(const sf::Color& color) { text.setOutlineColor(color); }
+	void setOutlineThickness(float thickness) { text.setOutlineThickness(thickness); }
 
 	virtual std::string getText() const { return text.getString().toAnsiString(); }
 	const sf::Font* getFont() const { return text.getFont(); }
 	unsigned int getCharacterSize() const { return text.getCharacterSize(); }
 	sf::Uint32 getStyle() const { return text.getStyle(); }
-	const sf::Color& getColor() const { return text.getColor(); }
+	const sf::Color& getColor() const { return text.getFillColor(); }
+	const sf::Color& getOutlineColor() const { return text.getOutlineColor(); }
+	float getOutlineThickness() const { return text.getOutlineThickness(); }
 	sf::Vector2f findCharacterPos(std::size_t index) const { return text.findCharacterPos(index); }
 	virtual sf::FloatRect getLocalBounds() const { return text.getLocalBounds(); }
 	virtual sf::FloatRect getGlobalBounds() const { return text.getGlobalBounds(); }

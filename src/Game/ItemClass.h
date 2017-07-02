@@ -35,7 +35,7 @@ private:
 	std::shared_ptr<Namer> prefix;
 	std::shared_ptr<Namer> suffix;
 
-	std::array<std::shared_ptr<Namer>, 5> descriptions;
+	std::array<std::pair<std::shared_ptr<Namer>, uint16_t>, 5> descriptions;
 
 	std::array<std::pair<uint16_t, Formula>, 6> formulas;
 	size_t formulasSize{ 0 };
@@ -128,7 +128,7 @@ public:
 
 	bool getFullName(const Queryable& item, std::string& fullName) const;
 
-	void setDescription(size_t idx, const std::shared_ptr<Namer>& namer);
+	void setDescription(size_t idx, const std::shared_ptr<Namer>& namer, uint16_t skipFirst);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
 

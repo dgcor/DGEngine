@@ -5,7 +5,55 @@
 #include "Game.h"
 #include "Menu.h"
 #include <string>
+#include "TextUtils.h"
 #include "Variable.h"
+
+class ActMenuAppendText : public Action
+{
+private:
+	std::string id;
+	size_t idx;
+	std::string textFormat;
+	std::vector<std::string> bindings;
+	TextUtils::TextOp textOp;
+
+public:
+	ActMenuAppendText(const std::string& id_, size_t idx_,
+		const std::string& text_, TextUtils::TextOp textOp_)
+		: id(id_), idx(idx_), textFormat(text_), textOp(textOp_) {}
+
+	ActMenuAppendText(const std::string& id_, size_t idx_,
+		const std::string& text_, const std::string& query_)
+		: id(id_), idx(idx_), textFormat(text_),
+		textOp(TextUtils::TextOp::Query)
+	{
+		bindings.push_back(query_);
+	}
+
+	ActMenuAppendText(const std::string& id_,
+		size_t idx_, const std::string& format_,
+		const std::vector<std::string>& bindings_)
+		: id(id_), idx(idx_), textFormat(format_),
+		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
+
+	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() { textOp |= TextUtils::TextOp::Trim; }
+
+	virtual bool execute(Game& game)
+	{
+		auto menu = game.Resources().getResource<Menu>(id);
+		if (menu != nullptr)
+		{
+			auto button = menu->getItem(idx);
+			if (button != nullptr)
+			{
+				button->setText(button->getText() +
+					TextUtils::getText(game, textOp, textFormat, bindings));
+			}
+		}
+		return true;
+	}
+};
 
 class ActMenuClick : public Action
 {
@@ -82,7 +130,7 @@ public:
 		if (menu != nullptr && scrollBar != nullptr && anchorTo != nullptr)
 		{
 			auto pos = anchorTo->DrawPosition();
-			auto newRange = std::max(0u, std::min(range - (unsigned)scrollBar->Size().y, range));
+			auto newRange = std::min(range - (unsigned)scrollBar->Size().y, range);
 			auto itemCount = menu->getItemCount();
 			if (focus == true)
 			{
@@ -211,11 +259,31 @@ class ActMenuSetText : public Action
 private:
 	std::string id;
 	size_t idx;
-	std::string text;
+	std::string textFormat;
+	std::vector<std::string> bindings;
+	TextUtils::TextOp textOp;
 
 public:
-	ActMenuSetText(const std::string& id_, size_t idx_, const std::string& text_)
-		: id(id_), idx(idx_), text(text_) {}
+	ActMenuSetText(const std::string& id_, size_t idx_,
+		const std::string& text_, TextUtils::TextOp textOp_)
+		: id(id_), idx(idx_), textFormat(text_), textOp(textOp_) {}
+
+	ActMenuSetText(const std::string& id_, size_t idx_,
+		const std::string& text_, const std::string& query_)
+		: id(id_), idx(idx_), textFormat(text_),
+		textOp(TextUtils::TextOp::Query)
+	{
+		bindings.push_back(query_);
+	}
+
+	ActMenuSetText(const std::string& id_,
+		size_t idx_, const std::string& format_,
+		const std::vector<std::string>& bindings_)
+		: id(id_), idx(idx_), textFormat(format_),
+		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
+
+	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
 	{
@@ -225,7 +293,7 @@ public:
 			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
-				button->setText(game.getVarOrPropString(text));
+				button->setText(TextUtils::getText(game, textOp, textFormat, bindings));
 			}
 		}
 		return true;

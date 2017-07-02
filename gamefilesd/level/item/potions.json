@@ -21,8 +21,10 @@
         "value": "$bonusLife * $life * 0.125",
         "valueMax": "$bonusLife * 3 * $life * 0.125"
       },
-      "description1": "potion",
-      "description2": "rightClickToUse",
+      "descriptions": [
+        { "index": 0, "name": "potionOfHealing" },
+        { "index": 1, "name": "rightClickToUse" }
+      ],
       "inventorySize": [1, 1],
       "actions": {
         "action": "pickItemInLevel",
@@ -49,7 +51,8 @@
       "formulas": {
         "value": "$bonusMana * $mana * 0.125",
         "valueMax": "$bonusMana * 3 * $mana * 0.125"
-      }
+      },
+      "descriptions": { "index": 0, "name": "potionOfMana" }
     },
     {
       "id": "potionOfFullHealing",
@@ -68,7 +71,8 @@
       "formulas": {
         "value": 0,
         "valueMax": null
-      }
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullHealing" }
     },
     {
       "id": "potionOfFullMana",
@@ -83,7 +87,8 @@
         "price": 150,
         "useOn": "manaDamage",
         "useOp": "="
-      }
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullMana" }
     },
     {
       "id": "potionOfRejuvenation",
@@ -103,7 +108,8 @@
         "valueMax": "$bonusLife * 3 * $life * 0.125",
         "value2": "$bonusMana * $mana * 0.125",
         "value2Max": "$bonusMana * 3 * $mana * 0.125"
-      }
+      },
+      "descriptions": { "index": 0, "name": "potionOfRejuvenation" }
     },
     {
       "id": "potionOfFullRejuvenation",
@@ -120,7 +126,8 @@
       },
       "formulas": {
         "value2": 0
-      }
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullRejuvenation" }
     },
     {
       "id": "spectralElixir",
@@ -139,8 +146,11 @@
       "formulas": {
         "value": 3
       },
-      "description1": "",
-      "description2": ""
+      "descriptions": [
+        { "index": 0, "name": "" },
+        { "index": 1, "name": "" },
+        { "index": 3, "name": "" }
+      ]
     }
   ]
 }

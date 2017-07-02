@@ -25,6 +25,11 @@
     },
     {
       "name": "action.set",
+      "id": "rightClickLevel",
+      "action": { "name": "drawable.executeAction", "id": "level", "action": "rightClick" }
+    },
+    {
+      "name": "action.set",
       "id": "clearPanelText",
       "action": {
         "name": "if.notEqual",

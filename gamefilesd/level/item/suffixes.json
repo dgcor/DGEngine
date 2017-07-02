@@ -4,7 +4,67 @@
       "id": "armorSuffixes",
       "names": [
         {
-          "property": "hitPoints",
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": -6, "text": "Of Trouble" },
+            { "min": -5, "max": -1, "text": "Of The Pit" },
+            { "min": 1, "max": 3, "text": "Of The Sky" },
+            { "min": 4, "max": 7, "text": "Of The Moon" },
+            { "min": 8, "max": 11, "text": "Of The Stars" },
+            { "min": 12, "max": 15, "text": "Of The Heavens" },
+            { "min": 16, "max": "max", "text": "Of The Zodiac" }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -6, "text": "Of Frailty" },
+            { "min": -5, "max": -1, "text": "Of Weakness" },
+            { "min": 1, "max": 5, "text": "Of Strength" },
+            { "min": 6, "max": 10, "text": "Of Might" },
+            { "min": 11, "max": 15, "text": "Of Power" },
+            { "min": 16, "max": 20, "text": "Of Giants" },
+            { "min": 21, "max": "max", "text": "Of Titans" }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -6, "text": "Of The Fool" },
+            { "min": -5, "max": -1, "text": "Of Dyslexia" },
+            { "min": 1, "max": 5, "text": "Of Magic" },
+            { "min": 6, "max": 10, "text": "Of The Mind" },
+            { "min": 11, "max": 15, "text": "Of Brilliance" },
+            { "min": 16, "max": 20, "text": "Of Sorcery" },
+            { "min": 21, "max": "max", "text": "Of Wizardry" }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -6, "text": "Of Paralysis" },
+            { "min": -5, "max": -1, "text": "Of Atrophy" },
+            { "min": -1, "max": 5, "text": "Of Dexterity" },
+            { "min": 6, "max": 10, "text": "Of Skill" },
+            { "min": 11, "max": 15, "text": "Of Accuracy" },
+            { "min": 16, "max": 20, "text": "Of Precision" },
+            { "min": 21, "max": "max", "text": "Of Perfection" }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -6, "text": "Of Illness" },
+            { "min": -5, "max": -1, "text": "Of Disease" },
+            { "min": -1, "max": 5, "text": "Of Vitality" },
+            { "min": 6, "max": 10, "text": "Of Zest" },
+            { "min": 11, "max": 15, "text": "Of Vim" },
+            { "min": 16, "max": 20, "text": "Of Vigor" },
+            { "min": 21, "max": "max", "text": "Of Life" }
+          ]
+        },
+        {
+          "property": "life",
           "value": [
             { "min": "min", "max": -11, "text": "Of The Vulture" },
             { "min": -10, "max": -1, "text": "Of The Jackal" },
@@ -140,6 +200,17 @@
             { "min": 5, "max": 8, "text": "Of Puncturing" },
             { "min": 9, "max": "max", "text": "Of Bashing" }
           ]
+        },
+        {
+          "property": "damage",
+          "value": [
+            { "min": 1, "max": 2, "text": "Of Quality" },
+            { "min": 3, "max": 5, "text": "Of Maiming" },
+            { "min": 6, "max": 8, "text": "Of Slaying" },
+            { "min": 9, "max": 12, "text": "Of Gore" },
+            { "min": 13, "max": 16, "text": "Of Carnage" },
+            { "min": 17, "max": "max", "text": "Of Slaughter" }
+          ]
         }
       ]
     },
@@ -207,7 +278,7 @@
           ]
         },
         {
-          "property": "hitPoints",
+          "property": "life",
           "value": [
             { "min": "min", "max": -11, "text": "Of The Vulture" },
             { "min": -10, "max": -1, "text": "Of The Jackal" },

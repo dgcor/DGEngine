@@ -53,8 +53,8 @@
         "name": "if.equal",
         "param1": "%colorCycling%",
         "param2": true,
-        "then": { "name": "button.setText", "id": "colorCycling", "text": "Color Cycling On" },
-        "else": { "name": "button.setText", "id": "colorCycling", "text": "Color Cycling Off" }
+        "then": { "name": "text.setText", "id": "colorCycling", "text": "Color Cycling On" },
+        "else": { "name": "text.setText", "id": "colorCycling", "text": "Color Cycling Off" }
       }
     },
     {

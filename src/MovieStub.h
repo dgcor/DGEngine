@@ -23,6 +23,7 @@ public:
 
 	void setVolume(float volume) {}
 
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
 	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }

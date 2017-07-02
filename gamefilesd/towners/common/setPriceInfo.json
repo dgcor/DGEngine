@@ -1,0 +1,28 @@
+{
+  "action": [
+    { "name": "text.setText", "id": "itemPrice", "text": "{4}" },
+    {
+      "replaceVars": true,
+      "name": "if.equal",
+      "param1": {
+        "name": "player.canEquipItem",
+        "item": { "player": "{1}", "inventory": {2}, "item": {3} }
+      },
+      "param2": false,
+      "then": { "name": "text.setColor", "id": "itemPrice", "color": "%textRed%" },
+      "else": {
+        "name": "if.equal",
+        "param1": "|currentLevel|player.{1}.item.{2}.{3}.unique|",
+        "param2": 1,
+        "then": { "name": "text.setColor", "id": "itemPrice", "color": "%textGold%" },
+        "else": {
+          "name": "if.equal",
+          "param1": "|currentLevel|player.{1}.item.{2}.{3}.magical|",
+          "param2": 1,
+          "then": { "name": "text.setColor", "id": "itemPrice", "color": "%textBlue%" },
+          "else": { "name": "text.setColor", "id": "itemPrice" }
+        }
+      }
+    }
+  ]
+}

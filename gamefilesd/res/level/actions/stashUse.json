@@ -1,0 +1,16 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "use{1}Item",
+    "action": {
+      "name": "if.equal",
+      "param1": "|currentLevel|currentPlayer.item.stash.{2}.isUsable|",
+      "param2": true,
+      "then": [
+        { "name": "item.use", "inventory": "stash", "item": [{2}] },
+        "updateAllPlayerStats"
+      ],
+      "else": "rightClickLevel"
+    }
+  }
+}

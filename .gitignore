@@ -21,6 +21,8 @@
 /DGEngine
 /DIABDAT
 /DIABDAT.*
+/FFMPEG*
+/FFmpeg*
 /gamefiles.zip
 /gamefilesd.zip
 /gamefilesd/res/icon.png

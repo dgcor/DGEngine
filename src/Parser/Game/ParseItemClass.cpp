@@ -8,6 +8,15 @@ namespace Parser
 {
 	using namespace rapidjson;
 
+	void parseDescriptionValue(ItemClass& itemClass,
+		const Level& level, const Value& elem)
+	{
+		itemClass.setDescription(
+			getUIntKey(elem, "index"),
+			level.getNamer(getStringKey(elem, "name")),
+			(uint16_t)getUIntKey(elem, "skip"));
+	}
+
 	std::shared_ptr<ItemClass> parseItemClassHelper(const Game& game,
 		const Level& level, const Value& elem, std::string& id)
 	{
@@ -203,6 +212,22 @@ namespace Parser
 			}
 		}
 
+		if (elem.HasMember("descriptions") == true)
+		{
+			const auto& descriptions = elem["descriptions"];
+			if (descriptions.IsObject() == true)
+			{
+				parseDescriptionValue(*itemClass, *level, descriptions);
+			}
+			else if (descriptions.IsArray() == true)
+			{
+				for (const auto& val : descriptions)
+				{
+					parseDescriptionValue(*itemClass, *level, val);
+				}
+			}
+		}
+
 		if (elem.HasMember("prefix") == true)
 		{
 			auto namer = level->getNamer(getStringVal(elem["prefix"]));
@@ -212,32 +237,6 @@ namespace Parser
 		{
 			auto namer = level->getNamer(getStringVal(elem["suffix"]));
 			itemClass->setSuffix(namer);
-		}
-
-		if (elem.HasMember("description1") == true)
-		{
-			auto namer = level->getNamer(getStringVal(elem["description1"]));
-			itemClass->setDescription(0, namer);
-		}
-		if (elem.HasMember("description2") == true)
-		{
-			auto namer = level->getNamer(getStringVal(elem["description2"]));
-			itemClass->setDescription(1, namer);
-		}
-		if (elem.HasMember("description3") == true)
-		{
-			auto namer = level->getNamer(getStringVal(elem["description3"]));
-			itemClass->setDescription(2, namer);
-		}
-		if (elem.HasMember("description4") == true)
-		{
-			auto namer = level->getNamer(getStringVal(elem["description4"]));
-			itemClass->setDescription(3, namer);
-		}
-		if (elem.HasMember("description5") == true)
-		{
-			auto namer = level->getNamer(getStringVal(elem["description5"]));
-			itemClass->setDescription(4, namer);
 		}
 
 		level->addItemClass(id, itemClass);

@@ -148,11 +148,11 @@ bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
 	return true;
 }
 
-void ItemClass::setDescription(size_t idx, const std::shared_ptr<Namer>& namer)
+void ItemClass::setDescription(size_t idx, const std::shared_ptr<Namer>& namer, uint16_t skipFirst)
 {
 	if (idx < descriptions.size())
 	{
-		descriptions[idx] = namer;
+		descriptions[idx] = std::make_pair(namer, skipFirst);
 	}
 }
 
@@ -162,12 +162,12 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	{
 		return false;
 	}
-	auto namer = descriptions[idx].get();
+	auto namer = descriptions[idx].first.get();
 	if (namer == nullptr)
 	{
 		return false;
 	}
-	description = namer->getName(item);
+	description = namer->getName(item, descriptions[idx].second);
 	if (description.empty() == false)
 	{
 		description = GameUtils::replaceStringWithQueryable(description, item);

@@ -41,6 +41,8 @@ class CelFile
 private:
 	std::vector<std::vector<uint8_t>> mFrames;
 	size_t animLength{ 0 };
+	size_t defaultWidth{ 0 };
+	size_t defaultHeight{ 0 };
 	bool isCl2;
 	bool isTileCel;
 
@@ -54,6 +56,12 @@ public:
 	CelFile(const char* filename, bool isCl2_, bool isTileCel_);
 
 	CelFrame get(size_t index, const Palette& palette) const;
+
+	void setDefaultSize(size_t defaultWidth_, size_t defaultHeight_)
+	{
+		defaultWidth = defaultWidth_;
+		defaultHeight = defaultHeight_;
+	}
 
 	size_t Size() const { return mFrames.size(); }
 

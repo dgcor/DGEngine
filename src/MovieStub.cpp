@@ -4,6 +4,17 @@
 #include "GameUtils.h"
 #include "Utils.h"
 
+std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16)
+{
+	switch (nameHash16)
+	{
+	case str2int16("complete"):
+		return actionComplete;
+	default:
+		return nullptr;
+	}
+}
+
 void Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)

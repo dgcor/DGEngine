@@ -62,7 +62,7 @@ namespace Utils
 		auto outputDiff = x > y ? x - y : y - x;
 
 		val -= inputRange.x;
-		val = std::lround((double)val * (double)outputDiff / (double)inputDiff) + (double)outputRange.x;
+		val = std::lround((double)val * (double)outputDiff / (double)inputDiff) + (long)outputRange.x;
 		return val;
 	}
 

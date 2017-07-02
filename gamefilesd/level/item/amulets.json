@@ -19,10 +19,12 @@
       "formulas": {
         "sell": "price * 0.25"
       },
-      "description1": "indestructible",
-      "description2": "magic1",
-      "description3": "magic2",
-      "description4": "noAttributes",
+      "descriptions": [
+        { "index": 0, "name": "indestructible" },
+        { "index": 1, "name": "magic" },
+        { "index": 2, "name": "magic", "skip": 1 },
+        { "index": 3, "name": "noAttributes" }
+      ],
       "inventorySize": [1, 1],
       "actions": {
         "action": "pickItemInLevel",

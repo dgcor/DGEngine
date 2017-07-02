@@ -21,6 +21,14 @@
       }
     }
   ],
+  "button": {
+    "id": "background",
+    "texture": "empty",
+    "anchor": "all",
+    "textureRect": [640, 480],
+    "captureInputEvents": true,
+    "resizable": true
+  },
   "image": [
     {
       "id": "textWallBackground",
@@ -42,13 +50,5 @@
       "textureRect": [2, 0, 266, 3],
       "texture": "textbox2"
     }
-  ],
-  "button": {
-    "id": "background",
-    "texture": "empty",
-    "anchor": "all",
-    "textureRect": [640, 480],
-    "resizable": true,
-    "captureScrollEvent": true
-  }
+  ]
 }

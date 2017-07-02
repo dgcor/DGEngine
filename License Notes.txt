@@ -54,6 +54,9 @@ Mapbox Variant uses the BSD license.
 
 https://github.com/mapbox/variant/
 
+FindFFmpeg.cmake was taken from Dolphin that uses the GPL v2 license.
+https://github.com/dolphin-emu/dolphin
+
 Small utility functions (string manipulation, etc) were taken from stackoverflow
 which use the cc by-sa 3.0 license with attribution required. I will update
 those functions in the future and point out the original authors in the next commits.

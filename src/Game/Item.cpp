@@ -181,6 +181,9 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("itemSubType"):
 		var = Variable(ItemSubType());
 		break;
+	case str2int16("isUsable"):
+		var = Variable(isUsable());
+		break;
 	case str2int16("needsRecharge"):
 		var = Variable(needsRecharge());
 		break;
@@ -228,11 +231,10 @@ void Item::setProperty(const std::string& prop, const Variable& val)
 	setIntByHash(str2int16(prop.c_str()), val2);
 }
 
-bool Item::hasInt(const char* prop) const
+bool Item::hasIntByHash(uint16_t propHash) const
 {
 	if (propertiesSize > 0)
 	{
-		auto propHash = str2int16(prop);
 		for (size_t i = 0; i < propertiesSize; i++)
 		{
 			if (properties[i].first == propHash)
@@ -242,6 +244,11 @@ bool Item::hasInt(const char* prop) const
 		}
 	}
 	return false;
+}
+
+bool Item::hasInt(const char* prop) const
+{
+	return hasIntByHash(str2int16(prop));
 }
 
 LevelObjValue Item::getIntByHash(uint16_t propHash) const
@@ -396,6 +403,11 @@ bool Item::needsRepair() const
 		}
 	}
 	return false;
+}
+
+bool Item::isUsable() const
+{
+	return hasIntByHash(ItemProp::UseOn);
 }
 
 bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
