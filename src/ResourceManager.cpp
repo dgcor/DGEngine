@@ -556,47 +556,94 @@ void ResourceManager::addFocused(const std::shared_ptr<Button>& obj)
 
 void ResourceManager::clickFocused(Game& game, bool playSound)
 {
-	const auto& vec = resources.back().focusButtons;
-	auto focusIdx = resources.back().focusIdx;
-	if (focusIdx < vec.size())
+	for (const auto& res : reverse(resources))
 	{
-		vec[focusIdx]->click(game, playSound);
+		if (res.ignore != IgnoreResource::None)
+		{
+			continue;
+		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		auto focusIdx = res.focusIdx;
+		if (focusIdx < size)
+		{
+			vec[focusIdx]->click(game, playSound);
+		}
+		break;
 	}
 }
 
 const Button* ResourceManager::getFocused() const
 {
-	const auto& vec = resources.back().focusButtons;
-	auto focusIdx = resources.back().focusIdx;
-	if (focusIdx < vec.size())
+	for (const auto& res : reverse(resources))
 	{
-		return vec[focusIdx].get();
+		if (res.ignore != IgnoreResource::None)
+		{
+			continue;
+		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		auto focusIdx = res.focusIdx;
+		if (focusIdx < size)
+		{
+			return vec[focusIdx].get();
+		}
+		break;
 	}
 	return nullptr;
 }
 
 void ResourceManager::setFocused(const Button* obj)
 {
-	const auto& vec = resources.back().focusButtons;
-	auto size = vec.size();
-	for (size_t i = 0; i < size; i++)
+	for (auto& res : reverse(resources))
 	{
-		if (vec[i].get() == obj)
+		if (res.ignore != IgnoreResource::None)
 		{
-			resources.back().focusIdx = i;
-			return;
+			continue;
 		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		for (size_t i = 0; i < size; i++)
+		{
+			if (vec[i].get() == obj)
+			{
+				res.focusIdx = i;
+				return;
+			}
+		}
+		break;
 	}
 }
 
 void ResourceManager::moveFocusDown(Game& game)
 {
-	const auto& vec = resources.back().focusButtons;
-	auto& focusIdx = resources.back().focusIdx;
-	auto idx = focusIdx;
-	auto size = vec.size();
-	if (size > 0)
+	for (auto& res : reverse(resources))
 	{
+		if (res.ignore != IgnoreResource::None)
+		{
+			continue;
+		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		auto& focusIdx = res.focusIdx;
+		auto idx = focusIdx;
+
 		while (true)
 		{
 			if (idx + 1 < size)
@@ -617,17 +664,27 @@ void ResourceManager::moveFocusDown(Game& game)
 			focusIdx = idx;
 			vec[idx]->focus(game);
 		}
+		break;
 	}
 }
 
 void ResourceManager::moveFocusUp(Game& game)
 {
-	const auto& vec = resources.back().focusButtons;
-	auto& focusIdx = resources.back().focusIdx;
-	auto idx = focusIdx;
-	auto size = vec.size();
-	if (size > 0)
+	for (auto& res : reverse(resources))
 	{
+		if (res.ignore != IgnoreResource::None)
+		{
+			continue;
+		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		auto& focusIdx = res.focusIdx;
+		auto idx = focusIdx;
+
 		while (true)
 		{
 			if (idx > 0)
@@ -648,17 +705,6 @@ void ResourceManager::moveFocusUp(Game& game)
 			focusIdx = idx;
 			vec[idx]->focus(game);
 		}
-	}
-}
-
-void ResourceManager::setFocusIdx(const Button* obj)
-{
-	const auto& vec = resources.back().focusButtons;
-	for (size_t i = 0; i < vec.size(); i++)
-	{
-		if (vec[i].get() == obj)
-		{
-			resources.back().focusIdx = i;
-		}
+		break;
 	}
 }

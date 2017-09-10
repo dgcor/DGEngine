@@ -111,22 +111,16 @@ namespace Utils
 
 	std::string trimStart(const std::string& str, const std::string& chars)
 	{
-		auto startPos = str.find_first_not_of(chars);
-		if (startPos != std::string::npos)
-		{
-			return str.substr(startPos);
-		}
-		return str;
+		auto ret(str);
+		ret.erase(ret.find_last_not_of(chars) + 1);
+		return ret;
 	}
 
 	std::string trimEnd(const std::string& str, const std::string& chars)
 	{
-		auto endPos = str.find_last_not_of(chars);
-		if (endPos != std::string::npos)
-		{
-			return str.substr(0, endPos + 1);
-		}
-		return str;
+		auto ret(str);
+		ret.erase(0, ret.find_first_not_of(chars));
+		return ret;
 	}
 
 	std::string trim(const std::string& str, const std::string& chars)

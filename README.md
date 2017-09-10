@@ -8,4 +8,4 @@ See the wiki for more information.
 
 https://github.com/dgengin/DGEngine/wiki
 
-![DGEngine Running Diablo](https://cloud.githubusercontent.com/assets/20025614/16467025/4bd77ef0-3e3d-11e6-872a-38ca8eb2c9f8.gif)
+![DGEngine Running Diablo](https://user-images.githubusercontent.com/20025614/30250613-4033a546-9649-11e7-86d7-97a718d0f119.gif)

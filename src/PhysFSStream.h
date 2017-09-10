@@ -24,7 +24,6 @@
 #include <physfs.h>
 #include <SFML/System.hpp>
 #include <string>
-#include <vector>
 
 namespace sf
 {
@@ -34,7 +33,7 @@ namespace sf
 		PHYSFS_File* file;
 
 	public:
-		PhysFSStream(std::string fileName) : PhysFSStream(fileName.c_str()) {}
+		PhysFSStream(const std::string& fileName) : PhysFSStream(fileName.c_str()) {}
 		PhysFSStream(const char* fileName);
 		virtual ~PhysFSStream();
 
@@ -45,6 +44,13 @@ namespace sf
 
 		bool hasError() const { return file == NULL; }
 
-		const char* getLastError() { return PHYSFS_getLastError(); }
+		const char* getLastError()
+		{
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
+			return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
+#else
+			return PHYSFS_getLastError();
+#endif
+		}
 	};
 }

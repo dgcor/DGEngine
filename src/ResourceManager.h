@@ -277,6 +277,4 @@ public:
 
 	void moveFocusDown(Game& game);
 	void moveFocusUp(Game& game);
-
-	void setFocusIdx(const Button* obj);
 };

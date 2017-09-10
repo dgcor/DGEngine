@@ -20,8 +20,6 @@
 //distribution.
 
 #include "PhysFSStream.h"
-#include <iostream>
-#include <memory>
 
 sf::PhysFSStream::PhysFSStream(const char* fileName)
 {
@@ -38,8 +36,8 @@ sf::PhysFSStream::~PhysFSStream()
 
 sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size)
 {
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
-	return PHYSFS_readBytes(file, data, (PHYSFS_uint32)size);
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
+	return PHYSFS_readBytes(file, data, (PHYSFS_uint64)size);
 #else
 	return PHYSFS_read(file, data, 1, (PHYSFS_uint32)size);
 #endif

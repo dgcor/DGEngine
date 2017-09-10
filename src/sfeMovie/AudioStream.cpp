@@ -297,14 +297,31 @@ namespace sfe
     
     bool AudioStream::decodePacket(AVPacket* packet, AVFrame* outputFrame, bool& gotFrame)
     {
+#if LIBAVCODEC_VERSION_MAJOR > 56
+        int ret;
+        gotFrame = false;
+        
+        ret = avcodec_send_packet(m_codecCtx, packet);
+        if (ret < 0)
+        {
+            return false;
+        }
+        
+        ret = avcodec_receive_frame(m_codecCtx, outputFrame);
+        if (ret < 0)
+        {
+            if (ret == AVERROR(EAGAIN))
+            {
+                return true;
+            }
+            return false;
+        }
+        gotFrame = true;
+        return false;
+#else
         bool needsMoreDecoding = false;
         int igotFrame = 0;
-        
-#if LIBAVCODEC_VERSION_MAJOR > 56
-        int decodedLength = avcodec_decode_audio4(m_codecCtx, outputFrame, &igotFrame, packet);
-#else
         int decodedLength = avcodec_decode_audio4(m_stream->codec, outputFrame, &igotFrame, packet);
-#endif
         gotFrame = (igotFrame != 0);
         CHECK(decodedLength >= 0, "AudioStream::decodePacket() - error: decodedLength=" + s(decodedLength));
         
@@ -316,6 +333,7 @@ namespace sfe
         }
         
         return needsMoreDecoding;
+#endif
     }
     
     void AudioStream::initResampler()
