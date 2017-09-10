@@ -254,14 +254,34 @@ namespace sfe
     
     bool VideoStream::decodePacket(AVPacket* packet, AVFrame* outputFrame, bool& gotFrame, bool& needsMoreDecoding)
     {
-        int gotPicture = 0;
+#if LIBAVCODEC_VERSION_MAJOR > 56
+        int ret;
+        gotFrame = false;
         needsMoreDecoding = false;
         
-#if LIBAVCODEC_VERSION_MAJOR > 56
-        int decodedLength = avcodec_decode_video2(m_codecCtx, outputFrame, &gotPicture, packet);
+        ret = avcodec_send_packet(m_codecCtx, packet);
+        if (ret < 0)
+        {
+            return false;
+        }
+        
+        ret = avcodec_receive_frame(m_codecCtx, outputFrame);
+        if (ret < 0)
+        {
+            needsMoreDecoding = (ret == AVERROR(EAGAIN));
+            if (needsMoreDecoding == true)
+            {
+                return true;
+            }
+            return false;
+        }
+        gotFrame = true;
+        return true;
 #else
+        int gotPicture = 0;
+        needsMoreDecoding = false;
         int decodedLength = avcodec_decode_video2(m_stream->codec, outputFrame, &gotPicture, packet);
-#endif
+        
         gotFrame = (gotPicture != 0);
         
         if (decodedLength > 0 || gotFrame)
@@ -279,6 +299,7 @@ namespace sfe
         {
             return false;
         }
+#endif
     }
     
     void VideoStream::initRescaler()

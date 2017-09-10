@@ -12,14 +12,18 @@ namespace Parser
 	{
 		if (PHYSFS_mount(filePath.c_str(), NULL, 0) == 0)
 		{
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
+			throw std::runtime_error(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+#else
 			throw std::runtime_error(PHYSFS_getLastError());
+#endif
 		}
 
 		rapidjson::Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
 
 		if (doc.Parse(FileUtils::readText(fileName.c_str()).c_str()).HasParseError())
 		{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			PHYSFS_unmount(filePath.c_str());
 #else
 			PHYSFS_removeFromSearchPath(filePath.c_str());

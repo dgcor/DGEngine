@@ -13,7 +13,7 @@ namespace FileUtils
 
 	bool deleteAll(const char* filePath)
 	{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		PHYSFS_Stat fileStat;
 		if (PHYSFS_stat(filePath, &fileStat) == 0)
 		{
@@ -21,7 +21,7 @@ namespace FileUtils
 		}
 #endif
 		bool ret = false;
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY)
 #else
 		if (PHYSFS_isDirectory(filePath) != 0)
@@ -36,7 +36,7 @@ namespace FileUtils
 					for (char** path = paths; *path != NULL; path++)
 					{
 						auto fullPath = std::string(filePath) + '/' + *path;
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 						if (PHYSFS_stat(fullPath.c_str(), &fileStat) == 0)
 						{
 							continue;
@@ -93,7 +93,7 @@ namespace FileUtils
 		auto files = PHYSFS_enumerateFiles(filePath.c_str());
 		if (files != NULL)
 		{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			PHYSFS_Stat fileStat;
 #endif
 			for (char** file = files; *file != NULL; file++)
@@ -104,7 +104,7 @@ namespace FileUtils
 				{
 					continue;
 				}
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 				if (PHYSFS_stat(file2.c_str(), &fileStat) == 0)
 				{
 					continue;
@@ -157,12 +157,12 @@ namespace FileUtils
 			auto writeDir = PHYSFS_getWriteDir();
 			if (writeDir != NULL)
 			{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 				PHYSFS_Stat fileStat;
 #endif
 				for (char** dir = dirs; *dir != NULL; dir++)
 				{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 					if (PHYSFS_stat(*dir, &fileStat) == 0)
 					{
 						continue;
@@ -240,13 +240,13 @@ namespace FileUtils
 #ifdef __ANDROID__
 		auto userDir = "data/data/com.dgengine/files/";
 #else
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		auto userDir = PHYSFS_getPrefDir("DGEngine", dirName);
 #else
 		auto userDir = PHYSFS_getUserDir();
 #endif
 #endif
-#if (__ANDROID__) || (!(PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1))
+#if (__ANDROID__) || (!(PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1)))
 		if (PHYSFS_setWriteDir(userDir) != 0)
 		{
 			if (PHYSFS_mkdir(dirName) != 0)
@@ -270,7 +270,7 @@ namespace FileUtils
 		auto file = PHYSFS_openWrite(filePath);
 		if (file != NULL)
 		{
-#if (PHYSFS_VER_MAJOR >= 2 && PHYSFS_VER_MINOR >= 1)
+#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			PHYSFS_writeBytes(file, str, strLen);
 #else
 			PHYSFS_write(file, str, 1, strLen);
