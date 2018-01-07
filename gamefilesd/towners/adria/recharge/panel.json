@@ -38,17 +38,15 @@
   ],
   "animation": [
     {
-      "texture": "pentspn2",
+      "texturePack": "pentspn2",
       "id": "pent1",
-      "frames": 8,
       "position": [32, 94],
       "anchor": "none",
       "refresh": 50
     },
     {
-      "texture": "pentspn2",
+      "texturePack": "pentspn2",
       "id": "pent2",
-      "frames": 8,
       "position": [575, 94],
       "anchor": "none",
       "refresh": 50
@@ -94,7 +92,7 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.body.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.body.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",
@@ -153,7 +151,7 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.belt.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",
@@ -212,7 +210,7 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.stash.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.stash.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",

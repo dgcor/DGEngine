@@ -2,6 +2,6 @@
 
 #include <memory>
 #include "Predicates/Predicate.h"
-#include "Variable.h"
+#include <variant>
 
-typedef mapbox::util::variant<Variable, std::shared_ptr<Predicate>> VarOrPredicate;
+typedef std::variant<Variable, std::shared_ptr<Predicate>> VarOrPredicate;

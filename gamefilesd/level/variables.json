@@ -2,6 +2,12 @@
   "variable": [
     { "identifyPrice": 100 },
     { "showMap": false },
+    { "outlineCantUse": "0xCF4949" },
+    { "outlineEnemy": "0x931E1E" },
+    { "outlineFriend": "0xA55A5A" },
+    { "outlineItem": "0x797FA0" },
+    { "outlineItemInv": "0xAB9A63" },
+    { "outlineObject": "0xDDC47E" },
     { "textBlue": "0xA7B0DE" },
     { "textGold": "0xEDD689" },
     { "textRed": "0xFE9292" },

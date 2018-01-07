@@ -70,8 +70,15 @@
     },
     {
       "name": "action.set",
-      "id": "updateSelectedItemText",
+      "id": "updateSelectedItem",
       "action": [
+        {
+          "name": "if.equal",
+          "param1": "|currentLevel|currentPlayer.canUseSelectedItem|",
+          "param2": false,
+          "then": { "name": "cursor.setPalette", "palette": "infra", "color": "0xFF0000" },
+          "else": { "name": "cursor.setPalette", "palette": "town" }
+        },
         {
           "name": "text.setText",
           "id": "txtPanel",

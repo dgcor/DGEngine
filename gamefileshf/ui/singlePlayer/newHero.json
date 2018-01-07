@@ -2,7 +2,7 @@
   "action": [
     { "name": "resource.add", "id": "singlePlayerNewHero" },
     { "name": "text.setText", "id": "label2", "text": "Choose Class" },
-    { "name": "image.setTextureRect", "id": "heros", "rect": [0, 0, 180, 76] },
+    { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 0 },
     { "name": "text.setText", "id": "txtLevel", "text": "1" },
     { "name": "text.setText", "id": "txtStrength", "text": "30" },
     { "name": "text.setText", "id": "txtMagic", "text": "10" },
@@ -13,16 +13,14 @@
   "animation": [
     {
       "id": "pent1",
-      "texture": "focus16",
-      "frames": 8,
+      "texturePack": "focus16",
       "position": [263, 258],
       "anchor": "none",
       "refresh": 50
     },
     {
       "id": "pent2",
-      "texture": "focus16",
-      "frames": 8,
+      "texturePack": "focus16",
       "position": [566, 258],
       "anchor": "none",
       "refresh": 50

@@ -35,7 +35,7 @@ namespace Parser
 			text->setText(splitText);
 		}
 
-		auto speed = sf::milliseconds(getUIntKey(elem, "refresh"));
+		auto speed = getTimeKey(elem, "refresh", sf::milliseconds(50));
 		auto scrollable = std::make_shared<ScrollableText>(std::move(text), speed);
 
 		auto anchor = getAnchorKey(elem, "anchor");
@@ -65,6 +65,13 @@ namespace Parser
 			scrollable->setAction(str2int16("complete"), parseAction(game, elem["onComplete"]));
 		}
 
-		game.Resources().addDrawable(id, scrollable);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, scrollable);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, scrollable);
+		}
 	}
 }

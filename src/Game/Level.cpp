@@ -1,16 +1,41 @@
 #include "Level.h"
 #include "Game.h"
-#include "Game/LevelHelper.h"
 #include "GameUtils.h"
+#include "Shaders.h"
 #include "Utils.h"
 
-void Level::Init(const LevelMap& map_, Min& min_, CelFrameCache& cel_)
+void Level::Init(const LevelMap& map_,
+	std::shared_ptr<TexturePack>& tilesBottom_,
+	std::shared_ptr<TexturePack>& tilesTop_)
 {
 	map = map_;
+	tilesBottom = tilesBottom_;
+	tilesTop = tilesTop_;
 	currentMapPosition = MapCoord(map.Width() / 2, map.Height() / 2);
-	tiles = LevelHelper::loadTilesetSprite(cel_, min_, false);
-	tiles2 = LevelHelper::loadTilesetSprite(cel_, min_, true);
 	hoverObject = nullptr;
+
+	sf::Vector2i textureSize;
+	if (tilesBottom_ != nullptr &&
+		tilesBottom_->getTextureSize(textureSize) == true)
+	{
+		tileWidth = textureSize.x;
+		tileHeight = textureSize.y;
+	}
+	else
+	{
+		tileWidth = 64;
+		tileHeight = 32;
+	}
+	if (tilesTop_ != nullptr &&
+		tilesTop_->getTextureSize(textureSize) == true)
+	{
+		pillarHeight = textureSize.y;
+	}
+	else
+	{
+		pillarHeight = 256;
+	}
+	map.setTileSize(tileWidth, tileHeight);
 }
 
 std::shared_ptr<Action> Level::getAction(uint16_t nameHash16)
@@ -35,30 +60,33 @@ std::shared_ptr<Action> Level::getAction(uint16_t nameHash16)
 	}
 }
 
-void Level::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Level::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("click"):
 	case str2int16("leftClick"):
 		leftAction = action;
-		return;
+		break;
 	case str2int16("rightClick"):
 		rightAction = action;
-		return;
+		break;
 	case str2int16("hoverEnter"):
 		hoverEnterAction = action;
-		return;
+		break;
 	case str2int16("hoverLeave"):
 		hoverLeaveAction = action;
-		return;
+		break;
 	case str2int16("scrollDown"):
 		scrollDownAction = action;
-		return;
+		break;
 	case str2int16("scrollUp"):
 		scrollUpAction = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void Level::executeHoverEnterAction(Game& game)
@@ -175,57 +203,119 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.setView(view.getView());
 
 	sf::Sprite sprite;
+	const sf::Texture* texture;
+	sf::IntRect textureRect;
+	const sf::Texture* palette = nullptr;
 
 	auto viewCenter = target.getView().getCenter();
 	auto viewSize = target.getView().getSize();
 
-	sf::FloatRect drawRect(viewCenter.x - (viewSize.x / 2) - 64,
-		viewCenter.y - (viewSize.y / 2) - 256,
-		viewSize.x + 64, viewSize.y + 256);
+	sf::FloatRect drawRect(viewCenter.x - (viewSize.x / 2) - tileWidth,
+		viewCenter.y - (viewSize.y / 2) - pillarHeight,
+		viewSize.x + tileWidth, viewSize.y + pillarHeight);
 
-	for (Coord x = 0; x < map.Width(); x++)
+	auto tiles = tilesBottom.get();
+	if (tiles != nullptr)
 	{
-		for (Coord y = 0; y < map.Height(); y++)
+		if (tiles->isIndexed() == true &&
+			tiles->getPalette() != nullptr &&
+			Shaders::supportsPalettes() == true)
 		{
-			size_t index = map[x][y].MinIndex();
-			auto coords = map.getCoord(MapCoord(x, y));
+			palette = &tiles->getPalette()->texture;
+		}
+		if (palette != nullptr)
+		{
+			states.shader = &Shaders::Palette;
+			Shaders::Palette.setUniform("palette", *palette);
+		}
+		auto newPillarHeight = pillarHeight - tileHeight;
 
-			if (drawRect.contains(coords) == true &&
-				index < tiles.size())
+		for (Coord x = 0; x < map.Width(); x++)
+		{
+			for (Coord y = 0; y < map.Height(); y++)
 			{
-				sprite.setTexture(*tiles[index], true);
-				sprite.setPosition(coords);
-				target.draw(sprite, states);
+				auto index = map[x][y].MinIndex();
+				if (index < 0)
+				{
+					continue;
+				}
+				auto coords = map.getCoord(MapCoord(x, y));
+				coords.y += newPillarHeight;
+
+				if (drawRect.contains(coords) == true)
+				{
+					if (tiles->get((size_t)index, &texture, textureRect) == true)
+					{
+						sprite.setTexture(*texture);
+						sprite.setTextureRect(textureRect);
+						sprite.setPosition(coords);
+						target.draw(sprite, states);
+					}
+				}
 			}
 		}
+	}
+
+	palette = nullptr;
+	tiles = tilesTop.get();
+
+	if (tiles != nullptr &&
+		tiles->isIndexed() == true &&
+		tiles->getPalette() != nullptr &&
+		Shaders::supportsPalettes() == true)
+	{
+		palette = &tiles->getPalette()->texture;
+	}
+	if (palette != nullptr)
+	{
+		states.shader = &Shaders::Palette;
+		Shaders::Palette.setUniform("palette", *palette);
+	}
+	else
+	{
+		states.shader = NULL;
 	}
 
 	for (Coord x = 0; x < map.Width(); x++)
 	{
 		for (Coord y = 0; y < map.Height(); y++)
 		{
-			size_t index = map[x][y].MinIndex();
 			auto coords = map.getCoord(MapCoord(x, y));
 
 			if (drawRect.contains(coords) == true)
 			{
+				bool drewObj = false;
 				for (const auto& drawObj : map[x][y])
 				{
 					if (drawObj != nullptr)
 					{
 						target.draw(*drawObj, states);
+						drewObj = true;
 					}
 				}
-				if (index < tiles2.size())
+				if (drewObj == true &&
+					palette != nullptr)
 				{
-					sprite.setTexture(*tiles2[index], true);
-					sprite.setPosition(coords);
-					target.draw(sprite, states);
+					Shaders::Palette.setUniform("palette", *palette);
+				}
+				if (tiles != nullptr)
+				{
+					size_t index = map[x][y].MinIndex();
+					if (index < 0)
+					{
+						continue;
+					}
+					if (tiles->get((size_t)index, &texture, textureRect) == true)
+					{
+						sprite.setTexture(*texture);
+						sprite.setTextureRect(textureRect);
+						sprite.setPosition(coords);
+						target.draw(sprite, states);
+					}
 				}
 			}
 		}
 	}
-
 	target.setView(origView);
 }
 
@@ -325,6 +415,7 @@ void Level::update(Game& game)
 	{
 		updateView = false;
 		view.updateSize(game);
+		view.updateViewport(game);
 	}
 	if (pause == true)
 	{
@@ -374,7 +465,7 @@ void Level::update(Game& game)
 	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
 		currentMapPosition = currentPlayer->MapPosition();
-		view.setCenter(currentPlayer->getBasePosition());
+		view.setCenter(currentPlayer->getBasePosition(*this));
 	}
 }
 
@@ -557,6 +648,27 @@ void Level::clearPlayerClasses(size_t clearIdx)
 	}
 }
 
+void Level::clearPlayerTextures()
+{
+	for (const auto& playerClass : playerClasses)
+	{
+		auto plrClassPtr = playerClass.second.get();
+		bool classIsUsed = false;
+		for (const auto& player : players)
+		{
+			if (plrClassPtr == player->getPlayerClass())
+			{
+				classIsUsed = true;
+				break;
+			}
+		}
+		if (classIsUsed == false)
+		{
+			plrClassPtr->clearTextures();
+		}
+	}
+}
+
 void Level::clearPlayers(size_t clearIdx)
 {
 	if (clearIdx < players.size())
@@ -614,36 +726,36 @@ std::shared_ptr<Item> Level::getItem(const ItemLocation& location) const
 
 std::shared_ptr<Item> Level::getItem(const ItemLocation& location, Player*& player) const
 {
-	if (location.is<MapCoord>() == true)
+	if (std::holds_alternative<MapCoord>(location) == true)
 	{
 		player = nullptr;
-		return getItem(location.get<MapCoord>());
+		return getItem(std::get<MapCoord>(location));
 	}
 	else
 	{
-		return getItem(location.get<ItemCoordInventory>(), player);
+		return getItem(std::get<ItemCoordInventory>(location), player);
 	}
 }
 
 bool Level::setItem(const MapCoord& mapCoord, const std::shared_ptr<Item>& item)
 {
-	auto& mapCel = map[mapCoord.x][mapCoord.y];
-	auto oldItem = mapCel.getObject<Item>();
+	auto& mapCell = map[mapCoord.x][mapCoord.y];
+	auto oldItem = mapCell.getObject<Item>();
 	if (item == nullptr)
 	{
 		if (oldItem != nullptr)
 		{
 			deleteLevelObject(oldItem.get());
-			mapCel.deleteObject(oldItem.get());
+			mapCell.deleteObject(oldItem.get());
 		}
 		return true;
 	}
-	if (mapCel.Passable() == true
+	if (mapCell.Passable() == true
 		&& oldItem == nullptr)
 	{
 		item->MapPosition(mapCoord);
 		item->updateDrawPosition(*this);
-		mapCel.addFront(item);
+		mapCell.addFront(item);
 		addLevelObject(item);
 		return true;
 	}
@@ -681,13 +793,13 @@ bool Level::setItem(const ItemCoordInventory& itemCoord, const std::shared_ptr<I
 
 bool Level::setItem(const ItemLocation& location, const std::shared_ptr<Item>& item)
 {
-	if (location.is<MapCoord>() == true)
+	if (std::holds_alternative<MapCoord>(location) == true)
 	{
-		return setItem(location.get<MapCoord>(), item);
+		return setItem(std::get<MapCoord>(location), item);
 	}
 	else
 	{
-		return setItem(location.get<ItemCoordInventory>(), item);
+		return setItem(std::get<ItemCoordInventory>(location), item);
 	}
 }
 
@@ -739,4 +851,34 @@ void Level::updateLevelObjectPositions()
 		const auto& mapPosition = obj->MapPosition();
 		map[mapPosition.x][mapPosition.y].addBack(obj);
 	}
+}
+
+uint32_t Level::getExperienceFromLevel(uint32_t level) const
+{
+	if (level < experiencePoints.size())
+	{
+		return experiencePoints[level];
+	}
+	else if (experiencePoints.empty() == false)
+	{
+		return experiencePoints.back();
+	}
+	return 0;
+}
+
+uint32_t Level::getLevelFromExperience(uint32_t experience) const
+{
+	if (experience == 0 || experiencePoints.size() <= 1)
+	{
+		return 1;
+	}
+	for (uint32_t i = 1; i < experiencePoints.size(); i++)
+	{
+		auto exp = experiencePoints[i];
+		if (experience <= exp)
+		{
+			return i;
+		}
+	}
+	return experiencePoints.size();
 }

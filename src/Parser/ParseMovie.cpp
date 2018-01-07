@@ -79,7 +79,14 @@ namespace Parser
 
 		movie->Visible(getBoolKey(elem, "visible", true));
 
-		game.Resources().addDrawable(id, movie);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, movie);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, movie);
+		}
 
 		try
 		{

@@ -130,13 +130,7 @@ namespace Parser
 
 	void parsePlayer(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false
-			|| isValidString(elem, "class") == false)
-		{
-			return;
-		}
-		std::string id(elem["id"].GetString());
-		if (isValidId(id) == false)
+		if (isValidString(elem, "class") == false)
 		{
 			return;
 		}
@@ -161,14 +155,14 @@ namespace Parser
 		}
 
 		auto class_ = level->getPlayerClass(elem["class"].GetString());
-		if (class_ == nullptr)
+
+		if (class_ == nullptr ||
+			class_->hasTextures() == false)
 		{
 			return;
 		}
 
-		auto player = std::make_shared<Player>(class_);
-
-		player->applyDefaults();
+		auto player = std::make_shared<Player>(class_, *level);
 
 		mapCell.addBack(player);
 		player->MapPosition(mapPos);
@@ -177,12 +171,24 @@ namespace Parser
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
-		player->setStatus(getPlayerStatusKey(elem, "status"));
+		player->setAnimation(getPlayerAnimationKey(elem, "animation"));
 		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));
 		player->setTextureIdx(getUIntKey(elem, "textureIndex"));
 
+		auto outline = getColorKey(elem, "outline", class_->DefaultOutline());
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->DefaultOutlineIgnore());
+		player->setOutline(outline, outlineIgnore);
+		player->setOutlineOnHover(getBoolKey(elem, "outlineOnHover", true));
+
+		player->setAI(getBoolKey(elem, "AI"));
+
+		auto id = getStringKey(elem, "id");
+		if (isValidId(id) == false)
+		{
+			id.clear();
+		}
 		player->Id(id);
-		player->Name(getStringKey(elem, "name"));
+		player->Name(getStringKey(elem, "name", class_->Name()));
 
 		if (elem.HasMember("properties") == true)
 		{
@@ -194,7 +200,7 @@ namespace Parser
 					if (it->name.GetStringLength() > 0)
 					{
 						player->setNumber(it->name.GetString(),
-							getMinMaxNumber32Val(it->value));
+							getMinMaxNumber32Val(it->value), level);
 					}
 				}
 			}
@@ -223,7 +229,7 @@ namespace Parser
 
 		player->updateProperties();
 		player->updateTexture();
-		player->updateDrawPosition();
+		player->updateDrawPosition(*level);
 
 		level->addPlayer(player);
 

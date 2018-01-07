@@ -23,7 +23,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto sndBuffer = game.Resources().getSound(id);
+		auto sndBuffer = game.Resources().getSoundBuffer(id);
 
 		if (sndBuffer == nullptr && id.empty() == false)
 		{
@@ -31,7 +31,7 @@ public:
 		}
 		if (sndBuffer != nullptr)
 		{
-			sf::Sound sound(*sndBuffer.get());
+			sf::Sound sound(*sndBuffer);
 			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
 			if (vol > 0)
 			{
@@ -60,10 +60,10 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto sndBuffer = game.Resources().getSound(id);
+		auto sndBuffer = game.Resources().getSoundBuffer(id);
 		if (sndBuffer != nullptr)
 		{
-			sf::Sound sound(*sndBuffer.get());
+			sf::Sound sound(*sndBuffer);
 			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
 			if (vol > 0)
 			{

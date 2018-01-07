@@ -1,16 +1,21 @@
 #pragma once
 
 #include <array>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include <string>
 #include <vector>
+
+typedef std::array<sf::Color, 256> PaletteArray;
 
 class Palette
 {
 private:
-	std::array<sf::Color, 256> palette;
+	void loadTexture();
 
 public:
+	sf::Texture texture;
+	PaletteArray palette;
+
 	Palette() {}
 	Palette(const std::string& file) : Palette(file.c_str()) {}
 	Palette(const char* file);

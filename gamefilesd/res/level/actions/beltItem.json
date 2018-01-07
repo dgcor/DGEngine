@@ -2,25 +2,45 @@
   "action": {
     "name": "action.set",
     "id": "update{1}Item",
+    "replaceVars": true,
     "action": {
       "name": "if.equal",
       "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
       "param2": true,
       "then": [
+        { "name": "image.setTexture", "id": "img{1}", "inventory": "{2}", "item": {3}, "resetRect": false },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.{2}.{3}|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.{2}.{3}|",
           "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "{2}", "item": {3}, "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "{2}", "item": {3} }
+          "then": [
+            { "name": "image.setPalette", "id": "img{1}", "palette": "infra", "color": "0xFF0000" },
+            { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineCantUse%", "ignore": "0x000000" }
+          ],
+          "else": [
+            { "name": "image.setPalette", "id": "img{1}", "palette": "town" },
+            {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.{2}.{3}.magical|",
+              "param2": 1,
+              "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
+              "else": {
+                "name": "if.equal",
+                "param1": "|currentLevel|currentPlayer.item.{2}.{3}.unique|",
+                "param2": 1,
+                "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
+                "else": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItemInv%", "ignore": "0x000000" }
+              }
+            }
+          ]
         },
-        { "name": "image.centerTexture", "id": "img{1}" },
-        { "name": "button.setTexture", "id": "player{1}", "texture": "red" },
+        { "name": "drawable.center", "id": "img{1}", "idCenterOn": "player{1}" },
+        { "name": "image.setTexture", "id": "player{1}", "texture": "red" },
         { "name": "drawable.visible", "id": "txt{1}", "visible": true }
       ],
       "else": [
         { "name": "image.setTexture", "id": "img{1}", "texture": "empty" },
-        { "name": "button.setTexture", "id": "player{1}", "texture": "empty" },
+        { "name": "image.setTexture", "id": "player{1}", "texture": "empty" },
         { "name": "drawable.visible", "id": "txt{1}", "visible": false }
       ]
     }

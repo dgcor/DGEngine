@@ -48,6 +48,23 @@
       "mask": "0xFFFFFF"
     }
   ],
+  "texturePack": [
+    {
+      "id": "heros",
+      "texture": "heros",
+      "frames": 6
+    },
+    {
+      "id": "focus16",
+      "texture": "focus16",
+      "frames": 8
+    },
+    {
+      "id": "focus",
+      "texture": "focus",
+      "frames": 8
+    }
+  ],
   "image": [
     {
       "id": "selhero",
@@ -64,8 +81,7 @@
   ],
   "animation": {
     "id": "smlogo",
-    "texture":"smlogo",
-    "frames": 16,
+    "texturePack": "smlogo",
     "position": [0, 0],
     "anchor": "none",
     "refresh": 50

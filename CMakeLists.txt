@@ -1,12 +1,8 @@
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
 
 project(DGEngine)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 5.0)
-        message(FATAL_ERROR "GCC 5.0+ is required")
-    endif()
-
     if(NOT BEOS)
         add_definitions(-Wall)
     endif()
@@ -20,7 +16,7 @@ if(DGENGINE_MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
 find_package(PhysFS REQUIRED)
-find_package(SFML 2.3 REQUIRED system window graphics network audio)
+find_package(SFML 2.4 REQUIRED system window graphics network audio)
 
 include_directories(./src)
 
@@ -30,18 +26,16 @@ set(SOURCE_FILES
     src/Anchor.h
     src/Animation.cpp
     src/Animation.h
+    src/AudioSource.h
     src/BitmapButton.cpp
     src/BitmapButton.h
     src/BitmapFont.cpp
     src/BitmapFont.h
     src/BitmapText.cpp
     src/BitmapText.h
+    src/Button.cpp
     src/Button.h
-    src/Cel.cpp
-    src/Cel.h
-    src/CelCache.h
-    src/CelUtils.cpp
-    src/CelUtils.h
+    src/CachedImagePack.h
     src/Circle.cpp
     src/Circle.h
     src/DrawableText.h
@@ -63,6 +57,7 @@ set(SOURCE_FILES
     src/IgnoreResource.h
     src/Image.cpp
     src/Image.h
+    src/Image2.h
     src/ImageUtils.cpp
     src/ImageUtils.h
     src/InputText.cpp
@@ -75,9 +70,10 @@ set(SOURCE_FILES
     src/Min.h
     src/Movie2.cpp
     src/Movie2.h
-    src/MovieStub.cpp
-    src/MovieStub.h
+    src/Music2.cpp
     src/Music2.h
+    src/MusicLoops.cpp
+    src/MusicLoops.h
     src/Palette.cpp
     src/Palette.h
     src/Pcx.cpp
@@ -94,8 +90,11 @@ set(SOURCE_FILES
     src/ScrollableText.h
     src/SFMLUtils.cpp
     src/SFMLUtils.h
+    src/Shaders.cpp
+    src/Shaders.h
     src/Sol.cpp
     src/Sol.h
+    src/Sprite2.h
     src/StringButton.cpp
     src/StringButton.h
     src/StringText.cpp
@@ -109,10 +108,8 @@ set(SOURCE_FILES
     src/UIObject.h
     src/Utils.cpp
     src/Utils.h
-    src/UIText.h
     src/Variable.cpp
     src/Variable.h
-    src/Variant.h
     src/VarOrPredicate.h
     src/View2.cpp
     src/View2.h
@@ -133,6 +130,7 @@ set(SOURCE_FILES
     src/Actions/ActiontList.h
     src/Actions/ActItem.h
     src/Actions/ActLevel.h
+    src/Actions/ActLevelObject.h
     src/Actions/ActLoad.h
     src/Actions/ActLoadingScreen.h
     src/Actions/ActMenu.h
@@ -143,19 +141,17 @@ set(SOURCE_FILES
     src/Actions/ActResource.h
     src/Actions/ActSound.h
     src/Actions/ActText.h
-    src/Actions/ActTexture.h
-    src/Actions/ActUIText.h
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
-    src/Game/CelLevelObject.cpp
-    src/Game/CelLevelObject.h
+    src/Game/BaseClass.cpp
+    src/Game/BaseClass.h
+    src/Game/BaseLevelObject.cpp
+    src/Game/BaseLevelObject.h
     src/Game/Formula.cpp
     src/Game/Formula.h
     src/Game/fsa.h
     src/Game/GameProperties.cpp
     src/Game/GameProperties.h
-    src/Game/ImageLevelObject.cpp
-    src/Game/ImageLevelObject.h
     src/Game/Item.cpp
     src/Game/Item.h
     src/Game/ItemClass.cpp
@@ -188,7 +184,14 @@ set(SOURCE_FILES
     src/Game/PlayerClass.h
     src/Game/Quest.cpp
     src/Game/Quest.h
+    src/Game/SimpleLevelObject.cpp
+    src/Game/SimpleLevelObject.h
     src/Game/stlastar.h
+    src/ImageContainers/CelImageContainer.cpp
+    src/ImageContainers/CelImageContainer.h
+    src/ImageContainers/ImageContainer.h
+    src/ImageContainers/SimpleImageContainer.cpp
+    src/ImageContainers/SimpleImageContainer.h
     src/Json/JsonParser.h
     src/Json/JsonUtils.cpp
     src/Json/JsonUtils.h
@@ -198,16 +201,12 @@ set(SOURCE_FILES
     src/Parser/ParseAnimation.h
     src/Parser/ParseAudio.cpp
     src/Parser/ParseAudio.h
+    src/Parser/ParseAudioCommon.cpp
+    src/Parser/ParseAudioCommon.h
     src/Parser/ParseBitmapFont.cpp
     src/Parser/ParseBitmapFont.h
     src/Parser/ParseButton.cpp
     src/Parser/ParseButton.h
-    src/Parser/ParseCelFile.cpp
-    src/Parser/ParseCelFile.h
-    src/Parser/ParseCelTexture.cpp
-    src/Parser/ParseCelTexture.h
-    src/Parser/ParseCelTexturePack.cpp
-    src/Parser/ParseCelTexturePack.h
     src/Parser/ParseCircle.cpp
     src/Parser/ParseCircle.h
     src/Parser/ParseCondition.cpp
@@ -224,6 +223,8 @@ set(SOURCE_FILES
     src/Parser/ParseIcon.h
     src/Parser/ParseImage.cpp
     src/Parser/ParseImage.h
+    src/Parser/ParseImageContainer.cpp
+    src/Parser/ParseImageContainer.h
     src/Parser/ParseInputText.cpp
     src/Parser/ParseInputText.h
     src/Parser/ParseKeyboard.cpp
@@ -255,6 +256,8 @@ set(SOURCE_FILES
     src/Parser/ParseText.h
     src/Parser/ParseTexture.cpp
     src/Parser/ParseTexture.h
+    src/Parser/ParseTexturePack.cpp
+    src/Parser/ParseTexturePack.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
     src/Parser/Game/ParseItem.cpp
@@ -320,11 +323,18 @@ set(SOURCE_FILES
     src/rapidjson/internal/swap.h
     src/rapidjson/msinttypes/inttypes.h
     src/rapidjson/msinttypes/stdint.h
-    src/variant/optional.hpp
-    src/variant/recursive_wrapper.hpp
-    src/variant/variant.hpp
-    src/variant/variant_io.hpp
-    src/variant/variant_visitor.hpp
+    src/TexturePacks/CachedTexturePack.cpp
+    src/TexturePacks/CachedTexturePack.h
+    src/TexturePacks/RectTexturePack.cpp
+    src/TexturePacks/RectTexturePack.h
+    src/TexturePacks/SimpleIndexedTexturePack.cpp
+    src/TexturePacks/SimpleIndexedTexturePack.h
+    src/TexturePacks/SimpleTexturePack.cpp
+    src/TexturePacks/SimpleTexturePack.h
+    src/TexturePacks/TexturePack.cpp
+    src/TexturePacks/TexturePack.h
+    src/TexturePacks/VectorTexturePack.cpp
+    src/TexturePacks/VectorTexturePack.h
 )
 
 if(FFmpeg_FOUND)
@@ -373,5 +383,5 @@ if(SFML_FOUND)
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
 endif()
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)

@@ -1,5 +1,4 @@
 #include "Movie2.h"
-#ifndef USE_SFML_MOVIE_STUB
 #include "Game.h"
 #include "GameUtils.h"
 #include "Utils.h"
@@ -15,14 +14,17 @@ std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16)
 	}
 }
 
-void Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("complete"):
 		actionComplete = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void Movie2::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -40,12 +42,21 @@ void Movie2::updateSize(const Game& game)
 		return;
 	}
 	auto pos = movie.getPosition();
+#ifndef USE_SFML_MOVIE_STUB
 	if (size.x <= 0 || size.y <= 0)
 	{
 		size = movie.getSize();
 	}
+#else
+	auto size = movie.getSize();
+#endif
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+#ifndef USE_SFML_MOVIE_STUB
 	movie.fit(sf::FloatRect(pos, size));
+#else
+	movie.setPosition(pos);
+	movie.setSize(size);
+#endif
 }
 
 void Movie2::update(Game& game)
@@ -55,12 +66,16 @@ void Movie2::update(Game& game)
 		return;
 	}
 
+#ifndef USE_SFML_MOVIE_STUB
 	movie.update();
 
 	if (movie.getStatus() == sfe::Status::Stopped)
 	{
 		game.Events().addBack(actionComplete);
 	}
+#else
+	game.Events().addBack(actionComplete);
+#endif
 }
 
 bool Movie2::getProperty(const std::string& prop, Variable& var) const
@@ -72,4 +87,3 @@ bool Movie2::getProperty(const std::string& prop, Variable& var) const
 	auto props = Utils::splitStringIn2(prop, '.');
 	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
 }
-#endif	// USE_SFML_MOVIE_STUB

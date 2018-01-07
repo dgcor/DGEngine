@@ -1,41 +1,95 @@
 #pragma once
 
-#include <memory>
+#include <SFML/Audio/Export.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+#include <SFML/Audio/SoundStream.hpp>
+#include <SFML/Audio/InputSoundFile.hpp>
 #include <SFML/Audio/Music.hpp>
-#include <SFML/System/NonCopyable.hpp>
-#include "PhysFSStream.h"
+#include <SFML/System/Mutex.hpp>
+#include <SFML/System/Time.hpp>
+#include <string>
+#include <vector>
 
-class Music2 : public sf::NonCopyable
+namespace sf
 {
-private:
-	std::unique_ptr<sf::PhysFSStream> file;
-	std::unique_ptr<sf::Music> music;
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+	class InputStream;
 
-public:
-	Music2(const std::string& file_) : Music2(file_.c_str()) {}
-	Music2(const char* file_) : file(std::make_unique<sf::PhysFSStream>(file_)),
-		music(std::make_unique<sf::Music>()) {}
-
-	bool load()
+	class Music2 : public SoundStream
 	{
-		if (file == nullptr || file->hasError() == true)
+	protected:
+		struct MusicFile
 		{
-			return false;
+			InputSoundFile file;
+			std::vector<Int16> samples;
+		};
+
+		struct MusicBuffer
+		{
+			const Int16* samples{ nullptr };
+			Uint64 sampleCount{ 0 };
+			size_t channelCount{ 0 };
+			size_t sampleRate{ 0 };
+			size_t sampleBufferSize{ 0 };
+			Uint64 sampleBufferOffset{ 0 };
+			Time duration;
+		};
+
+		union
+		{
+			MusicFile m_file;
+			MusicBuffer m_buffer;
+		};
+		// 0 - not initialized, 1 - InputSoundFile, 2 - SoundBuffer
+		uint8_t m_type{ 0 };
+		Mutex m_mutex;
+		Music::Span<Uint64> m_loopSpan;
+
+		void initializeFile();
+		void initializeBuffer(const sf::SoundBuffer& buffer);
+
+		Uint64 timeToSamples(Time position) const
+		{
+			return timeToSamples(position, getSampleRate(), getChannelCount());
 		}
-		return music->openFromStream(*file);
-	}
+		Time samplesToTime(Uint64 samples) const
+		{
+			return samplesToTime(samples, getSampleRate(), getChannelCount());
+		}
 
-	void play() { music->play(); }
-	void pause() { music->pause(); }
-	void stop() { music->stop(); }
+		bool onGetDataFile(Chunk& data);
+		bool onGetDataBuffer(Chunk& data);
 
-	unsigned int getChannelCount() const { return music->getChannelCount(); }
-	bool getLoop() const { return music->getLoop(); }
-	sf::Time getPlayingOffset() const { return music->getPlayingOffset(); }
-	unsigned int getSampleRate() const { return music->getSampleRate(); }
-	sf::Music::Status getStatus() const { return music->getStatus(); }
+		Int64 onLoopFile();
+		Int64 onLoopBuffer();
 
-	void setLoop(bool loop) { music->setLoop(loop); }
-	void setPlayingOffset(sf::Time timeOffset) { music->setPlayingOffset(timeOffset); }
-	void setVolume(float volume) { music->setVolume(volume); }
-};
+		virtual bool onGetData(Chunk& data);
+		virtual void onSeek(Time timeOffset);
+		virtual Int64 onLoop();
+
+	public:
+		Music2() : m_file(), m_loopSpan(0, 0) { }
+		~Music2();
+
+		bool openFromFile(const std::string& filename);
+		bool openFromMemory(const void* data, std::size_t sizeInBytes);
+		bool openFromStream(InputStream& stream);
+		bool openFromSoundBuffer(const sf::SoundBuffer& buffer);
+
+		Time getDuration() const;
+
+		Music::TimeSpan getLoopPoints() const;
+
+		void setLoopPoints(Music::TimeSpan timePoints);
+
+		static Uint64 timeToSamples(Time position,
+			unsigned sampleRate, unsigned channelCount);
+		static Time samplesToTime(Uint64 samples,
+			unsigned sampleRate, unsigned channelCount);
+	};
+#else
+	class Music2 : public Music
+	{
+	};
+#endif
+}

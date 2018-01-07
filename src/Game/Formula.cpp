@@ -103,13 +103,13 @@ double Formula::eval(size_t& idx, const LevelObject& queryA, const LevelObject& 
 		const auto& elem = elements[idx];
 		idx++;
 		double val2 = 0.0;
-		if (elem.is<double>() == true)
+		if (std::holds_alternative<double>(elem) == true)
 		{
-			val2 = elem.get<double>();
+			val2 = std::get<double>(elem);
 		}
-		else if (elem.is<std::string>() == true)
+		else if (std::holds_alternative<std::string>(elem) == true)
 		{
-			const auto& prop = elem.get<std::string>();
+			const auto& prop = std::get<std::string>(elem);
 			if (prop.empty() == false)
 			{
 				Number32 queryVal;
@@ -131,7 +131,7 @@ double Formula::eval(size_t& idx, const LevelObject& queryA, const LevelObject& 
 		}
 		else
 		{
-			switch (elem.get<FormulaOp>())
+			switch (std::get<FormulaOp>(elem))
 			{
 			case FormulaOp::LeftBracket:
 				val2 = eval(idx, queryA, queryB);
@@ -139,7 +139,7 @@ double Formula::eval(size_t& idx, const LevelObject& queryA, const LevelObject& 
 			case FormulaOp::RightBracket:
 				return val;
 			default:
-				currFormula = elem.get<FormulaOp>();
+				currFormula = std::get<FormulaOp>(elem);
 				continue;
 			}
 		}
@@ -181,17 +181,17 @@ std::string Formula::toString() const
 
 	for (const auto elem : elements)
 	{
-		if (elem.is<double>() == true)
+		if (std::holds_alternative<double>(elem) == true)
 		{
-			str += Utils::toString(elem.get<double>()) + ' ';
+			str += Utils::toString(std::get<double>(elem)) + ' ';
 			continue;
 		}
-		else if (elem.is<std::string>() == true)
+		else if (std::holds_alternative<std::string>(elem) == true)
 		{
-			str += elem.get<std::string>() + ' ';
+			str += std::get<std::string>(elem) + ' ';
 			continue;
 		}
-		switch (elem.get<FormulaOp>())
+		switch (std::get<FormulaOp>(elem))
 		{
 		case FormulaOp::Add:
 		{

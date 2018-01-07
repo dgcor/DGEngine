@@ -17,7 +17,7 @@
   "image": [
     {
       "id": "textWallBackground",
-      "position": [104, 150],
+      "position": [103, 150],
       "anchor": "none",
       "textureRect": [435, 57],
       "texture": "textWallBackground"
@@ -51,6 +51,6 @@
   "event": {
     "id": "closeMsgBox",
     "action": { "name": "resource.pop", "id": "msgBox" },
-    "seconds": 4
+    "time": 4.0
   }
 }

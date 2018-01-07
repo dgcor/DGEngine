@@ -1,12 +1,9 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "CelCache.h"
-#include <cstdint>
-#include "GameProperties.h"
+#include "BaseLevelObject.h"
 #include "ItemClass.h"
-#include "LevelObject.h"
-#include <memory>
+#include <SFML/System/Time.hpp>
 
 class Player;
 
@@ -17,18 +14,12 @@ private:
 
 	const ItemClass* class_;
 
-	sf::Sprite sprite;
-	MapCoord mapPosition;
-
-	std::pair<size_t, size_t> frameRange;
-	size_t currentFrame{ 0 };
+	BaseLevelObject base;
 
 	sf::Time frameTime{ sf::milliseconds(40) };
 	sf::Time currentTime;
 
 	bool wasHoverEnabledOnItemDrop{ false };
-	bool enableHover{ true };
-	bool hovered{ false };
 
 	mutable bool updateNameAndDescr{ true };
 
@@ -43,10 +34,10 @@ private:
 	void updateNameAndDescriptions() const;
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash,
-		LevelObjValue value, Player& player) const;
+		LevelObjValue value, Player& player, const Level* level) const;
 
-	bool useHelper(uint16_t propHash, uint16_t useOpHash,
-		uint16_t valueHash, uint16_t valueMaxHash, Player& player) const;
+	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
+		uint16_t valueMaxHash, Player& player, const Level* level) const;
 
 public:
 	using iterator = ItemProperties::iterator;
@@ -68,25 +59,15 @@ public:
 	const_reverse_iterator crend() const { return properties.crend(); }
 
 	Item() {}
-	Item(const ItemClass* class__) : class_(class__)
-	{
-		frameRange.first = 0;
-		frameRange.second = class_->getCelDropTextureSize() - 1;
-		currentFrame = frameRange.second;
-		applyDefaults();
-	}
+	Item(const ItemClass* class__);
 
 	void resetDropAnimation();
 
-	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual sf::Vector2f Size() const
-	{
-		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	}
+	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
+	virtual sf::Vector2f Size() const { return base.getSize(); }
 
-	virtual const MapCoord& MapPosition() const { return mapPosition; }
-	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
-	void MapPosition(Level& level, const MapCoord& pos);
+	virtual const MapCoord& MapPosition() const { return base.mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) { base.mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
 	virtual bool getNumberProp(const char* prop, Number32& value) const
@@ -101,17 +82,25 @@ public:
 	}
 	virtual bool Passable() const { return true; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) {}
+	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
+	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	{
+		base.sprite.setOutline(outline, ignore);
+	}
+	virtual void setOutlineOnHover(bool outlineOnHover_) { base.outlineOnHover = outlineOnHover_; }
+	virtual void setPalette(const std::shared_ptr<Palette>& palette) { base.sprite.setPalette(palette); }
+	virtual bool hasPalette() const { return base.sprite.hasPalette(); }
 
-	virtual bool Hoverable() const { return enableHover; }
-	virtual void Hoverable(bool hoverable) { enableHover = hoverable; }
+	virtual bool Hoverable() const { return base.enableHover; }
+	virtual void Hoverable(bool hoverable) { base.enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		target.draw(sprite, states);
+		target.draw(base.sprite, states);
 	}
 	virtual void update(Game& game, Level& level);
 
-	void updateDrawPosition(const Level& level);
+	void updateDrawPosition(const Level& level) { base.updateDrawPosition(level); }
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
@@ -152,7 +141,7 @@ public:
 	bool needsRepair() const;
 	bool isUsable() const;
 
-	bool use(Player& player) const;
+	bool use(Player& player, const Level* level) const;
 
 	const std::string& Name() const { return name; }
 	const std::string& ShortName() const { return class_->ShortName(); }

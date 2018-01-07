@@ -2,13 +2,15 @@
   "itemClass": [
     {
       "id": "baseArmor",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 32,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 161,
+      "replaceVars": true,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 32,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 161,
       "name": "Armor",
       "type": "Armor",
+      "defaultOutline": "%outlineItem%",
+      "defaultOutlineIgnore": "0x000000",
       "defaults": {
         "identified": true,
         "magical": false
@@ -34,13 +36,15 @@
     },
     {
       "id": "baseWeapon",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 32,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 161,
+      "replaceVars": true,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 32,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 161,
       "name": "Weapon",
       "type": "Weapon",
+      "defaultOutline": "%outlineItem%",
+      "defaultOutlineIgnore": "0x000000",
       "defaults": {
         "identified": true,
         "magical": false

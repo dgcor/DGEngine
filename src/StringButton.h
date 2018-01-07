@@ -1,94 +1,15 @@
 #pragma once
 
-#include "Actions/Action.h"
 #include "Button.h"
-#include <memory>
-#include <SFML/Audio/SoundBuffer.hpp>
-#include <string>
 #include "Text2.h"
-#include "UIText.h"
 
-class StringButton : public Button, public UIText
+class StringButton : public Button, public Text2
 {
-private:
-	std::unique_ptr<Text2> text;
-	bool enabled{ true };
-	std::shared_ptr<Action> clickAction;
-	std::shared_ptr<Action> rightClickAction;
-	std::shared_ptr<Action> doubleClickAction;
-	std::shared_ptr<Action> clickDragAction;
-	std::shared_ptr<Action> clickInAction;
-	std::shared_ptr<Action> clickOutAction;
-	std::shared_ptr<Action> focusAction;
-	std::shared_ptr<Action> hoverEnterAction;
-	std::shared_ptr<Action> hoverLeaveAction;
-	std::shared_ptr<sf::SoundBuffer> clickSound;
-	std::shared_ptr<sf::SoundBuffer> focusSound;
-	sf::Clock mouseDblClickClock;
-	bool focusEnable{ false };
-	bool focusOnClick{ false };
-	bool hovered{ false };
-	bool clickUp{ false };
-	bool beingDragged{ false };
-	bool wasLeftClicked{ false };
-	bool wasRightClicked{ false };
-	bool captureInputEvents{ false };
-
-	void onHover(Game& game, bool contains);
-	void onMouseButtonPressed(Game& game, bool contains);
-	void onMouseButtonReleased(Game& game, bool contains);
-	void onMouseMoved(Game& game);
-	void onTouchBegan(Game& game, bool contains);
-	void onTouchEnded(Game& game, bool contains);
-
 public:
-	virtual std::string getText() const { return text->getText(); }
-	void setText(std::unique_ptr<Text2> text_) { text = std::move(text_); }
-	virtual void setText(const std::string& text_) { text->setText(text_); }
-
-	virtual void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
-	virtual void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
-
-	DrawableText* getDrawableText() { return text->getDrawableText(); }
-
-	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
-	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
-
-	bool getCaptureInputEvents() const { return captureInputEvents; }
-	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
-
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
-	virtual bool click(Game& game, bool playSound);
-	virtual void enable(bool enable) { enabled = enable; }
-	virtual void focus(Game& game) const;
-	virtual void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }
-	virtual bool isEnabled() const { return enabled; }
-	virtual const sf::Vector2f& DrawPosition() const { return text->DrawPosition(); }
-	virtual const sf::Vector2f& Position() const { return text->Position(); }
-	virtual void Position(const sf::Vector2f& position) { text->Position(position); }
-	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
-	virtual void updateSize(const Game& game) { text->updateSize(game); }
-	virtual void setClickSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { clickSound = buffer; }
-	virtual void setClickUp(bool clickUp_) { clickUp = clickUp_; }
-	virtual void setColor(const sf::Color& color_) { text->setColor(color_); }
-	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) { focusSound = buffer; }
-	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
-	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }
-	virtual sf::Vector2f Size() const { return text->Size(); }
-	virtual void Size(const sf::Vector2f& size) {}
-
-	virtual bool Visible() const { return text->Visible(); }
-	virtual void Visible(bool visible_) { text->Visible(visible_); }
-
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void setColor(const sf::Color& color_) { Text2::setColor(color_); }
 
 	virtual void update(Game& game);
-
-	virtual bool getProperty(const std::string& prop, Variable& var) const
-	{
-		return text->getProperty(prop, var);
-	}
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

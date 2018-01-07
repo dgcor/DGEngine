@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Action.h"
-#include "ActButton.h"
+#include "BitmapText.h"
 #include "Game.h"
 #include "Menu.h"
 #include <string>
+#include "StringText.h"
 #include "TextUtils.h"
 #include "Variable.h"
 
@@ -47,8 +48,9 @@ public:
 			auto button = menu->getItem(idx);
 			if (button != nullptr)
 			{
-				button->setText(button->getText() +
-					TextUtils::getText(game, textOp, textFormat, bindings));
+				auto str = button->getText();
+				TextUtils::appendText(game, textOp, str, textFormat, bindings);
+				button->setText(str);
 			}
 		}
 		return true;

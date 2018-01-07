@@ -1,20 +1,23 @@
 {
   "playerClass": {
     "id": "Rogue",
+    "replaceVars": true,
     "name": "Rogue",
     "type": "Human",
     "description": "Rogue",
+    "defaultOutline": "%outlineFriend%",
+    "defaultOutlineIgnore": "0x000000",
     "defaults": {
-      "level": 1,
       "experience": 0,
-      "expNextLevel": 2000,
       "points": 0,
       "strength": 20,
       "magic": 15,
       "dexterity": 30,
       "vitality": 20,
       "bonusLife": 1.5,
-      "bonusMana": 1.5
+      "bonusMana": 1.5,
+      "defaultDamageMin": 1,
+      "levelUp": 5
     },
     "maxStrength": 55,
     "maxMagic": 70,
@@ -28,7 +31,7 @@
     "armorFormula": "dexterityNow * 0.2 + armorItems",
     "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
     "damageFormula": "strengthNow + dexterityNow * level / 200",
-    "celTextures": [
+    "texturePacks": [
       "rogueNormal",
       "rogueNormalAxe",
       "rogueNormalBow",
@@ -57,7 +60,7 @@
       "roguePlateStaff",
       "roguePlateShield"
     ],
-    "celIndexes": [
+    "textureIndexes": [
       { "name": "Stand1", "index": 7 },
       { "name": "Stand2", "index": 0 },
       { "name": "Walk1", "index": 8 },
@@ -78,6 +81,13 @@
     "animationSpeeds": [
       { "name": "Walk1", "animation": 20, "walk": 25 },
       { "name": "Walk2", "animation": 20, "walk": 25 }
-    ]
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" }
+    ],
+    "defaultWalkSound": 0
   }
 }

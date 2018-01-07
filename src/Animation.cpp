@@ -1,46 +1,51 @@
-////////////////////////////////////////////////////////////
-//
-// Copyright (C) 2014 Maximilian Wagenbach (aka. Foaly) (foaly.f@web.de)
-//
-// This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
-//
-// Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
-//
-// 1. The origin of this software must not be misrepresented;
-// you must not claim that you wrote the original software.
-// If you use this software in a product, an acknowledgment
-// in the product documentation would be appreciated but is not required.
-//
-// 2. Altered source versions must be plainly marked as such,
-// and must not be misrepresented as being the original software.
-//
-// 3. This notice may not be removed or altered from any source distribution.
-//
-////////////////////////////////////////////////////////////
-
 #include "Animation.h"
 #include "Game.h"
 
-void Animation::setFrames(int16_t framesX_, int16_t framesY_)
+Animation::Animation(const std::shared_ptr<TexturePack>& texturePack_,
+	size_t frameStart_, size_t frameEnd_, const sf::Time& frameTime,
+	bool pause_, bool loop_) : texturePack(texturePack_),
+	frameStart(frameStart_), frameEnd(frameEnd_), frameIdx(frameStart_),
+	frameTime(frameTime), pause(pause_), loop(loop_)
 {
-	framesX = framesX_ - 1;
-	framesY = framesY_ - 1;
-	auto size = Size();
-	frameWidth = (int16_t)size.x / framesX_;
-	frameHeight = (int16_t)size.y / framesY_;
-	framePosX = 0;
-	framePosY = 0;
+	if (texturePack_->isIndexed() == true)
+	{
+		setPalette(texturePack_->getPalette());
+	}
+	updateTexture();
+}
 
-	setTextureRect(sf::IntRect(0, 0, frameWidth, frameHeight));
+void Animation::updateTexture()
+{
+	const sf::Texture* texture;
+	sf::IntRect rect;
+	if (texturePack->get(frameIdx, &texture, rect) == true)
+	{
+		setTexture(*texture);
+		setTextureRect(rect);
+	}
+}
+
+void Animation::updateFrameIndex()
+{
+	if (frameIdx < frameEnd)
+	{
+		frameIdx++;
+	}
+	else
+	{
+		frameIdx = frameStart;
+
+		if (loop == false)
+		{
+			pause = true;
+		}
+	}
 }
 
 void Animation::update(Game& game)
 {
 	if (pause == true ||
-		(framesX == 0 && framesY == 0) ||
+		frameEnd <= frameStart ||
 		Visible() == false)
 	{
 		return;
@@ -55,35 +60,7 @@ void Animation::update(Game& game)
 		// reset time, but keep the remainder
 		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
-		sf::IntRect rect(
-			frameWidth * framePosX,
-			frameHeight * framePosY,
-			frameWidth,
-			frameHeight);
-
-		setTextureRect(rect);
-
-		if (framePosY < framesY)
-		{
-			framePosY++;
-		}
-		else
-		{
-			framePosY = 0;
-
-			if (framePosX < framesX)
-			{
-				framePosX++;
-			}
-			else
-			{
-				framePosX = 0;
-
-				if (loop == false)
-				{
-					pause = true;
-				}
-			}
-		}
+		updateTexture();
+		updateFrameIndex();
 	}
 }

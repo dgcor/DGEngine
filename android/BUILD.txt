@@ -6,7 +6,7 @@ This project is based on the SFML Android example that comes with SFML.
 If you are able to build SFML's Android example, you will be able to build
 this project as well.
 
-Use a recent Android NDK as this project uses C++14.
+Use a recent Android NDK as this project uses C++17.
 
 Copy all the files inside the /src folder to the /android/jni folder.
 

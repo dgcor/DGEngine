@@ -28,25 +28,31 @@
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" },
-          "updatePanelTextSpacing",
           {
             "name": "if.equal",
             "param1": "|currentLevel|hoverObject.type|",
-            "param2": "item",
+            "param2": "player",
             "then": {
+              "name": "text.appendText",
+              "id": "txtPanel",
+              "query": "currentLevel.hoverObject",
+              "text": "\n%description%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|hoverObject.magical|",
+            "param2": 1,
+            "then": "setPanelTextColorBlue",
+            "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|hoverObject.magical|",
+              "param1": "|currentLevel|hoverObject.unique|",
               "param2": 1,
-              "then": "setPanelTextColorBlue",
-              "else": {
-                "name": "if.equal",
-                "param1": "|currentLevel|hoverObject.hasProperty.unique|",
-                "param2": true,
-                "then": "setPanelTextColorGold",
-                "else": "setPanelTextColorWhite"
-              }
-            },
-            "else": "setPanelTextColorWhite"
+              "then": "setPanelTextColorGold",
+              "else": "setPanelTextColorWhite"
+            }
           }
         ]
       }
@@ -68,7 +74,7 @@
               "name": "event.add",
               "id": "closeZoom",
               "action": { "name": "drawable.visible", "id": "txtZoom", "visible": false },
-              "seconds": 4
+              "time": 4.0
             }
           }
         ],

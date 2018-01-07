@@ -24,6 +24,27 @@ public:
 	}
 };
 
+class ActImageEnableOutline : public Action
+{
+private:
+	std::string id;
+	bool enable;
+
+public:
+	ActImageEnableOutline(const std::string& id_, bool enable_)
+		: id(id_), enable(enable_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			image->setOutlineEnabled(enable);
+		}
+		return true;
+	}
+};
+
 class ActImageInverseResizeXY : public Action
 {
 private:
@@ -86,6 +107,208 @@ public:
 					image->Position(pos);
 				}
 			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetOutline : public Action
+{
+private:
+	std::string id;
+	sf::Color outline;
+	sf::Color ignore;
+
+public:
+	ActImageSetOutline(const std::string& id_,
+		const sf::Color& outline_, const sf::Color& ignore_)
+		: id(id_), outline(outline_), ignore(ignore_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			image->setOutline(outline, ignore);
+		}
+		return true;
+	}
+};
+
+class ActImageSetPalette : public Action
+{
+private:
+	std::string id;
+	std::string idPalette;
+	sf::Color color;
+
+public:
+	ActImageSetPalette(const std::string& id_,
+		const std::string& idPalette_, const sf::Color& color_)
+		: id(id_), idPalette(idPalette_), color(color_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			if (image->hasPalette() == true)
+			{
+				auto palette = game.Resources().getPalette(idPalette);
+				if (palette != nullptr)
+				{
+					image->setPalette(palette);
+				}
+			}
+			else
+			{
+				image->setColor(color);
+			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetTexture : public Action
+{
+private:
+	std::string id;
+	std::string idTexture;
+	bool resetRect;
+
+public:
+	ActImageSetTexture(const std::string& id_,
+		const std::string& idTexture_, bool resetRect_)
+		: id(id_), idTexture(idTexture_), resetRect(resetRect_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			auto tex = game.Resources().getTexture(idTexture);
+			if (tex != nullptr)
+			{
+				image->setTexture(*tex, resetRect);
+				image->setPalette(nullptr);
+			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetTextureFromItem : public Action
+{
+private:
+	std::string id;
+	std::string idLevel;
+	ItemLocation itemLocation;
+	bool resetRect;
+
+public:
+	ActImageSetTextureFromItem(const std::string& id_, const std::string& idLevel_,
+		const ItemLocation& itemLocation_, bool resetRect_) : id(id_),
+		idLevel(idLevel_), itemLocation(itemLocation_), resetRect(resetRect_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			auto level = game.Resources().getLevel(idLevel);
+			if (level != nullptr)
+			{
+				auto item = level->getItem(itemLocation);
+				if (item != nullptr)
+				{
+					const sf::Texture* texture;
+					sf::IntRect rect;
+					if (item->Class()->getInventoryTexture(&texture, rect) == true)
+					{
+						image->setTexture(*texture);
+						if (resetRect == true)
+						{
+							image->setTextureRect(rect);
+						}
+					}
+					if (item->Class()->getInventoryTexturePack()->isIndexed() == true)
+					{
+						image->setPalette(item->Class()->getInventoryTexturePack()->getPalette());
+					}
+					else
+					{
+						image->setPalette(nullptr);
+					}
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetTextureFromPack : public Action
+{
+private:
+	std::string id;
+	std::string idTexturePack;
+	std::pair<size_t, size_t> textureIdx;
+	size_t textureIdxY;
+	bool resetRect;
+
+public:
+	ActImageSetTextureFromPack(const std::string& id_,
+		const std::string& idTexturePack_, const std::pair<size_t, size_t>& textureIdx_,
+		bool resetRect_) : id(id_), idTexturePack(idTexturePack_),
+		textureIdx(textureIdx_), resetRect(resetRect_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			auto tex = game.Resources().getTexturePack(idTexturePack);
+			if (tex != nullptr)
+			{
+				const sf::Texture* texture;
+				sf::IntRect rect;
+				if (tex->get(textureIdx.first, textureIdx.second, &texture, rect) == true)
+				{
+					image->setTexture(*texture);
+					if (resetRect == true)
+					{
+						image->setTextureRect(rect);
+					}
+				}
+				if (tex->isIndexed() == true)
+				{
+					image->setPalette(tex->getPalette());
+				}
+				else
+				{
+					image->setPalette(nullptr);
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetTextureRect : public Action
+{
+private:
+	std::string id;
+	sf::IntRect rect;
+
+public:
+	ActImageSetTextureRect(const std::string& id_,
+		const sf::IntRect& rect_) : id(id_), rect(rect_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto image = game.Resources().getResource<Image>(id);
+		if (image != nullptr)
+		{
+			image->setTextureRect(rect);
 		}
 		return true;
 	}

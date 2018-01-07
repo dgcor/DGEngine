@@ -3,42 +3,82 @@
     {
       "name": "action.set",
       "id": "updateLeftHandItem",
+      "replaceVars": true,
       "action": [
+        { "name": "image.setTexture", "id": "imgLeftHand", "inventory": "body", "item": "LeftHand" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.body.LeftHand|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.body.LeftHand|",
           "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgLeftHand", "inventory": "body", "item": "LeftHand", "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgLeftHand", "inventory": "body", "item": "LeftHand" }
+          "then": [
+            { "name": "image.setPalette", "id": "imgLeftHand", "palette": "infra", "color": "0xFF0000" },
+            { "name": "image.setOutline", "id": "imgLeftHand", "outline": "%outlineCantUse%", "ignore": "0x000000" }
+          ],
+          "else": [
+            { "name": "image.setPalette", "id": "imgLeftHand", "palette": "town" },
+            {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.body.LeftHand.magical|",
+              "param2": 1,
+              "then": { "name": "image.setOutline", "id": "imgLeftHand", "outline": "%outlineItem%", "ignore": "0x000000" },
+              "else": {
+                "name": "if.equal",
+                "param1": "|currentLevel|currentPlayer.item.body.LeftHand.unique|",
+                "param2": 1,
+                "then": { "name": "image.setOutline", "id": "imgLeftHand", "outline": "%outlineItem%", "ignore": "0x000000" },
+                "else": { "name": "image.setOutline", "id": "imgLeftHand", "outline": "%outlineItemInv%", "ignore": "0x000000" }
+              }
+            }
+          ]
         },
-        { "name": "image.centerTexture", "id": "imgLeftHand" },
+        { "name": "drawable.center", "id": "imgLeftHand", "idCenterOn": "playerLeftHand" },
         {
           "name": "if.equal",
           "param1": "|currentLevel|currentPlayer.hasItem.body.LeftHand|",
           "param2": true,
-          "then": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "red" },
-          "else": { "name": "button.setTexture", "id": "playerLeftHand", "texture": "empty" }
+          "then": { "name": "image.setTexture", "id": "playerLeftHand", "texture": "red" },
+          "else": { "name": "image.setTexture", "id": "playerLeftHand", "texture": "empty" }
         }
       ]
     },
     {
       "name": "action.set",
       "id": "updateRightHandItem",
+      "replaceVars": true,
       "action": [
+        { "name": "image.setTexture", "id": "imgRightHand", "inventory": "body", "item": "RightHand" },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.body.RightHand|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.body.RightHand|",
           "param2": false,
-          "then": { "name": "image.setTextureFromItem", "id": "imgRightHand", "inventory": "body", "item": "RightHand", "equipable": false },
-          "else": { "name": "image.setTextureFromItem", "id": "imgRightHand", "inventory": "body", "item": "RightHand" }
+          "then": [
+            { "name": "image.setPalette", "id": "imgRightHand", "palette": "infra", "color": "0xFF0000" },
+            { "name": "image.setOutline", "id": "imgRightHand", "outline": "%outlineCantUse%", "ignore": "0x000000" }
+          ],
+          "else": [
+            { "name": "image.setPalette", "id": "imgRightHand", "palette": "town" },
+            {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.body.RightHand.magical|",
+              "param2": 1,
+              "then": { "name": "image.setOutline", "id": "imgRightHand", "outline": "%outlineItem%", "ignore": "0x000000" },
+              "else": {
+                "name": "if.equal",
+                "param1": "|currentLevel|currentPlayer.item.body.RightHand.unique|",
+                "param2": 1,
+                "then": { "name": "image.setOutline", "id": "imgRightHand", "outline": "%outlineItem%", "ignore": "0x000000" },
+                "else": { "name": "image.setOutline", "id": "imgRightHand", "outline": "%outlineItemInv%", "ignore": "0x000000" }
+              }
+            }
+          ]
         },
-        { "name": "image.centerTexture", "id": "imgRightHand" },
+        { "name": "drawable.center", "id": "imgRightHand", "idCenterOn": "playerRightHand" },
         {
           "name": "if.equal",
           "param1": "|currentLevel|currentPlayer.hasItem.body.RightHand|",
           "param2": true,
-          "then": { "name": "button.setTexture", "id": "playerRightHand", "texture": "red" },
-          "else": { "name": "button.setTexture", "id": "playerRightHand", "texture": "empty" }
+          "then": { "name": "image.setTexture", "id": "playerRightHand", "texture": "red" },
+          "else": { "name": "image.setTexture", "id": "playerRightHand", "texture": "empty" }
         }
       ]
     }

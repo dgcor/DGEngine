@@ -74,33 +74,33 @@ public:
 					Number32 currVal;
 					if (player->getNumberProp(propVal.c_str(), currVal) == true)
 					{
-						if (value2.is<int64_t>() == true)
+						if (std::holds_alternative<int64_t>(value2) == true)
 						{
 							if (remove == true)
 							{
-								currVal -= value2.get<int64_t>();
+								currVal -= std::get<int64_t>(value2);
 							}
 							else
 							{
-								currVal += value2.get<int64_t>();
+								currVal += std::get<int64_t>(value2);
 							}
 						}
-						else if (value2.is<double>() == true)
+						else if (std::holds_alternative<double>(value2) == true)
 						{
 							if (remove == true)
 							{
-								currVal -= value2.get<double>();
+								currVal -= std::get<double>(value2);
 							}
 							else
 							{
-								currVal += value2.get<double>();
+								currVal += std::get<double>(value2);
 							}
 						}
 						else
 						{
 							return true;
 						}
-						if (player->setNumber(propVal, currVal) == true)
+						if (player->setNumber(propVal, currVal, level) == true)
 						{
 							player->updateProperties();
 						}

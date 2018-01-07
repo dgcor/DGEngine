@@ -1,0 +1,5 @@
+{
+  "sound": [
+    { "id": "walk", "file": "sfx/misc/walk1.wav" }
+  ]
+}

@@ -2,7 +2,7 @@
 
 #include "LevelObject.h"
 #include <string>
-#include "Variant.h"
+#include <variant>
 #include <vector>
 
 // use brackets to force order
@@ -20,7 +20,7 @@ private:
 		LeftBracket,
 		RightBracket,
 	};
-	typedef mapbox::util::variant<FormulaOp, double, std::string> FormulaElement;
+	typedef std::variant<FormulaOp, double, std::string> FormulaElement;
 
 	std::vector<FormulaElement> elements;
 

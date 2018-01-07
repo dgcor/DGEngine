@@ -19,21 +19,24 @@ std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16)
 	}
 }
 
-void InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("change"):
 		actionChange = action;
-		return;
+		break;
 	case str2int16("click"):
 	case str2int16("enter"):
 		actionEnter = action;
-		return;
+		break;
 	case str2int16("minSize"):
 		actionMinSize = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void InputText::click(Game& game)

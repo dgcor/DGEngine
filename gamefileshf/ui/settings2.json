@@ -1,8 +1,7 @@
 {
   "animation": {
     "id": "smlogo",
-    "texture": "smlogo",
-    "frames": 16,
+    "texturePack": "smlogo",
     "position": [0, 0],
     "anchor": "none",
     "refresh": 50

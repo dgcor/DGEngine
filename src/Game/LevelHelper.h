@@ -1,9 +1,17 @@
-#include "Level.h"
+#pragma once
+
+#include "CachedImagePack.h"
+#include <memory>
 #include "Min.h"
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Vector2.hpp>
+#include <string>
+#include "TexturePacks/TexturePack.h"
 
 namespace LevelHelper
 {
-	std::vector<std::shared_ptr<sf::Texture>> loadTilesetSprite(CelFrameCache& cel, Min& min, bool top);
+	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
+		Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether);
+
+	// bottomTopOrBoth : -1 for both, 0 for bottom, 1 for top
+	void saveTilesetSprite(const std::string& path,
+		CachedImagePack& imgPack, Min& min, int bottomTopOrBoth, bool skipBlankTiles);
 }

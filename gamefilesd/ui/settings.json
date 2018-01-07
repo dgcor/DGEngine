@@ -44,17 +44,15 @@
   "load": "ui/settings2.json",
   "animation": [
     {
-      "texture": "focus42",
       "id": "pent1",
-      "frames": 8,
+      "texturePack": "focus42",
       "position": [40, 192],
       "anchor": "none",
       "refresh": 50
     },
     {
-      "texture": "focus42",
       "id": "pent2",
-      "frames": 8,
+      "texturePack": "focus42",
       "position": [564, 192],
       "anchor": "none",
       "refresh": 50

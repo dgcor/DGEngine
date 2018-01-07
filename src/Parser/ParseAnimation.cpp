@@ -1,6 +1,7 @@
 #include "ParseAnimation.h"
 #include "GameUtils.h"
 #include "ParseTexture.h"
+#include "TexturePacks/SimpleTexturePack.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -13,28 +14,46 @@ namespace Parser
 
 		if (isValidString(elem, "texture"))
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetString());
+			std::shared_ptr<sf::Texture> texture;
+			bool textureAddedToResources = getOrParseTexture(game, elem, "texture", texture);
 			if (texture == nullptr)
 			{
 				return nullptr;
 			}
-			animation = std::make_shared<Animation>(*texture);
+			auto frames = getFramesKey(elem, "frames");
+			if (textureAddedToResources == true &&
+				((frames.first == 0 || frames.second == 0) ||
+				(frames.first <= 1 && frames.second <= 1)))
+			{
+				animation = std::make_shared<Animation>(*texture);
+			}
+			else
+			{
+				auto texPack = std::make_shared<SimpleTexturePack>(
+					texture, frames.first, frames.second);
 
-			animation->setFrames(1, (int16_t)getIntKey(elem, "frames", 1));
+				if (texPack->totalSize() > 0)
+				{
+					animation = std::make_shared<Animation>(
+						texPack, frames.first, frames.second);
+				}
+				else
+				{
+					animation = std::make_shared<Animation>(*texture);
+				}
+			}
 		}
-		else if (isValidString(elem, "id"))
+		else if (isValidString(elem, "texturePack"))
 		{
-			size_t numFramesX = 1;
-			size_t numFramesY = 1;
-			auto img = parseTextureImg(game, elem, &numFramesX, &numFramesY);
-			auto tex = std::make_shared<sf::Texture>();
-			tex->loadFromImage(img);
-
-			game.Resources().addTexture(elem["id"].GetString(), tex);
-
-			animation = std::make_shared<Animation>(*tex);
-
-			animation->setFrames((int16_t)numFramesX, (int16_t)numFramesY);
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetString());
+			if (texPack == nullptr)
+			{
+				return nullptr;
+			}
+			auto frames = std::make_pair(0u, texPack->totalSize() - 1);
+			frames = getFramesKey(elem, "frames", frames);
+			animation = std::make_shared<Animation>(
+				texPack, frames.first, frames.second);
 		}
 		else
 		{
@@ -57,8 +76,13 @@ namespace Parser
 		}
 		animation->Position(pos);
 		animation->Visible(getBoolKey(elem, "visible", true));
-		animation->setFrameTime(sf::milliseconds(getUIntKey(elem, "refresh", 50)));
+		animation->setFrameTime(getTimeKey(elem, "refresh", sf::milliseconds(50)));
 		animation->setColor(getColorKey(elem, "color", sf::Color::White));
+
+		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);
+		animation->setOutline(outline, outlineIgnore);
+		animation->setOutlineEnabled(getBoolKey(elem, "enableOutline"));
 
 		return animation;
 	}
@@ -79,6 +103,13 @@ namespace Parser
 		{
 			return;
 		}
-		game.Resources().addDrawable(id, animation);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, animation);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, animation);
+		}
 	}
 }

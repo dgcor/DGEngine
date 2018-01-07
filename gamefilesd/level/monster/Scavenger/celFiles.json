@@ -1,0 +1,10 @@
+{
+  "imageContainer": [
+    { "file": "monsters/scav/scava.cl2" },
+    { "file": "monsters/scav/scavd.cl2" },
+    { "file": "monsters/scav/scavh.cl2" },
+    { "file": "monsters/scav/scavn.cl2" },
+    { "file": "monsters/scav/scavs.cl2" },
+    { "file": "monsters/scav/scavw.cl2" }
+  ]
+}

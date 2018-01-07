@@ -18,10 +18,22 @@
       "mask": "0x00FF00"
     }
   ],
+  "texturePack": {
+    "id": "logo",
+    "texture": "logo",
+    "frames": 15
+  },
   "image": {
     "id": "title",
     "texture": "title",
     "anchor": "none"
+  },
+  "animation": {
+    "id": "logo",
+    "texturePack": "logo",
+    "position": [45, 182],
+    "anchor": "none",
+    "refresh": 50
   },
   "button": {
     "id": "skip",
@@ -41,14 +53,6 @@
       }
     ]
   },
-  "animation": {
-    "id": "logo",
-    "texture": "logo",
-    "frames": 15,
-    "position": [45, 182],
-    "anchor": "none",
-    "refresh": 50
-  },
   "text": {
     "id": "copyright",
     "bitmapFont": "font24s",
@@ -66,7 +70,7 @@
         { "name": "game.fadeIn" }
       ]
     },
-    "seconds": 6
+    "time": 7.0
   },
   "action": {
     "name": "game.fadeIn"

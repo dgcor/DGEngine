@@ -64,7 +64,9 @@
     { "file": "sfx/items/sarcb.wav" },
     { "file": "sfx/items/shielfkd.wav" },
     { "file": "sfx/items/Swrdfkd.wav" },
-    { "file": "sfx/items/Trap.wav" }
+    { "file": "sfx/items/Trap.wav" },
+    { "file": "sfx/misc/swing.wav" },
+    { "file": "sfx/misc/swing2.wav" }
   ],
   "action": {
     "name": "if.equal",

@@ -1,6 +1,7 @@
 #include "ParseImage.h"
-#include "Image.h"
 #include "GameUtils.h"
+#include "Image.h"
+#include "ParseTexture.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -9,7 +10,8 @@ namespace Parser
 
 	void parseImage(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false || isValidString(elem, "texture") == false)
+		if (isValidString(elem, "id") == false ||
+			isValidString(elem, "texture") == false)
 		{
 			return;
 		}
@@ -19,8 +21,9 @@ namespace Parser
 			return;
 		}
 
-		auto texture = game.Resources().getTexture(elem["texture"].GetString());
-		if (texture == nullptr)
+		std::shared_ptr<sf::Texture> texture;
+		if (getOrParseTexture(game, elem, "texture", texture) == false ||
+			texture == nullptr)
 		{
 			return;
 		}
@@ -50,6 +53,18 @@ namespace Parser
 
 		image->setColor(getColorKey(elem, "color", sf::Color::White));
 
-		game.Resources().addDrawable(id, image);
+		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);
+		image->setOutline(outline, outlineIgnore);
+		image->setOutlineEnabled(getBoolKey(elem, "enableOutline"));
+
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, image);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, image);
+		}
 	}
 }

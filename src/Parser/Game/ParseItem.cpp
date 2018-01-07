@@ -39,6 +39,11 @@ namespace Parser
 			}
 		}
 
+		auto outline = getColorKey(elem, "outline", class_->DefaultOutline());
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->DefaultOutlineIgnore());
+		item->setOutline(outline, outlineIgnore);
+		item->setOutlineOnHover(getBoolKey(elem, "outlineOnHover", true));
+
 		return item;
 	}
 

@@ -15,14 +15,17 @@ std::shared_ptr<Action> Text2::getAction(uint16_t nameHash16)
 	}
 }
 
-void Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("change"):
 		changeAction = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void Text2::setBinding(const std::string& binding)

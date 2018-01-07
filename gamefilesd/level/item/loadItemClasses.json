@@ -58,7 +58,10 @@
         "name": "if.equal",
         "param1": "|game|hasResource.charPanelInventory|",
         "param2": true,
-        "then": { "name": "item.loadFromLevel" },
+        "then": [
+          { "name": "item.loadFromLevel" },
+          "updateSelectedItem"
+        ],
         "else": {
           "name": "switch",
           "param": "|currentLevel|clickedObject.itemType|",
@@ -91,9 +94,9 @@
       }
     }
   ],
-  "celTexturePack": {
+  "texturePack": {
     "id": "itemDrop",
-    "celFile": [
+    "imageContainer": [
       "armor2",
       "axe",
       "axeflip",
@@ -140,19 +143,12 @@
     ],
     "palette": "town"
   },
-  "celFile": { "file": "data/inv/objcurs.cel" },
-  "celTexture": [
-    {
-      "id": "itemIcons",
-      "celFile": "objcurs",
-      "palette": "town"
-    },
-    {
-      "id": "itemIconsInfra",
-      "celFile": "objcurs",
-      "palette": "infra"
-    }
-  ],
+  "imageContainer": { "file": "data/inv/objcurs.cel" },
+  "texturePack": {
+    "id": "itemIcons",
+    "imageContainer": "objcurs",
+    "palette": "town"
+  },
   "load": "level/item/prefixes.json",
   "load": "level/item/suffixes.json",
   "load": "level/item/descriptions.json",

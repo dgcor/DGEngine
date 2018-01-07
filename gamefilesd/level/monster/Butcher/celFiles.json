@@ -1,0 +1,9 @@
+{
+  "imageContainer": [
+    { "file": "monsters/fatc/fatca.cl2" },
+    { "file": "monsters/fatc/fatcd.cl2" },
+    { "file": "monsters/fatc/fatch.cl2" },
+    { "file": "monsters/fatc/fatcn.cl2" },
+    { "file": "monsters/fatc/fatcw.cl2" }
+  ]
+}

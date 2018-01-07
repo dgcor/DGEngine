@@ -19,34 +19,32 @@ namespace Parser
 		{
 			return;
 		}
+		if (isValidString(elem, "texture") == false)
+		{
+			return;
+		}
 
 		sf::Image img;
-		std::shared_ptr<sf::Texture> texture;
-
-		if (isValidString(elem, "texture"))
+		std::string textureId = elem["texture"].GetString();
+		auto texture = game.Resources().getTexture(textureId);
+		if (texture == nullptr)
 		{
-			texture = game.Resources().getTexture(elem["texture"].GetString());
-			if (texture == nullptr)
+			if (isValidId(textureId) == false)
 			{
 				return;
 			}
-		}
-		else if (isValidString(elem, "textureId"))
-		{
 			img = parseTextureImg(game, elem);
 			auto imgSize = img.getSize();
 			if (imgSize.x == 0 || imgSize.y == 0)
 			{
 				return;
 			}
-			texture = std::make_shared<sf::Texture>();
-			texture->loadFromImage(img);
-			texture->setSmooth(getBoolKey(elem, "smooth"));
-			game.Resources().addTexture(elem["textureId"].GetString(), texture);
-		}
-		else
-		{
-			return;
+			texture = parseTextureObj(game, elem, img);
+			if (texture == nullptr)
+			{
+				return;
+			}
+			game.Resources().addTexture(textureId, texture);
 		}
 
 		auto rows = getIntKey(elem, "rows", 16);

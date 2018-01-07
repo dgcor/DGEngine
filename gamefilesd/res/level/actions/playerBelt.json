@@ -36,5 +36,13 @@
   "load": ["res/level/actions/beltClick.json", "Belt5", 4],
   "load": ["res/level/actions/beltClick.json", "Belt6", 5],
   "load": ["res/level/actions/beltClick.json", "Belt7", 6],
-  "load": ["res/level/actions/beltClick.json", "Belt8", 7]
+  "load": ["res/level/actions/beltClick.json", "Belt8", 7],
+  "load": ["res/level/actions/hoverLeave.json", "Belt1"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt2"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt3"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt4"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt5"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt6"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt7"],
+  "load": ["res/level/actions/hoverLeave.json", "Belt8"]
 }

@@ -21,6 +21,11 @@
       "palette": "town"
     },
     {
+      "id": "charbut",
+      "file": "data/charbut.cel",
+      "palette": "town"
+    },
+    {
       "id": "quest",
       "file": "data/quest.cel",
       "palette": "town"
@@ -37,7 +42,7 @@
     },
     {
       "id": "red",
-      "fill": "0xFF000022",
+      "color": "0xFF000022",
       "size": [1, 1]
     },
     {
@@ -62,5 +67,10 @@
       "palette": "town"
     }
   ],
+  "texturePack": {
+    "id": "pentspn2",
+    "texture": "pentspn2",
+    "frames": 8
+  },
   "load": "res/level/textures2.json"
 }

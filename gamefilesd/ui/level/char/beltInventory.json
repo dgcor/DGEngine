@@ -9,7 +9,7 @@
       "onClick": "updateBelt1Click",
       "onRightClick": "useBelt1Item",
       "onHoverEnter": "updateBelt1Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt1Leave"
     },
     {
       "id": "playerBelt2",
@@ -20,7 +20,7 @@
       "onClick": "updateBelt2Click",
       "onRightClick": "useBelt2Item",
       "onHoverEnter": "updateBelt2Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt2Leave"
     },
     {
       "id": "playerBelt3",
@@ -31,7 +31,7 @@
       "onClick": "updateBelt3Click",
       "onRightClick": "useBelt3Item",
       "onHoverEnter": "updateBelt3Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt3Leave"
     },
     {
       "id": "playerBelt4",
@@ -42,7 +42,7 @@
       "onClick": "updateBelt4Click",
       "onRightClick": "useBelt4Item",
       "onHoverEnter": "updateBelt4Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt4Leave"
     },
     {
       "id": "playerBelt5",
@@ -53,7 +53,7 @@
       "onClick": "updateBelt5Click",
       "onRightClick": "useBelt5Item",
       "onHoverEnter": "updateBelt5Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt5Leave"
     },
     {
       "id": "playerBelt6",
@@ -64,7 +64,7 @@
       "onClick": "updateBelt6Click",
       "onRightClick": "useBelt6Item",
       "onHoverEnter": "updateBelt6Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt6Leave"
     },
     {
       "id": "playerBelt7",
@@ -75,7 +75,7 @@
       "onClick": "updateBelt7Click",
       "onRightClick": "useBelt7Item",
       "onHoverEnter": "updateBelt7Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt7Leave"
     },
     {
       "id": "playerBelt8",
@@ -86,63 +86,87 @@
       "onClick": "updateBelt8Click",
       "onRightClick": "useBelt8Item",
       "onHoverEnter": "updateBelt8Text",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverBelt8Leave"
     }
   ],
   "image": [
     {
       "id": "imgBelt1",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [205, 357]
     },
     {
       "id": "imgBelt2",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [234, 357]
     },
     {
       "id": "imgBelt3",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [263, 357]
     },
     {
       "id": "imgBelt4",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [292, 357]
     },
     {
       "id": "imgBelt5",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [321, 357]
     },
     {
       "id": "imgBelt6",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [350, 357]
     },
     {
       "id": "imgBelt7",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [379, 357]
     },
     {
       "id": "imgBelt8",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [28, 28],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [408, 357]
     }

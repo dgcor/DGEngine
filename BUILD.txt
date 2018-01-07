@@ -6,10 +6,11 @@ uses C++ features that are present only in VS2017.
 The provided project expects the following folders in the root of the
 project to build properly.
 
-/PhysicsFS - https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2
+/PhysicsFS - https://icculus.org/physfs
              Compile using MinSizeRel.
 
-/SFML - http://www.sfml-dev.org/files/SFML-2.3.2-windows-vc14-32-bit.zip
+/SFML - http://www.sfml-dev.org/
+        SFML 2.5.0
 
 /FFmpeg - http://ffmpeg.zeranoe.com/builds/
           Get both 32 bit shared and dev packages (version 2.x or 3.x)
@@ -47,15 +48,15 @@ swscale-3.dll           (FFmpeg 2)
 
 Linux
 
-To compile in Linux (Ubuntu), you need gcc or clang with C++14 support
-and to have both PhysicsFS and SFML installed.
+To compile in Linux (Ubuntu), you need gcc or clang with C++17 support
+and to have both PhysicsFS and SFML 2.5 installed.
 
-sudo apt-get install libphysfs-dev
-sudo apt-get install libsfml-dev
+sudo apt install libphysfs-dev
+sudo apt install libsfml-dev
 
 Optional (for movie support) FFmpeg:
 
-sudo apt-get install libavdevice-dev libavformat-dev libavfilter-dev libavcodec-dev libswscale-dev libavutil-dev
+sudo apt install libavdevice-dev libavformat-dev libavfilter-dev libavcodec-dev libswscale-dev libavutil-dev
 
 Movie support is enabled by default (CMake), unless FFmpeg isn't found.
 In CMake, set DGENGINE_MOVIE_SUPPORT to FALSE to skip movie support.

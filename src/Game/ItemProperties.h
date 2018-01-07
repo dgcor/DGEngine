@@ -35,6 +35,13 @@ namespace ItemProp
 	const uint16_t DamageMax = str2int16("damageMax");
 	const uint16_t ToDamage = str2int16("toDamage");
 
+	const uint16_t DefaultDamageMin = str2int16("defaultDamageMin");
+	const uint16_t DefaultDamageMax = str2int16("defaultDamageMax");
+
+	const uint16_t LevelUp = str2int16("levelUp");
+
+	const uint16_t SingleItemDamage = str2int16("singleItemDamage");
+
 	const uint16_t Durability = str2int16("durability");
 	const uint16_t DurabilityMax = str2int16("durabilityMax");
 

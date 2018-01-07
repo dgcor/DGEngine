@@ -1,5 +1,5 @@
 {
-  "celFile": [
+  "imageContainer": [
     { "id": "whaas", "file": "plrgfx/warrior/wha/whaas.cel" },
     { "id": "whaat", "file": "plrgfx/warrior/wha/whaat.cel" },
     { "id": "whaaw", "file": "plrgfx/warrior/wha/whaaw.cel" },

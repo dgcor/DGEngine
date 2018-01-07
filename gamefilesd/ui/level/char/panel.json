@@ -9,7 +9,83 @@
       { "name": "level.pause", "pause": false }
     ]
   },
+  "text": {
+    "id": "txtLevelUp",
+    "bitmapFont": "smaltext",
+    "position": [60, 298],
+    "anchor": "bottom",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "verticalAlign": "center",
+    "visible": false,
+    "text": "Level Up"
+  },
+  "button": {
+    "id": "btnLevelUp",
+    "texture": "charbut",
+    "textureRect": [0, 22, 41, 22],
+    "position": [40, 314],
+    "anchor": "bottom",
+    "captureInputEvents": true,
+    "clickUp": true,
+    "visible": false,
+    "onClick": { "name": "button.click", "id": "char" },
+    "onClickIn": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 44, 41, 22] },
+    "onClickOut": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 22, 41, 22] }
+  },
+  "image": [
+    {
+      "id": "itemInfoBk",
+      "position": [27, 28],
+      "anchor": "right",
+      "textureRect": [267, 300],
+      "texture": "textWallBackground",
+      "visible": false
+    },
+    {
+      "id": "itemInfoSp",
+      "position": [26, 98],
+      "anchor": "right",
+      "textureRect": [2, 0, 266, 3],
+      "texture": "textbox2",
+      "visible": false
+    }
+  ],
+  "button": {
+    "id": "itemInfoBr",
+    "position": [24, 25],
+    "anchor": "right",
+    "texture": "textbox2",
+    "visible": false,
+    "onHoverEnter": "hideItemInfo",
+    "onHoverLeave": "hideItemInfo"
+  },
   "text": [
+    {
+      "id": "itemInfoTitle",
+      "replaceVars": true,
+      "bitmapFont": "smaltext",
+      "anchor": "right",
+      "color": "%textGold%",
+      "position": [160, 63],
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "verticalAlign": "center",
+      "visible": false,
+      "text": ""
+    },
+    {
+      "id": "itemInfoDescr",
+      "bitmapFont": "smaltext",
+      "anchor": "right",
+      "position": [160, 195],
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 14,
+      "verticalAlign": "center",
+      "visible": false,
+      "text": ""
+    },
     {
       "id": "txtMapLabel",
       "replaceVars": true,
@@ -115,34 +191,9 @@
       "textureRect": [0, 88, 88, 0],
       "position": [464, 336],
       "anchor": "bottom"
-    },
-    {
-      "id": "itemInfoBk",
-      "position": [27, 28],
-      "anchor": "right",
-      "textureRect": [267, 300],
-      "texture": "textWallBackground",
-      "visible": false
-    },
-    {
-      "id": "itemInfoSp",
-      "position": [26, 98],
-      "anchor": "right",
-      "textureRect": [2, 0, 266, 3],
-      "texture": "textbox2",
-      "visible": false
     }
   ],
   "button": [
-    {
-      "id": "itemInfoBr",
-      "position": [24, 25],
-      "anchor": "right",
-      "texture": "textbox2",
-      "visible": false,
-      "onHoverEnter": "hideItemInfo",
-      "onHoverLeave": "hideItemInfo"
-    },
     {
       "id": "char",
       "texture": "empty",
@@ -159,8 +210,7 @@
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "load", "file": "ui/level/char/panelLabels.json" },
             { "name": "drawable.visible", "id": "charPanel", "visible": true },
-            { "name": "drawable.visible", "id": "questPanel", "visible": false },
-            "hideItemInfo"
+            { "name": "drawable.visible", "id": "questPanel", "visible": false }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelLabels" },
@@ -172,8 +222,8 @@
         },
         "resizeLevel"
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "char", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "char", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "char", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "char", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -214,8 +264,8 @@
         },
         "resizeLevel"
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "quest", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "quest", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "quest", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "quest", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -256,8 +306,8 @@
         },
         "resizeLevel"
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "inv", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "inv", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "inv", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "inv", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -298,8 +348,8 @@
         },
         "resizeLevel"
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "spell", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "spell", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "spell", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "spell", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -319,8 +369,8 @@
       "position": [9, 427],
       "textureRect": [0, 38, 71, 19],
       "clickUp": true,
-      "onClickIn": { "name": "button.setTexture", "id": "map", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "map", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "map", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "map", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -351,8 +401,8 @@
           { "name": "load", "file": "ui/level/menu/game.json" }
         ]
       },
-      "onClickIn": { "name": "button.setTexture", "id": "menu", "texture": "panel8bu" },
-      "onClickOut": { "name": "button.setTexture", "id": "menu", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "menu", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "menu", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
@@ -366,42 +416,15 @@
       "onHoverLeave": "clearPanelText"
     }
   ],
-  "text": [
-    {
-      "id": "itemInfoTitle",
-      "replaceVars": true,
-      "bitmapFont": "smaltext",
-      "anchor": "right",
-      "color": "%textGold%",
-      "position": [160, 63],
-      "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "verticalAlign": "center",
-      "visible": false,
-      "text": ""
-    },
-    {
-      "id": "itemInfoDescr",
-      "bitmapFont": "smaltext",
-      "anchor": "right",
-      "position": [160, 195],
-      "horizontalAlign": "center",
-      "horizontalSpaceOffset": 1,
-      "verticalSpaceOffset": 14,
-      "verticalAlign": "center",
-      "visible": false,
-      "text": ""
-    },
-    {
-      "id": "txtPanel",
-      "bitmapFont": "smaltext",
-      "anchor": "bottom",
-      "position": [320, 429],
-      "horizontalAlign": "center",
-      "horizontalSpaceOffset": 2,
-      "verticalAlign": "center"
-    }
-  ],
+  "text": {
+    "id": "txtPanel",
+    "bitmapFont": "smaltext",
+    "anchor": "bottom",
+    "position": [320, 429],
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 2,
+    "verticalAlign": "center"
+  },
   "keyboard": [
     { "key": "1", "action": "useBelt1Item" },
     { "key": "2", "action": "useBelt2Item" },
@@ -458,6 +481,20 @@
       "key": "f6",
       "action": [
         { "name": "player.addToProperty", "property": "manaDamage", "value": -10 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f7",
+      "action": [
+        { "name": "player.addToProperty", "property": "experience", "value": -2000 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f8",
+      "action": [
+        { "name": "player.addToProperty", "property": "experience", "value": 2000 },
         "updateAllPlayerStats"
       ]
     }

@@ -22,14 +22,17 @@ std::shared_ptr<Action> ScrollableText::getAction(uint16_t nameHash16)
 	}
 }
 
-void ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("complete"):
 		completeAction = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void ScrollableText::draw(sf::RenderTarget& target, sf::RenderStates states) const

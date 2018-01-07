@@ -9,9 +9,9 @@
     "id": "level",
     "name": "Hell",
     "palette": "l4_4",
-    "cel": "levels/l4data/l4.cel",
+    "file": "levels/l4data/l4.cel",
     "mapSize": [96, 96],
-    "dun": [
+    "map": [
       { "file": "levels/l4data/warlord2.dun", "position": [0, 0] },
       { "file": "levels/l4data/diab1.dun", "position": [10, 1] },
       { "file": "levels/l4data/diab2b.dun", "position": [0, 15] },

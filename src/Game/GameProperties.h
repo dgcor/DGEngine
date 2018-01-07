@@ -60,7 +60,16 @@ enum class PlayerItemMount : size_t
 	Size
 };
 
-enum class PlayerStatus : size_t
+enum class PlayerAction : size_t
+{
+	Stand,
+	Walk,
+	Attack,
+	Dead,
+	Size
+};
+
+enum class PlayerAnimation : size_t
 {
 	Stand1,
 	Stand2,

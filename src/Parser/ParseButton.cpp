@@ -37,18 +37,21 @@ namespace Parser
 		button->setResizable(getBoolKey(elem, "resizable"));
 		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 
+		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);
+		button->setOutline(outline, outlineIgnore);
+		button->setOutlineEnabled(getBoolKey(elem, "enableOutline"));
+
 		return button;
 	}
 
 	std::shared_ptr<Button> parseStringButton(Game& game, const Value& elem)
 	{
-		auto text = parseText2Obj(game, elem);
-		if (text == nullptr)
+		auto button = std::make_shared<StringButton>();
+		if (parseText2Obj(game, elem, *button) == false)
 		{
 			return nullptr;
 		}
-		auto button = std::make_shared<StringButton>();
-		button->setText(std::move(text));
 		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 		return button;
 	}
@@ -150,14 +153,21 @@ namespace Parser
 		}
 		if (elem.HasMember("sound"))
 		{
-			button->setClickSound(game.Resources().getSound(elem["sound"].GetString()));
+			button->setClickSound(game.Resources().getSoundBuffer(elem["sound"].GetString()));
 		}
 		if (elem.HasMember("focusSound"))
 		{
-			button->setFocusSound(game.Resources().getSound(elem["focusSound"].GetString()));
+			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetString()));
 		}
 
-		game.Resources().addDrawable(id, button);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, button);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, button);
+		}
 
 		if (getBoolKey(elem, "focus") == true)
 		{

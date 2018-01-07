@@ -13,7 +13,7 @@
           "param2": "{2}",
           "then": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+            "param1": "|currentLevel|currentPlayer.canUseSelectedItem|",
             "param2": true,
             "then": [
               { "name": "image.setTexture", "id": "img{1}", "texture": "empty" },
@@ -36,7 +36,7 @@
         "name": "if.equal",
         "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
         "param2": true,
-        "then": "updateSelectedItemText",
+        "then": "updateSelectedItem",
         "else": "update{1}Text"
       }
     ]

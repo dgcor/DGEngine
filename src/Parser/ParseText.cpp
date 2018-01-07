@@ -92,29 +92,39 @@ namespace Parser
 
 	std::unique_ptr<Text2> parseText2Obj(Game& game, const rapidjson::Value& elem)
 	{
-		auto drawableText = parseDrawableTextObj(game, elem);
-		if (drawableText == nullptr)
+		auto text = std::make_unique<Text2>();
+		if (parseText2Obj(game, elem, *text) == false)
 		{
 			return nullptr;
 		}
+		return text;
+	}
 
-		auto text = std::make_unique<Text2>(std::move(drawableText));
+	bool parseText2Obj(Game& game, const Value& elem, Text2& text)
+	{
+		auto drawableText = parseDrawableTextObj(game, elem);
+		if (drawableText == nullptr)
+		{
+			return false;
+		}
+		text.setText(std::move(drawableText));
+
 		auto hasBinding = elem.HasMember("binding") == true;
 		if (hasBinding == true)
 		{
-			text->setBinding(getStringVectorKey(elem, "binding"));
+			text.setBinding(getStringVectorKey(elem, "binding"));
 		}
-		text->setFormat(getStringKey(elem, "format", "[1]"));
+		text.setFormat(getStringKey(elem, "format", "[1]"));
 
 		if (elem.HasMember("onChange"))
 		{
-			text->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
+			text.setAction(str2int16("change"), parseAction(game, elem["onChange"]));
 		}
 		if (hasBinding == true)
 		{
-			text->update(game);
+			text.update(game);
 		}
-		return text;
+		return true;
 	}
 
 	void parseText(Game& game, const Value& elem)
@@ -128,13 +138,18 @@ namespace Parser
 		{
 			return;
 		}
-
 		std::shared_ptr<Text2> text(std::move(parseText2Obj(game, elem)));
 		if (text == nullptr)
 		{
 			return;
 		}
-
-		game.Resources().addDrawable(id, text);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, text);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, text);
+		}
 	}
 }

@@ -1,0 +1,10 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "hover{1}Leave",
+    "action": [
+      "clearPanelText",
+      { "name": "image.enableOutline", "id": "img{1}", "enable": false }
+    ]
+  }
+}

@@ -8,12 +8,12 @@
 
 class Game;
 
-class UIObject : public sf::Drawable, public Queryable
+class UIObject : public virtual sf::Drawable, public virtual Queryable
 {
 public:
 	// Action
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) = 0;
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) = 0;
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) = 0;
 
 	// Anchor
 	virtual void setAnchor(const Anchor anchor) = 0;

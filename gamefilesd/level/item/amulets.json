@@ -2,14 +2,16 @@
   "itemClass": [
     {
       "id": "amulet",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 35,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 56,
+      "replaceVars": true,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 35,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 56,
       "name": "Amulet",
       "shortName": "Amulet",
       "type": "Amulet",
+      "defaultOutline": "%outlineItem%",
+      "defaultOutlineIgnore": "0x000000",
       "defaults": {
         "price": 1200,
         "magical": true,

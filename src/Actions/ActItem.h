@@ -7,12 +7,22 @@
 #include "Game/Level.h"
 #include "Image.h"
 
-static void updateCursorWithItemImage(Game& game, const Item& item, bool equiped)
+static void updateCursorWithItemImage(Game& game, const Item& item)
 {
-	auto image = std::make_shared<Image>(item.Class()->getCelInventoryTexture(equiped));
-	image->setOrigin();
-	game.Resources().addCursor(image);
-	game.updateCursorPosition();
+	const sf::Texture* texture;
+	sf::IntRect rect;
+	if (item.Class()->getInventoryTexture(&texture, rect) == true)
+	{
+		auto image = std::make_shared<Image>(*texture);
+		image->setTextureRect(rect);
+		if (item.Class()->getInventoryTexturePack()->isIndexed() == true)
+		{
+			image->setPalette(item.Class()->getInventoryTexturePack()->getPalette());
+		}
+		image->setOrigin();
+		game.Resources().addCursor(image);
+		game.updateCursorPosition();
+	}
 }
 
 class ActItemDelete : public Action
@@ -147,8 +157,7 @@ public:
 					{
 						level->setItem(mapPos, nullptr);
 						player->SelectedItem(item);
-						updateCursorWithItemImage(game, *item,
-							player->canEquipItem(*item));
+						updateCursorWithItemImage(game, *item);
 						item->Class()->executeAction(game, str2int16("levelPick"));
 					}
 					else
@@ -351,8 +360,7 @@ public:
 							}
 							if (oldItem != nullptr)
 							{
-								updateCursorWithItemImage(game, *oldItem,
-									player->canEquipItem(*oldItem));
+								updateCursorWithItemImage(game, *oldItem);
 							}
 							else
 							{
@@ -368,8 +376,7 @@ public:
 						{
 							player->setItem(invIdx, itemIdx, nullptr);
 							player->SelectedItem(oldItem);
-							updateCursorWithItemImage(game, *oldItem,
-								player->canEquipItem(*oldItem));
+							updateCursorWithItemImage(game, *oldItem);
 
 							oldItem->Class()->executeAction(game, str2int16("inventoryPick"));
 						}
@@ -401,7 +408,8 @@ public:
 			if (item != nullptr &&
 				player != nullptr)
 			{
-				if (item->use(*player) == true)
+				if (player->canUseItem(*item) == true &&
+					item->use(*player, level) == true)
 				{
 					level->setItem(itemCoord, nullptr);
 					item->Class()->executeAction(game, str2int16("use"));

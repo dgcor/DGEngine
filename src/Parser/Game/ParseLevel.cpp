@@ -1,9 +1,10 @@
 #include "ParseLevel.h"
-#include "Cel.h"
 #include "FileUtils.h"
 #include "Game/LevelMap.h"
 #include "GameUtils.h"
+#include "Json/JsonUtils.h"
 #include "Parser/ParseAction.h"
+#include "Parser/ParseTexturePack.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "Utils.h"
 
@@ -11,29 +12,58 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseDun(const Value& elem, LevelMap& map, const TileSet& til, const Sol& sol)
+	void parseMap(const Value& elem, LevelMap& map, const TileSet& til, const Sol& sol)
 	{
-		Dun dun(getStringKey(elem, "file"));
+		auto pos = getVector2uKey<MapCoord>(elem, "position");
+		auto file = getStringKey(elem, "file");
+
+		if (Utils::endsWith(Utils::toLower(file), ".json") == false)
+		{
+			if (til.size() == 0)
+			{
+				return;
+			}
+			Dun dun(file);
+			if (dun.Width() > 0 && dun.Height() > 0)
+			{
+				map.setArea(pos.x, pos.y, dun, til, sol);
+			}
+			return;
+		}
+
+		Document doc;
+		if (JsonUtils::loadFile(file, doc) == false ||
+			isValidArray(doc, "layers") == false ||
+			doc["layers"].Empty() == true ||
+			isValidArray(doc["layers"][0], "data") == false)
+		{
+			return;
+		}
+
+		const auto& elemDun = doc["layers"][0];
+
+		Dun dun(getUIntKey(elemDun, "width"), getUIntKey(elemDun, "width"));
+
+		const auto& elemData = elemDun["data"];
+
+		for (size_t i = 0; i < elemData.Size(); i++)
+		{
+			dun.set(i, ((int16_t)getUIntIdx(elemData, i)) - 1);
+		}
+
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
-			auto pos = getVector2uKey<MapCoord>(elem, "position");
-			map.setArea(pos.x, pos.y, dun, til, sol);
+			map.setArea(pos.x, pos.y, dun, sol);
 		}
 	}
 
 	void parseLevelMap(Game& game, const Value& elem, Level& level)
 	{
-		auto celPath = elem["cel"].GetString();
-		auto tilPath = elem["til"].GetString();
-		auto minPath = elem["min"].GetString();
+		auto tilPath = getStringKey(elem, "til");
 		auto solPath = elem["sol"].GetString();
-		auto palPath = elem["palette"].GetString();
 
 		TileSet til(tilPath);
-		if (til.size() == 0)
-		{
-			return;
-		}
+
 		Sol sol(solPath);
 		if (sol.size() == 0)
 		{
@@ -43,36 +73,26 @@ namespace Parser
 		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize");
 		LevelMap map(mapSize.x, mapSize.y);
 
-		const auto& dunElem = elem["dun"];
-		if (dunElem.IsArray() == true)
+		const auto& mapElem = elem["map"];
+		if (mapElem.IsArray() == true)
 		{
-			for (const auto& val : dunElem)
+			for (const auto& val : mapElem)
 			{
-				parseDun(val, map, til, sol);
+				parseMap(val, map, til, sol);
 			}
 		}
-		else if (dunElem.IsObject() == true)
+		else if (mapElem.IsObject() == true)
 		{
-			parseDun(dunElem, map, til, sol);
+			parseMap(mapElem, map, til, sol);
 		}
 
-		// l4.min and town.min contain 16 blocks, all others 10.
-		Min min(minPath, getIntKey(elem, "minBlocks", 10));
-		if (min.size() == 0)
-		{
-			return;
-		}
+		std::shared_ptr<TexturePack> tilesBottom;
+		std::shared_ptr<TexturePack> tilesTop;
 
-		auto pal = game.Resources().getPalette(palPath);
-		if (pal == nullptr)
-		{
-			return;
-		}
-		bool isCl2 = Utils::endsWith(celPath, "cl2");
-		CelFile cel(celPath, isCl2, true);
+		getOrParseLevelTexturePack(game, elem,
+			"texturePackBottom", "texturePackTop", tilesBottom, tilesTop);
 
-		CelFrameCache celCache(cel, *pal);
-		level.Init(map, min, celCache);
+		level.Init(map, tilesBottom, tilesTop);
 		level.updateLevelObjectPositions();
 	}
 
@@ -109,16 +129,20 @@ namespace Parser
 			}
 			auto levelPtr = std::make_shared<Level>();
 			game.Resources().addDrawable(id, levelPtr);
+			if (isValidString(elem, "resource") == true)
+			{
+				game.Resources().addDrawable(elem["resource"].GetString(), id, levelPtr);
+			}
+			else
+			{
+				game.Resources().addDrawable(id, levelPtr);
+			}
 			level = levelPtr.get();
 			game.Resources().setCurrentLevel(level);
 		}
 
-		if (isValidString(elem, "cel") == true
-			&& isValidString(elem, "til") == true
-			&& isValidString(elem, "min") == true
-			&& isValidString(elem, "sol") == true
-			&& isValidString(elem, "palette") == true
-			&& elem.HasMember("dun") == true)
+		if (isValidString(elem, "sol") == true
+			&& elem.HasMember("map") == true)
 		{
 			parseLevelMap(game, elem, *level);
 		}
@@ -165,6 +189,20 @@ namespace Parser
 		if (elem.HasMember("onScrollUp"))
 		{
 			level->setAction(str2int16("scrollUp"), parseAction(game, elem["onScrollUp"]));
+		}
+		if (elem.HasMember("experiencePoints"))
+		{
+			const auto& expElem = elem["experiencePoints"];
+			if (expElem.IsArray() == true)
+			{
+				std::vector<uint32_t> expPoints;
+				expPoints.push_back(0);
+				for (const auto& val : expElem)
+				{
+					expPoints.push_back(getUIntVal(val));
+				}
+				level->setExperiencePoints(expPoints);
+			}
 		}
 	}
 }

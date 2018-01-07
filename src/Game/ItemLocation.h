@@ -1,14 +1,16 @@
 #pragma once
 
 #include "ItemXY.h"
-#include "Variant.h"
+#include <string>
+#include <variant>
 
 class ItemCoordInventory
 {
 private:
 	std::string playerId;
 	int16_t inventoryIdx{ 0 };
-	union {
+	union
+	{
 		ItemXY itemXY;
 		uint16_t itemIdx;
 	};
@@ -74,4 +76,4 @@ public:
 	const std::string& getPlayerId() const { return playerId; }
 };
 
-typedef mapbox::util::variant<MapCoord, ItemCoordInventory> ItemLocation;
+typedef std::variant<MapCoord, ItemCoordInventory> ItemLocation;

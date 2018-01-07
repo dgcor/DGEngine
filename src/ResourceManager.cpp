@@ -1,7 +1,6 @@
 #include "ResourceManager.h"
 #include "Button.h"
 #include <cctype>
-#include "ReverseIterable.h"
 
 void ResourceManager::addResource(const std::string& id)
 {
@@ -104,7 +103,7 @@ bool ResourceManager::resourceExists(const std::string& id) const
 	return false;
 }
 
-UIObject* ResourceManager::getCursor() const
+Image* ResourceManager::getCursor() const
 {
 	if (cursors.empty() == true)
 	{
@@ -139,91 +138,131 @@ void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Ac
 	resources.back().actions[key] = obj;
 }
 
-void ResourceManager::addFont(ResourceBundle& res,
+bool ResourceManager::addFont(ResourceBundle& res,
 	const std::string& key, const std::shared_ptr<Font2>& obj)
 {
 	if (res.fonts.find(key) == res.fonts.cend())
 	{
 		res.fonts[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addBitmapFont(ResourceBundle& res,
+bool ResourceManager::addBitmapFont(ResourceBundle& res,
 	const std::string& key, const std::shared_ptr<BitmapFont>& obj)
 {
 	if (res.bitmapFonts.find(key) == res.bitmapFonts.cend())
 	{
 		res.bitmapFonts[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addTexture(ResourceBundle& res,
+bool ResourceManager::addTexture(ResourceBundle& res,
 	const std::string& key, const std::shared_ptr<sf::Texture>& obj)
 {
 	if (res.textures.find(key) == res.textures.cend())
 	{
 		res.textures[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addSong(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<Music2>& obj)
+bool ResourceManager::addAudioSource(ResourceBundle& res,
+	const std::string& key, const AudioSource& obj)
 {
-	if (res.songs.find(key) == res.songs.cend())
+	if (res.audioSources.find(key) == res.audioSources.cend())
+	{
+		res.audioSources[key] = obj;
+		return true;
+	}
+	return false;
+}
+
+bool ResourceManager::addSong(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<sf::Music2>& obj)
+{
+	if (hasSong(key, true) == false)
 	{
 		res.songs[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addSound(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
-{
-	if (res.sounds.find(key) == res.sounds.cend())
-	{
-		res.sounds[key] = obj;
-	}
-}
-
-void ResourceManager::addPalette(ResourceBundle& res,
+bool ResourceManager::addPalette(ResourceBundle& res,
 	const std::string& key, const std::shared_ptr<Palette>& obj)
 {
 	if (hasPalette(key) == false)
 	{
 		res.palettes[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addCelFile(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<CelFile>& obj)
+bool ResourceManager::addImageContainer(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<ImageContainer>& obj)
 {
-	if (hasCelFile(key) == false)
+	if (hasImageContainer(key) == false)
 	{
-		res.celFiles[key] = obj;
+		res.imageContainers[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addCelTextureCache(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
+bool ResourceManager::addTexturePack(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<TexturePack>& obj)
 {
-	if (hasCelTextureCache(key) == false)
+	if (hasTexturePack(key) == false)
 	{
-		res.celCaches[key] = obj;
+		res.texturePacks[key] = obj;
+		return true;
 	}
+	return false;
 }
 
-void ResourceManager::addCelTextureCacheVec(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
+void ResourceManager::addDrawable(ResourceBundle& res,
+	const std::string& key, const std::shared_ptr<UIObject>& obj)
 {
-	if (hasCelTextureCacheVec(key) == false)
+	if (res.drawableIds.find(key) != res.drawableIds.cend())
 	{
-		res.celCachesVec[key] = obj;
+		for (auto& drawable : res.drawables)
+		{
+			if (drawable.first == key)
+			{
+				drawable.second = obj;
+				break;
+			}
+		}
 	}
-}
-
-void ResourceManager::addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)
-{
-	resources.back().drawables.push_back(std::make_pair(key, obj));
+	else
+	{
+		res.drawableIds.insert(key);
+		res.drawables.push_back(std::make_pair(key, obj));
+	}
 	clearCache();
+}
+
+void ResourceManager::addDrawable(const std::string& resourceId,
+	const std::string& key, const std::shared_ptr<UIObject>& obj)
+{
+	if (resourceId.empty() == true)
+	{
+		return;
+	}
+	for (auto& res : reverse(resources))
+	{
+		if (res.id == resourceId)
+		{
+			addDrawable(res, key, obj);
+			return;
+		}
+	}
 }
 
 void ResourceManager::addPlayingSound(const sf::Sound& obj, bool unique)
@@ -327,27 +366,43 @@ std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string& key)
 	return nullptr;
 }
 
-std::shared_ptr<Music2> ResourceManager::getSong(const std::string& key) const
+AudioSource ResourceManager::getAudioSource(const std::string& key) const
+{
+	for (const auto& res : reverse(resources))
+	{
+		const auto elem = res.audioSources.find(key);
+
+		if (elem != res.audioSources.cend())
+		{
+			return elem->second;
+		}
+	}
+	return {};
+}
+
+sf::SoundBuffer* ResourceManager::getSoundBuffer(const std::string& key) const
+{
+	auto elem = getAudioSource(key);
+	if (std::holds_alternative<std::shared_ptr<sf::SoundBuffer>>(elem) == true)
+	{
+		return std::get<std::shared_ptr<sf::SoundBuffer>>(elem).get();
+	}
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+	else if (std::holds_alternative<std::shared_ptr<SoundBufferLoops>>(elem) == true)
+	{
+		return &std::get<std::shared_ptr<SoundBufferLoops>>(elem)->soundBuffer;
+	}
+#endif
+	return nullptr;
+}
+
+std::shared_ptr<sf::Music2> ResourceManager::getSong(const std::string& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
 		const auto elem = res.songs.find(key);
 
 		if (elem != res.songs.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
-}
-
-std::shared_ptr<sf::SoundBuffer> ResourceManager::getSound(const std::string& key) const
-{
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.sounds.find(key);
-
-		if (elem != res.sounds.cend())
 		{
 			return elem->second;
 		}
@@ -369,13 +424,13 @@ std::shared_ptr<Palette> ResourceManager::getPalette(const std::string& key) con
 	return nullptr;
 }
 
-std::shared_ptr<CelFile> ResourceManager::getCelFile(const std::string& key) const
+std::shared_ptr<ImageContainer> ResourceManager::getImageContainer(const std::string& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
-		const auto elem = res.celFiles.find(key);
+		const auto elem = res.imageContainers.find(key);
 
-		if (elem != res.celFiles.cend())
+		if (elem != res.imageContainers.cend())
 		{
 			return elem->second;
 		}
@@ -383,13 +438,13 @@ std::shared_ptr<CelFile> ResourceManager::getCelFile(const std::string& key) con
 	return nullptr;
 }
 
-std::shared_ptr<CelTextureCache> ResourceManager::getCelTextureCache(const std::string& key) const
+std::shared_ptr<TexturePack> ResourceManager::getTexturePack(const std::string& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
-		const auto elem = res.celCaches.find(key);
+		const auto elem = res.texturePacks.find(key);
 
-		if (elem != res.celCaches.cend())
+		if (elem != res.texturePacks.cend())
 		{
 			return elem->second;
 		}
@@ -397,18 +452,20 @@ std::shared_ptr<CelTextureCache> ResourceManager::getCelTextureCache(const std::
 	return nullptr;
 }
 
-std::shared_ptr<CelTextureCacheVector> ResourceManager::getCelTextureCacheVec(const std::string& key) const
+bool ResourceManager::hasSong(const std::string& key, bool checkTopOnly) const
 {
-	for (const auto& res : reverse(resources))
+	for (const auto& resource : resources)
 	{
-		const auto elem = res.celCachesVec.find(key);
-
-		if (elem != res.celCachesVec.cend())
+		if (resource.songs.find(key) != resource.songs.cend())
 		{
-			return elem->second;
+			return true;
+		}
+		if (checkTopOnly == true)
+		{
+			return false;
 		}
 	}
-	return nullptr;
+	return false;
 }
 
 bool ResourceManager::hasPalette(const std::string& key) const
@@ -423,11 +480,11 @@ bool ResourceManager::hasPalette(const std::string& key) const
 	return false;
 }
 
-bool ResourceManager::hasCelFile(const std::string& key) const
+bool ResourceManager::hasImageContainer(const std::string& key) const
 {
 	for (const auto& resource : resources)
 	{
-		if (resource.celFiles.find(key) != resource.celFiles.cend())
+		if (resource.imageContainers.find(key) != resource.imageContainers.cend())
 		{
 			return true;
 		}
@@ -435,11 +492,11 @@ bool ResourceManager::hasCelFile(const std::string& key) const
 	return false;
 }
 
-bool ResourceManager::hasCelTextureCache(const std::string& key) const
+bool ResourceManager::hasTexturePack(const std::string& key) const
 {
 	for (const auto& resource : resources)
 	{
-		if (resource.celCaches.find(key) != resource.celCaches.cend())
+		if (resource.texturePacks.find(key) != resource.texturePacks.cend())
 		{
 			return true;
 		}
@@ -447,11 +504,11 @@ bool ResourceManager::hasCelTextureCache(const std::string& key) const
 	return false;
 }
 
-bool ResourceManager::hasCelTextureCacheVec(const std::string& key) const
+bool ResourceManager::hasDrawable(const std::string& key) const
 {
 	for (const auto& resource : resources)
 	{
-		if (resource.celCachesVec.find(key) != resource.celCachesVec.cend())
+		if (resource.drawableIds.find(key) != resource.drawableIds.cend())
 		{
 			return true;
 		}
@@ -484,18 +541,21 @@ void ResourceManager::deleteDrawable(const std::string& id)
 {
 	for (auto& res : reverse(resources))
 	{
-		auto& drawables = res.drawables;
-
-		for (auto it = drawables.begin(); it != drawables.end(); ++it)
+		if (res.drawableIds.find(id) != res.drawableIds.cend())
 		{
-			if (it->first == id)
+			res.drawableIds.erase(id);
+			auto& drawables = res.drawables;
+			for (auto it = drawables.begin(); it != drawables.end(); ++it)
 			{
-				if (drawableCache.first == id)
+				if (it->first == id)
 				{
-					clearCache();
+					if (drawableCache.first == id)
+					{
+						clearCache();
+					}
+					drawables.erase(it);
+					return;
 				}
-				drawables.erase(it);
-				return;
 			}
 		}
 	}

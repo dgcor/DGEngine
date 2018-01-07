@@ -1,0 +1,43 @@
+{
+  "playerClass": {
+    "id": "scavenger",
+    "replaceVars": true,
+    "name": "Scavenger",
+    "type": "Animal",
+    "description": "Total Kills : %totalKills%",
+    "defaultOutline": "%outlineEnemy%",
+    "defaultOutlineIgnore": "0x000000",
+    "defaults": {
+      "level": 2,
+      "experience": 80,
+      "defaultDamageMin": 1,
+      "defaultDamageMax": 5
+    },
+    "lifeFormula": "3",
+    "armorFormula": "10",
+    "toHitFormula": "50",
+    "texturePacks": "scavenger",
+    "textureIndexes": [
+      { "name": "Stand1", "index": 3 },
+      { "name": "Stand2", "index": 3 },
+      { "name": "Walk1", "index": 5 },
+      { "name": "Walk2", "index": 5 },
+      { "name": "Attack1", "index": 0 },
+      { "name": "Attack2", "index": 4 },
+      { "name": "Attack3", "index": 0 },
+      { "name": "Attack4", "index": 0 },
+      { "name": "Defend1", "index": 2 },
+      { "name": "Defend2", "index": 2 },
+      { "name": "Defend3", "index": 2 },
+      { "name": "Defend4", "index": 2 },
+      { "name": "Hit1", "index": 3 },
+      { "name": "Hit2", "index": 3 },
+      { "name": "Die1", "index": 1 },
+      { "name": "Die2", "index": 1 }
+    ],
+    "animationSpeeds": [
+      { "name": "Walk1", "animation": 20, "walk": 25 },
+      { "name": "Walk2", "animation": 20, "walk": 25 }
+    ]
+  }
+}

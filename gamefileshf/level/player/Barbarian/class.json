@@ -1,20 +1,23 @@
 {
   "playerClass": {
     "id": "Barbarian",
+    "replaceVars": true,
     "name": "Barbarian",
     "type": "Human",
     "description": "Barbarian",
+    "defaultOutline": "%outlineFriend%",
+    "defaultOutlineIgnore": "0x000000",
     "defaults": {
-      "level": 1,
       "experience": 0,
-      "expNextLevel": 2000,
       "points": 0,
       "strength": 40,
       "magic": 0,
       "dexterity": 20,
       "vitality": 25,
       "bonusLife": 1,
-      "bonusMana": 2
+      "bonusMana": 2,
+      "defaultDamageMin": 1,
+      "levelUp": 5
     },
     "maxStrength": 255,
     "maxMagic": 0,
@@ -28,7 +31,10 @@
     "armorFormula": "dexterityNow * 0.2 + armorItems + (level * 0.25)",
     "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
     "damageFormula": "strengthNow * level / 100",
-    "celTextures": [
+    "resistMagicFormula": "resistMagicItems + level",
+    "resistFireFormula": "resistFireItems + level",
+    "resistLightningFormula": "resistLightningItems + level",
+    "texturePacks": [
       "warriorNormal",
       "warriorNormalAxe",
       "warriorNormalBow",
@@ -57,7 +63,7 @@
       "warriorPlateStaff",
       "warriorPlateShield"
     ],
-    "celIndexes": [
+    "textureIndexes": [
       { "name": "Stand1", "index": 7 },
       { "name": "Stand2", "index": 0 },
       { "name": "Walk1", "index": 8 },
@@ -78,6 +84,13 @@
     "animationSpeeds": [
       { "name": "Walk1", "animation": 20, "walk": 25 },
       { "name": "Walk2", "animation": 20, "walk": 25 }
-    ]
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" }
+    ],
+    "defaultWalkSound": 0
   }
 }

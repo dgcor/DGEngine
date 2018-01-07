@@ -10,20 +10,20 @@ class ActEventAdd : public Action
 private:
 	std::string id;
 	std::shared_ptr<Action> action;
-	sf::Time seconds;
+	sf::Time time;
 	bool addToFront;
 
 public:
 	ActEventAdd(const std::string& id_, const std::shared_ptr<Action>& action_,
-		const sf::Time& seconds_, bool addToFront_) : id(id_), action(action_),
-		seconds(seconds_), addToFront(addToFront_) {}
+		const sf::Time& time_, bool addToFront_) : id(id_), action(action_),
+		time(time_), addToFront(addToFront_) {}
 
 	virtual bool execute(Game& game)
 	{
 		if (action != nullptr)
 		{
-			Event ev(action, seconds);
-			ev.setId(id);
+			auto ev = std::make_shared<Event>(action, time);
+			ev->setId(id);
 			if (addToFront == true)
 			{
 				game.Events().addFront(ev);

@@ -30,22 +30,36 @@
     {
       "key": "esc",
       "action": { "name": "menu.click", "id": "menu", "index": 4 }
-    }
-  ],
-  "texture": [
-    {
-      "id": "mainmenu",
-      "file": "ui_art/mainmenu.pcx"
     },
     {
+      "key": "f1",
+      "action": {
+        "name": "game.fadeOut",
+        "action": {
+          "name": "load",
+          "file": "ui/gameInfo.json"
+        }
+      }
+    }
+  ],
+  "texture": {
+    "id": "mainmenu",
+    "file": "ui_art/mainmenu.pcx"
+  },
+  "texturePack": [
+    {
       "id": "smlogo",
+      "texture": "smlogo",
       "file": "ui_art/smlogo.pcx",
-      "mask": "0x00FF00"
+      "mask": "0x00FF00",
+      "frames": 15
     },
     {
       "id": "focus42",
+      "texture": "focus42",
       "file": "ui_art/focus42.pcx",
-      "mask": "0x00FF00"
+      "mask": "0x00FF00",
+      "frames": 8
     }
   ],
   "cursor": {
@@ -59,24 +73,21 @@
   "animation": [
     {
       "id": "smlogo",
-      "texture": "smlogo",
-      "frames": 15,
+      "texturePack": "smlogo",
       "position": [125, 0],
       "anchor": "none",
       "refresh": 50
     },
     {
-      "texture": "focus42",
       "id": "pent1",
-      "frames": 8,
+      "texturePack": "focus42",
       "position": [67, 192],
       "anchor": "none",
       "refresh": 50
     },
     {
-      "texture": "focus42",
       "id": "pent2",
-      "frames": 8,
+      "texturePack": "focus42",
       "position": [537, 192],
       "anchor": "none",
       "refresh": 50

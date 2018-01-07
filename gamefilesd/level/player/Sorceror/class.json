@@ -1,20 +1,23 @@
 {
   "playerClass": {
     "id": "Sorceror",
+    "replaceVars": true,
     "name": "Sorceror",
     "type": "Human",
     "description": "Sorceror",
+    "defaultOutline": "%outlineFriend%",
+    "defaultOutlineIgnore": "0x000000",
     "defaults": {
-      "level": 1,
       "experience": 0,
-      "expNextLevel": 2000,
       "points": 0,
       "strength": 15,
       "magic": 35,
       "dexterity": 15,
       "vitality": 20,
       "bonusLife": 1,
-      "bonusMana": 2
+      "bonusMana": 2,
+      "defaultDamageMin": 1,
+      "levelUp": 5
     },
     "maxStrength": 45,
     "maxMagic": 250,
@@ -28,7 +31,7 @@
     "armorFormula": "dexterityNow * 0.2 + armorItems",
     "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
     "damageFormula": "strengthNow * level / 100",
-    "celTextures": [
+    "texturePacks": [
       "sorcerorNormal",
       "sorcerorNormalAxe",
       "sorcerorNormalBow",
@@ -57,7 +60,7 @@
       "sorcerorPlateStaff",
       "sorcerorPlateShield"
     ],
-    "celIndexes": [
+    "textureIndexes": [
       { "name": "Stand1", "index": 7 },
       { "name": "Stand2", "index": 0 },
       { "name": "Walk1", "index": 8 },
@@ -78,6 +81,13 @@
     "animationSpeeds": [
       { "name": "Walk1", "animation": 20, "walk": 25 },
       { "name": "Walk2", "animation": 20, "walk": 25 }
-    ]
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" }
+    ],
+    "defaultWalkSound": 0
   }
 }

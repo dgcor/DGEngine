@@ -108,6 +108,13 @@ public:
 
 	void init();
 
+	unsigned getOpenGLDepthBits() const { return window.getSettings().depthBits; }
+	unsigned getOpenGLStencilBits() const { return window.getSettings().stencilBits; }
+	unsigned getOpenGLAntialiasingLevel() const { return window.getSettings().antialiasingLevel; }
+	unsigned getOpenGLMajorVersion() const { return window.getSettings().majorVersion; }
+	unsigned getOpenGLMinorVersion() const { return window.getSettings().minorVersion; }
+	bool getOpenGLSRgbCapable() const { return window.getSettings().sRgbCapable; }
+
 	const sf::Vector2u& OldWindowSize() const { return oldSize; }
 	const sf::Vector2u& WindowSize() const { return size; }
 	const sf::Vector2u& WindowTexSize() const { return windowTexSize; }
@@ -209,7 +216,7 @@ public:
 	{
 		if (framerate_ > 0)
 		{
-			framerate = std::min(std::max(framerate_, 30u), 60u);
+			framerate = std::clamp(framerate_, 30u, 60u);
 		}
 		else
 		{
@@ -289,18 +296,18 @@ public:
 	template <class T, class U>
 	U getVarOrProp(const Variable& var, U defVal = U())
 	{
-		if (var.is<T>() == true)
+		if (std::holds_alternative<T>(var) == true)
 		{
-			return (U)var.get<T>();
+			return (U)std::get<T>(var);
 		}
-		else if (var.is<std::string>() == true)
+		else if (std::holds_alternative<std::string>(var) == true)
 		{
 			Variable var2;
-			if (getVarOrProp(var.get<std::string>(), var2) == true)
+			if (getVarOrProp(std::get<std::string>(var), var2) == true)
 			{
-				if (var2.is<T>() == true)
+				if (std::holds_alternative<T>(var2) == true)
 				{
-					return (U)var2.get<T>();
+					return (U)std::get<T>(var2);
 				}
 			}
 		}

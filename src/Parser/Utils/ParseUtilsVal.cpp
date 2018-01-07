@@ -102,6 +102,34 @@ namespace Parser
 		return val;
 	}
 
+	std::pair<size_t, size_t> getFramesVal(const Value& elem,
+		const std::pair<size_t, size_t>& val)
+	{
+		if (elem.IsArray() == true)
+		{
+			return getVector2uVal(elem, val);
+		}
+		else if (elem.IsUint() == true)
+		{
+			return std::make_pair(1u, elem.GetUint());
+		}
+		return val;
+	}
+
+	std::pair<size_t, size_t> getIndexVal(const Value& elem,
+		const std::pair<size_t, size_t>& val)
+	{
+		if (elem.IsArray() == true)
+		{
+			return getVector2uVal(elem, val);
+		}
+		else if (elem.IsUint() == true)
+		{
+			return std::make_pair(elem.GetUint(), 0u);
+		}
+		return val;
+	}
+
 	sf::IntRect getIntRectVal(const Value& elem, const sf::IntRect& val)
 	{
 		if (elem.IsArray() == true
@@ -134,6 +162,19 @@ namespace Parser
 		return val;
 	}
 
+	sf::Color getColorVal(const Value& elem, const sf::Color& val)
+	{
+		if (elem.IsString() == true)
+		{
+			try
+			{
+				return SFMLUtils::stringToColor(elem.GetString());
+			}
+			catch (std::exception ex) {}
+		}
+		return val;
+	}
+
 	sf::Keyboard::Key getKeyCodeVal(const Value& elem, sf::Keyboard::Key val)
 	{
 		if (elem.IsInt() == true)
@@ -147,6 +188,19 @@ namespace Parser
 		return val;
 	}
 
+	sf::Time getTimeVal(const Value& elem, const sf::Time& val)
+	{
+		if (elem.IsUint() == true)
+		{
+			return sf::milliseconds(elem.GetUint());
+		}
+		else if (elem.IsFloat() == true)
+		{
+			return sf::seconds(elem.GetFloat());
+		}
+		return val;
+	}
+
 	IgnoreResource getIgnoreResourceVal(const Value& elem,
 		IgnoreResource val)
 	{
@@ -154,7 +208,7 @@ namespace Parser
 		{
 			if (elem.GetBool() == true)
 			{
-				return IgnoreResource::DrawAndUpdate;
+				return IgnoreResource::Draw | IgnoreResource::Update;
 			}
 			else
 			{
@@ -342,19 +396,19 @@ namespace Parser
 		Variable var;
 		if (elem.IsString() == true)
 		{
-			var.set<std::string>(std::string(elem.GetString()));
+			var.emplace<std::string>(std::string(elem.GetString()));
 		}
 		else if (elem.IsInt64() == true)
 		{
-			var.set<int64_t>(elem.GetInt64());
+			var.emplace<int64_t>(elem.GetInt64());
 		}
 		else if (elem.IsDouble() == true)
 		{
-			var.set<double>(elem.GetDouble());
+			var.emplace<double>(elem.GetDouble());
 		}
 		else if (elem.IsBool() == true)
 		{
-			var.set<bool>(elem.GetBool());
+			var.emplace<bool>(elem.GetBool());
 		}
 		return var;
 	}

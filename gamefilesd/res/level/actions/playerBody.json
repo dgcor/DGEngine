@@ -31,5 +31,12 @@
   "load": ["res/level/actions/bodyClick.json", "Helmet", "Helmet"],
   "load": ["res/level/actions/bodyClick.json", "Amulet", "Amulet"],
   "load": ["res/level/actions/bodyClick.json", "LeftRing", "Ring"],
-  "load": ["res/level/actions/bodyClick.json", "RightRing", "Ring"]
+  "load": ["res/level/actions/bodyClick.json", "RightRing", "Ring"],
+  "load": ["res/level/actions/hoverLeave.json", "LeftHand"],
+  "load": ["res/level/actions/hoverLeave.json", "RightHand"],
+  "load": ["res/level/actions/hoverLeave.json", "Armor"],
+  "load": ["res/level/actions/hoverLeave.json", "Helmet"],
+  "load": ["res/level/actions/hoverLeave.json", "Amulet"],
+  "load": ["res/level/actions/hoverLeave.json", "LeftRing"],
+  "load": ["res/level/actions/hoverLeave.json", "RightRing"]
 }

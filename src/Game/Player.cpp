@@ -7,57 +7,67 @@
 #include "Level.h"
 #include "Utils.h"
 
+Player::Player(const PlayerClass* class__, const Level& level) : class_(class__)
+{
+	base.hoverCellSize = 2;
+	base.sprite.setOutline(class__->DefaultOutline(), class__->DefaultOutlineIgnore());
+	calculateRange();
+	applyDefaults(level);
+}
+
 void Player::calculateRange()
 {
-	celTexture = class_->getCelTexture(textureIdx);
-	if (celTexture != nullptr
+	auto oldTexturePack = base.texturePack;
+	base.texturePack = class_->getTexturePack(textureIdx);
+	if (base.texturePack != nullptr
 		&& direction < PlayerDirection::Size)
 	{
-		celIdx = class_->getStatusCelIndex(status);
-		auto numFrames = celTexture->size(celIdx);
+		if (base.texturePack != oldTexturePack)
+		{
+			if (base.texturePack->isIndexed() == true)
+			{
+				base.sprite.setPalette(base.texturePack->getPalette());
+			}
+			else
+			{
+				base.sprite.setPalette(nullptr);
+			}
+		}
+		base.texturePackIdx = class_->getAnimationIndex(animation);
+		auto numFrames = base.texturePack->size(base.texturePackIdx);
 		if (direction == PlayerDirection::All)
 		{
-			frameRange.first = 0;
-			frameRange.second = numFrames;
+			base.textureStartIdx = 0;
+			base.textureEndIdx = numFrames;
 		}
 		else
 		{
 			auto period = (numFrames / 8);
-			frameRange.first = (size_t)direction * period;
-			frameRange.second = frameRange.first + period;
+			base.textureStartIdx = (size_t)direction * period;
+			base.textureEndIdx = base.textureStartIdx + period;
 		}
 	}
 	else
 	{
-		celIdx = 0;
-		frameRange.first = 0;
-		frameRange.second = 0;
+		base.sprite.setPalette(nullptr);
+		base.texturePackIdx = 0;
+		base.textureStartIdx = 0;
+		base.textureEndIdx = 0;
 	}
-}
-
-void Player::updateDrawPosition(sf::Vector2f pos)
-{
-	pos.x += (float)(-(sprite.getTextureRect().width / 2)) + LevelMap::TileSize();
-	pos.y += (float)(224 - (sprite.getTextureRect().height - LevelMap::TileSize()));
-	sprite.setPosition(pos);
 }
 
 void Player::updateTexture()
 {
-	if (currentFrame < frameRange.first || currentFrame >= frameRange.second)
+	base.checkAndUpdateTextureIndex();
+	if (base.updateTexture() == true)
 	{
-		currentFrame = frameRange.first;
+		base.currentTextureIdx++;
 	}
-	if (currentFrame < celTexture->size(celIdx))
-	{
-		sprite.setTexture(celTexture->get(celIdx, currentFrame), true);
-	}
-	currentFrame++;
 }
 
 void Player::updateSpeed()
 {
-	if (hasWalkingStatus() == true)
+	if (hasWalkingAnimation() == true)
 	{
 		if (defaultSpeed.animation != sf::Time::Zero)
 		{
@@ -92,14 +102,24 @@ void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
 
 void Player::updateWalkPath(Game& game, Level& level)
 {
+	currentWalkTime += game.getElapsedTime();
+	if (currentWalkTime < speed.walk)
+	{
+		return;
+	}
+
+	currentWalkTime = sf::microseconds(
+		currentWalkTime.asMicroseconds() % speed.walk.asMicroseconds());
+
 	auto newDrawPos = drawPosA;
 	if (drawPosA == drawPosB)
 	{
 		if (walkPath.empty() == true &&
-			hasWalkingStatus() == true)
+			hasWalkingAnimation() == true)
 		{
-			setStandStatus();
+			setStandAnimation();
 			resetAnimationTime();
+			playerAction = PlayerAction::Stand;
 		}
 		while (walkPath.empty() == false)
 		{
@@ -111,16 +131,21 @@ void Player::updateWalkPath(Game& game, Level& level)
 				{
 					levelObj->executeAction(game);
 					walkPath.pop_back();
+
+					setStandAnimation();
+					resetAnimationTime();
+					playerAction = PlayerAction::Stand;
 					return;
 				}
 			}
-			if (nextMapPos == mapPosition)
+			if (nextMapPos == base.mapPosition)
 			{
 				walkPath.pop_back();
 				continue;
 			}
-			setWalkStatus();
-			setDirection(getPlayerDirection(mapPosition, nextMapPos));
+			playSound(walkSound);
+			setWalkAnimation();
+			setDirection(getPlayerDirection(base.mapPosition, nextMapPos));
 			MapPosition(level, nextMapPos);
 			currPositionStep = 0.1f;
 			updateWalkPathStep(newDrawPos);
@@ -131,7 +156,7 @@ void Player::updateWalkPath(Game& game, Level& level)
 	{
 		updateWalkPathStep(newDrawPos);
 	}
-	updateDrawPosition(newDrawPos);
+	base.updateDrawPosition(level, newDrawPos);
 }
 
 void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
@@ -141,17 +166,16 @@ void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
 		return;
 	}
 	walkPath = walkPath_;
+	playerAction = PlayerAction::Walk;
 	if (walkPath.empty() == false)
 	{
 		mapPositionMoveTo = walkPath.front();
 	}
 }
 
-sf::Vector2f Player::getBasePosition() const
+sf::Vector2f Player::getBasePosition(const Level& level) const
 {
-	return sf::Vector2f(
-		std::round(sprite.getPosition().x + (float)(sprite.getTextureRect().width / 2)),
-		std::round(sprite.getPosition().y + (float)(sprite.getTextureRect().height - LevelMap::TileSize() / 2)));
+	return base.getBasePosition(level);
 }
 
 void Player::executeAction(Game& game) const
@@ -162,51 +186,71 @@ void Player::executeAction(Game& game) const
 	}
 }
 
-void Player::updateMapPosition(Level& level, const MapCoord& pos)
-{
-	auto oldObj = level.Map()[mapPosition].getObject(this);
-	level.Map()[mapPosition].deleteObject(this);
-	mapPosition = pos;
-	level.Map()[mapPosition].addBack(oldObj);
-}
-
 void Player::MapPosition(Level& level, const MapCoord& pos)
 {
-	drawPosA = level.Map().getCoord(mapPosition);
+	drawPosA = level.Map().getCoord(base.mapPosition);
 	drawPosB = level.Map().getCoord(pos);
-	updateMapPosition(level, pos);
+	base.updateMapPositionBack(level, pos, this);
 }
 
 void Player::move(Level& level, const MapCoord& pos)
 {
-	if (mapPosition == pos)
+	if (base.mapPosition == pos)
 	{
 		return;
 	}
 	clearWalkPath();
-	setStandStatus();
+	setStandAnimation();
+	playerAction = PlayerAction::Stand;
 	resetAnimationTime();
 	drawPosA = drawPosB = level.Map().getCoord(pos);
-	updateMapPosition(level, pos);
+	base.updateMapPositionBack(level, pos, this);
+	updateDrawPosition(level);
 }
 
-void Player::update(Game& game, Level& level)
+void Player::updateAI(Level& level)
 {
-	if (celTexture == nullptr
-		|| frameRange.first > frameRange.second)
+	switch (playerAction)
+	{
+	case PlayerAction::Walk:
+		return;
+	default:
+		break;
+	}
+	auto plr = level.getCurrentPlayer();
+	if (plr != nullptr)
+	{
+		setWalkPath(level.Map().getPath(base.mapPosition, plr->MapPosition()));
+	}
+}
+
+void Player::updateWalk(Game& game, Level& level)
+{
+	updateWalkPath(game, level);
+	updateAnimation(game);
+}
+
+void Player::updateAttack(Game& game, Level& level)
+{
+	updateAnimation(game);
+}
+
+void Player::updateDead(Game& game, Level& level)
+{
+	if (animation != PlayerAnimation::Die1)
+	{
+		base.currentTextureIdx = 0;
+		setAnimation(PlayerAnimation::Die1);
+	}
+	if (base.currentTextureIdx >= base.textureEndIdx)
 	{
 		return;
 	}
+	updateAnimation(game);
+}
 
-	currentWalkTime += game.getElapsedTime();
-	if (currentWalkTime >= speed.walk)
-	{
-		currentWalkTime = sf::microseconds(
-			currentWalkTime.asMicroseconds() % speed.walk.asMicroseconds());
-
-		updateWalkPath(game, level);
-	}
-
+void Player::updateAnimation(Game& game)
+{
 	currentAnimationTime += game.getElapsedTime();
 	if (currentAnimationTime >= speed.animation)
 	{
@@ -215,32 +259,39 @@ void Player::update(Game& game, Level& level)
 
 		updateTexture();
 	}
-	if (enableHover == false)
+}
+
+void Player::update(Game& game, Level& level)
+{
+	base.processQueuedActions(game);
+
+	if (base.hasValidState() == false)
 	{
 		return;
 	}
-	if (level.HasMouseInside() == true &&
-		sprite.getGlobalBounds().contains(level.MousePositionf()) == true)
+	if (useAI == true)
 	{
-		if (hovered == false)
-		{
-			hovered = true;
-			level.setHoverObject(this);
-			level.executeHoverEnterAction(game);
-		}
+		updateAI(level);
 	}
-	else
+
+	switch (playerAction)
 	{
-		if (hovered == true)
-		{
-			hovered = false;
-			if (level.getHoverObject() == this)
-			{
-				level.setHoverObject(nullptr);
-				level.executeHoverLeaveAction(game);
-			}
-		}
+	default:
+	case PlayerAction::Stand:
+		updateAnimation(game);
+		break;
+	case PlayerAction::Walk:
+		updateWalk(game, level);
+		break;
+	case PlayerAction::Attack:
+		updateAttack(game, level);
+		break;
+	case PlayerAction::Dead:
+		updateDead(game, level);
+		break;
 	}
+
+	base.updateHover(game, level, this);
 }
 
 bool Player::getProperty(const std::string& prop, Variable& var) const
@@ -261,19 +312,32 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("name"):
 		var = Variable(name);
 		break;
+	case str2int16("d"):
+	case str2int16("description"):
+		var = Variable(GameUtils::replaceStringWithQueryable(class_->Description(), *this));
+		break;
 	case str2int16("class"):
 		var = Variable(class_->Name());
 		break;
-	case str2int16("canEquipSelectedItem"):
+	case str2int16("totalKills"):
+		var = Variable((int64_t)class_->TotalKills());
+		break;
+	case str2int16("hasMaxStats"):
+		var = Variable(hasMaxStats());
+		break;
+	case str2int16("hasProperty"):
+		var = Variable(hasInt(props.second));
+		break;
+	case str2int16("canUseSelectedItem"):
 	{
 		if (selectedItem == nullptr)
 		{
 			return false;
 		}
-		var = Variable(canEquipItem(*selectedItem));
+		var = Variable(canUseItem(*selectedItem));
 		break;
 	}
-	case str2int16("canEquipItem"):
+	case str2int16("canUseItem"):
 	{
 		std::string props2;
 		size_t invIdx;
@@ -282,7 +346,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		{
 			if (inventories[invIdx][itemIdx] != nullptr)
 			{
-				var = Variable(canEquipItem(*inventories[invIdx][itemIdx]));
+				var = Variable(canUseItem(*inventories[invIdx][itemIdx]));
 				break;
 			}
 		}
@@ -380,17 +444,17 @@ void Player::setProperty(const std::string& prop, const Variable& val)
 	{
 	case str2int16("name"):
 	{
-		if (val.is<std::string>() == true)
+		if (std::holds_alternative<std::string>(val) == true)
 		{
-			Name(val.get<std::string>());
+			Name(std::get<std::string>(val));
 		}
 	}
 	break;
 	default:
 	{
-		if (val.is<int64_t>() == true)
+		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			if (setNumberByHash(propHash16, (LevelObjValue)val.get<int64_t>()))
+			if (setNumberByHash(propHash16, (LevelObjValue)std::get<int64_t>(val), nullptr))
 			{
 				updateProperties();
 			}
@@ -439,6 +503,26 @@ const Queryable* Player::getQueryable(const std::string& prop) const
 	return queryable;
 }
 
+bool Player::hasIntByHash(uint16_t propHash) const
+{
+	if (customPropsSize > 0)
+	{
+		for (size_t i = 0; i < customPropsSize; i++)
+		{
+			if (customProperties[i].first == propHash)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::hasInt(const char* prop) const
+{
+	return hasIntByHash(str2int16(prop));
+}
+
 bool Player::getNumberProp(const char* prop, Number32& value) const
 {
 	return getNumberByHash(str2int16(prop), value);
@@ -458,6 +542,11 @@ bool Player::getNumberByHash(uint16_t propHash, Number32& value) const
 		value.setUInt32(uVal);
 		return true;
 	}
+	return getCustomIntByHash(propHash, value);
+}
+
+bool Player::getCustomIntByHash(uint16_t propHash, Number32& value) const
+{
 	for (size_t i = 0; i < customPropsSize; i++)
 	{
 		const auto& customProp = customProperties[i];
@@ -468,6 +557,11 @@ bool Player::getNumberByHash(uint16_t propHash, Number32& value) const
 		}
 	}
 	return false;
+}
+
+bool Player::getCustomInt(const char* prop, Number32& value) const
+{
+	return getCustomIntByHash(str2int16(prop), value);
 }
 
 bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
@@ -567,11 +661,20 @@ bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 	case str2int16("resistMagic"):
 		value = resistMagic;
 		break;
+	case str2int16("resistMagicItems"):
+		value = resistMagicItems;
+		break;
 	case str2int16("resistFire"):
 		value = resistFire;
 		break;
+	case str2int16("resistFireItems"):
+		value = resistFireItems;
+		break;
 	case str2int16("resistLightning"):
 		value = resistLightning;
+		break;
+	case str2int16("resistLightningItems"):
+		value = resistLightningItems;
 		break;
 	case str2int16("maxStrength"):
 		value = class_->MaxStrength();
@@ -635,21 +738,21 @@ bool Player::getUInt(const char* prop, uint32_t& value) const
 	return getUIntByHash(str2int16(prop), value);
 }
 
-bool Player::setIntByHash(uint16_t propHash, LevelObjValue value)
+bool Player::setIntByHash(uint16_t propHash, LevelObjValue value, const Level* level)
 {
 	switch (propHash)
 	{
 	case str2int16("strength"):
-		strength = std::min(std::max(value, 0), class_->MaxStrength());
+		strength = std::clamp(value, 0, class_->MaxStrength());
 		break;
 	case str2int16("magic"):
-		magic = std::min(std::max(value, 0), class_->MaxMagic());
+		magic = std::clamp(value, 0, class_->MaxMagic());
 		break;
 	case str2int16("dexterity"):
-		dexterity = std::min(std::max(value, 0), class_->MaxDexterity());
+		dexterity = std::clamp(value, 0, class_->MaxDexterity());
 		break;
 	case str2int16("vitality"):
-		vitality = std::min(std::max(value, 0), class_->MaxVitality());
+		vitality = std::clamp(value, 0, class_->MaxVitality());
 		break;
 	case str2int16("lifeDamage"):
 		lifeDamage = std::max(value, 0);
@@ -663,24 +766,24 @@ bool Player::setIntByHash(uint16_t propHash, LevelObjValue value)
 	return true;
 }
 
-bool Player::setInt(const char* prop, LevelObjValue value)
+bool Player::setInt(const char* prop, LevelObjValue value, const Level* level)
 {
-	return setIntByHash(str2int16(prop), value);
+	return setIntByHash(str2int16(prop), value, level);
 }
 
-bool Player::setUIntByHash(uint16_t propHash, uint32_t value)
+bool Player::setUIntByHash(uint16_t propHash, uint32_t value, const Level* level)
 {
 	switch (propHash)
 	{
-	case str2int16("level"):
-		currentLevel = value;
-		break;
 	case str2int16("experience"):
+	{
 		experience = value;
+		if (level != nullptr)
+		{
+			updateExperience(*level);
+		}
 		break;
-	case str2int16("expNextLevel"):
-		expNextLevel = value;
-		break;
+	}
 	case str2int16("points"):
 		points = value;
 		break;
@@ -690,39 +793,42 @@ bool Player::setUIntByHash(uint16_t propHash, uint32_t value)
 	return true;
 }
 
-bool Player::setUInt(const char* prop, uint32_t value)
+bool Player::setUInt(const char* prop, uint32_t value, const Level* level)
 {
-	return setUIntByHash(str2int16(prop), value);
+	return setUIntByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value)
+bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level)
 {
-	if (setIntByHash(propHash, value) == false)
+	if (setIntByHash(propHash, value, nullptr) == false)
 	{
-		return setUIntByHash(propHash, (uint32_t)value);
+		return setUIntByHash(propHash, (uint32_t)value, level);
 	}
 	return true;
 }
 
-bool Player::setNumber(const char* prop, LevelObjValue value)
+bool Player::setNumber(const char* prop, LevelObjValue value, const Level* level)
 {
-	return setNumberByHash(str2int16(prop), value);
+	return setNumberByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumber(const char* prop, const Number32& value)
+bool Player::setNumber(const char* prop, const Number32& value, const Level* level)
 {
-	return setNumberByHash(str2int16(prop), value);
+	return setNumberByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumberByHash(uint16_t propHash, const Number32& value)
+bool Player::setNumberByHash(uint16_t propHash, const Number32& value, const Level* level)
 {
-	if (setNumberByHash(propHash, value.getInt32()) == true)
+	if (setNumberByHash(propHash, value.getInt32(), level) == true)
 	{
 		return true;
 	}
 	switch (propHash)
 	{
 	case str2int16(""):
+	case str2int16("hasMaxStats"):
+	case str2int16("level"):
+	case str2int16("expNextLevel"):
 	case str2int16("strengthItems"):
 	case str2int16("strengthNow"):
 	case str2int16("magicItems"):
@@ -1092,14 +1198,16 @@ void Player::updateBodyItemValues()
 	armorItems = 0;
 	toArmor = 0;
 	toHitItems = 0;
-	damageMin = 1;
-	damageMax = 1;
+	damageMin = 0;
+	damageMax = 0;
 	damageMinItems = 0;
 	damageMaxItems = 0;
 	toDamage = 0;
-	resistMagic = 0;
-	resistFire = 0;
-	resistLightning = 0;
+	resistMagicItems = 0;
+	resistFireItems = 0;
+	resistLightningItems = 0;
+	LevelObjValue singleItemDamage = 0;
+	int equipedItems = 0;
 
 	if (bodyInventoryIdx >= inventories.size())
 	{
@@ -1111,6 +1219,7 @@ void Player::updateBodyItemValues()
 		{
 			continue;
 		}
+		equipedItems++;
 		const auto& item = inventories[bodyInventoryIdx].get(i);
 
 		if (item->Identified() == true)
@@ -1130,7 +1239,7 @@ void Player::updateBodyItemValues()
 		}
 		const auto& item = inventories[bodyInventoryIdx].get(i);
 
-		if (canEquipItem(*item) == false)
+		if (canUseItem(*item) == false)
 		{
 			continue;
 		}
@@ -1140,16 +1249,12 @@ void Player::updateBodyItemValues()
 			manaItems += item->getIntByHash(ItemProp::Mana);
 
 			auto resistAll = item->getIntByHash(ItemProp::ResistAll);
-			resistMagic += resistAll + item->getIntByHash(ItemProp::ResistMagic);
-			resistFire += resistAll + item->getIntByHash(ItemProp::ResistFire);
-			resistLightning += resistAll + item->getIntByHash(ItemProp::ResistLightning);
+			resistMagicItems += resistAll + item->getIntByHash(ItemProp::ResistMagic);
+			resistFireItems += resistAll + item->getIntByHash(ItemProp::ResistFire);
+			resistLightningItems += resistAll + item->getIntByHash(ItemProp::ResistLightning);
 
 			toArmor += item->getIntByHash(ItemProp::ToArmor);
 			toDamage += item->getIntByHash(ItemProp::ToDamage);
-
-			resistMagic = std::min(std::max(resistMagic, 0), class_->MaxResistMagic());
-			resistFire = std::min(std::max(resistFire, 0), class_->MaxResistFire());
-			resistLightning = std::min(std::max(resistLightning, 0), class_->MaxResistLightning());
 
 			auto damage = item->getIntByHash(ItemProp::Damage);
 			damageMin += damage;
@@ -1159,6 +1264,11 @@ void Player::updateBodyItemValues()
 		toHitItems += item->getIntByHash(ItemProp::ToHit);
 		damageMinItems += item->getIntByHash(ItemProp::DamageMin);
 		damageMaxItems += item->getIntByHash(ItemProp::DamageMax);
+
+		if (equipedItems == 1)
+		{
+			singleItemDamage = item->getIntByHash(ItemProp::SingleItemDamage);
+		}
 	}
 	auto toArmorPercentage = (float)toArmor * 0.01f;
 	armor += (LevelObjValue)(armorItems * toArmorPercentage);
@@ -1166,13 +1276,43 @@ void Player::updateBodyItemValues()
 	auto toDamagePercentage = 1.f + ((float)toDamage * 0.01f);
 	if (damageMinItems > 0)
 	{
-		damageMin--;
 		damageMin += (LevelObjValue)(damageMinItems * toDamagePercentage);
+	}
+	else if (damageMin <= 0)
+	{
+		Number32 defaultDamage;
+		if (getCustomIntByHash(ItemProp::DefaultDamageMin, defaultDamage))
+		{
+			damageMin = std::max(0, defaultDamage.getInt32());
+		}
+		else
+		{
+			damageMin = 0;
+		}
 	}
 	if (damageMaxItems > 0)
 	{
-		damageMax--;
 		damageMax += (LevelObjValue)(damageMaxItems * toDamagePercentage);
+	}
+	else if (damageMax <= 0)
+	{
+		Number32 defaultDamage;
+		if (getCustomIntByHash(ItemProp::DefaultDamageMax, defaultDamage))
+		{
+			damageMax = defaultDamage.getInt32();
+		}
+		else
+		{
+			damageMax = damageMin;
+		}
+		if (singleItemDamage > 0)
+		{
+			damageMax += singleItemDamage;
+		}
+	}
+	if (damageMin > damageMax)
+	{
+		damageMax = damageMin;
 	}
 }
 
@@ -1184,20 +1324,33 @@ void Player::updateProperties()
 	mana = class_->getActualMana(*this, 0);
 	armor += class_->getActualArmor(*this, 0);
 	toHit = class_->getActualToHit(*this, 0);
+
+	resistMagic = class_->getActualResistMagic(*this, resistMagicItems);
+	resistMagic = std::clamp(resistMagic, 0, class_->MaxResistMagic());
+	resistFire = class_->getActualResistFire(*this, resistFireItems);
+	resistFire = std::clamp(resistFire, 0, class_->MaxResistFire());
+	resistLightning = class_->getActualResistLightning(*this, resistLightningItems);
+	resistLightning = std::clamp(resistLightning, 0, class_->MaxResistLightning());
+
 	auto damage = class_->getActualDamage(*this, 0);
 	damageMin += damage;
 	damageMax += damage;
 }
 
-void Player::applyDefaults()
+void Player::applyDefaults(const Level& level)
 {
 	for (const auto& prop : class_->Defaults())
 	{
-		setNumberByHash(prop.first, prop.second);
+		setNumberByHash(prop.first, prop.second, &level);
 	}
+	attackSound = class_->getDefaultAttackSound();
+	defendSound = class_->getDefaultDefendSound();
+	dieSound = class_->getDefaultDieSound();
+	hitSound = class_->getDefaultHitSound();
+	walkSound = class_->getDefaultWalkSound();
 }
 
-bool Player::canEquipItem(const Item& item) const
+bool Player::canUseItem(const Item& item) const
 {
 	return (item.getIntByHash(ItemProp::RequiredStrength) <= StrengthNow() &&
 		item.getIntByHash(ItemProp::RequiredMagic) <= MagicNow() &&
@@ -1241,4 +1394,46 @@ bool Player::hasEquipedItemSubType(const std::string& type) const
 		}
 	}
 	return false;
+}
+
+void Player::playSound(int16_t soundIdx)
+{
+	if (soundIdx < 0)
+	{
+		return;
+	}
+	auto sndBuffer = class_->getSound((size_t)soundIdx);
+	if (sndBuffer == nullptr)
+	{
+		return;
+	}
+	currentSound.setBuffer(*sndBuffer);
+	currentSound.play();
+}
+
+void Player::updateExperience(const Level& level)
+{
+	auto oldLevel = currentLevel;
+	currentLevel = level.getLevelFromExperience(experience);
+	expNextLevel = level.getExperienceFromLevel(currentLevel);
+	if (currentLevel > oldLevel &&
+		oldLevel != 0)
+	{
+		lifeDamage = 0;
+		manaDamage = 0;
+		Number32 levelUp;
+		if (getNumberByHash(ItemProp::LevelUp, levelUp) == true)
+		{
+			points += levelUp.getUInt32();
+			base.queueAction(*class_, str2int16("levelChange"));
+		}
+	}
+}
+
+bool Player::hasMaxStats() const
+{
+	return (strength >= class_->MaxStrength() &&
+		magic >= class_->MaxMagic() &&
+		dexterity >= class_->MaxDexterity() &&
+		vitality >= class_->MaxVitality());
 }

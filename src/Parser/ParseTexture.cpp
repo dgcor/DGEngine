@@ -1,6 +1,5 @@
 #include "ParseTexture.h"
-#include "ParseCelFile.h"
-#include "CelUtils.h"
+#include "ParseImageContainer.h"
 #include "ImageUtils.h"
 #include "Utils.h"
 #include "Utils/ParseUtils.h"
@@ -9,15 +8,31 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	sf::Image parseTextureImg(Game& game, const rapidjson::Value& elem,
-		size_t* numFramesX, size_t* numFramesY)
+	sf::Image parseTextureImg(Game& game, const rapidjson::Value& elem)
 	{
 		sf::Image img;
 
-		if (elem.HasMember("fill"))
+		if (elem.HasMember("color") == true)
 		{
+			const auto& colorElem = elem["color"];
 			auto size = getVector2uKey(elem, "size", game.WindowTexSize());
-			img.create(size.x, size.y, getColorKey(elem, "fill"));
+
+			if (colorElem.IsArray() == true &&
+				colorElem.Size() == (size.x * size.y))
+			{
+				img.create(size.x, size.y);
+				for (size_t j = 0; j < size.y; j++)
+				{
+					for (size_t i = 0; i < size.x; i++)
+					{
+						img.setPixel(i, j, getColorVal(colorElem[i + j * size.y]));
+					}
+				}
+			}
+			else
+			{
+				img.create(size.x, size.y, getColorVal(colorElem));
+			}
 			return img;
 		}
 		else if (elem.HasMember("file") == false)
@@ -31,36 +46,31 @@ namespace Parser
 			{
 				return img;
 			}
-			auto celFile = parseCelFileObj(game, elem);
-			if (celFile == nullptr)
+			auto imgContainer = parseImageContainerObj(game, elem);
+			if (imgContainer == nullptr)
 			{
 				return img;
 			}
 			if (elem.HasMember("charMapFile") == true)
 			{
-				img = CelUtils::loadBitmapFontImage(*celFile, elem["charMapFile"].GetString(), *pal);
+				img = ImageUtils::loadBitmapFontImage(
+					*imgContainer, elem["charMapFile"].GetString(), pal);
 			}
 			else if (elem.HasMember("frame") == true)
 			{
 				auto frameIdx = getUIntVal(elem["frame"]);
-				img = CelUtils::loadImageFrame(*celFile, *pal, frameIdx);
-			}
-			else if (numFramesX != nullptr && numFramesY != nullptr)
-			{
-				// construct cel already vertically splitted, if pieces exists
-				(*numFramesX) = getUIntKey(elem, "pieces", 1);
-				img = CelUtils::loadImage(*celFile, *pal, *numFramesX, *numFramesY);
+				img = ImageUtils::loadImageFrame(*imgContainer, pal, frameIdx);
 			}
 			else
 			{
-				img = CelUtils::loadImage(*celFile, *pal);
+				img = ImageUtils::loadImage(*imgContainer, pal);
 			}
 		}
 		else
 		{
 			img = ImageUtils::loadImage(
 				getStringCharVal(elem["file"]),
-				getColorKey(elem, "mask"));
+				getColorKey(elem, "mask", sf::Color::Transparent));
 
 			if (elem.HasMember("split"))
 			{
@@ -73,15 +83,6 @@ namespace Parser
 				else if (elem["split"].GetString() == std::string("vertical"))
 				{
 					img = ImageUtils::splitImageVertical(img, piecesX);
-				}
-
-				if (numFramesX != nullptr)
-				{
-					(*numFramesX) = piecesX;
-				}
-				if (numFramesY != nullptr)
-				{
-					(*numFramesY) = (*numFramesY) / piecesX;
 				}
 			}
 		}
@@ -108,6 +109,29 @@ namespace Parser
 			return true;
 		}
 		return false;
+	}
+
+	std::shared_ptr<sf::Texture> parseTextureObj(Game& game,
+		const rapidjson::Value& elem, const sf::Image& image)
+	{
+		auto texture = std::make_shared<sf::Texture>();
+		if (texture->loadFromImage(image) == false)
+		{
+			return nullptr;
+		}
+		texture->setRepeated(getBoolKey(elem, "repeat", true));
+		return texture;
+	}
+
+	std::shared_ptr<sf::Texture> parseTextureObj(Game& game, const Value& elem)
+	{
+		auto img = parseTextureImg(game, elem);
+		auto imgSize = img.getSize();
+		if (imgSize.x == 0 || imgSize.y == 0)
+		{
+			return nullptr;
+		}
+		return parseTextureObj(game, elem, img);
 	}
 
 	void parseTexture(Game& game, const Value& elem)
@@ -137,21 +161,37 @@ namespace Parser
 		{
 			return;
 		}
-
-		auto img = parseTextureImg(game, elem);
-		auto imgSize = img.getSize();
-		if (imgSize.x == 0 || imgSize.y == 0)
+		auto texture = parseTextureObj(game, elem);
+		if (texture == nullptr)
 		{
 			return;
 		}
-		auto texture = std::make_shared<sf::Texture>();
-		if (texture->loadFromImage(img) == false)
-		{
-			return;
-		}
-
-		texture->setRepeated(getBoolKey(elem, "repeat", true));
-
 		game.Resources().addTexture(id, texture);
+	}
+
+	bool getOrParseTexture(Game& game, const Value& elem,
+		const char* idKey, std::shared_ptr<sf::Texture>& texture)
+	{
+		if (isValidString(elem, idKey) == true)
+		{
+			std::string id = elem[idKey].GetString();
+			texture = game.Resources().getTexture(id);
+			if (texture != nullptr)
+			{
+				return true;
+			}
+			texture = parseTextureObj(game, elem);
+			if (isValidId(id) == true &&
+				texture != nullptr)
+			{
+				game.Resources().addTexture(id, texture);
+				return true;
+			}
+		}
+		else
+		{
+			texture = parseTextureObj(game, elem);
+		}
+		return false;
 	}
 }

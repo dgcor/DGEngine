@@ -8,15 +8,13 @@
 #include "ParseAudio.h"
 #include "ParseBitmapFont.h"
 #include "ParseButton.h"
-#include "ParseCelFile.h"
-#include "ParseCelTexture.h"
-#include "ParseCelTexturePack.h"
 #include "ParseCircle.h"
 #include "ParseCursor.h"
 #include "ParseEvent.h"
 #include "ParseFont.h"
 #include "ParseIcon.h"
 #include "ParseImage.h"
+#include "ParseImageContainer.h"
 #include "ParseInputText.h"
 #include "ParseKeyboard.h"
 #include "ParseLoadingScreen.h"
@@ -30,6 +28,7 @@
 #include "ParseVariable.h"
 #include "ParseText.h"
 #include "ParseTexture.h"
+#include "ParseTexturePack.h"
 #include "Parser/Game/ParseItem.h"
 #include "Parser/Game/ParseItemClass.h"
 #include "Parser/Game/ParseLevel.h"
@@ -110,16 +109,11 @@ namespace Parser
 		parseJson(game, json);
 	}
 
-	void parseJson(Game& game, const std::string& str)
+	void parseJson(Game& game, const std::string& json)
 	{
-		if (str.empty() == true)
-		{
-			return;
-		}
+		Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
 
-		rapidjson::Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
-
-		if (doc.Parse(str.c_str()).HasParseError() == true)
+		if (JsonUtils::loadJson(json, doc) == false)
 		{
 			return;
 		}
@@ -219,9 +213,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("celFile"): {
+		case str2int16("imageContainer"): {
 			if (elem.IsArray() == false) {
-				parseCelFile(game, elem);
+				parseImageContainer(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -230,20 +224,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("celTexture"): {
+		case str2int16("texturePack"): {
 			if (elem.IsArray() == false) {
-				parseCelTexture(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("celTexturePack"): {
-			if (elem.IsArray() == false) {
-				parseCelTexturePack(game, elem);
+				parseTexturePack(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

@@ -3,9 +3,8 @@
 #include "DrawableText.h"
 #include <memory>
 #include "UIObject.h"
-#include "UIText.h"
 
-class Text2 : public UIObject, public UIText
+class Text2 : public virtual UIObject
 {
 private:
 	std::unique_ptr<DrawableText> text;
@@ -15,8 +14,6 @@ private:
 	bool triggerOnChange{ false };
 
 public:
-	Text2(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
-
 	DrawableText* getDrawableText() { return text.get(); }
 
 	virtual std::string getText() const { return text->getText(); }
@@ -36,7 +33,7 @@ public:
 	virtual void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }

@@ -1,0 +1,15 @@
+{
+  "load": "level/monster/Diablo/celFiles.json",
+  "texturePack": {
+    "id": "diablo",
+    "imageContainer": [
+      "diabloa",
+      "diablod",
+      "diabloh",
+      "diablon",
+      "diablos",
+      "diablow"
+    ],
+    "palette": "town"
+  }
+}

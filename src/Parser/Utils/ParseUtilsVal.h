@@ -70,14 +70,26 @@ namespace Parser
 		return val;
 	}
 
+	std::pair<size_t, size_t> getFramesVal(const rapidjson::Value& elem,
+		const std::pair<size_t, size_t>& val = {});
+
+	std::pair<size_t, size_t> getIndexVal(const rapidjson::Value& elem,
+		const std::pair<size_t, size_t>& val = {});
+
 	sf::IntRect getIntRectVal(const rapidjson::Value& elem,
 		const sf::IntRect& val = {});
 
 	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem,
 		const sf::FloatRect& val = {});
 
+	sf::Color getColorVal(const rapidjson::Value& elem,
+		const sf::Color& val = {});
+
 	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem,
 		sf::Keyboard::Key val = sf::Keyboard::Unknown);
+
+	sf::Time getTimeVal(const rapidjson::Value& elem,
+		const sf::Time& val = {});
 
 	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem,
 		IgnoreResource val = IgnoreResource::None);

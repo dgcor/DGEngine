@@ -3,7 +3,6 @@
     { "name": "resource.add", "id": "singlePlayerSelect" },
     { "name": "text.setText", "id": "label1", "text": "Single Player Characters" },
     { "name": "text.setText", "id": "label2", "text": "Select Hero" },
-    { "name": "image.setTextureRect", "id": "heros", "rect": [0, 228, 180, 76] },
     { "name": "text.setText", "id": "txtLevel", "text": "--" },
     { "name": "text.setText", "id": "txtStrength", "text": "--" },
     { "name": "text.setText", "id": "txtMagic", "text": "--" },
@@ -22,16 +21,14 @@
   "animation": [
     {
       "id": "pent1",
-      "texture": "focus16",
-      "frames": 8,
+      "texturePack": "focus16",
       "position": [263, 258],
       "anchor": "none",
       "refresh": 50
     },
     {
       "id": "pent2",
-      "texture": "focus16",
-      "frames": 8,
+      "texturePack": "focus16",
       "position": [566, 258],
       "anchor": "none",
       "refresh": 50
@@ -94,7 +91,7 @@
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete" },
-          { "name": "button.setFont", "id": "delete", "idFont": "font30g" },
+          { "name": "text.setFont", "id": "delete", "idFont": "font30g" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },
@@ -108,7 +105,7 @@
           { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
           { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
           { "name": "button.enable", "id": "delete", "enable": false },
-          { "name": "button.setFont", "id": "delete", "idFont": "font30s" },
+          { "name": "text.setFont", "id": "delete", "idFont": "font30s" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },

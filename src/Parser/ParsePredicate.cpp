@@ -28,9 +28,9 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getItemLocationKey(elem, "item"));
 		}
-		case str2int16("player.canEquipItem"):
+		case str2int16("player.canUseItem"):
 		{
-			return std::make_shared<PredPlayerCanEquip>(
+			return std::make_shared<PredPlayerCanUse>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "player"),
 				getItemLocationKey(elem, "item"));

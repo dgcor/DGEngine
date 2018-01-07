@@ -25,11 +25,11 @@
           { "name": "load", "file": "level/loadBaseLevel.json" },
           { "name": "loadingScreen.setProgress", "progress": 45 },
           { "name": "load", "file": "level/item/loadItemClasses.json" },
-          { "name": "loadingScreen.setProgress", "progress": 50},
+          { "name": "loadingScreen.setProgress", "progress": 50 },
+          { "name": "load", "file": "res/player/sounds.json" },
+          { "name": "loadingScreen.setProgress", "progress": 55 },
           { "name": "load", "file": ["level/player/save.json", "%charName%", "%charClass%"] },
           { "name": "load", "file": ["level/player/loadCel.json", "%charName%"] },
-          { "name": "loadingScreen.setProgress", "progress": 55 },
-          { "name": "load", "file": "res/player/sounds.json" },
           { "name": "loadingScreen.setProgress", "progress": 60 },
           { "name": "resource.add", "id": "currentLevel" },
           { "name": "load", "file": "level/town/level.json" },
@@ -42,6 +42,15 @@
           { "name": "load", "file": "level/town/players.json" },
           { "name": "load", "file": "level/town/music.json" },
           { "name": "load", "file": ["level/afterLevelLoad.json", "town"] },
+          {
+            "name": "if.equal",
+            "param1": "%beta%",
+            "param2": true,
+            "else": [
+              { "name": "load", "file": "level/town/soundWelcome.json" },
+              { "name": "sound.play", "id": "gameWelcome" }
+            ]
+          },
           { "name": "loadingScreen.setProgress", "progress": 100 }
         ]
       }

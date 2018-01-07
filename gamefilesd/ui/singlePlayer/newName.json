@@ -3,6 +3,11 @@
     { "name": "resource.add", "id": "singlePlayerNewName" },
     { "name": "text.setText", "id": "label2", "text": "Enter Name" }
   ],
+  "texturePack": {
+    "id": "caret",
+    "texture": "font24g",
+    "rects": [[168, 312, 4, 26], [0, 0, 4, 26]]
+  },
   "inputText": {
     "id": "heroName",
     "bitmapFont": "font24g",
@@ -29,12 +34,12 @@
       "idAnchor": "heroName"
     }
   },
-  "image": {
+  "animation": {
     "id": "caret",
+    "texturePack": "caret",
     "position": [310, 318],
     "anchor": "none",
-    "texture": "font24g",
-    "textureRect": [164, 312, 8, 26]
+    "refresh": 0.5
   },
   "button": [
     {
@@ -58,13 +63,5 @@
       "sound": "titlslct",
       "text": "Cancel"
     }
-  ],
-  "event": {
-    "id": "blinkCaret",
-    "action": {
-      "name": "image.setTextureRect", "id": "caret",
-      "rect": [[0, 0, 4, 26], [168, 312, 4, 26]]
-    },
-    "seconds": 0.5
-  }
+  ]
 }

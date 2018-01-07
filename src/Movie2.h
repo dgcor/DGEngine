@@ -1,25 +1,30 @@
 #pragma once
-#ifdef USE_SFML_MOVIE_STUB
-#include "MovieStub.h"
-#else
+
 #include "Actions/Action.h"
-#include "PhysFSStream.h"
 #include <SFML/Graphics.hpp>
-#include "sfeMovie/Movie.hpp"
 #include "UIObject.h"
+#ifndef USE_SFML_MOVIE_STUB
+#include "PhysFSStream.h"
+#include "sfeMovie/Movie.hpp"
+#endif
 
 class Movie2 : public UIObject
 {
 private:
+#ifndef USE_SFML_MOVIE_STUB
 	sfe::Movie movie;
+	std::unique_ptr<sf::PhysFSStream> file;
 	sf::Vector2f size;
+#else
+	sf::RectangleShape movie;
+#endif
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	bool visible{ true };
-	std::unique_ptr<sf::PhysFSStream> file;
 	std::shared_ptr<Action> actionComplete;
 
 public:
 	Movie2(const std::string& file_) : Movie2(file_.c_str()) {}
+#ifndef USE_SFML_MOVIE_STUB
 	Movie2(const char* file_) : file(std::make_unique<sf::PhysFSStream>(file_)) {}
 
 	bool load()
@@ -37,11 +42,18 @@ public:
 	}
 	void play() { movie.play(); }
 	void pause() { movie.pause(); }
-
 	void setVolume(float volume) { movie.setVolume(volume); }
-	
+#else
+	Movie2(const char* file_) { movie.setFillColor(sf::Color::Black); }
+
+	bool load() { return true; }
+	void play() {}
+	void pause() {}
+	void setVolume(float volume) {}
+#endif
+
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
@@ -49,12 +61,17 @@ public:
 	virtual const sf::Vector2f& DrawPosition() const { return movie.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return movie.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { movie.setPosition(position); }
+#ifndef USE_SFML_MOVIE_STUB
 	virtual sf::Vector2f Size() const { return size; }
 	virtual void Size(const sf::Vector2f& size_)
 	{
 		size = size_;
 		movie.fit(sf::FloatRect(movie.getPosition(), size_));
 	}
+#else
+	virtual sf::Vector2f Size() const { return movie.getSize(); }
+	virtual void Size(const sf::Vector2f& size) { movie.setSize(size); }
+#endif
 
 	virtual bool Visible() const { return visible; }
 	virtual void Visible(bool visible_) { visible = visible_; }
@@ -64,4 +81,3 @@ public:
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };
-#endif	// USE_SFML_MOVIE_STUB

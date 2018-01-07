@@ -36,7 +36,7 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.body.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.body.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",
@@ -82,7 +82,7 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.belt.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.belt.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",
@@ -128,7 +128,7 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canEquipItem.stash.%idx%|",
+          "param1": "|currentLevel|currentPlayer.canUseItem.stash.%idx%|",
           "param2": false,
           "then": {
             "name": "menu.setColor",

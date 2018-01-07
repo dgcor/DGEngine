@@ -6,13 +6,28 @@
 #include "Player.h"
 #include "Utils.h"
 
+Item::Item(const ItemClass* class__) : class_(class__)
+{
+	base.texturePack = class__->getDropTexturePack();
+	base.texturePackIdx = class__->getDropTextureIndex();
+	base.textureEndIdx = base.texturePack->size(base.texturePackIdx) - 1;
+	base.currentTextureIdx = base.textureEndIdx;
+	base.hoverCellSize = 1;
+	if (class__->getInventoryTexturePack()->isIndexed() == true)
+	{
+		base.sprite.setPalette(class__->getInventoryTexturePack()->getPalette());
+	}
+	base.sprite.setOutline(class__->DefaultOutline(), class__->DefaultOutlineIgnore());
+	applyDefaults();
+}
+
 void Item::resetDropAnimation()
 {
-	currentFrame = 0;
-	if (enableHover == true)
+	base.currentTextureIdx = 0;
+	if (base.enableHover == true)
 	{
 		wasHoverEnabledOnItemDrop = true;
-		enableHover = false;
+		base.enableHover = false;
 	}
 }
 
@@ -21,47 +36,12 @@ void Item::executeAction(Game& game) const
 	class_->executeAction(game, str2int16("action"));
 }
 
-void Item::MapPosition(Level& level, const MapCoord& pos)
-{
-	auto oldObj = level.Map()[mapPosition].getObject(this);
-	level.Map()[mapPosition].deleteObject(this);
-	mapPosition = pos;
-	level.Map()[mapPosition].addFront(oldObj);
-}
-
 void Item::update(Game& game, Level& level)
 {
-	if (enableHover == true)
-	{
-		if (level.HasMouseInside() == true &&
-			mapPosition == level.getMapCoordOverMouse())
-		{
-			if (level.getClickedObject() == nullptr)
-			{
-				level.setClickedObject(this);
-			}
-			if (hovered == false)
-			{
-				hovered = true;
-				level.setHoverObject(this);
-				level.executeHoverEnterAction(game);
-			}
-		}
-		else
-		{
-			if (hovered == true)
-			{
-				hovered = false;
-				if (level.getHoverObject() == this)
-				{
-					level.setHoverObject(nullptr);
-					level.executeHoverLeaveAction(game);
-				}
-			}
-		}
-	}
+	base.processQueuedActions(game);
+	base.updateHover(game, level, this);
 
-	if (frameRange.first > frameRange.second)
+	if (base.hasValidState() == false)
 	{
 		return;
 	}
@@ -75,39 +55,27 @@ void Item::update(Game& game, Level& level)
 		// reset time, but keep the remainder
 		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
-		if (currentFrame < frameRange.first)
+		if (base.currentTextureIdx < base.textureStartIdx)
 		{
-			currentFrame = frameRange.first;
+			base.currentTextureIdx = base.textureStartIdx;
 		}
-		else if (currentFrame < frameRange.second)
+		else if (base.currentTextureIdx < base.textureEndIdx)
 		{
-			currentFrame++;
+			base.currentTextureIdx++;
 		}
 		else
 		{
 			if (wasHoverEnabledOnItemDrop == true)
 			{
-				enableHover = true;
+				base.enableHover = true;
 				wasHoverEnabledOnItemDrop = false;
 			}
 		}
-
-		if (currentFrame < class_->getCelDropTextureSize())
+		if (base.updateTexture() == true)
 		{
-			sprite.setTexture(class_->getCelDropTexture(currentFrame), true);
-
-			updateDrawPosition(level);
+			base.updateDrawPosition(level);
 		}
 	}
-}
-
-void Item::updateDrawPosition(const Level& level)
-{
-	const auto& texSize = sprite.getTextureRect();
-	auto drawPos = level.Map().getCoord(mapPosition);
-	drawPos.x += (float)(-((int)texSize.width / 2)) + LevelMap::TileSize();
-	drawPos.y += (float)(224 - ((int)texSize.height - LevelMap::TileSize()));
-	sprite.setPosition(drawPos);
 }
 
 bool Item::getProperty(const std::string& prop, Variable& var) const
@@ -220,13 +188,13 @@ void Item::setProperty(const std::string& prop, const Variable& val)
 		return;
 	}
 	LevelObjValue val2 = 0;
-	if (val.is<bool>() == true)
+	if (std::holds_alternative<bool>(val) == true)
 	{
-		val2 = val.get<bool>() ? 1 : 0;
+		val2 = std::get<bool>(val) ? 1 : 0;
 	}
-	else if (val.is<int64_t>() == true)
+	else if (std::holds_alternative<int64_t>(val) == true)
 	{
-		val2 = (LevelObjValue)val.get<int64_t>();
+		val2 = (LevelObjValue)std::get<int64_t>(val);
 	}
 	setIntByHash(str2int16(prop.c_str()), val2);
 }
@@ -411,7 +379,7 @@ bool Item::isUsable() const
 }
 
 bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
-	LevelObjValue value, Player& player) const
+	LevelObjValue value, Player& player, const Level* level) const
 {
 	Number32 origValue2;
 	if (player.getNumberByHash(propHash, origValue2) == false)
@@ -433,11 +401,11 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
 		origValue = value;
 		break;
 	}
-	return player.setNumberByHash(propHash, (LevelObjValue)origValue);
+	return player.setNumberByHash(propHash, (LevelObjValue)origValue, level);
 }
 
-bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
-	uint16_t valueHash, uint16_t valueMaxHash, Player& player) const
+bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
+	uint16_t valueMaxHash, Player& player, const Level* level) const
 {
 	LevelObjValue value;
 	if (class_->evalFormula(valueHash, *this, player, value) == false)
@@ -449,10 +417,10 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
 	{
 		value = Utils::Random::get<LevelObjValue>(value, valueMax);
 	}
-	return useHelper(propHash, useOpHash, value, player);
+	return useHelper(propHash, useOpHash, value, player, level);
 }
 
-bool Item::use(Player& player) const
+bool Item::use(Player& player, const Level* level) const
 {
 	LevelObjValue useOn;
 	if (getIntByHash(ItemProp::UseOn, useOn) == false ||
@@ -470,9 +438,9 @@ bool Item::use(Player& player) const
 	case ItemProp::LifeAndManaDamage:
 	{
 		ret |= useHelper(ItemProp::LifeDamage, useOp,
-			ItemProp::Value, ItemProp::ValueMax, player);
+			ItemProp::Value, ItemProp::ValueMax, player, level);
 		ret |= useHelper(ItemProp::ManaDamage, useOp,
-			ItemProp::Value2, ItemProp::Value2Max, player);
+			ItemProp::Value2, ItemProp::Value2Max, player, level);
 		break;
 	}
 	case ItemProp::AllAttributes:
@@ -487,15 +455,15 @@ bool Item::use(Player& player) const
 		{
 			value = Utils::Random::get<LevelObjValue>(value, valueMax);
 		}
-		ret |= useHelper(ItemProp::Strength, useOp, value, player);
-		ret |= useHelper(ItemProp::Magic, useOp, value, player);
-		ret |= useHelper(ItemProp::Dexterity, useOp, value, player);
-		ret |= useHelper(ItemProp::Vitality, useOp, value, player);
+		ret |= useHelper(ItemProp::Strength, useOp, value, player, level);
+		ret |= useHelper(ItemProp::Magic, useOp, value, player, level);
+		ret |= useHelper(ItemProp::Dexterity, useOp, value, player, level);
+		ret |= useHelper(ItemProp::Vitality, useOp, value, player, level);
 		break;
 	}
 	default:
 	{
-		ret = useHelper(propHash, useOp, ItemProp::Value, ItemProp::ValueMax, player);
+		ret = useHelper(propHash, useOp, ItemProp::Value, ItemProp::ValueMax, player, level);
 		break;
 	}
 	}

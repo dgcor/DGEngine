@@ -159,6 +159,36 @@ public:
 	}
 };
 
+class ActDrawableCenter : public Action
+{
+private:
+	std::string id;
+	std::string idCenterOn;
+	sf::Vector2f offset;
+
+public:
+	ActDrawableCenter(const std::string& id_, const std::string& idCenterOn_,
+		const sf::Vector2f& offset_) : id(id_), idCenterOn(idCenterOn_), offset(offset_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto item = game.Resources().getResource<UIObject>(id);
+		auto itemCenter = game.Resources().getResource<UIObject>(idCenterOn);
+		if (item != nullptr && itemCenter != nullptr)
+		{
+			auto centerPos = itemCenter->Position();
+			auto centerSize = itemCenter->Size();
+			auto itemSize = item->Size();
+			sf::Vector2f newPos(
+				std::round(centerPos.x + (centerSize.x / 2.f) - (itemSize.x / 2.f)),
+				std::round(centerPos.y + (centerSize.y / 2.f) - (itemSize.y / 2.f))
+			);
+			item->Position(newPos + offset);
+		}
+		return true;
+	}
+};
+
 class ActDrawableCenterOnMouseX : public Action
 {
 private:
@@ -181,10 +211,10 @@ public:
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().x;
 			auto newRange = std::min(range - (unsigned)itemSize, range);
-			auto offset = std::max(0.f, std::min(game.MousePositionf().x - itemPos.x, (float)range));
+			auto offset = std::clamp(game.MousePositionf().x - itemPos.x, 0.f, (float)range);
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.x;
-			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
+			offset = std::clamp(offset - std::round(itemSize / 2.f), 0.f, (float)newRange);
 			if (numSteps > 1 && newRange > 0)
 			{
 				auto idx = std::round((offset * (float)(numSteps - 1)) / (float)newRange);
@@ -235,10 +265,10 @@ public:
 			auto itemPos = itemAnchor->Position();
 			auto itemSize = item->Size().y;
 			auto newRange = std::min(range - (unsigned)itemSize, range);
-			auto offset = std::max(0.f, std::min(game.MousePositionf().y - itemPos.y, (float)range));
+			auto offset = std::clamp(game.MousePositionf().y - itemPos.y, 0.f, (float)range);
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			float newPos = itemPos.y;
-			offset = std::min(std::max(0.f, offset - std::round(itemSize / 2.f)), (float)newRange);
+			offset = std::clamp(offset - std::round(itemSize / 2.f), 0.f, (float)newRange);
 			if (numSteps > 1 && newRange > 0)
 			{
 				auto idx = std::round((offset * (float)(numSteps - 1)) / (float)newRange);

@@ -23,8 +23,8 @@ namespace Parser
 		const std::shared_ptr<Font2>& font,
 		unsigned fontSize,
 		const std::shared_ptr<BitmapFont>& bitmapFont,
-		const std::shared_ptr<sf::SoundBuffer>& sound,
-		const std::shared_ptr<sf::SoundBuffer>& focusSound,
+		sf::SoundBuffer* sound,
+		sf::SoundBuffer* focusSound,
 		bool clickUp,
 		bool hasFocus,
 		bool focusOnClick,
@@ -42,7 +42,7 @@ namespace Parser
 			drawableText = std::make_unique<BitmapText>("",
 				bitmapFont, horizSpaceOffset, vertSpaceOffset);
 		}
-		button->setText(std::move(std::make_unique<Text2>(std::move(drawableText))));
+		button->setText(std::move(drawableText));
 
 		button->setAnchor(anchor);
 		button->setColor(color);

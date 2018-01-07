@@ -50,55 +50,46 @@ namespace Parser
 			}
 		}
 
-		if (isValidString(elem, "celTextureDrop") == false ||
-			isValidString(elem, "celTextureInventory") == false ||
-			isValidString(elem, "celTextureInventoryUnusable") == false)
+		if (isValidString(elem, "dropTexturePack") == false ||
+			isValidString(elem, "inventoryTexturePack") == false)
 		{
 			return itemClass;
 		}
 
-		auto celTexture = game.Resources().getCelTextureCacheVec(
-			elem["celTextureDrop"].GetString());
-		if (celTexture == nullptr)
+		auto dropTexture = game.Resources().getTexturePack(
+			elem["dropTexturePack"].GetString());
+		if (dropTexture == nullptr)
 		{
 			return itemClass;
 		}
-		auto celDropIdx = (size_t)getUIntKey(elem, "celIndexDrop");
-		if (celDropIdx >= celTexture->size())
+		auto dropTextureIdx = (size_t)getUIntKey(elem, "dropTextureIndex");
+		if (dropTextureIdx >= dropTexture->packSize())
 		{
 			return itemClass;
 		}
-		auto celTextureInv = game.Resources().getCelTextureCache(
-			elem["celTextureInventory"].GetString());
-		if (celTextureInv == nullptr)
+		auto InvTexture = game.Resources().getTexturePack(
+			elem["inventoryTexturePack"].GetString());
+		if (InvTexture == nullptr)
 		{
 			return itemClass;
 		}
-		auto celTextureInvUnusable = game.Resources().getCelTextureCache(
-			elem["celTextureInventoryUnusable"].GetString());
-		if (celTextureInvUnusable == nullptr)
-		{
-			return itemClass;
-		}
-		auto celInventoryIdx = (size_t)getUIntKey(elem, "celIndexInventory");
-		if (celInventoryIdx >= celTextureInv->size() ||
-			celInventoryIdx >= celTextureInvUnusable->size())
+		auto InvTextureIdx = (size_t)getUIntKey(elem, "inventoryTextureIndex");
+		if (InvTextureIdx >= InvTexture->totalSize())
 		{
 			return itemClass;
 		}
 
 		if (itemClass == nullptr)
 		{
-			itemClass = std::make_shared<ItemClass>(celTexture, celDropIdx,
-				celTextureInv, celTextureInvUnusable, celInventoryIdx);
+			itemClass = std::make_shared<ItemClass>(dropTexture, dropTextureIdx,
+				InvTexture, InvTextureIdx);
 		}
 		else
 		{
-			itemClass->setCelTextureDrop(celTexture);
-			itemClass->setCelDropIdx(celDropIdx);
-			itemClass->setCelTextureInventory(celTextureInv);
-			itemClass->setCelTextureInventoryUnusable(celTextureInvUnusable);
-			itemClass->setCelInventoryIdx(celInventoryIdx);
+			itemClass->setDropTexturePack(dropTexture);
+			itemClass->setDropTextureIndex(dropTextureIdx);
+			itemClass->setInventoryTexturePack(InvTexture);
+			itemClass->setInventoryTextureIndex(InvTextureIdx);
 		}
 		return itemClass;
 	}
@@ -136,6 +127,14 @@ namespace Parser
 		if (elem.HasMember("inventorySize") == true)
 		{
 			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], ItemXY(1, 1)));
+		}
+		if (elem.HasMember("defaultOutline") == true)
+		{
+			itemClass->DefaultOutline(getColorVal(elem["defaultOutline"], sf::Color::Transparent));
+		}
+		if (elem.HasMember("defaultOutlineIgnore") == true)
+		{
+			itemClass->DefaultOutlineIgnore(getColorVal(elem["defaultOutlineIgnore"], sf::Color::Transparent));
 		}
 
 		if (elem.HasMember("defaults") == true)

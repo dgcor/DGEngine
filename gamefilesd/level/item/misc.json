@@ -2,14 +2,16 @@
   "itemClass": [
     {
       "id": "gold",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 29,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 17,
+      "replaceVars": true,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 29,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 17,
       "name": "Gold",
       "shortName": "Gold",
       "type": "Gold",
+      "defaultOutline": "%outlineItem%",
+      "defaultOutlineIgnore": "0x000000",
       "defaults": {
         "identified": true,
         "gold": 1,

@@ -10,22 +10,22 @@ namespace JsonUtils
 	void replaceValueWithVariable(Value& elem,
 		Value::AllocatorType& allocator, const Variable& var)
 	{
-		if (var.is<std::string>() == true)
+		if (std::holds_alternative<std::string>(var) == true)
 		{
-			const auto& str = var.get<std::string>();
+			const auto& str = std::get<std::string>(var);
 			elem.SetString(str.c_str(), str.size(), allocator);
 		}
-		else if (var.is<int64_t>() == true)
+		else if (std::holds_alternative<int64_t>(var) == true)
 		{
-			elem.SetInt64(var.get<int64_t>());
+			elem.SetInt64(std::get<int64_t>(var));
 		}
-		else if (var.is<double>() == true)
+		else if (std::holds_alternative<double>(var) == true)
 		{
-			elem.SetDouble(var.get<double>());
+			elem.SetDouble(std::get<double>(var));
 		}
-		else if (var.is<bool>() == true)
+		else if (std::holds_alternative<bool>(var) == true)
 		{
-			elem.SetBool(var.get<bool>());
+			elem.SetBool(std::get<bool>(var));
 		}
 	}
 
@@ -245,6 +245,25 @@ namespace JsonUtils
 		Writer<StringBuffer> writer(buffer);
 		elem.Accept(writer);
 		return std::string(buffer.GetString());
+	}
+
+	bool loadFile(const std::string& file, Document& doc)
+	{
+		if (file.empty() == true)
+		{
+			return false;
+		}
+		return loadJson(FileUtils::readText(file.c_str()), doc);
+	}
+
+	bool loadJson(const std::string& json, Document& doc)
+	{
+		if (json.empty() == true)
+		{
+			return false;
+		}
+		// Default template parameter uses UTF8 and MemoryPoolAllocator.
+		return (doc.Parse(json.c_str()).HasParseError() == false);
 	}
 
 	void saveToFile(const std::string& file, const Value& elem)

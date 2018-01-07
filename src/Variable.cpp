@@ -5,71 +5,71 @@ namespace VarUtils
 {
 	bool toBool(const Variable& var)
 	{
-		if (var.is<bool>())
+		if (std::holds_alternative<bool>(var))
 		{
-			return var.get<bool>();
+			return std::get<bool>(var);
 		}
-		else if (var.is<int64_t>())
+		else if (std::holds_alternative<int64_t>(var))
 		{
-			return var.get<int64_t>() != 0;
+			return std::get<int64_t>(var) != 0;
 		}
-		else if (var.is<double>())
+		else if (std::holds_alternative<double>(var))
 		{
-			return var.get<double>() != 0.0;
+			return std::get<double>(var) != 0.0;
 		}
-		return var.get<std::string>().empty() == false;
+		return std::get<std::string>(var).empty() == false;
 	}
 
 	double toDouble(const Variable& var)
 	{
-		if (var.is<double>())
+		if (std::holds_alternative<double>(var))
 		{
-			return var.get<double>();
+			return std::get<double>(var);
 		}
-		else if (var.is<int64_t>())
+		else if (std::holds_alternative<int64_t>(var))
 		{
-			return (double)var.get<int64_t>();
+			return (double)std::get<int64_t>(var);
 		}
-		else if (var.is<bool>())
+		else if (std::holds_alternative<bool>(var))
 		{
-			return (var.get<bool>() ? 1.0 : 0.0);
+			return (std::get<bool>(var) ? 1.0 : 0.0);
 		}
-		return std::atof(var.get<std::string>().c_str());
+		return std::atof(std::get<std::string>(var).c_str());
 	}
 
 	int64_t toLong(const Variable& var)
 	{
-		if (var.is<int64_t>())
+		if (std::holds_alternative<int64_t>(var))
 		{
-			return var.get<int64_t>();
+			return std::get<int64_t>(var);
 		}
-		else if (var.is<double>())
+		else if (std::holds_alternative<double>(var))
 		{
-			return (int64_t)var.get<double>();
+			return (int64_t)std::get<double>(var);
 		}
-		else if (var.is<bool>())
+		else if (std::holds_alternative<bool>(var))
 		{
-			return (var.get<bool>() ? 1 : 0);
+			return (std::get<bool>(var) ? 1 : 0);
 		}
-		return std::atol(var.get<std::string>().c_str());
+		return std::atol(std::get<std::string>(var).c_str());
 	}
 
 	std::string toString(const Variable& var)
 	{
-		if (var.is<std::string>())
+		if (std::holds_alternative<std::string>(var))
 		{
-			return var.get<std::string>();
+			return std::get<std::string>(var);
 		}
-		else if (var.is<int64_t>())
+		else if (std::holds_alternative<int64_t>(var))
 		{
-			return std::to_string(var.get<int64_t>());
+			return std::to_string(std::get<int64_t>(var));
 		}
-		else if (var.is<double>())
+		else if (std::holds_alternative<double>(var))
 		{
-			return Utils::toString(var.get<double>());
+			return Utils::toString(std::get<double>(var));
 		}
 		// bool
-		if (var.get<bool>() == true)
+		if (std::get<bool>(var) == true)
 		{
 			return { "true" };
 		}
