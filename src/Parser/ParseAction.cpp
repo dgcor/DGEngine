@@ -15,6 +15,7 @@
 #include "Actions/ActiontList.h"
 #include "Actions/ActItem.h"
 #include "Actions/ActLevel.h"
+#include "Actions/ActLevelObject.h"
 #include "Actions/ActLoad.h"
 #include "Actions/ActLoadingScreen.h"
 #include "Actions/ActMenu.h"
@@ -25,8 +26,6 @@
 #include "Actions/ActResource.h"
 #include "Actions/ActSound.h"
 #include "Actions/ActText.h"
-#include "Actions/ActTexture.h"
-#include "Actions/ActUIText.h"
 #include "Actions/ActVariable.h"
 #include "Actions/ActVisibility.h"
 #include "GameUtils.h"
@@ -200,7 +199,7 @@ namespace Parser
 		{
 			return std::make_shared<ActAudioSeek>(
 				getStringKey(elem, "id"),
-				sf::seconds((float)getUIntKey(elem, "seconds")));
+				getTimeKey(elem, "time"));
 		}
 		case str2int16("audio.setVolume"):
 		{
@@ -234,43 +233,37 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getColorKey(elem, "color", sf::Color::White));
 		}
-		case str2int16("button.setFont"):
-		{
-			return std::make_shared<ActButtonSetFont>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "idFont"));
-		}
-		case str2int16("button.setTexture"):
-		{
-			return std::make_shared<ActSetTexture<BitmapButton>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "texture"),
-				getBoolKey(elem, "resetRect"));
-		}
-		case str2int16("button.setTextureFromItem"):
-		{
-			return std::make_shared<ActSetTextureFromItem<BitmapButton>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "level"),
-				getItemLocationVal(elem),
-				getBoolKey(elem, "equipable", true),
-				getBoolKey(elem, "resetRect"));
-		}
-		case str2int16("button.setTextureRect"):
-		{
-			return std::make_shared<ActSetTextureRect<BitmapButton>>(
-				getStringKey(elem, "id"),
-				getIntRectKey(elem, "rect"));
-		}
 		case str2int16("condition"):
 		{
 			return getIfCondition(
 				str2int16(getStringKey(elem, "condition").c_str()),
 				game, elem);
 		}
+		case str2int16("cursor.enableOutline"):
+		{
+			return std::make_shared<ActCursorEnableOutline>(
+				getBoolKey(elem, "enable", true));
+		}
 		case str2int16("cursor.pop"):
 		{
 			return std::make_shared<ActCursorPop>(getBoolKey(elem, "popAll"));
+		}
+		case str2int16("cursor.setColor"):
+		{
+			return std::make_shared<ActCursorSetColor>(
+				getColorKey(elem, "color", sf::Color::White));
+		}
+		case str2int16("cursor.setOutline"):
+		{
+			return std::make_shared<ActCursorSetOutline>(
+				getColorKey(elem, "outline", sf::Color::Transparent),
+				getColorKey(elem, "ignore", sf::Color::Transparent));
+		}
+		case str2int16("cursor.setPalette"):
+		{
+			return std::make_shared<ActCursorSetPalette>(
+				getStringKey(elem, "palette"),
+				getColorKey(elem, "color", sf::Color::White));
 		}
 		case str2int16("cursor.show"):
 		{
@@ -321,6 +314,13 @@ namespace Parser
 			return std::make_shared<ActDrawableAnchorToFocused>(
 				getStringKey(elem, "id"),
 				getAnchorKey(elem, "anchor"),
+				getVector2fKey<sf::Vector2f>(elem, "offset"));
+		}
+		case str2int16("drawable.center"):
+		{
+			return std::make_shared<ActDrawableCenter>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idCenterOn"),
 				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
 		case str2int16("drawable.centerOnMouseX"):
@@ -508,7 +508,7 @@ namespace Parser
 			return std::make_shared<ActEventAdd>(
 				getStringKey(elem, "id"),
 				getActionKey(game, elem, "action"),
-				sf::seconds((float)getUIntKey(elem, "seconds")),
+				getTimeKey(elem, "time"),
 				getBoolKey(elem, "addToFront"));
 		}
 		case str2int16("event.delete"):
@@ -570,7 +570,7 @@ namespace Parser
 				false,
 				getBoolKey(elem, "enableInput", true),
 				getUIntKey(elem, "fade", 25),
-				sf::milliseconds(getUIntKey(elem, "refresh", 15)));
+				getTimeKey(elem, "refresh", sf::milliseconds(15)));
 
 			if (elem.HasMember("action"))
 			{
@@ -585,7 +585,7 @@ namespace Parser
 				true,
 				getBoolKey(elem, "enableInput"),
 				getUIntKey(elem, "fade", 25),
-				sf::milliseconds(getUIntKey(elem, "refresh", 15)));
+				getTimeKey(elem, "refresh", sf::milliseconds(15)));
 
 			if (elem.HasMember("action"))
 			{
@@ -649,6 +649,12 @@ namespace Parser
 		{
 			return std::make_shared<ActImageCenterTexture>(getStringKey(elem, "id"));
 		}
+		case str2int16("image.enableOutline"):
+		{
+			return std::make_shared<ActImageEnableOutline>(
+				getStringKey(elem, "id"),
+				getBoolKey(elem, "enable", true));
+		}
 		case str2int16("image.inverseResizeX"):
 		{
 			return std::make_shared<ActImageInverseResizeXY>(
@@ -669,44 +675,51 @@ namespace Parser
 				getVector2iKey<sf::Vector2i>(elem, "range"),
 				true);
 		}
+		case str2int16("image.setOutline"):
+		{
+			return std::make_shared<ActImageSetOutline>(
+				getStringKey(elem, "id"),
+				getColorKey(elem, "outline", sf::Color::Transparent),
+				getColorKey(elem, "ignore", sf::Color::Transparent));
+		}
+		case str2int16("image.setPalette"):
+		{
+			return std::make_shared<ActImageSetPalette>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "palette"),
+				getColorKey(elem, "color", sf::Color::White));
+		}
 		case str2int16("image.setTexture"):
 		{
-			return std::make_shared<ActSetTexture<Image>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "texture"),
-				getBoolKey(elem, "resetRect"));
-		}
-		case str2int16("image.setTextureFromItem"):
-		{
-			return std::make_shared<ActSetTextureFromItem<Image>>(
-				getStringKey(elem, "id"),
-				getStringKey(elem, "level"),
-				getItemLocationVal(elem),
-				getBoolKey(elem, "equipable", true),
-				getBoolKey(elem, "resetRect"));
+			if (elem.HasMember("texture") == true)
+			{
+				return std::make_shared<ActImageSetTexture>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "texture"),
+					getBoolKey(elem, "resetRect"));
+			}
+			else if (elem.HasMember("texturePack") == true)
+			{
+				return std::make_shared<ActImageSetTextureFromPack>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "texturePack"),
+					getIndexKey(elem, "index"),
+					getBoolKey(elem, "resetRect", true));
+			}
+			else
+			{
+				return std::make_shared<ActImageSetTextureFromItem>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "level"),
+					getItemLocationVal(elem),
+					getBoolKey(elem, "resetRect", true));
+			}
 		}
 		case str2int16("image.setTextureRect"):
 		{
-			if (elem.HasMember("rect") && elem["rect"].IsArray())
-			{
-				const auto& arr = elem["rect"];
-				if (arr[0].IsArray() == false)
-				{
-					return std::make_shared<ActSetTextureRect<Image>>(
-						getStringKey(elem, "id"),
-						getIntRectKey(elem, "rect"));
-				}
-
-				std::vector<sf::IntRect> vecRect;
-				for (const auto& val : arr)
-				{
-					vecRect.push_back(getIntRectVal(val));
-				}
-
-				return std::make_shared<ActSetTextureRectVec<Image>>(
-					getStringKey(elem, "id"),
-					vecRect);
-			}
+			return std::make_shared<ActImageSetTextureRect>(
+				getStringKey(elem, "id"),
+				getIntRectKey(elem, "rect"));
 		}
 		case str2int16("inputText.click"):
 		{
@@ -811,6 +824,11 @@ namespace Parser
 				getStringKey(elem, "level"),
 				(size_t)getUIntKey(elem, "index"));
 		}
+		case str2int16("level.clearPlayerTextures"):
+		{
+			return std::make_shared<ActLevelClearPlayerTextures>(
+				getStringKey(elem, "level"));
+		}
 		case str2int16("level.move"):
 		{
 			return std::make_shared<ActLevelMove>(
@@ -840,6 +858,20 @@ namespace Parser
 				getIntKey(elem, "zoom", 100),
 				getBoolKey(elem, "relative"),
 				getBoolKey(elem, "smooth"));
+		}
+		case str2int16("levelObject.setOutline"):
+		{
+			return std::make_shared<ActLevelObjSetOutline>(
+				getStringKey(elem, "level"),
+				getColorKey(elem, "outline", sf::Color::Transparent),
+				getColorKey(elem, "ignore", sf::Color::Transparent));
+		}
+		case str2int16("levelObject.setPalette"):
+		{
+			return std::make_shared<ActLevelObjSetPalette>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "palette"),
+				getColorKey(elem, "color", sf::Color::White));
 		}
 		case str2int16("load"):
 		{
@@ -1088,7 +1120,7 @@ namespace Parser
 		{
 			return std::make_shared<ActResourceIgnore>(
 				getStringKey(elem, "id"),
-				getIgnoreResourceKey(elem, "ignore", IgnoreResource::DrawAndUpdate));
+				getIgnoreResourceKey(elem, "ignore", IgnoreResource::Draw | IgnoreResource::Update));
 		}
 		case str2int16("resource.pop"):
 		{
@@ -1123,7 +1155,7 @@ namespace Parser
 		}
 		case str2int16("text.appendText"):
 		{
-			return parseSetTextHelper<ActUITextAppendText>(game, elem);
+			return parseSetTextHelper<ActTextAppendText>(game, elem);
 		}
 		case str2int16("text.setColor"):
 		{
@@ -1131,9 +1163,15 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getColorKey(elem, "color", sf::Color::White));
 		}
+		case str2int16("text.setFont"):
+		{
+			return std::make_shared<ActTextSetFont>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "idFont"));
+		}
 		case str2int16("text.setSpacing"):
 		{
-			auto action = std::make_shared<ActUITextSetSpacing>(
+			auto action = std::make_shared<ActTextSetSpacing>(
 				getStringKey(elem, "id"));
 			if (elem.HasMember("horizontal") == true)
 			{
@@ -1147,7 +1185,7 @@ namespace Parser
 		}
 		case str2int16("text.setText"):
 		{
-			return parseSetTextHelper<ActUITextSetText>(game, elem);
+			return parseSetTextHelper<ActTextSetText>(game, elem);
 		}
 		case str2int16("variable.clear"):
 		{

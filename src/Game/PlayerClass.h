@@ -1,16 +1,25 @@
 #pragma once
 
-#include "CelCache.h"
+#include "BaseClass.h"
 #include "Formula.h"
 #include "GameProperties.h"
-#include <memory>
+#include <SFML/Audio/SoundBuffer.hpp>
 #include <string>
+#include "TexturePacks/TexturePack.h"
 
-class PlayerClass
+struct PlayerAI
+{
+	bool walksSlowly{ false };
+	int16_t sightRadius{ 0 };
+};
+
+class PlayerClass : public BaseClass
 {
 private:
-	std::vector<std::shared_ptr<CelTextureCacheVector>> celTextures;
-	std::array<size_t, (size_t)PlayerStatus::Size> statusCelIndexes;
+	std::vector<std::shared_ptr<TexturePack>> textures;
+	std::array<size_t, (size_t)PlayerAnimation::Size> animationIndexes;
+
+	PlayerAI ai;
 
 	std::string name;
 	std::string type;
@@ -27,63 +36,93 @@ private:
 	LevelObjValue maxResistFire{ 0 };
 	LevelObjValue maxResistLightning{ 0 };
 
-	std::vector<std::pair<PlayerStatus, AnimationSpeed>> animationSpeeds;
+	uint32_t totalKills{ 0 };
 
-	std::array<Formula, 5> formulas;
+	std::vector<std::pair<PlayerAnimation, AnimationSpeed>> animationSpeeds;
+
+	std::array<Formula, 8> formulas;
+
+	std::array<const sf::SoundBuffer*, 16> sounds{ {nullptr} };
+
+	int16_t defaultAttackSound{ -1 };
+	int16_t defaultDefendSound{ -1 };
+	int16_t defaultDieSound{ -1 };
+	int16_t defaultHitSound{ -1 };
+	int16_t defaultWalkSound{ -1 };
+
+	sf::Color defaultOutline{ sf::Color::Transparent };
+	sf::Color defaultOutlineIgnore{ sf::Color::Transparent };
 
 	LevelObjValue evalFormula(size_t idx,
 		const LevelObject& query, LevelObjValue default_) const;
 
 public:
-	PlayerClass() : statusCelIndexes() {}
+	PlayerClass() : animationIndexes() {}
 
-	CelTextureCacheVector* getCelTexture(size_t paletteIdx) const
+	bool hasTextures() const { return textures.empty() == false; }
+	void clearTextures() { textures.clear(); }
+
+	TexturePack* getTexturePack(size_t idx) const
 	{
-		if (paletteIdx < celTextures.size())
+		if (idx < textures.size())
 		{
-			return celTextures[paletteIdx].get();
+			return textures[idx].get();
 		}
-		else if (celTextures.empty() == false)
+		else if (textures.empty() == false)
 		{
-			return celTextures.front().get();
+			return textures.front().get();
 		}
 		return nullptr;
 	}
 
-	void addCelTexture(const std::shared_ptr<CelTextureCacheVector>& celTexture)
+	void addTexturePack(const std::shared_ptr<TexturePack>& texture)
 	{
-		celTextures.push_back(celTexture);
+		textures.push_back(texture);
 	}
 
-	void clearStatusCelIndexes() { statusCelIndexes.fill(0); }
+	void clearAnimationIndexes() { animationIndexes.fill(0); }
 
-	size_t getStatusCelIndex(PlayerStatus status) const
+	size_t getAnimationIndex(PlayerAnimation animation) const
 	{
-		if (status < PlayerStatus::Size)
+		if (animation < PlayerAnimation::Size)
 		{
-			return statusCelIndexes[(size_t)status];
+			return animationIndexes[(size_t)animation];
 		}
 		return 0;
 	}
 
-	void setStatusCelIndex(PlayerStatus status, size_t idx)
+	void setStatusTexturePackIndex(PlayerAnimation animation, size_t idx)
 	{
-		if (status < PlayerStatus::Size)
+		if (animation < PlayerAnimation::Size)
 		{
-			statusCelIndexes[(size_t)status] = idx;
+			animationIndexes[(size_t)animation] = idx;
 		}
-	}
-
-	const std::vector<std::shared_ptr<CelTextureCacheVector>>& CelTextures() const
-	{
-		return celTextures;
 	}
 
 	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const { return defaults; }
 	void setDefault(const char* prop, const Number32& val);
 
-	AnimationSpeed getSpeed(PlayerStatus status) const;
-	void setSpeed(PlayerStatus status, const AnimationSpeed& speed);
+	AnimationSpeed getSpeed(PlayerAnimation animation) const;
+	void setSpeed(PlayerAnimation animation, const AnimationSpeed& speed);
+
+	const PlayerAI& AI() const { return ai; }
+
+	const sf::SoundBuffer* getSound(size_t idx) const;
+	const sf::SoundBuffer* getSound(size_t idx, size_t size) const;
+
+	void setSound(size_t idx, const sf::SoundBuffer& snd);
+
+	int16_t getDefaultAttackSound() const { return defaultAttackSound; }
+	int16_t getDefaultDefendSound() const { return defaultDefendSound; }
+	int16_t getDefaultDieSound() const { return defaultDieSound; }
+	int16_t getDefaultHitSound() const { return defaultHitSound; }
+	int16_t getDefaultWalkSound() const { return defaultWalkSound; }
+
+	void setDefaultAttackSound(int16_t soundIdx) { defaultAttackSound = soundIdx; }
+	void setDefaultDefendSound(int16_t soundIdx) { defaultDefendSound = soundIdx; }
+	void setDefaultDieSound(int16_t soundIdx) { defaultDieSound = soundIdx; }
+	void setDefaultHitSound(int16_t soundIdx) { defaultHitSound = soundIdx; }
+	void setDefaultWalkSound(int16_t soundIdx) { defaultWalkSound = soundIdx; }
 
 	const std::string& Name() const { return name; }
 	const std::string& Type() const { return type; }
@@ -102,6 +141,11 @@ public:
 	LevelObjValue MaxResistFire() const { return maxResistFire; }
 	LevelObjValue MaxResistLightning() const { return maxResistLightning; }
 
+	uint32_t TotalKills() const { return totalKills; }
+
+	const sf::Color& DefaultOutline() const { return defaultOutline; }
+	const sf::Color& DefaultOutlineIgnore() const { return defaultOutlineIgnore; }
+
 	void MaxStrength(LevelObjValue val) { maxStrength = val; }
 	void MaxMagic(LevelObjValue val) { maxMagic = val; }
 	void MaxDexterity(LevelObjValue val) { maxDexterity = val; }
@@ -111,11 +155,20 @@ public:
 	void MaxResistFire(LevelObjValue val) { maxResistFire = val; }
 	void MaxResistLightning(LevelObjValue val) { maxResistLightning = val; }
 
+	void TotalKills(LevelObjValue val) { totalKills = val; }
+	void addKill() { totalKills++; }
+
+	void DefaultOutline(const sf::Color& color) { defaultOutline = color; }
+	void DefaultOutlineIgnore(const sf::Color& color) { defaultOutlineIgnore = color; }
+
 	void setLifeFormula(const Formula& formula) { formulas[0] = formula; }
 	void setManaFormula(const Formula& formula) { formulas[1] = formula; }
 	void setArmorFormula(const Formula& formula) { formulas[2] = formula; }
 	void setToHitFormula(const Formula& formula) { formulas[3] = formula; }
 	void setDamageFormula(const Formula& formula) { formulas[4] = formula; }
+	void setResistMagicFormula(const Formula& formula) { formulas[5] = formula; }
+	void setResistFireFormula(const Formula& formula) { formulas[6] = formula; }
+	void setResistLightningFormula(const Formula& formula) { formulas[7] = formula; }
 
 	LevelObjValue getActualLife(const LevelObject& query, LevelObjValue default_) const
 	{
@@ -136,5 +189,17 @@ public:
 	LevelObjValue getActualDamage(const LevelObject& query, LevelObjValue default_) const
 	{
 		return evalFormula(4, query, default_);
+	}
+	LevelObjValue getActualResistMagic(const LevelObject& query, LevelObjValue default_) const
+	{
+		return evalFormula(5, query, default_);
+	}
+	LevelObjValue getActualResistFire(const LevelObject& query, LevelObjValue default_) const
+	{
+		return evalFormula(6, query, default_);
+	}
+	LevelObjValue getActualResistLightning(const LevelObject& query, LevelObjValue default_) const
+	{
+		return evalFormula(7, query, default_);
 	}
 };

@@ -31,17 +31,15 @@
   },
   "animation": [
     {
-      "texture": "focus",
       "id": "pent1",
-      "frames": 8,
+      "texturePack": "focus",
       "position": [230, 392],
       "anchor": "none",
       "refresh": 50
     },
     {
-      "texture": "focus",
       "id": "pent2",
-      "frames": 8,
+      "texturePack": "focus",
       "position": [380, 392],
       "anchor": "none",
       "refresh": 50

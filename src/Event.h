@@ -5,7 +5,7 @@
 #include <SFML/System/Time.hpp>
 #include <string>
 
-class Event
+class Event : public Action
 {
 private:
 	std::string id;
@@ -25,5 +25,5 @@ public:
 
 	void resetTime() { currentTime = sf::Time::Zero; }
 
-	bool update(Game& game);
+	virtual bool execute(Game& game);
 };

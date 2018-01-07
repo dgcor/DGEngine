@@ -5,7 +5,7 @@
       "replaceVars": true,
       "name": "if.equal",
       "param1": {
-        "name": "player.canEquipItem",
+        "name": "player.canUseItem",
         "item": { "player": "{1}", "inventory": {2}, "item": {3} }
       },
       "param2": false,

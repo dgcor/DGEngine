@@ -2,18 +2,21 @@
   "texture": [
     {
       "id": "background",
-      "fill": "0x000000",
+      "color": "0x000000",
       "size": [1, 1]
     },
     {
       "id": "empty",
-      "fill": "0x00000000",
+      "color": "0x00000000",
       "size": [1, 1]
     },
     {
       "id": "textWallBackground",
-      "fill": "0x00000044",
-      "size": [1, 1]
+      "color": [
+        "0x000000FF", "0x00000000",
+        "0x00000000", "0x000000FF"
+      ],
+      "size": [2, 2]
     }
   ],
   "action": {

@@ -325,8 +325,16 @@ namespace GameUtils
 		{
 		case str2int16("none"):
 			return IgnoreResource::None;
+		case str2int16("alldraws"):
+			return IgnoreResource::Draw | IgnoreResource::All;
+		case str2int16("alldrawsandupdates"):
+			return IgnoreResource::Draw | IgnoreResource::Update | IgnoreResource::All;
+		case str2int16("allupdates"):
+			return IgnoreResource::Update | IgnoreResource::All;
+		case str2int16("draw"):
+			return IgnoreResource::Draw;
 		case str2int16("drawandupdate"):
-			return IgnoreResource::DrawAndUpdate;
+			return IgnoreResource::Draw | IgnoreResource::Update;
 		case str2int16("update"):
 			return IgnoreResource::Update;
 		}
@@ -437,42 +445,42 @@ namespace GameUtils
 		return (size_t)getPlayerItemMount(str, val);
 	}
 
-	PlayerStatus getPlayerStatus(const std::string& str, PlayerStatus val)
+	PlayerAnimation getPlayerAnimation(const std::string& str, PlayerAnimation val)
 	{
 		switch (str2int16(toLower(str).c_str()))
 		{
 		case str2int16("stand1"):
-			return PlayerStatus::Stand1;
+			return PlayerAnimation::Stand1;
 		case str2int16("stand2"):
-			return PlayerStatus::Stand2;
+			return PlayerAnimation::Stand2;
 		case str2int16("walk1"):
-			return PlayerStatus::Walk1;
+			return PlayerAnimation::Walk1;
 		case str2int16("walk2"):
-			return PlayerStatus::Walk2;
+			return PlayerAnimation::Walk2;
 		case str2int16("attack1"):
-			return PlayerStatus::Attack1;
+			return PlayerAnimation::Attack1;
 		case str2int16("attack2"):
-			return PlayerStatus::Attack2;
+			return PlayerAnimation::Attack2;
 		case str2int16("attack3"):
-			return PlayerStatus::Attack3;
+			return PlayerAnimation::Attack3;
 		case str2int16("attack4"):
-			return PlayerStatus::Attack4;
+			return PlayerAnimation::Attack4;
 		case str2int16("defend1"):
-			return PlayerStatus::Defend1;
+			return PlayerAnimation::Defend1;
 		case str2int16("defend2"):
-			return PlayerStatus::Defend2;
+			return PlayerAnimation::Defend2;
 		case str2int16("defend3"):
-			return PlayerStatus::Defend3;
+			return PlayerAnimation::Defend3;
 		case str2int16("defend4"):
-			return PlayerStatus::Defend4;
+			return PlayerAnimation::Defend4;
 		case str2int16("hit1"):
-			return PlayerStatus::Hit1;
+			return PlayerAnimation::Hit1;
 		case str2int16("hit2"):
-			return PlayerStatus::Hit2;
+			return PlayerAnimation::Hit2;
 		case str2int16("die1"):
-			return PlayerStatus::Die1;
+			return PlayerAnimation::Die1;
 		case str2int16("die2"):
-			return PlayerStatus::Die2;
+			return PlayerAnimation::Die2;
 		default:
 			return val;
 		}
@@ -480,7 +488,7 @@ namespace GameUtils
 
 	sf::Time getTime(int fps)
 	{
-		fps = std::max(std::min(fps, 1000), 1);
+		fps = std::clamp(fps, 1, 1000);
 		return sf::seconds(1.f / (float)fps);
 	}
 

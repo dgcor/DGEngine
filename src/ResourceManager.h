@@ -2,21 +2,26 @@
 
 #include "Actions/Action.h"
 #include "Animation.h"
+#include "AudioSource.h"
 #include "BitmapFont.h"
-#include "CelCache.h"
 #include "Font2.h"
 #include "Game/Level.h"
 #include "IgnoreResource.h"
+#include "ImageContainers/ImageContainer.h"
 #include <list>
 #include <memory>
 #include "Music2.h"
+#include "MusicLoops.h"
 #include "Palette.h"
-#include <string>
-#include "UIObject.h"
-#include <unordered_map>
-#include <vector>
+#include "ReverseIterable.h"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include <string>
+#include "TexturePacks/TexturePack.h"
+#include "UIObject.h"
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 class Button;
 
@@ -26,7 +31,11 @@ struct ResourceBundle
 	{
 		size_t operator()(const sf::Event::KeyEvent& obj) const
 		{
-			return ((obj.code << 4) | (obj.alt << 0) | (obj.control << 1) | (obj.shift << 2) | (obj.system << 3));
+			return ((obj.code << 4) |
+				(obj.alt << 0) |
+				(obj.control << 1) |
+				(obj.shift << 2) |
+				(obj.system << 3));
 		}
 		bool operator()(const sf::Event::KeyEvent& obj1, const sf::Event::KeyEvent& obj2) const
 		{
@@ -40,16 +49,6 @@ struct ResourceBundle
 
 	ResourceBundle() {}
 	ResourceBundle(const std::string& id_) :id(id_) {}
-	~ResourceBundle()
-	{
-		drawables.clear();
-		fonts.clear();
-		bitmapFonts.clear();
-		textures.clear();
-		songs.clear();
-		sounds.clear();
-		palettes.clear();
-	}
 
 	IgnoreResource ignore{ IgnoreResource::None };
 	std::string id;
@@ -58,13 +57,13 @@ struct ResourceBundle
 	std::unordered_map<std::string, std::shared_ptr<Font2>> fonts;
 	std::unordered_map<std::string, std::shared_ptr<BitmapFont>> bitmapFonts;
 	std::unordered_map<std::string, std::shared_ptr<sf::Texture>> textures;
-	std::unordered_map<std::string, std::shared_ptr<Music2>> songs;
-	std::unordered_map<std::string, std::shared_ptr<sf::SoundBuffer>> sounds;
+	std::unordered_map<std::string, AudioSource> audioSources;
+	std::unordered_map<std::string, std::shared_ptr<sf::Music2>> songs;
 	std::unordered_map<std::string, std::shared_ptr<Palette>> palettes;
-	std::unordered_map<std::string, std::shared_ptr<CelFile>> celFiles;
-	std::unordered_map<std::string, std::shared_ptr<CelTextureCache>> celCaches;
-	std::unordered_map<std::string, std::shared_ptr<CelTextureCacheVector>> celCachesVec;
+	std::unordered_map<std::string, std::shared_ptr<ImageContainer>> imageContainers;
+	std::unordered_map<std::string, std::shared_ptr<TexturePack>> texturePacks;
 
+	std::unordered_set<std::string> drawableIds;
 	std::vector<std::pair<std::string, std::shared_ptr<UIObject>>> drawables;
 	std::vector<std::shared_ptr<Button>> focusButtons;
 	size_t focusIdx{ 0 };
@@ -74,7 +73,7 @@ class ResourceManager
 {
 private:
 	std::vector<ResourceBundle> resources;
-	std::vector<std::shared_ptr<UIObject>> cursors;
+	std::vector<std::shared_ptr<Image>> cursors;
 	std::list<sf::Sound> playingSounds;
 	mutable std::pair<std::string, UIObject*> drawableCache{ "", nullptr };
 	Level* currentLevel{ nullptr };
@@ -95,24 +94,25 @@ private:
 		}
 	}
 
-	void addFont(ResourceBundle& res,
+	bool addFont(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<Font2>& obj);
-	void addBitmapFont(ResourceBundle& res,
+	bool addBitmapFont(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<BitmapFont>& obj);
-	void addTexture(ResourceBundle& res,
+	bool addTexture(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<sf::Texture>& obj);
-	void addSong(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<Music2>& obj);
-	void addSound(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj);
-	void addPalette(ResourceBundle& res,
+	bool addAudioSource(ResourceBundle& res,
+		const std::string& key, const AudioSource& obj);
+	bool addSong(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<sf::Music2>& obj);
+	bool addPalette(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<Palette>& obj);
-	void addCelFile(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<CelFile>& obj);
-	void addCelTextureCache(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<CelTextureCache>& obj);
-	void addCelTextureCacheVec(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj);
+	bool addImageContainer(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<ImageContainer>& obj);
+	bool addTexturePack(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<TexturePack>& obj);
+
+	void addDrawable(ResourceBundle& res,
+		const std::string& key, const std::shared_ptr<UIObject>& obj);
 
 public:
 	using iterator = std::vector<ResourceBundle>::iterator;
@@ -149,7 +149,7 @@ public:
 	void ignoreTopResource(IgnoreResource ignore);
 	bool resourceExists(const std::string& id) const;
 
-	UIObject* getCursor() const;
+	Image* getCursor() const;
 	Level* getCurrentLevel() const { return currentLevel; }
 	Level* getLevel(const std::string& id) const
 	{
@@ -159,7 +159,7 @@ public:
 		}
 		return getResource<Level>(id);
 	}
-	void addCursor(const std::shared_ptr<UIObject>& cursor_) { cursors.push_back(cursor_); }
+	void addCursor(const std::shared_ptr<Image>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
 	void popAllCursors() { cursors.clear(); }
 	size_t cursorCount() const { return cursors.size(); }
@@ -167,44 +167,45 @@ public:
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
 
-	void addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
+	bool addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
 	{
-		addFont(resources.back(), key, obj);
+		return addFont(resources.back(), key, obj);
 	}
-	void addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
+	bool addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
 	{
-		addBitmapFont(resources.back(), key, obj);
+		return addBitmapFont(resources.back(), key, obj);
 	}
-	void addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
+	bool addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
 	{
-		addTexture(resources.back(), key, obj);
+		return addTexture(resources.back(), key, obj);
 	}
-	void addSong(const std::string& key, const std::shared_ptr<Music2>& obj)
+	bool addAudioSource(const std::string& key, const AudioSource& obj)
 	{
-		addSong(resources.back(), key, obj);
+		return addAudioSource(resources.back(), key, obj);
 	}
-	void addSound(const std::string& key, const std::shared_ptr<sf::SoundBuffer>& obj)
+	bool addSong(const std::string& key, const std::shared_ptr<sf::Music2>& obj)
 	{
-		addSound(resources.back(), key, obj);
+		return addSong(resources.back(), key, obj);
 	}
-	void addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
+	bool addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
 	{
-		addPalette(resources.back(), key, obj);
+		return addPalette(resources.back(), key, obj);
 	}
-	void addCelFile(const std::string& key, const std::shared_ptr<CelFile>& obj)
+	bool addImageContainer(const std::string& key, const std::shared_ptr<ImageContainer>& obj)
 	{
-		addCelFile(resources.back(), key, obj);
+		return addImageContainer(resources.back(), key, obj);
 	}
-	void addCelTextureCache(const std::string& key, const std::shared_ptr<CelTextureCache>& obj)
+	bool addTexturePack(const std::string& key, const std::shared_ptr<TexturePack>& obj)
 	{
-		addCelTextureCache(resources.back(), key, obj);
-	}
-	void addCelTextureCacheVec(const std::string& key, const std::shared_ptr<CelTextureCacheVector>& obj)
-	{
-		addCelTextureCacheVec(resources.back(), key, obj);
+		return addTexturePack(resources.back(), key, obj);
 	}
 
-	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj);
+	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)
+	{
+		return addDrawable(resources.back(), key, obj);
+	}
+	void addDrawable(const std::string& resourceId,
+		const std::string& key, const std::shared_ptr<UIObject>& obj);
 
 	void addPlayingSound(const sf::Sound& obj, bool unique = false);
 
@@ -216,26 +217,28 @@ public:
 	std::shared_ptr<Font2> getFont(const std::string& key) const;
 	std::shared_ptr<BitmapFont> getBitmapFont(const std::string& key) const;
 	std::shared_ptr<sf::Texture> getTexture(const std::string& key) const;
-	std::shared_ptr<Music2> getSong(const std::string& key) const;
-	std::shared_ptr<sf::SoundBuffer> getSound(const std::string& key) const;
+	AudioSource getAudioSource(const std::string& key) const;
+	sf::SoundBuffer* getSoundBuffer(const std::string& key) const;
+	std::shared_ptr<sf::Music2> getSong(const std::string& key) const;
 	std::shared_ptr<Palette> getPalette(const std::string& key) const;
-	std::shared_ptr<CelFile> getCelFile(const std::string& key) const;
-	std::shared_ptr<CelTextureCache> getCelTextureCache(const std::string& key) const;
-	std::shared_ptr<CelTextureCacheVector> getCelTextureCacheVec(const std::string& key) const;
+	std::shared_ptr<ImageContainer> getImageContainer(const std::string& key) const;
+	std::shared_ptr<TexturePack> getTexturePack(const std::string& key) const;
 
+	bool hasSong(const std::string& key, bool checkTopOnly = false) const;
 	bool hasPalette(const std::string& key) const;
-	bool hasCelFile(const std::string& key) const;
-	bool hasCelTextureCache(const std::string& key) const;
-	bool hasCelTextureCacheVec(const std::string& key) const;
+	bool hasImageContainer(const std::string& key) const;
+	bool hasTexturePack(const std::string& key) const;
+
+	bool hasDrawable(const std::string& key) const;
 
 	UIObject* getDrawable(const std::string& key) const;
 
 	template <class T>
 	T* getResource(const std::string& key) const
 	{
-		for (auto it = resources.rbegin(); it != resources.rend(); ++it)
+		for (const auto& res : reverse(resources))
 		{
-			for (const auto& elem : it->drawables)
+			for (const auto& elem : res.drawables)
 			{
 				if (elem.first == key)
 				{
@@ -249,9 +252,9 @@ public:
 	template <class T>
 	std::shared_ptr<T> getResourceSharedPtr(const std::string& key) const
 	{
-		for (auto it = resources.rbegin(); it != resources.rend(); ++it)
+		for (const auto& res : reverse(resources))
 		{
-			for (const auto& elem : it->drawables)
+			for (const auto& elem : res.drawables)
 			{
 				if (elem.first == key)
 				{

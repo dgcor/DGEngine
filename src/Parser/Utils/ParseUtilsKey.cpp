@@ -125,6 +125,26 @@ namespace Parser
 		return val;
 	}
 
+	std::pair<size_t, size_t> getFramesKey(const Value& elem,
+		const char* key, const std::pair<size_t, size_t>& val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getFramesVal(elem[key], val);
+		}
+		return val;
+	}
+
+	std::pair<size_t, size_t> getIndexKey(const Value& elem,
+		const char* key, const std::pair<size_t, size_t>& val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getIndexVal(elem[key], val);
+		}
+		return val;
+	}
+
 	sf::IntRect getIntRectKey(const Value& elem,
 		const char* key, const sf::IntRect& val)
 	{
@@ -147,14 +167,18 @@ namespace Parser
 
 	sf::Color getColorKey(const Value& elem, const char* key, const sf::Color& val)
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsString() == true)
+		if (elem.HasMember(key) == true)
 		{
-			try
-			{
-				return SFMLUtils::stringToColor(elem[key].GetString());
-			}
-			catch (std::exception ex) {}
+			return getColorVal(elem[key], val);
+		}
+		return val;
+	}
+
+	sf::Time getTimeKey(const Value& elem, const char* key, const sf::Time& val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getTimeVal(elem[key], val);
 		}
 		return val;
 	}
@@ -275,15 +299,15 @@ namespace Parser
 		return val;
 	}
 
-	PlayerStatus getPlayerStatusKey(const Value& elem,
-		const char* key, PlayerStatus val)
+	PlayerAnimation getPlayerAnimationKey(const Value& elem,
+		const char* key, PlayerAnimation val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerStatus(keyElem.GetString(), val);
+				return GameUtils::getPlayerAnimation(keyElem.GetString(), val);
 			}
 		}
 		return val;

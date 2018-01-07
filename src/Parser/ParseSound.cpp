@@ -1,11 +1,12 @@
 #include "ParseSound.h"
+#include "ParseAudioCommon.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	std::shared_ptr<sf::SoundBuffer> parseSoundObj(Game& game,
+	sf::SoundBuffer* parseSoundObj(Game& game,
 		const std::string& id, const std::string& file)
 	{
 		sf::PhysFSStream stream(file);
@@ -14,15 +15,270 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto sound = std::make_shared<sf::SoundBuffer>();
-		if (sound->loadFromStream(stream) == false)
+		auto sndBuffer = std::make_shared<sf::SoundBuffer>();
+
+		if (sndBuffer->loadFromStream(stream) == false)
+		{
+			return nullptr;
+		}
+		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		{
+			return sndBuffer.get();
+		}
+		return nullptr;
+	}
+
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+	sf::SoundBuffer* parseSoundLoopsObj(Game& game, const Value& elem,
+		const std::string& id, const std::string& file)
+	{
+		sf::PhysFSStream stream(file);
+		if (stream.hasError() == true)
 		{
 			return nullptr;
 		}
 
-		game.Resources().addSound(id, sound);
-		return sound;
+		auto sndBuffer = std::make_shared<SoundBufferLoops>();
+
+		if (sndBuffer->soundBuffer.loadFromStream(stream) == false)
+		{
+			return nullptr;
+		}
+		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		{
+			parseAudioLoopNamesVal(elem, "loopNames", sndBuffer->loops);
+
+			return &sndBuffer->soundBuffer;
+		}
+		return nullptr;
 	}
+#endif
+
+	sf::SoundBuffer* parseSingleSoundObj(Game& game, const Value& elem)
+	{
+		std::string file(elem["file"].GetString());
+		std::string id;
+
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else if (getIdFromFile(file, id) == false)
+		{
+			return nullptr;
+		}
+		if (isValidId(id) == false)
+		{
+			return nullptr;
+		}
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+		if (elem.HasMember("loopNames") == true)
+		{
+			return parseSoundLoopsObj(game, elem, id, file);
+		}
+#endif
+		return parseSoundObj(game, id, file);
+	}
+
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+	sf::SoundBuffer* parseMultiSoundObj(Game& game,
+		const std::string& id, const sf::Int16* samples,
+		sf::Uint64 sampleCount, unsigned channelCount, unsigned sampleRate)
+	{
+		auto sndBuffer = std::make_shared<sf::SoundBuffer>();
+
+		if (sndBuffer->loadFromSamples(samples,
+			sampleCount, channelCount, sampleRate) == false)
+		{
+			return nullptr;
+		}
+		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		{
+			return sndBuffer.get();
+		}
+		return nullptr;
+	}
+
+	sf::SoundBuffer* parseMultiSoundLoopsObj(Game& game, const Value& elem,
+		const std::string& id, const sf::Int16* samples,
+		sf::Uint64 sampleCount, unsigned channelCount, unsigned sampleRate)
+	{
+		auto sndBuffer = std::make_shared<SoundBufferLoops>();
+
+		if (sndBuffer->soundBuffer.loadFromSamples(samples,
+			sampleCount, channelCount, sampleRate) == false)
+		{
+			return nullptr;
+		}
+		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		{
+			parseAudioLoopNamesVal(elem, "loopNames", sndBuffer->loops);
+
+			return &sndBuffer->soundBuffer;
+		}
+		return nullptr;
+	}
+
+	sf::SoundBuffer* parseMultiSoundObj(Game& game, const Value& elem)
+	{
+		std::string id;
+		std::vector<sf::Int16> samplesBuffer;
+		unsigned channelCount = 0;
+		unsigned sampleRate = 0;
+
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+
+		const auto& fileElem = elem["file"];
+
+		bool hasFile = true;
+		size_t fileIdx = 0;
+		while (hasFile == true)
+		{
+			const Value* fileVal = nullptr;
+			hasFile = false;
+
+			if (fileElem.IsObject() == true)
+			{
+				fileVal = &fileElem;
+			}
+			else if (fileElem.IsArray() == true &&
+				fileIdx < fileElem.Size())
+			{
+				fileVal = &fileElem[fileIdx];
+				fileIdx++;
+				if (fileIdx < fileElem.Size())
+				{
+					hasFile = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+
+			const char* fileName = nullptr;
+
+			if (fileVal->IsString() == true)
+			{
+				fileName = fileVal->GetString();
+			}
+			else if (fileVal->IsObject() == true &&
+				isValidString(*fileVal, "name") == true)
+			{
+				fileName = (*fileVal)["name"].GetString();
+			}
+			else
+			{
+				continue;
+			}
+
+			sf::PhysFSStream file(fileName);
+			if (file.hasError() == true)
+			{
+				continue;
+			}
+			if (isValidId(id) == false)
+			{
+				getIdFromFile(fileName, id);
+			}
+
+			sf::SoundBuffer sndBuffer;
+			if (sndBuffer.loadFromStream(file) == false)
+			{
+				continue;
+			}
+
+			if (channelCount == 0)
+			{
+				channelCount = sndBuffer.getChannelCount();
+				sampleRate = sndBuffer.getSampleRate();
+			}
+			else if (channelCount != sndBuffer.getChannelCount() ||
+				sampleRate != sndBuffer.getSampleRate())
+			{
+				continue;
+			}
+
+			bool hasChunk = true;
+			size_t chunkIdx = 0;
+			while (hasChunk == true)
+			{
+				sf::Music::TimeSpan chunk;
+				hasChunk = false;
+
+				if (fileVal->IsObject() == true &&
+					fileVal->HasMember("chunks") == true)
+				{
+					const auto& chunksElem = (*fileVal)["chunks"];
+					if (chunksElem.IsObject() == true)
+					{
+						chunk = parseAudioTimeSpan(chunksElem);
+					}
+					else if (chunksElem.IsArray() == true &&
+						chunkIdx < chunksElem.Size())
+					{
+						chunk = parseAudioTimeSpan(chunksElem[chunkIdx]);
+						chunkIdx++;
+						if (chunkIdx < chunksElem.Size())
+						{
+							hasChunk = true;
+						}
+					}
+				}
+
+				sf::Uint64 startPos = 0;
+				sf::Uint64 newSize = sndBuffer.getSampleCount();
+
+				if (chunk.offset != sf::Time::Zero)
+				{
+					startPos = std::min(
+						sf::Music2::timeToSamples(chunk.offset, sampleRate, channelCount),
+						newSize);
+				}
+				if (chunk.length != sf::Time::Zero)
+				{
+					auto length = sf::Music2::timeToSamples(chunk.length, sampleRate, channelCount);
+					if (startPos + length > newSize)
+					{
+						newSize = newSize - startPos;
+					}
+					else
+					{
+						newSize = length;
+					}
+				}
+				if (newSize == 0)
+				{
+					break;
+				}
+
+				auto oldSize = samplesBuffer.size();
+
+				samplesBuffer.resize(oldSize + (size_t)newSize);
+
+				auto samplesPtr = samplesBuffer.data() + oldSize;
+				auto sndBufferPtr = sndBuffer.getSamples() + (size_t)startPos;
+				memcpy(samplesPtr, sndBufferPtr, (size_t)newSize * sizeof(sf::Int16));
+			}
+		}
+		if (isValidId(id) == false ||
+			samplesBuffer.empty() == true)
+		{
+			return nullptr;
+		}
+
+		if (elem.HasMember("loopNames") == false)
+		{
+			return parseMultiSoundObj(game, id, samplesBuffer.data(),
+				samplesBuffer.size(), channelCount, sampleRate);
+		}
+		return parseMultiSoundLoopsObj(game, elem, id, samplesBuffer.data(),
+			samplesBuffer.size(), channelCount, sampleRate);
+	}
+#endif
 
 	bool parseSoundFromId(Game& game, const Value& elem)
 	{
@@ -34,10 +290,10 @@ namespace Parser
 				std::string id(elem["id"].GetString());
 				if (fromId != id && isValidId(id) == true)
 				{
-					auto obj = game.Resources().getSound(fromId);
-					if (obj != nullptr)
+					auto obj = game.Resources().getAudioSource(fromId);
+					if (std::holds_alternative<std::shared_ptr<sf::SoundBuffer>>(obj) == true)
 					{
-						game.Resources().addSound(id, obj);
+						game.Resources().addAudioSource(id, obj);
 					}
 				}
 			}
@@ -53,32 +309,25 @@ namespace Parser
 			return;
 		}
 
-		if (isValidString(elem, "file") == false)
+		sf::SoundBuffer* sndBuffer = nullptr;
+
+		if (isValidString(elem, "file") == true)
+		{
+			sndBuffer = parseSingleSoundObj(game, elem);
+		}
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+		else if (isValidArray(elem, "file") == true)
+		{
+			sndBuffer = parseMultiSoundObj(game, elem);
+		}
+#endif
+		if (sndBuffer == nullptr)
 		{
 			return;
 		}
-
-		std::string file(elem["file"].GetString());
-		std::string id;
-
-		if (isValidString(elem, "id") == true)
-		{
-			id = elem["id"].GetString();
-		}
-		else if (getIdFromFile(file, id) == false)
-		{
-			return;
-		}
-		if (isValidId(id) == false)
-		{
-			return;
-		}
-
-		auto sndBuffer = parseSoundObj(game, id, file);
-
 		if (getBoolKey(elem, "play") == true)
 		{
-			sf::Sound sound(*sndBuffer.get());
+			sf::Sound sound(*sndBuffer);
 
 			auto volume = getVariableKey(elem, "volume");
 			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());

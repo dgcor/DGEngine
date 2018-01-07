@@ -6,10 +6,16 @@
       "name": "if.equal",
       "param1": "|currentLevel|currentPlayer.item.belt.{2}.isUsable|",
       "param2": true,
-      "then": [
-        { "name": "item.use", "inventory": "belt", "item": {2} },
-        "updateAllPlayerStats"
-      ],
+      "then": {
+        "name": "if.equal",
+        "param1": "|currentLevel|currentPlayer.canUseItem.belt.{2}|",
+        "param2": true,
+        "then": [
+          { "name": "item.use", "inventory": "belt", "item": {2} },
+          "updateAllPlayerStats"
+        ],
+        "else": "sCantUseThisYet"
+      },
       "else": "rightClickLevel"
     }
   }

@@ -21,19 +21,19 @@ namespace Parser
 				Variable var;
 				if (value.IsString())
 				{
-					var.set<std::string>((value.GetString()));
+					var.emplace<std::string>((value.GetString()));
 				}
 				else if (value.IsInt64())
 				{
-					var.set<int64_t>(value.GetInt64());
+					var.emplace<int64_t>(value.GetInt64());
 				}
 				else if (value.IsDouble())
 				{
-					var.set<double>(value.GetDouble());
+					var.emplace<double>(value.GetDouble());
 				}
 				else if (value.IsBool())
 				{
-					var.set<bool>(value.GetBool());
+					var.emplace<bool>(value.GetBool());
 				}
 				else
 				{
@@ -57,19 +57,19 @@ namespace Parser
 				Variable var;
 				if (value.IsString())
 				{
-					var.set<std::string>(std::string(value.GetString()));
+					var.emplace<std::string>(std::string(value.GetString()));
 				}
 				else if (value.IsInt64())
 				{
-					var.set<int64_t>(value.GetInt64());
+					var.emplace<int64_t>(value.GetInt64());
 				}
 				else if (value.IsDouble())
 				{
-					var.set<double>(value.GetDouble());
+					var.emplace<double>(value.GetDouble());
 				}
 				else if (value.IsBool())
 				{
-					var.set<bool>(value.GetBool());
+					var.emplace<bool>(value.GetBool());
 				}
 				else
 				{

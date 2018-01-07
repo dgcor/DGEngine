@@ -1,7 +1,6 @@
 {
   "action": [
-    { "name": "resource.add", "id": "gameMenuCommon" },
-    { "name": "resource.ignore", "id": "level", "ignore": "update" },
+    { "name": "resource.add", "id": "gameMenuCommon", "ignorePrevious": "allUpdates" },
     { "name": "level.pause", "pause": true },
     {
       "name": "action.set",
@@ -38,18 +37,17 @@
       "action": { "name": "button.click", "id": "menu" }
     }
   ],
-  "texture": [
-    {
-      "id": "diabsmal",
-      "file": "data/diabsmal.cel",
-      "palette": "town"
-    },
-    {
-      "id": "PentSpin",
-      "file":"data/PentSpin.cel",
-      "palette": "town"
-    }
-  ],
+  "texture": {
+    "id": "diabsmal",
+    "file": "data/diabsmal.cel",
+    "palette": "town"
+  },
+  "texturePack": {
+    "id": "PentSpin",
+    "imageContainer": "PentSpin",
+    "file": "data/PentSpin.cel",
+    "palette": "town"
+  },
   "image": {
     "id": "diabsmal",
     "texture":"diabsmal",
@@ -59,16 +57,14 @@
   "animation": [
     {
       "id": "pent1",
-      "texture": "PentSpin",
-      "frames": 8,
+      "texturePack": "PentSpin",
       "position": [67, 140],
       "anchor": "none",
       "refresh": 50
     },
     {
       "id": "pent2",
-      "texture": "PentSpin",
-      "frames": 8,
+      "texturePack": "PentSpin",
       "position": [537, 140],
       "anchor": "none",
       "refresh": 50
@@ -85,9 +81,9 @@
       "onClick": [
         { "name": "button.click", "id": "char", "playSound": false }
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "char2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "char2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "char2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "char2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },
@@ -101,9 +97,9 @@
       "onClick": [
         { "name": "button.click", "id": "quest", "playSound": false }
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "quest2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "quest2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "quest2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "quest2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },
@@ -117,9 +113,9 @@
       "onClick": [
         { "name": "button.click", "id": "inv", "playSound": false }
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "inv2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "inv2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "inv2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "inv2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },
@@ -133,9 +129,9 @@
       "onClick": [
         { "name": "button.click", "id": "spell", "playSound": false }
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "spell2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "spell2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "spell2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },
@@ -149,9 +145,9 @@
       "onClick": [
         { "name": "button.click", "id": "map", "playSound": false }
       ],
-      "onClickIn": { "name": "button.setTexture", "id": "map2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "map2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "map2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "map2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },
@@ -162,9 +158,9 @@
       "position": [9, 453],
       "textureRect": [0, 57, 71, 19],
       "clickUp": true,
-      "onClickIn": { "name": "button.setTexture", "id": "menu2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "menu2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "button.setTexture", "id": "menu2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "menu2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     }

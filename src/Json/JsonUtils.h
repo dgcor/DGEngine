@@ -40,6 +40,9 @@ namespace JsonUtils
 	std::string toString(const rapidjson::Value& elem);
 	std::string jsonToString(const rapidjson::Value& elem);
 
+	bool loadFile(const std::string& file, rapidjson::Document& doc);
+	bool loadJson(const std::string& json, rapidjson::Document& doc);
+
 	void saveToFile(const std::string& file, const rapidjson::Value& elem);
 
 	template <class T>
@@ -55,21 +58,21 @@ namespace JsonUtils
 		{
 			writer.String(elem.first.c_str());
 			const Variable& var = elem.second;
-			if (var.is<std::string>())
+			if (std::holds_alternative<std::string>(var))
 			{
-				writer.String(var.get<std::string>().c_str());
+				writer.String(std::get<std::string>(var).c_str());
 			}
-			else if (var.is<int64_t>())
+			else if (std::holds_alternative<int64_t>(var))
 			{
-				writer.Int64(var.get<int64_t>());
+				writer.Int64(std::get<int64_t>(var));
 			}
-			else if (var.is<double>())
+			else if (std::holds_alternative<double>(var))
 			{
-				writer.Double(var.get<double>());
+				writer.Double(std::get<double>(var));
 			}
-			else if (var.is<bool>())
+			else if (std::holds_alternative<bool>(var))
 			{
-				writer.Bool(var.get<bool>());
+				writer.Bool(std::get<bool>(var));
 			}
 			else
 			{

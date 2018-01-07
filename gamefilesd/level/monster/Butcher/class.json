@@ -1,0 +1,44 @@
+{
+  "playerClass": {
+    "id": "butcher",
+    "replaceVars": true,
+    "name": "The Butcher",
+    "type": "Demon",
+    "description": "Some Magic Resistances\nNo Immunities",
+    "defaultOutline": "%outlineEnemy%",
+    "defaultOutlineIgnore": "0x000000",
+    "defaults": {
+      "level": 10,
+      "experience": 710,
+      "defaultDamageMin": 6,
+      "defaultDamageMax": 12,
+      "unique": true
+    },
+    "lifeFormula": "110",
+    "armorFormula": "50",
+    "toHitFormula": "50",
+    "texturePacks": "butcher",
+    "textureIndexes": [
+      { "name": "Stand1", "index": 3 },
+      { "name": "Stand2", "index": 3 },
+      { "name": "Walk1", "index": 4 },
+      { "name": "Walk2", "index": 4 },
+      { "name": "Attack1", "index": 0 },
+      { "name": "Attack2", "index": 0 },
+      { "name": "Attack3", "index": 0 },
+      { "name": "Attack4", "index": 0 },
+      { "name": "Defend1", "index": 1 },
+      { "name": "Defend2", "index": 1 },
+      { "name": "Defend3", "index": 1 },
+      { "name": "Defend4", "index": 1 },
+      { "name": "Hit1", "index": 3 },
+      { "name": "Hit2", "index": 3 },
+      { "name": "Die1", "index": 2 },
+      { "name": "Die2", "index": 2 }
+    ],
+    "animationSpeeds": [
+      { "name": "Walk1", "animation": 20, "walk": 25 },
+      { "name": "Walk2", "animation": 20, "walk": 25 }
+    ]
+  }
+}

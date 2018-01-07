@@ -1,0 +1,37 @@
+{
+  "sound": {
+    "id": "gameWelcome",
+    "file": [
+      {
+        "name": "sfx/Towners/storyt25.wav",
+        "chunks": [
+          { "offset": 0, "length": 1700 }
+        ]
+      },
+      {
+        "name": "sfx/Towners/storyt07.wav",
+        "chunks": [
+          { "offset": 4100, "length": 500 }
+        ]
+      },
+      {
+        "name": "sfx/Towners/storyt04.wav",
+        "chunks": [
+          { "offset": 7800, "length": 280 }
+        ]
+      },
+      {
+        "name": "sfx/Towners/storyt27.wav",
+        "chunks": [
+          { "offset": 11100, "length": 230 }
+        ]
+      },
+      {
+        "name": "sfx/Towners/storyt38.wav",
+        "chunks": [
+          { "offset": 30500, "length": 900 }
+        ]
+      }
+    ]
+  }
+}

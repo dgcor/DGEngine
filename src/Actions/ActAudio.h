@@ -63,6 +63,14 @@ public:
 			if (hasLoop == true)
 			{
 				song->setLoop(loop);
+#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
+				auto musicLoop = dynamic_cast<sf::MusicLoops*>(song.get());
+				if (musicLoop != nullptr)
+				{
+					musicLoop->setLoop(loop);
+					song->setLoop(true);
+				}
+#endif
 			}
 			song->setVolume((float)game.MusicVolume());
 			if (song->getStatus() != sf::Music::Playing)

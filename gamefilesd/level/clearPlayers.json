@@ -5,11 +5,11 @@
     "param2": "hero",
     "then": [
       { "name": "level.clearPlayers", "index": 1 },
-      { "name": "level.clearPlayerClasses", "index": 1 }
+      { "name": "level.clearPlayerTextures" }
     ],
     "else": [
       { "name": "level.clearPlayers" },
-      { "name": "level.clearPlayerClasses" }
+      { "name": "level.clearPlayerTextures" }
     ]
   }
 }

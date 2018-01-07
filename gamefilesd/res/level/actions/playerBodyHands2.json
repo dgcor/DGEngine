@@ -156,7 +156,7 @@
             "list": ["Axe", "Bow", "Club", "Shield", "Staff", "Sword"],
             "then": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+              "param1": "|currentLevel|currentPlayer.canUseSelectedItem|",
               "param2": true,
               "then": [
                 { "name": "image.setTexture", "id": "imgLeftHand", "texture": "empty" },
@@ -179,7 +179,7 @@
           "name": "if.equal",
           "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
           "param2": true,
-          "then": "updateSelectedItemText",
+          "then": "updateSelectedItem",
           "else": "updateLeftHandText"
         }
       ]
@@ -198,7 +198,7 @@
             "list": ["Axe", "Bow", "Club", "Shield", "Staff", "Sword"],
             "then": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.canEquipSelectedItem|",
+              "param1": "|currentLevel|currentPlayer.canUseSelectedItem|",
               "param2": true,
               "then": [
                 { "name": "image.setTexture", "id": "imgRightHand", "texture": "empty" },
@@ -221,7 +221,7 @@
           "name": "if.equal",
           "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
           "param2": true,
-          "then": "updateSelectedItemText",
+          "then": "updateSelectedItem",
           "else": "updateRightHandText"
         }
       ]

@@ -11,6 +11,7 @@
         "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
         "param2": true,
         "then": [
+          { "name": "image.enableOutline", "id": "img{1}" },
           {
             "name": "if.inList",
             "param": "|currentLevel|currentPlayer.item.{2}.{3}.itemType|",

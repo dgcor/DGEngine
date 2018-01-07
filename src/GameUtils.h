@@ -53,7 +53,7 @@ namespace GameUtils
 	size_t getPlayerItemMountIndex(const std::string& str,
 		PlayerItemMount val = PlayerItemMount::LeftHand);
 
-	PlayerStatus getPlayerStatus(const std::string& str, PlayerStatus val);
+	PlayerAnimation getPlayerAnimation(const std::string& str, PlayerAnimation val);
 
 	sf::Time getTime(int fps);
 

@@ -135,7 +135,7 @@
     {
       "id": "charLife",
       "bitmapFont": "smaltext",
-      "position": [110, 294],
+      "position": [111, 294],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
@@ -144,7 +144,7 @@
     {
       "id": "charLifeNow",
       "bitmapFont": "smaltext",
-      "position": [158, 294],
+      "position": [159, 294],
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
@@ -220,6 +220,56 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "onChange": "updateCharResistLightningColor"
+    }
+  ],
+  "button": [
+    {
+      "id": "charStrAddPoint",
+      "position": [137, 138],
+      "anchor": "left",
+      "texture": "charbut",
+      "textureRect": [0, 22, 41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charStrAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charStrAddPoint", "rect": [0, 44, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charStrAddPoint", "rect": [0, 22, 41, 22] }
+    },
+    {
+      "id": "charMagAddPoint",
+      "position": [137, 166],
+      "anchor": "left",
+      "texture": "charbut",
+      "textureRect": [0, 66, 41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charMagAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charMagAddPoint", "rect": [0, 88, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charMagAddPoint", "rect": [0, 66, 41, 22] }
+    },
+    {
+      "id": "charDexAddPoint",
+      "position": [137, 195],
+      "anchor": "left",
+      "texture": "charbut",
+      "textureRect": [0, 110, 41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charDexAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charDexAddPoint", "rect": [0, 132, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charDexAddPoint", "rect": [0, 110, 41, 22] }
+    },
+    {
+      "id": "charVitAddPoint",
+      "position": [137, 223],
+      "anchor": "left",
+      "texture": "charbut",
+      "textureRect": [0, 154, 41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charVitAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 176, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 154, 41, 22] }
     }
   ],
   "action": "updateCharLabels"

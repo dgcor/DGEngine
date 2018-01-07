@@ -156,15 +156,15 @@ namespace Parser
 		auto focusOnClick = getBoolKey(elem, "focusOnClick", true);
 		auto clickUp = getBoolKey(elem, "clickUp");
 
-		std::shared_ptr<sf::SoundBuffer> sound;
+		sf::SoundBuffer* sound{ nullptr };
 		if (elem.HasMember("sound"))
 		{
-			sound = game.Resources().getSound(elem["sound"].GetString());
+			sound = game.Resources().getSoundBuffer(elem["sound"].GetString());
 		}
-		std::shared_ptr<sf::SoundBuffer> focusSound;
+		sf::SoundBuffer* focusSound{ nullptr };
 		if (elem.HasMember("focusSound"))
 		{
-			focusSound = game.Resources().getSound(elem["focusSound"].GetString());
+			focusSound = game.Resources().getSoundBuffer(elem["focusSound"].GetString());
 		}
 
 		auto isTextFont = elem.HasMember("font");
@@ -407,6 +407,13 @@ namespace Parser
 		menu->updateVisibleItems();
 		menu->calculatePositions();
 
-		game.Resources().addDrawable(id, menu);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, menu);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, menu);
+		}
 	}
 }

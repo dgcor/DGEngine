@@ -16,36 +16,53 @@
   "texture": [
     {
       "id": "selhero",
-      "file":"ui_art/selhero.pcx"
+      "file": "ui_art/selhero.pcx"
     },
     {
       "id": "heros",
-      "file":"ui_art/heros.pcx"
+      "file": "ui_art/heros.pcx"
     },
     {
       "id": "focus16",
-      "file":"ui_art/focus16.pcx",
+      "file": "ui_art/focus16.pcx",
       "mask": "0x00FF00"
     },
     {
       "id": "focus",
-      "file":"ui_art/focus.pcx",
+      "file": "ui_art/focus.pcx",
       "mask": "0x00FF00"
     },
     {
       "id": "sb_arrow",
-      "file":"ui_art/sb_arrow.pcx",
+      "file": "ui_art/sb_arrow.pcx",
       "mask": "0xFFFFFF"
     },
     {
       "id": "sb_bg",
-      "file":"ui_art/sb_bg.pcx",
+      "file": "ui_art/sb_bg.pcx",
       "mask": "0xFFFFFF"
     },
     {
       "id": "sb_thumb",
-      "file":"ui_art/sb_thumb.pcx",
+      "file": "ui_art/sb_thumb.pcx",
       "mask": "0xFFFFFF"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "heros",
+      "texture": "heros",
+      "frames": 4
+    },
+    {
+      "id": "focus16",
+      "texture": "focus16",
+      "frames": 8
+    },
+    {
+      "id": "focus",
+      "texture": "focus",
+      "frames": 8
     }
   ],
   "image": [
@@ -64,8 +81,7 @@
   ],
   "animation": {
     "id": "smlogo",
-    "texture":"smlogo",
-    "frames": 15,
+    "texturePack": "smlogo",
     "position": [125, 0],
     "anchor": "none",
     "refresh": 50

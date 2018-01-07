@@ -1,0 +1,4 @@
+{
+  "load": "level/monster/Skeleton King/cel.json",
+  "load": "level/monster/Skeleton King/class.json"
+}

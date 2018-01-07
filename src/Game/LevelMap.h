@@ -12,10 +12,12 @@
 class LevelMap
 {
 private:
-	static int tileSize;
-
 	std::vector<LevelCell> cells;
 	MapCoord mapSize;
+
+	// a tile is 4 blocks
+	int32_t blockWidth{ 0 };
+	int32_t blockHeight{ 0 };
 
 	using Coord = decltype(mapSize.x);
 
@@ -32,7 +34,11 @@ public:
 	LevelMap() {}
 	LevelMap(Coord width_, Coord height_);
 
+	void setTileSize(int32_t tileWidth_, int32_t tileHeight_);
+
 	void setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol);
+
+	void setArea(Coord x, Coord y, const Dun& dun, const Sol& sol);
 
 	Misc::Helper2D<LevelMap, LevelCell&, Coord> operator[] (Coord x)
 	{
@@ -51,10 +57,10 @@ public:
 
 	const MapCoord& MapSize() const { return mapSize; }
 
-	static int TileSize() { return tileSize; }
-
 	sf::Vector2f getCoord(const MapCoord& tile) const;
 	MapCoord getTile(const sf::Vector2f& coords) const;
 
 	std::vector<MapCoord> getPath(const MapCoord& a, const MapCoord& b) const;
+
+	std::string toCSV(bool zeroBasedIndex) const;
 };

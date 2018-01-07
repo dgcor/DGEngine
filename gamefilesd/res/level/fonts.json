@@ -2,7 +2,7 @@
   "bitmapFont": [
     {
       "id": "smaltext",
-      "textureId": "smaltext",
+      "texture": "smaltext",
       "palette": "town",
       "file": "ctrlpan/smaltext.cel",
       "celSize": [13, 11],
@@ -11,7 +11,7 @@
     },
     {
       "id": "medtexts",
-      "textureId": "medtexts",
+      "texture": "medtexts",
       "palette": "town",
       "file": "data/medtexts.cel",
       "charMapFile": "res/level/medtextsCharMap.bin",
@@ -19,7 +19,7 @@
     },
     {
       "id": "bigtgold",
-      "textureId": "bigtgold",
+      "texture": "bigtgold",
       "palette": "town",
       "file": "data/bigtgold.cel",
       "charMapFile": "res/level/bigtgoldCharMap.bin",

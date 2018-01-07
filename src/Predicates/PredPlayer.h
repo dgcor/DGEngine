@@ -3,7 +3,7 @@
 #include "Predicate.h"
 #include "Game.h"
 
-class PredPlayerCanEquip : public Predicate
+class PredPlayerCanUse : public Predicate
 {
 private:
 	std::string idLevel;
@@ -11,7 +11,7 @@ private:
 	ItemLocation itemLocation;
 
 public:
-	PredPlayerCanEquip(const std::string& idLevel_,
+	PredPlayerCanUse(const std::string& idLevel_,
 		const std::string& idPlayer_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemLocation(itemLocation_) {}
 
@@ -26,7 +26,7 @@ public:
 				auto player = level->getPlayerOrCurrent(idPlayer);
 				if (player != nullptr)
 				{
-					return { player->canEquipItem(*item) };
+					return { player->canUseItem(*item) };
 				}
 			}
 		}

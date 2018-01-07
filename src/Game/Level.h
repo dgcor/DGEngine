@@ -1,12 +1,10 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "CelCache.h"
 #include "ItemClass.h"
 #include "ItemLocation.h"
 #include "LevelMap.h"
 #include <memory>
-#include "Min.h"
 #include "Namer.h"
 #include "Palette.h"
 #include "Player.h"
@@ -14,7 +12,7 @@
 #include "Quest.h"
 #include "Sol.h"
 #include <string>
-#include "TileSet.h"
+#include "TexturePacks/TexturePack.h"
 #include "UIObject.h"
 #include <unordered_map>
 #include <utility>
@@ -44,8 +42,12 @@ private:
 
 	std::string name;
 
-	std::vector<std::shared_ptr<sf::Texture>> tiles;
-	std::vector<std::shared_ptr<sf::Texture>> tiles2;
+	std::shared_ptr<TexturePack> tilesBottom;
+	std::shared_ptr<TexturePack> tilesTop;
+
+	int tileWidth{ 0 };
+	int tileHeight{ 0 };
+	int pillarHeight{ 0 };
 
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
@@ -74,21 +76,24 @@ private:
 
 	std::vector<Quest> quests;
 
+	std::vector<uint32_t> experiencePoints;
+
 	static const LevelCell& get(Coord x, Coord y, const Level& level)
 	{
 		return level.map[x][y];
 	}
 
-	void updateZoom(const Game& game);
-
 	void updateMouse(const Game& game);
+	void updateZoom(const Game& game);
 
 	void onMouseButtonPressed(Game& game);
 	void onMouseScrolled(Game& game);
 	void onTouchBegan(Game& game);
 
 public:
-	void Init(const LevelMap& map, Min& min, CelFrameCache& cel);
+	void Init(const LevelMap& map_,
+		std::shared_ptr<TexturePack>& tilesBottom_,
+		std::shared_ptr<TexturePack>& tilesTop_);
 
 	Misc::Helper2D<const Level, const LevelCell&, Coord> operator[] (Coord x) const
 	{
@@ -168,6 +173,8 @@ public:
 
 	// doesn't clear currently used player classes
 	void clearPlayerClasses(size_t clearIdx);
+	// doesn't clear currently used player classes
+	void clearPlayerTextures();
 	void clearPlayers(size_t clearIdx);
 
 	void resetView() { view.reset(); }
@@ -184,7 +191,7 @@ public:
 	void setHoverObject(LevelObject* object) { hoverObject = object; }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { view.setAnchor(anchor); }
 	virtual void updateSize(const Game& game);
@@ -241,6 +248,10 @@ public:
 
 	void updateLevelObjectPositions();
 
+	int TileWidth() const { return tileWidth; }
+	int TileHeight() const { return tileHeight; }
+	int PillarHeight() const { return pillarHeight; }
+
 	virtual bool Pause() const { return pause; }
 	virtual void Pause(bool pause_) { pause = pause_; }
 
@@ -268,4 +279,12 @@ public:
 	void addQuest(const Quest& quest_);
 	void deleteQuest(const std::string& questId);
 	void setQuestState(const std::string& questId, int state);
+
+	void setExperiencePoints(const std::vector<uint32_t>& experiencePoints_)
+	{
+		experiencePoints = experiencePoints_;
+	}
+
+	uint32_t getExperienceFromLevel(uint32_t level) const;
+	uint32_t getLevelFromExperience(uint32_t experience) const;
 };

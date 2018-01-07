@@ -1,0 +1,9 @@
+{
+  "load": "level/monster/Scavenger/load.json",
+  "player": {
+    "class": "scavenger",
+    "mapPosition": [66, 28],
+    "direction": "front",
+    "AI": true
+  }
+}

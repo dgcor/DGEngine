@@ -79,6 +79,12 @@ namespace Parser
 		return val;
 	}
 
+	std::pair<size_t, size_t> getFramesKey(const rapidjson::Value& elem,
+		const char* key, const std::pair<size_t, size_t>& val = {});
+
+	std::pair<size_t, size_t> getIndexKey(const rapidjson::Value& elem,
+		const char* key, const std::pair<size_t, size_t>& val = {});
+
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
 		const char* key, const sf::IntRect& val = {});
 
@@ -87,6 +93,9 @@ namespace Parser
 
 	sf::Color getColorKey(const rapidjson::Value& elem, const char* key,
 		const sf::Color& val = {});
+
+	sf::Time getTimeKey(const rapidjson::Value& elem, const char* key,
+		const sf::Time& val = {});
 
 	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const char* key);
 
@@ -124,8 +133,8 @@ namespace Parser
 	PlayerItemMount getPlayerItemMountKey(const rapidjson::Value& elem,
 		const char* key, PlayerItemMount val = PlayerItemMount::LeftHand);
 
-	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
-		const char* key, PlayerStatus val = PlayerStatus::Stand1);
+	PlayerAnimation getPlayerAnimationKey(const rapidjson::Value& elem,
+		const char* key, PlayerAnimation val = PlayerAnimation::Stand1);
 
 	ReplaceVars getReplaceVarsKey(const rapidjson::Value& elem,
 		const char* key, ReplaceVars val = ReplaceVars::None);

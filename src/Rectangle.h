@@ -13,7 +13,7 @@ public:
 	Rectangle(const sf::Vector2f& size = sf::Vector2f(0, 0)) : sf::RectangleShape(size) {}
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) { return false; }
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);

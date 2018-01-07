@@ -3,11 +3,10 @@
     {
       "id": "buckler",
       "fromId": "baseArmor",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 94,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 94,
       "name": "Buckler",
       "shortName": "Buckler",
       "type": "Shield",
@@ -15,7 +14,8 @@
         "price": 30,
         "armor": 5,
         "durability": 16,
-        "durabilityMax": 16
+        "durabilityMax": 16,
+        "singleItemDamage": 2
       },
       "inventorySize": [2, 2],
       "actions": {
@@ -31,11 +31,10 @@
     {
       "id": "smallShield",
       "fromId": "buckler",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 116,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 116,
       "name": "Small Shield",
       "shortName": "Shield",
       "defaults": {
@@ -50,11 +49,10 @@
     {
       "id": "largeShield",
       "fromId": "smallShield",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 158,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 158,
       "name": "Large Shield",
       "defaults": {
         "price": 200,
@@ -67,11 +65,10 @@
     {
       "id": "kiteShield",
       "fromId": "smallShield",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 124,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 124,
       "name": "Kite Shield",
       "defaults": {
         "price": 400,
@@ -84,11 +81,10 @@
     {
       "id": "towerShield",
       "fromId": "smallShield",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 143,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 143,
       "name": "Tower Shield",
       "defaults": {
         "price": 850,
@@ -101,11 +97,10 @@
     {
       "id": "gothicShield",
       "fromId": "smallShield",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 38,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 159,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 38,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 159,
       "name": "Gothic Shield",
       "defaults": {
         "price": 2300,

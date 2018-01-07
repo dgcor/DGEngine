@@ -1,22 +1,48 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include "Sprite2.h"
 #include "UIObject.h"
 
-class Image : public UIObject
+class Image : public virtual UIObject
 {
-private:
-	sf::Sprite sprite;
+protected:
+	Sprite2 sprite;
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	bool visible{ true };
 
 public:
-	Image(const sf::Texture& tex) : sprite(tex) {}
+	Image()
+	{
+		sprite.setOutlineEnabled(true);
+	}
+	Image(const sf::Texture& tex) : sprite(tex)
+	{
+		sprite.setOutlineEnabled(true);
+	}
+	Image(const sf::Texture& tex, const std::shared_ptr<Palette>& pal) : sprite(tex, pal)
+	{
+		sprite.setOutlineEnabled(true);
+	}
 
 	void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
 	void setColor(const sf::Color& color) { sprite.setColor(color); }
 	void setOrigin(const sf::Vector2f& origin) { sprite.setOrigin(origin); }
 	void setOrigin();
+
+	void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	{
+		sprite.setOutline(outline, ignore);
+	}
+	bool hasOutline() const { return sprite.hasOutline(); }
+
+	void setOutlineEnabled(bool enable)
+	{
+		sprite.setOutlineEnabled(enable);
+	}
+	bool isOutlineEnabled() const { return sprite.isOutlineEnabled(); }
+
+	void setPalette(const std::shared_ptr<Palette>& pal) { sprite.setPalette(pal); }
+	bool hasPalette() const { return sprite.hasPalette(); }
 
 	void centerTexture();
 
@@ -26,7 +52,7 @@ public:
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) {}
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) { return false; }
 
 	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
 	virtual void updateSize(const Game& game);

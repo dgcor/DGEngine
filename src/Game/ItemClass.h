@@ -1,26 +1,22 @@
 #pragma once
 
-#include "Actions/Action.h"
-#include "CelCache.h"
+#include "BaseClass.h"
 #include "Formula.h"
 #include "GameProperties.h"
 #include "ItemXY.h"
-#include <memory>
 #include "Namer.h"
 #include "Queryable.h"
 #include <string>
+#include "TexturePacks/TexturePack.h"
 #include "Utils.h"
 
-class ItemClass
+class ItemClass : public BaseClass
 {
 private:
-	std::shared_ptr<CelTextureCacheVector> celTextureDrop;
-	size_t celDropIdx;
-	std::shared_ptr<CelTextureCache> celTextureInventory;
-	std::shared_ptr<CelTextureCache> celTextureInventoryUnusable;
-	size_t celInventoryIdx;
-
-	std::vector<std::pair<uint16_t, std::shared_ptr<Action>>> actions;
+	std::shared_ptr<TexturePack> textureDrop;
+	size_t dropIdx;
+	std::shared_ptr<TexturePack> textureInventory;
+	size_t inventoryIdx;
 
 	std::string name;
 	std::string shortName;
@@ -40,54 +36,41 @@ private:
 	std::array<std::pair<uint16_t, Formula>, 6> formulas;
 	size_t formulasSize{ 0 };
 
+	sf::Color defaultOutline{ sf::Color::Transparent };
+	sf::Color defaultOutlineIgnore{ sf::Color::Transparent };
+
 public:
-	ItemClass(const std::shared_ptr<CelTextureCacheVector>& celTextureDrop_,
-		size_t celDropIdx_, const std::shared_ptr<CelTextureCache>& celTextureInventory_,
-		const std::shared_ptr<CelTextureCache>& celTextureInventoryUnusable_,
-		size_t celInventoryIdx_) : celTextureDrop(celTextureDrop_),
-		celDropIdx(celDropIdx_), celTextureInventory(celTextureInventory_),
-		celTextureInventoryUnusable(celTextureInventoryUnusable_), celInventoryIdx(celInventoryIdx_) {}
+	ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
+		size_t dropIdx_, const std::shared_ptr<TexturePack>& textureInventory_,
+		size_t inventoryIdx_) : textureDrop(textureDrop_),
+		dropIdx(dropIdx_), textureInventory(textureInventory_),
+		inventoryIdx(inventoryIdx_) {}
 
-	void setCelTextureDrop(const std::shared_ptr<CelTextureCacheVector>& celTextureDrop_)
+	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_)
 	{
-		celTextureDrop = celTextureDrop_;
+		textureDrop = textureDrop_;
 	}
-	void setCelDropIdx(size_t celDropIdx_)
+	void setDropTextureIndex(size_t dropIdx_)
 	{
-		celDropIdx = celDropIdx_;
+		dropIdx = dropIdx_;
 	}
-	void setCelTextureInventory(const std::shared_ptr<CelTextureCache>& celTextureInventory_)
+	void setInventoryTexturePack(const std::shared_ptr<TexturePack>& textureInventory_)
 	{
-		celTextureInventory = celTextureInventory_;
+		textureInventory = textureInventory_;
 	}
-	void setCelTextureInventoryUnusable(const std::shared_ptr<CelTextureCache>& celTextureInventoryUnusable_)
+	void setInventoryTextureIndex(size_t inventoryIdx_)
 	{
-		celTextureInventoryUnusable = celTextureInventoryUnusable_;
-	}
-	void setCelInventoryIdx(size_t celInventoryIdx_)
-	{
-		celInventoryIdx = celInventoryIdx_;
+		inventoryIdx = inventoryIdx_;
 	}
 
-	sf::Texture& getCelDropTexture(size_t idx) const { return celTextureDrop->get(celDropIdx, idx); }
-	sf::Texture& getCelDropTextureLast() const { return celTextureDrop->getLast(celDropIdx); }
-	size_t getCelDropTextureSize() const { return celTextureDrop->size(celDropIdx); }
+	const TexturePack* getDropTexturePack() const { return textureDrop.get(); }
+	const TexturePack* getInventoryTexturePack() const { return textureInventory.get(); }
+	size_t getDropTextureIndex() const { return dropIdx; }
 
-	sf::Texture& getCelInventoryTexture(bool equipable = true) const
+	bool getInventoryTexture(const sf::Texture** texture, sf::IntRect& textureRect) const
 	{
-		if (equipable == true)
-		{
-			return celTextureInventory->get(celInventoryIdx);
-		}
-		else
-		{
-			return celTextureInventoryUnusable->get(celInventoryIdx);
-		}
+		return textureInventory->get(inventoryIdx, texture, textureRect);
 	}
-
-	std::shared_ptr<Action> getAction(uint16_t nameHash16) const;
-	void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_);
-	void executeAction(Game& game, uint16_t nameHash16, bool executeNow = false) const;
 
 	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
 	void setDefault(const char* prop, LevelObjValue val);
@@ -113,6 +96,9 @@ public:
 	uint16_t TypeHash16() const { return typeHash16; }
 	const ItemXY& InventorySize() const { return inventorySize; }
 
+	const sf::Color& DefaultOutline() const { return defaultOutline; }
+	const sf::Color& DefaultOutlineIgnore() const { return defaultOutlineIgnore; }
+
 	void Name(const std::string& name_) { name = name_; }
 	void ShortName(const std::string& name_) { shortName = name_; }
 	void Type(const std::string& type_)
@@ -122,6 +108,9 @@ public:
 	}
 	void SubType(const std::string& subType_) { subType = subType_; }
 	void InventorySize(const ItemXY& inventorySize_) { inventorySize = inventorySize_; }
+
+	void DefaultOutline(const sf::Color& color) { defaultOutline = color; }
+	void DefaultOutlineIgnore(const sf::Color& color) { defaultOutlineIgnore = color; }
 
 	void setPrefix(const std::shared_ptr<Namer>& namer) { prefix = namer; }
 	void setSuffix(const std::shared_ptr<Namer>& namer) { suffix = namer; }

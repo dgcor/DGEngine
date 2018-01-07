@@ -1,8 +1,6 @@
 #include "LevelMap.h"
 #include "PathFinder.h"
 
-int LevelMap::tileSize = 32;
-
 LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 {
 	if (mapSize.x == std::numeric_limits<Coord>::max())
@@ -14,6 +12,12 @@ LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 		mapSize.y--;
 	}
 	cells.resize(mapSize.x * mapSize.y);
+}
+
+void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_)
+{
+	blockWidth = tileWidth_ / 2;
+	blockHeight = tileHeight_ / 2;
 }
 
 void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol)
@@ -85,11 +89,35 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 	}
 }
 
+void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const Sol& sol)
+{
+	for (size_t i = 0; i < dun.Width(); i++)
+	{
+		for (size_t j = 0; j < dun.Height(); j++)
+		{
+			auto cellX = x + i;
+			auto cellY = y + j;
+
+			if (cellX >= mapSize.x || cellY >= mapSize.y)
+			{
+				continue;
+			}
+
+			auto& cell = cells[cellX + (cellY * mapSize.x)];
+
+			auto minIndex = dun[i][j];
+			cell.MinIndex(minIndex);
+			cell.Sol((minIndex >= 0 ? sol.get(minIndex) : 0));
+		}
+	}
+}
+
 sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 {
 	return sf::Vector2f(
-		(float)((tile.y*(-32)) + 32 * tile.x + mapSize.y * 32 - 32),
-		(float)((tile.y * 16) + 16 * tile.x));
+		(float)((tile.y*(-blockWidth)) + blockWidth * tile.x + mapSize.y * blockWidth - blockWidth),
+		(float)((tile.y * blockHeight) + blockHeight * tile.x)
+	);
 }
 
 MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
@@ -98,11 +126,11 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 	int32_t flatX = (int32_t)coords.x;
 	int32_t flatY = (int32_t)coords.y;
 
-	// position on the map divided into 32x16 flat blocks
+	// position on the map divided into (blockWidth)x(blockHeight) flat blocks
 	// every second one of these blocks is centred on an isometric
 	// block centre, the others are centred on isometric block corners
-	int32_t flatGridX = (flatX + 16) / 32;
-	int32_t flatGridY = (flatY + 8) / 16;
+	int32_t flatGridX = (flatX + (blockWidth / 2)) / blockWidth;
+	int32_t flatGridY = (flatY + (blockHeight / 2)) / blockHeight;
 
 	// origin position (in flat grid coords) for the first line (isometric y = 0)
 	int32_t flatOriginPosX = mapSize.y;
@@ -110,11 +138,12 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 
 	// when a flat grid box is clicked that does not centre on an isometric block, work out which
 	// isometric quadrant of that box was clicked, then adjust flatGridPos accordingly
-	if ((flatGridX % 2 == 1 && flatGridY % 2 == 1) || (flatGridX % 2 == 0 && flatGridY % 2 == 0))
+	if ((flatGridX % 2 == 1 && flatGridY % 2 == 1) ||
+		(flatGridX % 2 == 0 && flatGridY % 2 == 0))
 	{
 		// origin of current flat grid box
-		int32_t baseX = 32 * flatGridX - 16;
-		int32_t baseY = 16 * flatGridY - 8;
+		int32_t baseX = blockWidth * flatGridX - (blockWidth / 2);
+		int32_t baseY = blockHeight * flatGridY - (blockHeight / 2);
 
 		// position within grid box
 		int32_t blockPosX = flatX - baseX;
@@ -122,7 +151,7 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 
 		if (blockPosY * 2 > blockPosX)
 		{
-			if (blockPosX < (15 - blockPosY) * 2)
+			if (blockPosX < (flatOriginPosY - blockPosY) * 2)
 			{
 				flatGridX--;
 			}
@@ -133,7 +162,7 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
 		}
 		else
 		{
-			if (blockPosX < (15 - blockPosY) * 2)
+			if (blockPosX < (flatOriginPosY - blockPosY) * 2)
 			{
 				flatGridY--;
 			}
@@ -227,4 +256,22 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 	pathFinder.EnsureMemoryFreed();
 
 	return path;
+}
+
+std::string LevelMap::toCSV(bool zeroBasedIndex) const
+{
+	std::string str;
+	int16_t inc = (zeroBasedIndex == true ? 0 : 1);
+
+	for (int j = 0; j < mapSize.y; j++)
+	{
+		for (int i = 0; i < mapSize.x; i++)
+		{
+			str += std::to_string((*this)[i][j].MinIndex() + inc) + ",";
+		}
+		str += "\n";
+	}
+	str.pop_back();
+	str.pop_back();
+	return str;
 }

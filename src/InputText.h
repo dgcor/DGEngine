@@ -30,7 +30,7 @@ public:
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor_) { text->setAnchor(anchor_); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }

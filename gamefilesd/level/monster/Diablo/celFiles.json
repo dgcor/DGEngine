@@ -1,0 +1,10 @@
+{
+  "imageContainer": [
+    { "file": "monsters/diablo/diabloa.cl2" },
+    { "file": "monsters/diablo/diablod.cl2" },
+    { "file": "monsters/diablo/diabloh.cl2" },
+    { "file": "monsters/diablo/diablon.cl2" },
+    { "file": "monsters/diablo/diablos.cl2" },
+    { "file": "monsters/diablo/diablow.cl2" }
+  ]
+}

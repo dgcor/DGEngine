@@ -2,58 +2,84 @@
   "playerClass": [
     {
       "id": "healer",
+      "replaceVars": true,
       "name": "Healer",
       "type": "Human",
-      "celTextures": "healer"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "healer"
     },
     {
       "id": "storyTeller",
+      "replaceVars": true,
       "name": "Story teller",
       "type": "Human",
-      "celTextures": "strytell"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "strytell"
     },
     {
       "id": "blacksmith",
+      "replaceVars": true,
       "name": "Blacksmith",
       "type": "Human",
-      "celTextures": "smithn"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "smithn"
     },
     {
       "id": "tavernOwner",
+      "replaceVars": true,
       "name": "Tavern owner",
       "type": "Human",
-      "celTextures": "twnfn"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "twnfn"
     },
     {
       "id": "drunk",
+      "replaceVars": true,
       "name": "Drunk",
       "type": "Human",
-      "celTextures": "twndrunk"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "twndrunk"
     },
     {
       "id": "barmaid",
+      "replaceVars": true,
       "name": "Barmaid",
       "type": "Human",
-      "celTextures": "wmnn"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "wmnn"
     },
     {
       "id": "boy",
+      "replaceVars": true,
       "name": "Boy",
       "type": "Human",
-      "celTextures": "pegkid1"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "pegkid1"
     },
     {
       "id": "witch",
+      "replaceVars": true,
       "name": "Witch",
       "type": "Human",
-      "celTextures": "witch"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "witch"
     },
     {
       "id": "cow",
+      "replaceVars": true,
       "name": "Cow",
       "type": "Animal",
-      "description": "Cow",
-      "celTextures": "cow"
+      "defaultOutline": "%outlineFriend%",
+      "defaultOutlineIgnore": "0x000000",
+      "texturePacks": "cow"
     }
   ]
 }

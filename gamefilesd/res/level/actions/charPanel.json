@@ -2,6 +2,76 @@
   "action": [
     {
       "name": "action.set",
+      "id": "showCharPoints",
+      "action": [
+        { "name": "text.setText", "id": "charPoints", "text": "|currentLevel|currentPlayer.points|" },
+        { "name": "drawable.visible", "id": "txtLevelUp", "visible": true },
+        { "name": "drawable.visible", "id": "btnLevelUp", "visible": true },
+        {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.strength|",
+          "param2": "|currentLevel|currentPlayer.maxStrength|",
+          "then": { "name": "drawable.visible", "id": "charStrAddPoint", "visible": true },
+          "else": { "name": "drawable.visible", "id": "charStrAddPoint", "visible": false }
+        },
+        {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.magic|",
+          "param2": "|currentLevel|currentPlayer.maxMagic|",
+          "then": { "name": "drawable.visible", "id": "charMagAddPoint", "visible": true },
+          "else": { "name": "drawable.visible", "id": "charMagAddPoint", "visible": false }
+        },
+        {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.dexterity|",
+          "param2": "|currentLevel|currentPlayer.maxDexterity|",
+          "then": { "name": "drawable.visible", "id": "charDexAddPoint", "visible": true },
+          "else": { "name": "drawable.visible", "id": "charDexAddPoint", "visible": false }
+        },
+        {
+          "name": "if.lower",
+          "param1": "|currentLevel|currentPlayer.vitality|",
+          "param2": "|currentLevel|currentPlayer.maxVitality|",
+          "then": { "name": "drawable.visible", "id": "charVitAddPoint", "visible": true },
+          "else": { "name": "drawable.visible", "id": "charVitAddPoint", "visible": false }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideCharPoints",
+      "action": [
+        { "name": "text.setText", "id": "charPoints" },
+        { "name": "drawable.visible", "id": "txtLevelUp", "visible": false },
+        { "name": "drawable.visible", "id": "btnLevelUp", "visible": false },
+        { "name": "drawable.visible", "id": "charStrAddPoint", "visible": false },
+        { "name": "drawable.visible", "id": "charMagAddPoint", "visible": false },
+        { "name": "drawable.visible", "id": "charDexAddPoint", "visible": false },
+        { "name": "drawable.visible", "id": "charVitAddPoint", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateCharPoints",
+      "action": {
+        "name": "if.greater",
+        "param1": "|currentLevel|currentPlayer.points|",
+        "param2": 0,
+        "then": {
+          "name": "if.notEqual",
+          "param1": "|currentLevel|currentPlayer.hasMaxStats|",
+          "param2": true,
+          "then": "showCharPoints",
+          "else": [
+            { "name": "player.setProperty", "property": "points", "value": 0 },
+            "hideCharPoints"
+          ]
+        },
+        "else": "hideCharPoints"
+      }
+    },
+    {
+      "name": "action.set",
       "id": "updateCharLabels",
       "action": {
         "name": "if.equal",
@@ -38,6 +108,7 @@
             "binding": ["|currentLevel|currentPlayer.damageMin|", "|currentLevel|currentPlayer.damageMax|"],
             "format": "[1]-[2]"
           },
+          "updateCharPoints",
           {
             "name": ">=",
             "param1": "|currentLevel|currentPlayer.resistMagic|",
@@ -406,6 +477,42 @@
           "else": { "name": "text.setColor", "id": "charResLight" }
         }
       }
+    },
+    {
+      "name": "action.set",
+      "id": "charStrAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "strength", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charMagAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "magic", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charDexAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "dexterity", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateCharLabels"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charVitAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "vitality", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateCharLabels"
+      ]
     }
   ]
 }

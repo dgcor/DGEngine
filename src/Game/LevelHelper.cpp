@@ -1,48 +1,57 @@
 #include "LevelHelper.h"
+#include "TexturePacks/SimpleIndexedTexturePack.h"
+#include "TexturePacks/VectorTexturePack.h"
 
 namespace LevelHelper
 {
-	void drawFrame(sf::Image& s, int start_x, int start_y, const CelFrame& frame)
+	void drawFrame(sf::Image& s, int start_x, int start_y, const sf::Image& frame)
 	{
 		auto size = s.getSize();
-		auto width = frame.Width();
-		auto height = frame.Height();
+		auto frameSize = frame.getSize();
 
-		for (size_t x = 0; x < width; x++)
+		for (size_t x = 0; x < frameSize.x; x++)
 		{
-			for (size_t y = 0; y < height; y++)
+			for (size_t y = 0; y < frameSize.y; y++)
 			{
 				size_t xx = start_x + x;
 				size_t yy = start_y + y;
 
 				if (xx < size.x && yy < size.y)
 				{
-					s.setPixel(xx, yy, frame[x][y]);
+					s.setPixel(xx, yy, frame.getPixel(x, y));
 				}
 			}
 		}
 	}
 
-	void drawMinTile(sf::Image& s, CelFrameCache& f, int x, int y, int16_t l, int16_t r)
+	bool drawMinTile(sf::Image& s, CachedImagePack& f, int x, int y, int16_t l, int16_t r)
 	{
+		bool notTransparent = false;
 		if (l != -1)
+		{
 			drawFrame(s, x, y, f[l]);
-
+			notTransparent = true;
+		}
 		if (r != -1)
+		{
 			drawFrame(s, x + 32, y, f[r]);
+			notTransparent = true;
+		}
+		return notTransparent;
 	}
 
-	void drawMinPillar(sf::Image& s, int x, int y,
-		const std::vector<int16_t>& pillar, CelFrameCache& tileset, bool top)
+	bool drawMinPillar(sf::Image& s, int x, int y,
+		const std::vector<int16_t>& pillar, CachedImagePack& tileset, bool top)
 	{
-		// compensate for maps using 5-row min files
-		if (pillar.size() == 10)
-			y += 3 * 32;
-
 		size_t i, lim;
 
-		if (top)
+		if (top == true)
 		{
+			// compensate for maps using 5-row min files
+			if (pillar.size() == 10)
+			{
+				y += 3 * 32;
+			}
 			i = 0;
 			lim = pillar.size() - 2;
 		}
@@ -50,8 +59,9 @@ namespace LevelHelper
 		{
 			i = pillar.size() - 2;
 			lim = pillar.size();
-			y += i * 16;
 		}
+
+		bool notTransparent = false;
 
 		// Each iteration draw one row of the min
 		for (; i < lim; i += 2)
@@ -59,47 +69,181 @@ namespace LevelHelper
 			int16_t l = (pillar[i] & 0x0FFF) - 1;
 			int16_t r = (pillar[i + 1] & 0x0FFF) - 1;
 
-			drawMinTile(s, tileset, x, y, l, r);
+			notTransparent |= drawMinTile(s, tileset, x, y, l, r);
 
 			y += 32; // down 32 each row
 		}
+		return notTransparent;
 	}
 
-	void drawMinPillarTop(sf::Image& s, int x, int y,
-		const std::vector<int16_t>& pillar, CelFrameCache& tileset)
+	std::shared_ptr<TexturePack> loadTilesetSprite(
+		CachedImagePack& imgPack, Min& min, bool top, bool skipBlankTiles)
 	{
-		drawMinPillar(s, x, y, pillar, tileset, true);
-	}
+		auto texturePack = std::make_shared<VectorTexturePack>(
+			min.size() - 1, imgPack.getPalette(), imgPack.IsIndexed());
 
-	void drawMinPillarBase(sf::Image& s, int x, int y,
-		const std::vector<int16_t>& pillar, CelFrameCache& tileset)
-	{
-		drawMinPillar(s, x, y, pillar, tileset, false);
-	}
-
-	std::vector<std::shared_ptr<sf::Texture>> loadTilesetSprite(CelFrameCache& cel, Min& min, bool top)
-	{
-		std::vector<std::shared_ptr<sf::Texture>> newMin(min.size() - 1);
+		bool hasTile = true;
+		sf::Image2 newPillar;
 
 		for (size_t i = 0; i < min.size() - 1; i++)
 		{
-			sf::Image newPillar;
-			newPillar.create(64, 256, sf::Color::Transparent);
-
-			if (top)
+			if (hasTile == true)
 			{
-				drawMinPillarTop(newPillar, 0, 0, min[i], cel);
-			}
-			else
-			{
-				drawMinPillarBase(newPillar, 0, 0, min[i], cel);
+				newPillar.create(64, (top == true ? 256 : 32), sf::Color::Transparent);
+				hasTile = false;
 			}
 
-			auto tex = std::make_shared<sf::Texture>();
-			tex->loadFromImage(newPillar);
-			newMin[i] = tex;
+			hasTile = drawMinPillar(newPillar, 0, 0, min[i], imgPack, top);
+
+			if (skipBlankTiles == false ||
+				hasTile == true)
+			{
+				texturePack->set(i, newPillar);
+			}
+		}
+		return texturePack;
+	}
+
+	std::shared_ptr<TexturePack> loadTilesetSpriteBatchSprites(
+		CachedImagePack& imgPack, Min& min, bool top, bool skipBlankTiles)
+	{
+		std::shared_ptr<SimpleMultiTexturePack> texturePack;
+		SimpleIndexedMultiTexturePack* indexedTexturePack = nullptr;
+
+		if (skipBlankTiles == false)
+		{
+			texturePack = std::make_shared<SimpleMultiTexturePack>(
+				imgPack.getPalette(), imgPack.IsIndexed());
+		}
+		else
+		{
+			texturePack = std::make_shared<SimpleIndexedMultiTexturePack>(
+				imgPack.getPalette(), imgPack.IsIndexed());
+			indexedTexturePack = (SimpleIndexedMultiTexturePack*)texturePack.get();
 		}
 
-		return newMin;
+		sf::Image2 newPillar;
+		size_t i = 0;
+		size_t xMax = 16;
+		size_t yMax = (top == true ? 4 : 32);
+
+		bool mainLoop = true;
+		while (mainLoop == true)
+		{
+			newPillar.create(1024, 1024, sf::Color::Transparent);
+
+			bool loop = true;
+			size_t x = 0;
+			size_t y = 0;
+			while (loop == true)
+			{
+				size_t newX = x * 64;
+				size_t newY = y * (top == true ? 256 : 32);
+
+				bool hasTile = drawMinPillar(newPillar, newX, newY, min[i], imgPack, top);
+
+				if (skipBlankTiles == false ||
+					hasTile == true)
+				{
+					if (indexedTexturePack != nullptr)
+					{
+						indexedTexturePack->addTextureIndex(i);
+					}
+
+					x++;
+					if (x >= xMax)
+					{
+						x = 0;
+						y++;
+						if (y >= yMax)
+						{
+							loop = false;
+						}
+					}
+				}
+
+				i++;
+				if (i >= (min.size() - 1))
+				{
+					loop = false;
+					mainLoop = false;
+				}
+			}
+			texturePack->addTexturePack(std::make_shared<sf::Texture>(newPillar), xMax, yMax, true);
+		}
+		return texturePack;
+	}
+
+	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
+		Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether)
+	{
+		if (batchSpritesTogether == false)
+		{
+			return loadTilesetSprite(imgPack, min, top, skipBlankTiles);
+		}
+		else
+		{
+			return loadTilesetSpriteBatchSprites(imgPack, min, top, skipBlankTiles);
+		}
+	}
+
+	void saveTilesetSprite(const std::string& path,
+		CachedImagePack& imgPack, Min& min, int bottomTopOrBoth, bool skipBlankTiles)
+	{
+		sf::Image2 newPillar;
+		size_t i = 0;
+		size_t file = 1;
+		size_t xMax = 16;
+		size_t yMax = (bottomTopOrBoth != 0 ? 4 : 32);
+
+		bool mainLoop = true;
+		while (mainLoop == true)
+		{
+			newPillar.create(1024, 1024, sf::Color::Transparent);
+
+			bool loop = true;
+			size_t x = 0;
+			size_t y = 0;
+			while (loop == true)
+			{
+				size_t newX = x * 64;
+				size_t newY = y * (bottomTopOrBoth != 0 ? 256 : 32);
+				bool hasTile = false;
+
+				if (bottomTopOrBoth < 0)
+				{
+					hasTile = drawMinPillar(newPillar, newX, newY + 224, min[i], imgPack, false);
+					hasTile |= drawMinPillar(newPillar, newX, newY, min[i], imgPack, true);
+				}
+				else
+				{
+					hasTile = drawMinPillar(newPillar, newX, newY, min[i], imgPack, bottomTopOrBoth != 0);
+				}
+
+				if (skipBlankTiles == false ||
+					hasTile == true)
+				{
+					x++;
+					if (x >= xMax)
+					{
+						x = 0;
+						y++;
+						if (y >= yMax)
+						{
+							loop = false;
+						}
+					}
+				}
+
+				i++;
+				if (i >= (min.size() - 1))
+				{
+					loop = false;
+					mainLoop = false;
+				}
+			}
+			newPillar.saveToFile(path + std::to_string(file) + ".png");
+			file++;
+		}
 	}
 }

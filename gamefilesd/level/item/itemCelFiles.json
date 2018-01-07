@@ -1,5 +1,5 @@
 {
-  "celFile": [
+  "imageContainer": [
     { "file": "items/armor2.cel" },
     { "file": "items/axe.cel" },
     { "file": "items/axeflip.cel" },

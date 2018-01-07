@@ -48,32 +48,39 @@ namespace TextUtils
 		const std::vector<std::string>& bindings)
 	{
 		std::string str;
+		appendText(game, textOp, str, textOrformat, bindings);
+		return str;
+	}
+
+	void appendText(const Game& game, TextOp textOp, std::string& str,
+		const std::string& textOrformat, const std::vector<std::string>& bindings)
+	{
 		switch (TextOp(((uint32_t)textOp) & 0x7u))
 		{
 		default:
 		case TextOp::Set:
-			str = textOrformat;
+			str += textOrformat;
 			break;
 		case TextOp::Replace:
-			str = game.getVarOrPropString(textOrformat);
+			str += game.getVarOrPropString(textOrformat);
 			break;
 		case TextOp::ReplaceAll:
-			str = game.getVarOrPropString(textOrformat);
+			str += game.getVarOrPropString(textOrformat);
 			break;
 		case TextOp::Query:
 		{
 			if (bindings.empty() == false)
 			{
-				str = getTextQueryable(game, textOrformat, bindings.front());
+				str += getTextQueryable(game, textOrformat, bindings.front());
 			}
 			else
 			{
-				str = textOrformat;
+				str += textOrformat;
 			}
 		}
 		break;
 		case TextOp::FormatString:
-			str = getFormatString(game, textOrformat, bindings);
+			str += getFormatString(game, textOrformat, bindings);
 			break;
 		}
 		if ((uint32_t)textOp & (uint32_t)TextOp::Trim)
@@ -84,6 +91,5 @@ namespace TextUtils
 		{
 			str = Utils::removeEmptyLines(str);
 		}
-		return str;
 	}
 }

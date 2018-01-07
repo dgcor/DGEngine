@@ -17,14 +17,14 @@ std::string Namer::getName(const Queryable& obj, uint16_t skipFirst) const
 			Variable var;
 			if (obj.getProperty(nameVal.property, var) == true)
 			{
-				if (var.is<int64_t>() == true)
+				if (std::holds_alternative<int64_t>(var) == true)
 				{
-					value = (LevelObjValue)var.get<int64_t>();
+					value = (LevelObjValue)std::get<int64_t>(var);
 					hasValue = true;
 				}
-				else if (var.is<bool>() == true)
+				else if (std::holds_alternative<bool>(var) == true)
 				{
-					value = (LevelObjValue)var.get<bool>();
+					value = (LevelObjValue)std::get<bool>(var);
 					hasValue = true;
 				}
 			}

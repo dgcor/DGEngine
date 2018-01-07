@@ -1,37 +1,60 @@
 #include "ParsePlayerClass.h"
 #include "Game/PlayerClass.h"
+#include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	void parsePlayerClassCelIndex(PlayerClass& playerClass, const Value& elem)
+	void parsePlayerClassTexturePackIndex(PlayerClass& playerClass, const Value& elem)
 	{
-		playerClass.setStatusCelIndex(getPlayerStatusKey(elem, "name"),
+		playerClass.setStatusTexturePackIndex(getPlayerAnimationKey(elem, "name"),
 			getUIntKey(elem, "index"));
 	}
 
-	void parsePlayerClassCelTexture(Game& game,
+	void parsePlayerClassTexturePack(Game& game,
 		PlayerClass& playerClass, const Value& elem)
 	{
-		auto celTexture = game.Resources().getCelTextureCacheVec(getStringVal(elem));
-		if (celTexture == nullptr)
+		auto texturePack = game.Resources().getTexturePack(getStringVal(elem));
+		if (texturePack == nullptr)
 		{
 			return;
 		}
-		playerClass.addCelTexture(celTexture);
+		playerClass.addTexturePack(texturePack);
 	}
 
 	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
 	{
-		playerClass.setSpeed(getPlayerStatusKey(elem, "name"), getPlayerAnimationSpeedVal(elem));
+		playerClass.setSpeed(
+			getPlayerAnimationKey(elem, "name"),
+			getPlayerAnimationSpeedVal(elem)
+		);
+	}
+
+	void parsePlayerSound(Game& game, PlayerClass& playerClass, const Value& elem)
+	{
+		auto id = getStringKey(elem, "id");
+		if (isValidId(id) == false)
+		{
+			return;
+		}
+		auto sndBuffer = game.Resources().getSoundBuffer(id);
+		if (sndBuffer == nullptr)
+		{
+			return;
+		}
+		auto idx = getIntKey(elem, "index");
+		if (idx < 0)
+		{
+			return;
+		}
+		playerClass.setSound((size_t)idx, *sndBuffer);
 	}
 
 	void parsePlayerClass(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false ||
-			elem.HasMember("celTextures") == false)
+		if (isValidString(elem, "id") == false)
 		{
 			return;
 		}
@@ -46,52 +69,63 @@ namespace Parser
 		{
 			return;
 		}
-		if (level->getPlayerClass(id) != nullptr)
+
+		PlayerClass* playerClass = level->getPlayerClass(id);
+
+		if (playerClass == nullptr)
 		{
-			return;
+			auto playerClassPtr = std::make_shared<PlayerClass>();
+			playerClass = playerClassPtr.get();
+			level->addPlayerClass(id, playerClassPtr);
 		}
 
-		auto playerClass = std::make_shared<PlayerClass>();
-
-		const auto& celTextures = elem["celTextures"];
-
-		if (celTextures.IsString() == true)
+		if (elem.HasMember("texturePacks") == true &&
+			playerClass->hasTextures() == false)
 		{
-			parsePlayerClassCelTexture(game, *playerClass, celTextures);
-		}
-		else if (celTextures.IsArray() == true)
-		{
-			for (const auto& val : celTextures)
+			const auto& texturePacks = elem["texturePacks"];
+
+			if (texturePacks.IsString() == true)
 			{
-				parsePlayerClassCelTexture(game, *playerClass, val);
+				parsePlayerClassTexturePack(game, *playerClass, texturePacks);
 			}
-		}
-
-		if (playerClass->getCelTexture(0) == nullptr)
-		{
-			return;
-		}
-
-		if (elem.HasMember("celIndexes") == true)
-		{
-			const auto& celIndexes = elem["celIndexes"];
-
-			if (celIndexes.IsObject() == true)
+			else if (texturePacks.IsArray() == true)
 			{
-				parsePlayerClassCelIndex(*playerClass, celIndexes);
-			}
-			else if (celIndexes.IsArray() == true)
-			{
-				for (const auto& val : celIndexes)
+				for (const auto& val : texturePacks)
 				{
-					parsePlayerClassCelIndex(*playerClass, val);
+					parsePlayerClassTexturePack(game, *playerClass, val);
 				}
 			}
 		}
 
-		playerClass->Name(getStringKey(elem, "name"));
-		playerClass->Type(getStringKey(elem, "type"));
-		playerClass->Description(getStringKey(elem, "description"));
+		if (elem.HasMember("textureIndexes") == true)
+		{
+			const auto& textureIndexes = elem["textureIndexes"];
+
+			if (textureIndexes.IsObject() == true)
+			{
+				parsePlayerClassTexturePackIndex(*playerClass, textureIndexes);
+			}
+			else if (textureIndexes.IsArray() == true)
+			{
+				for (const auto& val : textureIndexes)
+				{
+					parsePlayerClassTexturePackIndex(*playerClass, val);
+				}
+			}
+		}
+
+		if (elem.HasMember("name") == true)
+		{
+			playerClass->Name(getStringVal(elem["name"]));
+		}
+		if (elem.HasMember("type") == true)
+		{
+			playerClass->Type(getStringVal(elem["type"]));
+		}
+		if (elem.HasMember("description") == true)
+		{
+			playerClass->Description(getStringVal(elem["description"]));
+		}
 
 		if (elem.HasMember("defaults") == true)
 		{
@@ -104,6 +138,30 @@ namespace Parser
 					{
 						playerClass->setDefault(it->name.GetString(),
 							getMinMaxNumber32Val(it->value));
+					}
+				}
+			}
+		}
+
+		if (elem.HasMember("actions") == true)
+		{
+			const auto& actions = elem["actions"];
+			if (actions.IsObject() == true)
+			{
+				for (auto it = actions.MemberBegin(); it != actions.MemberEnd(); ++it)
+				{
+					if (it->name.GetStringLength() > 0)
+					{
+						std::shared_ptr<Action> action;
+						if (it->value.IsString() == true)
+						{
+							action = playerClass->getAction(str2int16(it->value.GetString()));
+						}
+						if (action == nullptr)
+						{
+							action = parseAction(game, it->value);
+						}
+						playerClass->setAction(str2int16(it->name.GetString()), action);
 					}
 				}
 			}
@@ -125,14 +183,72 @@ namespace Parser
 			}
 		}
 
-		playerClass->MaxStrength(getIntKey(elem, "maxStrength", 250));
-		playerClass->MaxMagic(getIntKey(elem, "maxMagic", 250));
-		playerClass->MaxDexterity(getIntKey(elem, "maxDexterity", 250));
-		playerClass->MaxVitality(getIntKey(elem, "maxVitality", 250));
+		if (elem.HasMember("sounds") == true)
+		{
+			const auto& sounds = elem["sounds"];
+			if (sounds.IsObject() == true)
+			{
+				parsePlayerSound(game, *playerClass, sounds);
+			}
+			else if (sounds.IsArray() == true)
+			{
+				for (const auto& val : sounds)
+				{
+					parsePlayerSound(game, *playerClass, val);
+				}
+			}
+		}
 
-		playerClass->MaxResistMagic(getIntKey(elem, "maxResistMagic", 100));
-		playerClass->MaxResistFire(getIntKey(elem, "maxResistFire", 100));
-		playerClass->MaxResistLightning(getIntKey(elem, "maxResistLightning", 100));
+		if (elem.HasMember("defaultAttackSound") == true)
+		{
+			playerClass->setDefaultAttackSound((int16_t)getIntVal(elem["defaultAttackSound"], -1));
+		}
+		if (elem.HasMember("defaultDefendSound") == true)
+		{
+			playerClass->setDefaultDefendSound((int16_t)getIntVal(elem["defaultDefendSound"], -1));
+		}
+		if (elem.HasMember("defaultDieSound") == true)
+		{
+			playerClass->setDefaultDieSound((int16_t)getIntVal(elem["defaultDieSound"], -1));
+		}
+		if (elem.HasMember("defaultHitSound") == true)
+		{
+			playerClass->setDefaultHitSound((int16_t)getIntVal(elem["defaultHitSound"], -1));
+		}
+		if (elem.HasMember("defaultWalkSound") == true)
+		{
+			playerClass->setDefaultWalkSound((int16_t)getIntVal(elem["defaultWalkSound"], -1));
+		}
+
+		if (elem.HasMember("maxStrength") == true)
+		{
+			playerClass->MaxStrength(getIntVal(elem["maxStrength"], 250));
+		}
+		if (elem.HasMember("maxMagic") == true)
+		{
+			playerClass->MaxMagic(getIntVal(elem["maxMagic"], 250));
+		}
+		if (elem.HasMember("maxDexterity") == true)
+		{
+			playerClass->MaxDexterity(getIntVal(elem["maxDexterity"], 250));
+		}
+		if (elem.HasMember("maxVitality") == true)
+		{
+			playerClass->MaxVitality(getIntVal(elem["maxVitality"], 250));
+		}
+
+		if (elem.HasMember("maxResistMagic") == true)
+		{
+			playerClass->MaxResistMagic(getIntVal(elem["maxResistMagic"], 100));
+		}
+		if (elem.HasMember("maxResistFire") == true)
+		{
+			playerClass->MaxResistFire(getIntVal(elem["maxResistFire"], 100));
+		}
+		if (elem.HasMember("maxResistLightning") == true)
+		{
+			playerClass->MaxResistLightning(getIntVal(elem["maxResistLightning"], 100));
+		}
 
 		if (elem.HasMember("lifeFormula") == true)
 		{
@@ -154,7 +270,25 @@ namespace Parser
 		{
 			playerClass->setDamageFormula(getStringVal(elem["damageFormula"]));
 		}
-
-		level->addPlayerClass(id, playerClass);
+		if (elem.HasMember("resistMagicFormula") == true)
+		{
+			playerClass->setResistMagicFormula(getStringVal(elem["resistMagicFormula"]));
+		}
+		if (elem.HasMember("resistFireFormula") == true)
+		{
+			playerClass->setResistFireFormula(getStringVal(elem["resistFireFormula"]));
+		}
+		if (elem.HasMember("resistLightningFormula") == true)
+		{
+			playerClass->setResistLightningFormula(getStringVal(elem["resistLightningFormula"]));
+		}
+		if (elem.HasMember("defaultOutline") == true)
+		{
+			playerClass->DefaultOutline(getColorVal(elem["defaultOutline"], sf::Color::Transparent));
+		}
+		if (elem.HasMember("defaultOutlineIgnore") == true)
+		{
+			playerClass->DefaultOutlineIgnore(getColorVal(elem["defaultOutlineIgnore"], sf::Color::Transparent));
+		}
 	}
 }

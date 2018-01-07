@@ -51,3 +51,17 @@ Misc::Helper2D<const Dun, const int16_t&, size_t> Dun::operator[] (size_t x) con
 {
 	return Misc::Helper2D<const Dun, const int16_t&, size_t>(*this, x, get);
 }
+
+void Dun::set(size_t index, int16_t val)
+{
+	if (index >= blocks.size())
+	{
+		return;
+	}
+	blocks[index] = std::max((int16_t)-1, val);
+}
+
+void Dun::set(size_t x, size_t y, int16_t val)
+{
+	set(x + y * width, val);
+}

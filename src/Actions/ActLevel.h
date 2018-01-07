@@ -65,6 +65,25 @@ public:
 	}
 };
 
+class ActLevelClearPlayerTextures : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActLevelClearPlayerTextures(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearPlayerTextures();
+		}
+		return true;
+	}
+};
+
 class ActLevelMove : public Action
 {
 private:

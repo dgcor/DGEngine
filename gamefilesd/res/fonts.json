@@ -2,7 +2,7 @@
   "bitmapFont": [
     {
       "id": "font16g",
-      "textureId": "font16g",
+      "texture": "font16g",
       "file": "ui_art/font16g.pcx",
       "charSizeFile": "ui_art/font16.bin",
       "rows": 16,
@@ -14,7 +14,7 @@
     },
     {
       "id": "font16s",
-      "textureId": "font16s",
+      "texture": "font16s",
       "file":"ui_art/font16s.pcx",
       "charSizeFile": "ui_art/font16.bin",
       "rows": 16,
@@ -26,7 +26,7 @@
     },
     {
       "id": "font24g",
-      "textureId": "font24g",
+      "texture": "font24g",
       "file":"ui_art/font24g.pcx",
       "charSizeFile": "ui_art/font24.bin",
       "rows": 16,
@@ -38,7 +38,7 @@
     },
     {
       "id": "font24s",
-      "textureId": "font24s",
+      "texture": "font24s",
       "file":"ui_art/font24s.pcx",
       "charSizeFile": "ui_art/font24.bin",
       "rows": 16,
@@ -50,7 +50,7 @@
     },
     {
       "id": "font30g",
-      "textureId": "font30g",
+      "texture": "font30g",
       "file":"ui_art/font30g.pcx",
       "charSizeFile": "ui_art/font30.bin",
       "rows": 16,
@@ -62,7 +62,7 @@
     },
     {
       "id": "font30s",
-      "textureId": "font30s",
+      "texture": "font30s",
       "file":"ui_art/font30s.pcx",
       "charSizeFile": "ui_art/font30.bin",
       "rows": 16,
@@ -74,7 +74,7 @@
     },
     {
       "id": "font42g",
-      "textureId": "font42g",
+      "texture": "font42g",
       "file":"ui_art/font42g.pcx",
       "charSizeFile": "ui_art/font42.bin",
       "rows": 16,
@@ -86,7 +86,7 @@
     },
     {
       "id": "font42y",
-      "textureId": "font42y",
+      "texture": "font42y",
       "file":"ui_art/font42y.pcx",
       "charSizeFile": "ui_art/font42.bin",
       "rows": 16,

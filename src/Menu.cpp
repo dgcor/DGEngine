@@ -16,17 +16,20 @@ std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16)
 	}
 }
 
-void Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 {
 	switch (nameHash16)
 	{
 	case str2int16("scrollDown"):
 		scrollDownAction = action;
-		return;
+		break;
 	case str2int16("scrollUp"):
 		scrollUpAction = action;
-		return;
+		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void Menu::updateVisibleItems()

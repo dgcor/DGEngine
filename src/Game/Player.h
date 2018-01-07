@@ -1,19 +1,18 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include <cstdint>
+#include "BaseLevelObject.h"
 #include "ItemCollection.h"
-#include "LevelObject.h"
-#include <memory>
 #include "PlayerClass.h"
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/System/Time.hpp>
 
 class Player : public LevelObject
 {
 private:
 	const PlayerClass* class_{ nullptr };
 
-	sf::Sprite sprite;
-	MapCoord mapPosition;
+	BaseLevelObject base;
 	MapCoord mapPositionMoveTo;
 	sf::Vector2f drawPosA;
 	sf::Vector2f drawPosB;
@@ -21,17 +20,14 @@ private:
 
 	std::vector<MapCoord> walkPath;
 
+	PlayerAction playerAction{ PlayerAction::Stand };
+
 	PlayerDirection direction{ PlayerDirection::All };
-	PlayerStatus status{ PlayerStatus::Size };
+	PlayerAnimation animation{ PlayerAnimation::Size };
 
 	uint16_t restStatus{ 0 };
 
-	size_t celIdx{ 0 };
 	size_t textureIdx{ 0 };
-
-	CelTextureCacheVector* celTexture{ nullptr };
-	std::pair<size_t, size_t> frameRange;
-	size_t currentFrame{ 0 };
 
 	AnimationSpeed speed;
 	AnimationSpeed defaultSpeed{ sf::Time::Zero, sf::Time::Zero };
@@ -41,8 +37,7 @@ private:
 
 	std::shared_ptr<Action> action;
 
-	bool enableHover{ true };
-	bool hovered{ false };
+	bool useAI{ false };
 
 	std::shared_ptr<Item> selectedItem;
 
@@ -86,15 +81,26 @@ private:
 	LevelObjValue toDamage{ 0 };
 
 	LevelObjValue resistMagic{ 0 };
+	LevelObjValue resistMagicItems{ 0 };
 	LevelObjValue resistFire{ 0 };
+	LevelObjValue resistFireItems{ 0 };
 	LevelObjValue resistLightning{ 0 };
+	LevelObjValue resistLightningItems{ 0 };
 
-	std::array<std::pair<uint16_t, Number32>, 4> customProperties;
+	std::array<std::pair<uint16_t, Number32>, 8> customProperties;
 	size_t customPropsSize{ 0 };
+
+	sf::Sound currentSound;
+
+	int16_t attackSound{ -1 };
+	int16_t defendSound{ -1 };
+	int16_t dieSound{ -1 };
+	int16_t hitSound{ -1 };
+	int16_t walkSound{ -1 };
 
 	void calculateRange();
 
-	void updateMapPosition(Level& level, const MapCoord& pos);
+	void updateAI(Level& level);
 
 	void updateSpeed();
 
@@ -109,22 +115,33 @@ private:
 
 	void updateBodyItemValues();
 
+	void updateAnimation(Game& game);
+
+	void updateWalk(Game& game, Level& level);
+	void updateAttack(Game& game, Level& level);
+	void updateDead(Game& game, Level& level);
+
+	void updateExperience(const Level& level);
+
+	bool getCustomIntByHash(uint16_t propHash, Number32& value) const;
+	bool getCustomInt(const char* prop, Number32& value) const;
+	bool getCustomInt(const std::string& prop, Number32& value) const
+	{
+		return getCustomInt(prop.c_str(), value);
+	}
+
+	void playSound(int16_t soundIdx);
+
 public:
-	Player(const PlayerClass* class__) : class_(class__)
-	{
-		calculateRange();
-	}
+	Player(const PlayerClass* class__, const Level& level);
 
-	sf::Vector2f getBasePosition() const;
+	sf::Vector2f getBasePosition(const Level& level) const;
 
-	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual sf::Vector2f Size() const
-	{
-		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	}
+	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
+	virtual sf::Vector2f Size() const { return base.getSize(); }
 
-	virtual const MapCoord& MapPosition() const { return mapPosition; }
-	virtual void MapPosition(const MapCoord& pos) { mapPosition = pos; }
+	virtual const MapCoord& MapPosition() const { return base.mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) { base.mapPosition = pos; }
 	void MapPosition(Level& level, const MapCoord& pos);
 
 	void move(Level& level, const MapCoord& pos);
@@ -135,19 +152,34 @@ public:
 	virtual bool getNumberProp(const char* prop, Number32& value) const;
 	virtual bool Passable() const { return false; }
 	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
+	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	{
+		base.sprite.setOutline(outline, ignore);
+	}
+	virtual void setOutlineOnHover(bool outlineOnHover_) { base.outlineOnHover = outlineOnHover_; }
+	virtual void setPalette(const std::shared_ptr<Palette>& palette) { base.sprite.setPalette(palette); }
+	virtual bool hasPalette() const { return base.sprite.hasPalette(); }
 
-	virtual bool Hoverable() const { return enableHover; }
-	virtual void Hoverable(bool hoverable) { enableHover = hoverable; }
+	virtual bool Hoverable() const { return base.enableHover; }
+	virtual void Hoverable(bool hoverable) { base.enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
-		target.draw(sprite, states);
+		target.draw(base.sprite, states);
 	}
 	virtual void update(Game& game, Level& level);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string& prop) const;
+
+	bool hasIntByHash(uint16_t propHash) const;
+	bool hasInt(const char* prop) const;
+	bool hasInt(const std::string& prop) const
+	{
+		return hasInt(prop.c_str());
+	}
 
 	bool getIntByHash(uint16_t propHash, LevelObjValue& value) const;
 	bool getInt(const char* prop, LevelObjValue& value) const;
@@ -161,34 +193,33 @@ public:
 	{
 		return getUInt(prop.c_str(), value);
 	}
-	bool setIntByHash(uint16_t propHash, LevelObjValue value);
-	bool setInt(const char* prop, LevelObjValue value);
-	bool setInt(const std::string& prop, LevelObjValue value)
+	bool setIntByHash(uint16_t propHash, LevelObjValue value, const Level* level);
+	bool setInt(const char* prop, LevelObjValue value, const Level* level);
+	bool setInt(const std::string& prop, LevelObjValue value, const Level* level)
 	{
-		return setInt(prop.c_str(), value);
+		return setInt(prop.c_str(), value, level);
 	}
-	bool setUIntByHash(uint16_t propHash, uint32_t value);
-	bool setUInt(const char* prop, uint32_t value);
-	bool setUInt(const std::string& prop, uint32_t value)
+	bool setUIntByHash(uint16_t propHash, uint32_t value, const Level* level);
+	bool setUInt(const char* prop, uint32_t value, const Level* level);
+	bool setUInt(const std::string& prop, uint32_t value, const Level* level)
 	{
-		return setUInt(prop.c_str(), value);
+		return setUInt(prop.c_str(), value, level);
 	}
 	bool getNumberByHash(uint16_t propHash, Number32& value) const;
-	bool setNumberByHash(uint16_t propHash, LevelObjValue value);
-	bool setNumberByHash(uint16_t propHash, const Number32& value);
-	bool setNumber(const char* prop, LevelObjValue value);
-	bool setNumber(const char* prop, const Number32& value);
-	bool setNumber(const std::string& prop, LevelObjValue value)
+	bool setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level);
+	bool setNumberByHash(uint16_t propHash, const Number32& value, const Level* level);
+	bool setNumber(const char* prop, LevelObjValue value, const Level* level);
+	bool setNumber(const char* prop, const Number32& value, const Level* level);
+	bool setNumber(const std::string& prop, LevelObjValue value, const Level* level)
 	{
-		return setNumber(prop.c_str(), value);
+		return setNumber(prop.c_str(), value, level);
 	}
-	bool setNumber(const std::string& prop, const Number32& value)
+	bool setNumber(const std::string& prop, const Number32& value, const Level* level)
 	{
-		return setNumber(prop.c_str(), value);
+		return setNumber(prop.c_str(), value, level);
 	}
 
-	void updateDrawPosition(sf::Vector2f pos);
-	void updateDrawPosition() { updateDrawPosition(drawPosA); }
+	void updateDrawPosition(const Level& level) { base.updateDrawPosition(level, drawPosA); }
 
 	void updateTexture();
 
@@ -198,7 +229,7 @@ public:
 	void setDefaultSpeed(const AnimationSpeed& speed_)
 	{
 		defaultSpeed = speed_;
-		speed = class_->getSpeed(status);
+		speed = class_->getSpeed(animation);
 		updateSpeed();
 	}
 
@@ -210,12 +241,12 @@ public:
 			calculateRange();
 		}
 	}
-	void setStatus(PlayerStatus status_)
+	void setAnimation(PlayerAnimation animation_)
 	{
-		if (status != status_)
+		if (animation != animation_)
 		{
-			status = status_;
-			speed = class_->getSpeed(status);
+			animation = animation_;
+			speed = class_->getSpeed(animation);
 			updateSpeed();
 			calculateRange();
 		}
@@ -231,17 +262,17 @@ public:
 
 	void setRestStatus(uint16_t restStatus_) { restStatus = std::min(restStatus_, (uint16_t)1); }
 
-	void setStandStatus()
+	void setStandAnimation()
 	{
-		setStatus((PlayerStatus)((size_t)PlayerStatus::Stand1 + restStatus));
+		setAnimation((PlayerAnimation)((size_t)PlayerAnimation::Stand1 + restStatus));
 	}
-	void setWalkStatus()
+	void setWalkAnimation()
 	{
-		setStatus((PlayerStatus)((size_t)PlayerStatus::Walk1 + restStatus));
+		setAnimation((PlayerAnimation)((size_t)PlayerAnimation::Walk1 + restStatus));
 	}
-	bool hasWalkingStatus()
+	bool hasWalkingAnimation()
 	{
-		return status >= PlayerStatus::Walk1 && status <= PlayerStatus::Walk2;
+		return animation >= PlayerAnimation::Walk1 && animation <= PlayerAnimation::Walk2;
 	}
 
 	void resetAnimationTime() { currentAnimationTime = speed.animation; }
@@ -298,15 +329,26 @@ public:
 
 	void updateProperties();
 
-	void applyDefaults();
+	void applyDefaults(const Level& level);
 
-	bool canEquipItem(const Item& item) const;
+	bool canUseItem(const Item& item) const;
 
 	bool addGold(const Level& level, LevelObjValue amount);
 
 	uint32_t getMaxGoldCapacity(const Level& level) const;
 
 	const PlayerClass* getPlayerClass() const { return class_; }
+
+	bool isAI() const { return useAI; }
+	void setAI(bool ai_) { useAI = ai_; }
+
+	bool hasMaxStats() const;
+
+	void setAttackSounds(int16_t soundIdx) { attackSound = soundIdx; }
+	void setDefendSounds(int16_t soundIdx) { defendSound = soundIdx; }
+	void setDieSounds(int16_t soundIdx) { dieSound = soundIdx; }
+	void setHitSounds(int16_t soundIdx) { hitSound = soundIdx; }
+	void setWalkSounds(int16_t soundIdx) { walkSound = soundIdx; }
 
 	const std::string& Id() const { return id; }
 	const std::string& Name() const { return name; }

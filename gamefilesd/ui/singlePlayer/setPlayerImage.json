@@ -5,17 +5,17 @@
     "case": [
       {
         "value": "Warrior",
-        "action": { "name": "image.setTextureRect", "id": "heros", "rect": [0, 0, 180, 76] }
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 0 }
       },
       {
         "value": "Rogue",
-        "action": { "name": "image.setTextureRect", "id": "heros", "rect": [0, 76, 180, 76] }
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 1 }
       },
       {
         "value": "Sorceror",
-        "action": { "name": "image.setTextureRect", "id": "heros", "rect": [0, 152, 180, 76] }
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 2 }
       }
     ],
-    "default": { "name": "image.setTextureRect", "id": "heros", "rect": [0, 228, 180, 76] }
+    "default": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 3 }
   }
 }

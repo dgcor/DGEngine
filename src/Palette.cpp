@@ -1,5 +1,6 @@
 #include "Palette.h"
 #include "PhysFSStream.h"
+#include "Shaders.h"
 
 Palette::Palette(const char* file)
 {
@@ -14,6 +15,7 @@ Palette::Palette(const char* file)
 	{
 		stream.read(&color, 3);
 	}
+	loadTexture();
 }
 
 Palette::Palette(const Palette& pal, const std::vector<sf::Uint8> trn)
@@ -22,4 +24,16 @@ Palette::Palette(const Palette& pal, const std::vector<sf::Uint8> trn)
 	{
 		palette[i] = pal[trn[i]];
 	}
+	loadTexture();
+}
+
+void Palette::loadTexture()
+{
+	if (Shaders::supportsPalettes() == false)
+	{
+		return;
+	}
+	sf::Image img;
+	img.create(palette.size(), 1, (const sf::Uint8*)&palette);
+	texture.loadFromImage(img);
 }

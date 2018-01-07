@@ -1,10 +1,9 @@
 #pragma once
 
-#include <string>
 #include <cstdint>
-#include <vector>
-
 #include "Helper2D.h"
+#include <string>
+#include <vector>
 
 class Dun
 {
@@ -25,6 +24,9 @@ public:
 
 	Misc::Helper2D<Dun, int16_t&, size_t> operator[] (size_t x);
 	Misc::Helper2D<const Dun, const int16_t&, size_t> operator[] (size_t x) const;
+
+	void set(size_t index, int16_t val);
+	void set(size_t x, size_t y, int16_t val);
 
 	size_t Width() const { return width; }
 	size_t Height() const { return height; }

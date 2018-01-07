@@ -1,20 +1,58 @@
 #pragma once
 
-#include "Alignment.h"
 #include <memory>
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "UIObject.h"
 
-class Button : public UIObject
+class Button : public virtual UIObject
 {
+protected:
+	std::shared_ptr<Action> clickAction;
+	std::shared_ptr<Action> rightClickAction;
+	std::shared_ptr<Action> doubleClickAction;
+	std::shared_ptr<Action> clickDragAction;
+	std::shared_ptr<Action> clickInAction;
+	std::shared_ptr<Action> clickOutAction;
+	std::shared_ptr<Action> focusAction;
+	std::shared_ptr<Action> hoverEnterAction;
+	std::shared_ptr<Action> hoverLeaveAction;
+	const sf::SoundBuffer* clickSound{ nullptr };
+	const sf::SoundBuffer* focusSound{ nullptr };
+	sf::Clock mouseDblClickClock;
+	bool enabled{ true };
+	bool focusEnable{ false };
+	bool focusOnClick{ false };
+	bool hovered{ false };
+	bool clickUp{ false };
+	bool beingDragged{ false };
+	bool wasLeftClicked{ false };
+	bool wasRightClicked{ false };
+	bool captureInputEvents{ false };
+
+	void onHover(Game& game, bool contains);
+	void onMouseButtonPressed(Game& game, bool contains);
+	void onMouseButtonReleased(Game& game, bool contains);
+	void onMouseMoved(Game& game);
+	void onTouchBegan(Game& game, bool contains);
+	void onTouchEnded(Game& game, bool contains);
+
 public:
-	virtual bool click(Game& game, bool playSound) = 0;
-	virtual void enable(bool enable) = 0;
-	virtual void focus(Game& game) const = 0;
-	virtual void focusEnabled(bool focusOnClick) = 0;
-	virtual bool isEnabled() const = 0;
-	virtual void setClickSound(const std::shared_ptr<sf::SoundBuffer>& buffer) = 0;
-	virtual void setClickUp(bool clickUp) = 0;
-	virtual void setColor(const sf::Color& color) = 0;
-	virtual void setFocusSound(const std::shared_ptr<sf::SoundBuffer>& buffer) = 0;
+	bool getCaptureInputEvents() const { return captureInputEvents; }
+	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
+
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+
+	bool click(Game& game, bool playSound);
+	void enable(bool enable) { enabled = enable; }
+	void focus(Game& game) const;
+	void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }
+	bool isEnabled() const { return enabled; }
+	void setClickSound(const sf::SoundBuffer* buffer) { clickSound = buffer; }
+	void setClickUp(bool clickUp_) { clickUp = clickUp_; }
+	void setFocusSound(const sf::SoundBuffer* buffer) { focusSound = buffer; }
+
+	void update(Game& game, bool contains);
+
+	virtual void setColor(const sf::Color& color_) = 0;
 };

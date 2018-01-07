@@ -2,13 +2,15 @@
   "itemClass": [
     {
       "id": "book",
-      "celTextureDrop": "itemDrop",
-      "celIndexDrop": 10,
-      "celTextureInventory": "itemIcons",
-      "celTextureInventoryUnusable": "itemIconsInfra",
-      "celIndexInventory": 97,
+      "replaceVars": true,
+      "dropTexturePack": "itemDrop",
+      "dropTextureIndex": 10,
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 97,
       "name": "Book",
       "type": "Book",
+      "defaultOutline": "%outlineItem%",
+      "defaultOutlineIgnore": "0x000000",
       "defaults": {
         "price": 1000,
         "identified": true

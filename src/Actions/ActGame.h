@@ -98,14 +98,14 @@ public:
 	{
 		auto prop2 = game.getVarOrPropString(prop);
 		auto value2 = game.getVarOrProp(value);
-		if (value2.is<int64_t>() == true)
+		if (std::holds_alternative<int64_t>(value2) == true)
 		{
 			if (hasPropRange == true &&
 				hasValueRange == true)
 			{
-				auto val = value2.get<int64_t>();
+				auto val = std::get<int64_t>(value2);
 				val = (int64_t)Utils::normalizeNumber<sf::Vector2i>((long)val, valueRange, propRange);
-				value2.set<int64_t>(val);
+				value2.emplace<int64_t>(val);
 			}
 		}
 		game.setProperty(prop2, value2);

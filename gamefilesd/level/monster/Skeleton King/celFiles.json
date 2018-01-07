@@ -1,0 +1,10 @@
+{
+  "imageContainer": [
+    { "file": "monsters/sking/skinga.cl2" },
+    { "file": "monsters/sking/skingd.cl2" },
+    { "file": "monsters/sking/skingh.cl2" },
+    { "file": "monsters/sking/skingn.cl2" },
+    { "file": "monsters/sking/skings.cl2" },
+    { "file": "monsters/sking/skingw.cl2" }
+  ]
+}

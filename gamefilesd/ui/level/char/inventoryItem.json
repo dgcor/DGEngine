@@ -1,0 +1,18 @@
+{
+  "button": {
+    "id": "img{1}",
+    "resource": "charPanelInventory",
+    "replaceVars": true,
+    "texture": "empty",
+    "textureRect": [28, 28],
+    "outline": "%outlineItemInv%",
+    "outlineIgnore": "0x000000",
+    "anchor": "right",
+    "relativeCoords": false,
+    "position": [{2}, {3}],
+    "onClick": "update{1}Click",
+    "onRightClick": "use{1}Item",
+    "onHoverEnter": "update{1}Text",
+    "onHoverLeave": "hover{1}Leave"
+  }
+}

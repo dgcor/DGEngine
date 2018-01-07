@@ -10,13 +10,13 @@
 
 static Variable getVariable(Game& game, const VarOrPredicate& varOrPred)
 {
-	if (varOrPred.is<Variable>() == true)
+	if (std::holds_alternative<Variable>(varOrPred) == true)
 	{
-		return game.getVarOrProp(varOrPred.get<Variable>());
+		return game.getVarOrProp(std::get<Variable>(varOrPred));
 	}
 	else
 	{
-		auto predicate = varOrPred.get<std::shared_ptr<Predicate>>().get();
+		auto predicate = std::get<std::shared_ptr<Predicate>>(varOrPred).get();
 		if (predicate != nullptr)
 		{
 			return predicate->getResult(game);

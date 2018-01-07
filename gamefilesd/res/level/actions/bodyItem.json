@@ -2,21 +2,38 @@
   "action": {
     "name": "action.set",
     "id": "update{1}Item",
+    "replaceVars": true,
     "action": [
+      { "name": "image.setTexture", "id": "img{1}", "inventory": "body", "item": "{1}" },
       {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.canEquipItem.body.{1}|",
+        "param1": "|currentLevel|currentPlayer.canUseItem.body.{1}|",
         "param2": false,
-        "then": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "body", "item": "{1}", "equipable": false },
-        "else": { "name": "image.setTextureFromItem", "id": "img{1}", "inventory": "body", "item": "{1}" }
+        "then": { "name": "image.setPalette", "id": "img{1}", "palette": "infra", "color": "0xFF0000" },
+        "else": [
+          { "name": "image.setPalette", "id": "img{1}", "palette": "town" },
+          {
+            "name": "if.equal",
+            "param1": "|currentLevel|currentPlayer.item.body.{1}.magical|",
+            "param2": 1,
+            "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
+            "else": {
+              "name": "if.equal",
+              "param1": "|currentLevel|currentPlayer.item.body.{1}.unique|",
+              "param2": 1,
+              "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
+              "else": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItemInv%", "ignore": "0x000000" }
+            }
+          }
+        ]
       },
-      { "name": "image.centerTexture", "id": "img{1}" },
+      { "name": "drawable.center", "id": "img{1}", "idCenterOn": "player{1}" },
       {
         "name": "if.equal",
         "param1": "|currentLevel|currentPlayer.hasItem.body.{1}|",
         "param2": true,
-        "then": { "name": "button.setTexture", "id": "player{1}", "texture": "red" },
-        "else": { "name": "button.setTexture", "id": "player{1}", "texture": "empty" }
+        "then": { "name": "image.setTexture", "id": "player{1}", "texture": "red" },
+        "else": { "name": "image.setTexture", "id": "player{1}", "texture": "empty" }
       }
     ]
   }

@@ -36,4 +36,7 @@ namespace TextUtils
 
 	std::string getText(const Game& game, TextOp textOp, const std::string& textOrformat,
 		const std::vector<std::string>& bindings);
+
+	void appendText(const Game& game, TextOp textOp, std::string& str,
+		const std::string& textOrformat, const std::vector<std::string>& bindings);
 }

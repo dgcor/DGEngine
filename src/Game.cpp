@@ -4,6 +4,7 @@
 #include "Parser/ParseVariable.h"
 #include "ReverseIterable.h"
 #include "SFMLUtils.h"
+#include "Shaders.h"
 #include "Utils.h"
 
 Game::~Game()
@@ -29,6 +30,8 @@ void Game::init()
 	oldSize = size;
 	window.create(sf::VideoMode(size.x, size.y), title);
 #endif
+	Shaders::init();
+
 	if (framerate > 0)
 	{
 		window.setFramerateLimit(framerate);
@@ -268,6 +271,8 @@ void Game::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt)
 	mouseScrollEvt = evt;
 	mouseScrolled = true;
 	updateMouse();
+	mouseScrollEvt.x = mousePositioni.x;
+	mouseScrollEvt.y = mousePositioni.y;
 }
 
 void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
@@ -278,6 +283,9 @@ void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
 	}
 	mousePressEvt = evt;
 	mousePressed = true;
+	updateMouse();
+	mousePressEvt.x = mousePositioni.x;
+	mousePressEvt.y = mousePositioni.y;
 }
 
 void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
@@ -288,6 +296,9 @@ void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
 	}
 	mouseReleaseEvt = evt;
 	mouseReleased = true;
+	updateMouse();
+	mouseReleaseEvt.x = mousePositioni.x;
+	mouseReleaseEvt.y = mousePositioni.y;
 }
 
 void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
@@ -299,6 +310,8 @@ void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
 	}
 	mouseMoveEvt = evt;
 	mouseMoved = true;
+	mouseMoveEvt.x = mousePositioni.x;
+	mouseMoveEvt.y = mousePositioni.y;
 }
 
 void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
@@ -309,6 +322,9 @@ void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
 	}
 	touchBeganEvt = evt;
 	touchBegan = true;
+	updateMouse();
+	touchBeganEvt.x = mousePositioni.x;
+	touchBeganEvt.y = mousePositioni.y;
 }
 
 void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
@@ -320,6 +336,8 @@ void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
 	}
 	touchMovedEvt = evt;
 	touchMoved = true;
+	touchMovedEvt.x = mousePositioni.x;
+	touchMovedEvt.y = mousePositioni.y;
 }
 
 void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
@@ -330,6 +348,9 @@ void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
 	}
 	touchEndedEvt = evt;
 	touchEnded = true;
+	updateMouse();
+	touchEndedEvt.x = mousePositioni.x;
+	touchEndedEvt.y = mousePositioni.y;
 }
 
 void Game::updateMouse()
@@ -380,7 +401,7 @@ void Game::drawAndUpdate()
 {
 	for (auto& res : reverse(resourceManager))
 	{
-		if (res.ignore != IgnoreResource::DrawAndUpdate)
+		if (((int)res.ignore & (int)IgnoreResource::Update) == 0)
 		{
 			for (auto it2 = res.drawables.rbegin(); it2 != res.drawables.rend(); ++it2)
 			{
@@ -391,15 +412,23 @@ void Game::drawAndUpdate()
 				}
 			}
 		}
+		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
+		{
+			break;
+		}
 	}
 	for (auto& res : resourceManager)
 	{
-		if (res.ignore != IgnoreResource::DrawAndUpdate)
+		if (((int)res.ignore & (int)IgnoreResource::Draw) == 0)
 		{
 			for (auto& obj : res.drawables)
 			{
 				windowTex.draw(*obj.second);
 			}
+		}
+		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
+		{
+			break;
 		}
 	}
 }
@@ -562,10 +591,10 @@ bool Game::getVarOrProp(const std::string& key, Variable& var) const
 
 Variable Game::getVarOrProp(const Variable& var) const
 {
-	if (var.is<std::string>())
+	if (std::holds_alternative<std::string>(var))
 	{
 		Variable var2;
-		if (getVarOrProp(var.get<std::string>(), var2) == true)
+		if (getVarOrProp(std::get<std::string>(var), var2) == true)
 		{
 			return var2;
 		}
@@ -585,9 +614,9 @@ bool Game::getVarOrPropBool(const std::string& key) const
 
 bool Game::getVarOrPropBool(const Variable& var) const
 {
-	if (var.is<std::string>())
+	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropBool(var.get<std::string>());
+		return getVarOrPropBool(std::get<std::string>(var));
 	}
 	return VarUtils::toBool(var);
 }
@@ -604,9 +633,9 @@ double Game::getVarOrPropDouble(const std::string& key) const
 
 double Game::getVarOrPropDouble(const Variable& var) const
 {
-	if (var.is<std::string>())
+	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropDouble(var.get<std::string>());
+		return getVarOrPropDouble(std::get<std::string>(var));
 	}
 	return VarUtils::toDouble(var);
 }
@@ -623,9 +652,9 @@ int64_t Game::getVarOrPropLong(const std::string& key) const
 
 int64_t Game::getVarOrPropLong(const Variable& var) const
 {
-	if (var.is<std::string>())
+	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropLong(var.get<std::string>());
+		return getVarOrPropLong(std::get<std::string>(var));
 	}
 	return VarUtils::toLong(var);
 }
@@ -635,9 +664,9 @@ std::string Game::getVarOrPropString(const std::string& key) const
 	Variable var;
 	if (getVariable(key, var) == true)
 	{
-		if (var.is<std::string>())
+		if (std::holds_alternative<std::string>(var))
 		{
-			GameUtils::getObjectProperty(*this, var.get<std::string>(), var);
+			GameUtils::getObjectProperty(*this, std::get<std::string>(var), var);
 		}
 	}
 	else if (GameUtils::getObjectProperty(*this, key, var) == false)
@@ -649,9 +678,9 @@ std::string Game::getVarOrPropString(const std::string& key) const
 
 std::string Game::getVarOrPropString(const Variable& var) const
 {
-	if (var.is<std::string>())
+	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropString(var.get<std::string>());
+		return getVarOrPropString(std::get<std::string>(var));
 	}
 	return VarUtils::toString(var);
 }
@@ -709,16 +738,15 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("framerate"):
 		var = Variable((int64_t)framerate);
 		break;
+	case str2int16("hasDrawable"):
+		var = Variable((bool)resourceManager.hasDrawable(props.second));
+		break;
 	case str2int16("hasEvent"):
-	{
 		var = Variable((bool)eventManager.exists(props.second));
 		break;
-	}
 	case str2int16("hasResource"):
-	{
 		var = Variable((bool)resourceManager.resourceExists(props.second));
 		break;
-	}
 	case str2int16("keepAR"):
 		var = Variable((bool)keepAR);
 		break;
@@ -731,6 +759,39 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		else
 		{
 			var = Variable((int64_t)minSize.y);
+		}
+		break;
+	}
+	case str2int16("openGL"):
+	{
+		switch (str2int16(props.second.c_str()))
+		{
+		case str2int16("antialiasingLevel"):
+			var = Variable((int64_t)getOpenGLAntialiasingLevel());
+			break;
+		case str2int16("depthBits"):
+			var = Variable((int64_t)getOpenGLDepthBits());
+			break;
+		case str2int16("hasGeometryShaders"):
+			var = Variable((bool)sf::Shader::isGeometryAvailable());
+			break;
+		case str2int16("hasShaders"):
+			var = Variable((bool)sf::Shader::isAvailable());
+			break;
+		case str2int16("majorVersion"):
+			var = Variable((int64_t)getOpenGLMajorVersion());
+			break;
+		case str2int16("minorVersion"):
+			var = Variable((int64_t)getOpenGLMinorVersion());
+			break;
+		case str2int16("sRgbCapable"):
+			var = Variable((bool)getOpenGLSRgbCapable());
+			break;
+		case str2int16("stencilBits"):
+			var = Variable((int64_t)getOpenGLStencilBits());
+			break;
+		default:
+			return false;
 		}
 		break;
 	}
@@ -776,6 +837,12 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("stretchToFit"):
 		var = Variable((bool)stretchToFit);
 		break;
+	case str2int16("supportsOutlines"):
+		var = Variable((bool)Shaders::supportsOutlines());
+		break;
+	case str2int16("supportsPalettes"):
+		var = Variable((bool)Shaders::supportsPalettes());
+		break;
 	case str2int16("title"):
 		var = Variable(title);
 		break;
@@ -798,64 +865,64 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 	{
 	case str2int16("framerate"):
 	{
-		if (val.is<int64_t>() == true)
+		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			Framerate((unsigned)val.get<int64_t>());
+			Framerate((unsigned)std::get<int64_t>(val));
 		}
 	}
 	break;
 	case str2int16("keepAR"):
 	{
-		if (val.is<bool>() == true)
+		if (std::holds_alternative<bool>(val) == true)
 		{
-			KeepAR(val.get<bool>());
+			KeepAR(std::get<bool>(val));
 		}
 	}
 	break;
 	case str2int16("musicVolume"):
 	{
-		if (val.is<int64_t>() == true)
+		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			MusicVolume((unsigned)val.get<int64_t>());
+			MusicVolume((unsigned)std::get<int64_t>(val));
 		}
 	}
 	break;
 	case str2int16("smoothScreen"):
 	{
-		if (val.is<bool>() == true)
+		if (std::holds_alternative<bool>(val) == true)
 		{
-			SmoothScreen(val.get<bool>());
+			SmoothScreen(std::get<bool>(val));
 		}
 	}
 	break;
 	case str2int16("soundVolume"):
 	{
-		if (val.is<int64_t>() == true)
+		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			SoundVolume((unsigned)val.get<int64_t>());
+			SoundVolume((unsigned)std::get<int64_t>(val));
 		}
 	}
 	break;
 	case str2int16("stretchToFit"):
 	{
-		if (val.is<bool>() == true)
+		if (std::holds_alternative<bool>(val) == true)
 		{
-			StretchToFit(val.get<bool>());
+			StretchToFit(std::get<bool>(val));
 		}
 	}
 	break;
 	case str2int16("title"):
 	{
-		if (val.is<std::string>() == true)
+		if (std::holds_alternative<std::string>(val) == true)
 		{
-			setTitle(val.get<std::string>());
+			setTitle(std::get<std::string>(val));
 		}
 	}
 	break;
 	case str2int16("version"):
-		if (val.is<std::string>() == true)
+		if (std::holds_alternative<std::string>(val) == true)
 		{
-			setVersion(val.get<std::string>());
+			setVersion(std::get<std::string>(val));
 		}
 	}
 }

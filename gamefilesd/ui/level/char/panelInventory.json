@@ -6,70 +6,70 @@
       "texture": "empty",
       "textureRect": [56, 84],
       "anchor": "right",
-      "position": [337, 76],
+      "position": [337, 77],
       "onClick": "updateLeftHandClick",
       "onHoverEnter": "updateLeftHandText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverLeftHandLeave"
     },
     {
       "id": "playerRightHand",
       "texture": "empty",
       "textureRect": [56, 84],
       "anchor": "right",
-      "position": [569, 76],
+      "position": [569, 77],
       "onClick": "updateRightHandClick",
       "onHoverEnter": "updateRightHandText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverRightHandLeave"
     },
     {
       "id": "playerArmor",
       "texture": "empty",
       "textureRect": [56, 84],
       "anchor": "right",
-      "position": [453, 76],
+      "position": [453, 77],
       "onClick": "updateArmorClick",
       "onHoverEnter": "updateArmorText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverArmorLeave"
     },
     {
       "id": "playerHelmet",
       "texture": "empty",
       "textureRect": [56, 56],
       "anchor": "right",
-      "position": [453, 2],
+      "position": [453, 4],
       "onClick": "updateHelmetClick",
       "onHoverEnter": "updateHelmetText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverHelmetLeave"
     },
     {
       "id": "playerAmulet",
       "texture": "empty",
       "textureRect": [28, 28],
       "anchor": "right",
-      "position": [525, 32],
+      "position": [525, 33],
       "onClick": "updateAmuletClick",
       "onHoverEnter": "updateAmuletText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverAmuletLeave"
     },
     {
       "id": "playerLeftRing",
       "texture": "empty",
       "textureRect": [28, 28],
       "anchor": "right",
-      "position": [368, 180],
+      "position": [368, 178],
       "onClick": "updateLeftRingClick",
       "onHoverEnter": "updateLeftRingText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverLeftRingLeave"
     },
     {
       "id": "playerRightRing",
       "texture": "empty",
       "textureRect": [28, 28],
       "anchor": "right",
-      "position": [569, 180],
+      "position": [569, 178],
       "onClick": "updateRightRingClick",
       "onHoverEnter": "updateRightRingText",
-      "onHoverLeave": "clearPanelText"
+      "onHoverLeave": "hoverRightRingLeave"
     },
     {
       "id": "btnStash11",
@@ -77,10 +77,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [337, 222],
-      "onClick": "updateStash11Click",
-      "onRightClick": "useStash11Item",
-      "onHoverEnter": "updateStash11Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash11Click"
     },
     {
       "id": "btnStash12",
@@ -88,10 +85,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [337, 251],
-      "onClick": "updateStash12Click",
-      "onRightClick": "useStash12Item",
-      "onHoverEnter": "updateStash12Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash12Click"
     },
     {
       "id": "btnStash13",
@@ -99,10 +93,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [337, 280],
-      "onClick": "updateStash13Click",
-      "onRightClick": "useStash13Item",
-      "onHoverEnter": "updateStash13Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash13Click"
     },
     {
       "id": "btnStash14",
@@ -110,10 +101,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [337, 308],
-      "onClick": "updateStash14Click",
-      "onRightClick": "useStash14Item",
-      "onHoverEnter": "updateStash14Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash14Click"
     },
     {
       "id": "btnStash21",
@@ -121,10 +109,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [366, 222],
-      "onClick": "updateStash21Click",
-      "onRightClick": "useStash21Item",
-      "onHoverEnter": "updateStash21Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash21Click"
     },
     {
       "id": "btnStash22",
@@ -132,10 +117,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [366, 251],
-      "onClick": "updateStash22Click",
-      "onRightClick": "useStash22Item",
-      "onHoverEnter": "updateStash22Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash22Click"
     },
     {
       "id": "btnStash23",
@@ -143,10 +125,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [366, 280],
-      "onClick": "updateStash23Click",
-      "onRightClick": "useStash23Item",
-      "onHoverEnter": "updateStash23Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash23Click"
     },
     {
       "id": "btnStash24",
@@ -154,10 +133,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [366, 308],
-      "onClick": "updateStash24Click",
-      "onRightClick": "useStash24Item",
-      "onHoverEnter": "updateStash24Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash24Click"
     },
     {
       "id": "btnStash31",
@@ -165,10 +141,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [394, 222],
-      "onClick": "updateStash31Click",
-      "onRightClick": "useStash31Item",
-      "onHoverEnter": "updateStash31Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash31Click"
     },
     {
       "id": "btnStash32",
@@ -176,10 +149,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [394, 251],
-      "onClick": "updateStash32Click",
-      "onRightClick": "useStash32Item",
-      "onHoverEnter": "updateStash32Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash32Click"
     },
     {
       "id": "btnStash33",
@@ -187,10 +157,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [394, 280],
-      "onClick": "updateStash33Click",
-      "onRightClick": "useStash33Item",
-      "onHoverEnter": "updateStash33Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash33Click"
     },
     {
       "id": "btnStash34",
@@ -198,10 +165,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [394, 308],
-      "onClick": "updateStash34Click",
-      "onRightClick": "useStash34Item",
-      "onHoverEnter": "updateStash34Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash34Click"
     },
     {
       "id": "btnStash41",
@@ -209,10 +173,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [423, 222],
-      "onClick": "updateStash41Click",
-      "onRightClick": "useStash41Item",
-      "onHoverEnter": "updateStash41Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash41Click"
     },
     {
       "id": "btnStash42",
@@ -220,10 +181,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [423, 251],
-      "onClick": "updateStash42Click",
-      "onRightClick": "useStash42Item",
-      "onHoverEnter": "updateStash42Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash42Click"
     },
     {
       "id": "btnStash43",
@@ -231,10 +189,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [423, 280],
-      "onClick": "updateStash43Click",
-      "onRightClick": "useStash43Item",
-      "onHoverEnter": "updateStash43Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash43Click"
     },
     {
       "id": "btnStash44",
@@ -242,10 +197,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [423, 308],
-      "onClick": "updateStash44Click",
-      "onRightClick": "useStash44Item",
-      "onHoverEnter": "updateStash44Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash44Click"
     },
     {
       "id": "btnStash51",
@@ -253,10 +205,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [451, 222],
-      "onClick": "updateStash51Click",
-      "onRightClick": "useStash51Item",
-      "onHoverEnter": "updateStash51Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash51Click"
     },
     {
       "id": "btnStash52",
@@ -264,10 +213,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [451, 251],
-      "onClick": "updateStash52Click",
-      "onRightClick": "useStash52Item",
-      "onHoverEnter": "updateStash52Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash52Click"
     },
     {
       "id": "btnStash53",
@@ -275,10 +221,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [451, 280],
-      "onClick": "updateStash53Click",
-      "onRightClick": "useStash53Item",
-      "onHoverEnter": "updateStash53Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash53Click"
     },
     {
       "id": "btnStash54",
@@ -286,10 +229,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [451, 308],
-      "onClick": "updateStash54Click",
-      "onRightClick": "useStash54Item",
-      "onHoverEnter": "updateStash54Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash54Click"
     },
     {
       "id": "btnStash61",
@@ -297,10 +237,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [480, 222],
-      "onClick": "updateStash61Click",
-      "onRightClick": "useStash61Item",
-      "onHoverEnter": "updateStash61Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash61Click"
     },
     {
       "id": "btnStash62",
@@ -308,10 +245,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [480, 251],
-      "onClick": "updateStash62Click",
-      "onRightClick": "useStash62Item",
-      "onHoverEnter": "updateStash62Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash62Click"
     },
     {
       "id": "btnStash63",
@@ -319,10 +253,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [480, 280],
-      "onClick": "updateStash63Click",
-      "onRightClick": "useStash63Item",
-      "onHoverEnter": "updateStash63Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash63Click"
     },
     {
       "id": "btnStash64",
@@ -330,10 +261,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [480, 308],
-      "onClick": "updateStash64Click",
-      "onRightClick": "useStash64Item",
-      "onHoverEnter": "updateStash64Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash64Click"
     },
     {
       "id": "btnStash71",
@@ -341,10 +269,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [509, 222],
-      "onClick": "updateStash71Click",
-      "onRightClick": "useStash71Item",
-      "onHoverEnter": "updateStash71Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash71Click"
     },
     {
       "id": "btnStash72",
@@ -352,10 +277,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [509, 251],
-      "onClick": "updateStash72Click",
-      "onRightClick": "useStash72Item",
-      "onHoverEnter": "updateStash72Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash72Click"
     },
     {
       "id": "btnStash73",
@@ -363,10 +285,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [509, 280],
-      "onClick": "updateStash73Click",
-      "onRightClick": "useStash73Item",
-      "onHoverEnter": "updateStash73Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash73Click"
     },
     {
       "id": "btnStash74",
@@ -374,10 +293,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [509, 308],
-      "onClick": "updateStash74Click",
-      "onRightClick": "useStash74Item",
-      "onHoverEnter": "updateStash74Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash74Click"
     },
     {
       "id": "btnStash81",
@@ -385,10 +301,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [538, 222],
-      "onClick": "updateStash81Click",
-      "onRightClick": "useStash81Item",
-      "onHoverEnter": "updateStash81Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash81Click"
     },
     {
       "id": "btnStash82",
@@ -396,10 +309,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [538, 251],
-      "onClick": "updateStash82Click",
-      "onRightClick": "useStash82Item",
-      "onHoverEnter": "updateStash82Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash82Click"
     },
     {
       "id": "btnStash83",
@@ -407,10 +317,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [538, 280],
-      "onClick": "updateStash83Click",
-      "onRightClick": "useStash83Item",
-      "onHoverEnter": "updateStash83Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash83Click"
     },
     {
       "id": "btnStash84",
@@ -418,10 +325,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [538, 308],
-      "onClick": "updateStash84Click",
-      "onRightClick": "useStash84Item",
-      "onHoverEnter": "updateStash84Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash84Click"
     },
     {
       "id": "btnStash91",
@@ -429,10 +333,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [567, 222],
-      "onClick": "updateStash91Click",
-      "onRightClick": "useStash91Item",
-      "onHoverEnter": "updateStash91Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash91Click"
     },
     {
       "id": "btnStash92",
@@ -440,10 +341,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [567, 251],
-      "onClick": "updateStash92Click",
-      "onRightClick": "useStash92Item",
-      "onHoverEnter": "updateStash92Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash92Click"
     },
     {
       "id": "btnStash93",
@@ -451,10 +349,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [567, 280],
-      "onClick": "updateStash93Click",
-      "onRightClick": "useStash93Item",
-      "onHoverEnter": "updateStash93Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash93Click"
     },
     {
       "id": "btnStash94",
@@ -462,10 +357,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [567, 308],
-      "onClick": "updateStash94Click",
-      "onRightClick": "useStash94Item",
-      "onHoverEnter": "updateStash94Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash94Click"
     },
     {
       "id": "btnStash101",
@@ -473,10 +365,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [596, 222],
-      "onClick": "updateStash101Click",
-      "onRightClick": "useStash101Item",
-      "onHoverEnter": "updateStash101Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash101Click"
     },
     {
       "id": "btnStash102",
@@ -484,10 +373,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [596, 251],
-      "onClick": "updateStash102Click",
-      "onRightClick": "useStash102Item",
-      "onHoverEnter": "updateStash102Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash102Click"
     },
     {
       "id": "btnStash103",
@@ -495,10 +381,7 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [596, 280],
-      "onClick": "updateStash103Click",
-      "onRightClick": "useStash103Item",
-      "onHoverEnter": "updateStash103Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash103Click"
     },
     {
       "id": "btnStash104",
@@ -506,341 +389,79 @@
       "textureRect": [28, 28],
       "anchor": "right",
       "position": [596, 308],
-      "onClick": "updateStash104Click",
-      "onRightClick": "useStash104Item",
-      "onHoverEnter": "updateStash104Text",
-      "onHoverLeave": "clearPanelText"
+      "onClick": "updateStash104Click"
     }
   ],
   "image": [
     {
       "id": "imgLeftHand",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [337, 77]
     },
     {
       "id": "imgRightHand",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [569, 77]
     },
     {
       "id": "imgArmor",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [453, 77]
     },
     {
       "id": "imgHelmet",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [453, -10]
     },
     {
       "id": "imgAmulet",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [511, 5]
     },
     {
       "id": "imgLeftRing",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [354, 150]
     },
     {
       "id": "imgRightRing",
+      "replaceVars": true,
       "texture": "empty",
       "textureRect": [56, 84],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [555, 150]
-    },
-    {
-      "id": "imgStash11",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [337, 222]
-    },
-    {
-      "id": "imgStash12",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [337, 251]
-    },
-    {
-      "id": "imgStash13",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [337, 280]
-    },
-    {
-      "id": "imgStash14",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [337, 308]
-    },
-    {
-      "id": "imgStash21",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [366, 222]
-    },
-    {
-      "id": "imgStash22",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [366, 251]
-    },
-    {
-      "id": "imgStash23",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [366, 280]
-    },
-    {
-      "id": "imgStash24",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [366, 308]
-    },
-    {
-      "id": "imgStash31",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [394, 222]
-    },
-    {
-      "id": "imgStash32",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [394, 251]
-    },
-    {
-      "id": "imgStash33",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [394, 280]
-    },
-    {
-      "id": "imgStash34",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [394, 308]
-    },
-    {
-      "id": "imgStash41",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [423, 222]
-    },
-    {
-      "id": "imgStash42",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [423, 251]
-    },
-    {
-      "id": "imgStash43",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [423, 280]
-    },
-    {
-      "id": "imgStash44",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [423, 308]
-    },
-    {
-      "id": "imgStash51",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [451, 222]
-    },
-    {
-      "id": "imgStash52",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [451, 251]
-    },
-    {
-      "id": "imgStash53",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [451, 280]
-    },
-    {
-      "id": "imgStash54",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [451, 308]
-    },
-    {
-      "id": "imgStash61",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [480, 222]
-    },
-    {
-      "id": "imgStash62",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [480, 251]
-    },
-    {
-      "id": "imgStash63",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [480, 280]
-    },
-    {
-      "id": "imgStash64",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [480, 308]
-    },
-    {
-      "id": "imgStash71",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [509, 222]
-    },
-    {
-      "id": "imgStash72",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [509, 251]
-    },
-    {
-      "id": "imgStash73",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [509, 280]
-    },
-    {
-      "id": "imgStash74",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [509, 308]
-    },
-    {
-      "id": "imgStash81",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [538, 222]
-    },
-    {
-      "id": "imgStash82",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [538, 251]
-    },
-    {
-      "id": "imgStash83",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [538, 280]
-    },
-    {
-      "id": "imgStash84",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [538, 308]
-    },
-    {
-      "id": "imgStash91",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [567, 222]
-    },
-    {
-      "id": "imgStash92",
-      "texture": "empty",
-      "textureRect": [56, 84],
-      "anchor": "right",
-      "position": [567, 251]
-    },
-    {
-      "id": "imgStash93",
-      "texture": "empty",
-      "textureRect": [56, 56],
-      "anchor": "right",
-      "position": [567, 280]
-    },
-    {
-      "id": "imgStash94",
-      "texture": "empty",
-      "textureRect": [56, 28],
-      "anchor": "right",
-      "position": [567, 308]
-    },
-    {
-      "id": "imgStash101",
-      "texture": "empty",
-      "textureRect": [28, 84],
-      "anchor": "right",
-      "position": [596, 222]
-    },
-    {
-      "id": "imgStash102",
-      "texture": "empty",
-      "textureRect": [28, 84],
-      "anchor": "right",
-      "position": [596, 251]
-    },
-    {
-      "id": "imgStash103",
-      "texture": "empty",
-      "textureRect": [28, 56],
-      "anchor": "right",
-      "position": [596, 280]
-    },
-    {
-      "id": "imgStash104",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [596, 308]
     }
   ],
   "action": [

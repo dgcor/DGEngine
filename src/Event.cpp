@@ -1,7 +1,7 @@
 #include "Event.h"
 #include "Game.h"
 
-bool Event::update(Game& game)
+bool Event::execute(Game& game)
 {
 	if (action == nullptr)
 	{

@@ -42,6 +42,13 @@ namespace Parser
 			inputText->setRegex(elem["regex"].GetString());
 		}
 
-		game.Resources().addDrawable(id, inputText);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, inputText);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, inputText);
+		}
 	}
 }

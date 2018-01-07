@@ -36,7 +36,7 @@ public:
 	void setPause(bool pause_) { pause = pause_; }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual void setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
 
 	virtual void setAnchor(const Anchor anchor) { view.setAnchor(anchor); }
 	virtual void updateSize(const Game& game);

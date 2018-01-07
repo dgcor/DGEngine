@@ -1,25 +1,28 @@
 {
-  "action": {
-    "name": "switch",
-    "param": "%charClass%",
-    "case": [
-      {
-        "value": "Rogue",
-        "action": { "name": "load", "file": "res/player/rogueSounds.json" }
-      },
-      {
-        "value": "Sorceror",
-        "action": { "name": "load", "file": "res/player/sorcerorSounds.json" }
-      },
-      {
-        "value": "Monk",
-        "action": { "name": "load", "file": "res/player/monkSounds.json" }
-      },
-      {
-        "value": "Bard",
-        "action": "Rogue"
-      }
-    ],
-    "default": { "name": "load", "file": "res/player/warriorSounds.json" }
-  }
+  "action": [
+    {
+      "name": "switch",
+      "param": "%charClass%",
+      "case": [
+        {
+          "value": "Rogue",
+          "action": { "name": "load", "file": "res/player/rogueSounds.json" }
+        },
+        {
+          "value": "Sorceror",
+          "action": { "name": "load", "file": "res/player/sorcerorSounds.json" }
+        },
+        {
+          "value": "Monk",
+          "action": { "name": "load", "file": "res/player/monkSounds.json" }
+        },
+        {
+          "value": "Bard",
+          "action": "Rogue"
+        }
+      ],
+      "default": { "name": "load", "file": "res/player/warriorSounds.json" }
+    },
+    { "name": "load", "file": "res/player/commonSounds.json" }
+  ]
 }

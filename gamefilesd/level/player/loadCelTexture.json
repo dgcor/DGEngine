@@ -1,7 +1,7 @@
 {
-  "celTexturePack": {
+  "texturePack": {
     "id": "{3}",
-    "celFile": [
+    "imageContainer": [
       "{1}as",
       "{1}at",
       "{1}aw",

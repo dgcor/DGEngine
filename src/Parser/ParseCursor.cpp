@@ -41,17 +41,14 @@ namespace Parser
 			game.updateMouse();
 		}
 
-		if (elem.HasMember("texture") || elem.HasMember("file"))
+		auto cursor = parseAnimationObj(game, elem);
+		if (cursor == nullptr)
 		{
-			auto cursor = parseAnimationObj(game, elem);
-			if (cursor == nullptr)
-			{
-				return;
-			}
-			auto size = cursor->Size();
-			cursor->setOrigin(getOrigin(elem, size.x, size.y));
-			game.Resources().addCursor(cursor);
-			game.updateMouse();
+			return;
 		}
+		auto size = cursor->Size();
+		cursor->setOrigin(getOrigin(elem, size.x, size.y));
+		game.Resources().addCursor(cursor);
+		game.updateMouse();
 	}
 }

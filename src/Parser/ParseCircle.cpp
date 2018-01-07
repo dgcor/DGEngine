@@ -55,6 +55,13 @@ namespace Parser
 		circle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		circle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		game.Resources().addDrawable(id, circle);
+		if (isValidString(elem, "resource") == true)
+		{
+			game.Resources().addDrawable(elem["resource"].GetString(), id, circle);
+		}
+		else
+		{
+			game.Resources().addDrawable(id, circle);
+		}
 	}
 }
