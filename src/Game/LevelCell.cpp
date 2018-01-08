@@ -8,7 +8,7 @@ bool LevelCell::Passable() const
 	}
 	for (const auto& obj : objects)
 	{
-		if (obj->Passable() == false)
+		if (obj != nullptr && obj->Passable() == false)
 		{
 			return false;
 		}
