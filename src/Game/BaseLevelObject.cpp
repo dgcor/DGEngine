@@ -113,12 +113,14 @@ std::shared_ptr<LevelObject> BaseLevelObject::updateMapPosition(
 
 void BaseLevelObject::updateMapPositionBack(Level& level, const MapCoord& pos, LevelObject* levelObj)
 {
-	level.Map()[mapPosition].addBack(updateMapPosition(level, pos, levelObj));
+	auto obj = updateMapPosition(level, pos, levelObj);
+	level.Map()[mapPosition].addBack(obj);
 }
 
 void BaseLevelObject::updateMapPositionFront(Level& level, const MapCoord& pos, LevelObject* levelObj)
 {
-	level.Map()[mapPosition].addFront(updateMapPosition(level, pos, levelObj));
+	auto obj = updateMapPosition(level, pos, levelObj);
+	level.Map()[mapPosition].addFront(obj);
 }
 
 bool BaseLevelObject::updateTexture()
