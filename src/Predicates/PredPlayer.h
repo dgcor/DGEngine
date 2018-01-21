@@ -83,7 +83,7 @@ public:
 				auto player = level->getPlayerOrCurrent(idPlayer);
 				if (player != nullptr)
 				{
-					return { player->hasItemSlot(*item) };
+					return { player->hasFreeItemSlot(*item) };
 				}
 			}
 		}

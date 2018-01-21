@@ -5,7 +5,7 @@
 #include "ItemProperties.h"
 #include "ItemTypes.h"
 #include "Level.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 Player::Player(const PlayerClass* class__, const Level& level) : class_(class__)
 {
@@ -249,7 +249,7 @@ void Player::updateDead(Game& game, Level& level)
 	updateAnimation(game);
 }
 
-void Player::updateAnimation(Game& game)
+void Player::updateAnimation(const Game& game)
 {
 	currentAnimationTime += game.getElapsedTime();
 	if (currentAnimationTime >= speed.animation)
@@ -344,9 +344,10 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		size_t itemIdx;
 		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
 		{
-			if (inventories[invIdx][itemIdx] != nullptr)
+			auto item = inventories[invIdx].get(itemIdx);
+			if (item != nullptr)
 			{
-				var = Variable(canUseItem(*inventories[invIdx][itemIdx]));
+				var = Variable(canUseItem(*item));
 				break;
 			}
 		}
@@ -368,7 +369,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		size_t itemIdx;
 		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
 		{
-			var = Variable(inventories[invIdx][itemIdx] != nullptr);
+			var = Variable(inventories[invIdx].get(itemIdx) != nullptr);
 			break;
 		}
 		return false;
@@ -401,7 +402,7 @@ bool Player::getProperty(const std::string& prop, Variable& var) const
 		size_t itemIdx;
 		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
 		{
-			auto item = inventories[invIdx][itemIdx].get();
+			auto item = inventories[invIdx].get(itemIdx);
 			if (item != nullptr)
 			{
 				return item->getProperty(props2, var);
@@ -487,7 +488,7 @@ const Queryable* Player::getQueryable(const std::string& prop) const
 		size_t itemIdx;
 		if (parseInventoryAndItem(props.second, props.second, invIdx, itemIdx) == true)
 		{
-			queryable = inventories[invIdx][itemIdx].get();
+			queryable = inventories[invIdx].get(itemIdx);
 			break;
 		}
 	}
@@ -503,7 +504,7 @@ const Queryable* Player::getQueryable(const std::string& prop) const
 	return queryable;
 }
 
-bool Player::hasIntByHash(uint16_t propHash) const
+bool Player::hasIntByHash(uint16_t propHash) const noexcept
 {
 	if (customPropsSize > 0)
 	{
@@ -518,17 +519,17 @@ bool Player::hasIntByHash(uint16_t propHash) const
 	return false;
 }
 
-bool Player::hasInt(const char* prop) const
+bool Player::hasInt(const char* prop) const noexcept
 {
 	return hasIntByHash(str2int16(prop));
 }
 
-bool Player::getNumberProp(const char* prop, Number32& value) const
+bool Player::getNumberProp(const char* prop, Number32& value) const noexcept
 {
 	return getNumberByHash(str2int16(prop), value);
 }
 
-bool Player::getNumberByHash(uint16_t propHash, Number32& value) const
+bool Player::getNumberByHash(uint16_t propHash, Number32& value) const noexcept
 {
 	LevelObjValue iVal;
 	if (getIntByHash(propHash, iVal) == true)
@@ -545,7 +546,7 @@ bool Player::getNumberByHash(uint16_t propHash, Number32& value) const
 	return getCustomIntByHash(propHash, value);
 }
 
-bool Player::getCustomIntByHash(uint16_t propHash, Number32& value) const
+bool Player::getCustomIntByHash(uint16_t propHash, Number32& value) const noexcept
 {
 	for (size_t i = 0; i < customPropsSize; i++)
 	{
@@ -559,12 +560,12 @@ bool Player::getCustomIntByHash(uint16_t propHash, Number32& value) const
 	return false;
 }
 
-bool Player::getCustomInt(const char* prop, Number32& value) const
+bool Player::getCustomInt(const char* prop, Number32& value) const noexcept
 {
 	return getCustomIntByHash(str2int16(prop), value);
 }
 
-bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
+bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const noexcept
 {
 	switch (propHash)
 	{
@@ -703,12 +704,12 @@ bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 	return true;
 }
 
-bool Player::getInt(const char* prop, LevelObjValue& value) const
+bool Player::getInt(const char* prop, LevelObjValue& value) const noexcept
 {
 	return getIntByHash(str2int16(prop), value);
 }
 
-bool Player::getUIntByHash(uint16_t propHash, uint32_t& value) const
+bool Player::getUIntByHash(uint16_t propHash, uint32_t& value) const noexcept
 {
 	switch (propHash)
 	{
@@ -733,12 +734,12 @@ bool Player::getUIntByHash(uint16_t propHash, uint32_t& value) const
 	return true;
 }
 
-bool Player::getUInt(const char* prop, uint32_t& value) const
+bool Player::getUInt(const char* prop, uint32_t& value) const noexcept
 {
 	return getUIntByHash(str2int16(prop), value);
 }
 
-bool Player::setIntByHash(uint16_t propHash, LevelObjValue value, const Level* level)
+bool Player::setIntByHash(uint16_t propHash, LevelObjValue value, const Level* level) noexcept
 {
 	switch (propHash)
 	{
@@ -766,12 +767,12 @@ bool Player::setIntByHash(uint16_t propHash, LevelObjValue value, const Level* l
 	return true;
 }
 
-bool Player::setInt(const char* prop, LevelObjValue value, const Level* level)
+bool Player::setInt(const char* prop, LevelObjValue value, const Level* level) noexcept
 {
 	return setIntByHash(str2int16(prop), value, level);
 }
 
-bool Player::setUIntByHash(uint16_t propHash, uint32_t value, const Level* level)
+bool Player::setUIntByHash(uint16_t propHash, uint32_t value, const Level* level) noexcept
 {
 	switch (propHash)
 	{
@@ -793,12 +794,12 @@ bool Player::setUIntByHash(uint16_t propHash, uint32_t value, const Level* level
 	return true;
 }
 
-bool Player::setUInt(const char* prop, uint32_t value, const Level* level)
+bool Player::setUInt(const char* prop, uint32_t value, const Level* level) noexcept
 {
 	return setUIntByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level)
+bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level) noexcept
 {
 	if (setIntByHash(propHash, value, nullptr) == false)
 	{
@@ -807,17 +808,17 @@ bool Player::setNumberByHash(uint16_t propHash, LevelObjValue value, const Level
 	return true;
 }
 
-bool Player::setNumber(const char* prop, LevelObjValue value, const Level* level)
+bool Player::setNumber(const char* prop, LevelObjValue value, const Level* level) noexcept
 {
 	return setNumberByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumber(const char* prop, const Number32& value, const Level* level)
+bool Player::setNumber(const char* prop, const Number32& value, const Level* level) noexcept
 {
 	return setNumberByHash(str2int16(prop), value, level);
 }
 
-bool Player::setNumberByHash(uint16_t propHash, const Number32& value, const Level* level)
+bool Player::setNumberByHash(uint16_t propHash, const Number32& value, const Level* level) noexcept
 {
 	if (setNumberByHash(propHash, value.getInt32(), level) == true)
 	{
@@ -933,7 +934,7 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 	amount = std::abs(amount);
 	size_t invIdx = 0;
 	size_t itemIdx = 0;
-	std::shared_ptr<Item> item;
+	Item* item;
 	while (findItem(ItemTypes::Gold, invIdx, itemIdx, item) == true)
 	{
 		auto itemGold = item->getIntByHash(ItemProp::Gold);
@@ -951,7 +952,8 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 			{
 				amount -= itemGold;
 				gold -= itemGold;
-				inventories[invIdx].set(itemIdx, nullptr);
+				std::unique_ptr<Item> nullItem;
+				inventories[invIdx].set(itemIdx, nullItem);
 			}
 		}
 		else
@@ -992,7 +994,7 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 			{
 				return true;
 			}
-			auto newItem = std::make_shared<Item>(goldClass);
+			auto newItem = std::make_unique<Item>(goldClass);
 			auto itemMaxGold = newItem->getIntByHash(ItemProp::GoldMax);
 			if (itemMaxGold <= 0)
 			{
@@ -1007,7 +1009,7 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 
 			size_t invIdx2 = 0;
 			size_t itemIdx2 = 0;
-			if (getItemSlot(*newItem, invIdx2, itemIdx2) == true)
+			if (getFreeItemSlot(*newItem, invIdx2, itemIdx2) == true)
 			{
 				inventories[invIdx2].set(itemIdx2, newItem);
 				amount -= goldVal;
@@ -1022,7 +1024,7 @@ bool Player::addGold(const Level& level, LevelObjValue amount)
 	return false;
 }
 
-void Player::updateGoldAdd(const std::shared_ptr<Item>& item)
+void Player::updateGoldAdd(const Item* item)
 {
 	if (item != nullptr &&
 		item->Class()->TypeHash16() == ItemTypes::Gold)
@@ -1031,7 +1033,7 @@ void Player::updateGoldAdd(const std::shared_ptr<Item>& item)
 	}
 }
 
-void Player::updateGoldRemove(const std::shared_ptr<Item>& item)
+void Player::updateGoldRemove(const Item* item)
 {
 	if (item != nullptr &&
 		item->Class()->TypeHash16() == ItemTypes::Gold)
@@ -1053,7 +1055,7 @@ uint32_t Player::getMaxGoldCapacity(const Level& level) const
 	uint64_t maxGold = 0;
 	size_t invIdx = 0;
 	size_t itemIdx = 0;
-	std::shared_ptr<Item> item;
+	Item* item;
 	while (findItem(ItemTypes::Gold, invIdx, itemIdx, item) == true)
 	{
 		auto itemGold = item->getIntByHash(ItemProp::Gold);
@@ -1091,12 +1093,12 @@ uint32_t Player::getMaxGoldCapacity(const Level& level) const
 	return (uint32_t)maxGold;
 }
 
-bool Player::getItemSlot(const Item& item, size_t& invIdx,
+bool Player::getFreeItemSlot(const Item& item, size_t& invIdx,
 	size_t& itemIdx, InventoryPosition invPos) const
 {
 	for (size_t i = 0; i < inventories.size(); i++)
 	{
-		if (inventories[i].getItemSlot(item, itemIdx, invPos) == true)
+		if (inventories[i].getFreeItemSlot(item, itemIdx, invPos) == true)
 		{
 			invIdx = i;
 			return true;
@@ -1105,15 +1107,15 @@ bool Player::getItemSlot(const Item& item, size_t& invIdx,
 	return false;
 }
 
-bool Player::hasItemSlot(const Item& item) const
+bool Player::hasFreeItemSlot(const Item& item) const
 {
 	size_t invIdx;
 	size_t itemIdx;
-	return getItemSlot(item, invIdx, itemIdx);
+	return getFreeItemSlot(item, invIdx, itemIdx);
 }
 
 bool Player::findItem(uint16_t itemTypeHash16, size_t& invIdx,
-	size_t& itemIdx, std::shared_ptr<Item>& item) const
+	size_t& itemIdx, Item*& item) const
 {
 	auto size = inventories.size();
 	if (invIdx < size)
@@ -1144,25 +1146,26 @@ unsigned Player::countFreeSlots(const ItemClass& itemClass) const
 	return count;
 }
 
-bool Player::setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>& item)
+bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item)
 {
-	std::shared_ptr<Item> oldItem;
+	std::unique_ptr<Item> oldItem;
 	return setItem(invIdx, itemIdx, item, oldItem);
 }
 
-bool Player::setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>& item,
-	std::shared_ptr<Item>& oldItem)
+bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
+	std::unique_ptr<Item>& oldItem)
 {
 	if (invIdx >= inventories.size())
 	{
 		return false;
 	}
+	auto itemPtr = item.get();
 	auto& inventory = inventories[invIdx];
 	auto ret = inventory.set(itemIdx, item, oldItem);
 	if (ret == true)
 	{
-		updateGoldRemove(oldItem);
-		updateGoldAdd(item);
+		updateGoldRemove(oldItem.get());
+		updateGoldAdd(itemPtr);
 		if (bodyInventoryIdx == invIdx)
 		{
 			updateProperties();
@@ -1172,13 +1175,13 @@ bool Player::setItem(size_t invIdx, size_t itemIdx, const std::shared_ptr<Item>&
 }
 
 bool Player::setItemInFreeSlot(size_t invIdx,
-	const std::shared_ptr<Item>& item, InventoryPosition invPos)
+	std::unique_ptr<Item>& item, InventoryPosition invPos)
 {
 	if (invIdx < inventories.size())
 	{
 		auto& inventory = inventories[invIdx];
 		size_t itemIdx = 0;
-		if (inventory.getItemSlot(*item, itemIdx, invPos) == true)
+		if (inventory.getFreeItemSlot(*item, itemIdx, invPos) == true)
 		{
 			return setItem(invIdx, itemIdx, item);
 		}
@@ -1213,61 +1216,50 @@ void Player::updateBodyItemValues()
 	{
 		return;
 	}
-	for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+	for (const auto& item : inventories[bodyInventoryIdx])
 	{
-		if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
-		{
-			continue;
-		}
 		equipedItems++;
-		const auto& item = inventories[bodyInventoryIdx].get(i);
 
-		if (item->Identified() == true)
+		if (item.Identified() == true)
 		{
-			auto allAttributes = item->getIntByHash(ItemProp::AllAttributes);
-			strengthItems += allAttributes + item->getIntByHash(ItemProp::Strength);
-			magicItems += allAttributes + item->getIntByHash(ItemProp::Magic);
-			dexterityItems += allAttributes + item->getIntByHash(ItemProp::Dexterity);
-			vitalityItems += allAttributes + item->getIntByHash(ItemProp::Vitality);
+			auto allAttributes = item.getIntByHash(ItemProp::AllAttributes);
+			strengthItems += allAttributes + item.getIntByHash(ItemProp::Strength);
+			magicItems += allAttributes + item.getIntByHash(ItemProp::Magic);
+			dexterityItems += allAttributes + item.getIntByHash(ItemProp::Dexterity);
+			vitalityItems += allAttributes + item.getIntByHash(ItemProp::Vitality);
 		}
 	}
-	for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+	for (const auto& item : inventories[bodyInventoryIdx])
 	{
-		if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
+		if (canUseItem(item) == false)
 		{
 			continue;
 		}
-		const auto& item = inventories[bodyInventoryIdx].get(i);
-
-		if (canUseItem(*item) == false)
+		if (item.Identified() == true)
 		{
-			continue;
-		}
-		if (item->Identified() == true)
-		{
-			lifeItems += item->getIntByHash(ItemProp::Life);
-			manaItems += item->getIntByHash(ItemProp::Mana);
+			lifeItems += item.getIntByHash(ItemProp::Life);
+			manaItems += item.getIntByHash(ItemProp::Mana);
 
-			auto resistAll = item->getIntByHash(ItemProp::ResistAll);
-			resistMagicItems += resistAll + item->getIntByHash(ItemProp::ResistMagic);
-			resistFireItems += resistAll + item->getIntByHash(ItemProp::ResistFire);
-			resistLightningItems += resistAll + item->getIntByHash(ItemProp::ResistLightning);
+			auto resistAll = item.getIntByHash(ItemProp::ResistAll);
+			resistMagicItems += resistAll + item.getIntByHash(ItemProp::ResistMagic);
+			resistFireItems += resistAll + item.getIntByHash(ItemProp::ResistFire);
+			resistLightningItems += resistAll + item.getIntByHash(ItemProp::ResistLightning);
 
-			toArmor += item->getIntByHash(ItemProp::ToArmor);
-			toDamage += item->getIntByHash(ItemProp::ToDamage);
+			toArmor += item.getIntByHash(ItemProp::ToArmor);
+			toDamage += item.getIntByHash(ItemProp::ToDamage);
 
-			auto damage = item->getIntByHash(ItemProp::Damage);
+			auto damage = item.getIntByHash(ItemProp::Damage);
 			damageMin += damage;
 			damageMax += damage;
 		}
-		armorItems += item->getIntByHash(ItemProp::Armor);
-		toHitItems += item->getIntByHash(ItemProp::ToHit);
-		damageMinItems += item->getIntByHash(ItemProp::DamageMin);
-		damageMaxItems += item->getIntByHash(ItemProp::DamageMax);
+		armorItems += item.getIntByHash(ItemProp::Armor);
+		toHitItems += item.getIntByHash(ItemProp::ToHit);
+		damageMinItems += item.getIntByHash(ItemProp::DamageMin);
+		damageMaxItems += item.getIntByHash(ItemProp::DamageMax);
 
 		if (equipedItems == 1)
 		{
-			singleItemDamage = item->getIntByHash(ItemProp::SingleItemDamage);
+			singleItemDamage = item.getIntByHash(ItemProp::SingleItemDamage);
 		}
 	}
 	auto toArmorPercentage = (float)toArmor * 0.01f;
@@ -1337,7 +1329,7 @@ void Player::updateProperties()
 	damageMax += damage;
 }
 
-void Player::applyDefaults(const Level& level)
+void Player::applyDefaults(const Level& level) noexcept
 {
 	for (const auto& prop : class_->Defaults())
 	{
@@ -1362,13 +1354,9 @@ bool Player::hasEquipedItemType(const std::string& type) const
 {
 	if (bodyInventoryIdx < inventories.size())
 	{
-		for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+		for (const auto& item : inventories[bodyInventoryIdx])
 		{
-			if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
-			{
-				continue;
-			}
-			if (inventories[bodyInventoryIdx].get(i)->ItemType() == type)
+			if (item.ItemType() == type)
 			{
 				return true;
 			}
@@ -1381,13 +1369,9 @@ bool Player::hasEquipedItemSubType(const std::string& type) const
 {
 	if (bodyInventoryIdx >= inventories.size())
 	{
-		for (size_t i = 0; i < inventories[bodyInventoryIdx].Size(); i++)
+		for (const auto& item : inventories[bodyInventoryIdx])
 		{
-			if (inventories[bodyInventoryIdx].isItemSlotInUse(i) == false)
-			{
-				continue;
-			}
-			if (inventories[bodyInventoryIdx].get(i)->ItemSubType() == type)
+			if (item.ItemSubType() == type)
 			{
 				return true;
 			}
@@ -1430,7 +1414,7 @@ void Player::updateExperience(const Level& level)
 	}
 }
 
-bool Player::hasMaxStats() const
+bool Player::hasMaxStats() const noexcept
 {
 	return (strength >= class_->MaxStrength() &&
 		magic >= class_->MaxMagic() &&

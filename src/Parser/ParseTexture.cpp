@@ -1,8 +1,8 @@
 #include "ParseTexture.h"
 #include "ParseImageContainer.h"
 #include "ImageUtils.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
@@ -59,7 +59,7 @@ namespace Parser
 			else if (elem.HasMember("frame") == true)
 			{
 				auto frameIdx = getUIntVal(elem["frame"]);
-				img = ImageUtils::loadImageFrame(*imgContainer, pal, frameIdx);
+				img = ImageUtils::loadImageFrame(*imgContainer, *pal, frameIdx);
 			}
 			else
 			{

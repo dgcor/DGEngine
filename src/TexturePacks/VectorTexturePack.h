@@ -11,7 +11,7 @@ private:
 	bool indexed{ false };
 	size_t lastTextureIndex{ 0 };
 
-	bool texturesHaveSameSize() const { return lastTextureIndex < textures.size(); }
+	bool texturesHaveSameSize() const noexcept { return lastTextureIndex < textures.size(); }
 
 public:
 	VectorTexturePack(size_t size_, const std::shared_ptr<Palette>& palette_,
@@ -31,9 +31,9 @@ public:
 
 	void set(size_t index, const sf::Texture& texture);
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return 1; }
-	virtual size_t totalSize() const { return textures.size(); }
-	virtual size_t size(size_t index) const { return textures.size(); }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return 1; }
+	virtual size_t totalSize() const noexcept { return textures.size(); }
+	virtual size_t size(size_t index) const noexcept { return textures.size(); }
 };

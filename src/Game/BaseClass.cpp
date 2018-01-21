@@ -1,7 +1,7 @@
 #include "BaseClass.h"
 #include "Game.h"
 
-std::shared_ptr<Action> BaseClass::getAction(uint16_t nameHash16) const
+std::shared_ptr<Action> BaseClass::getAction(uint16_t nameHash16) const noexcept
 {
 	for (const auto& elem : actions)
 	{

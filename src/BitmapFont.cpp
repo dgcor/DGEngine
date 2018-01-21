@@ -251,7 +251,7 @@ BitmapFont::BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int c
 	}
 }
 
-float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) const
+float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) const noexcept
 {
 	auto ch = text[0];
 	if (ch == 0 || ch == '\n')

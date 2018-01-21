@@ -2,7 +2,7 @@
 #include <cmath>
 #include "LevelMap.h"
 
-bool MapSearchNode::IsValid() const
+bool MapSearchNode::IsValid() const noexcept
 {
 	return (x >= 0 &&
 		x < map->Width() &&
@@ -10,7 +10,7 @@ bool MapSearchNode::IsValid() const
 		y < map->Height());
 }
 
-bool MapSearchNode::IsPassableIgnoreObject() const
+bool MapSearchNode::IsPassableIgnoreObject() const noexcept
 {
 	if (IsValid() == true)
 	{
@@ -31,22 +31,22 @@ bool MapSearchNode::IsPassable(int16_t x_, int16_t y_) const
 	return false;
 }
 
-bool MapSearchNode::IsSameState(MapSearchNode& rhs)
+bool MapSearchNode::IsSameState(MapSearchNode& rhs) noexcept
 {
 	return ((x == rhs.x) && (y == rhs.y));
 }
 
-float MapSearchNode::GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const
+float MapSearchNode::GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const noexcept
 {
 	return (float)(std::abs(x - nodeGoal.x) + std::abs(y - nodeGoal.y));
 }
 
-float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal)
+float MapSearchNode::GoalDistanceEstimate(MapSearchNode& nodeGoal) noexcept
 {
 	return GoalDistanceEstimateC(nodeGoal);
 }
 
-bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal)
+bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal) noexcept
 {
 	return ((x == nodeGoal.x) && (y == nodeGoal.y));
 }

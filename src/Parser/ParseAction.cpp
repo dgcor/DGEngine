@@ -1056,7 +1056,7 @@ namespace Parser
 			}
 			return std::make_shared<ActQuestAdd>(
 				getStringKey(elem, "level"),
-				quest);
+				std::move(quest));
 		}
 		case str2int16("quest.delete"):
 		{

@@ -1,6 +1,6 @@
 #include "GameProperties.h"
 
-PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos)
+PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos) noexcept
 {
 	if (newPos.x == currPos.x)
 	{

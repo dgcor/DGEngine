@@ -22,11 +22,11 @@ private:
 	unsigned lineCount{ 0 };
 	bool visible{ true };
 
-	void calcDrawPos();
+	void calcDrawPos() noexcept;
 	void calcSize();
 
 public:
-	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont> font_,
+	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont>& font_,
 		int horizSpaceOffset_ = 0, int vertSpaceOffset_ = 0) : text(text_), font(font_),
 		horizSpaceOffset(horizSpaceOffset_), vertSpaceOffset(vertSpaceOffset_)
 	{
@@ -34,16 +34,11 @@ public:
 		calcDrawPos();
 	}
 
-	virtual ~BitmapText() {}
-
-	void setFont(const std::shared_ptr<BitmapFont>& font_) { font = font_; }
+	void setFont(const std::shared_ptr<BitmapFont>& font_) noexcept { font = font_; }
 
 	virtual std::string getText() const { return text; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) { return false; }
-
-	virtual void setAnchor(const Anchor anchor_)
+	virtual void setAnchor(const Anchor anchor_) noexcept
 	{
 		if (anchor != anchor_)
 		{
@@ -51,7 +46,7 @@ public:
 			calcDrawPos();
 		}
 	}
-	virtual void updateSize(const Game& game);
+	virtual void updateSize(const Game& game) noexcept;
 
 	virtual bool setText(const std::string& str)
 	{
@@ -65,24 +60,24 @@ public:
 		return true;
 	}
 
-	virtual unsigned getLineCount() const { return lineCount; }
+	virtual unsigned getLineCount() const noexcept { return lineCount; }
 
-	virtual void setColor(const sf::Color& color_) { color = color_; }
+	virtual void setColor(const sf::Color& color_) noexcept { color = color_; }
 
-	virtual const sf::Vector2f& DrawPosition() const { return drawPos; }
-	virtual const sf::Vector2f& Position() const { return pos; }
-	virtual void Position(const sf::Vector2f& position)
+	virtual const sf::Vector2f& DrawPosition() const noexcept { return drawPos; }
+	virtual const sf::Vector2f& Position() const noexcept { return pos; }
+	virtual void Position(const sf::Vector2f& position) noexcept
 	{
 		pos = position;
 		calcDrawPos();
 	}
-	virtual sf::Vector2f Size() const { return size; }
-	virtual void Size(const sf::Vector2f& size_) {}
+	virtual sf::Vector2f Size() const noexcept { return size; }
+	virtual void Size(const sf::Vector2f& size_) noexcept {}
 
 	virtual sf::FloatRect getLocalBounds() const { return sf::FloatRect(drawPos, size); }
 	virtual sf::FloatRect getGlobalBounds() const { return sf::FloatRect(drawPos, size); }
 
-	virtual void setHorizontalAlign(const HorizontalAlign align)
+	virtual void setHorizontalAlign(const HorizontalAlign align) noexcept
 	{
 		if (horizAlign != align)
 		{
@@ -90,7 +85,7 @@ public:
 			calcDrawPos();
 		}
 	}
-	virtual void setVerticalAlign(const VerticalAlign align)
+	virtual void setVerticalAlign(const VerticalAlign align) noexcept
 	{
 		if (vertAlign != align)
 		{
@@ -118,13 +113,12 @@ public:
 		}
 	}
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const noexcept { return visible; }
+	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
-	void update(Game& game) {}
+	void update(Game& game) noexcept {}
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

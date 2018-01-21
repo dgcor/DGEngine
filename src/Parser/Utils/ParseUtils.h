@@ -15,7 +15,7 @@ namespace Parser
 
 	bool isValidArray(const rapidjson::Value& elem, const char* key);
 
-	bool isValidId(const std::string& id);
+	bool isValidId(const std::string& id) noexcept;
 
 	bool isValidString(const rapidjson::Value& elem, const char* key);
 }

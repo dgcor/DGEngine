@@ -18,12 +18,12 @@ public:
 		const sf::Time& timeout_ = sf::Time::Zero)
 		: action(action_), timeout(timeout_) {}
 
-	const std::string& getId() const { return id; }
+	const std::string& getId() const noexcept { return id; }
 	void setId(const std::string& id_) { id = id_; }
 
-	void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 
-	void resetTime() { currentTime = sf::Time::Zero; }
+	void resetTime() noexcept { currentTime = sf::Time::Zero; }
 
 	virtual bool execute(Game& game);
 };

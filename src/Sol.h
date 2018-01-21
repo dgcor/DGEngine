@@ -17,5 +17,5 @@ public:
 
 	bool passable(size_t index) const;
 
-	size_t size() const { return data.size(); }
+	size_t size() const noexcept { return data.size(); }
 };

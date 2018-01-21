@@ -31,6 +31,10 @@ RapidJSON uses the MIT license.
 
 https://github.com/miloyip/rapidjson/
 
+Simple Iterator Template implementation by Vinícius Garcia uses the MIT license.
+
+https://github.com/VinGarcia/Simple-Iterator-Template
+
 SFML Animation class based on an implementation by Maximilian Wagenbach.
 It uses the zlib/png license.
 

@@ -22,7 +22,7 @@ namespace Parser
 	}
 #endif
 
-	bool openMusicFromFile(Game& game, std::shared_ptr<sf::Music2>& music,
+	bool openMusicFromFile(Game& game, std::shared_ptr<sf::Music2> music,
 		sf::PhysFSStream& stream, const AudioSource audioSource, const std::string& id)
 	{
 		if (music->openFromStream(stream) == true &&

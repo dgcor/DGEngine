@@ -71,7 +71,7 @@ void ResourceManager::popAllResources(bool popBaseResources)
 	clearCache();
 }
 
-void ResourceManager::ignoreResources(const std::string& id, IgnoreResource ignore)
+void ResourceManager::ignoreResources(const std::string& id, IgnoreResource ignore) noexcept
 {
 	for (auto& res : reverse(resources))
 	{
@@ -91,7 +91,7 @@ void ResourceManager::ignoreTopResource(IgnoreResource ignore)
 	}
 }
 
-bool ResourceManager::resourceExists(const std::string& id) const
+bool ResourceManager::resourceExists(const std::string& id) const noexcept
 {
 	for (auto& res : resources)
 	{

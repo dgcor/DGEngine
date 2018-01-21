@@ -4,7 +4,7 @@
 #include "Game/Level.h"
 #include "ItemProperties.h"
 #include "Player.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 Item::Item(const ItemClass* class__) : class_(class__)
 {
@@ -21,7 +21,7 @@ Item::Item(const ItemClass* class__) : class_(class__)
 	applyDefaults();
 }
 
-void Item::resetDropAnimation()
+void Item::resetDropAnimation() noexcept
 {
 	base.currentTextureIdx = 0;
 	if (base.enableHover == true)
@@ -199,7 +199,7 @@ void Item::setProperty(const std::string& prop, const Variable& val)
 	setIntByHash(str2int16(prop.c_str()), val2);
 }
 
-bool Item::hasIntByHash(uint16_t propHash) const
+bool Item::hasIntByHash(uint16_t propHash) const noexcept
 {
 	if (propertiesSize > 0)
 	{
@@ -214,7 +214,7 @@ bool Item::hasIntByHash(uint16_t propHash) const
 	return false;
 }
 
-bool Item::hasInt(const char* prop) const
+bool Item::hasInt(const char* prop) const noexcept
 {
 	return hasIntByHash(str2int16(prop));
 }
@@ -373,13 +373,13 @@ bool Item::needsRepair() const
 	return false;
 }
 
-bool Item::isUsable() const
+bool Item::isUsable() const noexcept
 {
 	return hasIntByHash(ItemProp::UseOn);
 }
 
 bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
-	LevelObjValue value, Player& player, const Level* level) const
+	LevelObjValue value, Player& player, const Level* level) const noexcept
 {
 	Number32 origValue2;
 	if (player.getNumberByHash(propHash, origValue2) == false)

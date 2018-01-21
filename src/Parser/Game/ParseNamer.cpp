@@ -122,6 +122,6 @@ namespace Parser
 		{
 			return;
 		}
-		level->addNamer(id, std::make_shared<Namer>(values));
+		level->addNamer(id, std::make_unique<Namer>(std::move(values)));
 	}
 }

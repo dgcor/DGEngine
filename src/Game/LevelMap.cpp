@@ -14,7 +14,7 @@ LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 	cells.resize(mapSize.x * mapSize.y);
 }
 
-void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_)
+void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
 {
 	blockWidth = tileWidth_ / 2;
 	blockHeight = tileHeight_ / 2;
@@ -112,6 +112,11 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const Sol& sol)
 	}
 }
 
+bool LevelMap::isMapCoordValid(const MapCoord& mapCoord) const noexcept
+{
+	return mapCoord.x < mapSize.x && mapCoord.y < mapSize.y;
+}
+
 sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 {
 	return sf::Vector2f(
@@ -120,7 +125,7 @@ sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 	);
 }
 
-MapCoord LevelMap::getTile(const sf::Vector2f& coords) const
+MapCoord LevelMap::getTile(const sf::Vector2f& coords) const noexcept
 {
 	// Position on the map in pixels
 	int32_t flatX = (int32_t)coords.x;

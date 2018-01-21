@@ -3,7 +3,7 @@
 #include "Action.h"
 #include "Game.h"
 #include "Image.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 class ActImageCenterTexture : public Action
 {
@@ -34,7 +34,7 @@ public:
 	ActImageEnableOutline(const std::string& id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto image = game.Resources().getResource<Image>(id);
 		if (image != nullptr)
@@ -124,7 +124,7 @@ public:
 		const sf::Color& outline_, const sf::Color& ignore_)
 		: id(id_), outline(outline_), ignore(ignore_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto image = game.Resources().getResource<Image>(id);
 		if (image != nullptr)
@@ -252,7 +252,6 @@ private:
 	std::string id;
 	std::string idTexturePack;
 	std::pair<size_t, size_t> textureIdx;
-	size_t textureIdxY;
 	bool resetRect;
 
 public:

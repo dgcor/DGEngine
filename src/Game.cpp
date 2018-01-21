@@ -2,10 +2,10 @@
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "Parser/ParseVariable.h"
-#include "ReverseIterable.h"
 #include "SFMLUtils.h"
 #include "Shaders.h"
-#include "Utils.h"
+#include "Utils/ReverseIterable.h"
+#include "Utils/Utils.h"
 
 Game::~Game()
 {
@@ -220,17 +220,17 @@ void Game::updateWindowTex()
 	windowSprite.setTexture(windowTex.getTexture(), true);
 }
 
-void Game::onLostFocus()
+void Game::onLostFocus() noexcept
 {
 	paused = (pauseOnFocusLoss == true);
 }
 
-void Game::onGainedFocus()
+void Game::onGainedFocus() noexcept
 {
 	paused = false;
 }
 
-void Game::onTextEntered(const sf::Event::TextEvent& evt)
+void Game::onTextEntered(const sf::Event::TextEvent& evt) noexcept
 {
 	if (enableInput == false)
 	{

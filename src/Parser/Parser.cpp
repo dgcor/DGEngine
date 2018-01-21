@@ -1,8 +1,8 @@
 #include "Parser.h"
 #include "FileUtils.h"
 #include "ParseFile.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

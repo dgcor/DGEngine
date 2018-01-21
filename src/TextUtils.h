@@ -20,13 +20,13 @@ namespace TextUtils
 
 	using T = std::underlying_type_t<TextOp>;
 
-	inline TextOp operator~ (TextOp a) { return (TextOp)~static_cast<T>(a); }
-	inline TextOp operator| (TextOp a, TextOp b) { return (TextOp)(static_cast<T>(a) | static_cast<T>(b)); }
-	inline TextOp operator& (TextOp a, TextOp b) { return (TextOp)(static_cast<T>(a) & static_cast<T>(b)); }
-	inline TextOp operator^ (TextOp a, TextOp b) { return (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); }
-	inline TextOp& operator|= (TextOp& a, TextOp b) { a = (TextOp)(static_cast<T>(a) | static_cast<T>(b)); return a; }
-	inline TextOp& operator&= (TextOp& a, TextOp b) { a = (TextOp)(static_cast<T>(a) & static_cast<T>(b)); return a; }
-	inline TextOp& operator^= (TextOp& a, TextOp b) { a = (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
+	inline TextOp operator~ (TextOp a) noexcept { return (TextOp)~static_cast<T>(a); }
+	inline TextOp operator| (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) | static_cast<T>(b)); }
+	inline TextOp operator& (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) & static_cast<T>(b)); }
+	inline TextOp operator^ (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); }
+	inline TextOp& operator|= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) | static_cast<T>(b)); return a; }
+	inline TextOp& operator&= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) & static_cast<T>(b)); return a; }
+	inline TextOp& operator^= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
 
 	std::string getFormatString(const Game& game, const std::string& format,
 		const std::vector<std::string>& bindings);

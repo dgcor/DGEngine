@@ -9,13 +9,13 @@ class ActResourceAdd : public Action
 {
 private:
 	std::string id;
-	IgnoreResource ignorePrevious;
+	IgnoreResource ignorePrevious{ IgnoreResource::None };
 	bool hasIgnore{ false };
 
 public:
 	ActResourceAdd(const std::string& id_) : id(id_) {}
 
-	void setIgnorePrevious(IgnoreResource ignore)
+	void setIgnorePrevious(IgnoreResource ignore) noexcept
 	{
 		ignorePrevious = ignore;
 		hasIgnore = true;
@@ -42,7 +42,7 @@ public:
 	ActResourceIgnore(const std::string& id_, IgnoreResource ignorePrevious_)
 		: id(id_), ignore(ignorePrevious_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		game.Resources().ignoreResources(id, ignore);
 		return true;

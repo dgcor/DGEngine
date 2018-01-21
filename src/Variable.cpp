@@ -1,9 +1,9 @@
 #include "Variable.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace VarUtils
 {
-	bool toBool(const Variable& var)
+	bool toBool(const Variable& var) noexcept
 	{
 		if (std::holds_alternative<bool>(var))
 		{
@@ -20,7 +20,7 @@ namespace VarUtils
 		return std::get<std::string>(var).empty() == false;
 	}
 
-	double toDouble(const Variable& var)
+	double toDouble(const Variable& var) noexcept
 	{
 		if (std::holds_alternative<double>(var))
 		{
@@ -37,7 +37,7 @@ namespace VarUtils
 		return std::atof(std::get<std::string>(var).c_str());
 	}
 
-	int64_t toLong(const Variable& var)
+	int64_t toLong(const Variable& var) noexcept
 	{
 		if (std::holds_alternative<int64_t>(var))
 		{

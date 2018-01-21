@@ -19,7 +19,7 @@ private:
 	std::string name;
 
 public:
-	SimpleLevelObject() {}
+	SimpleLevelObject() noexcept {}
 	SimpleLevelObject(const sf::Texture& texture) : base(texture) {}
 	SimpleLevelObject(const TexturePack& texturePack_,
 		const std::pair<size_t, size_t>& frameRange_)
@@ -31,24 +31,24 @@ public:
 	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
 	virtual sf::Vector2f Size() const { return base.getSize(); }
 
-	virtual const MapCoord& MapPosition() const { return base.mapPosition; }
-	virtual void MapPosition(const MapCoord& pos) { base.mapPosition = pos; }
+	virtual const MapCoord& MapPosition() const noexcept { return base.mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) noexcept { base.mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const char* prop, Number32& value) const { return false; }
-	virtual bool Passable() const { return true; }
-	virtual void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+	virtual bool getNumberProp(const char* prop, Number32& value) const noexcept { return false; }
+	virtual bool Passable() const noexcept { return true; }
+	virtual void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
-	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
 	{
 		base.sprite.setOutline(outline, ignore);
 	}
-	virtual void setOutlineOnHover(bool outlineOnHover_) { base.outlineOnHover = outlineOnHover_; }
-	virtual void setPalette(const std::shared_ptr<Palette>& palette) { base.sprite.setPalette(palette); }
-	virtual bool hasPalette() const { return base.sprite.hasPalette(); }
+	virtual void setOutlineOnHover(bool outlineOnHover_) noexcept { base.outlineOnHover = outlineOnHover_; }
+	virtual void setPalette(const std::shared_ptr<Palette>& palette) noexcept { base.sprite.setPalette(palette); }
+	virtual bool hasPalette() const noexcept { return base.sprite.hasPalette(); }
 
-	virtual bool Hoverable() const { return base.enableHover; }
-	virtual void Hoverable(bool hoverable) { base.enableHover = hoverable; }
+	virtual bool Hoverable() const noexcept { return base.enableHover; }
+	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -60,16 +60,15 @@ public:
 	virtual void update(Game& game, Level& level);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual void setProperty(const std::string& prop, const Variable& val) {}
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
+	virtual void setProperty(const std::string& prop, const Variable& val) noexcept {}
 
-	sf::Time getFrameTime() const { return frameTime; }
-	void setFrameTime(sf::Time time) { frameTime = time; }
+	sf::Time getFrameTime() const noexcept { return frameTime; }
+	void setFrameTime(sf::Time time) noexcept { frameTime = time; }
 
 	void setTextureRect(const sf::IntRect& rectangle) { base.sprite.setTextureRect(rectangle); }
 
-	const std::string& Id() const { return id; }
-	const std::string& Name() const { return name; }
+	const std::string& Id() const noexcept { return id; }
+	const std::string& Name() const noexcept { return name; }
 	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
 };

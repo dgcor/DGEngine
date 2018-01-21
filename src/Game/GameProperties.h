@@ -10,8 +10,8 @@ struct AnimationSpeed
 	sf::Time animation;
 	sf::Time walk;
 
-	AnimationSpeed() : animation(sf::microseconds(200000)), walk(sf::microseconds(40000)) {}
-	AnimationSpeed(sf::Time animation_, sf::Time walk_) : animation(animation_), walk(walk_) {}
+	AnimationSpeed() noexcept : animation(sf::microseconds(200000)), walk(sf::microseconds(40000)) {}
+	AnimationSpeed(sf::Time animation_, sf::Time walk_) noexcept : animation(animation_), walk(walk_) {}
 };
 
 enum class InventoryPosition : size_t
@@ -90,4 +90,4 @@ enum class PlayerAnimation : size_t
 	Size
 };
 
-PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos);
+PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos) noexcept;

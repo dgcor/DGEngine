@@ -13,5 +13,5 @@ private:
 public:
 	TileSet(const std::string& fileName);
 	const TilBlock& operator[] (size_t index) const { return blocks[index]; }
-	size_t size() const { return blocks.size(); }
+	size_t size() const noexcept { return blocks.size(); }
 };

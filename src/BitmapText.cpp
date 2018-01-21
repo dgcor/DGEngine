@@ -1,9 +1,9 @@
 #include "BitmapText.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-void BitmapText::calcDrawPos()
+void BitmapText::calcDrawPos() noexcept
 {
 	drawPos = GameUtils::getAlignmentPosition(pos, size, horizAlign, vertAlign);
 }
@@ -13,7 +13,7 @@ void BitmapText::calcSize()
 	size = font->calculateSize(text, horizSpaceOffset, vertSpaceOffset, &lineCount);
 }
 
-void BitmapText::updateSize(const Game& game)
+void BitmapText::updateSize(const Game& game) noexcept
 {
 	if (game.StretchToFit() == true)
 	{

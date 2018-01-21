@@ -3,7 +3,7 @@
 #include "CachedImagePack.h"
 #include "Pcx.h"
 #include "PhysFSStream.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace ImageUtils
 {
@@ -91,11 +91,11 @@ namespace ImageUtils
 	}
 
 	sf::Image loadImageFrame(const ImageContainer& imgContainer,
-		const std::shared_ptr<Palette>& pal, size_t frameIdx)
+		const Palette& pal, size_t frameIdx)
 	{
 		if (imgContainer.size() > 0 && frameIdx < imgContainer.size())
 		{
-			return imgContainer.get(frameIdx, &pal->palette);
+			return imgContainer.get(frameIdx, &pal.palette);
 		}
 		return sf::Image();
 	}

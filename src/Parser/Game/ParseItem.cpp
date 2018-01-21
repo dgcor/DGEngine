@@ -7,7 +7,7 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	std::shared_ptr<Item> parseItemObj(Game& game,
+	std::unique_ptr<Item> parseItemObj(Game& game,
 		const Level& level, const Value& elem)
 	{
 		if (isValidString(elem, "class") == false)
@@ -21,7 +21,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto item = std::make_shared<Item>(class_);
+		auto item = std::make_unique<Item>(class_);
 
 		if (elem.HasMember("properties") == true)
 		{

@@ -6,7 +6,7 @@
 #include "Parser/ParseAction.h"
 #include "Parser/ParseTexturePack.h"
 #include "Parser/Utils/ParseUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
@@ -92,11 +92,10 @@ namespace Parser
 		getOrParseLevelTexturePack(game, elem,
 			"texturePackBottom", "texturePackTop", tilesBottom, tilesTop);
 
-		level.Init(map, tilesBottom, tilesTop);
-		level.updateLevelObjectPositions();
+		level.Init(std::move(map), tilesBottom, tilesTop);
 	}
 
-	void parsePosSize(Game& game, const Value& elem, Level& level)
+	void parsePosSize(const Game& game, const Value& elem, Level& level)
 	{
 		auto anchor = getAnchorKey(elem, "anchor");
 		level.setAnchor(anchor);

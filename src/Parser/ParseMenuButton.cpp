@@ -20,11 +20,11 @@ namespace Parser
 		int horizSpaceOffset,
 		int vertSpaceOffset,
 		bool isTextFont,
-		const std::shared_ptr<Font2>& font,
+		const sf::Font& font,
 		unsigned fontSize,
 		const std::shared_ptr<BitmapFont>& bitmapFont,
-		sf::SoundBuffer* sound,
-		sf::SoundBuffer* focusSound,
+		const sf::SoundBuffer* sound,
+		const sf::SoundBuffer* focusSound,
 		bool clickUp,
 		bool hasFocus,
 		bool focusOnClick,
@@ -35,7 +35,7 @@ namespace Parser
 		std::unique_ptr<DrawableText> drawableText;
 		if (isTextFont)
 		{
-			drawableText = std::make_unique<StringText>("", *font, fontSize);
+			drawableText = std::make_unique<StringText>("", font, fontSize);
 		}
 		else
 		{

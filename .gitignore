@@ -17,6 +17,7 @@
 /cmake_install.cmake
 /Debug
 /Debug Clang
+/Debug Code Analysis
 /Debug VS2015
 /DGEngine
 /DIABDAT
@@ -43,3 +44,4 @@
 /Release Static
 /sfeMovie
 /SFML
+/Win32

@@ -27,10 +27,10 @@ private:
 	double eval(size_t& idx, const LevelObject& queryA, const LevelObject& queryB) const;
 
 public:
-	Formula() {}
+	Formula() noexcept {}
 	Formula(const std::string& formula);
 
-	bool empty() const { return elements.empty(); }
+	bool empty() const  noexcept { return elements.empty(); }
 
 	double eval(const LevelObject& query) const;
 	double eval(const LevelObject& queryA, const LevelObject& queryB) const;

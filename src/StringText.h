@@ -24,11 +24,6 @@ public:
 		calcLineCount();
 	}
 
-	virtual ~StringText() {}
-
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) { return false; }
-
 	virtual void setAnchor(const Anchor anchor_)
 	{
 		if (anchor != anchor_)
@@ -51,7 +46,7 @@ public:
 		return true;
 	}
 
-	virtual unsigned getLineCount() const { return lineCount; }
+	virtual unsigned getLineCount() const noexcept { return lineCount; }
 
 	void setFont(const sf::Font& font) { text.setFont(font); }
 	void setCharacterSize(unsigned int size) { text.setCharacterSize(size); }
@@ -72,14 +67,14 @@ public:
 	virtual sf::FloatRect getGlobalBounds() const { return text.getGlobalBounds(); }
 
 	virtual const sf::Vector2f& DrawPosition() const { return text.getPosition(); }
-	virtual const sf::Vector2f& Position() const { return pos; }
+	virtual const sf::Vector2f& Position() const noexcept { return pos; }
 	virtual void Position(const sf::Vector2f& position)
 	{
 		pos = position;
 		calculateDrawPosition();
 	}
 	virtual sf::Vector2f Size() const { return sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height); }
-	virtual void Size(const sf::Vector2f& size) {}
+	virtual void Size(const sf::Vector2f& size) noexcept {}
 
 	virtual void setHorizontalAlign(const HorizontalAlign align)
 	{
@@ -98,8 +93,8 @@ public:
 		}
 	}
 
-	virtual void setHorizontalSpaceOffset(int offset) {}
-	virtual void setVerticalSpaceOffset(int offset) {}
+	virtual void setHorizontalSpaceOffset(int offset) noexcept {}
+	virtual void setVerticalSpaceOffset(int offset) noexcept {}
 
 	void setRotation(float angle) { text.setRotation(angle); }
 	void setScale(float factorX, float factorY) { text.setScale(factorX, factorY); }
@@ -117,8 +112,8 @@ public:
 	const sf::Transform& getTransform() const { return text.getTransform(); }
 	const sf::Transform& getInverseTransform() const { return text.getInverseTransform(); }
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const noexcept { return visible; }
+	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -128,8 +123,5 @@ public:
 		}
 	}
 
-	virtual void update(Game& game) {}
-
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

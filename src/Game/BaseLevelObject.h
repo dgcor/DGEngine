@@ -8,10 +8,6 @@
 
 struct BaseLevelObject
 {
-private:
-	std::shared_ptr<LevelObject> updateMapPosition(
-		Level& level, const MapCoord& pos, LevelObject* levelObj);
-
 public:
 	Sprite2 sprite;
 	MapCoord mapPosition;
@@ -35,21 +31,21 @@ public:
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
 
-	void checkAndUpdateTextureIndex();
-	bool hasValidState() const;
+	void checkAndUpdateTextureIndex() noexcept;
+	bool hasValidState() const noexcept;
 	sf::Vector2f getBasePosition(const Level& level) const;
 	void updateDrawPosition(const Level& level);
 	void updateDrawPosition(const Level& level, sf::Vector2f drawPos);
 	void updateHover(Game& game, Level& level, LevelObject* levelObj);
-	void updateMapPositionBack(Level& level, const MapCoord& pos, LevelObject* levelObj);
-	void updateMapPositionFront(Level& level, const MapCoord& pos, LevelObject* levelObj);
+	void updateMapPositionBack(Level& level, const MapCoord pos, LevelObject* levelObj);
+	void updateMapPositionFront(Level& level, const MapCoord pos, LevelObject* levelObj);
 	bool updateTexture();
 
 	void queueAction(const std::shared_ptr<Action>& action);
 	void queueAction(const BaseClass& class_, uint16_t nameHash16);
 	void processQueuedActions(Game& game);
 
-	BaseLevelObject() {}
+	BaseLevelObject() noexcept {}
 	BaseLevelObject(const sf::Texture& texture) : sprite(texture) {}
 	BaseLevelObject(const TexturePack& texturePack_,
 		const std::pair<size_t, size_t>& frameRange_) : texturePack(&texturePack_),

@@ -45,7 +45,7 @@ public:
 	ActAudioPlay(const std::string& id_, bool clear_)
 		: id(id_), clear(clear_) {}
 
-	void setLoop(bool loop_)
+	void setLoop(bool loop_) noexcept
 	{
 		loop = loop_;
 		hasLoop = true;
@@ -88,7 +88,7 @@ private:
 	bool restart;
 
 public:
-	ActAudioResumeAll(bool restart_) : restart(restart_) {}
+	ActAudioResumeAll(bool restart_) noexcept : restart(restart_) {}
 
 	virtual bool execute(Game& game)
 	{

@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include "TextUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-std::shared_ptr<Action> Text2::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> Text2::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -15,7 +15,7 @@ std::shared_ptr<Action> Text2::getAction(uint16_t nameHash16)
 	}
 }
 
-bool Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{
@@ -28,13 +28,13 @@ bool Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action
 	return true;
 }
 
-void Text2::setBinding(const std::string& binding)
+void Text2::setBinding(const std::string binding)
 {
 	bindings.clear();
 	bindings.push_back(binding);
 }
 
-void Text2::setBinding(const std::vector<std::string>& bindings_)
+void Text2::setBinding(const std::vector<std::string> bindings_)
 {
 	bindings = bindings_;
 }

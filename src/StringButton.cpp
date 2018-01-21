@@ -1,7 +1,7 @@
 #include "StringButton.h"
 #include "Game.h"
 
-std::shared_ptr<Action> StringButton::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> StringButton::getAction(uint16_t nameHash16) const noexcept
 {
 	auto action = Button::getAction(nameHash16);
 	if (action == nullptr)
@@ -11,7 +11,7 @@ std::shared_ptr<Action> StringButton::getAction(uint16_t nameHash16)
 	return action;
 }
 
-bool StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	if (Button::setAction(nameHash16, action) == false)
 	{

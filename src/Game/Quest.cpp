@@ -1,7 +1,7 @@
 #include "Quest.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-bool Quest::getProperty(const std::string& prop, Variable& var) const
+bool Quest::getProperty(const std::string& prop, Variable& var) const noexcept
 {
 	if (prop.empty() == true)
 	{

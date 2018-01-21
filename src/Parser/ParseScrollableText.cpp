@@ -3,8 +3,8 @@
 #include "ParseScrollableText.h"
 #include "ParseText.h"
 #include "ScrollableText.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

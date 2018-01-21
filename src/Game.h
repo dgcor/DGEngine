@@ -2,7 +2,6 @@
 
 #include "EventManager.h"
 #include "FadeInOut.h"
-#include "Game/Level.h"
 #include "LoadingScreen.h"
 #include <memory>
 #include "Menu.h"
@@ -77,10 +76,10 @@ private:
 	void processEvents();
 	void onClosed();
 	void onResized(const sf::Event::SizeEvent& evt);
-	void onLostFocus();
-	void onGainedFocus();
+	void onLostFocus() noexcept;
+	void onGainedFocus() noexcept;
 
-	void onTextEntered(const sf::Event::TextEvent& evt);
+	void onTextEntered(const sf::Event::TextEvent& evt) noexcept;
 	void onKeyPressed(const sf::Event::KeyEvent& evt);
 	void onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt);
 	void onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt);
@@ -103,7 +102,7 @@ private:
 	std::map<std::string, Variable>::const_iterator findVariable(const std::string& key) const;
 
 public:
-	Game() : refSize(640, 480), minSize(640, 480), size(640, 480) {}
+	Game() noexcept : refSize(640, 480), minSize(640, 480), size(640, 480) {}
 	~Game();
 
 	void init();
@@ -115,9 +114,9 @@ public:
 	unsigned getOpenGLMinorVersion() const { return window.getSettings().minorVersion; }
 	bool getOpenGLSRgbCapable() const { return window.getSettings().sRgbCapable; }
 
-	const sf::Vector2u& OldWindowSize() const { return oldSize; }
-	const sf::Vector2u& WindowSize() const { return size; }
-	const sf::Vector2u& WindowTexSize() const { return windowTexSize; }
+	const sf::Vector2u& OldWindowSize() const noexcept { return oldSize; }
+	const sf::Vector2u& WindowSize() const noexcept { return size; }
+	const sf::Vector2u& WindowTexSize() const noexcept { return windowTexSize; }
 	sf::Vector2f WindowTexSizef() const
 	{
 		return sf::Vector2f((float)windowTexSize.x, (float)windowTexSize.y);
@@ -136,7 +135,7 @@ public:
 			}
 		}
 	}
-	const sf::Vector2u& RefSize() const { return refSize; }
+	const sf::Vector2u& RefSize() const noexcept { return refSize; }
 	void RefSize(const sf::Vector2u& size_)
 	{
 		if (window.isOpen() == false &&
@@ -146,7 +145,7 @@ public:
 			refSize = size_;
 		}
 	}
-	const sf::Vector2u& MinSize() const { return minSize; }
+	const sf::Vector2u& MinSize() const noexcept { return minSize; }
 	void MinSize(const sf::Vector2u& size_)
 	{
 		if (window.isOpen() == true)
@@ -159,45 +158,45 @@ public:
 			size = minSize;
 		}
 	}
-	unsigned Framerate() const { return framerate; }
-	bool SmoothScreen() const { return smoothScreen; }
-	bool StretchToFit() const { return stretchToFit; }
-	bool KeepAR() const { return keepAR; }
+	unsigned Framerate() const noexcept { return framerate; }
+	bool SmoothScreen() const noexcept { return smoothScreen; }
+	bool StretchToFit() const noexcept { return stretchToFit; }
+	bool KeepAR() const noexcept { return keepAR; }
 
-	const sf::Vector2i& MousePositioni() const { return mousePositioni; }
-	const sf::Vector2f& MousePositionf() const { return mousePositionf; }
+	const sf::Vector2i& MousePositioni() const noexcept { return mousePositioni; }
+	const sf::Vector2f& MousePositionf() const noexcept { return mousePositionf; }
 
-	const sf::Event::MouseButtonEvent& MousePress() { return mousePressEvt; }
-	const sf::Event::MouseButtonEvent& MouseRelease() { return mouseReleaseEvt; }
-	const sf::Event::MouseMoveEvent& MouseMove() { return mouseMoveEvt; }
-	const sf::Event::MouseWheelScrollEvent& MouseScroll() { return mouseScrollEvt; }
-	const sf::Event::KeyEvent& KeyPress() { return keyPressEvt; }
-	const sf::Event::TextEvent& TextEntered() { return textEnteredEvt; }
-	const sf::Event::TouchEvent& TouchBegan() { return touchBeganEvt; }
-	const sf::Event::TouchEvent& TouchMoved() { return touchMovedEvt; }
-	const sf::Event::TouchEvent& TouchEnded() { return touchEndedEvt; }
+	const sf::Event::MouseButtonEvent& MousePress() const noexcept { return mousePressEvt; }
+	const sf::Event::MouseButtonEvent& MouseRelease() const noexcept { return mouseReleaseEvt; }
+	const sf::Event::MouseMoveEvent& MouseMove() const noexcept { return mouseMoveEvt; }
+	const sf::Event::MouseWheelScrollEvent& MouseScroll() const noexcept { return mouseScrollEvt; }
+	const sf::Event::KeyEvent& KeyPress() const noexcept { return keyPressEvt; }
+	const sf::Event::TextEvent& TextEntered() const noexcept { return textEnteredEvt; }
+	const sf::Event::TouchEvent& TouchBegan() const noexcept { return touchBeganEvt; }
+	const sf::Event::TouchEvent& TouchMoved() const noexcept { return touchMovedEvt; }
+	const sf::Event::TouchEvent& TouchEnded() const noexcept { return touchEndedEvt; }
 
-	bool wasMousePressed() { return mousePressed; }
-	bool wasMouseReleased() { return mouseReleased; }
-	bool wasMouseMoved() { return mouseMoved; }
-	bool wasMouseScrolled() { return mouseScrolled; }
-	bool wasKeyPressed() { return keyPressed; }
-	bool wasTextEntered() { return textEntered; }
-	bool hasTouchBegan() { return touchBegan; }
-	bool hasTouchMoved() { return touchMoved; }
-	bool hasTouchEnded() { return touchEnded; }
+	bool wasMousePressed() const noexcept { return mousePressed; }
+	bool wasMouseReleased() const noexcept { return mouseReleased; }
+	bool wasMouseMoved() const noexcept { return mouseMoved; }
+	bool wasMouseScrolled() const noexcept { return mouseScrolled; }
+	bool wasKeyPressed() const noexcept { return keyPressed; }
+	bool wasTextEntered() const noexcept { return textEntered; }
+	bool hasTouchBegan() const noexcept { return touchBegan; }
+	bool hasTouchMoved() const noexcept { return touchMoved; }
+	bool hasTouchEnded() const noexcept { return touchEnded; }
 
-	void clearMousePressed() { mousePressed = false; }
-	void clearMouseReleased() { mouseReleased = false; }
-	void clearMouseMoved() { mouseMoved = false; }
-	void clearMouseScrolled() { mouseScrolled = false; }
-	void clearKeyPressed() { keyPressed = false; }
-	void clearTextEntered() { textEntered = false; }
-	void clearTouchBegan() { touchBegan = false; }
-	void clearTouchMoved() { touchMoved = false; }
-	void clearTouchEnded() { touchEnded = false; }
+	void clearMousePressed() noexcept { mousePressed = false; }
+	void clearMouseReleased() noexcept { mouseReleased = false; }
+	void clearMouseMoved() noexcept { mouseMoved = false; }
+	void clearMouseScrolled() noexcept { mouseScrolled = false; }
+	void clearKeyPressed() noexcept { keyPressed = false; }
+	void clearTextEntered() noexcept { textEntered = false; }
+	void clearTouchBegan() noexcept { touchBegan = false; }
+	void clearTouchMoved() noexcept { touchMoved = false; }
+	void clearTouchEnded() noexcept { touchEnded = false; }
 
-	void clearInputEvents()
+	void clearInputEvents() noexcept
 	{
 		mousePressed = false;
 		mouseReleased = false;
@@ -210,8 +209,8 @@ public:
 		touchEnded = false;
 	}
 
-	void MinWidth(unsigned width_) { size.x = width_; }
-	void MinHeight(unsigned height_) { size.y = height_; }
+	void MinWidth(unsigned width_) noexcept { size.x = width_; }
+	void MinHeight(unsigned height_) noexcept { size.y = height_; }
 	void Framerate(unsigned framerate_)
 	{
 		if (framerate_ > 0)
@@ -230,39 +229,39 @@ public:
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);
 	void KeepAR(bool keepAR_);
-	void PauseOnFocusLoss(bool pause_) { pauseOnFocusLoss = pause_; }
+	void PauseOnFocusLoss(bool pause_) noexcept { pauseOnFocusLoss = pause_; }
 
-	unsigned MusicVolume() const { return musicVolume; }
-	void MusicVolume(unsigned volume)
+	unsigned MusicVolume() const noexcept { return musicVolume; }
+	void MusicVolume(unsigned volume) noexcept
 	{
-		musicVolume <= 100 ? musicVolume = volume : musicVolume = 100;
+		musicVolume = std::min(volume, 100u);
 	}
-	unsigned SoundVolume() const { return soundVolume; }
-	void SoundVolume(unsigned volume)
+	unsigned SoundVolume() const noexcept { return soundVolume; }
+	void SoundVolume(unsigned volume) noexcept
 	{
-		soundVolume <= 100 ? soundVolume = volume : soundVolume = 100;
+		soundVolume = std::min(volume, 100u);
 	}
 
 	void addPlayingSound(const sf::SoundBuffer& obj);
 	void addPlayingSound(const sf::SoundBuffer* obj);
 
-	const sf::Time& getElapsedTime() const { return elapsedTime; }
+	const sf::Time& getElapsedTime() const noexcept { return elapsedTime; }
 
-	const std::string& getPath() const { return path; }
-	const std::string& getTitle() const { return title; }
-	const std::string& getVersion() const { return version; }
+	const std::string& getPath() const noexcept { return path; }
+	const std::string& getTitle() const noexcept { return title; }
+	const std::string& getVersion() const noexcept { return version; }
 
-	bool isInputEnabled() { return enableInput; }
-	void EnableInput(bool enable) { enableInput = enable; }
+	bool isInputEnabled() const noexcept { return enableInput; }
+	void EnableInput(bool enable) noexcept { enableInput = enable; }
 
-	sf::RenderWindow& Window() { return window; }
-	const sf::RenderWindow& Window() const { return window; }
+	sf::RenderWindow& Window() noexcept { return window; }
+	const sf::RenderWindow& Window() const noexcept { return window; }
 
-	const sf::RenderTexture& WindowTex() const { return windowTex; }
+	const sf::RenderTexture& WindowTex() const noexcept { return windowTex; }
 
-	ResourceManager& Resources() { return resourceManager; }
-	const ResourceManager& Resources() const { return resourceManager; }
-	EventManager& Events() { return eventManager; }
+	ResourceManager& Resources() noexcept { return resourceManager; }
+	const ResourceManager& Resources() const noexcept { return resourceManager; }
+	EventManager& Events() noexcept { return eventManager; }
 
 	void setPath(const std::string& path_) { path = path_; }
 	void setTitle(const std::string& title_)
@@ -275,20 +274,26 @@ public:
 	}
 	void setVersion(const std::string& version_) { version = version_; }
 
-	LoadingScreen* getLoadingScreen() { return loadingScreen.get(); }
-	void setLoadingScreen(std::unique_ptr<LoadingScreen> loadingScreen_) { loadingScreen = std::move(loadingScreen_); }
+	LoadingScreen* getLoadingScreen() noexcept { return loadingScreen.get(); }
+	void setLoadingScreen(std::unique_ptr<LoadingScreen> loadingScreen_) noexcept
+	{
+		loadingScreen = std::move(loadingScreen_);
+	}
 
 	bool drawLoadingScreen();
 
-	FadeInOut* getFadeInOut() const { return fadeInOut.get(); }
-	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) { fadeInOut = std::move(fadeInOut_); }
+	FadeInOut* getFadeInOut() const noexcept { return fadeInOut.get(); }
+	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) noexcept
+	{
+		fadeInOut = std::move(fadeInOut_);
+	}
 
 	void updateMouse();
 	void updateCursorPosition();
 
 	void play();
 
-	const std::map<std::string, Variable>& getVariables() { return variables; }
+	const std::map<std::string, Variable>& getVariables() const noexcept { return variables; }
 
 	bool getVariableNoPercentage(const std::string& key, Variable& var) const;
 	bool getVariable(const std::string& key, Variable& var) const;

@@ -2,11 +2,11 @@
 #include <cstring>
 #include "PhysFSStream.h"
 #include <memory>
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace FileUtils
 {
-	bool createDir(const char* dirName)
+	bool createDir(const char* dirName) noexcept
 	{
 		return PHYSFS_mkdir(dirName) != 0;
 	}
@@ -68,7 +68,7 @@ namespace FileUtils
 		return ret;
 	}
 
-	bool deleteFile(const char* filePath)
+	bool deleteFile(const char* filePath) noexcept
 	{
 		auto writeDir = PHYSFS_getWriteDir();
 		auto realDir = PHYSFS_getRealDir(filePath);
@@ -82,7 +82,7 @@ namespace FileUtils
 		return false;
 	}
 
-	bool exists(const char* filePath)
+	bool exists(const char* filePath) noexcept
 	{
 		return PHYSFS_exists(filePath) != 0;
 	}
@@ -127,7 +127,7 @@ namespace FileUtils
 
 	struct MatchPathSeparator
 	{
-		bool operator()(char ch) const
+		bool operator()(char ch) const noexcept
 		{
 			return ch == '\\' || ch == '/';
 		}
@@ -197,24 +197,16 @@ namespace FileUtils
 		sf::PhysFSStream ifs(fileName);
 		if (ifs.hasError() == true)
 		{
-			return "";
+			return {};
 		}
-		auto data = std::make_unique<char[]>((size_t)ifs.getSize());
-		ifs.read(data.get(), ifs.getSize());
-
-		return std::string(data.get(), (unsigned)ifs.getSize());
+		std::string data((size_t)ifs.getSize(), '\0');
+		ifs.read(data.data(), ifs.getSize());
+		return data;
 	}
 
 	std::vector<uint8_t> readChar(const char* fileName)
 	{
-		sf::PhysFSStream ifs(fileName);
-		if (ifs.hasError() == true)
-		{
-			return std::vector<uint8_t>();
-		}
-		std::vector<uint8_t> data((size_t)ifs.getSize());
-		ifs.read(data.data(), ifs.getSize());
-		return data;
+		return readChar(fileName, std::numeric_limits<size_t>::max());
 	}
 
 	std::vector<uint8_t> readChar(const char* fileName, size_t maxNumBytes)
@@ -222,7 +214,7 @@ namespace FileUtils
 		sf::PhysFSStream ifs(fileName);
 		if (ifs.hasError() == true)
 		{
-			return std::vector<uint8_t>();
+			return {};
 		}
 		auto size = std::min((size_t)ifs.getSize(), maxNumBytes);
 		std::vector<uint8_t> data(size);
@@ -230,12 +222,12 @@ namespace FileUtils
 		return data;
 	}
 
-	const char* getSaveDir()
+	const char* getSaveDir() noexcept
 	{
 		return PHYSFS_getWriteDir();
 	}
 
-	bool setSaveDir(const char* dirName)
+	bool setSaveDir(const char* dirName) noexcept
 	{
 #ifdef __ANDROID__
 		auto userDir = "data/data/com.dgengine/files/";
@@ -265,7 +257,7 @@ namespace FileUtils
 #endif
 	}
 
-	bool saveText(const char* filePath, const char* str, size_t strLen)
+	bool saveText(const char* filePath, const char* str, size_t strLen) noexcept
 	{
 		auto file = PHYSFS_openWrite(filePath);
 		if (file != NULL)
@@ -280,7 +272,7 @@ namespace FileUtils
 		return false;
 	}
 
-	bool saveText(const char* filePath, const std::string& str)
+	bool saveText(const char* filePath, const std::string& str) noexcept
 	{
 		return saveText(filePath, str.c_str(), str.size());
 	}

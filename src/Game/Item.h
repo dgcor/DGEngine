@@ -34,7 +34,7 @@ private:
 	void updateNameAndDescriptions() const;
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash,
-		LevelObjValue value, Player& player, const Level* level) const;
+		LevelObjValue value, Player& player, const Level* level) const noexcept;
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 		uint16_t valueMaxHash, Player& player, const Level* level) const;
@@ -45,29 +45,28 @@ public:
 	using reverse_iterator = ItemProperties::reverse_iterator;
 	using const_reverse_iterator = ItemProperties::const_reverse_iterator;
 
-	iterator begin() { return properties.begin(); }
-	iterator end() { return properties.begin() + propertiesSize; }
-	const_iterator begin() const { return properties.begin(); }
-	const_iterator end() const { return properties.begin() + propertiesSize; }
-	const_iterator cbegin() const { return properties.cbegin(); }
-	const_iterator cend() const { return properties.cbegin() + propertiesSize; }
-	reverse_iterator rbegin() { return properties.rend() - propertiesSize; }
-	reverse_iterator rend() { return properties.rend(); }
-	const_reverse_iterator rbegin() const { return properties.rend() - propertiesSize; }
-	const_reverse_iterator rend() const { return properties.rend(); }
-	const_reverse_iterator crbegin() const { return properties.crend() - propertiesSize; }
-	const_reverse_iterator crend() const { return properties.crend(); }
+	iterator begin() noexcept { return properties.begin(); }
+	iterator end() noexcept { return properties.begin() + propertiesSize; }
+	const_iterator begin() const noexcept { return properties.begin(); }
+	const_iterator end() const noexcept { return properties.begin() + propertiesSize; }
+	const_iterator cbegin() const noexcept { return properties.cbegin(); }
+	const_iterator cend() const noexcept { return properties.cbegin() + propertiesSize; }
+	reverse_iterator rbegin() noexcept { return properties.rend() - propertiesSize; }
+	reverse_iterator rend() noexcept { return properties.rend(); }
+	const_reverse_iterator rbegin() const noexcept { return properties.rend() - propertiesSize; }
+	const_reverse_iterator rend() const noexcept { return properties.rend(); }
+	const_reverse_iterator crbegin() const noexcept { return properties.crend() - propertiesSize; }
+	const_reverse_iterator crend() const noexcept { return properties.crend(); }
 
-	Item() {}
 	Item(const ItemClass* class__);
 
-	void resetDropAnimation();
+	void resetDropAnimation() noexcept;
 
 	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
 	virtual sf::Vector2f Size() const { return base.getSize(); }
 
-	virtual const MapCoord& MapPosition() const { return base.mapPosition; }
-	virtual void MapPosition(const MapCoord& pos) { base.mapPosition = pos; }
+	virtual const MapCoord& MapPosition() const noexcept { return base.mapPosition; }
+	virtual void MapPosition(const MapCoord& pos) noexcept { base.mapPosition = pos; }
 
 	virtual void executeAction(Game& game) const;
 	virtual bool getNumberProp(const char* prop, Number32& value) const
@@ -80,19 +79,19 @@ public:
 		}
 		return ret;
 	}
-	virtual bool Passable() const { return true; }
-	virtual void setAction(const std::shared_ptr<Action>& action_) {}
+	virtual bool Passable() const noexcept { return true; }
+	virtual void setAction(const std::shared_ptr<Action>& action_) noexcept {}
 	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
-	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
 	{
 		base.sprite.setOutline(outline, ignore);
 	}
-	virtual void setOutlineOnHover(bool outlineOnHover_) { base.outlineOnHover = outlineOnHover_; }
-	virtual void setPalette(const std::shared_ptr<Palette>& palette) { base.sprite.setPalette(palette); }
-	virtual bool hasPalette() const { return base.sprite.hasPalette(); }
+	virtual void setOutlineOnHover(bool outlineOnHover_) noexcept { base.outlineOnHover = outlineOnHover_; }
+	virtual void setPalette(const std::shared_ptr<Palette>& palette) noexcept { base.sprite.setPalette(palette); }
+	virtual bool hasPalette() const noexcept { return base.sprite.hasPalette(); }
 
-	virtual bool Hoverable() const { return base.enableHover; }
-	virtual void Hoverable(bool hoverable) { base.enableHover = hoverable; }
+	virtual bool Hoverable() const noexcept { return base.enableHover; }
+	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -104,13 +103,12 @@ public:
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val);
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 
-	const ItemClass* Class() const { return class_; }
+	const ItemClass* Class() const noexcept { return class_; }
 
-	bool hasIntByHash(uint16_t propHash) const;
-	bool hasInt(const char* prop) const;
-	bool hasInt(const std::string& prop) const
+	bool hasIntByHash(uint16_t propHash) const noexcept;
+	bool hasInt(const char* prop) const noexcept;
+	bool hasInt(const std::string& prop) const noexcept
 	{
 		return hasInt(prop.c_str());
 	}
@@ -139,14 +137,14 @@ public:
 
 	bool needsRecharge() const;
 	bool needsRepair() const;
-	bool isUsable() const;
+	bool isUsable() const noexcept;
 
 	bool use(Player& player, const Level* level) const;
 
-	const std::string& Name() const { return name; }
-	const std::string& ShortName() const { return class_->ShortName(); }
-	const std::string& SimpleName() const { return class_->Name(); }
-	const std::string& ItemType() const { return class_->Type(); }
-	const std::string& ItemSubType() const { return class_->SubType(); }
-	bool Identified() const { return identified; }
+	const std::string& Name() const noexcept { return name; }
+	const std::string& ShortName() const noexcept { return class_->ShortName(); }
+	const std::string& SimpleName() const noexcept { return class_->Name(); }
+	const std::string& ItemType() const noexcept { return class_->Type(); }
+	const std::string& ItemSubType() const noexcept { return class_->SubType(); }
+	bool Identified() const noexcept { return identified; }
 };

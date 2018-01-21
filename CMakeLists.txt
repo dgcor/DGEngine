@@ -53,7 +53,6 @@ set(SOURCE_FILES
     src/Game.h
     src/GameUtils.cpp
     src/GameUtils.h
-    src/Helper2D.h
     src/IgnoreResource.h
     src/Image.cpp
     src/Image.h
@@ -85,7 +84,6 @@ set(SOURCE_FILES
     src/Rectangle.h
     src/ResourceManager.cpp
     src/ResourceManager.h
-    src/ReverseIterable.h
     src/ScrollableText.cpp
     src/ScrollableText.h
     src/SFMLUtils.cpp
@@ -106,8 +104,6 @@ set(SOURCE_FILES
     src/TileSet.cpp
     src/TileSet.h
     src/UIObject.h
-    src/Utils.cpp
-    src/Utils.h
     src/Variable.cpp
     src/Variable.h
     src/VarOrPredicate.h
@@ -335,6 +331,11 @@ set(SOURCE_FILES
     src/TexturePacks/TexturePack.h
     src/TexturePacks/VectorTexturePack.cpp
     src/TexturePacks/VectorTexturePack.h
+    src/Utils/Helper2D.h
+    src/Utils/iterator_tpl.h
+    src/Utils/ReverseIterable.h
+    src/Utils/Utils.cpp
+    src/Utils/Utils.h
 )
 
 if(FFmpeg_FOUND)

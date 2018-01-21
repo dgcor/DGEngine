@@ -1,7 +1,7 @@
 #include "ParseAudioCommon.h"
 #if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 #include "Utils/ParseUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

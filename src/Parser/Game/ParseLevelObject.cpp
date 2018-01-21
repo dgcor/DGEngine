@@ -38,7 +38,7 @@ namespace Parser
 			return;
 		}
 
-		std::shared_ptr<SimpleLevelObject> levelObj;
+		std::unique_ptr<SimpleLevelObject> levelObj;
 
 		if (isValidString(elem, "texture") == true)
 		{
@@ -47,7 +47,7 @@ namespace Parser
 			{
 				return;
 			}
-			levelObj = std::make_shared<SimpleLevelObject>(*texture);
+			levelObj = std::make_unique<SimpleLevelObject>(*texture);
 
 			if (elem.HasMember("textureRect") == true)
 			{
@@ -64,17 +64,16 @@ namespace Parser
 			}
 			auto frames = std::make_pair(0u, texPack->totalSize() - 1);
 			frames = getFramesKey(elem, "frames", frames);
-			levelObj = std::make_shared<SimpleLevelObject>(*texPack, frames);
+			levelObj = std::make_unique<SimpleLevelObject>(*texPack, frames);
 
 			levelObj->setFrameTime(getTimeKey(elem, "refresh", sf::milliseconds(50)));
 		}
 		else
 		{
-			levelObj = std::make_shared<SimpleLevelObject>();
+			levelObj = std::make_unique<SimpleLevelObject>();
 		}
 
 		levelObj->MapPosition(mapPos);
-		mapCell.addFront(levelObj);
 
 		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
 
@@ -86,6 +85,6 @@ namespace Parser
 			levelObj->setAction(parseAction(game, elem["action"]));
 		}
 
-		level->addLevelObject(levelObj);
+		level->addLevelObject(std::move(levelObj), true);
 	}
 }

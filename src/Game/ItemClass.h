@@ -8,7 +8,7 @@
 #include "Queryable.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 class ItemClass : public BaseClass
 {
@@ -22,16 +22,16 @@ private:
 	std::string shortName;
 	std::string type;
 	std::string subType;
-	uint16_t typeHash16;
+	uint16_t typeHash16{ 0 };
 
 	std::vector<LevelObjProperty> defaults;
 
 	ItemXY inventorySize;
 
-	std::shared_ptr<Namer> prefix;
-	std::shared_ptr<Namer> suffix;
+	Namer* prefix{ nullptr };
+	Namer* suffix{ nullptr };
 
-	std::array<std::pair<std::shared_ptr<Namer>, uint16_t>, 5> descriptions;
+	std::array<std::pair<Namer*, uint16_t>, 5> descriptions;
 
 	std::array<std::pair<uint16_t, Formula>, 6> formulas;
 	size_t formulasSize{ 0 };
@@ -46,78 +46,78 @@ public:
 		dropIdx(dropIdx_), textureInventory(textureInventory_),
 		inventoryIdx(inventoryIdx_) {}
 
-	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_)
+	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_) noexcept
 	{
 		textureDrop = textureDrop_;
 	}
-	void setDropTextureIndex(size_t dropIdx_)
+	void setDropTextureIndex(size_t dropIdx_) noexcept
 	{
 		dropIdx = dropIdx_;
 	}
-	void setInventoryTexturePack(const std::shared_ptr<TexturePack>& textureInventory_)
+	void setInventoryTexturePack(const std::shared_ptr<TexturePack>& textureInventory_) noexcept
 	{
 		textureInventory = textureInventory_;
 	}
-	void setInventoryTextureIndex(size_t inventoryIdx_)
+	void setInventoryTextureIndex(size_t inventoryIdx_) noexcept
 	{
 		inventoryIdx = inventoryIdx_;
 	}
 
-	const TexturePack* getDropTexturePack() const { return textureDrop.get(); }
-	const TexturePack* getInventoryTexturePack() const { return textureInventory.get(); }
-	size_t getDropTextureIndex() const { return dropIdx; }
+	const TexturePack* getDropTexturePack() const noexcept { return textureDrop.get(); }
+	const TexturePack* getInventoryTexturePack() const noexcept { return textureInventory.get(); }
+	size_t getDropTextureIndex() const noexcept { return dropIdx; }
 
 	bool getInventoryTexture(const sf::Texture** texture, sf::IntRect& textureRect) const
 	{
 		return textureInventory->get(inventoryIdx, texture, textureRect);
 	}
 
-	const std::vector<LevelObjProperty> Defaults() const { return defaults; }
+	const std::vector<LevelObjProperty>& Defaults() const noexcept { return defaults; }
 	void setDefault(const char* prop, LevelObjValue val);
 
-	LevelObjValue getDefaultByHash(uint16_t propHash) const;
-	LevelObjValue getDefault(const char* prop) const;
-	LevelObjValue getDefault(const std::string& prop) const
+	LevelObjValue getDefaultByHash(uint16_t propHash) const noexcept;
+	LevelObjValue getDefault(const char* prop) const noexcept;
+	LevelObjValue getDefault(const std::string& prop) const noexcept
 	{
 		return getDefault(prop.c_str());
 	}
 
-	bool getDefaultByHash(uint16_t propHash, LevelObjValue& value) const;
-	bool getDefault(const char* prop, LevelObjValue& value) const;
-	bool getDefault(const std::string& prop, LevelObjValue& value) const
+	bool getDefaultByHash(uint16_t propHash, LevelObjValue& value) const noexcept;
+	bool getDefault(const char* prop, LevelObjValue& value) const noexcept;
+	bool getDefault(const std::string& prop, LevelObjValue& value) const noexcept
 	{
 		return getDefault(prop.c_str(), value);
 	}
 
-	const std::string& Name() const { return name; }
-	const std::string& ShortName() const { return shortName; }
-	const std::string& Type() const { return type; }
-	const std::string& SubType() const { return subType; }
-	uint16_t TypeHash16() const { return typeHash16; }
-	const ItemXY& InventorySize() const { return inventorySize; }
+	const std::string& Name() const noexcept { return name; }
+	const std::string& ShortName() const noexcept { return shortName; }
+	const std::string& Type() const noexcept { return type; }
+	const std::string& SubType() const noexcept { return subType; }
+	uint16_t TypeHash16() const noexcept { return typeHash16; }
+	const ItemXY& InventorySize() const noexcept { return inventorySize; }
 
-	const sf::Color& DefaultOutline() const { return defaultOutline; }
-	const sf::Color& DefaultOutlineIgnore() const { return defaultOutlineIgnore; }
+	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
+	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
 
-	void Name(const std::string& name_) { name = name_; }
-	void ShortName(const std::string& name_) { shortName = name_; }
-	void Type(const std::string& type_)
+	void Name(const std::string name_) { name = name_; }
+	void ShortName(const std::string name_) { shortName = name_; }
+	void Type(const std::string type_)
 	{
 		type = type_;
 		typeHash16 = str2int16(Utils::toLower(type_).c_str());
 	}
-	void SubType(const std::string& subType_) { subType = subType_; }
-	void InventorySize(const ItemXY& inventorySize_) { inventorySize = inventorySize_; }
+	void SubType(const std::string subType_) { subType = subType_; }
+	void InventorySize(const ItemXY inventorySize_) noexcept { inventorySize = inventorySize_; }
 
-	void DefaultOutline(const sf::Color& color) { defaultOutline = color; }
-	void DefaultOutlineIgnore(const sf::Color& color) { defaultOutlineIgnore = color; }
+	void DefaultOutline(const sf::Color color) noexcept { defaultOutline = color; }
+	void DefaultOutlineIgnore(const sf::Color color) noexcept { defaultOutlineIgnore = color; }
 
-	void setPrefix(const std::shared_ptr<Namer>& namer) { prefix = namer; }
-	void setSuffix(const std::shared_ptr<Namer>& namer) { suffix = namer; }
+	void setPrefix(Namer* namer) noexcept { prefix = namer; }
+	void setSuffix(Namer* namer) noexcept { suffix = namer; }
 
 	bool getFullName(const Queryable& item, std::string& fullName) const;
 
-	void setDescription(size_t idx, const std::shared_ptr<Namer>& namer, uint16_t skipFirst);
+	void setDescription(size_t idx, Namer* namer, uint16_t skipFirst);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
 
@@ -128,7 +128,7 @@ public:
 	bool evalFormula(uint16_t nameHash, const LevelObject& objA,
 		const LevelObject& objB, LevelObjValue& val) const;
 
-	LevelObjValue evalFormula(uint16_t nameHash, LevelObject& obj) const;
-	LevelObjValue evalFormula(uint16_t nameHash, LevelObject& objA,
+	LevelObjValue evalFormula(uint16_t nameHash, const LevelObject& obj) const;
+	LevelObjValue evalFormula(uint16_t nameHash, const LevelObject& objA,
 		const LevelObject& objB) const;
 };

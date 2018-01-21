@@ -14,7 +14,7 @@ private:
 
 public:
 	RectTexturePack(const std::shared_ptr<sf::Texture>& texture_,
-		const std::shared_ptr<Palette>& palette_ = nullptr, bool isIndexed_ = false)
+		const std::shared_ptr<Palette>& palette_ = nullptr, bool isIndexed_ = false) noexcept
 		: texture(texture_), palette(palette_), indexed(isIndexed_) {}
 
 	void add(const sf::IntRect& rect);
@@ -27,9 +27,9 @@ public:
 
 	virtual bool getTextureSize(sf::Vector2i& textureSize) const;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return 1; }
-	virtual size_t totalSize() const { return rects.size(); }
-	virtual size_t size(size_t index) const { return rects.size(); }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return 1; }
+	virtual size_t totalSize() const noexcept { return rects.size(); }
+	virtual size_t size(size_t index) const noexcept { return rects.size(); }
 };

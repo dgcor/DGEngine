@@ -20,7 +20,8 @@
             { "name": "load", "file": "level/{2}/players.json" },
             { "name": "load", "file": "level/{2}/music.json" },
             { "name": "load", "file": ["level/afterLevelLoad.json", "{2}", "{3}", "{4}"] },
-            { "name": "loadingScreen.setProgress", "progress": 100 }
+            { "name": "loadingScreen.setProgress", "progress": 100 },
+            "clearPanelText"
           ]
         }
       ]

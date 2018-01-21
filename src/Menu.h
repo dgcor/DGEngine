@@ -26,7 +26,7 @@ private:
 	bool visible{ true };
 
 public:
-	void updateVisibleItems();
+	void updateVisibleItems() noexcept;
 	void calculatePositions();
 
 	void addItem(const std::shared_ptr<StringButton>& item)
@@ -49,7 +49,7 @@ public:
 	{
 		return getItem(start + idx);
 	}
-	size_t getItemCount() const { return items.size(); }
+	size_t getItemCount() const noexcept { return items.size(); }
 	size_t getItemPosition(const Button* item) const
 	{
 		for (size_t i = 0; i < items.size(); i++)
@@ -62,9 +62,9 @@ public:
 		return 0;
 	}
 
-	virtual const sf::Vector2f& DrawPosition() const { return pos; }
-	virtual const sf::Vector2f& Position() const { return pos; }
-	virtual void Position(const sf::Vector2f& position_)
+	virtual const sf::Vector2f& DrawPosition() const noexcept { return pos; }
+	virtual const sf::Vector2f& Position() const noexcept { return pos; }
+	virtual void Position(const sf::Vector2f& position_) noexcept
 	{
 		pos = position_;
 		if (visibleItems > 0)
@@ -72,7 +72,7 @@ public:
 			recalculatePos = true;
 		}
 	}
-	virtual void ScrollPosition(const sf::Vector2f& position_)
+	virtual void ScrollPosition(const sf::Vector2f& position_) noexcept
 	{
 		scrollPosition = position_;
 		scrollRect.left = (int)position_.x;
@@ -82,13 +82,13 @@ public:
 	{
 		return sf::Vector2f((float)scrollRect.width, (float)scrollRect.height);
 	}
-	virtual void Size(const sf::Vector2f& size)
+	virtual void Size(const sf::Vector2f& size) noexcept
 	{
 		scrollRect.width = (int)size.x;
 		scrollRect.height = (int)size.y;
 	}
 
-	void setVerticalAlign(const VerticalAlign align)
+	void setVerticalAlign(const VerticalAlign align) noexcept
 	{
 		if (vertAlign != align)
 		{
@@ -96,14 +96,14 @@ public:
 			recalculatePos = true;
 		}
 	}
-	void setVerticalPad(int verticalPad_)
+	void setVerticalPad(int verticalPad_) noexcept
 	{
 		if (verticalPad != verticalPad_)
 		{
 			verticalPad = verticalPad_;
 		}
 	}
-	void setVisibleItems(size_t visibleItems_)
+	void setVisibleItems(size_t visibleItems_) noexcept
 	{
 		if (visibleItems == visibleItems_)
 		{
@@ -128,7 +128,7 @@ public:
 		}
 	}
 
-	void setCurrentIdx(size_t idx)
+	void setCurrentIdx(size_t idx) noexcept
 	{
 		if (idx < items.size())
 		{
@@ -140,10 +140,10 @@ public:
 		}
 	}
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
-	virtual void setAnchor(const Anchor anchor_)
+	virtual void setAnchor(const Anchor anchor_) noexcept
 	{
 		if (anchor != anchor_)
 		{
@@ -152,13 +152,12 @@ public:
 	}
 	virtual void updateSize(const Game& game);
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const noexcept { return visible; }
+	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	virtual void update(Game& game);
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

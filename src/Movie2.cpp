@@ -1,9 +1,9 @@
 #include "Movie2.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -14,7 +14,7 @@ std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16)
 	}
 }
 
-bool Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{

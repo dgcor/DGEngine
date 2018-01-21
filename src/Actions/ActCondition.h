@@ -5,10 +5,10 @@
 #include "Game.h"
 #include "Image.h"
 #include "Parser/ParseVariable.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 #include "VarOrPredicate.h"
 
-static Variable getVariable(Game& game, const VarOrPredicate& varOrPred)
+static Variable getVariable(const Game& game, const VarOrPredicate& varOrPred)
 {
 	if (std::holds_alternative<Variable>(varOrPred) == true)
 	{

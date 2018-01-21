@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include <string>
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 class ActDrawableAddToPosition : public Action
 {
@@ -737,7 +737,7 @@ public:
 		const char* name, const std::shared_ptr<Action>& action_)
 		: id(id_), nameHash(str2int16(name)), action(action_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto item = game.Resources().getResource<UIObject>(id);
 		if (item != nullptr)

@@ -542,7 +542,7 @@ size_t CelImageContainer::readCl2ArchiveFrames(sf::InputStream& file)
 	std::vector<uint32_t> headerOffsets(8);
 	file.read(&headerOffsets[0], 32);
 
-	uint32_t numFrames;
+	uint32_t numFrames = 0;
 
 	for (size_t i = 0; i < 8; i++)
 	{

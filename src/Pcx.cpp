@@ -55,14 +55,14 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 
 	if (stream.hasError() == true)
 	{
-		return sf::Image();
+		return {};
 	}
 
-	long flen = (long)stream.getSize();
+	auto flen = (size_t)stream.getSize();
 
-	auto buffer = std::make_unique<char[]>(flen + 1);
-	stream.read(buffer.get(), flen);
-	char* pBuff = buffer.get();
+	auto buffer = std::vector<char>(flen + 1);
+	stream.read(buffer.data(), stream.getSize());
+	char* pBuff = buffer.data();
 
 	/////////////////////////////////////////////////////
 
@@ -73,14 +73,14 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 		(header->encoding != 1) ||
 		(header->bitsPerPixel != 8))
 	{
-		return sf::Image();
+		return {};
 	}
 
 	header->width = header->width - header->x + 1;
 	header->height = header->height - header->y + 1;
 
 	// allocate memory for image data
-	auto data = std::make_unique<unsigned char[]>(header->width * header->height);
+	auto data = std::vector<unsigned char>(header->width * header->height);
 
 	pBuff = (char*)&buffer[128];
 
@@ -94,11 +94,13 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 			auto numRepeat = 0x3f & c;
 			c = *(pBuff++);
 
-			for (int i = 0; i < numRepeat; i++) {
+			for (int i = 0; i < numRepeat; i++)
+			{
 				data[idx++] = c;
 			}
 		}
-		else {
+		else
+		{
 			data[idx++] = c;
 		}
 	}
@@ -131,6 +133,5 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 			img.setPixel(i, j, rgba);
 		}
 	}
-
 	return img;
 }

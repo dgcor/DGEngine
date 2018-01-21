@@ -20,5 +20,5 @@ public:
 
 	virtual sf::Image2 get(size_t index, const PaletteArray* palette) const;
 
-	virtual size_t size() const { return numFrames; }
+	virtual size_t size() const noexcept { return numFrames; }
 };

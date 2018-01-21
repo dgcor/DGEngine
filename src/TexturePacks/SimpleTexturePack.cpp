@@ -36,7 +36,7 @@ static bool ConstructTexturePack(MultiTexture& t, const std::shared_ptr<sf::Text
 }
 
 static void getTexture(const MultiTexture& t, size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect)
+	const sf::Texture** texture, sf::IntRect& textureRect) noexcept
 {
 	if (t.horizontalDirection == true)
 	{
@@ -62,7 +62,7 @@ SimpleTexturePack::SimpleTexturePack(const std::shared_ptr<sf::Texture>& texture
 }
 
 bool SimpleTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
+	const sf::Texture** texture, sf::IntRect& textureRect) const noexcept
 {
 	if (t.numFrames == 0 ||
 		index >= t.numFrames)
@@ -74,12 +74,12 @@ bool SimpleTexturePack::get(size_t index,
 }
 
 bool SimpleTexturePack::get(size_t indexX, size_t indexY,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
+	const sf::Texture** texture, sf::IntRect& textureRect) const noexcept
 {
 	return get(indexX, texture, textureRect);
 }
 
-bool SimpleTexturePack::getTextureSize(sf::Vector2i& textureSize) const
+bool SimpleTexturePack::getTextureSize(sf::Vector2i& textureSize) const noexcept
 {
 	textureSize.x = (int)t.subImageSizeX;
 	textureSize.y = (int)t.subImageSizeY;

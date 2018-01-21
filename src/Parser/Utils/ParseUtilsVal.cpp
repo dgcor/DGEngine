@@ -6,7 +6,7 @@
 #include "FileUtils.h"
 #include "GameUtils.h"
 #include "SFMLUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

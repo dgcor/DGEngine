@@ -1,9 +1,9 @@
 #include "Menu.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -16,7 +16,7 @@ std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16)
 	}
 }
 
-bool Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{
@@ -32,7 +32,7 @@ bool Menu::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
 	return true;
 }
 
-void Menu::updateVisibleItems()
+void Menu::updateVisibleItems() noexcept
 {
 	if (items.empty() == true ||
 		visibleItems == 0)

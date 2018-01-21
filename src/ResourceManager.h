@@ -13,7 +13,6 @@
 #include "Music2.h"
 #include "MusicLoops.h"
 #include "Palette.h"
-#include "ReverseIterable.h"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <string>
@@ -21,6 +20,7 @@
 #include "UIObject.h"
 #include <unordered_map>
 #include <unordered_set>
+#include "Utils/ReverseIterable.h"
 #include <vector>
 
 class Button;
@@ -29,7 +29,7 @@ struct ResourceBundle
 {
 	struct CompareKeyEvent
 	{
-		size_t operator()(const sf::Event::KeyEvent& obj) const
+		size_t operator()(const sf::Event::KeyEvent& obj) const noexcept
 		{
 			return ((obj.code << 4) |
 				(obj.alt << 0) |
@@ -37,7 +37,7 @@ struct ResourceBundle
 				(obj.shift << 2) |
 				(obj.system << 3));
 		}
-		bool operator()(const sf::Event::KeyEvent& obj1, const sf::Event::KeyEvent& obj2) const
+		bool operator()(const sf::Event::KeyEvent& obj1, const sf::Event::KeyEvent& obj2) const noexcept
 		{
 			return (obj1.code == obj2.code &&
 				obj1.alt == obj2.alt &&
@@ -47,7 +47,7 @@ struct ResourceBundle
 		}
 	};
 
-	ResourceBundle() {}
+	ResourceBundle() noexcept {}
 	ResourceBundle(const std::string& id_) :id(id_) {}
 
 	IgnoreResource ignore{ IgnoreResource::None };
@@ -79,13 +79,13 @@ private:
 	Level* currentLevel{ nullptr };
 	size_t currentLevelResourceIdx{ 0 };
 
-	void clearCache()
+	void clearCache() noexcept
 	{
 		drawableCache.first.clear();
 		drawableCache.second = nullptr;
 	}
 
-	void clearCurrentLevel()
+	void clearCurrentLevel() noexcept
 	{
 		if (currentLevelResourceIdx > resources.size() - 1)
 		{
@@ -120,22 +120,22 @@ public:
 	using reverse_iterator = std::vector<ResourceBundle>::reverse_iterator;
 	using const_reverse_iterator = std::vector<ResourceBundle>::const_reverse_iterator;
 
-	iterator begin() { return resources.begin(); }
-	iterator end() { return resources.end(); }
-	const_iterator begin() const { return resources.begin(); }
-	const_iterator end() const { return resources.end(); }
-	const_iterator cbegin() const { return resources.cbegin(); }
-	const_iterator cend() const { return resources.cend(); }
-	reverse_iterator rbegin() { return resources.rbegin(); }
-	reverse_iterator rend() { return resources.rend(); }
-	const_reverse_iterator rbegin() const { return resources.rbegin(); }
-	const_reverse_iterator rend() const { return resources.rend(); }
-	const_reverse_iterator crbegin() const { return resources.crbegin(); }
-	const_reverse_iterator crend() const { return resources.crend(); }
+	iterator begin() noexcept { return resources.begin(); }
+	iterator end() noexcept { return resources.end(); }
+	const_iterator begin() const noexcept { return resources.begin(); }
+	const_iterator end() const noexcept { return resources.end(); }
+	const_iterator cbegin() const noexcept { return resources.cbegin(); }
+	const_iterator cend() const noexcept { return resources.cend(); }
+	reverse_iterator rbegin() noexcept { return resources.rbegin(); }
+	reverse_iterator rend() noexcept { return resources.rend(); }
+	const_reverse_iterator rbegin() const noexcept { return resources.rbegin(); }
+	const_reverse_iterator rend() const noexcept { return resources.rend(); }
+	const_reverse_iterator crbegin() const noexcept { return resources.crbegin(); }
+	const_reverse_iterator crend() const noexcept { return resources.crend(); }
 
-	ResourceManager() : resources(1, ResourceBundle()) {}
+	ResourceManager() noexcept : resources(1, ResourceBundle()) {}
 
-	void setCurrentLevel(Level* level)
+	void setCurrentLevel(Level* level) noexcept
 	{
 		currentLevel = level;
 		currentLevelResourceIdx = resources.size() - 1;
@@ -145,13 +145,13 @@ public:
 	void popResource(const std::string& id);
 	void popAllResources(const std::string& id);
 	void popAllResources(bool popBaseResources);
-	void ignoreResources(const std::string& id, IgnoreResource ignore);
+	void ignoreResources(const std::string& id, IgnoreResource ignore) noexcept;
 	void ignoreTopResource(IgnoreResource ignore);
-	bool resourceExists(const std::string& id) const;
+	bool resourceExists(const std::string& id) const noexcept;
 
 	Image* getCursor() const;
-	Level* getCurrentLevel() const { return currentLevel; }
-	Level* getLevel(const std::string& id) const
+	Level* getCurrentLevel() const noexcept { return currentLevel; }
+	Level* getLevel(const std::string& id) const noexcept
 	{
 		if (id.empty() == true)
 		{
@@ -161,8 +161,8 @@ public:
 	}
 	void addCursor(const std::shared_ptr<Image>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
-	void popAllCursors() { cursors.clear(); }
-	size_t cursorCount() const { return cursors.size(); }
+	void popAllCursors() noexcept { cursors.clear(); }
+	size_t cursorCount() const noexcept { return cursors.size(); }
 
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
@@ -210,7 +210,7 @@ public:
 	void addPlayingSound(const sf::Sound& obj, bool unique = false);
 
 	void clearFinishedSounds();
-	void clearPlayingSounds() { playingSounds.clear(); }
+	void clearPlayingSounds() noexcept { playingSounds.clear(); }
 
 	std::shared_ptr<Action> getKeyboardAction(const sf::Event::KeyEvent& key) const;
 	std::shared_ptr<Action> getAction(const std::string& key) const;
@@ -234,7 +234,7 @@ public:
 	UIObject* getDrawable(const std::string& key) const;
 
 	template <class T>
-	T* getResource(const std::string& key) const
+	T* getResource(const std::string& key) const noexcept
 	{
 		for (const auto& res : reverse(resources))
 		{
@@ -250,7 +250,7 @@ public:
 	}
 
 	template <class T>
-	std::shared_ptr<T> getResourceSharedPtr(const std::string& key) const
+	std::shared_ptr<T> getResourceSharedPtr(const std::string& key) const noexcept
 	{
 		for (const auto& res : reverse(resources))
 		{

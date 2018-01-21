@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include "SFMLUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 void Image::setOrigin()
 {

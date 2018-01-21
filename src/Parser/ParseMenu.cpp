@@ -7,8 +7,8 @@
 #include "ParseMenuButton.h"
 #include "StringButton.h"
 #include "StringText.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
@@ -73,7 +73,7 @@ namespace Parser
 	}
 
 	bool compareVariables(uint16_t conditionHash16,
-		const Variable& var1, const Variable& var2)
+		const Variable& var1, const Variable& var2) noexcept
 	{
 		switch (conditionHash16)
 		{
@@ -94,7 +94,7 @@ namespace Parser
 	}
 
 	bool getFilterResult(const std::vector<FilterObject>& filterList,
-		const Variable& varToCheck, bool includedOrExcluded)
+		const Variable& varToCheck, bool includedOrExcluded) noexcept
 	{
 		bool skip = includedOrExcluded;
 		for (const auto& filterObj : filterList)
@@ -242,7 +242,7 @@ namespace Parser
 						JsonUtils::replaceValueWithString(valCopy, allocator, "%save%", dir);
 
 						parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-							horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+							horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
 							fontSize, bitmapFont, sound, focusSound, clickUp,
 							hasFocus, focusOnClick, relativePos, origPos);
 
@@ -292,7 +292,7 @@ namespace Parser
 							});
 
 							parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-								horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+								horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
 								fontSize, bitmapFont, sound, focusSound, clickUp,
 								hasFocus, focusOnClick, relativePos, origPos);
 
@@ -325,7 +325,7 @@ namespace Parser
 								{
 									continue;
 								}
-								const auto& item = itemCollection[i];
+								const auto item = itemCollection.get(i);
 
 								if (filterList.empty() == false &&
 									getFilterResult(filterList, *item, include) == true)
@@ -345,7 +345,7 @@ namespace Parser
 								});
 
 								parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-									horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+									horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
 									fontSize, bitmapFont, sound, focusSound, clickUp,
 									hasFocus, focusOnClick, relativePos, origPos);
 
@@ -360,7 +360,7 @@ namespace Parser
 			else
 			{
 				parseMenuButton(game, val, *menu, anchor, color, horizAlign,
-					horizSpaceOffset, vertSpaceOffset, isTextFont, font,
+					horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
 					fontSize, bitmapFont, sound, focusSound, clickUp,
 					hasFocus, focusOnClick, relativePos, origPos);
 

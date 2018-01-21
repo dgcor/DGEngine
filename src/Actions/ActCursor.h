@@ -10,7 +10,7 @@ private:
 	bool enable;
 
 public:
-	ActCursorEnableOutline(bool enable_) : enable(enable_) {}
+	ActCursorEnableOutline(bool enable_) noexcept : enable(enable_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -29,7 +29,7 @@ private:
 	bool popAll;
 
 public:
-	ActCursorPop(bool popAll_) : popAll(popAll_) {}
+	ActCursorPop(bool popAll_) noexcept : popAll(popAll_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -45,7 +45,7 @@ private:
 	sf::Color color;
 
 public:
-	ActCursorSetColor(const sf::Color& color_) : color(color_) {}
+	ActCursorSetColor(const sf::Color& color_) noexcept : color(color_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -65,7 +65,7 @@ private:
 	sf::Color ignore;
 
 public:
-	ActCursorSetOutline(const sf::Color& outline_, const sf::Color& ignore_)
+	ActCursorSetOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
 		: outline(outline_), ignore(ignore_) {}
 
 	virtual bool execute(Game& game)
@@ -117,7 +117,7 @@ private:
 	bool show;
 
 public:
-	ActCursorShow(bool show_) : show(show_) {}
+	ActCursorShow(bool show_) noexcept : show(show_) {}
 
 	virtual bool execute(Game& game)
 	{

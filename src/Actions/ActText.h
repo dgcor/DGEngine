@@ -31,8 +31,8 @@ public:
 		textFormat(format_), bindings(bindings_),
 		textOp(TextUtils::TextOp::FormatString) {}
 
-	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
-	void Trim() { textOp |= TextUtils::TextOp::Trim; }
+	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
 	{
@@ -122,13 +122,13 @@ private:
 public:
 	ActTextSetSpacing(const std::string& id_) : id(id_) {}
 
-	void setHorizontalSpaceOffset(int offset)
+	void setHorizontalSpaceOffset(int offset) noexcept
 	{
 		horizSpaceOffset = offset;
 		hasHorizSpaceOffset = true;
 	}
 
-	void setVerticalSpaceOffset(int offset)
+	void setVerticalSpaceOffset(int offset) noexcept
 	{
 		vertSpaceOffset = offset;
 		hasVertSpaceOffset = true;
@@ -176,8 +176,8 @@ public:
 		textFormat(format_), bindings(bindings_),
 		textOp(TextUtils::TextOp::FormatString) {}
 
-	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
-	void Trim() { textOp |= TextUtils::TextOp::Trim; }
+	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
 	{

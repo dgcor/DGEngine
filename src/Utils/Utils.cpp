@@ -20,7 +20,6 @@ namespace Utils
 	std::string splitInLines(std::string source, std::size_t width, std::string whitespace)
 	{
 		std::size_t  currIndex = width - 1;
-		std::size_t  sizeToElim;
 		while (currIndex < source.length())
 		{
 			currIndex = source.find_last_of(whitespace, currIndex + 1);
@@ -33,7 +32,7 @@ namespace Utils
 			{
 				break;
 			}
-			sizeToElim = source.find_first_not_of(whitespace, currIndex + 1) - currIndex - 1;
+			auto sizeToElim = source.find_first_not_of(whitespace, currIndex + 1) - currIndex - 1;
 			source.replace(currIndex + 1, sizeToElim, "\n");
 			currIndex += (width + 1); //due to the recently inserted "\n"
 		}

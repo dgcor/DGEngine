@@ -22,7 +22,7 @@ private:
 	bool loop{ false };
 
 	void updateTexture();
-	void updateFrameIndex();
+	void updateFrameIndex() noexcept;
 
 public:
 	Animation(const sf::Texture& texture) : Image(texture) {}
@@ -32,18 +32,18 @@ public:
 		const sf::Time& frameTime = sf::milliseconds(50),
 		bool pause_ = false, bool loop_ = true);
 
-	sf::Time getFrameTime() const { return frameTime; }
-	void setFrameTime(sf::Time time) { frameTime = time; }
+	sf::Time getFrameTime() const noexcept { return frameTime; }
+	void setFrameTime(sf::Time time) noexcept { frameTime = time; }
 
-	bool Pause() const { return pause; }
-	void Pause(bool pause_) { pause = pause_; }
-	bool Loop() const { return loop; }
-	void Loop(bool loop_) { loop = loop_; }
-	void stop()
+	bool Pause() const noexcept { return pause; }
+	void Pause(bool pause_) noexcept { pause = pause_; }
+	bool Loop() const noexcept { return loop; }
+	void Loop(bool loop_) noexcept { loop = loop_; }
+	void stop() noexcept
 	{
 		pause = true;
 		frameIdx = frameStart;
 	}
 
-	virtual void update(Game& game);
+	virtual void update(Game& game) noexcept;
 };

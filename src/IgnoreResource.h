@@ -10,10 +10,10 @@ enum class IgnoreResource : int
 
 using T = std::underlying_type_t<IgnoreResource>;
 
-inline IgnoreResource operator~ (IgnoreResource a) { return (IgnoreResource)~static_cast<T>(a); }
-inline IgnoreResource operator| (IgnoreResource a, IgnoreResource b) { return (IgnoreResource)(static_cast<T>(a) | static_cast<T>(b)); }
-inline IgnoreResource operator& (IgnoreResource a, IgnoreResource b) { return (IgnoreResource)(static_cast<T>(a) & static_cast<T>(b)); }
-inline IgnoreResource operator^ (IgnoreResource a, IgnoreResource b) { return (IgnoreResource)(static_cast<T>(a) ^ static_cast<T>(b)); }
-inline IgnoreResource& operator|= (IgnoreResource& a, IgnoreResource b) { a = (IgnoreResource)(static_cast<T>(a) | static_cast<T>(b)); return a; }
-inline IgnoreResource& operator&= (IgnoreResource& a, IgnoreResource b) { a = (IgnoreResource)(static_cast<T>(a) & static_cast<T>(b)); return a; }
-inline IgnoreResource& operator^= (IgnoreResource& a, IgnoreResource b) { a = (IgnoreResource)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
+inline IgnoreResource operator~ (IgnoreResource a) noexcept { return (IgnoreResource)~static_cast<T>(a); }
+inline IgnoreResource operator| (IgnoreResource a, IgnoreResource b) noexcept { return (IgnoreResource)(static_cast<T>(a) | static_cast<T>(b)); }
+inline IgnoreResource operator& (IgnoreResource a, IgnoreResource b) noexcept { return (IgnoreResource)(static_cast<T>(a) & static_cast<T>(b)); }
+inline IgnoreResource operator^ (IgnoreResource a, IgnoreResource b) noexcept { return (IgnoreResource)(static_cast<T>(a) ^ static_cast<T>(b)); }
+inline IgnoreResource& operator|= (IgnoreResource& a, IgnoreResource b) noexcept { a = (IgnoreResource)(static_cast<T>(a) | static_cast<T>(b)); return a; }
+inline IgnoreResource& operator&= (IgnoreResource& a, IgnoreResource b) noexcept { a = (IgnoreResource)(static_cast<T>(a) & static_cast<T>(b)); return a; }
+inline IgnoreResource& operator^= (IgnoreResource& a, IgnoreResource b) noexcept { a = (IgnoreResource)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }

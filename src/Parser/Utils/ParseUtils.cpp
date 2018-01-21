@@ -3,7 +3,7 @@
 #include "FileUtils.h"
 #include "Json/JsonUtils.h"
 #include <regex>
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
@@ -37,7 +37,7 @@ namespace Parser
 			&& elem[key].Size() > 0);
 	}
 
-	bool isValidId(const std::string& id)
+	bool isValidId(const std::string& id) noexcept
 	{
 		if (id.empty() == true)
 		{

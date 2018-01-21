@@ -5,6 +5,10 @@
       <Configuration>Debug Clang</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Code Analysis|Win32">
+      <Configuration>Debug Code Analysis</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug NoMovie|Win32">
       <Configuration>Debug NoMovie</Configuration>
       <Platform>Win32</Platform>
@@ -144,7 +148,7 @@
     <ClCompile Include="src\TexturePacks\VectorTexturePack.cpp" />
     <ClCompile Include="src\TextUtils.cpp" />
     <ClCompile Include="src\TileSet.cpp" />
-    <ClCompile Include="src\Utils.cpp" />
+    <ClCompile Include="src\Utils\Utils.cpp" />
     <ClCompile Include="src\Variable.cpp" />
     <ClCompile Include="src\View2.cpp" />
   </ItemGroup>
@@ -277,7 +281,6 @@
     <ClInclude Include="src\Predicates\PredPlayer.h" />
     <ClInclude Include="src\Queryable.h" />
     <ClInclude Include="src\Rectangle.h" />
-    <ClInclude Include="src\ReverseIterable.h" />
     <ClInclude Include="src\sfeMovie\AudioStream.hpp" />
     <ClInclude Include="src\sfeMovie\Demuxer.hpp" />
     <ClInclude Include="src\sfeMovie\Macros.hpp" />
@@ -300,7 +303,6 @@
     <ClInclude Include="src\EventManager.h" />
     <ClInclude Include="src\Font2.h" />
     <ClInclude Include="src\Game.h" />
-    <ClInclude Include="src\Helper2D.h" />
     <ClInclude Include="src\LoadingScreen.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\Min.h" />
@@ -326,7 +328,10 @@
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\TileSet.h" />
     <ClInclude Include="src\UIObject.h" />
-    <ClInclude Include="src\Utils.h" />
+    <ClInclude Include="src\Utils\Helper2D.h" />
+    <ClInclude Include="src\Utils\iterator_tpl.h" />
+    <ClInclude Include="src\Utils\ReverseIterable.h" />
+    <ClInclude Include="src\Utils\Utils.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\VarOrPredicate.h" />
     <ClInclude Include="src\View2.h" />
@@ -344,6 +349,12 @@
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -353,7 +364,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>LLVM-vs2014</PlatformToolset>
+    <PlatformToolset>LLVM-vs2017</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -383,6 +394,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -400,6 +414,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableCppCoreCheck>true</EnableCppCoreCheck>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -410,6 +429,23 @@
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\FFmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\FFmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -437,12 +473,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\FFmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <AdditionalOptions>-Xclang "-std=c++17" %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
