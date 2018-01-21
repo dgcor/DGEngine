@@ -62,35 +62,38 @@
           { "name": "item.loadFromLevel" },
           "updateSelectedItem"
         ],
-        "else": {
-          "name": "switch",
-          "param": "|currentLevel|clickedObject.itemType|",
-          "case": [
-            {
-              "value": "Gold",
-              "action": {
-                "name": "item.loadFromLevel",
-                "inventory": "stash",
-                "position": "BottomRight",
-                "onInventoryFull": "pickItemInventoryFull"
+        "else": [
+          {
+            "name": "switch",
+            "param": "|currentLevel|clickedObject.itemType|",
+            "case": [
+              {
+                "value": "Gold",
+                "action": {
+                  "name": "item.loadFromLevel",
+                  "inventory": "stash",
+                  "position": "BottomRight",
+                  "onInventoryFull": "pickItemInventoryFull"
+                }
+              },
+              {
+                "value": "Potion",
+                "action": "pickItemInLevelToBeltOrStash"
+              },
+              {
+                "value": "Scroll",
+                "action": "pickItemInLevelToBeltOrStash"
               }
-            },
-            {
-              "value": "Potion",
-              "action": "pickItemInLevelToBeltOrStash"
-            },
-            {
-              "value": "Scroll",
-              "action": "pickItemInLevelToBeltOrStash"
+            ],
+            "default": {
+              "name": "item.loadFromLevel",
+              "inventory": "stash",
+              "position": "TopRight",
+              "onInventoryFull": "pickItemInventoryFull"
             }
-          ],
-          "default": {
-            "name": "item.loadFromLevel",
-            "inventory": "stash",
-            "position": "TopRight",
-            "onInventoryFull": "pickItemInventoryFull"
-          }
-        }
+          },
+          "clearPanelText"
+        ]
       }
     }
   ],

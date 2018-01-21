@@ -32,23 +32,23 @@ public:
 		height = vSize.y;
 	}
 
-	void setLoop(bool loop_) { loop = loop_; }
-	void setPause(bool pause_) { pause = pause_; }
+	void setLoop(bool loop_) noexcept { loop = loop_; }
+	void setPause(bool pause_) noexcept { pause = pause_; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
-	virtual void setAnchor(const Anchor anchor) { view.setAnchor(anchor); }
+	virtual void setAnchor(const Anchor anchor) noexcept { view.setAnchor(anchor); }
 	virtual void updateSize(const Game& game);
 
-	virtual const sf::Vector2f& DrawPosition() const { return view.getPosition(); }
-	virtual const sf::Vector2f& Position() const { return view.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { view.setPosition(position); }
-	virtual sf::Vector2f Size() const { return view.getSize(); }
+	virtual const sf::Vector2f& DrawPosition() const noexcept { return view.getPosition(); }
+	virtual const sf::Vector2f& Position() const noexcept { return view.getPosition(); }
+	virtual void Position(const sf::Vector2f& position) noexcept { view.setPosition(position); }
+	virtual sf::Vector2f Size() const noexcept { return view.getSize(); }
 	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const noexcept { return visible; }
+	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
@@ -57,5 +57,4 @@ public:
 	virtual void updateViewPort(const Game& game) { view.updateViewport(game); }
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

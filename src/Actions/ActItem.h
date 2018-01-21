@@ -40,7 +40,7 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			level->setItem(itemLocation, nullptr);
+			level->deleteItem(itemLocation);
 		}
 		return true;
 	}
@@ -61,14 +61,14 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto item = level->getItem(itemCoord);
+			auto item2 = level->removeItem(itemCoord);
+			auto item = item2.get();
 			if (item != nullptr)
 			{
 				auto mapPos = level->getMapCoordOverMouse();
-				if (level->setItem(mapPos, item) == true)
+				if (level->setItem(mapPos, item2) == true)
 				{
 					item->resetDropAnimation();
-					level->setItem(itemCoord, nullptr);
 					if (game.Resources().cursorCount() > 1)
 					{
 						game.Resources().popCursor();
@@ -76,6 +76,10 @@ public:
 					game.updateCursorPosition();
 
 					item->Class()->executeAction(game, str2int16("levelDrop"));
+				}
+				else
+				{
+					level->setItem(itemCoord, item2);
 				}
 			}
 		}
@@ -120,7 +124,7 @@ class ActItemLoadFromLevel : public Action
 private:
 	std::string idLevel;
 	ItemCoordInventory itemCoord;
-	InventoryPosition invPos;
+	InventoryPosition invPos{ InventoryPosition::TopLeft };
 	bool useInvPos{ false };
 	std::shared_ptr<Action> inventoryFullAction;
 
@@ -129,13 +133,13 @@ public:
 		const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
-	void setInventoryPosition(InventoryPosition invPos_)
+	void setInventoryPosition(InventoryPosition invPos_) noexcept
 	{
 		invPos = invPos_;
 		useInvPos = true;
 	}
 
-	void setInventoryFullAction(const std::shared_ptr<Action>& action_)
+	void setInventoryFullAction(const std::shared_ptr<Action>& action_) noexcept
 	{
 		inventoryFullAction = action_;
 	}
@@ -149,14 +153,14 @@ public:
 			if (player != nullptr)
 			{
 				auto mapPos = player->MapPositionMoveTo();
-				auto item = level->getItem(mapPos);
+				auto item2 = level->removeItem(mapPos);
+				auto item = item2.get();
 				if (item != nullptr)
 				{
 					if (itemCoord.isSelectedItem() == true &&
 						player->SelectedItem() == nullptr)
 					{
-						level->setItem(mapPos, nullptr);
-						player->SelectedItem(item);
+						player->SelectedItem(std::move(item2));
 						updateCursorWithItemImage(game, *item);
 						item->Class()->executeAction(game, str2int16("levelPick"));
 					}
@@ -164,21 +168,20 @@ public:
 					{
 						if (useInvPos == false)
 						{
-							level->setItem(mapPos, nullptr);
-							level->setItem(itemCoord, item);
+							level->setItem(itemCoord, item2);
 						}
 						else
 						{
 							size_t invIdx = itemCoord.getInventoryIdx();
 							if (invIdx < player->getInventorySize())
 							{
-								if (player->setItemInFreeSlot(invIdx, item, invPos) == true)
+								if (player->setItemInFreeSlot(invIdx, item2, invPos) == true)
 								{
-									level->setItem(mapPos, nullptr);
 									item->Class()->executeAction(game, str2int16("levelPick"));
 								}
 								else
 								{
+									level->setItem(mapPos, item2);
 									if (inventoryFullAction != nullptr)
 									{
 										game.Events().addBack(inventoryFullAction);
@@ -210,11 +213,7 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto item = level->getItem(from);
-			if (item != nullptr)
-			{
-				level->setItem(from, nullptr);
-			}
+			auto item = level->removeItem(from);
 			level->setItem(to, item);
 		}
 		return true;
@@ -275,7 +274,7 @@ public:
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemCoord(itemCoord_),
 		invPos(invPos_) {}
 
-	void setInventoryFullAction(const std::shared_ptr<Action>& action_)
+	void setInventoryFullAction(const std::shared_ptr<Action>& action_) noexcept
 	{
 		inventoryFullAction = action_;
 	}
@@ -296,10 +295,10 @@ public:
 				{
 					size_t invIdx = 0;
 					size_t itemIdx = 0;
-					if (buyer->getItemSlot(*item, invIdx, itemIdx, invPos) == true)
+					if (buyer->getFreeItemSlot(*item, invIdx, itemIdx, invPos) == true)
 					{
-						level->setItem(ItemCoordInventory(idPlayer, invIdx, itemIdx), item);
-						level->setItem(itemCoord, nullptr);
+						auto item2 = level->removeItem(itemCoord);
+						level->setItem(ItemCoordInventory(idPlayer, invIdx, itemIdx), item2);
 					}
 					else
 					{
@@ -347,13 +346,15 @@ public:
 					{
 						itemIdx = itemCoord.getItemIdx();
 					}
-					auto selectedItem = player->SelectedItem();
+					auto selectedItem2 = player->SelectedItem(nullptr);
+					auto selectedItem = selectedItem2.get();
 					if (selectedItem != nullptr)
 					{
-						std::shared_ptr<Item> oldItem;
-						if (player->setItem(invIdx, itemIdx, selectedItem, oldItem) == true)
+						std::unique_ptr<Item> oldItem2;
+						if (player->setItem(invIdx, itemIdx, selectedItem2, oldItem2) == true)
 						{
-							player->SelectedItem(oldItem);
+							auto oldItem = oldItem2.get();
+							player->SelectedItem(std::move(oldItem2));
 							if (game.Resources().cursorCount() > 1)
 							{
 								game.Resources().popCursor();
@@ -368,14 +369,20 @@ public:
 							}
 							selectedItem->Class()->executeAction(game, str2int16("inventoryDrop"));
 						}
+						else
+						{
+							player->SelectedItem(std::move(selectedItem2));
+						}
 					}
 					else
 					{
-						auto oldItem = inventory.get(itemIdx);
+						std::unique_ptr<Item> nullItem;
+						std::unique_ptr<Item> oldItem2;
+						player->setItem(invIdx, itemIdx, nullItem, oldItem2);
+						auto oldItem = oldItem2.get();
 						if (oldItem != nullptr)
 						{
-							player->setItem(invIdx, itemIdx, nullptr);
-							player->SelectedItem(oldItem);
+							player->SelectedItem(std::move(oldItem2));
 							updateCursorWithItemImage(game, *oldItem);
 
 							oldItem->Class()->executeAction(game, str2int16("inventoryPick"));
@@ -411,8 +418,8 @@ public:
 				if (player->canUseItem(*item) == true &&
 					item->use(*player, level) == true)
 				{
-					level->setItem(itemCoord, nullptr);
 					item->Class()->executeAction(game, str2int16("use"));
+					level->deleteItem(itemCoord);
 				}
 			}
 		}

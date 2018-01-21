@@ -5,13 +5,13 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	Quest parseQuestObj(Game& game, const rapidjson::Value& elem)
+	Quest parseQuestObj(Game& game, const Value& elem)
 	{
 		return Quest(getStringKey(elem, "id"),
 			getStringKey(elem, "name"), getIntKey(elem, "state"));
 	}
 
-	void parseQuest(Game& game, const rapidjson::Value& elem)
+	void parseQuest(Game& game, const Value& elem)
 	{
 		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
@@ -26,6 +26,6 @@ namespace Parser
 			return;
 		}
 
-		level->addQuest(quest);
+		level->addQuest(std::move(quest));
 	}
 }

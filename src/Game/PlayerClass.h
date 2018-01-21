@@ -57,10 +57,10 @@ private:
 		const LevelObject& query, LevelObjValue default_) const;
 
 public:
-	PlayerClass() : animationIndexes() {}
+	PlayerClass() noexcept : animationIndexes() {}
 
-	bool hasTextures() const { return textures.empty() == false; }
-	void clearTextures() { textures.clear(); }
+	bool hasTextures() const noexcept { return textures.empty() == false; }
+	void clearTextures() noexcept { textures.clear(); }
 
 	TexturePack* getTexturePack(size_t idx) const
 	{
@@ -82,7 +82,7 @@ public:
 
 	void clearAnimationIndexes() { animationIndexes.fill(0); }
 
-	size_t getAnimationIndex(PlayerAnimation animation) const
+	size_t getAnimationIndex(PlayerAnimation animation) const noexcept
 	{
 		if (animation < PlayerAnimation::Size)
 		{
@@ -91,7 +91,7 @@ public:
 		return 0;
 	}
 
-	void setStatusTexturePackIndex(PlayerAnimation animation, size_t idx)
+	void setStatusTexturePackIndex(PlayerAnimation animation, size_t idx) noexcept
 	{
 		if (animation < PlayerAnimation::Size)
 		{
@@ -99,67 +99,67 @@ public:
 		}
 	}
 
-	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const { return defaults; }
+	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const noexcept { return defaults; }
 	void setDefault(const char* prop, const Number32& val);
 
-	AnimationSpeed getSpeed(PlayerAnimation animation) const;
+	AnimationSpeed getSpeed(PlayerAnimation animation) const noexcept;
 	void setSpeed(PlayerAnimation animation, const AnimationSpeed& speed);
 
-	const PlayerAI& AI() const { return ai; }
+	const PlayerAI& AI() const noexcept { return ai; }
 
-	const sf::SoundBuffer* getSound(size_t idx) const;
+	const sf::SoundBuffer* getSound(size_t idx) const noexcept;
 	const sf::SoundBuffer* getSound(size_t idx, size_t size) const;
 
-	void setSound(size_t idx, const sf::SoundBuffer& snd);
+	void setSound(size_t idx, const sf::SoundBuffer& snd) noexcept;
 
-	int16_t getDefaultAttackSound() const { return defaultAttackSound; }
-	int16_t getDefaultDefendSound() const { return defaultDefendSound; }
-	int16_t getDefaultDieSound() const { return defaultDieSound; }
-	int16_t getDefaultHitSound() const { return defaultHitSound; }
-	int16_t getDefaultWalkSound() const { return defaultWalkSound; }
+	int16_t getDefaultAttackSound() const noexcept { return defaultAttackSound; }
+	int16_t getDefaultDefendSound() const noexcept { return defaultDefendSound; }
+	int16_t getDefaultDieSound() const noexcept { return defaultDieSound; }
+	int16_t getDefaultHitSound() const noexcept { return defaultHitSound; }
+	int16_t getDefaultWalkSound() const noexcept { return defaultWalkSound; }
 
-	void setDefaultAttackSound(int16_t soundIdx) { defaultAttackSound = soundIdx; }
-	void setDefaultDefendSound(int16_t soundIdx) { defaultDefendSound = soundIdx; }
-	void setDefaultDieSound(int16_t soundIdx) { defaultDieSound = soundIdx; }
-	void setDefaultHitSound(int16_t soundIdx) { defaultHitSound = soundIdx; }
-	void setDefaultWalkSound(int16_t soundIdx) { defaultWalkSound = soundIdx; }
+	void setDefaultAttackSound(int16_t soundIdx) noexcept { defaultAttackSound = soundIdx; }
+	void setDefaultDefendSound(int16_t soundIdx) noexcept { defaultDefendSound = soundIdx; }
+	void setDefaultDieSound(int16_t soundIdx) noexcept { defaultDieSound = soundIdx; }
+	void setDefaultHitSound(int16_t soundIdx) noexcept { defaultHitSound = soundIdx; }
+	void setDefaultWalkSound(int16_t soundIdx) noexcept { defaultWalkSound = soundIdx; }
 
-	const std::string& Name() const { return name; }
-	const std::string& Type() const { return type; }
-	const std::string& Description() const { return description; }
+	const std::string& Name() const noexcept { return name; }
+	const std::string& Type() const noexcept { return type; }
+	const std::string& Description() const noexcept { return description; }
 
 	void Name(const std::string& name_) { name = name_; }
 	void Type(const std::string& type_) { type = type_; }
 	void Description(const std::string& description_) { description = description_; }
 
-	LevelObjValue MaxStrength() const { return maxStrength; }
-	LevelObjValue MaxMagic() const { return maxMagic; }
-	LevelObjValue MaxDexterity() const { return maxDexterity; }
-	LevelObjValue MaxVitality() const { return maxVitality; }
+	LevelObjValue MaxStrength() const noexcept { return maxStrength; }
+	LevelObjValue MaxMagic() const noexcept { return maxMagic; }
+	LevelObjValue MaxDexterity() const noexcept { return maxDexterity; }
+	LevelObjValue MaxVitality() const noexcept { return maxVitality; }
 
-	LevelObjValue MaxResistMagic() const { return maxResistMagic; }
-	LevelObjValue MaxResistFire() const { return maxResistFire; }
-	LevelObjValue MaxResistLightning() const { return maxResistLightning; }
+	LevelObjValue MaxResistMagic() const noexcept { return maxResistMagic; }
+	LevelObjValue MaxResistFire() const noexcept { return maxResistFire; }
+	LevelObjValue MaxResistLightning() const noexcept { return maxResistLightning; }
 
-	uint32_t TotalKills() const { return totalKills; }
+	uint32_t TotalKills() const noexcept { return totalKills; }
 
-	const sf::Color& DefaultOutline() const { return defaultOutline; }
-	const sf::Color& DefaultOutlineIgnore() const { return defaultOutlineIgnore; }
+	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
+	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
 
-	void MaxStrength(LevelObjValue val) { maxStrength = val; }
-	void MaxMagic(LevelObjValue val) { maxMagic = val; }
-	void MaxDexterity(LevelObjValue val) { maxDexterity = val; }
-	void MaxVitality(LevelObjValue val) { maxVitality = val; }
+	void MaxStrength(LevelObjValue val) noexcept { maxStrength = val; }
+	void MaxMagic(LevelObjValue val) noexcept { maxMagic = val; }
+	void MaxDexterity(LevelObjValue val) noexcept { maxDexterity = val; }
+	void MaxVitality(LevelObjValue val) noexcept { maxVitality = val; }
 
-	void MaxResistMagic(LevelObjValue val) { maxResistMagic = val; }
-	void MaxResistFire(LevelObjValue val) { maxResistFire = val; }
-	void MaxResistLightning(LevelObjValue val) { maxResistLightning = val; }
+	void MaxResistMagic(LevelObjValue val) noexcept { maxResistMagic = val; }
+	void MaxResistFire(LevelObjValue val) noexcept { maxResistFire = val; }
+	void MaxResistLightning(LevelObjValue val) noexcept { maxResistLightning = val; }
 
-	void TotalKills(LevelObjValue val) { totalKills = val; }
-	void addKill() { totalKills++; }
+	void TotalKills(LevelObjValue val) noexcept { totalKills = val; }
+	void addKill() noexcept { totalKills++; }
 
-	void DefaultOutline(const sf::Color& color) { defaultOutline = color; }
-	void DefaultOutlineIgnore(const sf::Color& color) { defaultOutlineIgnore = color; }
+	void DefaultOutline(const sf::Color& color) noexcept { defaultOutline = color; }
+	void DefaultOutlineIgnore(const sf::Color& color) noexcept { defaultOutlineIgnore = color; }
 
 	void setLifeFormula(const Formula& formula) { formulas[0] = formula; }
 	void setManaFormula(const Formula& formula) { formulas[1] = formula; }

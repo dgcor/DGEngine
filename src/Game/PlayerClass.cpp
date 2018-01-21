@@ -1,6 +1,6 @@
 #include "PlayerClass.h"
 #include "Player.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 void PlayerClass::setDefault(const char* prop, const Number32& val)
 {
@@ -20,7 +20,7 @@ void PlayerClass::setDefault(const char* prop, const Number32& val)
 	defaults.push_back(std::make_pair(propertyHash, val));
 }
 
-AnimationSpeed PlayerClass::getSpeed(PlayerAnimation animation) const
+AnimationSpeed PlayerClass::getSpeed(PlayerAnimation animation) const noexcept
 {
 	for (auto& elem : animationSpeeds)
 	{
@@ -45,7 +45,7 @@ void PlayerClass::setSpeed(PlayerAnimation animation, const AnimationSpeed& spee
 	animationSpeeds.push_back(std::make_pair(animation, speed));
 }
 
-const sf::SoundBuffer* PlayerClass::getSound(size_t idx) const
+const sf::SoundBuffer* PlayerClass::getSound(size_t idx) const noexcept
 {
 	if (idx < sounds.size())
 	{
@@ -69,7 +69,7 @@ const sf::SoundBuffer* PlayerClass::getSound(size_t idx, size_t size) const
 	return sounds[rndIdx];
 }
 
-void PlayerClass::setSound(size_t idx, const sf::SoundBuffer& snd)
+void PlayerClass::setSound(size_t idx, const sf::SoundBuffer& snd) noexcept
 {
 	if (idx < sounds.size())
 	{

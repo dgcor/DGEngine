@@ -38,8 +38,8 @@
 #include "Parser/Game/ParsePlayerClass.h"
 #include "Parser/Game/ParseQuest.h"
 #include "PhysFSStream.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

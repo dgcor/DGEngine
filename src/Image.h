@@ -11,7 +11,7 @@ protected:
 	bool visible{ true };
 
 public:
-	Image()
+	Image() noexcept
 	{
 		sprite.setOutlineEnabled(true);
 	}
@@ -29,20 +29,20 @@ public:
 	void setOrigin(const sf::Vector2f& origin) { sprite.setOrigin(origin); }
 	void setOrigin();
 
-	void setOutline(const sf::Color& outline, const sf::Color& ignore)
+	void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
 	{
 		sprite.setOutline(outline, ignore);
 	}
-	bool hasOutline() const { return sprite.hasOutline(); }
+	bool hasOutline() const noexcept { return sprite.hasOutline(); }
 
-	void setOutlineEnabled(bool enable)
+	void setOutlineEnabled(bool enable) noexcept
 	{
 		sprite.setOutlineEnabled(enable);
 	}
-	bool isOutlineEnabled() const { return sprite.isOutlineEnabled(); }
+	bool isOutlineEnabled() const noexcept { return sprite.isOutlineEnabled(); }
 
-	void setPalette(const std::shared_ptr<Palette>& pal) { sprite.setPalette(pal); }
-	bool hasPalette() const { return sprite.hasPalette(); }
+	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { sprite.setPalette(pal); }
+	bool hasPalette() const noexcept { return sprite.hasPalette(); }
 
 	void centerTexture();
 
@@ -51,14 +51,11 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) { return nullptr; }
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) { return false; }
-
-	virtual void setAnchor(const Anchor anchor_) { anchor = anchor_; }
+	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 
-	virtual bool Visible() const { return visible; }
-	virtual void Visible(bool visible_) { visible = visible_; }
+	virtual bool Visible() const noexcept { return visible; }
+	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
 	virtual const sf::Vector2f& DrawPosition() const { return sprite.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
@@ -81,8 +78,6 @@ public:
 			target.draw(sprite, states);
 		}
 	}
-	virtual void update(Game& game) {}
 
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

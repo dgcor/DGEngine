@@ -77,7 +77,7 @@ namespace LevelHelper
 	}
 
 	std::shared_ptr<TexturePack> loadTilesetSprite(
-		CachedImagePack& imgPack, Min& min, bool top, bool skipBlankTiles)
+		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
 	{
 		auto texturePack = std::make_shared<VectorTexturePack>(
 			min.size() - 1, imgPack.getPalette(), imgPack.IsIndexed());
@@ -105,7 +105,7 @@ namespace LevelHelper
 	}
 
 	std::shared_ptr<TexturePack> loadTilesetSpriteBatchSprites(
-		CachedImagePack& imgPack, Min& min, bool top, bool skipBlankTiles)
+		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
 	{
 		std::shared_ptr<SimpleMultiTexturePack> texturePack;
 		SimpleIndexedMultiTexturePack* indexedTexturePack = nullptr;
@@ -175,7 +175,7 @@ namespace LevelHelper
 	}
 
 	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
-		Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether)
+		const Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether)
 	{
 		if (batchSpritesTogether == false)
 		{
@@ -188,7 +188,7 @@ namespace LevelHelper
 	}
 
 	void saveTilesetSprite(const std::string& path,
-		CachedImagePack& imgPack, Min& min, int bottomTopOrBoth, bool skipBlankTiles)
+		CachedImagePack& imgPack, const Min& min, int bottomTopOrBoth, bool skipBlankTiles)
 	{
 		sf::Image2 newPillar;
 		size_t i = 0;

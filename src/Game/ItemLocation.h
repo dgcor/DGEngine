@@ -17,7 +17,7 @@ private:
 
 public:
 	// inventoryIdx = -1 points to player's selected item
-	ItemCoordInventory() : inventoryIdx(-1) {};
+	ItemCoordInventory() noexcept : inventoryIdx(-1), itemIdx(0) {};
 
 	ItemCoordInventory(const std::string& playerId_) :
 		playerId(playerId_), inventoryIdx(-1), itemIdx(0) {};
@@ -32,12 +32,12 @@ public:
 		inventoryIdx(((int16_t)inventoryIdx_) | 0x8000),
 		itemXY(itemXY_) {}
 
-	bool isSelectedItem() const
+	bool isSelectedItem() const noexcept
 	{
 		return (inventoryIdx == -1);
 	}
 
-	bool isCoordXY() const
+	bool isCoordXY() const noexcept
 	{
 		if (inventoryIdx == -1)
 		{
@@ -46,7 +46,7 @@ public:
 		return (inventoryIdx & 0x8000) != 0;
 	}
 
-	size_t getInventoryIdx() const
+	size_t getInventoryIdx() const noexcept
 	{
 		if (isSelectedItem() == true)
 		{
@@ -55,7 +55,7 @@ public:
 		return (inventoryIdx & 0x7FFF);
 	}
 
-	size_t getItemIdx() const
+	size_t getItemIdx() const noexcept
 	{
 		if (isCoordXY() == true)
 		{
@@ -64,7 +64,7 @@ public:
 		return itemIdx;
 	}
 
-	ItemXY getItemXY() const
+	ItemXY getItemXY() const noexcept
 	{
 		if (isCoordXY() == false)
 		{
@@ -73,7 +73,7 @@ public:
 		return itemXY;
 	}
 
-	const std::string& getPlayerId() const { return playerId; }
+	const std::string& getPlayerId() const noexcept { return playerId; }
 };
 
 typedef std::variant<MapCoord, ItemCoordInventory> ItemLocation;

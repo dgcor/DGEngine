@@ -1,7 +1,7 @@
 #include "ScrollableText.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_) :
 	text(std::move(text_)), frameTime(frameTime_)
@@ -11,7 +11,7 @@ ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Ti
 	text->Visible(true);
 }
 
-std::shared_ptr<Action> ScrollableText::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> ScrollableText::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -22,7 +22,7 @@ std::shared_ptr<Action> ScrollableText::getAction(uint16_t nameHash16)
 	}
 }
 
-bool ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{

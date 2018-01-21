@@ -16,7 +16,7 @@ namespace ImageUtils
 		const std::shared_ptr<Palette>& pal);
 
 	sf::Image loadImageFrame(const ImageContainer& imgContainer,
-		const std::shared_ptr<Palette>& pal, size_t frameIdx);
+		const Palette& pal, size_t frameIdx);
 
 	sf::Image loadBitmapFontImage(const ImageContainer& imgContainer,
 		const char* fileNameBin, const std::shared_ptr<Palette>& pal);

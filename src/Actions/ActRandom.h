@@ -3,7 +3,7 @@
 #include "Action.h"
 #include "Game.h"
 #include <string>
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 class ActRandomList : public Action
 {
@@ -35,8 +35,8 @@ private:
 	std::shared_ptr<Action> action2;
 
 public:
-	ActRandom(float percentage_,
-		const std::shared_ptr<Action>& action1_, const std::shared_ptr<Action>& action2_)
+	ActRandom(float percentage_, const std::shared_ptr<Action>& action1_,
+		const std::shared_ptr<Action>& action2_) noexcept
 		: percentage(percentage_), action1(action1_), action2(action2_) {}
 
 	virtual bool execute(Game& game)

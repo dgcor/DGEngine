@@ -36,7 +36,7 @@ public:
 	ActButtonEnable(const std::string& id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto button = game.Resources().getResource<Button>(id);
 		if (button != nullptr)

@@ -1,7 +1,7 @@
 #include "GameUtils.h"
 #include "Game.h"
 #include <regex>
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 namespace GameUtils
 {
@@ -10,7 +10,7 @@ namespace GameUtils
 	sf::Vector2f getAlignmentPosition(const sf::Vector2f& position,
 		const sf::Vector2f& size,
 		HorizontalAlign horizAlign,
-		VerticalAlign vertAlign)
+		VerticalAlign vertAlign) noexcept
 	{
 		auto drawPos = position;
 		switch (horizAlign)
@@ -49,7 +49,7 @@ namespace GameUtils
 	}
 
 	sf::Vector2f getAnchorPosition(Anchor srcAnchor, const sf::Vector2f& srcSize,
-		const sf::Vector2f& srcPos, const sf::Vector2f& anchorToSize)
+		const sf::Vector2f& srcPos, const sf::Vector2f& anchorToSize) noexcept
 	{
 		auto pos = srcPos;
 		if (srcAnchor == (Anchor::Bottom | Anchor::Left))
@@ -113,7 +113,7 @@ namespace GameUtils
 	}
 
 	void setAnchorPosSize(Anchor anchor, sf::Vector2f& pos, sf::Vector2f& size,
-		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize)
+		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize) noexcept
 	{
 		if (((int)anchor & (int)Anchor::Top) != 0)
 		{
@@ -210,7 +210,7 @@ namespace GameUtils
 		}
 	}
 
-	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val)
+	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept
 	{
 		if (num >= sf::Keyboard::Unknown && num < sf::Keyboard::KeyCount)
 		{

@@ -1,9 +1,9 @@
 #include "InputText.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
-std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16)
+std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -19,7 +19,7 @@ std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16)
 	}
 }
 
-bool InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+bool InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{

@@ -10,7 +10,6 @@
     "anchor": "right",
     "relativeCoords": false,
     "position": [{2}, {3}],
-    "onClick": "update{1}Click",
     "onRightClick": "use{1}Item",
     "onHoverEnter": "update{1}Text",
     "onHoverLeave": "hover{1}Leave"

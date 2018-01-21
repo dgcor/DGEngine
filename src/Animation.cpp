@@ -25,7 +25,7 @@ void Animation::updateTexture()
 	}
 }
 
-void Animation::updateFrameIndex()
+void Animation::updateFrameIndex() noexcept
 {
 	if (frameIdx < frameEnd)
 	{
@@ -42,7 +42,7 @@ void Animation::updateFrameIndex()
 	}
 }
 
-void Animation::update(Game& game)
+void Animation::update(Game& game) noexcept
 {
 	if (pause == true ||
 		frameEnd <= frameStart ||

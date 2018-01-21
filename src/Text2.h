@@ -14,17 +14,17 @@ private:
 	bool triggerOnChange{ false };
 
 public:
-	DrawableText* getDrawableText() { return text.get(); }
+	DrawableText* getDrawableText() noexcept { return text.get(); }
 
 	virtual std::string getText() const { return text->getText(); }
-	void setText(std::unique_ptr<DrawableText> text_) { text = std::move(text_); }
+	void setText(std::unique_ptr<DrawableText> text_) noexcept { text = std::move(text_); }
 	virtual void setText(const std::string& text_) { triggerOnChange = text->setText(text_); }
 
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
-	void setBinding(const std::string& binding);
-	void setBinding(const std::vector<std::string>& bindings_);
+	void setBinding(const std::string binding);
+	void setBinding(const std::vector<std::string> bindings_);
 	void setColor(const sf::Color& color) { text->setColor(color); }
 	void setFormat(const std::string& format_) { format = format_; }
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
@@ -32,8 +32,8 @@ public:
 	virtual void setHorizontalSpaceOffset(int offset) { text->setHorizontalSpaceOffset(offset); }
 	virtual void setVerticalSpaceOffset(int offset) { text->setVerticalSpaceOffset(offset); }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
 	virtual void setAnchor(const Anchor anchor) { text->setAnchor(anchor); }
 	virtual void updateSize(const Game& game) { text->updateSize(game); }
@@ -58,5 +58,4 @@ public:
 	{
 		return text->getProperty(prop, var);
 	}
-	virtual const Queryable* getQueryable(const std::string& prop) const { return nullptr; }
 };

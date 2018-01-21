@@ -37,14 +37,14 @@ namespace sf
 		PhysFSStream(const char* fileName);
 		virtual ~PhysFSStream();
 
-		virtual sf::Int64 read(void* data, sf::Int64 size);
-		virtual sf::Int64 seek(sf::Int64 position);
-		virtual sf::Int64 tell();
-		virtual sf::Int64 getSize();
+		virtual sf::Int64 read(void* data, sf::Int64 size) noexcept;
+		virtual sf::Int64 seek(sf::Int64 position) noexcept;
+		virtual sf::Int64 tell() noexcept;
+		virtual sf::Int64 getSize() noexcept;
 
-		bool hasError() const { return file == NULL; }
+		bool hasError() const noexcept { return file == NULL; }
 
-		const char* getLastError()
+		const char* getLastError() const noexcept
 		{
 #if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());

@@ -74,9 +74,9 @@ namespace Parser
 
 		if (playerClass == nullptr)
 		{
-			auto playerClassPtr = std::make_shared<PlayerClass>();
+			auto playerClassPtr = std::make_unique<PlayerClass>();
 			playerClass = playerClassPtr.get();
-			level->addPlayerClass(id, playerClassPtr);
+			level->addPlayerClass(id, std::move(playerClassPtr));
 		}
 
 		if (elem.HasMember("texturePacks") == true &&

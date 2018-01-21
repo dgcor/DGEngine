@@ -13,7 +13,7 @@ private:
 
 public:
 	ActQuestAdd(const std::string& idLevel_, Quest quest_)
-		: idLevel(idLevel_), quest(quest_) {}
+		: idLevel(idLevel_), quest(std::move(quest_)) {}
 
 	virtual bool execute(Game& game)
 	{

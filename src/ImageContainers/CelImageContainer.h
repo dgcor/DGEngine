@@ -26,14 +26,14 @@ public:
 	// if palette is null, gets an indexed image with the index in the red channel.
 	virtual sf::Image2 get(size_t index, const PaletteArray* palette) const;
 
-	void setDefaultSize(size_t defaultWidth_, size_t defaultHeight_)
+	void setDefaultSize(size_t defaultWidth_, size_t defaultHeight_) noexcept
 	{
 		defaultWidth = defaultWidth_;
 		defaultHeight = defaultHeight_;
 	}
 
-	virtual size_t size() const { return mFrames.size(); }
+	virtual size_t size() const noexcept { return mFrames.size(); }
 
 	///< if normal cel file, returns same as numFrames(), for an archive, the number of frames in each subcel
-	size_t AnimLength() const { return animLength; }
+	size_t AnimLength() const noexcept { return animLength; }
 };

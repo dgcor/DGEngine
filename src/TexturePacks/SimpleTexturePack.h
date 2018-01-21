@@ -26,18 +26,18 @@ public:
 		const std::shared_ptr<Palette>& palette_ = nullptr, bool isIndexed_ = false);
 
 	virtual bool get(size_t index,
-		const sf::Texture** texture, sf::IntRect& textureRect) const;
+		const sf::Texture** texture, sf::IntRect& textureRect) const noexcept;
 
 	virtual bool get(size_t indexX, size_t indexY,
-		const sf::Texture** texture, sf::IntRect& textureRect) const;
+		const sf::Texture** texture, sf::IntRect& textureRect) const noexcept;
 
-	virtual bool getTextureSize(sf::Vector2i& textureSize) const;
+	virtual bool getTextureSize(sf::Vector2i& textureSize) const noexcept;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return 1; }
-	virtual size_t totalSize() const { return t.numFrames; }
-	virtual size_t size(size_t index) const { return t.numFrames; }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return 1; }
+	virtual size_t totalSize() const noexcept { return t.numFrames; }
+	virtual size_t size(size_t index) const noexcept { return t.numFrames; }
 };
 
 class SimpleMultiTexturePack : public TexturePack
@@ -50,7 +50,7 @@ private:
 	bool indexed{ false };
 	bool texturesHaveSameSize{ false };
 
-	bool texturesHaveSameNumFrames() const { return numFrames != 0; }
+	bool texturesHaveSameNumFrames() const noexcept { return numFrames != 0; }
 
 public:
 	SimpleMultiTexturePack(const std::shared_ptr<Palette>& palette_, bool isIndexed_ = false)
@@ -67,11 +67,11 @@ public:
 	void addTexturePack(const std::shared_ptr<sf::Texture>& texture,
 		size_t xFrames, size_t yFrames, bool horizontalDirection = false);
 
-	size_t getTextureCount() const { return texVec.size(); }
+	size_t getTextureCount() const noexcept { return texVec.size(); }
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return texVec.size(); }
-	virtual size_t totalSize() const { return textureCount; }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return texVec.size(); }
+	virtual size_t totalSize() const noexcept { return textureCount; }
 	virtual size_t size(size_t index) const { return texVec[index].numFrames; }
 };

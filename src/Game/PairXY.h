@@ -8,15 +8,15 @@ struct PairXY
 	T x;
 	T y;
 
-	constexpr PairXY() : x(0), y(0) {}
-	constexpr PairXY(T x_, T y_) : x(x_), y(y_) {}
+	constexpr PairXY() noexcept: x(0), y(0) {}
+	constexpr PairXY(T x_, T y_) noexcept : x(x_), y(y_) {}
 
-	bool operator==(const PairXY& rhs) const
+	bool operator==(const PairXY& rhs) const noexcept
 	{
 		return (x == rhs.x) && (y == rhs.y);
 	}
 
-	bool operator!=(const PairXY& rhs) const
+	bool operator!=(const PairXY& rhs) const noexcept
 	{
 		return !operator==(rhs);
 	}

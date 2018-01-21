@@ -30,14 +30,14 @@ public:
 		barPosOffset = offset;
 		progressBar.setPosition(sprite.getPosition() + offset);
 	}
-	void setProgressBarSize(const sf::Vector2f& size) { barSize = size; }
+	void setProgressBarSize(const sf::Vector2f& size) noexcept { barSize = size; }
 	void setProgress(int percent_);
-	bool isComplete() const { return percent >= 100; }
+	bool isComplete() const noexcept { return percent >= 100; }
 
-	const std::shared_ptr<Action>& getAction() const { return action; }
-	void setAction(const std::shared_ptr<Action>& action_) { action = action_; }
+	const std::shared_ptr<Action>& getAction() const noexcept { return action; }
+	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 
-	void setAnchor(const Anchor anchor_) { anchor = anchor_; }
+	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 
 	void updateSize(const Game& game);
 

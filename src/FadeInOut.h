@@ -17,8 +17,8 @@ private:
 
 	bool updateEnableInput{ false };
 
-	bool HasFadeEnded(uint8_t alpha);
-	void UpdateFade(sf::Color& color);
+	bool HasFadeEnded(uint8_t alpha) noexcept;
+	void UpdateFade(sf::Color& color) noexcept;
 
 public:
 	FadeInOut(const sf::Vector2f& size_, bool isFadeOut_, bool enableInput_, sf::Color color_,
@@ -59,5 +59,5 @@ public:
 		setFillColor(color_);
 	}
 
-	virtual void update(Game& game);
+	virtual void update(Game& game) noexcept;
 };

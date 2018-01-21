@@ -16,8 +16,8 @@ public:
 	static sf::Shader Outline;
 	static sf::Shader Palette;
 
-	static bool supportsOutlines() { return hasOutline; }
-	static bool supportsPalettes() { return hasPalette; }
+	static bool supportsOutlines() noexcept { return hasOutline; }
+	static bool supportsPalettes() noexcept { return hasPalette; }
 
 	static void init();
 };

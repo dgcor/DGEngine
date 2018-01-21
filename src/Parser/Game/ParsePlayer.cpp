@@ -10,7 +10,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	void parsePlayerItem(Game& game, const Level& level,
-		ItemCollection& inventory, Player& player, size_t invIdx, const Value& elem)
+		const ItemCollection& inventory, Player& player, size_t invIdx, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
 		{
@@ -162,11 +162,9 @@ namespace Parser
 			return;
 		}
 
-		auto player = std::make_shared<Player>(class_, *level);
+		auto player = std::make_unique<Player>(class_, *level);
 
-		mapCell.addBack(player);
 		player->MapPosition(mapPos);
-		player->MapPosition(*level, mapPos);
 
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
 
@@ -229,13 +227,12 @@ namespace Parser
 
 		player->updateProperties();
 		player->updateTexture();
-		player->updateDrawPosition(*level);
-
-		level->addPlayer(player);
 
 		if (getBoolKey(elem, "currentPlayer") == true)
 		{
 			level->setCurrentPlayer(player.get());
 		}
+
+		level->addPlayer(std::move(player));
 	}
 }

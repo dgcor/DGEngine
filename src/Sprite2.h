@@ -15,7 +15,7 @@ private:
 	bool outlineEnabled{ false };
 
 public:
-	Sprite2() : sf::Sprite() {}
+	Sprite2() noexcept : sf::Sprite() {}
 	explicit Sprite2(const sf::Texture& texture,
 		const std::shared_ptr<Palette>& palette_ = nullptr)
 		: sf::Sprite(texture), palette(palette_) {}
@@ -28,16 +28,16 @@ public:
 		}
 	}
 
-	void setPalette(const std::shared_ptr<Palette>& pal) { palette = pal; }
-	bool hasPalette() const { return palette != nullptr; }
+	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { palette = pal; }
+	bool hasPalette() const noexcept { return palette != nullptr; }
 
-	void setOutline(const sf::Color& outline_, const sf::Color& ignore_)
+	void setOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
 	{
 		outline = outline_;
 		ignore = ignore_;
 	}
-	bool hasOutline() const { return outline.a > 0; }
-	void setOutlineEnabled(bool enable)
+	bool hasOutline() const noexcept { return outline.a > 0; }
+	void setOutlineEnabled(bool enable) noexcept
 	{
 		if (Shaders::supportsOutlines() == false)
 		{
@@ -45,7 +45,7 @@ public:
 		}
 		outlineEnabled = enable;
 	}
-	bool isOutlineEnabled() const { return outlineEnabled; }
+	bool isOutlineEnabled() const noexcept { return outlineEnabled; }
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{

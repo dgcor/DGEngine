@@ -37,8 +37,8 @@ public:
 		: id(id_), idx(idx_), textFormat(format_),
 		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
 
-	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
-	void Trim() { textOp |= TextUtils::TextOp::Trim; }
+	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
 	{
@@ -284,8 +284,8 @@ public:
 		: id(id_), idx(idx_), textFormat(format_),
 		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
 
-	void RemoveEmptyLines() { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
-	void Trim() { textOp |= TextUtils::TextOp::Trim; }
+	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
 	{

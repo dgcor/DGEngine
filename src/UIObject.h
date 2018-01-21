@@ -12,8 +12,8 @@ class UIObject : public virtual sf::Drawable, public virtual Queryable
 {
 public:
 	// Action
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) = 0;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) = 0;
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept { return nullptr; }
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept { return false; }
 
 	// Anchor
 	virtual void setAnchor(const Anchor anchor) = 0;
@@ -27,7 +27,7 @@ public:
 	virtual void Size(const sf::Vector2f& size) = 0;
 
 	// Update
-	virtual void update(Game& game) = 0;
+	virtual void update(Game& game) {}
 
 	// Visible
 	virtual bool Visible() const = 0;

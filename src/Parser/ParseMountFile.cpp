@@ -7,7 +7,7 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseMountFile(Game& game, const Value& elem)
+	void parseMountFile(const Game& game, const Value& elem)
 	{
 		auto file = getStringKey(elem, "file");
 		if (file.empty() == true)

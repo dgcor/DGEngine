@@ -37,20 +37,20 @@ protected:
 	void onTouchEnded(Game& game, bool contains);
 
 public:
-	bool getCaptureInputEvents() const { return captureInputEvents; }
-	void setCaptureInputEvents(bool captureEvents) { captureInputEvents = captureEvents; }
+	bool getCaptureInputEvents() const noexcept { return captureInputEvents; }
+	void setCaptureInputEvents(bool captureEvents) noexcept { captureInputEvents = captureEvents; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16);
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action);
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
 	bool click(Game& game, bool playSound);
-	void enable(bool enable) { enabled = enable; }
+	void enable(bool enable) noexcept { enabled = enable; }
 	void focus(Game& game) const;
-	void focusEnabled(bool focusOnClick_) { focusEnable = true; focusOnClick = focusOnClick_; }
-	bool isEnabled() const { return enabled; }
-	void setClickSound(const sf::SoundBuffer* buffer) { clickSound = buffer; }
-	void setClickUp(bool clickUp_) { clickUp = clickUp_; }
-	void setFocusSound(const sf::SoundBuffer* buffer) { focusSound = buffer; }
+	void focusEnabled(bool focusOnClick_) noexcept { focusEnable = true; focusOnClick = focusOnClick_; }
+	bool isEnabled() const noexcept { return enabled; }
+	void setClickSound(const sf::SoundBuffer* buffer) noexcept { clickSound = buffer; }
+	void setClickUp(bool clickUp_) noexcept { clickUp = clickUp_; }
+	void setFocusSound(const sf::SoundBuffer* buffer) noexcept { focusSound = buffer; }
 
 	void update(Game& game, bool contains);
 

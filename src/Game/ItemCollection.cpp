@@ -1,5 +1,5 @@
 #include "ItemCollection.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 ItemCollection::ItemCollection(size_t size_)
 {
@@ -16,6 +16,7 @@ void ItemCollection::init(size_t size_)
 	uint8_t newSize = (size_ > 0xFF ? 0xFF : (uint8_t)size_);
 	size = ItemXY(newSize, 1);
 	items.resize(newSize);
+	resetIndexes();
 }
 
 void ItemCollection::init(const ItemXY& size_)
@@ -30,6 +31,15 @@ void ItemCollection::init(const ItemXY& size_)
 		size = size_;
 	}
 	items.resize(size.x * size.y);
+	resetIndexes();
+}
+
+void ItemCollection::resetIndexes() noexcept
+{
+	for (auto& item : items)
+	{
+		item.second = -1;
+	}
 }
 
 void ItemCollection::allowType(const std::string& type)
@@ -55,14 +65,28 @@ bool ItemCollection::isTypeAllowed(uint16_t typeHash16) const
 	return (std::find(allowedTypes.begin(), allowedTypes.end(), typeHash16) != allowedTypes.end());
 }
 
-bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item)
+Item* ItemCollection::get(size_t idx) const
 {
-	std::shared_ptr<Item> oldItem;
+	if (idx < items.size())
+	{
+		if (items[idx].second >= 0 &&
+			((size_t)items[idx].second) < items.size())
+		{
+			return items[(size_t)items[idx].second].first.get();
+		}
+		return items[idx].first.get();
+	}
+	return nullptr;
+}
+
+bool ItemCollection::set(size_t idx, std::unique_ptr<Item>& item)
+{
+	std::unique_ptr<Item> oldItem;
 	return set(idx, item, oldItem);
 }
 
-bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item,
-	std::shared_ptr<Item>& oldItem)
+bool ItemCollection::set(size_t idx, std::unique_ptr<Item>& item,
+	std::unique_ptr<Item>& oldItem)
 {
 	if (idx < items.size())
 	{
@@ -86,14 +110,14 @@ bool ItemCollection::set(size_t idx, const std::shared_ptr<Item>& item,
 	return false;
 }
 
-bool ItemCollection::set(const ItemXY& position, const std::shared_ptr<Item>& item)
+bool ItemCollection::set(const ItemXY& position, std::unique_ptr<Item>& item)
 {
-	std::shared_ptr<Item> oldItem;
+	std::unique_ptr<Item> oldItem;
 	return set(position, item, oldItem);
 }
 
 bool ItemCollection::set(const ItemXY& position,
-	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
 	size_t idx = position.x + position.y * size.x;
 	if (idx < items.size())
@@ -116,15 +140,16 @@ bool ItemCollection::set(const ItemXY& position,
 }
 
 bool ItemCollection::setAndDontEnforceItemSize(size_t idx,
-	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
-	oldItem = items[idx];
-	items[idx] = item;
+	oldItem = std::move(items[idx].first);
+	items[idx].first = std::move(item);
+	items[idx].second = -1;
 	return true;
 }
 
 bool ItemCollection::setAndEnforceItemSize(const ItemXY& position,
-	const std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
+	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
 	if (size.x == 0 || size.y == 0)
 	{
@@ -153,7 +178,7 @@ bool ItemCollection::setAndEnforceItemSize(const ItemXY& position,
 		posEndY = size.y;
 		pos.y = size.y - itemSize.y;
 	}
-	std::shared_ptr<Item> oldItemTemp;
+	Item* oldItemTemp = nullptr;
 	for (size_t i = pos.x; i < posEndX; i++)
 	{
 		for (size_t j = pos.y; j < posEndY; j++)
@@ -174,30 +199,54 @@ bool ItemCollection::setAndEnforceItemSize(const ItemXY& position,
 	}
 	if (oldItemTemp != nullptr)
 	{
+		int32_t oldIdx = -1;
 		for (size_t i = 0; i < items.size(); i++)
 		{
-			if (items[i] == oldItemTemp)
+			if (oldIdx >= 0)
 			{
-				items[i] = nullptr;
+				if (items[i].second == oldIdx)
+				{
+					items[i].second = -1;
+				}
+				continue;
+			}
+			if (items[i].first.get() == oldItemTemp)
+			{
+				oldIdx = (int32_t)i;
+				oldItem = std::move(items[i].first);
 			}
 		}
 	}
-	oldItem = oldItemTemp;
+	else
+	{
+		oldItem = nullptr;
+	}
+
+	int32_t newIdx = -1;
 	for (size_t i = pos.x; i < posEndX; i++)
 	{
 		for (size_t j = pos.y; j < posEndY; j++)
 		{
-			items[i + j * size.x] = item;
+			size_t idx = i + j * size.x;
+			if (newIdx >= 0)
+			{
+				items[idx].second = newIdx;
+				continue;
+			}
+			items[idx].first = std::move(item);
+			items[idx].second = -1;
+			newIdx = (int32_t)idx;
 		}
 	}
 	return true;
 }
 
-bool ItemCollection::isFull() const
+bool ItemCollection::isFull() const noexcept
 {
 	for (const auto& item : items)
 	{
-		if (item == nullptr)
+		if (item.first == nullptr &&
+			item.second < 0)
 		{
 			return false;
 		}
@@ -207,11 +256,11 @@ bool ItemCollection::isFull() const
 
 bool ItemCollection::isItemSlotInUse(size_t idx) const
 {
-	if (idx < items.size())
+	if (idx >= items.size())
 	{
-		return isItemSlotInUse(ItemXY((uint8_t)(idx % size.x), (uint8_t)(idx / size.x)));
+		return false;
 	}
-	return false;
+	return items[idx].first != nullptr;
 }
 
 bool ItemCollection::isItemSlotInUse(const ItemXY& position) const
@@ -221,29 +270,7 @@ bool ItemCollection::isItemSlotInUse(const ItemXY& position) const
 	{
 		return false;
 	}
-	auto item = get(position).get();
-	if (item == nullptr)
-	{
-		return false;
-	}
-	bool isPrevItemSameX = false;
-	bool isPrevItemSameY = false;
-	if (position.x > 0)
-	{
-		isPrevItemSameX = (get(position.x - 1, position.y).get() == item);
-	}
-	if (position.y > 0)
-	{
-		isPrevItemSameY = (get(position.x, position.y - 1).get() == item);
-	}
-	if (isPrevItemSameX || isPrevItemSameY)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
+	return isItemSlotInUse(position.x + position.y * size.x);
 }
 
 bool ItemCollection::isItemSlotEmpty(int x, int y,
@@ -256,7 +283,9 @@ bool ItemCollection::isItemSlotEmpty(int x, int y,
 	{
 		for (size_t j = y; j < sizeY; j++)
 		{
-			if (get(i, j).get() != nullptr)
+			size_t idx = i + j * size.x;
+			if (items[idx].first != nullptr ||
+				items[idx].second >= 0)
 			{
 				return false;
 			}
@@ -266,7 +295,7 @@ bool ItemCollection::isItemSlotEmpty(int x, int y,
 	return true;
 }
 
-bool ItemCollection::getItemSlot(const Item& item,
+bool ItemCollection::getFreeItemSlot(const Item& item,
 	size_t& itemIdx, InventoryPosition invPos) const
 {
 	if (isTypeAllowed(item.Class()->TypeHash16()) == false)
@@ -347,14 +376,14 @@ bool ItemCollection::getItemSlot(const Item& item,
 	return false;
 }
 
-bool ItemCollection::hasItemSlot(const Item& item) const
+bool ItemCollection::hasFreeItemSlot(const Item& item) const
 {
 	size_t itemIdx;
-	return getItemSlot(item, itemIdx);
+	return getFreeItemSlot(item, itemIdx);
 }
 
 bool ItemCollection::find(uint16_t itemTypeHash16,
-	size_t& idx, std::shared_ptr<Item>& item) const
+	size_t& idx, Item*& item) const
 {
 	auto size = items.size();
 	if (idx < size)
@@ -363,10 +392,10 @@ bool ItemCollection::find(uint16_t itemTypeHash16,
 		{
 			if (isItemSlotInUse(i) == true)
 			{
-				if (items[i]->Class()->TypeHash16() == itemTypeHash16)
+				if (items[i].first->Class()->TypeHash16() == itemTypeHash16)
 				{
 					idx = i;
-					item = items[i];
+					item = items[i].first.get();
 					return true;
 				}
 			}
@@ -384,7 +413,7 @@ unsigned ItemCollection::countFreeSlots(const ItemClass& itemClass) const
 	{
 		for (const auto& item : items)
 		{
-			if (item == nullptr)
+			if (item.first == nullptr || item.second < 0)
 			{
 				count++;
 			}

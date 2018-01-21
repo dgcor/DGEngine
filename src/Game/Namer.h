@@ -7,8 +7,8 @@
 
 struct NameValue
 {
-	LevelObjValue min;
-	LevelObjValue max;
+	LevelObjValue min{ 0 };
+	LevelObjValue max{ 0 };
 	std::string text;
 };
 
@@ -24,7 +24,8 @@ private:
 	std::vector<NameValueInterval> nameValues;
 
 public:
-	Namer(const std::vector<NameValueInterval>& nameValues_) : nameValues(nameValues_) {}
+	Namer(std::vector<NameValueInterval> nameValues_) noexcept
+		: nameValues(std::move(nameValues_)) {}
 
 	std::string getName(const Queryable& obj, uint16_t skipFirst = 0) const;
 };

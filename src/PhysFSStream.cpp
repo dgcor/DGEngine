@@ -34,7 +34,7 @@ sf::PhysFSStream::~PhysFSStream()
 	}
 }
 
-sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size)
+sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size) noexcept
 {
 #if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 	return PHYSFS_readBytes(file, data, (PHYSFS_uint64)size);
@@ -43,7 +43,7 @@ sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size)
 #endif
 }
 
-sf::Int64 sf::PhysFSStream::seek(sf::Int64 position)
+sf::Int64 sf::PhysFSStream::seek(sf::Int64 position) noexcept
 {
 	if (PHYSFS_seek(file, position) == 0)
 	{
@@ -52,12 +52,12 @@ sf::Int64 sf::PhysFSStream::seek(sf::Int64 position)
 	return position;
 }
 
-sf::Int64 sf::PhysFSStream::tell()
+sf::Int64 sf::PhysFSStream::tell() noexcept
 {
 	return PHYSFS_tell(file);
 }
 
-sf::Int64 sf::PhysFSStream::getSize()
+sf::Int64 sf::PhysFSStream::getSize() noexcept
 {
 	return PHYSFS_fileLength(file);
 }

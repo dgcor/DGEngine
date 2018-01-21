@@ -6,7 +6,7 @@
 class ActGameClearPlayingSounds : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		game.Resources().clearPlayingSounds();
 		return true;
@@ -29,9 +29,9 @@ private:
 	bool enable;
 
 public:
-	ActGameEnableInput(bool enable_) : enable(enable_) {}
+	ActGameEnableInput(bool enable_) noexcept : enable(enable_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		game.EnableInput(enable);
 		return true;
@@ -44,9 +44,9 @@ private:
 	bool pause;
 
 public:
-	ActGamePauseOnFocusLoss(bool pause_) : pause(pause_) {}
+	ActGamePauseOnFocusLoss(bool pause_) noexcept : pause(pause_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		game.PauseOnFocusLoss(pause);
 		return true;
@@ -59,7 +59,7 @@ private:
 	Variable volume;
 
 public:
-	ActGameSetMusicVolume(const Variable& volume_) : volume(volume_) {}
+	ActGameSetMusicVolume(const Variable& volume_) noexcept : volume(volume_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -83,12 +83,12 @@ public:
 	ActGameSetProperty(const std::string& prop_, const Variable& value_)
 		: prop(prop_), value(value_) {}
 
-	void setPropRange(const sf::Vector2i& propRange_)
+	void setPropRange(const sf::Vector2i& propRange_) noexcept
 	{
 		propRange = propRange_;
 		hasPropRange = true;
 	}
-	void setValueRange(const sf::Vector2i& valueRange_)
+	void setValueRange(const sf::Vector2i& valueRange_) noexcept
 	{
 		valueRange = valueRange_;
 		hasValueRange = true;
@@ -119,7 +119,7 @@ private:
 	Variable volume;
 
 public:
-	ActGameSetSoundVolume(const Variable& volume_) : volume(volume_) {}
+	ActGameSetSoundVolume(const Variable& volume_) noexcept : volume(volume_) {}
 
 	virtual bool execute(Game& game)
 	{

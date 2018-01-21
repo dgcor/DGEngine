@@ -1,7 +1,7 @@
 #include "Circle.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 void Circle::updateSize(const Game& game)
 {

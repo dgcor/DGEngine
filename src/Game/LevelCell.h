@@ -10,47 +10,46 @@ class LevelCell
 private:
 	int16_t minIndex{ -1 };
 	int8_t sol{ 0 };
-	std::vector<std::shared_ptr<LevelObject>> objects;
+	std::vector<LevelObject*> objects;
 
 public:
-	using iterator = std::vector<std::shared_ptr<LevelObject>>::iterator;
-	using const_iterator = std::vector<std::shared_ptr<LevelObject>>::const_iterator;
-	using reverse_iterator = std::vector<std::shared_ptr<LevelObject>>::reverse_iterator;
-	using const_reverse_iterator = std::vector<std::shared_ptr<LevelObject>>::const_reverse_iterator;
+	using iterator = std::vector<LevelObject*>::iterator;
+	using const_iterator = std::vector<LevelObject*>::const_iterator;
+	using reverse_iterator = std::vector<LevelObject*>::reverse_iterator;
+	using const_reverse_iterator = std::vector<LevelObject*>::const_reverse_iterator;
 
-	iterator begin() { return objects.begin(); }
-	iterator end() { return objects.end(); }
-	const_iterator begin() const { return objects.begin(); }
-	const_iterator end() const { return objects.end(); }
-	const_iterator cbegin() const { return objects.cbegin(); }
-	const_iterator cend() const { return objects.cend(); }
-	reverse_iterator rbegin() { return objects.rbegin(); }
-	reverse_iterator rend() { return objects.rend(); }
-	const_reverse_iterator rbegin() const { return objects.rbegin(); }
-	const_reverse_iterator rend() const { return objects.rend(); }
-	const_reverse_iterator crbegin() const { return objects.crbegin(); }
-	const_reverse_iterator crend() const { return objects.crend(); }
+	iterator begin() noexcept { return objects.begin(); }
+	iterator end() noexcept { return objects.end(); }
+	const_iterator begin() const noexcept { return objects.begin(); }
+	const_iterator end() const noexcept { return objects.end(); }
+	const_iterator cbegin() const noexcept { return objects.cbegin(); }
+	const_iterator cend() const noexcept { return objects.cend(); }
+	reverse_iterator rbegin() noexcept { return objects.rbegin(); }
+	reverse_iterator rend() noexcept { return objects.rend(); }
+	const_reverse_iterator rbegin() const noexcept { return objects.rbegin(); }
+	const_reverse_iterator rend() const noexcept { return objects.rend(); }
+	const_reverse_iterator crbegin() const noexcept { return objects.crbegin(); }
+	const_reverse_iterator crend() const noexcept { return objects.crend(); }
 
-	int16_t MinIndex() const { return minIndex; }
-	void MinIndex(int16_t minIndex_) { minIndex = minIndex_; }
-	void Sol(int8_t sol_) { sol = sol_; }
+	int16_t MinIndex() const noexcept { return minIndex; }
+	void MinIndex(int16_t minIndex_) noexcept { minIndex = minIndex_; }
+	void Sol(int8_t sol_) noexcept { sol = sol_; }
 
-	bool PassableIgnoreObject() const { return !(sol & 0x01); }
+	bool PassableIgnoreObject() const noexcept { return !(sol & 0x01); }
+	bool PassableIgnoreObject(const LevelObject* ignoreObj) const;
 	bool Passable() const;
 
-	std::shared_ptr<LevelObject> back() const;
-	std::shared_ptr<LevelObject> front() const;
+	LevelObject* back() const;
+	LevelObject* front() const;
 
-	bool hasObjects() const { return objects.empty() == false; }
-
-	std::shared_ptr<LevelObject> getObject(LevelObject* obj) const;
+	bool hasObjects() const noexcept { return objects.empty() == false; }
 
 	template <class T>
-	std::shared_ptr<T> getObject() const
+	T* getObject() const noexcept
 	{
-		for (const auto& object : objects)
+		for (const auto object : objects)
 		{
-			auto castObj = std::dynamic_pointer_cast<T>(object);
+			const auto castObj = dynamic_cast<T*>(object);
 			if (castObj != nullptr)
 			{
 				return castObj;
@@ -59,7 +58,22 @@ public:
 		return nullptr;
 	}
 
-	void addFront(const std::shared_ptr<LevelObject>& obj);
-	void addBack(const std::shared_ptr<LevelObject>& obj);
-	void deleteObject(LevelObject* obj);
+	void addFront(LevelObject* obj);
+	void addBack(LevelObject* obj);
+	void removeObject(const LevelObject* obj);
+
+	template <class T>
+	T* removeObject()
+	{
+		for (auto it = objects.begin(); it != objects.end(); ++it)
+		{
+			auto oldObj = dynamic_cast<T*>(*it);
+			if (oldObj != nullptr)
+			{
+				objects.erase(it);
+				return oldObj;
+			}
+		}
+		return nullptr;
+	}
 };

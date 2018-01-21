@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Game/Level.h"
 
-void BaseLevelObject::checkAndUpdateTextureIndex()
+void BaseLevelObject::checkAndUpdateTextureIndex() noexcept
 {
 	if (currentTextureIdx < textureStartIdx || currentTextureIdx >= textureEndIdx)
 	{
@@ -10,7 +10,7 @@ void BaseLevelObject::checkAndUpdateTextureIndex()
 	}
 }
 
-bool BaseLevelObject::hasValidState() const
+bool BaseLevelObject::hasValidState() const noexcept
 {
 	return (texturePack == nullptr || textureStartIdx > textureEndIdx) == false;
 }
@@ -102,25 +102,32 @@ void BaseLevelObject::updateHover(Game& game, Level& level, LevelObject* levelOb
 	}
 }
 
-std::shared_ptr<LevelObject> BaseLevelObject::updateMapPosition(
-	Level& level, const MapCoord& pos, LevelObject* levelObj)
+void BaseLevelObject::updateMapPositionBack(Level& level, const MapCoord pos,
+	LevelObject* levelObj)
 {
-	auto oldObj = level.Map()[mapPosition].getObject(levelObj);
-	level.Map()[mapPosition].deleteObject(levelObj);
+	if (level.Map().isMapCoordValid(mapPosition) == true)
+	{
+		level.Map()[mapPosition].removeObject(levelObj);
+	}
+	if (level.Map().isMapCoordValid(pos) == true)
+	{
+		level.Map()[pos].addBack(levelObj);
+	}
 	mapPosition = pos;
-	return oldObj;
 }
 
-void BaseLevelObject::updateMapPositionBack(Level& level, const MapCoord& pos, LevelObject* levelObj)
+void BaseLevelObject::updateMapPositionFront(Level& level, const MapCoord pos,
+	LevelObject* levelObj)
 {
-	auto obj = updateMapPosition(level, pos, levelObj);
-	level.Map()[mapPosition].addBack(obj);
-}
-
-void BaseLevelObject::updateMapPositionFront(Level& level, const MapCoord& pos, LevelObject* levelObj)
-{
-	auto obj = updateMapPosition(level, pos, levelObj);
-	level.Map()[mapPosition].addFront(obj);
+	if (level.Map().isMapCoordValid(mapPosition) == true)
+	{
+		level.Map()[mapPosition].removeObject(levelObj);
+	}
+	if (level.Map().isMapCoordValid(pos) == true)
+	{
+		level.Map()[pos].addFront(levelObj);
+	}
+	mapPosition = pos;
 }
 
 bool BaseLevelObject::updateTexture()

@@ -11,14 +11,14 @@ class BitmapFont
 private:
 	std::shared_ptr<sf::Texture> texture;
 	sf::IntRect chars[256];
-	int newLine;
-	int space;
-	int rows;
-	int columns;
-	int padding;
+	int newLine{ 0 };
+	int space{ 0 };
+	int rows{ 0 };
+	int columns{ 0 };
+	int padding{ 0 };
 
 	void calculateCharSizes(const sf::Image& img, bool verticalDirection);
-	float calculateLineLength(const char* text, int horizSpaceOffset) const;
+	float calculateLineLength(const char* text, int horizSpaceOffset) const noexcept;
 
 public:
 	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
@@ -28,7 +28,7 @@ public:
 	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
 		int padding_, bool verticalDirection, const std::vector<uint8_t>& charSizes);
 
-	int getNewLine() const { return newLine; }
+	int getNewLine() const noexcept { return newLine; }
 
 	sf::Vector2f calculateSize(const std::string& text) const;
 	sf::Vector2f calculateSize(const std::string& text,

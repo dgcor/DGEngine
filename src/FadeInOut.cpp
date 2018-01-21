@@ -1,7 +1,7 @@
 #include "FadeInOut.h"
 #include "Game.h"
 
-bool FadeInOut::HasFadeEnded(uint8_t alpha)
+bool FadeInOut::HasFadeEnded(uint8_t alpha) noexcept
 {
 	if (isFadeOut == true)
 	{
@@ -13,7 +13,7 @@ bool FadeInOut::HasFadeEnded(uint8_t alpha)
 	}
 }
 
-void FadeInOut::UpdateFade(sf::Color& color)
+void FadeInOut::UpdateFade(sf::Color& color) noexcept
 {
 	if (isFadeOut == true)
 	{
@@ -39,7 +39,7 @@ void FadeInOut::UpdateFade(sf::Color& color)
 	}
 }
 
-void FadeInOut::update(Game& game)
+void FadeInOut::update(Game& game) noexcept
 {
 	if (updateEnableInput == true)
 	{

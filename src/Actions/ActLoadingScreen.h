@@ -9,7 +9,7 @@ private:
 	int progress;
 
 public:
-	ActLoadingScreenSetProgress(int progress_) : progress(progress_) {}
+	ActLoadingScreenSetProgress(int progress_) noexcept : progress(progress_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -30,7 +30,7 @@ public:
 class ActLoadingScreenClear : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		game.setLoadingScreen(nullptr);
 		return true;

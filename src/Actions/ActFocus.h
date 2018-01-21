@@ -35,7 +35,7 @@ private:
 	bool playSound;
 
 public:
-	ActFocusClick(bool playSound_) : playSound(playSound_) {}
+	ActFocusClick(bool playSound_) noexcept : playSound(playSound_) {}
 
 	virtual bool execute(Game& game)
 	{

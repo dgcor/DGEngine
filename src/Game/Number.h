@@ -14,41 +14,41 @@ private:
 	};
 
 public:
-	constexpr Number32() : type(0), intNum(0) {}
-	constexpr explicit Number32(int32_t num) : type(0), intNum(num) {}
-	constexpr explicit Number32(uint32_t num) : type(1), uintNum(num) {}
-	constexpr explicit Number32(float num) : type(2), floatNum(num) {}
+	constexpr Number32() noexcept : type(0), intNum(0) {}
+	constexpr explicit Number32(int32_t num) noexcept : type(0), intNum(num) {}
+	constexpr explicit Number32(uint32_t num) noexcept : type(1), uintNum(num) {}
+	constexpr explicit Number32(float num) noexcept : type(2), floatNum(num) {}
 
-	constexpr bool isInt32() const
+	constexpr bool isInt32() const noexcept
 	{
 		return type == 0;
 	}
-	constexpr bool isUInt32() const
+	constexpr bool isUInt32() const noexcept
 	{
 		return type == 1;
 	}
-	constexpr bool isFloat() const
+	constexpr bool isFloat() const noexcept
 	{
 		return type == 2;
 	}
 
-	constexpr void setInt32(int32_t num)
+	constexpr void setInt32(int32_t num) noexcept
 	{
 		type = 0;
 		intNum = num;
 	}
-	constexpr void setUInt32(uint32_t num)
+	constexpr void setUInt32(uint32_t num) noexcept
 	{
 		type = 1;
 		uintNum = num;
 	}
-	constexpr void setFloat(float num)
+	constexpr void setFloat(float num) noexcept
 	{
 		type = 2;
 		floatNum = num;
 	}
 
-	constexpr int32_t getInt32() const
+	constexpr int32_t getInt32() const noexcept
 	{
 		switch (type)
 		{
@@ -61,7 +61,7 @@ public:
 			return (int32_t)floatNum;
 		}
 	}
-	constexpr uint32_t getUInt32() const
+	constexpr uint32_t getUInt32() const noexcept
 	{
 		switch (type)
 		{
@@ -74,7 +74,7 @@ public:
 			return (uint32_t)floatNum;
 		}
 	}
-	constexpr float getFloat() const
+	constexpr float getFloat() const noexcept
 	{
 		switch (type)
 		{
@@ -87,7 +87,7 @@ public:
 			return floatNum;
 		}
 	}
-	constexpr int64_t getInt64() const
+	constexpr int64_t getInt64() const noexcept
 	{
 		switch (type)
 		{
@@ -100,7 +100,7 @@ public:
 			return (int64_t)floatNum;
 		}
 	}
-	constexpr double getDouble() const
+	constexpr double getDouble() const noexcept
 	{
 		switch (type)
 		{
@@ -114,7 +114,7 @@ public:
 		}
 	}
 
-	constexpr Number32& operator+=(const int64_t& right)
+	constexpr Number32& operator+=(const int64_t& right) noexcept
 	{
 		switch (type)
 		{
@@ -131,7 +131,7 @@ public:
 		}
 		return *this;
 	}
-	constexpr Number32& operator+=(const double& right)
+	constexpr Number32& operator+=(const double& right) noexcept
 	{
 		switch (type)
 		{
@@ -148,7 +148,7 @@ public:
 		}
 		return *this;
 	}
-	constexpr Number32& operator-=(const int64_t& right)
+	constexpr Number32& operator-=(const int64_t& right) noexcept
 	{
 		switch (type)
 		{
@@ -165,7 +165,7 @@ public:
 		}
 		return *this;
 	}
-	constexpr Number32& operator-=(const double& right)
+	constexpr Number32& operator-=(const double& right) noexcept
 	{
 		switch (type)
 		{

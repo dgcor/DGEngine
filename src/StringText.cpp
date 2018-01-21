@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 void StringText::calcLineCount()
 {

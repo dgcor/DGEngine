@@ -1,7 +1,7 @@
 #include "Rectangle.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 void Rectangle::updateSize(const Game& game)
 {

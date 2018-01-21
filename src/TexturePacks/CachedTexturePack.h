@@ -28,13 +28,13 @@ public:
 		return get(indexX, texture, textureRect);
 	}
 
-	virtual bool getTextureSize(sf::Vector2i& textureSize) const { return false; }
+	virtual bool getTextureSize(sf::Vector2i& textureSize) const noexcept { return false; }
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return 1; }
-	virtual size_t totalSize() const { return imgPack->size(); }
-	virtual size_t size(size_t index) const { return imgPack->size(); }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return 1; }
+	virtual size_t totalSize() const noexcept { return imgPack->size(); }
+	virtual size_t size(size_t index) const noexcept { return imgPack->size(); }
 };
 
 class CachedMultiTexturePack : public TexturePack
@@ -57,11 +57,11 @@ public:
 	virtual bool get(size_t indexX, size_t indexY,
 		const sf::Texture** texture, sf::IntRect& textureRect) const;
 
-	virtual bool getTextureSize(sf::Vector2i& textureSize) const { return false; }
+	virtual bool getTextureSize(sf::Vector2i& textureSize) const noexcept { return false; }
 
-	virtual const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	virtual bool isIndexed() const { return indexed; }
-	virtual size_t packSize() const { return imgVec.size(); }
-	virtual size_t totalSize() const { return textureCount; }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	virtual bool isIndexed() const noexcept { return indexed; }
+	virtual size_t packSize() const noexcept { return imgVec.size(); }
+	virtual size_t totalSize() const noexcept { return textureCount; }
 	virtual size_t size(size_t index) const { return imgVec[index]->size(); }
 };

@@ -1,8 +1,8 @@
 #include "ParseImageContainer.h"
 #include "ImageContainers/CelImageContainer.h"
 #include "ImageContainers/SimpleImageContainer.h"
-#include "Utils.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

@@ -20,7 +20,7 @@ namespace Utils
 	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter);
 
 	template <class T>
-	constexpr T str2intT(const char* str)
+	constexpr T str2intT(const char* str) noexcept
 	{
 		T hash = 5381;
 		char c = 0;
@@ -44,7 +44,7 @@ namespace Utils
 	std::string removeEmptyLines(const std::string& str);
 
 	template <class T>
-	long normalizeNumber(long val, const T& inputRange, const T& outputRange)
+	long normalizeNumber(long val, const T& inputRange, const T& outputRange) noexcept
 	{
 		if (val < (long)inputRange.x)
 		{

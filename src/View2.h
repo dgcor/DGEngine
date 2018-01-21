@@ -20,7 +20,7 @@ public:
 	void updateSize(const Game& game);
 	void updateViewport(const Game& game);
 
-	void setAnchor(const Anchor anchor_) { anchor = anchor_; }
+	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 
 	const sf::Vector2f& getCenter() const { return view.getCenter(); }
 	void setCenter(float x, float y) { view.setCenter(x, y); }
@@ -28,10 +28,10 @@ public:
 
 	sf::Vector2f getPosition(const sf::Vector2f& point) const;
 
-	const sf::Vector2f& getPosition() const { return position; }
-	void setPosition(const sf::Vector2f& position_) { position = position_; }
+	const sf::Vector2f& getPosition() const noexcept { return position; }
+	void setPosition(const sf::Vector2f& position_) noexcept { position = position_; }
 
-	const sf::Vector2f& getSize() const { return sizeNoZoom; }
+	const sf::Vector2f& getSize() const noexcept { return sizeNoZoom; }
 	void setSize(float width, float height)
 	{
 		view.setSize(width, height);
@@ -43,11 +43,11 @@ public:
 		sizeNoZoom = size_;
 	}
 
-	const sf::View& getView() const { return view; }
+	const sf::View& getView() const noexcept { return view; }
 
-	float getZoom() const { return zoomFactor; }
+	float getZoom() const noexcept { return zoomFactor; }
 
-	void setZoom(float factor) { zoomFactor = factor; }
+	void setZoom(float factor) noexcept { zoomFactor = factor; }
 
 	void reset(const sf::FloatRect& rectangle) { view.reset(rectangle); }
 	void reset();

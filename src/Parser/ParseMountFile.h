@@ -5,5 +5,5 @@
 
 namespace Parser
 {
-	void parseMountFile(Game& game, const rapidjson::Value& elem);
+	void parseMountFile(const Game& game, const rapidjson::Value& elem);
 }

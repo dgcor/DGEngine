@@ -1,12 +1,32 @@
 #include "LevelCell.h"
 
+bool LevelCell::PassableIgnoreObject(const LevelObject* ignoreObj) const
+{
+	if (PassableIgnoreObject() == false)
+	{
+		return false;
+	}
+	for (const auto obj : objects)
+	{
+		if (obj == ignoreObj)
+		{
+			continue;
+		}
+		if (obj->Passable() == false)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 bool LevelCell::Passable() const
 {
 	if (PassableIgnoreObject() == false)
 	{
 		return false;
 	}
-	for (const auto& obj : objects)
+	for (const auto obj : objects)
 	{
 		if (obj->Passable() == false)
 		{
@@ -16,7 +36,7 @@ bool LevelCell::Passable() const
 	return true;
 }
 
-std::shared_ptr<LevelObject> LevelCell::back() const
+LevelObject* LevelCell::back() const
 {
 	if (objects.empty() == false)
 	{
@@ -25,7 +45,7 @@ std::shared_ptr<LevelObject> LevelCell::back() const
 	return nullptr;
 }
 
-std::shared_ptr<LevelObject> LevelCell::front() const
+LevelObject* LevelCell::front() const
 {
 	if (objects.empty() == false)
 	{
@@ -34,33 +54,21 @@ std::shared_ptr<LevelObject> LevelCell::front() const
 	return nullptr;
 }
 
-std::shared_ptr<LevelObject> LevelCell::getObject(LevelObject* obj) const
-{
-	for (const auto& object : objects)
-	{
-		if (object.get() == obj)
-		{
-			return object;
-		}
-	}
-	return nullptr;
-}
-
-void LevelCell::addFront(const std::shared_ptr<LevelObject>& obj)
+void LevelCell::addFront(LevelObject* obj)
 {
 	objects.insert(objects.begin(), obj);
 }
 
-void LevelCell::addBack(const std::shared_ptr<LevelObject>& obj)
+void LevelCell::addBack(LevelObject* obj)
 {
 	objects.push_back(obj);
 }
 
-void LevelCell::deleteObject(LevelObject* obj)
+void LevelCell::removeObject(const LevelObject* obj)
 {
 	for (auto it = objects.begin(); it != objects.end(); ++it)
 	{
-		if (it->get() == obj)
+		if (*it == obj)
 		{
 			objects.erase(it);
 			return;

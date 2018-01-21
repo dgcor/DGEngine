@@ -20,7 +20,7 @@ public:
 
 	void addTextureIndex(size_t index);
 
-	virtual size_t packSize() const { return 1; }
-	virtual size_t totalSize() const { return numIndexedTextures; }
-	virtual size_t size(size_t index) const { return numIndexedTextures; }
+	virtual size_t packSize() const noexcept { return 1; }
+	virtual size_t totalSize() const noexcept { return numIndexedTextures; }
+	virtual size_t size(size_t index) const noexcept { return numIndexedTextures; }
 };

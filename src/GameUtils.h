@@ -16,13 +16,13 @@ namespace GameUtils
 	const int DoubleClickDelay = 500;
 
 	sf::Vector2f getAlignmentPosition(const sf::Vector2f& position, const sf::Vector2f& size,
-		HorizontalAlign horizAlign, VerticalAlign vertAlign);
+		HorizontalAlign horizAlign, VerticalAlign vertAlign) noexcept;
 
 	sf::Vector2f getAnchorPosition(Anchor srcAnchor, const sf::Vector2f& srcSize,
-		const sf::Vector2f& srcPos, const sf::Vector2f& anchorToSize);
+		const sf::Vector2f& srcPos, const sf::Vector2f& anchorToSize) noexcept;
 
 	void setAnchorPosSize(Anchor anchor, sf::Vector2f& pos, sf::Vector2f& size,
-		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize);
+		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize) noexcept;
 
 	Anchor getAnchor(const std::string& str, Anchor val);
 
@@ -30,7 +30,7 @@ namespace GameUtils
 
 	VerticalAlign getVerticalAlignment(const std::string& str);
 
-	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val);
+	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept;
 
 	sf::Keyboard::Key getKeyCode(const std::string& str, sf::Keyboard::Key val);
 

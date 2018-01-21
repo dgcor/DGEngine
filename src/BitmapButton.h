@@ -12,14 +12,14 @@ public:
 	sf::FloatRect getLocalBounds() const { return sprite.getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return sprite.getGlobalBounds(); }
 
-	bool getResizable() const { return resizable; }
-	void setResizable(bool resizable_) { resizable = resizable_; }
+	bool getResizable() const noexcept { return resizable; }
+	void setResizable(bool resizable_) noexcept { resizable = resizable_; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16)
+	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept
 	{
 		return Button::getAction(nameHash16);
 	}
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action)
+	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 	{
 		return Button::setAction(nameHash16, action);
 	}

@@ -21,21 +21,21 @@ void ItemClass::setDefault(const char* prop, LevelObjValue val)
 	defaults.push_back(std::make_pair(propertyHash, val));
 }
 
-LevelObjValue ItemClass::getDefaultByHash(uint16_t propHash) const
+LevelObjValue ItemClass::getDefaultByHash(uint16_t propHash) const noexcept
 {
 	LevelObjValue value = 0;
 	getDefaultByHash(propHash, value);
 	return value;
 }
 
-LevelObjValue ItemClass::getDefault(const char* prop) const
+LevelObjValue ItemClass::getDefault(const char* prop) const noexcept
 {
 	LevelObjValue value = 0;
 	getDefault(prop, value);
 	return value;
 }
 
-bool ItemClass::getDefault(const char* prop, LevelObjValue& value) const
+bool ItemClass::getDefault(const char* prop, LevelObjValue& value) const noexcept
 {
 	if (defaults.empty() == false)
 	{
@@ -44,7 +44,7 @@ bool ItemClass::getDefault(const char* prop, LevelObjValue& value) const
 	return false;
 }
 
-bool ItemClass::getDefaultByHash(uint16_t propHash, LevelObjValue& value) const
+bool ItemClass::getDefaultByHash(uint16_t propHash, LevelObjValue& value) const noexcept
 {
 	for (const auto& prop : defaults)
 	{
@@ -99,7 +99,7 @@ bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
 	return true;
 }
 
-void ItemClass::setDescription(size_t idx, const std::shared_ptr<Namer>& namer, uint16_t skipFirst)
+void ItemClass::setDescription(size_t idx, Namer* namer, uint16_t skipFirst)
 {
 	if (idx < descriptions.size())
 	{
@@ -113,7 +113,7 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	{
 		return false;
 	}
-	auto namer = descriptions[idx].first.get();
+	auto namer = descriptions[idx].first;
 	if (namer == nullptr)
 	{
 		return false;
@@ -189,12 +189,12 @@ bool ItemClass::evalFormula(uint16_t nameHash, const LevelObject& objA,
 	return false;
 }
 
-LevelObjValue ItemClass::evalFormula(uint16_t nameHash, LevelObject& obj) const
+LevelObjValue ItemClass::evalFormula(uint16_t nameHash, const LevelObject& obj) const
 {
 	return evalFormula(nameHash, obj, obj);
 }
 
-LevelObjValue ItemClass::evalFormula(uint16_t nameHash, LevelObject& objA,
+LevelObjValue ItemClass::evalFormula(uint16_t nameHash, const LevelObject& objA,
 	const LevelObject& objB) const
 {
 	LevelObjValue val = 0;

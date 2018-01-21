@@ -17,7 +17,7 @@ namespace Parser
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
-	std::shared_ptr<ItemClass> parseItemClassHelper(const Game& game,
+	std::unique_ptr<ItemClass> parseItemClassHelper(const Game& game,
 		const Level& level, const Value& elem, std::string& id)
 	{
 		if (isValidString(elem, "id") == false)
@@ -34,7 +34,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		std::shared_ptr<ItemClass> itemClass;
+		std::unique_ptr<ItemClass> itemClass;
 
 		if (isValidString(elem, "fromId") == true)
 		{
@@ -46,7 +46,7 @@ namespace Parser
 				{
 					return nullptr;
 				}
-				itemClass = std::make_shared<ItemClass>(*obj);
+				itemClass = std::make_unique<ItemClass>(*obj);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Parser
 
 		if (itemClass == nullptr)
 		{
-			itemClass = std::make_shared<ItemClass>(dropTexture, dropTextureIdx,
+			itemClass = std::make_unique<ItemClass>(dropTexture, dropTextureIdx,
 				InvTexture, InvTextureIdx);
 		}
 		else
@@ -238,6 +238,6 @@ namespace Parser
 			itemClass->setSuffix(namer);
 		}
 
-		level->addItemClass(id, itemClass);
+		level->addItemClass(id, std::move(itemClass));
 	}
 }

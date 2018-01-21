@@ -14,7 +14,7 @@ private:
 	std::map<size_t, sf::Image> cache;
 
 public:
-	CachedImagePack() {}
+	CachedImagePack() noexcept {}
 	CachedImagePack(const ImageContainer* imgContainer_,
 		const std::shared_ptr<Palette>& palette_, bool isIndexed_ = false)
 		: imgContainer(imgContainer_), palette(palette_), isIndexed(isIndexed_) {}
@@ -32,7 +32,7 @@ public:
 		return cache[index];
 	}
 
-	const std::shared_ptr<Palette>& getPalette() const { return palette; }
-	bool IsIndexed() const { return isIndexed; }
-	size_t size() const { return imgContainer->size(); }
+	const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	bool IsIndexed() const noexcept { return isIndexed; }
+	size_t size() const noexcept { return imgContainer->size(); }
 };
