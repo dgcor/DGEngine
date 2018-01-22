@@ -53,20 +53,20 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 {
 	sf::PhysFSStream stream(fileName);
 
-	if (stream.hasError() == true)
+	if (stream.hasError() == true ||
+		stream.getSize() < 900)
 	{
 		return {};
 	}
 
-	auto flen = (size_t)stream.getSize();
+	auto fileSize = (size_t)stream.getSize();
 
-	auto buffer = std::vector<char>(flen + 1);
+	std::vector<uint8_t> buffer(fileSize + 1);
 	stream.read(buffer.data(), stream.getSize());
-	char* pBuff = buffer.data();
 
 	/////////////////////////////////////////////////////
 
-	auto header = (PCXHEADER*)pBuff;
+	auto header = (PCXHEADER*)buffer.data();
 
 	if ((header->manufacturer != 10) ||
 		(header->version != 5) ||
@@ -76,61 +76,54 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 		return {};
 	}
 
-	header->width = header->width - header->x + 1;
-	header->height = header->height - header->y + 1;
+	// the palette is located at the 769th last byte of the file
+	auto paletteStartPos = fileSize - 769;
+	auto palette = &buffer[paletteStartPos];
 
-	// allocate memory for image data
-	auto data = std::vector<unsigned char>(header->width * header->height);
-
-	pBuff = (char*)&buffer[128];
-
-	unsigned char c;
-
-	// uncode compressed image (RLE)
-	for (int idx = 0; idx < (header->width * header->height);)
+	// verify the palette; first byte must be equal to 12
+	if (*(palette++) != 12)
 	{
-		if ((c = *(pBuff++)) > 0xbf)
-		{
-			auto numRepeat = 0x3f & c;
-			c = *(pBuff++);
+		return {};
+	}
 
-			for (int i = 0; i < numRepeat; i++)
+	auto width = header->width - header->x + 1u;
+	auto height = header->height - header->y + 1u;
+	auto imageSize = width * height;
+
+	sf::Image img;
+	img.create(width, height);
+	auto data = (sf::Uint8*)img.getPixelsPtr();
+
+	// decode compressed image (RLE)
+	for (size_t idx = 0, buffIdx = 128;
+		idx < imageSize && buffIdx < paletteStartPos;)
+	{
+		auto c = buffer[buffIdx++];
+		if (c > 0xbf)
+		{
+			size_t numRepeat = 0x3f & c;
+			c = buffer[buffIdx++];
+
+			for (size_t i = 0; i < numRepeat; i++)
 			{
-				data[idx++] = c;
+				auto palIdx = 3u * c;
+				data[idx * 4 + 0] = palette[palIdx + 0];
+				data[idx * 4 + 1] = palette[palIdx + 1];
+				data[idx * 4 + 2] = palette[palIdx + 2];
+				idx++;
+				if (idx >= imageSize)
+				{
+					break;
+				}
 			}
 		}
 		else
 		{
-			data[idx++] = c;
-		}
-	}
-
-	// the palette is located at the 769th last byte of the file
-	pBuff = &buffer[flen - 769];
-
-	// verify the palette; first char must be equal to 12
-	if (*(pBuff++) != 12)
-	{
-		return sf::Image();
-	}
-
-	// read the palette
-	header->palette = (unsigned char*)pBuff;
-
-	sf::Image img;
-	img.create(header->width, header->height);
-
-	for (auto i = 0; i < header->width; i++)
-	{
-		for (auto j = 0; j < header->height; j++)
-		{
-			auto color = 3 * data[i + (j * header->width)];
-			auto rgba = sf::Color(
-				header->palette[color + 0],
-				header->palette[color + 1],
-				header->palette[color + 2]);
-
-			img.setPixel(i, j, rgba);
+			auto palIdx = 3u * c;
+			data[idx * 4 + 0] = palette[palIdx + 0];
+			data[idx * 4 + 1] = palette[palIdx + 1];
+			data[idx * 4 + 2] = palette[palIdx + 2];
+			idx++;
 		}
 	}
 	return img;

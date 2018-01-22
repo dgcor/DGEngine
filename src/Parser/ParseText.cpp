@@ -112,7 +112,7 @@ namespace Parser
 		auto hasBinding = elem.HasMember("binding") == true;
 		if (hasBinding == true)
 		{
-			text.setBinding(getStringVectorKey(elem, "binding"));
+			text.setBinding(std::move(getStringVectorKey(elem, "binding")));
 		}
 		text.setFormat(getStringKey(elem, "format", "[1]"));
 

@@ -10,7 +10,7 @@ namespace sf
 	public:
 		operator Texture() const
 		{
-			auto tex = Texture();
+			Texture tex;
 			tex.loadFromImage(*this);
 			return tex;
 		}

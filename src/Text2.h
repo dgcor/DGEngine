@@ -23,8 +23,8 @@ public:
 	sf::FloatRect getLocalBounds() const { return text->getLocalBounds(); }
 	sf::FloatRect getGlobalBounds() const { return text->getGlobalBounds(); }
 
-	void setBinding(const std::string binding);
-	void setBinding(const std::vector<std::string> bindings_);
+	void setBinding(const std::string& binding);
+	void setBinding(std::vector<std::string> bindings_);
 	void setColor(const sf::Color& color) { text->setColor(color); }
 	void setFormat(const std::string& format_) { format = format_; }
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
