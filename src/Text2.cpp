@@ -28,15 +28,15 @@ bool Text2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action
 	return true;
 }
 
-void Text2::setBinding(const std::string binding)
+void Text2::setBinding(const std::string& binding)
 {
 	bindings.clear();
 	bindings.push_back(binding);
 }
 
-void Text2::setBinding(const std::vector<std::string> bindings_)
+void Text2::setBinding(std::vector<std::string> bindings_)
 {
-	bindings = bindings_;
+	bindings = std::move(bindings_);
 }
 
 void Text2::update(Game& game)
