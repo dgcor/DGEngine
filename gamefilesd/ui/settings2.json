@@ -2,7 +2,7 @@
   "animation": {
     "id": "smlogo",
     "texturePack": "smlogo",
-    "position": [125, 0],
+    "position": ["center", 0],
     "anchor": "none",
     "refresh": 50
   }

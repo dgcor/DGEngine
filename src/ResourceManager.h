@@ -3,8 +3,7 @@
 #include "Actions/Action.h"
 #include "Animation.h"
 #include "AudioSource.h"
-#include "BitmapFont.h"
-#include "Font2.h"
+#include "Font.h"
 #include "Game/Level.h"
 #include "IgnoreResource.h"
 #include "ImageContainers/ImageContainer.h"
@@ -54,8 +53,7 @@ struct ResourceBundle
 	std::string id;
 	std::unordered_map<std::string, std::shared_ptr<Action>> actions;
 	std::unordered_map<sf::Event::KeyEvent, std::shared_ptr<Action>, CompareKeyEvent, CompareKeyEvent> keyboardActions;
-	std::unordered_map<std::string, std::shared_ptr<Font2>> fonts;
-	std::unordered_map<std::string, std::shared_ptr<BitmapFont>> bitmapFonts;
+	std::unordered_map<std::string, Font> fonts;
 	std::unordered_map<std::string, std::shared_ptr<sf::Texture>> textures;
 	std::unordered_map<std::string, AudioSource> audioSources;
 	std::unordered_map<std::string, std::shared_ptr<sf::Music2>> songs;
@@ -95,9 +93,7 @@ private:
 	}
 
 	bool addFont(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<Font2>& obj);
-	bool addBitmapFont(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<BitmapFont>& obj);
+		const std::string& key, const Font& obj);
 	bool addTexture(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<sf::Texture>& obj);
 	bool addAudioSource(ResourceBundle& res,
@@ -167,13 +163,9 @@ public:
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
 
-	bool addFont(const std::string& key, const std::shared_ptr<Font2>& obj)
+	bool addFont(const std::string& key, const Font& obj)
 	{
 		return addFont(resources.back(), key, obj);
-	}
-	bool addBitmapFont(const std::string& key, const std::shared_ptr<BitmapFont>& obj)
-	{
-		return addBitmapFont(resources.back(), key, obj);
 	}
 	bool addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
 	{
@@ -214,8 +206,7 @@ public:
 
 	std::shared_ptr<Action> getKeyboardAction(const sf::Event::KeyEvent& key) const;
 	std::shared_ptr<Action> getAction(const std::string& key) const;
-	std::shared_ptr<Font2> getFont(const std::string& key) const;
-	std::shared_ptr<BitmapFont> getBitmapFont(const std::string& key) const;
+	Font getFont(const std::string& key) const;
 	std::shared_ptr<sf::Texture> getTexture(const std::string& key) const;
 	AudioSource getAudioSource(const std::string& key) const;
 	sf::SoundBuffer* getSoundBuffer(const std::string& key) const;

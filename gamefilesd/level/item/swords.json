@@ -3,9 +3,7 @@
     {
       "id": "dagger",
       "fromId": "baseWeapon",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "swrdflip",
       "inventoryTextureIndex": 62,
       "name": "Dagger",
       "shortName": "Dagger",
@@ -23,9 +21,6 @@
     {
       "id": "shortSword",
       "fromId": "dagger",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 75,
       "name": "Short Sword",
       "shortName": "Sword",
@@ -42,9 +37,6 @@
     {
       "id": "sabre",
       "fromId": "shortSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 78,
       "name": "Sabre",
       "shortName": "Sabre",
@@ -60,9 +52,6 @@
     {
       "id": "scimitar",
       "fromId": "shortSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 83,
       "name": "Scimitar",
       "shortName": "Scimitar",
@@ -79,9 +68,6 @@
     {
       "id": "blade",
       "fromId": "shortSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 67,
       "name": "Blade",
       "shortName": "Blade",
@@ -98,9 +84,6 @@
     {
       "id": "falchion",
       "fromId": "shortSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 73,
       "name": "Falchion",
       "shortName": "Falchion",
@@ -116,9 +99,6 @@
     {
       "id": "longSword",
       "fromId": "shortSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 71,
       "name": "Long Sword",
       "shortName": "Sword",
@@ -135,9 +115,6 @@
     {
       "id": "claymore",
       "fromId": "longSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 76,
       "name": "Claymore",
       "defaults": {
@@ -153,9 +130,6 @@
     {
       "id": "broadSword",
       "fromId": "claymore",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 72,
       "name": "Broad Sword",
       "defaults": {
@@ -170,9 +144,6 @@
     {
       "id": "bastardSword",
       "fromId": "claymore",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 68,
       "name": "Bastard Sword",
       "defaults": {
@@ -187,9 +158,6 @@
     {
       "id": "twoHandedSword",
       "fromId": "claymore",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 121,
       "name": "Two-Handed Sword",
       "defaults": {
@@ -206,9 +174,6 @@
     {
       "id": "greatSword",
       "fromId": "twoHandedSword",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 145,
       "name": "Great Sword",
       "defaults": {

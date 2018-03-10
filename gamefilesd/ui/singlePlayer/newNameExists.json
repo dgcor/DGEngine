@@ -23,7 +23,7 @@
   },
   "text": {
     "id": "characterExists",
-    "bitmapFont": "font24s",
+    "font": "font24s",
     "position": [120, 236],
     "anchor": "none",
     "text": "Character already exists. Do you\nwant to overwrite \"{1}\"?"
@@ -48,7 +48,7 @@
     {
       "id": "yes",
       "horizontalAlign": "center",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [319, 392],
       "anchor": "none",
       "focus": true,
@@ -57,17 +57,14 @@
         { "name": "io.deleteAll", "file": "{1}" },
         { "name": "load", "file": "level/newGame.json" }
       ],
-      "onFocus": [
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-      ],
+      "onFocus": "anchorPentagrams",
       "sound": "titlslct",
       "text": "Yes"
     },
     {
       "id": "no",
       "horizontalAlign": "center",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [319, 428],
       "anchor": "none",
       "focus": true,
@@ -77,10 +74,7 @@
         { "name": "resource.pop" },
         { "name": "load", "file": "ui/singlePlayer/newName.json" }
       ],
-      "onFocus": [
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-      ],
+      "onFocus": "anchorPentagrams",
       "sound": "titlslct",
       "text": "No"
     }

@@ -1,15 +1,18 @@
 #include "SimpleTexturePack.h"
 
 static bool ConstructTexturePack(MultiTexture& t, const std::shared_ptr<sf::Texture>& texture,
-	size_t xFrames, size_t yFrames, bool horizontalDirection)
+	const std::pair<size_t, size_t>& frames, const sf::Vector2f& offset,
+	size_t startIndex, bool horizontalDirection)
 {
 	if (texture == nullptr)
 	{
 		return false;
 	}
 	t.texture = texture;
+	t.offset = offset;
+	t.startIndex = startIndex;
 	t.horizontalDirection = horizontalDirection;
-	t.numFrames = xFrames * yFrames;
+	t.numFrames = frames.first * frames.second;
 	if (t.numFrames == 0)
 	{
 		return false;
@@ -19,136 +22,120 @@ static bool ConstructTexturePack(MultiTexture& t, const std::shared_ptr<sf::Text
 
 	if (imgSize.x == 0 ||
 		imgSize.y == 0 ||
-		xFrames > imgSize.x ||
-		yFrames > imgSize.y ||
-		imgSize.x % xFrames != 0 ||
-		imgSize.y % yFrames != 0)
+		frames.first > imgSize.x ||
+		frames.second > imgSize.y ||
+		imgSize.x % frames.first != 0 ||
+		imgSize.y % frames.second != 0)
 	{
 		t.numFrames = 0;
 		return false;
 	}
 
-	t.maxFrames = (horizontalDirection == true ? xFrames : yFrames);
-	t.subImageSizeX = imgSize.x / xFrames;
-	t.subImageSizeY = imgSize.y / yFrames;
+	t.maxFrames = (horizontalDirection == true ? frames.first : frames.second);
+	t.subImageSizeX = imgSize.x / frames.first;
+	t.subImageSizeY = imgSize.y / frames.second;
 
 	return true;
 }
 
-static void getTexture(const MultiTexture& t, size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) noexcept
+static void getTexture(const MultiTexture& t, size_t index, TextureInfo& ti) noexcept
 {
-	if (t.horizontalDirection == true)
+	if (t.numFrames <= 1 && index == 0)
 	{
-		textureRect.left = (int)((index % t.maxFrames) * t.subImageSizeX);
-		textureRect.top = (int)((index / t.maxFrames) * t.subImageSizeY);
+		ti.textureRect.left = 0;
+		ti.textureRect.top = 0;
+	}
+	else if (t.horizontalDirection == true)
+	{
+		ti.textureRect.left = (int)((index % t.maxFrames) * t.subImageSizeX);
+		ti.textureRect.top = (int)((index / t.maxFrames) * t.subImageSizeY);
 	}
 	else
 	{
-		textureRect.left = (int)((index / t.maxFrames) * t.subImageSizeX);
-		textureRect.top = (int)((index % t.maxFrames) * t.subImageSizeY);
+		ti.textureRect.left = (int)((index / t.maxFrames) * t.subImageSizeX);
+		ti.textureRect.top = (int)((index % t.maxFrames) * t.subImageSizeY);
 	}
-	textureRect.width = t.subImageSizeX;
-	textureRect.height = t.subImageSizeY;
-	(*texture) = t.texture.get();
+	ti.textureRect.width = t.subImageSizeX;
+	ti.textureRect.height = t.subImageSizeY;
+	ti.texture = t.texture.get();
+	ti.offset = t.offset;
 }
 
-SimpleTexturePack::SimpleTexturePack(const std::shared_ptr<sf::Texture>& texture_,
-	size_t xFrames_, size_t yFrames_, bool horizontalDirection_,
-	const std::shared_ptr<Palette>& palette_, bool isIndexed_)
-	: palette(palette_), indexed(isIndexed_)
+SimpleTexturePack::SimpleTexturePack(const std::shared_ptr<sf::Texture>& texture,
+	const std::pair<size_t, size_t>& frames, const sf::Vector2f& offset,
+	size_t startIndex, bool horizontalDirection, const std::shared_ptr<Palette>& palette_,
+	bool isIndexed) : palette(palette_), indexed(isIndexed)
 {
-	ConstructTexturePack(t, texture_, xFrames_, yFrames_, horizontalDirection_);
+	ConstructTexturePack(t, texture, frames, offset, startIndex, horizontalDirection);
 }
 
-bool SimpleTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const noexcept
+bool SimpleTexturePack::get(size_t index, TextureInfo& ti) const noexcept
 {
 	if (t.numFrames == 0 ||
-		index >= t.numFrames)
+		index < t.startIndex)
 	{
 		return false;
 	}
-	getTexture(t, index, texture, textureRect);
-	return true;
-}
-
-bool SimpleTexturePack::get(size_t indexX, size_t indexY,
-	const sf::Texture** texture, sf::IntRect& textureRect) const noexcept
-{
-	return get(indexX, texture, textureRect);
-}
-
-bool SimpleTexturePack::getTextureSize(sf::Vector2i& textureSize) const noexcept
-{
-	textureSize.x = (int)t.subImageSizeX;
-	textureSize.y = (int)t.subImageSizeY;
-	return true;
-}
-
-bool SimpleMultiTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
-{
-	if (texVec.empty() == true ||
-		index >= textureCount)
+	index -= t.startIndex;
+	if (index >= t.numFrames)
 	{
 		return false;
 	}
-	if (texturesHaveSameNumFrames() == true)
+	getTexture(t, index, ti);
+	return true;
+}
+
+bool SimpleMultiTexturePack::get(size_t index, TextureInfo& ti) const
+{
+	if (texVec.empty() == true)
+	{
+		return false;
+	}
+	if (indexesHaveGaps == false &&
+		texturesHaveSameNumFrames() == true)
 	{
 		size_t indexX = index % numFrames;
 		size_t indexY = index / numFrames;
-		getTexture(texVec[indexY], indexX, texture, textureRect);
+		getTexture(texVec[indexY], indexX, ti);
 		return true;
 	}
-	size_t indexX = index;
-	size_t indexY = 0;
-	while (indexX >= texVec[indexY].numFrames)
+	size_t indexX;
+	size_t indexY = std::numeric_limits<size_t>::max();
+	do
 	{
-		indexX -= texVec[indexY].numFrames;
 		indexY++;
-		if (indexY >= texVec.size())
+		if (indexY >= texVec.size() ||
+			index < texVec[indexY].startIndex)
 		{
 			return false;
 		}
-	}
-	getTexture(texVec[indexY], indexX, texture, textureRect);
-	return true;
-}
+		indexX = index - texVec[indexY].startIndex;
 
-bool SimpleMultiTexturePack::get(size_t indexX, size_t indexY,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
-{
-	if (indexY >= texVec.size() ||
-		indexX >= texVec[indexY].numFrames)
-	{
-		return false;
-	}
-	getTexture(texVec[indexY], indexX, texture, textureRect);
-	return true;
-}
+	} while (indexX >= texVec[indexY].numFrames);
 
-bool SimpleMultiTexturePack::getTextureSize(sf::Vector2i& textureSize) const
-{
-	if (texturesHaveSameSize == false)
-	{
-		return false;
-	}
-	textureSize.x = (int)texVec.front().subImageSizeX;
-	textureSize.y = (int)texVec.front().subImageSizeY;
+	getTexture(texVec[indexY], indexX, ti);
 	return true;
 }
 
 void SimpleMultiTexturePack::addTexturePack(const std::shared_ptr<sf::Texture>& texture,
-	size_t xFrames, size_t yFrames, bool horizontalDirection)
+	const std::pair<size_t, size_t>& frames, const sf::Vector2f& offset,
+	size_t startIndex, bool horizontalDirection)
 {
+	if (startIndex < textureCount)
+	{
+		startIndex = textureCount;
+	}
 	MultiTexture t;
-	if (ConstructTexturePack(t, texture, xFrames, yFrames, horizontalDirection) == true)
+	if (ConstructTexturePack(t, texture, frames, offset, startIndex, horizontalDirection) == true)
 	{
 		if (texVec.empty() == true)
 		{
 			texturesHaveSameSize = true;
 			numFrames = t.numFrames;
+			if (t.startIndex > 0)
+			{
+				indexesHaveGaps = true;
+			}
 		}
 		else
 		{
@@ -162,6 +149,11 @@ void SimpleMultiTexturePack::addTexturePack(const std::shared_ptr<sf::Texture>& 
 				numFrames != t.numFrames)
 			{
 				numFrames = 0;
+			}
+			if (indexesHaveGaps == false &&
+				(t.startIndex > (texVec.back().startIndex + texVec.back().numFrames)))
+			{
+				indexesHaveGaps = true;
 			}
 		}
 		texVec.push_back(t);

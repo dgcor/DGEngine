@@ -1,27 +1,14 @@
 #include "VectorTexturePack.h"
 
-bool VectorTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
+bool VectorTexturePack::get(size_t index, TextureInfo& ti) const
 {
 	if (index >= textures.size() ||
 		textures[index].getNativeHandle() == 0)
 	{
 		return false;
 	}
-	(*texture) = &textures[index];
-	updateTextureRect(textures[index], textureRect);
-	return true;
-}
-
-bool VectorTexturePack::getTextureSize(sf::Vector2i& textureSize) const
-{
-	if (texturesHaveSameSize() == false)
-	{
-		return false;
-	}
-	auto size = textures[lastTextureIndex].getSize();
-	textureSize.x = (int)size.x;
-	textureSize.y = (int)size.y;
+	ti.texture = &textures[index];
+	updateTextureInfo(ti);
 	return true;
 }
 

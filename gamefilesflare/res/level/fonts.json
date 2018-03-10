@@ -1,0 +1,16 @@
+{
+  "font": [
+    {
+      "id": "smaltext",
+      "fromId": "font16g"
+    },
+    {
+      "id": "medtexts",
+      "fromId": "font16g"
+    },
+    {
+      "id": "bigtgold",
+      "fromId": "font16g"
+    }
+  ]
+}

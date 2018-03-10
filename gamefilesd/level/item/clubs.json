@@ -3,9 +3,7 @@
     {
       "id": "club",
       "fromId": "baseWeapon",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "mace",
       "inventoryTextureIndex": 77,
       "name": "Club",
       "shortName": "Club",
@@ -22,9 +20,6 @@
     {
       "id": "spikedClub",
       "fromId": "club",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 81,
       "name": "Spiked Club",
       "defaults": {
@@ -39,9 +34,6 @@
     {
       "id": "mace",
       "fromId": "club",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 70,
       "name": "Mace",
       "shortName": "Mace",
@@ -57,9 +49,6 @@
     {
       "id": "morningStar",
       "fromId": "mace",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 74,
       "name": "Morning Star",
       "defaults": {
@@ -74,9 +63,6 @@
     {
       "id": "flail",
       "fromId": "mace",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 142,
       "name": "Flail",
       "shortName": "Flail",
@@ -93,9 +79,6 @@
     {
       "id": "warHammer",
       "fromId": "flail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 132,
       "name": "War Hammer",
       "shortName": "Hammer",
@@ -111,9 +94,6 @@
     {
       "id": "maul",
       "fromId": "flail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 40,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 133,
       "name": "Maul",
       "shortName": "Maul",

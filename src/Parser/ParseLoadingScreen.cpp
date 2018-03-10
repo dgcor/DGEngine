@@ -9,26 +9,24 @@ namespace Parser
 
 	void parseLoadingScreen(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "texture") == false)
-		{
-			return;
-		}
+		std::unique_ptr<LoadingScreen> loadingScreen;
 
-		auto tex = game.Resources().getTexture(elem["texture"].GetString());
-		if (tex == nullptr)
+		auto tex = game.Resources().getTexture(getStringKey(elem, "texture"));
+		if (tex != nullptr)
 		{
-			return;
+			loadingScreen = std::make_unique<LoadingScreen>(*tex);
 		}
-
-		auto loadingScreen = std::make_unique<LoadingScreen>(*tex);
+		else
+		{
+			loadingScreen = std::make_unique<LoadingScreen>();
+		}
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		loadingScreen->setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = loadingScreen->getSize();
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
-			auto sizeTex = tex->getSize();
-			auto size = sf::Vector2f((float)sizeTex.x, (float)sizeTex.y);
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
 			{

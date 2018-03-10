@@ -3,9 +3,7 @@
     {
       "id": "buckler",
       "fromId": "baseArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "shield",
       "inventoryTextureIndex": 94,
       "name": "Buckler",
       "shortName": "Buckler",
@@ -31,9 +29,6 @@
     {
       "id": "smallShield",
       "fromId": "buckler",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 116,
       "name": "Small Shield",
       "shortName": "Shield",
@@ -49,9 +44,6 @@
     {
       "id": "largeShield",
       "fromId": "smallShield",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 158,
       "name": "Large Shield",
       "defaults": {
@@ -65,9 +57,6 @@
     {
       "id": "kiteShield",
       "fromId": "smallShield",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 124,
       "name": "Kite Shield",
       "defaults": {
@@ -81,9 +70,6 @@
     {
       "id": "towerShield",
       "fromId": "smallShield",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 143,
       "name": "Tower Shield",
       "defaults": {
@@ -97,9 +83,6 @@
     {
       "id": "gothicShield",
       "fromId": "smallShield",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 38,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 159,
       "name": "Gothic Shield",
       "defaults": {

@@ -148,10 +148,10 @@ namespace Parser
 		auto anchor = getAnchorKey(elem, "anchor");
 		auto color = getColorKey(elem, "color", sf::Color::White);
 		auto horizAlign = GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign"));
-		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"));
+		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom);
 		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
 		auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
-		auto fontSize = getUIntKey(elem, "fontSize");
+		auto fontSize = getUIntKey(elem, "fontSize", 12);
 		auto hasFocus = getBoolKey(elem, "focus");
 		auto focusOnClick = getBoolKey(elem, "focusOnClick", true);
 		auto clickUp = getBoolKey(elem, "clickUp");
@@ -167,31 +167,17 @@ namespace Parser
 			focusSound = game.Resources().getSoundBuffer(elem["focusSound"].GetString());
 		}
 
-		auto isTextFont = elem.HasMember("font");
-		std::shared_ptr<Font2> font;
-		std::shared_ptr<BitmapFont> bitmapFont;
-		if (isTextFont == true)
+		auto font = game.Resources().getFont(getStringKey(elem, "font"));
+		if (hasNullFont(font) == true)
 		{
-			font = game.Resources().getFont(getStringVal(elem["font"]));
-			if (font == nullptr)
-			{
-				return;
-			}
-		}
-		else
-		{
-			bitmapFont = game.Resources().getBitmapFont(getStringKey(elem, "bitmapFont"));
-			if (bitmapFont == nullptr)
-			{
-				return;
-			}
+			return;
 		}
 
 		auto relativePos = getBoolKey(elem, "relativeCoords", true);
 
-		auto origPos = getVector2fKey<sf::Vector2f>(elem, "position");
-		auto pos = origPos;
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
+		auto origPos = getPositionKey(elem, "position", size, game.RefSize());
+		auto pos = origPos;
 		if (relativePos == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -242,8 +228,8 @@ namespace Parser
 						JsonUtils::replaceValueWithString(valCopy, allocator, "%save%", dir);
 
 						parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-							horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
-							fontSize, bitmapFont, sound, focusSound, clickUp,
+							horizSpaceOffset, vertSpaceOffset, font,
+							fontSize, sound, focusSound, clickUp,
 							hasFocus, focusOnClick, relativePos, origPos);
 
 						parseAndExecuteMenuAction(game, valCopy);
@@ -292,8 +278,8 @@ namespace Parser
 							});
 
 							parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-								horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
-								fontSize, bitmapFont, sound, focusSound, clickUp,
+								horizSpaceOffset, vertSpaceOffset, font,
+								fontSize, sound, focusSound, clickUp,
 								hasFocus, focusOnClick, relativePos, origPos);
 
 							parseAndExecuteMenuAction(game, valCopy);
@@ -345,8 +331,8 @@ namespace Parser
 								});
 
 								parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-									horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
-									fontSize, bitmapFont, sound, focusSound, clickUp,
+									horizSpaceOffset, vertSpaceOffset, font,
+									fontSize, sound, focusSound, clickUp,
 									hasFocus, focusOnClick, relativePos, origPos);
 
 								parseAndExecuteMenuAction(game, valCopy);
@@ -360,8 +346,8 @@ namespace Parser
 			else
 			{
 				parseMenuButton(game, val, *menu, anchor, color, horizAlign,
-					horizSpaceOffset, vertSpaceOffset, isTextFont, *font,
-					fontSize, bitmapFont, sound, focusSound, clickUp,
+					horizSpaceOffset, vertSpaceOffset, font,
+					fontSize, sound, focusSound, clickUp,
 					hasFocus, focusOnClick, relativePos, origPos);
 
 				parseAndExecuteMenuAction(game, val);

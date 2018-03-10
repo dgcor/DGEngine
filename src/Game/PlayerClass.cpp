@@ -2,6 +2,51 @@
 #include "Player.h"
 #include "Utils/Utils.h"
 
+TexturePack* PlayerClass::getTexturePack(size_t idx) const
+{
+	if (idx < textures.size())
+	{
+		return textures[idx].first.get();
+	}
+	else if (textures.empty() == false)
+	{
+		return textures.front().first.get();
+	}
+	return nullptr;
+}
+
+void PlayerClass::getTextureAnimationRange(size_t idx,
+	PlayerAnimation animation, BaseAnimation& baseAnim) const
+{
+	const std::pair<std::shared_ptr<TexturePack>, Ranges>* tex = nullptr;
+	if (idx < textures.size())
+	{
+		tex = &textures[idx];
+	}
+	else if (textures.empty() == false)
+	{
+		tex = &textures.front();
+	}
+	if (tex != nullptr)
+	{
+		size_t animIdx = 0;
+		if (animation < PlayerAnimation::Size)
+		{
+			animIdx = animationIndexes[(size_t)animation];
+		}
+		if (animIdx < tex->second.size())
+		{
+			baseAnim.textureIndexRange = tex->second[animIdx].range;
+			baseAnim.animType = tex->second[animIdx].animType;
+			baseAnim.backDirection = false;
+			return;
+		}
+	}
+	baseAnim.textureIndexRange = std::make_pair(0, 0);
+	baseAnim.animType = AnimationType::PlayOnce;
+	baseAnim.backDirection = false;
+}
+
 void PlayerClass::setDefault(const char* prop, const Number32& val)
 {
 	auto propertyHash = str2int16(prop);

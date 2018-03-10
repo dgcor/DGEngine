@@ -17,12 +17,17 @@ private:
 	int percent{ 0 };
 
 public:
+	LoadingScreen() {}
 	LoadingScreen(const sf::Texture& tex) : sprite(tex) {}
 
 	void setPosition(const sf::Vector2f& position)
 	{
 		sprite.setPosition(position);
 		progressBar.setPosition(position + barPosOffset);
+	}
+	sf::Vector2f getSize() const
+	{
+		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
 	void setProgressBarColor(const sf::Color& color) { progressBar.setFillColor(color); }
 	void setProgressBarPositionOffset(const sf::Vector2f& offset)

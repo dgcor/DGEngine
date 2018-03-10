@@ -56,8 +56,8 @@ namespace Parser
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		movie->setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
-		auto size = getVector2iKey<sf::Vector2f>(elem, "size", movie->Size());
+		auto size = getVector2fKey<sf::Vector2f>(elem, "size", movie->Size());
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());

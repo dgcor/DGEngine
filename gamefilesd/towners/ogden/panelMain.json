@@ -23,7 +23,7 @@
     {
       "id": "panelTitle1",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 46],
       "anchor": "none",
@@ -34,7 +34,7 @@
     {
       "id": "panelTitle2",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 70],
       "anchor": "none",
@@ -45,7 +45,7 @@
     {
       "id": "panelText",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 142],
       "anchor": "none",
@@ -58,7 +58,7 @@
     {
       "id": "talk",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textBlue%",
       "sound": "titlslct",
       "focus": true,
@@ -76,7 +76,7 @@
     },
     {
       "id": "back",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",

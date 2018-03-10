@@ -37,15 +37,15 @@
   },
   "scrollableText": {
     "id": "textBox",
-    "bitmapFont": "medtexts",
+    "font": "medtexts",
     "refresh": {2},
     "file": "{3}",
     "horizontalSpaceOffset": 2,
     "verticalSpaceOffset": 17,
     "splitText": 40,
     "position": [48, 49],
+    "size": [550, 257],
     "anchor": "none",
-    "boxSize": [550, 257],
     "onComplete": [
       { "name": "resource.pop" },
       "afterShowText"

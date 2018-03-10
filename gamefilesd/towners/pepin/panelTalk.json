@@ -31,7 +31,7 @@
     {
       "id": "panelTitle1",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 58],
       "anchor": "none",
@@ -42,7 +42,7 @@
   ],
   "menu": {
     "id": "panelQuests",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "position": [480, 195],
     "horizontalAlign": "center",
     "verticalAlign": "center",
@@ -86,7 +86,7 @@
   },
   "button": {
     "id": "back",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "focus": true,
     "focusSound": "titlemov",

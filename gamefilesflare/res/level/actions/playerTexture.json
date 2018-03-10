@@ -1,0 +1,7 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updatePlayerTexture",
+    "action": null
+  }
+}

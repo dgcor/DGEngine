@@ -19,10 +19,8 @@ namespace Parser
 		HorizontalAlign horizAlign,
 		int horizSpaceOffset,
 		int vertSpaceOffset,
-		bool isTextFont,
-		const sf::Font& font,
+		const Font& font,
 		unsigned fontSize,
-		const std::shared_ptr<BitmapFont>& bitmapFont,
 		const sf::SoundBuffer* sound,
 		const sf::SoundBuffer* focusSound,
 		bool clickUp,
@@ -33,14 +31,15 @@ namespace Parser
 	{
 		auto button = std::make_shared<StringButton>();
 		std::unique_ptr<DrawableText> drawableText;
-		if (isTextFont)
+		if (hasFreeTypeFont(font) == true)
 		{
-			drawableText = std::make_unique<StringText>("", font, fontSize);
+			drawableText = std::make_unique<StringText>("",
+				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
 		}
 		else
 		{
 			drawableText = std::make_unique<BitmapText>("",
-				bitmapFont, horizSpaceOffset, vertSpaceOffset);
+				std::get<std::shared_ptr<BitmapFont>>(font), horizSpaceOffset, vertSpaceOffset);
 		}
 		button->setText(std::move(drawableText));
 

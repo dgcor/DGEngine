@@ -9,25 +9,32 @@
 Item::Item(const ItemClass* class__) : class_(class__)
 {
 	base.texturePack = class__->getDropTexturePack();
-	base.texturePackIdx = class__->getDropTextureIndex();
-	base.textureEndIdx = base.texturePack->size(base.texturePackIdx) - 1;
-	base.currentTextureIdx = base.textureEndIdx;
+	base.animation.textureIndexRange = class__->getDropTextureIndexRange();
+	base.animation.textureIndexRange.second--;
+	base.animation.currentTextureIdx = base.animation.textureIndexRange.second;
+	base.animation.frameTime = class_->DefaultAnimationSpeed();
+	base.animation.animType = AnimationType::PlayOnce;
 	base.hoverCellSize = 1;
 	if (class__->getInventoryTexturePack()->isIndexed() == true)
 	{
 		base.sprite.setPalette(class__->getInventoryTexturePack()->getPalette());
 	}
 	base.sprite.setOutline(class__->DefaultOutline(), class__->DefaultOutlineIgnore());
+	base.updateTexture();
 	applyDefaults();
 }
 
-void Item::resetDropAnimation() noexcept
+void Item::resetDropAnimation(Level& level) noexcept
 {
-	base.currentTextureIdx = 0;
+	base.animation.currentTextureIdx = base.animation.textureIndexRange.first;
 	if (base.enableHover == true)
 	{
 		wasHoverEnabledOnItemDrop = true;
 		base.enableHover = false;
+	}
+	if (base.updateTexture() == true)
+	{
+		base.updateDrawPosition(level);
 	}
 }
 
@@ -41,35 +48,13 @@ void Item::update(Game& game, Level& level)
 	base.processQueuedActions(game);
 	base.updateHover(game, level, this);
 
-	if (base.hasValidState() == false)
+	if (base.hasValidState() == true &&
+		base.animation.update(game.getElapsedTime()) == true)
 	{
-		return;
-	}
-
-	// add delta time
-	currentTime += game.getElapsedTime();
-
-	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
-	{
-		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
-
-		if (base.currentTextureIdx < base.textureStartIdx)
+		if (wasHoverEnabledOnItemDrop == true)
 		{
-			base.currentTextureIdx = base.textureStartIdx;
-		}
-		else if (base.currentTextureIdx < base.textureEndIdx)
-		{
-			base.currentTextureIdx++;
-		}
-		else
-		{
-			if (wasHoverEnabledOnItemDrop == true)
-			{
-				base.enableHover = true;
-				wasHoverEnabledOnItemDrop = false;
-			}
+			base.enableHover = true;
+			wasHoverEnabledOnItemDrop = false;
 		}
 		if (base.updateTexture() == true)
 		{

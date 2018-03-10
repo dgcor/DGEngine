@@ -2,5 +2,5 @@
 
 #include "PairXY.h"
 
-typedef uint16_t Coord;
-typedef PairXY<uint16_t> MapCoord;
+typedef int32_t Coord;
+typedef PairXY<int32_t> MapCoord;

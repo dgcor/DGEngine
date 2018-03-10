@@ -50,46 +50,35 @@ namespace Parser
 			}
 		}
 
-		if (isValidString(elem, "dropTexturePack") == false ||
-			isValidString(elem, "inventoryTexturePack") == false)
-		{
-			return itemClass;
-		}
-
 		auto dropTexture = game.Resources().getTexturePack(
-			elem["dropTexturePack"].GetString());
-		if (dropTexture == nullptr)
-		{
-			return itemClass;
-		}
-		auto dropTextureIdx = (size_t)getUIntKey(elem, "dropTextureIndex");
-		if (dropTextureIdx >= dropTexture->packSize())
-		{
-			return itemClass;
-		}
+			getStringKey(elem, "dropTexturePack"));
 		auto InvTexture = game.Resources().getTexturePack(
-			elem["inventoryTexturePack"].GetString());
-		if (InvTexture == nullptr)
-		{
-			return itemClass;
-		}
+			getStringKey(elem, "inventoryTexturePack"));
+
 		auto InvTextureIdx = (size_t)getUIntKey(elem, "inventoryTextureIndex");
-		if (InvTextureIdx >= InvTexture->totalSize())
-		{
-			return itemClass;
-		}
 
 		if (itemClass == nullptr)
 		{
-			itemClass = std::make_unique<ItemClass>(dropTexture, dropTextureIdx,
-				InvTexture, InvTextureIdx);
+			if (dropTexture != nullptr &&
+				InvTexture != nullptr)
+			{
+				itemClass = std::make_unique<ItemClass>(dropTexture, InvTexture, InvTextureIdx);
+			}
 		}
 		else
 		{
-			itemClass->setDropTexturePack(dropTexture);
-			itemClass->setDropTextureIndex(dropTextureIdx);
-			itemClass->setInventoryTexturePack(InvTexture);
-			itemClass->setInventoryTextureIndex(InvTextureIdx);
+			if (dropTexture != nullptr)
+			{
+				itemClass->setDropTexturePack(dropTexture);
+			}
+			if (InvTexture != nullptr)
+			{
+				itemClass->setInventoryTexturePack(InvTexture);
+			}
+			if (elem.HasMember("inventoryTextureIndex") == true)
+			{
+				itemClass->setInventoryTextureIndex(InvTextureIdx);
+			}
 		}
 		return itemClass;
 	}
@@ -106,6 +95,13 @@ namespace Parser
 		if (itemClass == nullptr)
 		{
 			return;
+		}
+
+		if (elem.HasMember("dropTextureIndexRange") == true)
+		{
+			itemClass->setDropTextureIndexRange(
+				getVector2uVal<std::pair<size_t, size_t>>(elem["dropTextureIndexRange"])
+			);
 		}
 
 		if (elem.HasMember("name") == true)
@@ -127,6 +123,10 @@ namespace Parser
 		if (elem.HasMember("inventorySize") == true)
 		{
 			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], ItemXY(1, 1)));
+		}
+		if (elem.HasMember("defaultAnimationSpeed") == true)
+		{
+			itemClass->DefaultAnimationSpeed(getTimeVal(elem["defaultAnimationSpeed"], sf::milliseconds(40)));
 		}
 		if (elem.HasMember("defaultOutline") == true)
 		{

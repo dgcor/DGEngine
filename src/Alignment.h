@@ -9,7 +9,7 @@ enum class HorizontalAlign
 
 enum class VerticalAlign
 {
-	Bottom,
+	Top,
 	Center,
-	Top
+	Bottom
 };

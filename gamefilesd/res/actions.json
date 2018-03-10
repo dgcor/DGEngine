@@ -19,6 +19,14 @@
       "name": "action.set",
       "id": "focus.moveUp",
       "action": { "name": "focus.moveUp" }
+    },
+    {
+      "name": "action.set",
+      "id": "anchorPentagrams",
+      "action": [
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
+        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+      ]
     }
   ]
 }

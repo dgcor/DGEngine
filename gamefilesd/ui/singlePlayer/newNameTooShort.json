@@ -31,7 +31,7 @@
   ],
   "text": {
     "id": "tooShort",
-    "bitmapFont": "font24s",
+    "font": "font24s",
     "position": [140, 236],
     "anchor": "none",
     "text": "Invalid name. A name cannot\ncontain spaces, reserved\ncharacters, or reserved words."
@@ -39,7 +39,7 @@
   "button": {
     "id": "ok",
     "horizontalAlign": "center",
-    "bitmapFont": "font30g",
+    "font": "font30g",
     "position": [319, 392],
     "anchor": "none",
     "onClick": [

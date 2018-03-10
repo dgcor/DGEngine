@@ -1,17 +1,7 @@
 {
   "action": [
     { "name": "resource.add", "id": "settings", "ignorePrevious": true },
-    { "name": "game.fadeIn" },
-    {
-      "name": "action.set",
-      "id": "anchorLeftPentagram",
-      "action": { "name": "drawable.verticalAnchorToFocused", "id": "pent1" }
-    },
-    {
-      "name": "action.set",
-      "id": "anchorRightPentagram",
-      "action": { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-    }
+    { "name": "game.fadeIn" }
   ],
   "keyboard": [
     {
@@ -61,7 +51,7 @@
   "button": [
     {
       "id": "windowSize",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -85,14 +75,11 @@
         ],
         "default": { "name": "loadJson", "json": { "windowSize": [640, 480] } }
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     },
     {
       "id": "stretchToFit",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -112,14 +99,11 @@
           { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
         ]
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     },
     {
       "id": "keepAR",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -139,14 +123,11 @@
           { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
         ]
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     },
     {
       "id": "smoothScreen",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -166,14 +147,11 @@
           { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
         ]
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     },
     {
       "id": "framerate",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -222,14 +200,11 @@
         ],
         "default": { "name": "loadJson", "json": { "windowSize": [640, 480] } }
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     },
     {
       "id": "back",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -245,10 +220,7 @@
           { "name": "game.fadeIn" }
         ]
       },
-      "onFocus": [
-        "anchorLeftPentagram",
-        "anchorRightPentagram"
-      ]
+      "onFocus": "anchorPentagrams"
     }
   ],
   "action": [
@@ -280,7 +252,6 @@
       "then": { "name": "text.setText", "id": "framerate", "text": "Framerate Limit: Off" },
       "else": { "name": "text.setText", "id": "framerate", "binding": "|game|framerate|", "format": "Framerate Limit: [1]" }
     },
-    "anchorLeftPentagram",
-    "anchorRightPentagram"
+    "anchorPentagrams"
   ]
 }

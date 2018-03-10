@@ -8,9 +8,17 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	sf::Image parseTextureImg(Game& game, const rapidjson::Value& elem)
+	sf::Image parseTextureImg(Game& game, const Value& elem)
 	{
 		sf::Image img;
+		parseTextureImg(game, elem, img, nullptr);
+		return img;
+	}
+
+	bool parseTextureImg(Game& game, const Value& elem,
+		sf::Image& img, ImageCache* cache)
+	{
+		sf::Image* imgPtr = &img;
 
 		if (elem.HasMember("color") == true)
 		{
@@ -33,23 +41,23 @@ namespace Parser
 			{
 				img.create(size.x, size.y, getColorVal(colorElem));
 			}
-			return img;
+			return false;
 		}
 		else if (elem.HasMember("file") == false)
 		{
-			return img;
+			return false;
 		}
 		if (elem.HasMember("palette"))
 		{
 			auto pal = game.Resources().getPalette(getStringVal(elem["palette"]));
 			if (pal == nullptr)
 			{
-				return img;
+				return false;
 			}
 			auto imgContainer = parseImageContainerObj(game, elem);
 			if (imgContainer == nullptr)
 			{
-				return img;
+				return false;
 			}
 			if (elem.HasMember("charMapFile") == true)
 			{
@@ -68,25 +76,61 @@ namespace Parser
 		}
 		else
 		{
-			img = ImageUtils::loadImage(
-				getStringCharVal(elem["file"]),
-				getColorKey(elem, "mask", sf::Color::Transparent));
-
-			if (elem.HasMember("split"))
+			auto path = getStringCharVal(elem["file"]);
+			auto mask = getColorKey(elem, "mask", sf::Color::Transparent);
+			if (cache != nullptr)
+			{
+				if (cache->path != path)
+				{
+					cache->image = ImageUtils::loadImage(path, mask);
+					cache->path = path;
+				}
+				imgPtr = &cache->image;
+			}
+			else
+			{
+				img = ImageUtils::loadImage(path, mask);
+			}
+			if (elem.HasMember("split") == true)
 			{
 				auto piecesX = getUIntKey(elem, "pieces", 1);
 
 				if (elem["split"].GetString() == std::string("horizontal"))
 				{
-					img = ImageUtils::splitImageHorizontal(img, piecesX);
+					img = ImageUtils::splitImageHorizontal(*imgPtr, piecesX);
+					imgPtr = &img;
 				}
 				else if (elem["split"].GetString() == std::string("vertical"))
 				{
-					img = ImageUtils::splitImageVertical(img, piecesX);
+					img = ImageUtils::splitImageVertical(*imgPtr, piecesX);
+					imgPtr = &img;
 				}
 			}
 		}
-		return img;
+		if (isValidArray(elem, "trim") == true)
+		{
+			auto trimRect = getIntRectVal(elem["trim"]);
+			auto imgSize = imgPtr->getSize();
+
+			if (trimRect.left >= 0 &&
+				trimRect.top >= 0 &&
+				trimRect.width > 0 &&
+				trimRect.height > 0 &&
+				trimRect.left + trimRect.width <= (int)imgSize.x &&
+				trimRect.top + trimRect.height <= (int)imgSize.y)
+			{
+				sf::Image img2;
+				img2.create((unsigned)trimRect.width, (unsigned)trimRect.height);
+				img2.copy(*imgPtr, 0, 0, trimRect);
+				img = img2;
+				return false;
+			}
+		}
+		if (imgPtr != &img)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	bool parseTextureFromId(Game& game, const Value& elem)
@@ -112,7 +156,7 @@ namespace Parser
 	}
 
 	std::shared_ptr<sf::Texture> parseTextureObj(Game& game,
-		const rapidjson::Value& elem, const sf::Image& image)
+		const Value& elem, const sf::Image& image)
 	{
 		auto texture = std::make_shared<sf::Texture>();
 		if (texture->loadFromImage(image) == false)
@@ -134,7 +178,29 @@ namespace Parser
 		return parseTextureObj(game, elem, img);
 	}
 
+	std::shared_ptr<sf::Texture> parseTextureObj(Game& game,
+		const Value& elem, ImageCache* cache)
+	{
+		sf::Image img;
+		sf::Image* imgPtr = &img;
+		if (parseTextureImg(game, elem, img, cache) == true)
+		{
+			imgPtr = &cache->image;
+		}
+		auto imgSize = imgPtr->getSize();
+		if (imgSize.x == 0 || imgSize.y == 0)
+		{
+			return nullptr;
+		}
+		return parseTextureObj(game, elem, *imgPtr);
+	}
+
 	void parseTexture(Game& game, const Value& elem)
+	{
+		return parseTexture(game, elem, nullptr);
+	}
+
+	void parseTexture(Game& game, const Value& elem, ImageCache* cache)
 	{
 		if (parseTextureFromId(game, elem) == true)
 		{
@@ -161,7 +227,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto texture = parseTextureObj(game, elem);
+		auto texture = parseTextureObj(game, elem, cache);
 		if (texture == nullptr)
 		{
 			return;
@@ -169,8 +235,14 @@ namespace Parser
 		game.Resources().addTexture(id, texture);
 	}
 
-	bool getOrParseTexture(Game& game, const Value& elem,
-		const char* idKey, std::shared_ptr<sf::Texture>& texture)
+	bool getOrParseTexture(Game& game, const Value& elem, const char* idKey,
+		std::shared_ptr<sf::Texture>& texture)
+	{
+		return getOrParseTexture(game, elem, idKey, texture, nullptr);
+	}
+
+	bool getOrParseTexture(Game& game, const Value& elem, const char* idKey,
+		std::shared_ptr<sf::Texture>& texture, ImageCache* cache)
 	{
 		if (isValidString(elem, idKey) == true)
 		{
@@ -180,7 +252,7 @@ namespace Parser
 			{
 				return true;
 			}
-			texture = parseTextureObj(game, elem);
+			texture = parseTextureObj(game, elem, cache);
 			if (isValidId(id) == true &&
 				texture != nullptr)
 			{
@@ -190,7 +262,7 @@ namespace Parser
 		}
 		else
 		{
-			texture = parseTextureObj(game, elem);
+			texture = parseTextureObj(game, elem, cache);
 		}
 		return false;
 	}

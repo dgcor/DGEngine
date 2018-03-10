@@ -69,7 +69,7 @@
   ],
   "menu": {
     "id": "menuLoadGame",
-    "bitmapFont": "font24g",
+    "font": "font24g",
     "position": [423, 260],
     "horizontalAlign": "center",
     "anchor": "none",
@@ -88,8 +88,7 @@
         "onClick": [
           { "name": "load", "file": ["ui/loadCharInfo.json", "|focus|text|"] },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
+          "anchorPentagrams",
           { "name": "button.enable", "id": "delete" },
           { "name": "text.setFont", "id": "delete", "idFont": "font30g" },
           "saveMenu.moveScrollbar"
@@ -102,8 +101,7 @@
         "onClick": [
           { "name": "load", "file": "ui/charInfoDefault.json" },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" },
+          "anchorPentagrams",
           { "name": "button.enable", "id": "delete", "enable": false },
           { "name": "text.setFont", "id": "delete", "idFont": "font30s" },
           "saveMenu.moveScrollbar"
@@ -116,7 +114,7 @@
   "button": [
     {
       "id": "ok",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [279, 429],
       "anchor": "none",
       "onClick": {
@@ -134,7 +132,7 @@
     },
     {
       "id": "delete",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [378, 429],
       "anchor": "none",
       "onClick": [
@@ -145,7 +143,7 @@
     },
     {
       "id": "cancel",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [501, 429],
       "anchor": "none",
       "onClick": {

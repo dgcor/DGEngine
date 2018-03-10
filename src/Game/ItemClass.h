@@ -14,8 +14,8 @@ class ItemClass : public BaseClass
 {
 private:
 	std::shared_ptr<TexturePack> textureDrop;
-	size_t dropIdx;
 	std::shared_ptr<TexturePack> textureInventory;
+	std::pair<size_t, size_t> dropTextureIndexRange;
 	size_t inventoryIdx;
 
 	std::string name;
@@ -36,24 +36,25 @@ private:
 	std::array<std::pair<uint16_t, Formula>, 6> formulas;
 	size_t formulasSize{ 0 };
 
+	sf::Time defaultAnimationSpeed{ sf::milliseconds(40) };
 	sf::Color defaultOutline{ sf::Color::Transparent };
 	sf::Color defaultOutlineIgnore{ sf::Color::Transparent };
 
 public:
 	ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
-		size_t dropIdx_, const std::shared_ptr<TexturePack>& textureInventory_,
-		size_t inventoryIdx_) : textureDrop(textureDrop_),
-		dropIdx(dropIdx_), textureInventory(textureInventory_),
-		inventoryIdx(inventoryIdx_) {}
+		const std::shared_ptr<TexturePack>& textureInventory_,
+		size_t inventoryIdx_);
 
-	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_) noexcept
+	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_) noexcept;
+	const std::pair<size_t, size_t>& getDropTextureIndexRange() const noexcept
 	{
-		textureDrop = textureDrop_;
+		return dropTextureIndexRange;
 	}
-	void setDropTextureIndex(size_t dropIdx_) noexcept
+	void setDropTextureIndexRange(const std::pair<size_t, size_t>& textureIndexRange) noexcept
 	{
-		dropIdx = dropIdx_;
+		dropTextureIndexRange = textureIndexRange;
 	}
+
 	void setInventoryTexturePack(const std::shared_ptr<TexturePack>& textureInventory_) noexcept
 	{
 		textureInventory = textureInventory_;
@@ -65,11 +66,10 @@ public:
 
 	const TexturePack* getDropTexturePack() const noexcept { return textureDrop.get(); }
 	const TexturePack* getInventoryTexturePack() const noexcept { return textureInventory.get(); }
-	size_t getDropTextureIndex() const noexcept { return dropIdx; }
 
-	bool getInventoryTexture(const sf::Texture** texture, sf::IntRect& textureRect) const
+	bool getInventoryTexture(TextureInfo& ti) const
 	{
-		return textureInventory->get(inventoryIdx, texture, textureRect);
+		return textureInventory->get(inventoryIdx, ti);
 	}
 
 	const std::vector<LevelObjProperty>& Defaults() const noexcept { return defaults; }
@@ -96,6 +96,7 @@ public:
 	uint16_t TypeHash16() const noexcept { return typeHash16; }
 	const ItemXY& InventorySize() const noexcept { return inventorySize; }
 
+	const sf::Time& DefaultAnimationSpeed() const noexcept { return defaultAnimationSpeed; }
 	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
 	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
 
@@ -109,6 +110,7 @@ public:
 	void SubType(const std::string subType_) { subType = subType_; }
 	void InventorySize(const ItemXY inventorySize_) noexcept { inventorySize = inventorySize_; }
 
+	void DefaultAnimationSpeed(const sf::Time time) noexcept { defaultAnimationSpeed = time; }
 	void DefaultOutline(const sf::Color color) noexcept { defaultOutline = color; }
 	void DefaultOutlineIgnore(const sf::Color color) noexcept { defaultOutlineIgnore = color; }
 

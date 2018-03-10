@@ -2,6 +2,7 @@
 
 #include "Alignment.h"
 #include "Anchor.h"
+#include "AnimationType.h"
 #include "Game/GameProperties.h"
 #include "IgnoreResource.h"
 #include <SFML/System/Vector2.hpp>
@@ -15,6 +16,9 @@ namespace GameUtils
 {
 	const int DoubleClickDelay = 500;
 
+	AnimationType getAnimationType(const std::string& str,
+		AnimationType val = AnimationType::Looped);
+
 	sf::Vector2f getAlignmentPosition(const sf::Vector2f& position, const sf::Vector2f& size,
 		HorizontalAlign horizAlign, VerticalAlign vertAlign) noexcept;
 
@@ -26,9 +30,11 @@ namespace GameUtils
 
 	Anchor getAnchor(const std::string& str, Anchor val);
 
-	HorizontalAlign getHorizontalAlignment(const std::string& str);
+	HorizontalAlign getHorizontalAlignment(const std::string& str,
+		HorizontalAlign val = HorizontalAlign::Left);
 
-	VerticalAlign getVerticalAlignment(const std::string& str);
+	VerticalAlign getVerticalAlignment(const std::string& str,
+		VerticalAlign val = VerticalAlign::Top);
 
 	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept;
 

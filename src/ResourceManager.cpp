@@ -139,22 +139,11 @@ void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Ac
 }
 
 bool ResourceManager::addFont(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<Font2>& obj)
+	const std::string& key, const Font& obj)
 {
 	if (res.fonts.find(key) == res.fonts.cend())
 	{
 		res.fonts[key] = obj;
-		return true;
-	}
-	return false;
-}
-
-bool ResourceManager::addBitmapFont(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<BitmapFont>& obj)
-{
-	if (res.bitmapFonts.find(key) == res.bitmapFonts.cend())
-	{
-		res.bitmapFonts[key] = obj;
 		return true;
 	}
 	return false;
@@ -324,27 +313,13 @@ std::shared_ptr<Action> ResourceManager::getAction(const std::string& key) const
 	return nullptr;
 }
 
-std::shared_ptr<Font2> ResourceManager::getFont(const std::string& key) const
+Font ResourceManager::getFont(const std::string& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
 		const auto elem = res.fonts.find(key);
 
 		if (elem != res.fonts.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
-}
-
-std::shared_ptr<BitmapFont> ResourceManager::getBitmapFont(const std::string& key) const
-{
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.bitmapFonts.find(key);
-
-		if (elem != res.bitmapFonts.cend())
 		{
 			return elem->second;
 		}

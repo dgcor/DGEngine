@@ -3,6 +3,11 @@
 
 LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 {
+	resize();
+}
+
+void LevelMap::resize()
+{
 	if (mapSize.x == std::numeric_limits<Coord>::max())
 	{
 		mapSize.x--;
@@ -12,6 +17,13 @@ LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
 		mapSize.y--;
 	}
 	cells.resize(mapSize.x * mapSize.y);
+}
+
+void LevelMap::resize(Coord width_, Coord height_)
+{
+	mapSize.x = width_;
+	mapSize.y = height_;
+	resize();
 }
 
 void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
@@ -65,10 +77,11 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 
 			int32_t dunIndex = dun[xDunIndex][yDunIndex] - 1;
 
-			auto cellX = x + i;
-			auto cellY = y + j;
+			auto cellX = x + (Coord)i;
+			auto cellY = y + (Coord)j;
 
-			if (cellX >= mapSize.x || cellY >= mapSize.y)
+			if (cellX < 0 || cellX >= mapSize.x ||
+				cellY < 0 || cellY >= mapSize.y)
 			{
 				continue;
 			}
@@ -77,13 +90,16 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 
 			if (dunIndex == -1)
 			{
-				cell.MinIndex(-1);
+				cell.TileIndexBack(-1);
+				cell.TileIndexFront(-1);
 				cell.Sol(0);
 			}
 			else
 			{
-				cell.MinIndex(til[dunIndex][tilIndex]);
-				cell.Sol(sol.get(cell.MinIndex()));
+				auto tileIndex = til[dunIndex][tilIndex];
+				cell.TileIndexBack(tileIndex);
+				cell.TileIndexFront(tileIndex);
+				cell.Sol(sol.get(tileIndex));
 			}
 		}
 	}
@@ -95,19 +111,52 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const Sol& sol)
 	{
 		for (size_t j = 0; j < dun.Height(); j++)
 		{
-			auto cellX = x + i;
-			auto cellY = y + j;
+			auto cellX = x + (Coord)i;
+			auto cellY = y + (Coord)j;
 
-			if (cellX >= mapSize.x || cellY >= mapSize.y)
+			if (cellX < 0 || cellX >= mapSize.x ||
+				cellY < 0 || cellY >= mapSize.y)
 			{
 				continue;
 			}
 
-			auto& cell = cells[cellX + (cellY * mapSize.x)];
+			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
 
-			auto minIndex = dun[i][j];
-			cell.MinIndex(minIndex);
-			cell.Sol((minIndex >= 0 ? sol.get(minIndex) : 0));
+			auto tileIndex = dun[i][j];
+			cell.TileIndexBack(tileIndex);
+			cell.TileIndexFront(tileIndex);
+			cell.Sol((tileIndex >= 0 ? sol.get(tileIndex) : 0));
+		}
+	}
+}
+
+void LevelMap::setArea(Coord x, Coord y, size_t index, const Dun& dun)
+{
+	if (index > 2)
+	{
+		return;
+	}
+	for (size_t i = 0; i < dun.Width(); i++)
+	{
+		for (size_t j = 0; j < dun.Height(); j++)
+		{
+			auto cellX = x + (Coord)i;
+			auto cellY = y + (Coord)j;
+
+			if (cellX < 0 || cellX >= mapSize.x ||
+				cellY < 0 || cellY >= mapSize.y)
+			{
+				continue;
+			}
+
+			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
+
+			auto tileIndex = dun[i][j];
+			if (index == 2) // sol
+			{
+				tileIndex = (tileIndex != 0 ? 1 : 0);
+			}
+			cell.TileIndex(index, tileIndex);
 		}
 	}
 }
@@ -272,7 +321,7 @@ std::string LevelMap::toCSV(bool zeroBasedIndex) const
 	{
 		for (int i = 0; i < mapSize.x; i++)
 		{
-			str += std::to_string((*this)[i][j].MinIndex() + inc) + ",";
+			str += std::to_string((*this)[i][j].TileIndexBack() + inc) + ",";
 		}
 		str += "\n";
 	}

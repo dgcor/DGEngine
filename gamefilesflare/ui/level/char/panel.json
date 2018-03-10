@@ -1,0 +1,675 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "menu.saveAndCloseAction",
+      "action": [
+        { "name": "load", "file": "ui/level/saveSettings.json" },
+        { "name": "resource.popAll", "id": "gameMenuCommon" },
+        { "name": "resource.ignore", "id": "level", "ignore": "none" },
+        { "name": "level.pause", "pause": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showCharPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "charPanel", "visible": true },
+        { "name": "drawable.visible", "id": "charPanel2", "visible": true }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideCharPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "charPanel", "visible": false },
+        { "name": "drawable.visible", "id": "charPanel2", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showQuestPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "questPanel", "visible": true },
+        { "name": "drawable.visible", "id": "questPanel2", "visible": true },
+        { "name": "drawable.visible", "id": "questPanel3", "visible": true },
+        { "name": "drawable.visible", "id": "questPanel4", "visible": true }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideQuestPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "questPanel", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel2", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel3", "visible": false },
+        { "name": "drawable.visible", "id": "questPanel4", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showInvPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": true },
+        { "name": "drawable.visible", "id": "invPanel2", "visible": true },
+        { "name": "drawable.visible", "id": "invPanel3", "visible": true }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideInvPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "invPanel", "visible": false },
+        { "name": "drawable.visible", "id": "invPanel2", "visible": false },
+        { "name": "drawable.visible", "id": "invPanel3", "visible": false }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "showSpellPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "spellPanel", "visible": true },
+        { "name": "drawable.visible", "id": "spellPanel2", "visible": true }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideSpellPanel",
+      "action": [
+        { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+        { "name": "drawable.visible", "id": "spellPanel2", "visible": false }
+      ]
+    }
+  ],
+  "text": {
+    "id": "txtLevelUp",
+    "font": "smaltext",
+    "position": [60, 298],
+    "anchor": "bottom",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "verticalAlign": "center",
+    "visible": false,
+    "text": "Level Up"
+  },
+  "button": {
+    "id": "btnLevelUp",
+    "texture": "grey",
+    "textureRect": [0, 22, 41, 22],
+    "position": [40, 314],
+    "anchor": "bottom",
+    "captureInputEvents": true,
+    "clickUp": true,
+    "visible": false,
+    "onClick": { "name": "button.click", "id": "char" },
+    "onClickIn": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 44, 41, 22] },
+    "onClickOut": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 22, 41, 22] }
+  },
+  "image": [
+    {
+      "id": "itemInfoBk",
+      "position": [27, 28],
+      "anchor": "right",
+      "textureRect": [267, 300],
+      "texture": "textWallBackground",
+      "visible": false
+    },
+    {
+      "id": "itemInfoSp",
+      "position": [26, 98],
+      "anchor": "right",
+      "textureRect": [2, 0, 266, 3],
+      "texture": "textbox2",
+      "visible": false
+    }
+  ],
+  "button": {
+    "id": "itemInfoBr",
+    "position": [24, 25],
+    "anchor": "right",
+    "texture": "textbox2",
+    "visible": false,
+    "onHoverEnter": "hideItemInfo",
+    "onHoverLeave": "hideItemInfo"
+  },
+  "text": [
+    {
+      "id": "itemInfoTitle",
+      "replaceVars": true,
+      "font": "smaltext",
+      "anchor": "right",
+      "color": "%textGold%",
+      "position": [160, 63],
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "verticalAlign": "center",
+      "visible": false,
+      "text": ""
+    },
+    {
+      "id": "itemInfoDescr",
+      "font": "smaltext",
+      "anchor": "right",
+      "position": [160, 195],
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 14,
+      "verticalAlign": "center",
+      "visible": false,
+      "text": ""
+    },
+    {
+      "id": "txtMapLabel",
+      "replaceVars": true,
+      "font": "smaltext",
+      "color": "%textGold%",
+      "position": [8, 10],
+      "horizontalSpaceOffset": 1,
+      "binding": "|currentLevel|name|",
+      "format": "Level: [1]",
+      "visible": false
+    },
+    {
+      "id": "txtZoom",
+      "replaceVars": true,
+      "anchor": "topRight",
+      "font": "smaltext",
+      "color": "%textGold%",
+      "position": [632, 10],
+      "horizontalAlign": "right",
+      "horizontalSpaceOffset": 1,
+      "binding": "|currentLevel|zoomPercentage|",
+      "format": "Zoom: [1]%",
+      "visible": false
+    }
+  ],
+  "button": [
+    {
+      "id": "charPanel",
+      "texture": "config",
+      "textureRect": [0, 0, 316, 352],
+      "anchor": "left",
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "charPanel2",
+      "texture": "config",
+      "textureRect": [636, 0, 4, 352],
+      "anchor": "left",
+      "position": [316, 0],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "invPanel",
+      "texture": "inventory",
+      "textureRect": [0, 0, 320, 352],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "invPanel2",
+      "texture": "character",
+      "textureRect": [0, 0, 26, 26],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "invPanel3",
+      "texture": "inventory",
+      "textureRect": [0, 414, 320, 2],
+      "anchor": "right",
+      "position": [320, 351],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "questPanel",
+      "texture": "powers",
+      "textureRect": [0, 0, 320, 318],
+      "anchor": "left",
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "questPanel2",
+      "texture": "character",
+      "textureRect": [0, 318, 320, 34],
+      "anchor": "left",
+      "position": [0, 318],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "questPanel3",
+      "texture": "powers",
+      "textureRect": [0, 412, 320, 4],
+      "anchor": "left",
+      "position": [0, 348],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "questPanel4",
+      "texture": "powers",
+      "textureRect": [29, 384, 262, 4],
+      "anchor": "left",
+      "position": [29, 318],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "spellPanel",
+      "texture": "config",
+      "textureRect": [0, 0, 320, 352],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "spellPanel2",
+      "texture": "config",
+      "textureRect": [636, 0, 4, 352],
+      "anchor": "right",
+      "position": [636, 0],
+      "captureInputEvents": true,
+      "visible": false,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "panel",
+      "texture": "config",
+      "position": [0, 352],
+      "textureRect": [0, 0, 640, 124],
+      "anchor": "bottom",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "panel2",
+      "texture": "config",
+      "position": [0, 476],
+      "textureRect": [0, 348, 640, 4],
+      "anchor": "bottom",
+      "onRightClick": "rightClickLevel"
+    }
+  ],
+  "image": [
+    {
+      "id": "lifeOrbEmpty",
+      "texture": "bar_hp_background",
+      "position": [87, 353],
+      "anchor": "bottom"
+    },
+    {
+      "id": "manaOrbEmpty",
+      "texture": "bar_mp_background",
+      "position": [449, 353],
+      "anchor": "bottom"
+    },
+    {
+      "id": "lifeOrbFull",
+      "texture": "bar_hp",
+      "position": [87, 353],
+      "anchor": "bottom"
+    },
+    {
+      "id": "manaOrbFull",
+      "texture": "bar_mp",
+      "position": [449, 353],
+      "anchor": "bottom"
+    },
+    {
+      "id": "belt",
+      "texture": "inventory",
+      "textureRect": [31, 353, 258, 32],
+      "position": [192, 357],
+      "anchor": "bottom"
+    },
+    {
+      "id": "txtPanelBk",
+      "texture": "background",
+      "textureRect": [0, 0, 304, 70],
+      "position": [170, 392],
+      "anchor": "bottom"
+    }
+  ],
+  "button": [
+    {
+      "id": "char",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [9, 361],
+      "text": "Char",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|charPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            { "name": "load", "file": "ui/level/char/panelLabels.json" },
+            "showCharPanel",
+            "hideQuestPanel"
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            "hideCharPanel",
+            "hideQuestPanel",
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "quest",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [9, 387],
+      "text": "Quests",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|questPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "load", "file": "ui/level/char/panelQuests.json" },
+            "hideCharPanel",
+            "showQuestPanel"
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelLabels" },
+            { "name": "resource.pop", "id": "charPanelQuests" },
+            "hideCharPanel",
+            "hideQuestPanel",
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "inv",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [560, 361],
+      "text": "Inventory",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|invPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "load", "file": "ui/level/char/panelInventory.json" },
+            "showInvPanel",
+            "hideSpellPanel"
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            "hideInvPanel",
+            "hideSpellPanel",
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "spell",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [560, 387],
+      "text": "Spells",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onClick": [
+        {
+          "name": "if.equal",
+          "param1": "|spellPanel|visible|",
+          "param2": false,
+          "then": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "load", "file": "ui/level/char/panelSpells.json" },
+            "hideInvPanel",
+            "showSpellPanel"
+          ],
+          "else": [
+            { "name": "resource.pop", "id": "charPanelInventory" },
+            { "name": "resource.pop", "id": "charPanelSpells" },
+            "hideInvPanel",
+            "hideSpellPanel",
+            "setLevelHoverActions"
+          ]
+        },
+        "resizeLevel"
+      ],
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "map",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [9, 427],
+      "text": "Map",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "menu",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [9, 453],
+      "sound": "titlemov",
+      "text": "Menu",
+      "verticalAlign": "center",
+      "clickUp": true,
+      "onClick": {
+        "name": "if.equal",
+        "param1": "|game|hasResource.gameMenuCommon|",
+        "param2": true,
+        "then": "menu.saveAndCloseAction",
+        "else": [
+          { "name": "load", "file": "ui/level/menu/common.json" },
+          { "name": "load", "file": "ui/level/menu/game.json" }
+        ]
+      },
+      "onHoverEnter": {
+        "name": "if.notEqual",
+        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param2": true,
+        "then": [
+          { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+          "setPanelTextColorWhite",
+          "updatePanelTextSpacing"
+        ]
+      },
+      "onHoverLeave": "clearPanelText"
+    }
+  ],
+  "text": {
+    "id": "txtPanel",
+    "font": "smaltext",
+    "anchor": "bottom",
+    "position": [320, 429],
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 2,
+    "verticalAlign": "center"
+  },
+  "keyboard": [
+    { "key": "1", "action": "useBelt1Item" },
+    { "key": "2", "action": "useBelt2Item" },
+    { "key": "3", "action": "useBelt3Item" },
+    { "key": "4", "action": "useBelt4Item" },
+    { "key": "5", "action": "useBelt5Item" },
+    { "key": "6", "action": "useBelt6Item" },
+    { "key": "7", "action": "useBelt7Item" },
+    { "key": "8", "action": "useBelt8Item" },
+    { "key": "b", "action": { "name": "button.click", "id": "spell" } },
+    { "key": "c", "action": { "name": "button.click", "id": "char" } },
+    { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
+    { "key": "i", "action": { "name": "button.click", "id": "inv" } },
+    { "key": "q", "action": { "name": "button.click", "id": "quest" } },
+    { "key": "tab", "action": { "name": "button.click", "id": "map" } },
+    {
+      "key": "f1",
+      "action": [
+        { "name": "player.addGold", "gold": -4000 },
+        "updateStashItems",
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f2",
+      "action": [
+        { "name": "player.addGold", "gold": 4000 },
+        "updateStashItems",
+        "updateCharLabels"
+      ]
+    },
+    {
+      "key": "f3",
+      "action": [
+        { "name": "player.addToProperty", "property": "lifeDamage", "value": 10 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f4",
+      "action": [
+        { "name": "player.addToProperty", "property": "lifeDamage", "value": -10 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f5",
+      "action": [
+        { "name": "player.addToProperty", "property": "manaDamage", "value": 10 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f6",
+      "action": [
+        { "name": "player.addToProperty", "property": "manaDamage", "value": -10 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f7",
+      "action": [
+        { "name": "player.addToProperty", "property": "experience", "value": -2000 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "key": "f8",
+      "action": [
+        { "name": "player.addToProperty", "property": "experience", "value": 2000 },
+        "updateAllPlayerStats"
+      ]
+    }
+  ],
+  "load": "ui/level/char/beltInventory.json"
+}

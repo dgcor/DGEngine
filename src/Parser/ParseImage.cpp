@@ -38,10 +38,10 @@ namespace Parser
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		image->setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = image->Size();
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
-			auto size = image->Size();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
 			{

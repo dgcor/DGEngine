@@ -11,7 +11,13 @@
           { "name": "item.drop" },
           "clearPanelText"
         ],
-        "else": { "name": "player.moveToClick", "player": "hero" }
+        "else": {
+          "name": "if.equal",
+          "param1": "|currentLevel|hasCurrentPlayer|",
+          "param2": true,
+          "then": { "name": "player.moveToClick", "player": "hero" },
+          "else": { "name": "level.moveToClick" }
+        }
       }
     },
     {

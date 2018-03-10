@@ -40,7 +40,7 @@
   "text": {
     "id": "textMsg",
     "replaceVars": true,
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "color": "%textGold%",
     "position": [322, 172],
     "anchor": "none",

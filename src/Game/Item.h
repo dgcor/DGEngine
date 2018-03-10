@@ -3,7 +3,6 @@
 #include "Actions/Action.h"
 #include "BaseLevelObject.h"
 #include "ItemClass.h"
-#include <SFML/System/Time.hpp>
 
 class Player;
 
@@ -15,9 +14,6 @@ private:
 	const ItemClass* class_;
 
 	BaseLevelObject base;
-
-	sf::Time frameTime{ sf::milliseconds(40) };
-	sf::Time currentTime;
 
 	bool wasHoverEnabledOnItemDrop{ false };
 
@@ -60,7 +56,7 @@ public:
 
 	Item(const ItemClass* class__);
 
-	void resetDropAnimation() noexcept;
+	void resetDropAnimation(Level& level) noexcept;
 
 	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
 	virtual sf::Vector2f Size() const { return base.getSize(); }

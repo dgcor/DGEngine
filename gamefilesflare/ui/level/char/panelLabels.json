@@ -1,0 +1,276 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelLabels" },
+  "text": [
+    {
+      "id": "charName",
+      "font": "smaltext",
+      "position": [86, 22],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charClass",
+      "font": "smaltext",
+      "position": [234, 22],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charLevel",
+      "font": "smaltext",
+      "position": [88, 59],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charExp",
+      "font": "smaltext",
+      "position": [258, 59],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charExpNext",
+      "font": "smaltext",
+      "position": [258, 87],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charGold",
+      "font": "smaltext",
+      "position": [258, 136],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "binding": "|currentLevel|currentPlayer.gold|"
+    },
+    {
+      "id": "charStr",
+      "font": "smaltext",
+      "position": [110, 145],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharStrengthColor"
+    },
+    {
+      "id": "charStrNow",
+      "font": "smaltext",
+      "position": [158, 145],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharStrengthNowColor"
+    },
+    {
+      "id": "charMag",
+      "font": "smaltext",
+      "position": [111, 173],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharMagicColor"
+    },
+    {
+      "id": "charMagNow",
+      "font": "smaltext",
+      "position": [158, 173],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharMagicNowColor"
+    },
+    {
+      "id": "charDex",
+      "font": "smaltext",
+      "position": [110, 201],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharDexterityColor"
+    },
+    {
+      "id": "charDexNow",
+      "font": "smaltext",
+      "position": [158, 201],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharDexterityNowColor"
+    },
+    {
+      "id": "charVit",
+      "font": "smaltext",
+      "position": [110, 229],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharVitalityColor"
+    },
+    {
+      "id": "charVitNow",
+      "font": "smaltext",
+      "position": [158, 229],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharVitalityNowColor"
+    },
+    {
+      "id": "charPoints",
+      "replaceVars": true,
+      "font": "smaltext",
+      "color": "%textRed%",
+      "position": [111, 256],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "charLife",
+      "font": "smaltext",
+      "position": [111, 294],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharLifeColor"
+    },
+    {
+      "id": "charLifeNow",
+      "font": "smaltext",
+      "position": [159, 294],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharLifeNowColor"
+    },
+    {
+      "id": "charMana",
+      "font": "smaltext",
+      "position": [111, 322],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharManaColor"
+    },
+    {
+      "id": "charManaNow",
+      "font": "smaltext",
+      "position": [159, 322],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharManaNowColor"
+    },
+    {
+      "id": "charArmor",
+      "font": "smaltext",
+      "position": [280, 173],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharArmorColor"
+    },
+    {
+      "id": "charToHit",
+      "font": "smaltext",
+      "position": [279, 201],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharToHitColor"
+    },
+    {
+      "id": "charDamage",
+      "font": "smaltext",
+      "position": [280, 229],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "onChange": "updateCharDamageColor"
+    },
+    {
+      "id": "charResMagic",
+      "font": "smaltext",
+      "position": [279, 266],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharResistMagicColor"
+    },
+    {
+      "id": "charResFire",
+      "font": "smaltext",
+      "position": [279, 294],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharResistFireColor"
+    },
+    {
+      "id": "charResLight",
+      "font": "smaltext",
+      "position": [279, 322],
+      "anchor": "left",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "onChange": "updateCharResistLightningColor"
+    }
+  ],
+  "button": [
+    {
+      "id": "charStrAddPoint",
+      "position": [137, 138],
+      "anchor": "left",
+      "texture": "red",
+      "textureRect": [41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charStrAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charStrAddPoint", "rect": [0, 44, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charStrAddPoint", "rect": [0, 22, 41, 22] }
+    },
+    {
+      "id": "charMagAddPoint",
+      "position": [137, 166],
+      "anchor": "left",
+      "texture": "red",
+      "textureRect": [41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charMagAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charMagAddPoint", "rect": [0, 88, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charMagAddPoint", "rect": [0, 66, 41, 22] }
+    },
+    {
+      "id": "charDexAddPoint",
+      "position": [137, 195],
+      "anchor": "left",
+      "texture": "red",
+      "textureRect": [41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charDexAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charDexAddPoint", "rect": [0, 132, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charDexAddPoint", "rect": [0, 110, 41, 22] }
+    },
+    {
+      "id": "charVitAddPoint",
+      "position": [137, 223],
+      "anchor": "left",
+      "texture": "red",
+      "textureRect": [41, 22],
+      "clickUp": true,
+      "visible": true,
+      "onClick": "charVitAddPoint",
+      "onClickIn": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 176, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 154, 41, 22] }
+    }
+  ],
+  "action": "updateCharLabels"
+}

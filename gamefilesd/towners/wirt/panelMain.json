@@ -23,7 +23,7 @@
     {
       "id": "panelTitle1",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 58],
       "anchor": "none",
@@ -34,7 +34,7 @@
     {
       "id": "panelText1",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 178],
       "anchor": "none",
@@ -45,7 +45,7 @@
     {
       "id": "panelText2",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 202],
       "anchor": "none",
@@ -56,7 +56,7 @@
     {
       "id": "panelText3",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [476, 226],
       "anchor": "none",
@@ -69,7 +69,7 @@
     {
       "id": "talk",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textBlue%",
       "sound": "titlslct",
       "focus": true,
@@ -87,7 +87,7 @@
     },
     {
       "id": "ShowItem",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -104,7 +104,7 @@
     },
     {
       "id": "back",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",

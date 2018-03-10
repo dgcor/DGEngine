@@ -2,32 +2,22 @@
   "itemClass": [
     {
       "id": "scroll",
-      "replaceVars": true,
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 37,
+      "fromId": "baseItem",
+      "dropTexturePack": "scroll",
       "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 12,
       "name": "Scroll",
       "type": "Scroll",
-      "defaultOutline": "%outlineItem%",
-      "defaultOutlineIgnore": "0x000000",
       "defaults": {
-        "price": 50,
-        "identified": true
-      },
-      "formulas": {
-        "sell": "price * 0.25"
+        "price": 50
       },
       "descriptions": [
         { "index": 0, "name": "rightClickToRead2" },
         { "index": 1, "name": "required" }
       ],
-      "inventorySize": [1, 1],
       "actions": {
-        "action": "pickItemInLevel",
         "levelDrop": { "name": "sound.play", "id": "flipscrl" },
-        "inventoryDrop": { "name": "sound.play", "id": "invscrol" },
-        "inventoryPick": "pickItemInInventory"
+        "inventoryDrop": { "name": "sound.play", "id": "invscrol" }
       }
     }
   ]

@@ -1,0 +1,36 @@
+{
+  "font": [
+    {
+      "id": "font16g",
+      "file": "fonts/LiberationSans-Bold.ttf"
+    },
+    {
+      "id": "font16s",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font24g",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font24s",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font30g",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font30s",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font42g",
+      "fromId": "font16g"
+    },
+    {
+      "id": "font42y",
+      "fromId": "font16g"
+    }
+  ]
+}

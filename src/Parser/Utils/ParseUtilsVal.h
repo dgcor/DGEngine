@@ -76,6 +76,9 @@ namespace Parser
 	std::pair<size_t, size_t> getIndexVal(const rapidjson::Value& elem,
 		const std::pair<size_t, size_t>& val = {});
 
+	sf::Vector2f getPositionVal(const rapidjson::Value& elem,
+		const sf::Vector2f& size, const sf::Vector2u& refSize);
+
 	sf::IntRect getIntRectVal(const rapidjson::Value& elem,
 		const sf::IntRect& val = {});
 

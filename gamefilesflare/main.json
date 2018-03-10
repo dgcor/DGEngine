@@ -1,0 +1,24 @@
+{
+  "title" : "Diablo Flare",
+  "version": "0.1",
+  "saveDir": ".diabloflare",
+  "refWindowSize": [640, 480],
+  "minWindowSize": [640, 480],
+  "windowSize": [800, 600],
+  "keepAR": true,
+  "stretchToFit": true,
+  "smoothScreen": true,
+  "load": "settings.json",
+  "init": true,
+  "mountFile": [
+    { "file": "gamefilesd" },
+    { "file": "fantasycore.zip" }
+  ],
+  "action": {
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "images/logo/icon.png" },
+    "param2": true,
+    "then": { "name": "load", "file": "ui/loadMain.json" },
+    "else": { "name": "load", "file": ["ui/dataMissing.json", "fantasycore"] }
+  }
+}

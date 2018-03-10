@@ -6,7 +6,6 @@
 #include "ParseAction.h"
 #include "ParseAnimation.h"
 #include "ParseAudio.h"
-#include "ParseBitmapFont.h"
 #include "ParseButton.h"
 #include "ParseCircle.h"
 #include "ParseCursor.h"
@@ -183,17 +182,6 @@ namespace Parser
 		case str2int16("audio"): {
 			if (elem.IsArray() == false) {
 				parseAudio(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("bitmapFont"): {
-			if (elem.IsArray() == false) {
-				parseBitmapFont(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

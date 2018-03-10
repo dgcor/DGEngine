@@ -26,7 +26,10 @@ set(SOURCE_FILES
     src/Anchor.h
     src/Animation.cpp
     src/Animation.h
+    src/AnimationType.h
     src/AudioSource.h
+    src/BaseAnimation.cpp
+    src/BaseAnimation.h
     src/BitmapButton.cpp
     src/BitmapButton.h
     src/BitmapFont.cpp
@@ -48,7 +51,8 @@ set(SOURCE_FILES
     src/FadeInOut.h
     src/FileUtils.cpp
     src/FileUtils.h
-    src/Font2.h
+    src/Font.h
+    src/FreeTypeFont.h
     src/Game.cpp
     src/Game.h
     src/GameUtils.cpp
@@ -199,8 +203,6 @@ set(SOURCE_FILES
     src/Parser/ParseAudio.h
     src/Parser/ParseAudioCommon.cpp
     src/Parser/ParseAudioCommon.h
-    src/Parser/ParseBitmapFont.cpp
-    src/Parser/ParseBitmapFont.h
     src/Parser/ParseButton.cpp
     src/Parser/ParseButton.h
     src/Parser/ParseCircle.cpp
@@ -321,10 +323,10 @@ set(SOURCE_FILES
     src/rapidjson/msinttypes/stdint.h
     src/TexturePacks/CachedTexturePack.cpp
     src/TexturePacks/CachedTexturePack.h
+    src/TexturePacks/IndexedTexturePack.cpp
+    src/TexturePacks/IndexedTexturePack.h
     src/TexturePacks/RectTexturePack.cpp
     src/TexturePacks/RectTexturePack.h
-    src/TexturePacks/SimpleIndexedTexturePack.cpp
-    src/TexturePacks/SimpleIndexedTexturePack.h
     src/TexturePacks/SimpleTexturePack.cpp
     src/TexturePacks/SimpleTexturePack.h
     src/TexturePacks/TexturePack.cpp

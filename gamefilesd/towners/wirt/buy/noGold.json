@@ -14,7 +14,7 @@
   "text": {
     "id": "panelTitle",
     "replaceVars": true,
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "color": "%textGold%",
     "position": [320, 58],
     "anchor": "none",

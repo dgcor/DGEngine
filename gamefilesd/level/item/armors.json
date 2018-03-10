@@ -3,9 +3,7 @@
     {
       "id": "rags",
       "fromId": "baseArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "larmor",
       "inventoryTextureIndex": 139,
       "name": "Rags",
       "shortName": "Rags",
@@ -21,9 +19,6 @@
     {
       "id": "cape",
       "fromId": "rags",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 161,
       "name": "Cape",
       "shortName": "Cape",
@@ -37,9 +32,6 @@
     {
       "id": "cloak",
       "fromId": "rags",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 160,
       "name": "Cloak",
       "shortName": "Cloak",
@@ -53,9 +45,6 @@
     {
       "id": "robe",
       "fromId": "rags",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 148,
       "name": "Robe",
       "shortName": "Robe",
@@ -69,9 +58,6 @@
     {
       "id": "quiltedArmor",
       "fromId": "rags",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 140,
       "name": "Quilted Armor",
       "shortName": "Armor",
@@ -86,9 +72,6 @@
     {
       "id": "leatherArmor",
       "fromId": "quiltedArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 146,
       "name": "Leather Armor",
       "defaults": {
@@ -101,9 +84,6 @@
     {
       "id": "hardLeatherArmor",
       "fromId": "quiltedArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 138,
       "name": "Hard Leather Armor",
       "defaults": {
@@ -116,9 +96,6 @@
     {
       "id": "studdedLeatherArmor",
       "fromId": "quiltedArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 32,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 118,
       "name": "Studded Leather Armor",
       "defaults": {
@@ -132,10 +109,8 @@
     {
       "id": "ringMail",
       "fromId": "quiltedArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
-      "inventoryTextureIndex": {1},
+      "dropTexturePack": "FPlateAr",
+      "inventoryTextureIndex": 165,
       "name": "Ring Mail",
       "shortName": "Mail",
       "subType": "Plate",
@@ -154,9 +129,6 @@
     {
       "id": "chainMail",
       "fromId": "ringMail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 122,
       "name": "Chain Mail",
       "defaults": {
@@ -170,9 +142,6 @@
     {
       "id": "scaleMail",
       "fromId": "ringMail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 125,
       "name": "Scale Mail",
       "defaults": {
@@ -186,9 +155,6 @@
     {
       "id": "breastPlate",
       "fromId": "ringMail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 164,
       "name": "Breast Plate",
       "shortName": "Plate",
@@ -203,9 +169,6 @@
     {
       "id": "splintMail",
       "fromId": "ringMail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 147,
       "name": "Splint Mail",
       "defaults": {
@@ -219,9 +182,6 @@
     {
       "id": "fieldPlate",
       "fromId": "breastPlate",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 114,
       "name": "Field Plate",
       "defaults": {
@@ -235,10 +195,7 @@
     {
       "id": "gothicPlate",
       "fromId": "breastPlate",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
-      "inventoryTextureIndex": {2},
+      "inventoryTextureIndex": 163,
       "name": "Gothic Plate",
       "defaults": {
         "price": 8000,
@@ -251,9 +208,6 @@
     {
       "id": "fullPlateMail",
       "fromId": "breastPlate",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 28,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 162,
       "name": "Full Plate Mail",
       "defaults": {
@@ -267,10 +221,8 @@
     {
       "id": "valorArmor",
       "fromId": "ringMail",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 0,
-      "inventoryTexturePack": "itemIcons",
-      "inventoryTextureIndex": {3},
+      "dropTexturePack": "armor2",
+      "inventoryTextureIndex": 168,
       "name": "Arkaine's Valor",
       "shortName": "Arkaine's Valor",
       "descriptions": [

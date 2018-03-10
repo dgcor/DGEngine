@@ -55,7 +55,7 @@
   },
   "text": {
     "id": "copyright",
-    "bitmapFont": "font24s",
+    "font": "font24s",
     "text": "Copyright © 1996-2001 Blizzard Entertainment",
     "position": [59, 410],
     "anchor": "none"

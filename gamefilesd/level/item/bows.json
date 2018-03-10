@@ -3,9 +3,7 @@
     {
       "id": "shortBow",
       "fromId": "baseWeapon",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "bow",
       "inventoryTextureIndex": 129,
       "name": "Short Bow",
       "shortName": "Bow",
@@ -27,9 +25,6 @@
     {
       "id": "longBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 113,
       "name": "Long Bow",
       "defaults": {
@@ -45,9 +40,6 @@
     {
       "id": "huntersBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 113,
       "name": "Hunter's Bow",
       "defaults": {
@@ -63,9 +55,6 @@
     {
       "id": "compositeBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 144,
       "name": "Composite Bow",
       "defaults": {
@@ -81,10 +70,7 @@
     {
       "id": "shortBattleBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
-      "inventoryTextureIndex": {1},
+      "inventoryTextureIndex": 178,
       "name": "Short Battle Bow",
       "defaults": {
         "price": 750,
@@ -99,9 +85,6 @@
     {
       "id": "longBattleBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 130,
       "name": "Long Battle Bow",
       "defaults": {
@@ -117,10 +100,7 @@
     {
       "id": "shortWarBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
-      "inventoryTextureIndex": {2},
+      "inventoryTextureIndex": 176,
       "name": "Short War Bow",
       "defaults": {
         "price": 1500,
@@ -135,9 +115,6 @@
     {
       "id": "longWarBow",
       "fromId": "shortBow",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 11,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 130,
       "name": "Long War Bow",
       "defaults": {

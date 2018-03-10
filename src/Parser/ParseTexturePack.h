@@ -10,5 +10,6 @@ namespace Parser
 	void getOrParseLevelTexturePack(Game& game, const rapidjson::Value& elem,
 		const char* idKeyBottom, const char* idKeyTop,
 		std::shared_ptr<TexturePack>& texturePackBottom,
-		std::shared_ptr<TexturePack>& texturePackTop);
+		std::shared_ptr<TexturePack>& texturePackTop,
+		std::pair<uint32_t, uint32_t>& tileSize);
 }

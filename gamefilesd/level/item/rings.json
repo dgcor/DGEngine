@@ -3,9 +3,6 @@
     {
       "id": "ring",
       "fromId": "amulet",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 35,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 23,
       "name": "Ring",
       "shortName": "Ring",

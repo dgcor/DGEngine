@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AnimationType.h"
+#include "BaseAnimation.h"
 #include "BaseClass.h"
 #include "Formula.h"
 #include "GameProperties.h"
@@ -15,8 +17,16 @@ struct PlayerAI
 
 class PlayerClass : public BaseClass
 {
+public:
+	struct Range
+	{
+		std::pair<size_t, size_t> range;
+		AnimationType animType{ AnimationType::PlayOnce };
+	};
+	typedef std::vector<Range> Ranges;
+
 private:
-	std::vector<std::shared_ptr<TexturePack>> textures;
+	std::vector<std::pair<std::shared_ptr<TexturePack>, Ranges>> textures;
 	std::array<size_t, (size_t)PlayerAnimation::Size> animationIndexes;
 
 	PlayerAI ai;
@@ -62,22 +72,14 @@ public:
 	bool hasTextures() const noexcept { return textures.empty() == false; }
 	void clearTextures() noexcept { textures.clear(); }
 
-	TexturePack* getTexturePack(size_t idx) const
-	{
-		if (idx < textures.size())
-		{
-			return textures[idx].get();
-		}
-		else if (textures.empty() == false)
-		{
-			return textures.front().get();
-		}
-		return nullptr;
-	}
+	TexturePack* getTexturePack(size_t idx) const;
 
-	void addTexturePack(const std::shared_ptr<TexturePack>& texture)
+	void getTextureAnimationRange(size_t idx,
+		PlayerAnimation animation, BaseAnimation& baseAnim) const;
+
+	void addTexturePack(const std::shared_ptr<TexturePack>& texture, Ranges ranges = {})
 	{
-		textures.push_back(texture);
+		textures.push_back(std::make_pair(std::move(texture), std::move(ranges)));
 	}
 
 	void clearAnimationIndexes() { animationIndexes.fill(0); }

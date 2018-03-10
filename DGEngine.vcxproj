@@ -32,6 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\BaseAnimation.cpp" />
     <ClCompile Include="src\BitmapButton.cpp" />
     <ClCompile Include="src\BitmapFont.cpp" />
     <ClCompile Include="src\BitmapText.cpp" />
@@ -86,7 +87,6 @@
     <ClCompile Include="src\Parser\ParseAnimation.cpp" />
     <ClCompile Include="src\Parser\ParseAudio.cpp" />
     <ClCompile Include="src\Parser\ParseAudioCommon.cpp" />
-    <ClCompile Include="src\Parser\ParseBitmapFont.cpp" />
     <ClCompile Include="src\Parser\ParseButton.cpp" />
     <ClCompile Include="src\Parser\ParseCircle.cpp" />
     <ClCompile Include="src\Parser\ParseCondition.cpp" />
@@ -141,8 +141,8 @@
     <ClCompile Include="src\StringText.cpp" />
     <ClCompile Include="src\Text2.cpp" />
     <ClCompile Include="src\TexturePacks\CachedTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\IndexedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\RectTexturePack.cpp" />
-    <ClCompile Include="src\TexturePacks\SimpleIndexedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\SimpleTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\TexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\VectorTexturePack.cpp" />
@@ -186,11 +186,15 @@
     <ClInclude Include="src\Alignment.h" />
     <ClInclude Include="src\Anchor.h" />
     <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\AnimationType.h" />
     <ClInclude Include="src\AudioSource.h" />
+    <ClInclude Include="src\BaseAnimation.h" />
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\FadeInOut.h" />
     <ClInclude Include="src\FileUtils.h" />
+    <ClInclude Include="src\Font.h" />
+    <ClInclude Include="src\FreeTypeFont.h" />
     <ClInclude Include="src\GameUtils.h" />
     <ClInclude Include="src\Game\BaseClass.h" />
     <ClInclude Include="src\Game\BaseLevelObject.h" />
@@ -242,7 +246,6 @@
     <ClInclude Include="src\Parser\ParseAnimation.h" />
     <ClInclude Include="src\Parser\ParseAudio.h" />
     <ClInclude Include="src\Parser\ParseAudioCommon.h" />
-    <ClInclude Include="src\Parser\ParseBitmapFont.h" />
     <ClInclude Include="src\Parser\ParseButton.h" />
     <ClInclude Include="src\Parser\ParseCircle.h" />
     <ClInclude Include="src\Parser\ParseCondition.h" />
@@ -301,7 +304,6 @@
     <ClInclude Include="src\Dun.h" />
     <ClInclude Include="src\Event.h" />
     <ClInclude Include="src\EventManager.h" />
-    <ClInclude Include="src\Font2.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\LoadingScreen.h" />
     <ClInclude Include="src\Menu.h" />
@@ -320,8 +322,8 @@
     <ClInclude Include="src\StringText.h" />
     <ClInclude Include="src\Text2.h" />
     <ClInclude Include="src\TexturePacks\CachedTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\IndexedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\RectTexturePack.h" />
-    <ClInclude Include="src\TexturePacks\SimpleIndexedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\SimpleTexturePack.h" />
     <ClInclude Include="src\TexturePacks\TexturePack.h" />
     <ClInclude Include="src\TexturePacks\VectorTexturePack.h" />

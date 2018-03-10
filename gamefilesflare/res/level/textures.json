@@ -1,0 +1,60 @@
+{
+  "texture": [
+    {
+      "id": "bar_hp",
+      "file": "images/menus/bar_hp.png"
+    },
+    {
+      "id": "bar_hp_background",
+      "file": "images/menus/bar_hp_background.png"
+    },
+    {
+      "id": "bar_mp",
+      "file": "images/menus/bar_mp.png"
+    },
+    {
+      "id": "bar_mp_background",
+      "file": "images/menus/bar_mp_background.png"
+    },
+    {
+      "id": "character",
+      "file": "images/menus/character.png"
+    },
+    {
+      "id": "config",
+      "file": "images/menus/config.png"
+    },
+    {
+      "id": "inventory",
+      "file": "images/menus/inventory.png"
+    },
+    {
+      "id": "log",
+      "file": "images/menus/log.png"
+    },
+    {
+      "id": "powers",
+      "file": "images/menus/powers.png"
+    },
+    {
+      "id": "red",
+      "color": "0xFF000022",
+      "size": [1, 1]
+    },
+    {
+      "id": "grey",
+      "color": "0x4C4A48",
+      "size": [1, 1]
+    },
+    {
+      "id": "tab_active",
+      "file": "images/menus/tab_active.png"
+    }
+  ],
+  "texturePack": {
+    "id": "pentspn2",
+    "texture": "pentspn2",
+    "frames": 8
+  },
+  "load": "res/level/textures2.json"
+}

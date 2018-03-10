@@ -16,7 +16,7 @@
   ],
   "button": {
     "id": "back",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "position": [320, 202],
     "anchor": "none",

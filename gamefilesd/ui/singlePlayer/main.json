@@ -82,28 +82,28 @@
   "animation": {
     "id": "smlogo",
     "texturePack": "smlogo",
-    "position": [125, 0],
+    "position": ["center", 0],
     "anchor": "none",
     "refresh": 50
   },
   "text": [
     {
       "id": "label1",
-      "bitmapFont": "font30s",
+      "font": "font30s",
       "position": [319, 161],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
       "id": "label2",
-      "bitmapFont": "font30s",
+      "font": "font30s",
       "position": [424, 211],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
       "id": "level",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "Level:",
       "position": [149, 323],
       "anchor": "none",
@@ -111,7 +111,7 @@
     },
     {
       "id": "strength",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "Strength:",
       "position": [149, 358],
       "anchor": "none",
@@ -119,7 +119,7 @@
     },
     {
       "id": "magic",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "Magic:",
       "position": [149, 380],
       "anchor": "none",
@@ -127,7 +127,7 @@
     },
     {
       "id": "dexterity",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "Dexterity:",
       "position": [149, 401],
       "anchor": "none",
@@ -135,7 +135,7 @@
     },
     {
       "id": "vitality",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "Vitality:",
       "position": [149, 422],
       "anchor": "none",
@@ -143,7 +143,7 @@
     },
     {
       "id": "txtLevel",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "--",
       "position": [179, 323],
       "anchor": "none",
@@ -151,7 +151,7 @@
     },
     {
       "id": "txtStrength",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "--",
       "position": [179, 358],
       "anchor": "none",
@@ -159,7 +159,7 @@
     },
     {
       "id": "txtMagic",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "--",
       "position": [179, 380],
       "anchor": "none",
@@ -167,7 +167,7 @@
     },
     {
       "id": "txtDexterity",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "--",
       "position": [179, 401],
       "anchor": "none",
@@ -175,7 +175,7 @@
     },
     {
       "id": "txtVitality",
-      "bitmapFont": "font16s",
+      "font": "font16s",
       "text": "--",
       "position": [179, 422],
       "anchor": "none",

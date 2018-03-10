@@ -1,0 +1,17 @@
+{
+  "load": "level/item/baseItems.json",
+  "load": "level/item/amulets.json",
+  "load": "level/item/armors.json",
+  "load": "level/item/axes.json",
+  "load": "level/item/books.json",
+  "load": "level/item/bows.json",
+  "load": "level/item/clubs.json",
+  "load": "level/item/helmets.json",
+  "load": "level/item/misc.json",
+  "load": "level/item/potions.json",
+  "load": "level/item/rings.json",
+  "load": "level/item/scrolls.json",
+  "load": "level/item/shields.json",
+  "load": "level/item/staffs.json",
+  "load": "level/item/swords.json"
+}

@@ -1,0 +1,20 @@
+{
+  "sound": [
+    {
+      "id": "door_open",
+      "file": "soundfx/door_open.ogg"
+    },
+    {
+      "id": "inventory_wood",
+      "file": "soundfx/inventory/inventory_wood.ogg"
+    },
+    {
+      "id": "titlslct",
+      "fromId": "door_open"
+    },
+    {
+      "id": "titlemov",
+      "fromId": "inventory_wood"
+    }
+  ]
+}
