@@ -41,7 +41,7 @@ namespace Parser
 		auto anchor = getAnchorKey(elem, "anchor");
 		scrollable->setAnchor(anchor);
 		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
-		auto size = getVector2fKey<sf::Vector2f>(elem, "boxSize");
+		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());

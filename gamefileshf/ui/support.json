@@ -52,7 +52,7 @@
     "file": "ui/support.txt",
     "anchor": "none",
     "position": [30, 115],
-    "boxSize": [580, 250],
+    "size": [580, 250],
     "onComplete": {
       "name": "game.fadeOut",
       "action": [

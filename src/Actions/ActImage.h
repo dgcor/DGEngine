@@ -221,14 +221,20 @@ public:
 				auto item = level->getItem(itemLocation);
 				if (item != nullptr)
 				{
-					const sf::Texture* texture;
-					sf::IntRect rect;
-					if (item->Class()->getInventoryTexture(&texture, rect) == true)
+					TextureInfo ti;
+					if (item->Class()->getInventoryTexture(ti) == true)
 					{
-						image->setTexture(*texture);
+						image->setTexture(*ti.texture);
 						if (resetRect == true)
 						{
-							image->setTextureRect(rect);
+							image->setTextureRect(ti.textureRect);
+						}
+						else
+						{
+							auto oldRect = image->getTextureRect();
+							oldRect.left = ti.textureRect.left;
+							oldRect.top = ti.textureRect.top;
+							image->setTextureRect(oldRect);
 						}
 					}
 					if (item->Class()->getInventoryTexturePack()->isIndexed() == true)
@@ -251,12 +257,12 @@ class ActImageSetTextureFromPack : public Action
 private:
 	std::string id;
 	std::string idTexturePack;
-	std::pair<size_t, size_t> textureIdx;
+	size_t textureIdx;
 	bool resetRect;
 
 public:
 	ActImageSetTextureFromPack(const std::string& id_,
-		const std::string& idTexturePack_, const std::pair<size_t, size_t>& textureIdx_,
+		const std::string& idTexturePack_, size_t textureIdx_,
 		bool resetRect_) : id(id_), idTexturePack(idTexturePack_),
 		textureIdx(textureIdx_), resetRect(resetRect_) {}
 
@@ -268,14 +274,20 @@ public:
 			auto tex = game.Resources().getTexturePack(idTexturePack);
 			if (tex != nullptr)
 			{
-				const sf::Texture* texture;
-				sf::IntRect rect;
-				if (tex->get(textureIdx.first, textureIdx.second, &texture, rect) == true)
+				TextureInfo ti;
+				if (tex->get(textureIdx, ti) == true)
 				{
-					image->setTexture(*texture);
+					image->setTexture(*ti.texture);
 					if (resetRect == true)
 					{
-						image->setTextureRect(rect);
+						image->setTextureRect(ti.textureRect);
+					}
+					else
+					{
+						auto oldRect = image->getTextureRect();
+						oldRect.left = ti.textureRect.left;
+						oldRect.top = ti.textureRect.top;
+						image->setTextureRect(oldRect);
 					}
 				}
 				if (tex->isIndexed() == true)

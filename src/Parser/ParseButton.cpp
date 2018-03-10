@@ -70,36 +70,35 @@ namespace Parser
 
 		std::shared_ptr<Button> button;
 
-		if (elem.HasMember("texture"))
+		if (elem.HasMember("texture") == true)
 		{
 			button = parseBitmapButton(game, elem);
-			if (button == nullptr)
+			if (button != nullptr)
 			{
-				return;
-			}
-			auto anchor = getAnchorKey(elem, "anchor");
-			button->setAnchor(anchor);
-			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
-			auto size = button->Size();
-			if (getBoolKey(elem, "relativeCoords", true) == true)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-				if (game.StretchToFit() == false)
+				auto anchor = getAnchorKey(elem, "anchor");
+				button->setAnchor(anchor);
+				auto size = button->Size();
+				auto pos = getPositionKey(elem, "position", size, game.RefSize());
+				if (getBoolKey(elem, "relativeCoords", true) == true)
 				{
-					GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
+					GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
+					if (game.StretchToFit() == false)
+					{
+						GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
+					}
 				}
-			}
-			button->Position(pos);
-			auto bitmapBtn = static_cast<BitmapButton*>(button.get());
-			if (bitmapBtn->getResizable() == true)
-			{
-				bitmapBtn->Size(size);
-			}
-			button->Visible(getBoolKey(elem, "visible", true));
+				button->Position(pos);
+				auto bitmapBtn = static_cast<BitmapButton*>(button.get());
+				if (bitmapBtn->getResizable() == true)
+				{
+					bitmapBtn->Size(size);
+				}
+				button->Visible(getBoolKey(elem, "visible", true));
 
-			button->setColor(getColorKey(elem, "color", sf::Color::White));
+				button->setColor(getColorKey(elem, "color", sf::Color::White));
+			}
 		}
-		else
+		if (button == nullptr)
 		{
 			button = parseStringButton(game, elem);
 			if (button == nullptr)

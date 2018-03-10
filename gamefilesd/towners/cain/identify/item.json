@@ -35,7 +35,7 @@
     {
       "id": "thisItemIs",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [320, 118],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -45,7 +45,7 @@
     {
       "id": "itemInfo",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [51, 166],
       "anchor": "none",
       "horizontalSpaceOffset": 1,
@@ -54,7 +54,7 @@
   ],
   "button": {
     "id": "back",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "focus": true,
     "focusSound": "titlemov",

@@ -5,7 +5,6 @@
 #include "ItemCollection.h"
 #include "PlayerClass.h"
 #include <SFML/Audio/Sound.hpp>
-#include <SFML/System/Time.hpp>
 
 class Player : public LevelObject
 {
@@ -32,7 +31,6 @@ private:
 	AnimationSpeed speed;
 	AnimationSpeed defaultSpeed{ sf::Time::Zero, sf::Time::Zero };
 
-	sf::Time currentAnimationTime;
 	sf::Time currentWalkTime;
 
 	std::shared_ptr<Action> action;
@@ -135,7 +133,7 @@ private:
 public:
 	Player(const PlayerClass* class__, const Level& level);
 
-	sf::Vector2f getBasePosition(const Level& level) const;
+	const sf::Vector2f& getBasePosition() const noexcept { return base.basePosition; }
 
 	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
 	virtual sf::Vector2f Size() const { return base.getSize(); }
@@ -230,6 +228,7 @@ public:
 	{
 		defaultSpeed = speed_;
 		speed = class_->getSpeed(animation);
+		base.animation.frameTime = speed.animation;
 		updateSpeed();
 	}
 
@@ -247,6 +246,7 @@ public:
 		{
 			animation = animation_;
 			speed = class_->getSpeed(animation);
+			base.animation.frameTime = speed.animation;
 			updateSpeed();
 			calculateRange();
 		}
@@ -278,7 +278,7 @@ public:
 		return animation >= PlayerAnimation::Walk1 && animation <= PlayerAnimation::Walk2;
 	}
 
-	void resetAnimationTime() noexcept { currentAnimationTime = speed.animation; }
+	void resetAnimationTime() noexcept { base.animation.currentTime = speed.animation; }
 
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept

@@ -33,7 +33,10 @@ namespace Parser
 			return;
 		}
 
-		game.Window().setMouseCursorVisible(getBoolKey(elem, "show"));
+		if (elem.HasMember("show") == true)
+		{
+			game.Window().setMouseCursorVisible(getBoolVal(elem["show"]));
+		}
 
 		if (getBoolKey(elem, "pop") == true)
 		{

@@ -30,7 +30,7 @@
     {
       "id": "warrior",
       "horizontalAlign": "center",
-      "bitmapFont": "font24g",
+      "font": "font24g",
       "position": [424, 285],
       "anchor": "none",
       "onClick": [
@@ -42,8 +42,7 @@
         { "name": "text.setText", "id": "txtMagic", "text": "10" },
         { "name": "text.setText", "id": "txtDexterity", "text": "20" },
         { "name": "text.setText", "id": "txtVitality", "text": "25" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        "anchorPentagrams"
       ],
       "onFocus": { "name": "button.click", "id": "warrior" },
       "focusOnClick": false,
@@ -53,7 +52,7 @@
     {
       "id": "rogue",
       "horizontalAlign": "center",
-      "bitmapFont": "font24g",
+      "font": "font24g",
       "position": [424, 318],
       "anchor": "none",
       "onClick": [
@@ -65,8 +64,7 @@
         { "name": "text.setText", "id": "txtMagic", "text": "15" },
         { "name": "text.setText", "id": "txtDexterity", "text": "30" },
         { "name": "text.setText", "id": "txtVitality", "text": "20" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        "anchorPentagrams"
       ],
       "onFocus": { "name": "button.click", "id": "rogue" },
       "focusOnClick": false,
@@ -76,7 +74,7 @@
     {
       "id": "sorcerer",
       "horizontalAlign": "center",
-      "bitmapFont": "font24g",
+      "font": "font24g",
       "position": [424, 352],
       "anchor": "none",
       "onClick": [
@@ -88,8 +86,7 @@
         { "name": "text.setText", "id": "txtMagic", "text": "35" },
         { "name": "text.setText", "id": "txtDexterity", "text": "15" },
         { "name": "text.setText", "id": "txtVitality", "text": "20" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-        { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
+        "anchorPentagrams"
       ],
       "onFocus": { "name": "button.click", "id": "sorcerer" },
       "focusOnClick": false,
@@ -98,7 +95,7 @@
     },
     {
       "id": "ok",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [329, 429],
       "anchor": "none",
       "onClick": [
@@ -110,7 +107,7 @@
     },
     {
       "id": "cancel",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [451, 429],
       "anchor": "none",
       "onClick": [

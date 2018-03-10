@@ -31,6 +31,7 @@ public:
 	const sf::Vector2f& getPosition() const noexcept { return position; }
 	void setPosition(const sf::Vector2f& position_) noexcept { position = position_; }
 
+	const sf::Vector2f& getVisibleSize() const noexcept { return view.getSize(); }
 	const sf::Vector2f& getSize() const noexcept { return sizeNoZoom; }
 	void setSize(float width, float height)
 	{

@@ -82,27 +82,23 @@ public:
 		auto text2 = game.Resources().getResource<Text2>(id);
 		if (text2 != nullptr)
 		{
+			auto newFont = game.Resources().getFont(idFont);
 			auto text = text2->getDrawableText();
-			if (text != nullptr)
+			if (hasNullFont(newFont) == false &&
+				text != nullptr)
 			{
 				auto bitmapText = dynamic_cast<BitmapText*>(text);
-				if (bitmapText != nullptr)
+				if (bitmapText != nullptr &&
+					hasBitmapFont(newFont) == true)
 				{
-					auto newFont = game.Resources().getBitmapFont(idFont);
-					if (newFont != nullptr)
-					{
-						bitmapText->setFont(newFont);
-					}
+					bitmapText->setFont(std::get<std::shared_ptr<BitmapFont>>(newFont));
 					return true;
 				}
 				auto stringText = dynamic_cast<StringText*>(text);
-				if (stringText != nullptr)
+				if (stringText != nullptr &&
+					hasFreeTypeFont(newFont) == true)
 				{
-					auto newFont = game.Resources().getFont(idFont);
-					if (newFont != nullptr)
-					{
-						stringText->setFont(*newFont);
-					}
+					stringText->setFont(*std::get<std::shared_ptr<FreeTypeFont>>(newFont));
 				}
 			}
 		}

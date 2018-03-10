@@ -10,7 +10,6 @@
     "name": "King Leoric's Lair",
     "palette": "l1_1",
     "file": "levels/l1data/l1.cel",
-    "mapSize": [96, 96],
     "map": { "file": "levels/l1data/sklkng1.dun" },
     "til": "levels/l1data/l1.til",
     "min": "levels/l1data/l1.min",

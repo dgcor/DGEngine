@@ -55,7 +55,7 @@
   "menu": {
     "id": "mainMenu",
     "replaceVars": true,
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "position": [52, 94],
     "horizontalSpaceOffset": 1,
@@ -251,7 +251,7 @@
   },
   "button": {
     "id": "back",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "position": [320, 304],
     "anchor": "none",

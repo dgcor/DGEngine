@@ -6,39 +6,23 @@
 
 void Level::Init(LevelMap map_,
 	std::shared_ptr<TexturePack> tilesBottom_,
-	std::shared_ptr<TexturePack> tilesTop_)
+	std::shared_ptr<TexturePack> tilesTop_,
+	int tileWidth_, int tileHeight_)
 {
 	map = std::move(map_);
 	tilesBottom = tilesBottom_;
 	tilesTop = tilesTop_;
-	currentMapPosition = MapCoord(map.Width() / 2, map.Height() / 2);
 	clickedObject = nullptr;
 	hoverObject = nullptr;
 
-	sf::Vector2i textureSize;
-	if (tilesBottom_ != nullptr &&
-		tilesBottom_->getTextureSize(textureSize) == true)
-	{
-		tileWidth = textureSize.x;
-		tileHeight = textureSize.y;
-	}
-	else
-	{
-		tileWidth = 64;
-		tileHeight = 32;
-	}
-	if (tilesTop_ != nullptr &&
-		tilesTop_->getTextureSize(textureSize) == true)
-	{
-		pillarHeight = textureSize.y;
-	}
-	else
-	{
-		pillarHeight = 256;
-	}
+	tileWidth = tileWidth_;
+	tileHeight = tileHeight_;
 	map.setTileSize(tileWidth, tileHeight);
 
+	setCurrentMapPosition(MapCoord(map.Width() / 2, map.Height() / 2));
+
 	updateLevelObjectPositions();
+	updateViewPort = true;
 }
 
 void Level::updateLevelObjectPositions()
@@ -195,6 +179,7 @@ void::Level::updateZoom(const Game& game)
 	view.setZoom(1.f / currentZoomFactor);
 
 	view.updateViewport(game);
+	updateVisibleArea();
 }
 
 void Level::addLevelObject(std::unique_ptr<LevelObject> obj, bool addToFront)
@@ -247,16 +232,9 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.setView(view.getView());
 
 	sf::Sprite sprite;
-	const sf::Texture* texture;
-	sf::IntRect textureRect;
+	TextureInfo ti;
+	sf::FloatRect tileRect;
 	const sf::Texture* palette = nullptr;
-
-	auto viewCenter = target.getView().getCenter();
-	auto viewSize = target.getView().getSize();
-
-	sf::FloatRect drawRect(viewCenter.x - (viewSize.x / 2) - tileWidth,
-		viewCenter.y - (viewSize.y / 2) - pillarHeight,
-		viewSize.x + tileWidth, viewSize.y + pillarHeight);
 
 	auto tiles = tilesBottom.get();
 	if (tiles != nullptr)
@@ -272,26 +250,29 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			states.shader = &Shaders::Palette;
 			Shaders::Palette.setUniform("palette", *palette);
 		}
-		auto newPillarHeight = pillarHeight - tileHeight;
 
-		for (Coord x = 0; x < map.Width(); x++)
+		for (Coord x = visibleStart.x; x < visibleEnd.x; x++)
 		{
-			for (Coord y = 0; y < map.Height(); y++)
+			for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
 			{
-				auto index = map[x][y].MinIndex();
+				auto index = map[x][y].TileIndexBack();
 				if (index < 0)
 				{
 					continue;
 				}
-				auto coords = map.getCoord(MapCoord(x, y));
-				coords.y += newPillarHeight;
-
-				if (drawRect.contains(coords) == true)
+				if (tiles->get((size_t)index, ti) == true)
 				{
-					if (tiles->get((size_t)index, &texture, textureRect) == true)
+					auto coords = map.getCoord(MapCoord(x, y));
+					coords.y -= (float)(ti.textureRect.height - tileHeight);
+					coords += ti.offset;
+					tileRect.left = coords.x;
+					tileRect.top = coords.y;
+					tileRect.width = (float)ti.textureRect.width;
+					tileRect.height = (float)ti.textureRect.height;
+					if (visibleRect.intersects(tileRect) == true)
 					{
-						sprite.setTexture(*texture);
-						sprite.setTextureRect(textureRect);
+						sprite.setTexture(*ti.texture);
+						sprite.setTextureRect(ti.textureRect);
 						sprite.setPosition(coords);
 						target.draw(sprite, states);
 					}
@@ -320,39 +301,45 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		states.shader = NULL;
 	}
 
-	for (Coord x = 0; x < map.Width(); x++)
+	for (Coord x = visibleStart.x; x < visibleEnd.x; x++)
 	{
-		for (Coord y = 0; y < map.Height(); y++)
+		for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
 		{
 			auto coords = map.getCoord(MapCoord(x, y));
+			bool drewObj = false;
 
-			if (drawRect.contains(coords) == true)
+			for (const auto& drawObj : map[x][y])
 			{
-				bool drewObj = false;
-				for (const auto& drawObj : map[x][y])
+				if (drawObj != nullptr)
 				{
-					if (drawObj != nullptr)
-					{
-						target.draw(*drawObj, states);
-						drewObj = true;
-					}
+					target.draw(*drawObj, states);
+					drewObj = true;
 				}
-				if (drewObj == true &&
-					palette != nullptr)
+			}
+			if (drewObj == true &&
+				palette != nullptr)
+			{
+				Shaders::Palette.setUniform("palette", *palette);
+			}
+			if (tiles != nullptr)
+			{
+				size_t index = map[x][y].TileIndexFront();
+				if (index < 0)
 				{
-					Shaders::Palette.setUniform("palette", *palette);
+					continue;
 				}
-				if (tiles != nullptr)
+				if (tiles->get((size_t)index, ti) == true)
 				{
-					size_t index = map[x][y].MinIndex();
-					if (index < 0)
+					coords.y -= (float)(ti.textureRect.height - tileHeight);
+					coords += ti.offset;
+					tileRect.left = coords.x;
+					tileRect.top = coords.y;
+					tileRect.width = (float)ti.textureRect.width;
+					tileRect.height = (float)ti.textureRect.height;
+					if (visibleRect.intersects(tileRect) == true)
 					{
-						continue;
-					}
-					if (tiles->get((size_t)index, &texture, textureRect) == true)
-					{
-						sprite.setTexture(*texture);
-						sprite.setTextureRect(textureRect);
+						sprite.setTexture(*ti.texture);
+						sprite.setTextureRect(ti.textureRect);
 						sprite.setPosition(coords);
 						target.draw(sprite, states);
 					}
@@ -366,12 +353,55 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Level::updateSize(const Game& game)
 {
 	view.updateSize(game);
+	updateVisibleArea();
+}
+
+void Level::updateVisibleArea()
+{
+	const auto& viewCenter = view.getCenter();
+	const auto& viewSize = view.getVisibleSize();
+
+	visibleRect = sf::FloatRect(viewCenter.x - std::round(viewSize.x / 2),
+		viewCenter.y - std::round(viewSize.y / 2),
+		std::round(viewSize.x),
+		std::round(viewSize.y));
+
+	sf::Vector2f TL{ visibleRect.left, visibleRect.top };
+	sf::Vector2f TR{ TL.x + visibleRect.width + tileWidth, TL.y };
+	sf::Vector2f BL{ TL.x, TL.y + visibleRect.height + tileHeight };
+	sf::Vector2f BR{ TR.x, BL.y };
+
+	auto mapTL = map.getTile(TL);
+	auto mapTR = map.getTile(TR);
+	auto mapBL = map.getTile(BL);
+	auto mapBR = map.getTile(BR);
+
+	if (mapTL.x > 0)
+	{
+		visibleStart.x = std::max((Coord)0, mapTL.x - 2);
+	}
+	else
+	{
+		visibleStart.x = 0;
+	}
+	visibleEnd.x = std::clamp(mapBR.x + 12, 0, map.Width());
+	if (mapTR.y > 0)
+	{
+		visibleStart.y = std::max((Coord)0, mapTR.y - 2);
+	}
+	else
+	{
+		visibleStart.y = 0;
+	}
+	visibleEnd.y = std::clamp(mapBL.y + 12, 0, map.Height());
 }
 
 void Level::updateMouse(const Game& game)
 {
 	mousePositionf = view.getPosition(game.MousePositionf());
-	mapCoordOverMouse = map.getTile(mousePositionf);
+	auto mousePositionf2 = mousePositionf;
+	mousePositionf2.y += 224;
+	mapCoordOverMouse = map.getTile(mousePositionf2);
 }
 
 void Level::onMouseButtonPressed(Game& game)
@@ -455,11 +485,11 @@ void Level::update(Game& game)
 	{
 		return;
 	}
-	if (updateView == true)
+	if (updateViewPort == true)
 	{
-		updateView = false;
-		view.updateSize(game);
+		updateViewPort = false;
 		view.updateViewport(game);
+		updateVisibleArea();
 	}
 	if (pause == true)
 	{
@@ -495,21 +525,23 @@ void Level::update(Game& game)
 	{
 		hasMouseInside = false;
 	}
-
 	for (auto& obj : levelObjects)
 	{
 		obj->update(game, *this);
 	}
-
 	for (auto& player : players)
 	{
 		player->update(game, *this);
 	}
-
 	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
 		currentMapPosition = currentPlayer->MapPosition();
-		view.setCenter(currentPlayer->getBasePosition(*this));
+		currentMapViewCenter = currentPlayer->getBasePosition();
+	}
+	if (view.getCenter() != currentMapViewCenter)
+	{
+		view.setCenter(currentMapViewCenter);
+		updateVisibleArea();
 	}
 }
 
@@ -530,6 +562,7 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 			return clickedObject->getProperty(props.second, var);
 		}
 	}
+	break;
 	case str2int16("currentPlayer"):
 	{
 		if (currentPlayer != nullptr)
@@ -538,6 +571,10 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
+	case str2int16("hasCurrentPlayer"):
+		var = Variable((bool)(currentPlayer != nullptr));
+		return true;
+		break;
 	case str2int16("hoverObject"):
 	{
 		if (hoverObject != nullptr)

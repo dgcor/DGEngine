@@ -130,6 +130,57 @@ namespace Parser
 		return val;
 	}
 
+	sf::Vector2f getPositionVal(const Value& elem,
+		const sf::Vector2f& size, const sf::Vector2u& refSize)
+	{
+		float x = 0.f;
+		float y = 0.f;
+
+		if (elem.IsArray() == true
+			&& elem.Size() > 1)
+		{
+			if (elem[0].IsNumber() == true)
+			{
+				x = elem[0].GetFloat();
+			}
+			else if (elem[0].IsString() == true)
+			{
+				switch (GameUtils::getHorizontalAlignment(elem[0].GetString()))
+				{
+				case HorizontalAlign::Left:
+				default:
+					break;
+				case HorizontalAlign::Center:
+					x = std::round((((float)refSize.x) / 2.f) - (size.x / 2.f));
+					break;
+				case HorizontalAlign::Right:
+					x = ((float)refSize.x) - size.x;
+					break;
+				}
+			}
+			if (elem[1].IsNumber() == true)
+			{
+				y = elem[1].GetFloat();
+			}
+			else if (elem[1].IsString() == true)
+			{
+				switch (GameUtils::getVerticalAlignment(elem[1].GetString()))
+				{
+				case VerticalAlign::Top:
+				default:
+					break;
+				case VerticalAlign::Center:
+					y = std::round((((float)refSize.y) / 2.f) - (size.y / 2.f));
+					break;
+				case VerticalAlign::Bottom:
+					y = ((float)refSize.y) - size.y;
+					break;
+				}
+			}
+		}
+		return { x, y };
+	}
+
 	sf::IntRect getIntRectVal(const Value& elem, const sf::IntRect& val)
 	{
 		if (elem.IsArray() == true

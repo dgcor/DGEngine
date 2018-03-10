@@ -10,7 +10,6 @@
     "name": "Chamber of Bones",
     "palette": "l2",
     "file": "levels/l2data/l2.cel",
-    "mapSize": [96, 96],
     "map": { "file": "levels/l2data/bonecha1.dun" },
     "til": "levels/l2data/l2.til",
     "min": "levels/l2data/l2.min",

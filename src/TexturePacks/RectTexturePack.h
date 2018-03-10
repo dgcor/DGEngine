@@ -6,30 +6,27 @@
 class RectTexturePack : public TexturePack
 {
 private:
-	std::shared_ptr<sf::Texture> texture;
-	std::vector<sf::IntRect> rects;
-	std::shared_ptr<Palette> palette;
-	bool indexed{ false };
-	bool texturesHaveSameSize{ false };
+	struct RectTexture
+	{
+		size_t index;
+		sf::IntRect rect;
+		sf::Vector2f offset;
+		RectTexture(size_t index_, const sf::IntRect& rect_, const sf::Vector2f& offset_)
+			: index(index_), rect(rect_), offset(offset_) {}
+	};
+
+	std::unique_ptr<TexturePack> texturePack;
+	std::vector<RectTexture> rects;
 
 public:
-	RectTexturePack(const std::shared_ptr<sf::Texture>& texture_,
-		const std::shared_ptr<Palette>& palette_ = nullptr, bool isIndexed_ = false) noexcept
-		: texture(texture_), palette(palette_), indexed(isIndexed_) {}
+	RectTexturePack(std::unique_ptr<TexturePack> texturePack_)
+		: texturePack(std::move(texturePack_)) {}
 
-	void add(const sf::IntRect& rect);
+	void addRect(size_t index, const sf::IntRect& rect, const sf::Vector2f& offset);
 
-	virtual bool get(size_t index,
-		const sf::Texture** textureOut, sf::IntRect& textureRect) const;
+	virtual bool get(size_t index, TextureInfo& ti) const;
 
-	virtual bool get(size_t indexX, size_t indexY,
-		const sf::Texture** textureOut, sf::IntRect& textureRect) const;
-
-	virtual bool getTextureSize(sf::Vector2i& textureSize) const;
-
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
-	virtual bool isIndexed() const noexcept { return indexed; }
-	virtual size_t packSize() const noexcept { return 1; }
-	virtual size_t totalSize() const noexcept { return rects.size(); }
-	virtual size_t size(size_t index) const noexcept { return rects.size(); }
+	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return texturePack->getPalette(); }
+	virtual bool isIndexed() const noexcept { return texturePack->isIndexed(); }
+	virtual size_t size() const noexcept { return rects.size(); }
 };

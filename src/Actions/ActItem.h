@@ -9,12 +9,11 @@
 
 static void updateCursorWithItemImage(Game& game, const Item& item)
 {
-	const sf::Texture* texture;
-	sf::IntRect rect;
-	if (item.Class()->getInventoryTexture(&texture, rect) == true)
+	TextureInfo ti;
+	if (item.Class()->getInventoryTexture(ti) == true)
 	{
-		auto image = std::make_shared<Image>(*texture);
-		image->setTextureRect(rect);
+		auto image = std::make_shared<Image>(*ti.texture);
+		image->setTextureRect(ti.textureRect);
 		if (item.Class()->getInventoryTexturePack()->isIndexed() == true)
 		{
 			image->setPalette(item.Class()->getInventoryTexturePack()->getPalette());
@@ -68,11 +67,8 @@ public:
 				auto mapPos = level->getMapCoordOverMouse();
 				if (level->setItem(mapPos, item2) == true)
 				{
-					item->resetDropAnimation();
-					if (game.Resources().cursorCount() > 1)
-					{
-						game.Resources().popCursor();
-					}
+					item->resetDropAnimation(*level);
+					game.Resources().popCursor();
 					game.updateCursorPosition();
 
 					item->Class()->executeAction(game, str2int16("levelDrop"));
@@ -110,7 +106,7 @@ public:
 				auto item = level->getItem(mapPos);
 				if (item != nullptr)
 				{
-					item->resetDropAnimation();
+					item->resetDropAnimation(*level);
 					item->Class()->executeAction(game, str2int16("levelDrop"));
 				}
 			}
@@ -355,10 +351,7 @@ public:
 						{
 							auto oldItem = oldItem2.get();
 							player->SelectedItem(std::move(oldItem2));
-							if (game.Resources().cursorCount() > 1)
-							{
-								game.Resources().popCursor();
-							}
+							game.Resources().popCursor();
 							if (oldItem != nullptr)
 							{
 								updateCursorWithItemImage(game, *oldItem);

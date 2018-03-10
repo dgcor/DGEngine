@@ -7,6 +7,21 @@ namespace GameUtils
 {
 	using namespace Utils;
 
+	AnimationType getAnimationType(const std::string& str, AnimationType val)
+	{
+		switch (str2int16(toLower(str).c_str()))
+		{
+		case str2int16("playonce"):
+			return AnimationType::PlayOnce;
+		case str2int16("looped"):
+			return AnimationType::Looped;
+		case str2int16("backandforth"):
+			return AnimationType::BackAndForth;
+		default:
+			return val;
+		}
+	}
+
 	sf::Vector2f getAlignmentPosition(const sf::Vector2f& position,
 		const sf::Vector2f& size,
 		HorizontalAlign horizAlign,
@@ -182,31 +197,33 @@ namespace GameUtils
 		}
 	}
 
-	HorizontalAlign getHorizontalAlignment(const std::string& str)
+	HorizontalAlign getHorizontalAlignment(const std::string& str, HorizontalAlign val)
 	{
 		switch (str2int16(toLower(str).c_str()))
 		{
 		case str2int16("left"):
-		default:
 			return HorizontalAlign::Left;
 		case str2int16("center"):
 			return HorizontalAlign::Center;
 		case str2int16("right"):
 			return HorizontalAlign::Right;
+		default:
+			return val;
 		}
 	}
 
-	VerticalAlign getVerticalAlignment(const std::string& str)
+	VerticalAlign getVerticalAlignment(const std::string& str, VerticalAlign val)
 	{
 		switch (str2int16(toLower(str).c_str()))
 		{
-		case str2int16("bottom"):
-		default:
-			return VerticalAlign::Bottom;
-		case str2int16("center"):
-			return VerticalAlign::Center;
 		case str2int16("top"):
 			return VerticalAlign::Top;
+		case str2int16("center"):
+			return VerticalAlign::Center;
+		case str2int16("bottom"):
+			return VerticalAlign::Bottom;
+		default:
+			return val;
 		}
 	}
 

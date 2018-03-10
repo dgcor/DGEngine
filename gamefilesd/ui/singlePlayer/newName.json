@@ -10,7 +10,7 @@
   },
   "inputText": {
     "id": "heroName",
-    "bitmapFont": "font24g",
+    "font": "font24g",
     "position": [308, 318],
     "anchor": "none",
     "minSize": 1,
@@ -44,7 +44,7 @@
   "button": [
     {
       "id": "ok",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [329, 429],
       "anchor": "none",
       "onClick": { "name": "inputText.click", "id": "heroName" },
@@ -53,7 +53,7 @@
     },
     {
       "id": "cancel",
-      "bitmapFont": "font30g",
+      "font": "font30g",
       "position": [451, 429],
       "anchor": "none",
       "onClick": [

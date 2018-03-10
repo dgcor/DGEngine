@@ -8,11 +8,13 @@
 class LevelCell
 {
 private:
-	int16_t minIndex{ -1 };
-	int8_t sol{ 0 };
+	// 0 - back, 1 - front, 2 - sol
+	std::array<int16_t, 3> tileIndexes;
 	std::vector<LevelObject*> objects;
 
 public:
+	LevelCell() : tileIndexes{ -1, -1, 0 } {}
+
 	using iterator = std::vector<LevelObject*>::iterator;
 	using const_iterator = std::vector<LevelObject*>::const_iterator;
 	using reverse_iterator = std::vector<LevelObject*>::reverse_iterator;
@@ -31,11 +33,15 @@ public:
 	const_reverse_iterator crbegin() const noexcept { return objects.crbegin(); }
 	const_reverse_iterator crend() const noexcept { return objects.crend(); }
 
-	int16_t MinIndex() const noexcept { return minIndex; }
-	void MinIndex(int16_t minIndex_) noexcept { minIndex = minIndex_; }
-	void Sol(int8_t sol_) noexcept { sol = sol_; }
+	int16_t TileIndexBack() const noexcept { return tileIndexes[0]; }
+	int16_t TileIndexFront() const noexcept { return tileIndexes[1]; }
 
-	bool PassableIgnoreObject() const noexcept { return !(sol & 0x01); }
+	void TileIndex(size_t index, int16_t tileIndex_) noexcept { tileIndexes[index] = tileIndex_; }
+	void TileIndexBack(int16_t tileIndex_) noexcept { tileIndexes[0] = tileIndex_; }
+	void TileIndexFront(int16_t tileIndex_) noexcept { tileIndexes[1] = tileIndex_; }
+	void Sol(int16_t sol_) noexcept { tileIndexes[2] = sol_; }
+
+	bool PassableIgnoreObject() const noexcept { return !(tileIndexes[2] & 0x01); }
 	bool PassableIgnoreObject(const LevelObject* ignoreObj) const;
 	bool Passable() const;
 

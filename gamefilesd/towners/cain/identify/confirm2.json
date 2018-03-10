@@ -33,7 +33,7 @@
     {
       "id": "itemInfo",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [51, 130],
       "anchor": "none",
       "horizontalSpaceOffset": 1,
@@ -42,7 +42,7 @@
     {
       "id": "itemPrice",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [571, 130],
       "anchor": "none",
       "horizontalAlign": "right",
@@ -51,7 +51,7 @@
     },
     {
       "id": "confirm",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [320, 214],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -62,7 +62,7 @@
   "button": [
     {
       "id": "yes",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -93,7 +93,7 @@
     },
     {
       "id": "back",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",

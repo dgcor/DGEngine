@@ -10,7 +10,6 @@
     "name": "Foul Water",
     "palette": "l3pwater",
     "file": "levels/l3data/l3.cel",
-    "mapSize": [96, 96],
     "map": { "file": "levels/l3data/foulwatr.dun" },
     "til": "levels/l3data/l3.til",
     "min": "levels/l3data/l3.min",

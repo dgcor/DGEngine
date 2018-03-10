@@ -5,38 +5,38 @@
 //
 
 #include "Pcx.h"
-#include <memory>
+#include <cstdint>
 #include "PhysFSStream.h"
+#include <vector>
 
 // --------------------------------------------
-// PCXHEADER - pcx header structure.
+// PCXHeader - PCX header structure.
 // --------------------------------------------
 
 #pragma pack(push)
 #pragma pack(1)
 
-typedef struct tagPCXHEADER
+struct PCXHeader
 {
-	unsigned char	manufacturer;		// manufacturer
-	unsigned char	version;			// version
-	unsigned char	encoding;			// encoding type
-	unsigned char	bitsPerPixel;		// number of bits per pixel
+	uint8_t manufacturer;		// manufacturer
+	uint8_t version;			// version
+	uint8_t encoding;			// encoding type
+	uint8_t bitsPerPixel;		// number of bits per pixel
 
-	unsigned short	x, y;				// ...
-	unsigned short	width, height;		// dimensions
-	unsigned short	horzRes, vertRes;	// horisontal and vertical screen resolutions
+	uint16_t x, y;				// ...
+	uint16_t width, height;		// dimensions
+	uint16_t horzRes, vertRes;	// horisontal and vertical screen resolutions
 
-	unsigned char*	palette;			// color palette
-	unsigned char	reserved;			// reserved
-	unsigned char	numColorPlanes;		// number of planes
+	uint8_t palette[48];		// color palette
+	uint8_t reserved;			// reserved
+	uint8_t numColorPlanes;		// number of planes
 
-	unsigned short	bytesPerScanLine;	// byte per line
-	unsigned short	paletteType;		// palette type
-	unsigned short	horzSize, vertSize;	// ...
+	uint16_t bytesPerScanLine;	// byte per line
+	uint16_t paletteType;		// palette type
+	uint16_t horzSize, vertSize;// ...
 
-	unsigned char	padding[54];		// ...
-
-} PCXHEADER, *PPCXHEADER;
+	uint8_t padding[54];		// ...
+};
 
 #pragma pack(pop)
 
@@ -66,7 +66,7 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 
 	/////////////////////////////////////////////////////
 
-	auto header = (PCXHEADER*)buffer.data();
+	auto header = (PCXHeader*)buffer.data();
 
 	if ((header->manufacturer != 10) ||
 		(header->version != 5) ||
@@ -78,14 +78,14 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 
 	// the palette is located at the 769th last byte of the file
 	auto paletteStartPos = fileSize - 769;
-	auto palette = &buffer[paletteStartPos];
 
 	// verify the palette; first byte must be equal to 12
-	if (*(palette++) != 12)
+	if (buffer[paletteStartPos] != 12)
 	{
 		return {};
 	}
 
+	auto palette = &buffer[paletteStartPos + 1];
 	auto width = header->width - header->x + 1u;
 	auto height = header->height - header->y + 1u;
 	auto imageSize = width * height;

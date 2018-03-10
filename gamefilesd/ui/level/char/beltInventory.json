@@ -174,7 +174,7 @@
   "text": [
     {
       "id": "txtBelt1",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [228, 374],
       "visible": false,
@@ -182,7 +182,7 @@
     },
     {
       "id": "txtBelt2",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [255, 374],
       "visible": false,
@@ -190,7 +190,7 @@
     },
     {
       "id": "txtBelt3",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [284, 374],
       "visible": false,
@@ -198,7 +198,7 @@
     },
     {
       "id": "txtBelt4",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [312, 374],
       "visible": false,
@@ -206,7 +206,7 @@
     },
     {
       "id": "txtBelt5",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [342, 374],
       "visible": false,
@@ -214,7 +214,7 @@
     },
     {
       "id": "txtBelt6",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [371, 374],
       "visible": false,
@@ -222,7 +222,7 @@
     },
     {
       "id": "txtBelt7",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [400, 374],
       "visible": false,
@@ -230,7 +230,7 @@
     },
     {
       "id": "txtBelt8",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "anchor": "bottom",
       "position": [429, 374],
       "visible": false,

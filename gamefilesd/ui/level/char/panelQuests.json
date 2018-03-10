@@ -49,7 +49,7 @@
   ],
   "menu": {
     "id": "menuQuests",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "position": [160, 130],
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
@@ -86,7 +86,7 @@
   "button": {
     "id": "closeQuestLog",
     "anchor": "left",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "focus": true,
     "focusSound": "titlemov",
     "position": [160, 298],

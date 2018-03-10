@@ -1,0 +1,407 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelInventory" },
+  "button": [
+    {
+      "id": "playerLeftHand",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 112],
+      "onClick": "updateLeftHandClick",
+      "onHoverEnter": "updateLeftHandText",
+      "onHoverLeave": "hoverLeftHandLeave"
+    },
+    {
+      "id": "playerRightHand",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 112],
+      "onClick": "updateRightHandClick",
+      "onHoverEnter": "updateRightHandText",
+      "onHoverLeave": "hoverRightHandLeave"
+    },
+    {
+      "id": "playerArmor",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [464, 80],
+      "onClick": "updateArmorClick",
+      "onHoverEnter": "updateArmorText",
+      "onHoverLeave": "hoverArmorLeave"
+    },
+    {
+      "id": "playerHelmet",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [464, 32],
+      "onClick": "updateHelmetClick",
+      "onHoverEnter": "updateHelmetText",
+      "onHoverLeave": "hoverHelmetLeave"
+    },
+    {
+      "id": "playerAmulet",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 64],
+      "onClick": "updateAmuletClick",
+      "onHoverEnter": "updateAmuletText",
+      "onHoverLeave": "hoverAmuletLeave"
+    },
+    {
+      "id": "playerLeftRing",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 160],
+      "onClick": "updateLeftRingClick",
+      "onHoverEnter": "updateLeftRingText",
+      "onHoverLeave": "hoverLeftRingLeave"
+    },
+    {
+      "id": "playerRightRing",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 160],
+      "onClick": "updateRightRingClick",
+      "onHoverEnter": "updateRightRingText",
+      "onHoverLeave": "hoverRightRingLeave"
+    },
+    {
+      "id": "btnStash11",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [352, 224],
+      "onClick": "updateStash11Click"
+    },
+    {
+      "id": "btnStash12",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [352, 256],
+      "onClick": "updateStash12Click"
+    },
+    {
+      "id": "btnStash13",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [352, 288],
+      "onClick": "updateStash13Click"
+    },
+    {
+      "id": "btnStash14",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [352, 320],
+      "onClick": "updateStash14Click"
+    },
+    {
+      "id": "btnStash21",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [384, 224],
+      "onClick": "updateStash21Click"
+    },
+    {
+      "id": "btnStash22",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [384, 256],
+      "onClick": "updateStash22Click"
+    },
+    {
+      "id": "btnStash23",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [384, 288],
+      "onClick": "updateStash23Click"
+    },
+    {
+      "id": "btnStash24",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [384, 320],
+      "onClick": "updateStash24Click"
+    },
+    {
+      "id": "btnStash31",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 224],
+      "onClick": "updateStash31Click"
+    },
+    {
+      "id": "btnStash32",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 256],
+      "onClick": "updateStash32Click"
+    },
+    {
+      "id": "btnStash33",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 288],
+      "onClick": "updateStash33Click"
+    },
+    {
+      "id": "btnStash34",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [416, 320],
+      "onClick": "updateStash34Click"
+    },
+    {
+      "id": "btnStash41",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [448, 224],
+      "onClick": "updateStash41Click"
+    },
+    {
+      "id": "btnStash42",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [448, 256],
+      "onClick": "updateStash42Click"
+    },
+    {
+      "id": "btnStash43",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [448, 288],
+      "onClick": "updateStash43Click"
+    },
+    {
+      "id": "btnStash44",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [448, 320],
+      "onClick": "updateStash44Click"
+    },
+    {
+      "id": "btnStash51",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [480, 224],
+      "onClick": "updateStash51Click"
+    },
+    {
+      "id": "btnStash52",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [480, 256],
+      "onClick": "updateStash52Click"
+    },
+    {
+      "id": "btnStash53",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [480, 288],
+      "onClick": "updateStash53Click"
+    },
+    {
+      "id": "btnStash54",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [480, 320],
+      "onClick": "updateStash54Click"
+    },
+    {
+      "id": "btnStash61",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 224],
+      "onClick": "updateStash61Click"
+    },
+    {
+      "id": "btnStash62",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 256],
+      "onClick": "updateStash62Click"
+    },
+    {
+      "id": "btnStash63",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 288],
+      "onClick": "updateStash63Click"
+    },
+    {
+      "id": "btnStash64",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [512, 320],
+      "onClick": "updateStash64Click"
+    },
+    {
+      "id": "btnStash71",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [544, 224],
+      "onClick": "updateStash71Click"
+    },
+    {
+      "id": "btnStash72",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [544, 256],
+      "onClick": "updateStash72Click"
+    },
+    {
+      "id": "btnStash73",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [544, 288],
+      "onClick": "updateStash73Click"
+    },
+    {
+      "id": "btnStash74",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [544, 320],
+      "onClick": "updateStash74Click"
+    },
+    {
+      "id": "btnStash81",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [576, 224],
+      "onClick": "updateStash81Click"
+    },
+    {
+      "id": "btnStash82",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [576, 256],
+      "onClick": "updateStash82Click"
+    },
+    {
+      "id": "btnStash83",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [576, 288],
+      "onClick": "updateStash83Click"
+    },
+    {
+      "id": "btnStash84",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "anchor": "right",
+      "position": [576, 320],
+      "onClick": "updateStash84Click"
+    }
+  ],
+  "image": [
+    {
+      "id": "imgLeftHand",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [337, 77]
+    },
+    {
+      "id": "imgRightHand",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [569, 77]
+    },
+    {
+      "id": "imgArmor",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [453, 77]
+    },
+    {
+      "id": "imgHelmet",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [453, -10]
+    },
+    {
+      "id": "imgAmulet",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [511, 5]
+    },
+    {
+      "id": "imgLeftRing",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [354, 150]
+    },
+    {
+      "id": "imgRightRing",
+      "replaceVars": true,
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "outline": "%outlineItemInv%",
+      "outlineIgnore": "0x000000",
+      "anchor": "right",
+      "position": [555, 150]
+    }
+  ],
+  "action": [
+    "updateBodyItems",
+    "updateStashItems"
+  ]
+}

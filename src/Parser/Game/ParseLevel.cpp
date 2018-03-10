@@ -12,95 +12,145 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseMap(const Value& elem, LevelMap& map, const TileSet& til, const Sol& sol)
+	Dun getDunFromLayer(const Value& elem, int16_t indexOffset)
 	{
-		auto pos = getVector2uKey<MapCoord>(elem, "position");
-		auto file = getStringKey(elem, "file");
+		Dun dun(getUIntKey(elem, "width"), getUIntKey(elem, "height"));
 
-		if (Utils::endsWith(Utils::toLower(file), ".json") == false)
+		if (dun.Width() == 0 ||
+			dun.Height() == 0 ||
+			isValidArray(elem, "data") == false)
 		{
-			if (til.size() == 0)
-			{
-				return;
-			}
-			Dun dun(file);
-			if (dun.Width() > 0 && dun.Height() > 0)
-			{
-				map.setArea(pos.x, pos.y, dun, til, sol);
-			}
-			return;
+			return dun;
 		}
+		const auto& elemData = elem["data"];
+		for (size_t i = 0; i < elemData.Size(); i++)
+		{
+			dun.set(i, ((int16_t)getUIntIdx(elemData, i) + indexOffset));
+		}
+		return dun;
+	}
 
+	void parseTiledMap(const Value& elem, LevelMap& map,
+		const std::string& file, const Sol& sol, bool resizeToFit)
+	{
 		Document doc;
 		if (JsonUtils::loadFile(file, doc) == false ||
 			isValidArray(doc, "layers") == false ||
-			doc["layers"].Empty() == true ||
-			isValidArray(doc["layers"][0], "data") == false)
+			doc["layers"].Empty() == true)
 		{
 			return;
 		}
 
-		const auto& elemDun = doc["layers"][0];
+		auto backName = getStringKey(elem, "back");
+		auto frontName = getStringKey(elem, "front");
+		auto solName = getStringKey(elem, "sol");
+		auto pos = getVector2iKey<MapCoord>(elem, "position");
+		bool wasResized = false;
 
-		Dun dun(getUIntKey(elemDun, "width"), getUIntKey(elemDun, "width"));
-
-		const auto& elemData = elemDun["data"];
-
-		for (size_t i = 0; i < elemData.Size(); i++)
+		for (const auto& elemLayer : doc["layers"])
 		{
-			dun.set(i, ((int16_t)getUIntIdx(elemData, i)) - 1);
-		}
+			Dun dun = getDunFromLayer(elemLayer, (int16_t)getIntKey(elem, "indexOffset"));
 
+			if (dun.Width() > 0 && dun.Height() > 0)
+			{
+				auto pos2 = pos;
+				pos2.x += getIntKey(elemLayer, "x");
+				pos2.y += getIntKey(elemLayer, "y");
+
+				if (resizeToFit == true && wasResized == false)
+				{
+					map.resize((Coord)(pos2.x + dun.Width()), (Coord)(pos2.y + dun.Height()));
+					wasResized = true;
+				}
+				if (doc["layers"].Size() == 1)
+				{
+					map.setArea(pos2.x, pos2.y, dun, sol);
+					continue;
+				}
+				auto name = getStringKey(elemLayer, "name");
+				if (backName == name)
+				{
+					map.setArea(pos2.x, pos2.y, 0, dun);
+				}
+				if (frontName == name)
+				{
+					map.setArea(pos2.x, pos2.y, 1, dun);
+				}
+				if (solName == name)
+				{
+					map.setArea(pos2.x, pos2.y, 2, dun);
+				}
+			}
+		}
+	}
+
+	void parseMap(const Value& elem, LevelMap& map,
+		const TileSet& til, const Sol& sol, bool resizeToFit)
+	{
+		auto file = getStringKey(elem, "file");
+
+		if (Utils::endsWith(Utils::toLower(file), ".json") == true)
+		{
+			parseTiledMap(elem, map, file, sol, resizeToFit);
+			return;
+		}
+		if (til.size() == 0)
+		{
+			return;
+		}
+		Dun dun(file);
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
-			map.setArea(pos.x, pos.y, dun, sol);
+			auto pos = getVector2uKey<MapCoord>(elem, "position");
+			if (resizeToFit == true)
+			{
+				map.resize((Coord)(pos.x + (dun.Width() * 2)), (Coord)(pos.y + (dun.Height() * 2)));
+			}
+			map.setArea(pos.x, pos.y, dun, til, sol);
 		}
 	}
 
 	void parseLevelMap(Game& game, const Value& elem, Level& level)
 	{
-		auto tilPath = getStringKey(elem, "til");
-		auto solPath = elem["sol"].GetString();
+		TileSet til(getStringKey(elem, "til"));
+		Sol sol(getStringKey(elem, "sol"));
 
-		TileSet til(tilPath);
-
-		Sol sol(solPath);
-		if (sol.size() == 0)
-		{
-			return;
-		}
-
-		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize");
+		bool resizeToFit = elem.HasMember("mapSize") == false;
+		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize", MapCoord(96, 96));
 		LevelMap map(mapSize.x, mapSize.y);
 
-		const auto& mapElem = elem["map"];
-		if (mapElem.IsArray() == true)
+		if (elem.HasMember("map") == true)
 		{
-			for (const auto& val : mapElem)
+			const auto& mapElem = elem["map"];
+			if (mapElem.IsArray() == true)
 			{
-				parseMap(val, map, til, sol);
+				for (const auto& val : mapElem)
+				{
+					parseMap(val, map, til, sol, false);
+				}
 			}
-		}
-		else if (mapElem.IsObject() == true)
-		{
-			parseMap(mapElem, map, til, sol);
+			else if (mapElem.IsObject() == true)
+			{
+				parseMap(mapElem, map, til, sol, resizeToFit);
+			}
 		}
 
 		std::shared_ptr<TexturePack> tilesBottom;
 		std::shared_ptr<TexturePack> tilesTop;
+		std::pair<uint32_t, uint32_t> tileSize;
 
 		getOrParseLevelTexturePack(game, elem,
-			"texturePackBottom", "texturePackTop", tilesBottom, tilesTop);
+			"texturePackBottom", "texturePackTop", tilesBottom, tilesTop, tileSize);
 
-		level.Init(std::move(map), tilesBottom, tilesTop);
+		level.Init(std::move(map), tilesBottom, tilesTop, tileSize.first, tileSize.second);
 	}
 
 	void parsePosSize(const Game& game, const Value& elem, Level& level)
 	{
 		auto anchor = getAnchorKey(elem, "anchor");
 		level.setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.WindowTexSizef());
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -140,11 +190,7 @@ namespace Parser
 			game.Resources().setCurrentLevel(level);
 		}
 
-		if (isValidString(elem, "sol") == true
-			&& elem.HasMember("map") == true)
-		{
-			parseLevelMap(game, elem, *level);
-		}
+		parseLevelMap(game, elem, *level);
 
 		level->Name(getStringKey(elem, "name"));
 

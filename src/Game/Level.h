@@ -22,7 +22,10 @@ class Level : public UIObject
 {
 private:
 	View2 view;
-	bool updateView{ false };
+	sf::FloatRect visibleRect;
+	MapCoord visibleStart;
+	MapCoord visibleEnd;
+	bool updateViewPort{ false };
 	float currentZoomFactor{ 1.f };
 	float startZoomFactor{ 1.f };
 	float stopZoomFactor{ 1.f };
@@ -39,6 +42,7 @@ private:
 
 	MapCoord mapCoordOverMouse;
 	MapCoord currentMapPosition;
+	sf::Vector2f currentMapViewCenter;
 
 	std::string name;
 
@@ -47,7 +51,6 @@ private:
 
 	int tileWidth{ 0 };
 	int tileHeight{ 0 };
-	int pillarHeight{ 0 };
 
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
@@ -84,12 +87,19 @@ private:
 		return level.map[x][y];
 	}
 
+	void setCurrentMapPosition(const MapCoord& mapPos)
+	{
+		currentMapPosition = mapPos;
+		currentMapViewCenter = map.getCoord(currentMapPosition);
+	}
+
 	void addLevelObject(std::unique_ptr<LevelObject> obj, const MapCoord& mapCoord, bool addToFront);
 	void addLevelObject(std::unique_ptr<LevelObject> obj, LevelCell& mapCell, bool addToFront);
 	void addPlayer(std::unique_ptr<Player> player, const MapCoord& mapCoord);
 
 	void updateLevelObjectPositions();
 	void updateMouse(const Game& game);
+	void updateVisibleArea();
 	void updateZoom(const Game& game);
 
 	void onMouseButtonPressed(Game& game);
@@ -99,7 +109,8 @@ private:
 public:
 	void Init(LevelMap map_,
 		std::shared_ptr<TexturePack> tilesBottom_,
-		std::shared_ptr<TexturePack> tilesTop_);
+		std::shared_ptr<TexturePack> tilesTop_,
+		int tileWidth_, int tileHeight_);
 
 	Misc::Helper2D<const Level, const LevelCell&, Coord> operator[] (Coord x) const noexcept
 	{
@@ -207,13 +218,13 @@ public:
 	virtual void Position(const sf::Vector2f& position) noexcept
 	{
 		view.setPosition(position);
-		updateView = true;
+		updateViewPort = true;
 	}
 	virtual sf::Vector2f Size() const noexcept { return view.getSize(); }
 	virtual void Size(const sf::Vector2f& size)
 	{
 		view.setSize(size);
-		updateView = true;
+		updateViewPort = true;
 	}
 
 	float Zoom() const noexcept { return stopZoomFactor; }
@@ -253,14 +264,11 @@ public:
 
 	void move(const MapCoord& mapPos)
 	{
-		currentMapPosition = mapPos;
-		auto center = map.getCoord(mapPos);
-		view.setCenter(center.x, center.y);
+		setCurrentMapPosition(mapPos);
 	}
-
-	void move(Game& game)
+	void move() noexcept
 	{
-		view.setCenter(mousePositionf);
+		currentMapViewCenter = mousePositionf;
 	}
 
 	void addPlayer(std::unique_ptr<Player> player);
@@ -271,7 +279,7 @@ public:
 		currentPlayer = player_;
 		if (currentPlayer != nullptr)
 		{
-			currentMapPosition = currentPlayer->MapPosition();
+			setCurrentMapPosition(currentPlayer->MapPosition());
 		}
 	}
 
@@ -279,7 +287,6 @@ public:
 
 	int TileWidth() const noexcept { return tileWidth; }
 	int TileHeight() const noexcept { return tileHeight; }
-	int PillarHeight() const noexcept { return pillarHeight; }
 
 	virtual bool Pause() const noexcept { return pause; }
 	virtual void Pause(bool pause_) noexcept { pause = pause_; }

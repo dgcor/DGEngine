@@ -101,6 +101,7 @@ public:
 		if (verticalPad != verticalPad_)
 		{
 			verticalPad = verticalPad_;
+			recalculatePos = true;
 		}
 	}
 	void setVisibleItems(size_t visibleItems_) noexcept

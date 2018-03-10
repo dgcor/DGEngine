@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Anchor.h"
+#include "AnimationType.h"
 #include "Game/GameProperties.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
@@ -12,6 +13,9 @@
 
 namespace Parser
 {
+	AnimationType getAnimationTypeKey(const rapidjson::Value& elem,
+		const char* key, AnimationType val = AnimationType::Looped);
+
 	Anchor getAnchorKey(const rapidjson::Value& elem,
 		const char* key, Anchor val = Anchor::Top | Anchor::Left);
 
@@ -84,6 +88,9 @@ namespace Parser
 
 	std::pair<size_t, size_t> getIndexKey(const rapidjson::Value& elem,
 		const char* key, const std::pair<size_t, size_t>& val = {});
+
+	sf::Vector2f getPositionKey(const rapidjson::Value& elem,
+		const char* key, const sf::Vector2f& size, const sf::Vector2u& refSize);
 
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
 		const char* key, const sf::IntRect& val = {});

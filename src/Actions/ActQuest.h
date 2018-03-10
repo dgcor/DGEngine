@@ -58,7 +58,7 @@ public:
 	ActQuestSetState(const std::string& idLevel_, const std::string& idQuest_, int state_)
 		: idLevel(idLevel_), idQuest(idQuest_), state(state_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

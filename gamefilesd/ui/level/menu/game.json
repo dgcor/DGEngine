@@ -6,7 +6,7 @@
   "button": [
     {
       "id": "saveGame",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -22,7 +22,7 @@
     },
     {
       "id": "options",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -42,7 +42,7 @@
     },
     {
       "id": "newGame",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -65,7 +65,7 @@
     },
     {
       "id": "loadGame",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
@@ -81,7 +81,7 @@
     },
     {
       "id": "quitDiablo",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",

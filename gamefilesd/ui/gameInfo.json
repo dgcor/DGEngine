@@ -63,7 +63,7 @@
   "text": [
     {
       "id": "openGLVersion",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "binding": ["|game|openGL.majorVersion|", "|game|openGL.minorVersion|"],
       "format": "OpenGL [1].[2]",
       "position": [319, 192],
@@ -72,28 +72,28 @@
     },
     {
       "id": "hasShaders",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "position": [319, 235],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
       "id": "hasGeometryShaders",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "position": [319, 277],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
       "id": "supportsPalettes",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "position": [319, 320],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
       "id": "supportsOutlines",
-      "bitmapFont": "font42g",
+      "font": "font42g",
       "position": [319, 363],
       "anchor": "none",
       "horizontalAlign": "center"
@@ -101,7 +101,7 @@
   ],
   "button": {
     "id": "back",
-    "bitmapFont": "font42g",
+    "font": "font42g",
     "sound": "titlslct",
     "focus": true,
     "position": [319, 406],

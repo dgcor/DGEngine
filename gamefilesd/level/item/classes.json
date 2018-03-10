@@ -4,8 +4,14 @@
       "name": "if.equal",
       "param1": "%beta%",
       "param2": true,
-      "then": { "name": "load", "file": "level/item/itemCelFilesBeta.json" },
-      "else": { "name": "load", "file": "level/item/itemCelFiles.json" }
+      "then": [
+        { "name": "load", "file": "level/item/itemCelFilesBeta.json" },
+        { "name": "load", "file": "level/item/inventoryTexturesBeta.json" }
+      ],
+      "else": [
+        { "name": "load", "file": "level/item/itemCelFiles.json" },
+        { "name": "load", "file": "level/item/inventoryTextures.json" }
+      ]
     },
     {
       "name": "action.set",
@@ -97,64 +103,10 @@
       }
     }
   ],
-  "texturePack": {
-    "id": "itemDrop",
-    "imageContainer": [
-      "armor2",
-      "axe",
-      "axeflip",
-      "bldstn",
-      "bottle",
-      "bow",
-      "cleaver",
-      "crownf",
-      "duricons",
-      "fanvil",
-      "fbook",
-      "fbow",
-      "fbrain",
-      "fbttle",
-      "fbttlebb",
-      "fbttlebl",
-      "fbttlebr",
-      "fbttleby",
-      "fbttledb",
-      "fbttledy",
-      "fbttleor",
-      "fbttlewh",
-      "fear",
-      "feye",
-      "fheart",
-      "flazstaf",
-      "fmush",
-      "food",
-      "FPlateAr",
-      "goldflip",
-      "helmut",
-      "innsign",
-      "larmor",
-      "mace",
-      "manaflip",
-      "ring",
-      "rock",
-      "scroll",
-      "shield",
-      "staff",
-      "swrdflip",
-      "wand",
-      "wshield"
-    ],
-    "palette": "town"
-  },
-  "imageContainer": { "file": "data/inv/objcurs.cel" },
-  "texturePack": {
-    "id": "itemIcons",
-    "imageContainer": "objcurs",
-    "palette": "town"
-  },
+  "load": "level/item/dropTextures.json",
   "load": "level/item/prefixes.json",
   "load": "level/item/suffixes.json",
   "load": "level/item/descriptions.json",
   "load": "level/item/descriptionsUnique.json",
-  "load": "level/item/loadItemClasses2.json"
+  "load": "level/item/classes2.json"
 }

@@ -29,13 +29,13 @@ namespace Parser
 			}
 			else
 			{
+				sf::Vector2f offset;
 				auto texPack = std::make_shared<SimpleTexturePack>(
-					texture, frames.first, frames.second);
+					texture, frames, offset, 0, false, nullptr, false);
 
-				if (texPack->totalSize() > 0)
+				if (texPack->size() > 0)
 				{
-					animation = std::make_shared<Animation>(
-						texPack, frames.first, frames.second);
+					animation = std::make_shared<Animation>(texPack, frames);
 				}
 				else
 				{
@@ -50,10 +50,9 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			auto frames = std::make_pair(0u, texPack->totalSize() - 1);
+			auto frames = std::make_pair(0u, texPack->size() - 1);
 			frames = getFramesKey(elem, "frames", frames);
-			animation = std::make_shared<Animation>(
-				texPack, frames.first, frames.second);
+			animation = std::make_shared<Animation>(texPack, frames);
 		}
 		else
 		{
@@ -64,10 +63,10 @@ namespace Parser
 		animation->scale(sf::Vector2f(scale, scale));
 		auto anchor = getAnchorKey(elem, "anchor");
 		animation->setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+		auto size = animation->Size();
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
-			auto size = animation->Size();
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 			if (game.StretchToFit() == false)
 			{

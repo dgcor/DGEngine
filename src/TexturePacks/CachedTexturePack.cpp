@@ -1,19 +1,25 @@
 #include "CachedTexturePack.h"
 
-bool CachedTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
+CachedTexturePack::CachedTexturePack(const std::shared_ptr<ImageContainer>& imgPack_,
+	const std::shared_ptr<Palette>& palette_, bool isIndexed_)
+	: imgPack(imgPack_), palette(palette_), indexed(isIndexed_)
+{
+	cache.resize(imgPack_->size());
+}
+
+bool CachedTexturePack::get(size_t index, TextureInfo& ti) const
 {
 	if (index >= imgPack->size())
 	{
 		return false;
 	}
-	if (cache.count(index) == 0)
+	if (cache[index].getNativeHandle() == 0)
 	{
 		cache[index] = imgPack->get(index,
 			(indexed == true ? nullptr : &palette->palette));
 	}
-	(*texture) = &cache[index];
-	updateTextureRect(**texture, textureRect);
+	ti.texture = &cache[index];
+	updateTextureInfo(ti);
 	return true;
 }
 
@@ -26,46 +32,47 @@ CachedMultiTexturePack::CachedMultiTexturePack(
 	{
 		textureCount += imgPack->size();
 	}
+	cache.resize(textureCount);
 }
 
-bool CachedMultiTexturePack::get(size_t index,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
+bool CachedMultiTexturePack::get(size_t index, TextureInfo& ti) const
 {
 	if (imgVec.empty() == true ||
 		index >= textureCount)
 	{
 		return false;
 	}
-
-	size_t indexX = index;
-	size_t indexY = 0;
-	while (indexX >= imgVec[indexY]->size())
+	if (cache[index].getNativeHandle() == 0)
 	{
-		indexX -= imgVec[indexY]->size();
-		indexY++;
-		if (indexY >= imgVec.size())
+		size_t indexX = index;
+		size_t indexY = 0;
+		while (indexX >= imgVec[indexY]->size())
 		{
-			return false;
+			indexX -= imgVec[indexY]->size();
+			indexY++;
+			if (indexY >= imgVec.size())
+			{
+				return false;
+			}
 		}
-	}
-	return get(indexX, indexY, texture, textureRect);
-}
-
-bool CachedMultiTexturePack::get(size_t indexX, size_t indexY,
-	const sf::Texture** texture, sf::IntRect& textureRect) const
-{
-	if (indexY >= imgVec.size() ||
-		indexX >= imgVec[indexY]->size())
-	{
-		return false;
-	}
-	auto index = std::make_pair(indexX, indexY);
-	if (cache.count(index) == 0)
-	{
 		cache[index] = imgVec[indexY]->get(indexX,
 			(indexed == true ? nullptr : &palette->palette));
 	}
-	(*texture) = &cache[index];
-	updateTextureRect(**texture, textureRect);
+	ti.texture = &cache[index];
+	updateTextureInfo(ti);
 	return true;
+}
+
+std::vector<std::pair<size_t, size_t>> CachedMultiTexturePack::getRanges() const
+{
+	std::vector<std::pair<size_t, size_t>> ranges;
+	size_t startIdx = 0;
+	size_t stopIdx = 0;
+	for (const auto& imgCont : imgVec)
+	{
+		stopIdx += imgCont->size();
+		ranges.push_back(std::make_pair(startIdx, stopIdx));
+		startIdx = stopIdx;
+	}
+	return ranges;
 }

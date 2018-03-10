@@ -12,6 +12,20 @@ namespace Parser
 	using namespace rapidjson;
 	using namespace Utils;
 
+	AnimationType getAnimationTypeKey(const rapidjson::Value& elem,
+		const char* key, AnimationType val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getAnimationType(keyElem.GetString(), val);
+			}
+		}
+		return val;
+	}
+
 	Anchor getAnchorKey(const Value& elem, const char* key, Anchor val)
 	{
 		if (elem.HasMember(key) == true)
@@ -143,6 +157,16 @@ namespace Parser
 			return getIndexVal(elem[key], val);
 		}
 		return val;
+	}
+
+	sf::Vector2f getPositionKey(const Value& elem, const char* key,
+		const sf::Vector2f& size, const sf::Vector2u& refSize)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getPositionVal(elem[key], size, refSize);
+		}
+		return {};
 	}
 
 	sf::IntRect getIntRectKey(const Value& elem,

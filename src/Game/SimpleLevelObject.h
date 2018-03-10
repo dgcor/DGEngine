@@ -3,15 +3,11 @@
 #include "Actions/Action.h"
 #include "BaseLevelObject.h"
 #include <memory>
-#include <SFML/System/Time.hpp>
 
 class SimpleLevelObject : public LevelObject
 {
 private:
 	BaseLevelObject base;
-
-	sf::Time frameTime{ sf::milliseconds(50) };
-	sf::Time currentTime;
 
 	std::shared_ptr<Action> action;
 
@@ -21,9 +17,10 @@ private:
 public:
 	SimpleLevelObject() noexcept {}
 	SimpleLevelObject(const sf::Texture& texture) : base(texture) {}
-	SimpleLevelObject(const TexturePack& texturePack_,
-		const std::pair<size_t, size_t>& frameRange_)
-		: base(texturePack_, frameRange_)
+	SimpleLevelObject(const TexturePack& texturePack,
+		const std::pair<size_t, size_t>& textureIndexRange,
+		const sf::Time& frameTime, AnimationType animType)
+		: base(texturePack, textureIndexRange, frameTime, animType)
 	{
 		base.updateTexture();
 	}
@@ -62,8 +59,8 @@ public:
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
 	virtual void setProperty(const std::string& prop, const Variable& val) noexcept {}
 
-	sf::Time getFrameTime() const noexcept { return frameTime; }
-	void setFrameTime(sf::Time time) noexcept { frameTime = time; }
+	sf::Time getFrameTime() const noexcept { return base.animation.frameTime; }
+	void setFrameTime(sf::Time time) noexcept { base.animation.frameTime = time; }
 
 	void setTextureRect(const sf::IntRect& rectangle) { base.sprite.setTextureRect(rectangle); }
 

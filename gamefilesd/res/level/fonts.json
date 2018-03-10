@@ -1,5 +1,5 @@
 {
-  "bitmapFont": [
+  "font": [
     {
       "id": "smaltext",
       "texture": "smaltext",

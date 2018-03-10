@@ -1,10 +1,12 @@
 #include "TexturePack.h"
 
-void TexturePack::updateTextureRect(const sf::Texture& texture, sf::IntRect& textureRect)
+void TexturePack::updateTextureInfo(TextureInfo& ti)
 {
-	auto size = texture.getSize();
-	textureRect.left = 0;
-	textureRect.top = 0;
-	textureRect.width = (int)size.x;
-	textureRect.height = (int)size.y;
+	auto size = ti.texture->getSize();
+	ti.textureRect.left = 0;
+	ti.textureRect.top = 0;
+	ti.textureRect.width = (int)size.x;
+	ti.textureRect.height = (int)size.y;
+	ti.offset.x = 0.f;
+	ti.offset.y = 0.f;
 }

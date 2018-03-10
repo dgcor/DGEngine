@@ -1,0 +1,63 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateLifeManaOrbs",
+      "action": [
+        {
+          "name": "<=",
+          "param1": "|currentLevel|currentPlayer.life|",
+          "param2": 0,
+          "then": {
+            "name": "drawable.resizeX",
+            "id": "lifeOrbFull",
+            "size": 1,
+            "inputRangeMax": 1,
+            "range": [0, 106]
+          },
+          "else": {
+            "name": "drawable.resizeX",
+            "id": "lifeOrbFull",
+            "size": "|currentLevel|currentPlayer.lifeNow|",
+            "inputRangeMax": "|currentLevel|currentPlayer.life|",
+            "range": [0, 106]
+          }
+        },
+        {
+          "name": "<=",
+          "param1": "|currentLevel|currentPlayer.mana|",
+          "param2": 0,
+          "then": {
+            "name": "drawable.resizeX",
+            "id": "manaOrbFull",
+            "size": 1,
+            "inputRangeMax": 1,
+            "range": [0, 106]
+          },
+          "else": {
+            "name": "drawable.resizeX",
+            "id": "manaOrbFull",
+            "size": "|currentLevel|currentPlayer.manaNow|",
+            "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+            "range": [0, 106]
+          }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateAllPlayerStats",
+      "action": [
+        "updateLifeManaOrbs",
+        "updateBeltItems",
+        {
+          "name": "if.equal",
+          "param1": "|game|hasResource.charPanelInventory|",
+          "param2": true,
+          "then": ["updateStashItems", "updateBodyItems"]
+        },
+        "updateCharLabels"
+      ]
+    }
+  ]
+}

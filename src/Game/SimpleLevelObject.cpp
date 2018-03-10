@@ -19,26 +19,9 @@ void SimpleLevelObject::update(Game& game, Level& level)
 	{
 		base.updateDrawPosition(level);
 	}
-
-	if (base.hasValidState() == false)
+	if (base.hasValidState() == true)
 	{
-		return;
-	}
-
-	// add delta time
-	currentTime += game.getElapsedTime();
-
-	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
-	{
-		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
-
-		base.checkAndUpdateTextureIndex();
-		if (base.updateTexture() == true)
-		{
-			base.currentTextureIdx++;
-		}
+		base.animation.update(game.getElapsedTime());
 	}
 }
 

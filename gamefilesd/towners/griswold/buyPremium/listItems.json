@@ -16,7 +16,7 @@
   ],
   "menu": {
     "id": "menuPrices",
-    "bitmapFont": "smaltext",
+    "font": "smaltext",
     "sound": "titlslct",
     "position": [571, 94],
     "horizontalAlign": "right",

@@ -3,9 +3,7 @@
     {
       "id": "cap",
       "fromId": "baseArmor",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "helmut",
       "inventoryTextureIndex": 102,
       "name": "Cap",
       "shortName": "Cap",
@@ -25,9 +23,6 @@
     {
       "id": "skullCap",
       "fromId": "cap",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 101,
       "name": "Skull Cap",
       "defaults": {
@@ -40,9 +35,6 @@
     {
       "id": "helm",
       "fromId": "cap",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 93,
       "name": "Helm",
       "shortName": "Helm",
@@ -57,9 +49,6 @@
     {
       "id": "fullHelm",
       "fromId": "helm",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 86,
       "name": "Full Helm",
       "defaults": {
@@ -73,9 +62,6 @@
     {
       "id": "crown",
       "fromId": "helm",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 106,
       "name": "Crown",
       "shortName": "Crown",
@@ -90,9 +76,6 @@
     {
       "id": "greatHelm",
       "fromId": "helm",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 30,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 109,
       "name": "Great Helm",
       "defaults": {

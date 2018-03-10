@@ -2,6 +2,7 @@
 #include "Game/PlayerClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
+#include "TexturePacks/CachedTexturePack.h"
 
 namespace Parser
 {
@@ -21,7 +22,55 @@ namespace Parser
 		{
 			return;
 		}
-		playerClass.addTexturePack(texturePack);
+		PlayerClass::Ranges ranges;
+		auto cMultiTexPack = dynamic_cast<CachedMultiTexturePack*>(texturePack.get());
+		if (cMultiTexPack != nullptr)
+		{
+			auto ranges2 = cMultiTexPack->getRanges();
+			for (const auto& range : ranges2)
+			{
+				PlayerClass::Range range2;
+				range2.range = range;
+				range2.animType = AnimationType::Looped;
+				ranges.push_back(range2);
+			}
+		}
+		playerClass.addTexturePack(texturePack, ranges);
+	}
+
+	void parsePlayerClassTexturePackWithAnims(Game& game,
+		PlayerClass& playerClass, const Value& elem)
+	{
+		auto texturePack = game.Resources().getTexturePack(getStringKey(elem, "texturePack"));
+		if (texturePack == nullptr)
+		{
+			return;
+		}
+		PlayerClass::Ranges ranges;
+
+		if (elem.HasMember("animations") == true &&
+			elem["animations"].IsArray() == true)
+		{
+			for (const auto& val : elem["animations"])
+			{
+				if (val.IsArray() == true)
+				{
+					PlayerClass::Range range;
+					range.range = getVector2uVal<std::pair<size_t, size_t>>(val);
+					range.animType = AnimationType::Looped;
+					ranges.push_back(range);
+				}
+				else if (val.IsObject() == true)
+				{
+					PlayerClass::Range range;
+					range.range = getVector2uKey<std::pair<size_t, size_t>>(val, "range");
+					range.animType = getAnimationTypeKey(val, "type");
+					ranges.push_back(range);
+				}
+			}
+		}
+
+		playerClass.addTexturePack(texturePack, std::move(ranges));
 	}
 
 	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
@@ -88,11 +137,22 @@ namespace Parser
 			{
 				parsePlayerClassTexturePack(game, *playerClass, texturePacks);
 			}
+			if (texturePacks.IsObject() == true)
+			{
+				parsePlayerClassTexturePackWithAnims(game, *playerClass, texturePacks);
+			}
 			else if (texturePacks.IsArray() == true)
 			{
 				for (const auto& val : texturePacks)
 				{
-					parsePlayerClassTexturePack(game, *playerClass, val);
+					if (val.IsObject() == true)
+					{
+						parsePlayerClassTexturePackWithAnims(game, *playerClass, val);
+					}
+					else
+					{
+						parsePlayerClassTexturePack(game, *playerClass, val);
+					}
 				}
 			}
 		}

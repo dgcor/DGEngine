@@ -73,7 +73,7 @@ private:
 public:
 	ActLevelClearPlayerTextures(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -117,7 +117,7 @@ public:
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->move(game);
+			level->move();
 		}
 		return true;
 	}
@@ -157,7 +157,7 @@ private:
 public:
 	ActLevelPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -180,7 +180,7 @@ public:
 	ActLevelZoom(const std::string& id_, int percentage_, bool relative_, bool smooth_)
 		: id(id_), percentage(percentage_), relative(relative_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	virtual bool execute(Game& game) noexcept
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)

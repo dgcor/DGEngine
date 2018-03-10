@@ -1,5 +1,6 @@
 #include "LevelHelper.h"
-#include "TexturePacks/SimpleIndexedTexturePack.h"
+#include "TexturePacks/IndexedTexturePack.h"
+#include "TexturePacks/SimpleTexturePack.h"
 #include "TexturePacks/VectorTexturePack.h"
 
 namespace LevelHelper
@@ -104,28 +105,33 @@ namespace LevelHelper
 		return texturePack;
 	}
 
-	std::shared_ptr<TexturePack> loadTilesetSpriteBatchSprites(
+	std::shared_ptr<TexturePack> loadTilesetAndBatchSprites(
 		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
 	{
-		std::shared_ptr<SimpleMultiTexturePack> texturePack;
-		SimpleIndexedMultiTexturePack* indexedTexturePack = nullptr;
+		std::shared_ptr<TexturePack> texturePack;
+		SimpleMultiTexturePack* multiTexturePack = nullptr;
+		IndexedTexturePack* indexedTexturePack = nullptr;
 
 		if (skipBlankTiles == false)
 		{
 			texturePack = std::make_shared<SimpleMultiTexturePack>(
 				imgPack.getPalette(), imgPack.IsIndexed());
+			multiTexturePack = (SimpleMultiTexturePack*)texturePack.get();
 		}
 		else
 		{
-			texturePack = std::make_shared<SimpleIndexedMultiTexturePack>(
+			auto texturePack2 = std::make_unique<SimpleMultiTexturePack>(
 				imgPack.getPalette(), imgPack.IsIndexed());
-			indexedTexturePack = (SimpleIndexedMultiTexturePack*)texturePack.get();
+			multiTexturePack = texturePack2.get();
+			texturePack = std::make_shared<IndexedTexturePack>(std::move(texturePack2), true);
+			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 		}
 
 		sf::Image2 newPillar;
 		size_t i = 0;
 		size_t xMax = 16;
 		size_t yMax = (top == true ? 4 : 32);
+		sf::Vector2f offset;
 
 		bool mainLoop = true;
 		while (mainLoop == true)
@@ -147,7 +153,7 @@ namespace LevelHelper
 				{
 					if (indexedTexturePack != nullptr)
 					{
-						indexedTexturePack->addTextureIndex(i);
+						indexedTexturePack->mapTextureIndex(i);
 					}
 
 					x++;
@@ -169,7 +175,8 @@ namespace LevelHelper
 					mainLoop = false;
 				}
 			}
-			texturePack->addTexturePack(std::make_shared<sf::Texture>(newPillar), xMax, yMax, true);
+			multiTexturePack->addTexturePack(std::make_shared<sf::Texture>(newPillar),
+				std::make_pair(xMax, yMax), offset, 0, true);
 		}
 		return texturePack;
 	}
@@ -183,7 +190,7 @@ namespace LevelHelper
 		}
 		else
 		{
-			return loadTilesetSpriteBatchSprites(imgPack, min, top, skipBlankTiles);
+			return loadTilesetAndBatchSprites(imgPack, min, top, skipBlankTiles);
 		}
 	}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cstddef>
+#include <cstdint>
 #include "MapCoord.h"
 #include <SFML/System/Time.hpp>
 #include <utility>

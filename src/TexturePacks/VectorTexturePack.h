@@ -15,25 +15,14 @@ private:
 
 public:
 	VectorTexturePack(size_t size_, const std::shared_ptr<Palette>& palette_,
-		bool isIndexed_ = false) : textures(size_), palette(palette_),
+		bool isIndexed_) : textures(size_), palette(palette_),
 		indexed(isIndexed_), lastTextureIndex(size_) {}
 
-	virtual bool get(size_t index,
-		const sf::Texture** texture, sf::IntRect& textureRect) const;
-
-	virtual bool get(size_t indexX, size_t indexY,
-		const sf::Texture** texture, sf::IntRect& textureRect) const
-	{
-		return get(indexX, texture, textureRect);
-	}
-
-	virtual bool getTextureSize(sf::Vector2i& textureSize) const;
+	virtual bool get(size_t index, TextureInfo& ti) const;
 
 	void set(size_t index, const sf::Texture& texture);
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
 	virtual bool isIndexed() const noexcept { return indexed; }
-	virtual size_t packSize() const noexcept { return 1; }
-	virtual size_t totalSize() const noexcept { return textures.size(); }
-	virtual size_t size(size_t index) const noexcept { return textures.size(); }
+	virtual size_t size() const noexcept { return textures.size(); }
 };

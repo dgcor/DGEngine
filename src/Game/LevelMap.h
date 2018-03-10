@@ -30,15 +30,19 @@ private:
 		return map.cells[x + y * map.Width()];
 	}
 
+	void resize();
+
 public:
 	LevelMap() noexcept {}
 	LevelMap(Coord width_, Coord height_);
 
+	void resize(Coord width_, Coord height_);
+
 	void setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
 
 	void setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol);
-
 	void setArea(Coord x, Coord y, const Dun& dun, const Sol& sol);
+	void setArea(Coord x, Coord y, size_t index, const Dun& dun);
 
 	Misc::Helper2D<LevelMap, LevelCell&, Coord> operator[] (Coord x) noexcept
 	{

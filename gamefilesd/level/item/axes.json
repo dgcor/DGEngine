@@ -3,9 +3,7 @@
     {
       "id": "smallAxe",
       "fromId": "baseWeapon",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
+      "dropTexturePack": "axe",
       "inventoryTextureIndex": 123,
       "name": "Small Axe",
       "shortName": "Axe",
@@ -27,9 +25,6 @@
     {
       "id": "axe",
       "fromId": "smallAxe",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 155,
       "name": "Axe",
       "defaults": {
@@ -44,9 +39,6 @@
     {
       "id": "largeAxe",
       "fromId": "smallAxe",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 153,
       "name": "Large Axe",
       "defaults": {
@@ -61,9 +53,6 @@
     {
       "id": "broadAxe",
       "fromId": "smallAxe",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 152,
       "name": "Broad Axe",
       "defaults": {
@@ -78,9 +67,6 @@
     {
       "id": "battleAxe",
       "fromId": "smallAxe",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 112,
       "name": "Battle Axe",
       "defaults": {
@@ -95,9 +81,6 @@
     {
       "id": "greatAxe",
       "fromId": "smallAxe",
-      "dropTexturePack": "itemDrop",
-      "dropTextureIndex": 1,
-      "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 154,
       "name": "Great Axe",
       "defaults": {

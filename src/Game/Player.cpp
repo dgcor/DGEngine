@@ -9,6 +9,7 @@
 
 Player::Player(const PlayerClass* class__, const Level& level) : class_(class__)
 {
+	base.animation.animType = AnimationType::Looped;
 	base.hoverCellSize = 2;
 	base.sprite.setOutline(class__->DefaultOutline(), class__->DefaultOutlineIgnore());
 	calculateRange();
@@ -33,36 +34,25 @@ void Player::calculateRange()
 				base.sprite.setPalette(nullptr);
 			}
 		}
-		base.texturePackIdx = class_->getAnimationIndex(animation);
-		auto numFrames = base.texturePack->size(base.texturePackIdx);
-		if (direction == PlayerDirection::All)
+		class_->getTextureAnimationRange(textureIdx, animation, base.animation);
+		if (direction != PlayerDirection::All)
 		{
-			base.textureStartIdx = 0;
-			base.textureEndIdx = numFrames;
-		}
-		else
-		{
-			auto period = (numFrames / 8);
-			base.textureStartIdx = (size_t)direction * period;
-			base.textureEndIdx = base.textureStartIdx + period;
+			auto period = (((base.animation.textureIndexRange.second + 1) - base.animation.textureIndexRange.first) / 8);
+			base.animation.textureIndexRange.first += ((size_t)direction * period);
+			base.animation.textureIndexRange.second = base.animation.textureIndexRange.first + period - 1;
 		}
 	}
 	else
 	{
 		base.sprite.setPalette(nullptr);
-		base.texturePackIdx = 0;
-		base.textureStartIdx = 0;
-		base.textureEndIdx = 0;
+		base.animation.clear();
 	}
+	base.animation.reset();
 }
 
 void Player::updateTexture()
 {
-	base.checkAndUpdateTextureIndex();
-	if (base.updateTexture() == true)
-	{
-		base.currentTextureIdx++;
-	}
+	base.updateTexture();
 }
 
 void Player::updateSpeed()
@@ -72,6 +62,7 @@ void Player::updateSpeed()
 		if (defaultSpeed.animation != sf::Time::Zero)
 		{
 			speed.animation = defaultSpeed.animation;
+			base.animation.frameTime = speed.animation;
 		}
 		if (defaultSpeed.walk != sf::Time::Zero)
 		{
@@ -173,11 +164,6 @@ void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
 	}
 }
 
-sf::Vector2f Player::getBasePosition(const Level& level) const
-{
-	return base.getBasePosition(level);
-}
-
 void Player::executeAction(Game& game) const
 {
 	if (action != nullptr)
@@ -239,10 +225,10 @@ void Player::updateDead(Game& game, Level& level)
 {
 	if (animation != PlayerAnimation::Die1)
 	{
-		base.currentTextureIdx = 0;
+		base.animation.currentTextureIdx = 0;
 		setAnimation(PlayerAnimation::Die1);
 	}
-	if (base.currentTextureIdx >= base.textureEndIdx)
+	if (base.animation.currentTextureIdx >= base.animation.textureIndexRange.second)
 	{
 		return;
 	}
@@ -251,13 +237,9 @@ void Player::updateDead(Game& game, Level& level)
 
 void Player::updateAnimation(const Game& game)
 {
-	currentAnimationTime += game.getElapsedTime();
-	if (currentAnimationTime >= speed.animation)
+	if (base.animation.update(game.getElapsedTime()))
 	{
-		currentAnimationTime = sf::microseconds(
-			currentAnimationTime.asMicroseconds() % speed.animation.asMicroseconds());
-
-		updateTexture();
+		base.updateTexture();
 	}
 }
 

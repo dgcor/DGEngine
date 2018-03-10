@@ -95,13 +95,12 @@
   ],
   "menu": {
     "id": "menu",
-    "bitmapFont": "font42g",
+    "font": "font42g",
     "position": [319, 192],
     "sound": "titlslct",
     "focus": true,
     "focusSound": "titlemov",
     "anchor": "none",
-    "verticalPad": 1,
     "items": [
       {
         "text": "Single Player",
@@ -110,19 +109,13 @@
           "name": "load",
           "file": "ui/singlePlayer/main.json"
         },
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       },
       {
         "text": "Multi Player",
         "position": [172, 235],
         "enable": false,
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       },
       {
         "text": "Replay Intro",
@@ -131,10 +124,7 @@
           "name": "load",
           "file": ["ui/playIntro.json", "ui/fadeIn.json"]
         },
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       },
       {
         "text": "Support",
@@ -146,10 +136,7 @@
             "file": "ui/support.json"
           }
         },
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       },
       {
         "text": "Credits",
@@ -161,10 +148,7 @@
             "file": "ui/credits.json"
           }
         },
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       },
       {
         "text": "Exit Hellfire",
@@ -175,16 +159,13 @@
             "name": "game.close"
           }
         },
-        "onFocus": [
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
-          { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
-        ]
+        "onFocus": "anchorPentagrams"
       }
     ]
   },
   "button": {
     "id": "versionInfo",
-    "bitmapFont": "font16s",
+    "font": "font16s",
     "position": [17, 444],
     "sound": "titlslct",
     "anchor": "none",

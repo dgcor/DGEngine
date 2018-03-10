@@ -283,7 +283,7 @@
     },
     {
       "id": "music",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
@@ -313,7 +313,7 @@
     },
     {
       "id": "sound",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
@@ -343,7 +343,7 @@
     },
     {
       "id": "gamma",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
@@ -373,7 +373,7 @@
     },
     {
       "id": "jog",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
@@ -403,7 +403,7 @@
     },
     {
       "id": "previousMenu",
-      "bitmapFont": "bigtgold",
+      "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",

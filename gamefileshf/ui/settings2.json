@@ -1,9 +1,0 @@
-{
-  "animation": {
-    "id": "smlogo",
-    "texturePack": "smlogo",
-    "position": [0, 0],
-    "anchor": "none",
-    "refresh": 50
-  }
-}

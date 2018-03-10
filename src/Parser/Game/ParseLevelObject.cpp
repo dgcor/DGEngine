@@ -62,11 +62,11 @@ namespace Parser
 			{
 				return;
 			}
-			auto frames = std::make_pair(0u, texPack->totalSize() - 1);
+			auto frames = std::make_pair(0u, texPack->size() - 1);
 			frames = getFramesKey(elem, "frames", frames);
-			levelObj = std::make_unique<SimpleLevelObject>(*texPack, frames);
-
-			levelObj->setFrameTime(getTimeKey(elem, "refresh", sf::milliseconds(50)));
+			auto refresh = getTimeKey(elem, "refresh", sf::milliseconds(50));
+			levelObj = std::make_unique<SimpleLevelObject>(
+				*texPack, frames, refresh, AnimationType::Looped);
 		}
 		else
 		{

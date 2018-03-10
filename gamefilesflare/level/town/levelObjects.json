@@ -1,0 +1,10 @@
+{
+  "levelObject": {
+    "id": "l1",
+    "name": "Down to dungeon",
+    "mapPosition": [19, 11],
+    "texture": "empty",
+    "textureRect": [32, 32],
+    "action": { "name": "load", "file": ["level/l1/load.json", "positionPlayer", "[43, 62]"] }
+  }
+}

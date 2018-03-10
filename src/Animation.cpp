@@ -2,10 +2,9 @@
 #include "Game.h"
 
 Animation::Animation(const std::shared_ptr<TexturePack>& texturePack_,
-	size_t frameStart_, size_t frameEnd_, const sf::Time& frameTime,
-	bool pause_, bool loop_) : texturePack(texturePack_),
-	frameStart(frameStart_), frameEnd(frameEnd_), frameIdx(frameStart_),
-	frameTime(frameTime), pause(pause_), loop(loop_)
+	const std::pair<size_t, size_t>& textureIndexRange, const sf::Time& frameTime,
+	AnimationType type, bool pause) : texturePack(texturePack_),
+	base(textureIndexRange, frameTime, type, pause)
 {
 	if (texturePack_->isIndexed() == true)
 	{
@@ -16,51 +15,19 @@ Animation::Animation(const std::shared_ptr<TexturePack>& texturePack_,
 
 void Animation::updateTexture()
 {
-	const sf::Texture* texture;
-	sf::IntRect rect;
-	if (texturePack->get(frameIdx, &texture, rect) == true)
+	TextureInfo ti;
+	if (texturePack->get(base.currentTextureIdx, ti) == true)
 	{
-		setTexture(*texture);
-		setTextureRect(rect);
-	}
-}
-
-void Animation::updateFrameIndex() noexcept
-{
-	if (frameIdx < frameEnd)
-	{
-		frameIdx++;
-	}
-	else
-	{
-		frameIdx = frameStart;
-
-		if (loop == false)
-		{
-			pause = true;
-		}
+		setTexture(*ti.texture);
+		setTextureRect(ti.textureRect);
 	}
 }
 
 void Animation::update(Game& game) noexcept
 {
-	if (pause == true ||
-		frameEnd <= frameStart ||
-		Visible() == false)
+	if (Visible() == true &&
+		base.update(game.getElapsedTime()) == true)
 	{
-		return;
-	}
-
-	// add delta time
-	currentTime += game.getElapsedTime();
-
-	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
-	{
-		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
-
 		updateTexture();
-		updateFrameIndex();
 	}
 }

@@ -3,6 +3,28 @@
 #include "Game.h"
 #include "GameUtils.h"
 
+ItemClass::ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
+	const std::shared_ptr<TexturePack>& textureInventory_,
+	size_t inventoryIdx_) : textureDrop(textureDrop_),
+	textureInventory(textureInventory_), inventoryIdx(inventoryIdx_)
+{
+	if (textureDrop_ != nullptr)
+	{
+		dropTextureIndexRange.first = 0;
+		dropTextureIndexRange.second = textureDrop_->size();
+	}
+}
+
+void ItemClass::setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_) noexcept
+{
+	textureDrop = textureDrop_;
+	if (textureDrop_ != nullptr)
+	{
+		dropTextureIndexRange.first = 0;
+		dropTextureIndexRange.second = textureDrop_->size();
+	}
+}
+
 void ItemClass::setDefault(const char* prop, LevelObjValue val)
 {
 	auto propertyHash = str2int16(prop);

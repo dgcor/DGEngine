@@ -23,7 +23,7 @@
     {
       "id": "panelTitle1",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 58],
       "anchor": "none",
@@ -34,7 +34,7 @@
     {
       "id": "panelText",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textGold%",
       "position": [480, 142],
       "anchor": "none",
@@ -46,7 +46,7 @@
   "button": [
     {
       "id": "talk",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "replaceVars": true,
       "color": "%textBlue%",
       "sound": "titlslct",
@@ -65,7 +65,7 @@
     },
     {
       "id": "buyItems",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -89,7 +89,7 @@
     },
     {
       "id": "sellItems",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -113,7 +113,7 @@
     },
     {
       "id": "RechargeStaves",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -137,7 +137,7 @@
     },
     {
       "id": "back",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",

@@ -3,7 +3,7 @@
   "text": [
     {
       "id": "charName",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [86, 22],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -11,7 +11,7 @@
     },
     {
       "id": "charClass",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [234, 22],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -19,7 +19,7 @@
     },
     {
       "id": "charLevel",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [88, 59],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -27,7 +27,7 @@
     },
     {
       "id": "charExp",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [258, 59],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -35,7 +35,7 @@
     },
     {
       "id": "charExpNext",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [258, 87],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -43,7 +43,7 @@
     },
     {
       "id": "charGold",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [258, 136],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -52,7 +52,7 @@
     },
     {
       "id": "charStr",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [110, 145],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -61,7 +61,7 @@
     },
     {
       "id": "charStrNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [158, 145],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -70,7 +70,7 @@
     },
     {
       "id": "charMag",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [111, 173],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -79,7 +79,7 @@
     },
     {
       "id": "charMagNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [158, 173],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -88,7 +88,7 @@
     },
     {
       "id": "charDex",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [110, 201],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -97,7 +97,7 @@
     },
     {
       "id": "charDexNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [158, 201],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -106,7 +106,7 @@
     },
     {
       "id": "charVit",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [110, 229],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -115,7 +115,7 @@
     },
     {
       "id": "charVitNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [158, 229],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -125,7 +125,7 @@
     {
       "id": "charPoints",
       "replaceVars": true,
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "color": "%textRed%",
       "position": [111, 256],
       "anchor": "left",
@@ -134,7 +134,7 @@
     },
     {
       "id": "charLife",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [111, 294],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -143,7 +143,7 @@
     },
     {
       "id": "charLifeNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [159, 294],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -152,7 +152,7 @@
     },
     {
       "id": "charMana",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [111, 322],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -161,7 +161,7 @@
     },
     {
       "id": "charManaNow",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [159, 322],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -170,7 +170,7 @@
     },
     {
       "id": "charArmor",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [280, 173],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -179,7 +179,7 @@
     },
     {
       "id": "charToHit",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [279, 201],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -188,7 +188,7 @@
     },
     {
       "id": "charDamage",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [280, 229],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -196,7 +196,7 @@
     },
     {
       "id": "charResMagic",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [279, 266],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -205,7 +205,7 @@
     },
     {
       "id": "charResFire",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [279, 294],
       "anchor": "left",
       "horizontalAlign": "center",
@@ -214,7 +214,7 @@
     },
     {
       "id": "charResLight",
-      "bitmapFont": "smaltext",
+      "font": "smaltext",
       "position": [279, 322],
       "anchor": "left",
       "horizontalAlign": "center",

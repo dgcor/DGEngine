@@ -12,6 +12,11 @@ namespace Parser
 
 	std::unique_ptr<DrawableText> parseDrawableTextObj(Game& game, const rapidjson::Value& elem)
 	{
+		if (isValidString(elem, "font") == false)
+		{
+			return nullptr;
+		}
+
 		std::string displayText;
 
 		if (elem.HasMember("text"))
@@ -23,26 +28,27 @@ namespace Parser
 			displayText = FileUtils::readText(getStringCharVal(elem["file"]));
 		}
 
-		if (elem.HasMember("font"))
+		auto font = game.Resources().getFont(elem["font"].GetString());
+		if (hasNullFont(font) == true)
 		{
-			auto font = game.Resources().getFont(elem["font"].GetString());
-			if (font == nullptr)
-			{
-				return nullptr;
-			}
+			return nullptr;
+		}
 
+		if (hasFreeTypeFont(font) == true)
+		{
 			auto fontSize = getUIntKey(elem, "fontSize", 12);
-			auto text = std::make_unique<StringText>(displayText, *font, fontSize);
+			auto text = std::make_unique<StringText>(displayText,
+				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
 			text->setColor(getColorKey(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
+			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
 
 			auto anchor = getAnchorKey(elem, "anchor");
 			text->setAnchor(anchor);
-			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
+			auto size = text->Size();
+			auto pos = getPositionKey(elem, "position", size, game.RefSize());
 			if (getBoolKey(elem, "relativeCoords", true) == true)
 			{
-				auto size = text->Size();
 				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
 				if (game.StretchToFit() == false)
 				{
@@ -54,21 +60,16 @@ namespace Parser
 
 			return std::move(text);
 		}
-		else if (elem.HasMember("bitmapFont"))
+		else
 		{
-			auto font = game.Resources().getBitmapFont(elem["bitmapFont"].GetString());
-			if (font == nullptr)
-			{
-				return nullptr;
-			}
-
 			auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
 			auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
 
-			auto text = std::make_unique<BitmapText>(displayText, font, horizSpaceOffset, vertSpaceOffset);
+			auto text = std::make_unique<BitmapText>(displayText,
+				std::get<std::shared_ptr<BitmapFont>>(font), horizSpaceOffset, vertSpaceOffset);
 			text->setColor(getColorKey(elem, "color", sf::Color::White));
 			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign")));
+			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
 
 			auto anchor = getAnchorKey(elem, "anchor");
 			text->setAnchor(anchor);

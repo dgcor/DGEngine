@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BaseAnimation.h"
 #include "BaseClass.h"
 #include "LevelObject.h"
 #include <list>
@@ -10,13 +11,13 @@ struct BaseLevelObject
 {
 public:
 	Sprite2 sprite;
+	sf::Vector2f originalPosition;
+	sf::Vector2f basePosition;
+	sf::Vector2f offset;
 	MapCoord mapPosition;
 
 	const TexturePack* texturePack{ nullptr };
-	size_t textureStartIdx{ 0 };
-	size_t textureEndIdx{ 0 };
-	size_t currentTextureIdx{ 0 };
-	size_t texturePackIdx{ 0 };
+	BaseAnimation animation;
 
 	uint8_t hoverCellSize{ 0 };
 
@@ -31,11 +32,9 @@ public:
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
 
-	void checkAndUpdateTextureIndex() noexcept;
 	bool hasValidState() const noexcept;
-	sf::Vector2f getBasePosition(const Level& level) const;
 	void updateDrawPosition(const Level& level);
-	void updateDrawPosition(const Level& level, sf::Vector2f drawPos);
+	void updateDrawPosition(const Level& level, const sf::Vector2f& drawPos);
 	void updateHover(Game& game, Level& level, LevelObject* levelObj);
 	void updateMapPositionBack(Level& level, const MapCoord pos, LevelObject* levelObj);
 	void updateMapPositionFront(Level& level, const MapCoord pos, LevelObject* levelObj);
@@ -48,6 +47,7 @@ public:
 	BaseLevelObject() noexcept {}
 	BaseLevelObject(const sf::Texture& texture) : sprite(texture) {}
 	BaseLevelObject(const TexturePack& texturePack_,
-		const std::pair<size_t, size_t>& frameRange_) : texturePack(&texturePack_),
-		textureStartIdx(frameRange_.first), textureEndIdx(frameRange_.second) {}
+		const std::pair<size_t, size_t>& textureIndexRange,
+		const sf::Time& frameTime, AnimationType type)
+		: texturePack(&texturePack_), animation(textureIndexRange, frameTime, type, false) {}
 };

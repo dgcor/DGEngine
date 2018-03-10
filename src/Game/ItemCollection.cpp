@@ -276,9 +276,18 @@ bool ItemCollection::isItemSlotInUse(const ItemXY& position) const
 bool ItemCollection::isItemSlotEmpty(int x, int y,
 	const ItemXY& itemSize, size_t& itemIdx) const
 {
-	size_t sizeX = (size_t)x + itemSize.x;
-	size_t sizeY = (size_t)y + itemSize.y;
-
+	size_t sizeX = (size_t)x;
+	size_t sizeY = (size_t)y;
+	if (enforceItemSize == true)
+	{
+		sizeX += itemSize.x;
+		sizeY += itemSize.y;
+	}
+	else
+	{
+		sizeX++;
+		sizeY++;
+	}
 	for (size_t i = x; i < sizeX; i++)
 	{
 		for (size_t j = y; j < sizeY; j++)

@@ -703,7 +703,7 @@ namespace Parser
 				return std::make_shared<ActImageSetTextureFromPack>(
 					getStringKey(elem, "id"),
 					getStringKey(elem, "texturePack"),
-					getIndexKey(elem, "index"),
+					getUIntKey(elem, "index"),
 					getBoolKey(elem, "resetRect", true));
 			}
 			else
