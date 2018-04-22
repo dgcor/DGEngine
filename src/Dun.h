@@ -12,15 +12,15 @@ private:
 	size_t width{ 0 };
 	size_t height{ 0 };
 
-	void resize(size_t width_, size_t height_);
+	void resize(size_t width_, size_t height_, int16_t defaultTile);
 
 	friend const int16_t& get(size_t x, size_t y, const Dun& dun);
 	friend int16_t& get(size_t x, size_t y, Dun& dun);
 
 public:
 	Dun() noexcept {}
-	Dun(const std::string&);
-	Dun(size_t width_, size_t height_);
+	Dun(const std::string& fileName, int16_t defaultTile = -1);
+	Dun(size_t width_, size_t height_, int16_t defaultTile = -1);
 
 	Misc::Helper2D<Dun, int16_t&, size_t> operator[] (size_t x) noexcept;
 	Misc::Helper2D<const Dun, const int16_t&, size_t> operator[] (size_t x) const noexcept;

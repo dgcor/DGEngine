@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "PlayerClass.h"
 #include "Quest.h"
+#include "Save/SaveLevel.h"
 #include "Sol.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
@@ -44,7 +45,9 @@ private:
 	MapCoord currentMapPosition;
 	sf::Vector2f currentMapViewCenter;
 
+	std::string id;
 	std::string name;
+	std::string path;
 
 	std::shared_ptr<TexturePack> tilesBottom;
 	std::shared_ptr<TexturePack> tilesTop;
@@ -79,8 +82,8 @@ private:
 	bool captureInputEvents{ true };
 
 	std::vector<Quest> quests;
-
 	std::vector<uint32_t> experiencePoints;
+	std::unordered_map<uint16_t, std::string> propertyNames;
 
 	static const LevelCell& get(Coord x, Coord y, const Level& level) noexcept
 	{
@@ -106,6 +109,11 @@ private:
 	void onMouseScrolled(Game& game);
 	void onTouchBegan(Game& game);
 
+	friend void Save::save(const std::string& filePath, const Level& level,
+		bool skipDefaults, bool skipCurrentPlayer);
+	friend void Save::serialize(void* serializeObj, const Level& level,
+		bool skipDefaults, bool skipCurrentPlayer);
+
 public:
 	void Init(LevelMap map_,
 		std::shared_ptr<TexturePack> tilesBottom_,
@@ -126,7 +134,9 @@ public:
 	Coord Width() const noexcept { return map.Width(); }
 	Coord Height() const noexcept { return map.Height(); }
 
+	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
+	void Path(const std::string& path_) { path = path_; }
 
 	void clearLevelObjects();
 
@@ -297,6 +307,19 @@ public:
 	bool getCaptureInputEvents() const noexcept { return captureInputEvents; }
 	void setCaptureInputEvents(bool captureEvents) noexcept { captureInputEvents = captureEvents; }
 
+	void save(const std::string& filePath, bool skipDefaults, bool skipCurrentPlayer) const
+	{
+		Save::save(filePath, *this, skipDefaults, skipCurrentPlayer);
+	}
+	void save(const std::string& filePath, const LevelObject& obj, bool skipDefaults) const
+	{
+		Save::save(filePath, *this, obj, skipDefaults);
+	}
+	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults)
+	{
+		Save::serialize(serializeObj, *this, skipDefaults, false);
+	}
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string& prop, Variable& var) const;
@@ -346,4 +369,7 @@ public:
 
 	uint32_t getExperienceFromLevel(uint32_t level) const;
 	uint32_t getLevelFromExperience(uint32_t experience) const;
+
+	const char* getPropertyName(uint16_t hash16) const;
+	void setPropertyName(uint16_t hash16, const std::string& prop);
 };

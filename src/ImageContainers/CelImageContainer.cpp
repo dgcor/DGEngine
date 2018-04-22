@@ -1,592 +1,835 @@
 #include "CelImageContainer.h"
 #include "PhysFSStream.h"
+#include "StreamReader.h"
 
-static void imagePushBack(const uint8_t idx, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
+const bool CelLevelFrameType2[512] =
 {
-	rawImage.push_back(pal == nullptr ? sf::Color(idx, 0, 0, 255) : (*pal)[idx]);
-}
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
 
-//begin cel
-int32_t normalWidth(const std::vector<uint8_t>& frame, size_t frameNum, bool fromHeader, uint16_t offset)
+const uint16_t CelLevelFrameType2ZeroedBytes[32] =
 {
-	// If we have a header, we know that offset points to the end of the 32nd line.
-	// So, when we reach that point, we will have produced 32 lines of pixels, so we 
-	// can divide the number of pixels we have passed at this point by 32, to get the 
-	// width.
-	if (fromHeader)
-	{
-		// Workaround for objcurs.cel, the only cel file containing frames with a header whose offset is zero
-		if (offset == 0)
-		{
-			if (frameNum == 0)
-			{
-				return 33;
-			}
-			else if (frameNum > 0 && frameNum < 10)
-			{
-				return 32;
-			}
-			else if (frameNum == 10)
-			{
-				return 23;
-			}
-			else if (frameNum > 10 && frameNum < 86)
-			{
-				return 28;
-			}
-		}
+	0, 1, 8, 9, 24, 25, 48, 49, 80, 81, 120, 121, 168, 169, 224, 225,
+	288, 289, 348, 349, 400, 401, 444, 445, 480, 481, 508, 509, 528, 529, 540, 541
+};
 
-		int32_t widthHeader = 0;
-
-		for (size_t i = 10; i < frame.size(); i++)
-		{
-			if (i == offset && fromHeader)
-			{
-				widthHeader = widthHeader / 32;
-				break;
-			}
-			// Regular command
-			if (frame[i] <= 127)
-			{
-				widthHeader += frame[i];
-				i += frame[i];
-			}
-			else if (128 <= frame[i])	// Transparency command
-			{
-				widthHeader += 256 - frame[i];
-			}
-		}
-		return widthHeader;
-	}
-
-	// If we do not have a header we probably (definitely?) don't have any transparency.
-	// The maximum stretch of opaque pixels following a command byte is 127.
-	// Since commands can't wrap over lines (it seems), if the width is shorter than 127,
-	// the first (command) byte will indicate an entire line, so it's value is the width.
-	// If the width is larger than 127, it will be some sequence of 127 byte long stretches,
-	// followed by some other value to bring it to the end of a line (presuming the width is
-	// not divisible by 127).
-	// So, for all image except those whose width is divisible by 127, we can determine width
-	// by looping through control bits, adding 127 each time, until we find some value which
-	// is not 127, then add that to the 127-total and that is our width.
-	//
-	// The above is the basic idea, but there is also a bunch of crap added in to maybe deal
-	// with frames that don't quite fit the criteria.
-	else
-	{
-		int32_t widthRegular = 0;
-		bool hasTrans = false;
-
-		uint8_t lastVal = 0;
-		uint8_t lastTransVal = 0;
-
-		for (size_t i = 0; i < frame.size(); i++)
-		{
-			uint8_t val = frame[i];
-
-			// Regular command
-			if (val <= 127)
-			{
-				widthRegular += val;
-				i += val;
-
-				// prevents crash when loading l4
-				if (i + 1 >= frame.size())
-				{
-					break;
-				}
-
-				// Workaround for frames that start with a few px, then trans for the rest of the line
-				if (128 <= frame[i + 1])
-				{
-					hasTrans = true;
-				}
-			}
-			else if (128 <= val)
-			{
-				// Workaround for frames that start trans, then a few px of colour at the end
-				if (val == lastTransVal && lastVal <= 127 && lastVal == frame[i + 1])
-				{
-					break;
-				}
-
-				widthRegular += 256 - val;
-
-				// Workaround - presumes all headerless frames first lines start transparent, then go colour,
-				// then go transparent again, at which point they hit the end of the line, or if the first two
-				// commands are both transparency commands, that the image starts with a fully transparent line
-				if ((hasTrans || 128 <= frame[i + 1]) && val != 128)
-				{
-					break;
-				}
-
-				hasTrans = true;
-				lastTransVal = val;
-			}
-
-			if (val != 127 && !hasTrans)
-			{
-				break;
-			}
-			lastVal = val;
-		}
-		return widthRegular;
-	}
-}
-
-int32_t normalDecode(const std::vector<uint8_t>& frame, size_t frameNum,
-	const PaletteArray* pal, std::vector<sf::Color>& rawImage, bool tileCel)
+const bool CelLevelFrameType3[512] =
 {
-	size_t i = 0;
-	uint16_t offset = 0;
-	bool fromHeader = false;
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+};
 
-	// The frame has a header which we can use to determine width
-	if (!tileCel && frame[0] == 10)
-	{
-		fromHeader = true;
-		offset = (uint16_t)(frame[3] << 8 | frame[2]);
-		i = 10; // Skip the header
-	}
-
-	for (; i < frame.size(); i++)
-	{
-		// Regular command
-		if (frame[i] <= 127)
-		{
-			size_t j;
-			// Just push the number of pixels specified by the command
-			for (j = 1; j < frame[i] + 1 && i + j < frame.size(); j++)
-			{
-				int index = i + j;
-				uint8_t f = frame[index];
-
-				imagePushBack(f, pal, rawImage);
-			}
-			i += frame[i];
-		}
-		else if (128 <= frame[i])	// Transparency command
-		{
-			// Push (256 - command value) transparent pixels
-			for (size_t j = 0; j < 256 - frame[i]; j++)
-			{
-				rawImage.push_back(sf::Color::Transparent);
-			}
-		}
-	}
-	return normalWidth(frame, frameNum, fromHeader, offset);
-}
-//end cel
-
-//begin cl2
-int32_t cl2Width(const std::vector<uint8_t>& frame, uint16_t offset)
+const uint16_t CelLevelFrameType3ZeroedBytes[32] =
 {
-	int32_t pixels = 0;
-	size_t i = 10; // CL2 frames always have headers
+	2, 3, 14, 15, 34, 35, 62, 63, 98, 99, 142, 143, 194, 195, 254, 255,
+	318, 319, 374, 375, 422, 423, 462, 463, 494, 495, 518, 519, 534, 535, 542, 543
+};
 
-	for (; i < frame.size(); i++)
+const bool CelLevelFrameType4[512] =
+{
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+};
+
+const uint16_t CelLevelFrameType4ZeroedBytes[16] =
+{
+	0, 1, 8, 9, 24, 25, 48, 49, 80, 81, 120, 121, 168, 169, 224, 225
+};
+
+const bool CelLevelFrameType5[512] =
+{
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+};
+
+const uint16_t CelLevelFrameType5ZeroedBytes[16] =
+{
+	2, 3, 14, 15, 34, 35, 62, 63, 98, 99, 142, 143, 194, 195, 254, 255
+};
+
+CelImageContainer::CelFrameType CelImageContainer::getLevelFrame220Type(
+	const gsl::span<const uint8_t> frameData)
+{
+	auto type = CelFrameType::Regular;
+	for (size_t i = 0; i < 32; i++)
 	{
-		if (i == offset)
+		if (frameData[CelLevelFrameType2ZeroedBytes[i]] != 0)
 		{
-			return pixels / 32;
+			break;
 		}
-
-		// Color command
-		if (frame[i] > 127)
+		if (i == 31)
 		{
-			uint8_t val = 256 - frame[i];
-
-			// Regular command
-			if (val <= 65)
-			{
-				pixels += val;
-				i += val;
-			}
-			else	// RLE (run length encoded) Colour command
-			{
-				pixels += val - 65;
-				i += 1;
-			}
-		}
-		else	// Transparency command
-		{
-			pixels += frame[i];
+			type = CelFrameType::LevelType2;
 		}
 	}
-	return -1; // keep the compiler happy
-}
-
-int32_t cl2Decode(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
-{
-	size_t i = 10; // CL2 frames always have headers
-
-	for (; i < frame.size(); i++)
+	for (size_t i = 0; i < 32; i++)
 	{
-		// Color command
-		if (frame[i] > 127)
+		if (frameData[CelLevelFrameType3ZeroedBytes[i]] != 0)
 		{
-			uint8_t val = 256 - frame[i];
-
-			// Regular command
-			if (val <= 65)
-			{
-				size_t j;
-				// Just push the number of pixels specified by the command
-				for (j = 1; j < val + 1 && i + j < frame.size(); j++)
-				{
-					int index = i + j;
-					auto f = frame[index];
-
-					imagePushBack(f, pal, rawImage);
-				}
-				i += val;
-			}
-			else	// RLE (run length encoded) Colour command
-			{
-				for (int j = 0; j < val - 65; j++)
-				{
-					imagePushBack(frame[i + 1], pal, rawImage);
-				}
-				i += 1;
-			}
+			break;
 		}
-		else	// Transparency command
+		if (i == 31)
 		{
-			// Push transparent pixels
-			for (size_t j = 0; j < frame[i]; j++)
-			{
-				rawImage.push_back(sf::Color::Transparent);
-			}
+			type = CelFrameType::LevelType3;
 		}
 	}
-
-	uint16_t offset = (uint16_t)(frame[3] << 8 | frame[2]);
-	return cl2Width(frame, offset);
-}
-// end cl2
-
-//begin tile
-bool greaterThanFirst(const std::vector<uint8_t>& frame)
-{
-	return frame.size() >= 196 &&
-		frame[2] == 0 && frame[3] == 0 &&
-		frame[14] == 0 && frame[15] == 0 &&
-		frame[34] == 0 && frame[35] == 0 &&
-		frame[62] == 0 && frame[63] == 0 &&
-		frame[98] == 0 && frame[99] == 0 &&
-		frame[142] == 0 && frame[143] == 0 &&
-		frame[194] == 0 && frame[195] == 0;
+	return type;
 }
 
-bool greaterThanSecond(const std::vector<uint8_t>& frame)
+CelImageContainer::CelFrameType CelImageContainer::getLevelFrame320Type(
+	const gsl::span<const uint8_t> frameData)
 {
-	return frame.size() >= 196 &&
-		frame[254] == 0 && frame[255] == 0 &&
-		frame[318] == 0 && frame[319] == 0 &&
-		frame[374] == 0 && frame[375] == 0 &&
-		frame[422] == 0 && frame[423] == 0 &&
-		frame[462] == 0 && frame[463] == 0 &&
-		frame[494] == 0 && frame[495] == 0 &&
-		frame[518] == 0 && frame[519] == 0 &&
-		frame[534] == 0 && frame[535] == 0;
-}
-
-bool isGreaterThan(const std::vector<uint8_t>& frame)
-{
-	return greaterThanFirst(frame);
-}
-
-bool lessThanFirst(const std::vector<uint8_t>& frame)
-{
-	return frame.size() >= 226 &&
-		frame[0] == 0 && frame[1] == 0 &&
-		frame[8] == 0 && frame[9] == 0 &&
-		frame[24] == 0 && frame[25] == 0 &&
-		frame[48] == 0 && frame[49] == 0 &&
-		frame[80] == 0 && frame[81] == 0 &&
-		frame[120] == 0 && frame[121] == 0 &&
-		frame[168] == 0 && frame[169] == 0 &&
-		frame[224] == 0 && frame[225] == 0;
-}
-
-bool lessThanSecond(const std::vector<uint8_t>& frame)
-{
-	return frame.size() >= 530 &&
-		frame[288] == 0 && frame[289] == 0 &&
-		frame[348] == 0 && frame[349] == 0 &&
-		frame[400] == 0 && frame[401] == 0 &&
-		frame[444] == 0 && frame[445] == 0 &&
-		frame[480] == 0 && frame[481] == 0 &&
-		frame[508] == 0 && frame[509] == 0 &&
-		frame[528] == 0 && frame[529] == 0;
-}
-
-bool isLessThan(const std::vector<uint8_t>& frame)
-{
-	return lessThanFirst(frame);
-}
-
-void fillTransparent(size_t pixels, std::vector<sf::Color>& rawImage)
-{
-	for (int px = 0; px < pixels; px++)
+	auto type = CelFrameType::Regular;
+	for (size_t i = 0; i < 16; i++)
 	{
-		rawImage.push_back(sf::Color::Transparent);
-	}
-}
-
-void drawRow(int row, int lastRow, int& framePos, const std::vector<uint8_t>& frame,
-	const PaletteArray* pal, std::vector<sf::Color>& rawImage, bool lessThan)
-{
-	for (; row < lastRow; row++)
-	{
-		// Skip markers - for less than, when on the first half of the image (row < 16), all even rows will start with a pair of marker bits
-		// for the second half of the image (row >= 16), all odd rows will start with a pair of marker bits.
-		// The inverse is true of greater than images.
-		if ((lessThan && ((row < 16 && row % 2 == 0) || (row >= 16 && row % 2 != 0))) ||
-			(!lessThan && ((row < 16 && row % 2 != 0) || (row >= 16 && row % 2 == 0))))
+		if (frameData[CelLevelFrameType4ZeroedBytes[i]] != 0)
 		{
-			framePos += 2;
+			break;
 		}
-
-		int toDraw;
-		if (row < 16)
+		if (i == 15)
 		{
-			toDraw = 2 + (row * 2);
+			type = CelFrameType::LevelType4;
+		}
+	}
+	for (size_t i = 0; i < 16; i++)
+	{
+		if (frameData[CelLevelFrameType5ZeroedBytes[i]] != 0)
+		{
+			break;
+		}
+		if (i == 15)
+		{
+			type = CelFrameType::LevelType5;
+		}
+	}
+	return type;
+}
+
+CelImageContainer::CelFrameType CelImageContainer::getLevelFrame400Type(
+	const gsl::span<const uint8_t> frameData)
+{
+	uint32_t globalPixelCount = 0;
+	uint16_t pixelCount = 0;
+
+	// Going through the frame data to find pixel groups
+	for (ptrdiff_t i = 0; i < frameData.size(); i++)
+	{
+		auto readByte = frameData[i];
+
+		// Transparent pixels group
+		if (readByte > 0x80)
+		{
+			pixelCount += (256u - readByte);
+			globalPixelCount += pixelCount;
+			if (pixelCount > 32)
+			{
+				return CelFrameType::LevelType0;
+			}
+			pixelCount = 0;
+		}
+		else if (readByte == 0x80)
+		{
+			pixelCount += 0x80;
+			if (pixelCount > 32)
+			{
+				return CelFrameType::LevelType0;
+			}
+		}
+		// Palette indices pixel group
+		else if (readByte == 0x7F)
+		{
+			pixelCount += 0x7F;
+			if (pixelCount > 32 || i + 0x7F >= frameData.size())
+			{
+				return CelFrameType::LevelType0;
+			}
+			i += 0x7F;
 		}
 		else
 		{
-			toDraw = 32 - ((row - 16) * 2);
-		}
-
-		if (lessThan)
-		{
-			fillTransparent(32 - toDraw, rawImage);
-		}
-
-		for (int px = 0; px < toDraw; px++)
-		{
-			imagePushBack(frame[framePos], pal, rawImage);
-			framePos++;
-		}
-
-		if (!lessThan)
-		{
-			fillTransparent(32 - toDraw, rawImage);
+			pixelCount += readByte;
+			globalPixelCount += pixelCount;
+			if (pixelCount > 32 || i + readByte >= frameData.size())
+			{
+				return CelFrameType::LevelType0;
+			}
+			pixelCount = 0;
+			i += readByte;
 		}
 	}
+	if (globalPixelCount == 32 * 32)
+	{
+		return CelFrameType::Regular;
+	}
+	return CelFrameType::LevelType0;
 }
 
-void decodeGreaterLessThan(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage, bool lessThan)
+uint16_t CelImageContainer::computeWidthFromHeader(const gsl::span<const uint8_t> frameData)
 {
-	int framePos = 0;
+	std::array<uint16_t, 5> celFrameHeader;
+	std::array<uint16_t, 4> celFrameWidth = { 0, 0, 0, 0 };
 
-	drawRow(0, 15, framePos, frame, pal, rawImage, lessThan);
-
-	if ((lessThan && lessThanSecond(frame)) ||
-		(!lessThan && greaterThanSecond(frame)))
+	// Read the {CEL FRAME HEADER}
+	LittleEndianStreamReader fileStream(frameData.data(), frameData.size());
+	for (auto& headerElem : celFrameHeader)
 	{
-		drawRow(16, 33, framePos, frame, pal, rawImage, lessThan);
+		fileStream.read(headerElem);
 	}
+
+	// Read the five 32 pixel-lines block to calculate the image width
+	uint16_t pixelCount = 0;
+	for (size_t i = 0; i < 4; i++)
+	{
+		if (celFrameHeader[i + 1] == 0)
+		{
+			break;
+		}
+		for (size_t j = celFrameHeader[i]; j < celFrameHeader[i + 1]; j++)
+		{
+			auto readByte = frameData[(ptrdiff_t)j];
+
+			if (readByte > 0x7F)
+			{
+				pixelCount += (256u - readByte);
+			}
+			else
+			{
+				pixelCount += readByte;
+				j += readByte;
+			}
+		}
+
+		celFrameWidth[i] = pixelCount / 32;
+		pixelCount = 0;
+	}
+
+	// The calculated width has to be the identical for each 32 pixel-line block
+	// If it's not the case, 0 is returned
+	for (size_t i = 0; i < 3; i++)
+	{
+		if (celFrameWidth[i + 1] != 0 && celFrameWidth[i] != celFrameWidth[i + 1])
+		{
+			return 0;
+		}
+	}
+	return celFrameWidth[0];
+}
+
+uint16_t CelImageContainer::computeWidthFromData(const gsl::span<const uint8_t> frameData)
+{
+	int32_t frameDataStartOffset = 0;
+	uint32_t globalPixelCount = 0;
+	uint16_t biggestGroupPixelCount = 0;
+	uint16_t pixelCount = 0;
+	std::vector<CelPixelGroup> pixelGroups;
+
+	// Checking the presence of the {CEL FRAME HEADER}
+	if (frameData[0] == 0x0A && frameData[1] == 0x00)
+	{
+		frameDataStartOffset = 0x0A;
+	}
+
+	// Going through the frame data to find pixel groups
+	for (ptrdiff_t i = frameDataStartOffset; i < frameData.size(); i++)
+	{
+		auto readByte = frameData[i];
+
+		// Transparent pixels group
+		if (readByte > 0x80)
+		{
+			pixelCount += (256u - readByte);
+			pixelGroups.push_back(CelPixelGroup(pixelCount, true));
+			globalPixelCount += pixelCount;
+			if (pixelCount > biggestGroupPixelCount)
+			{
+				biggestGroupPixelCount = pixelCount;
+			}
+			pixelCount = 0;
+		}
+		else if (readByte == 0x80)
+		{
+			pixelCount += 0x80;
+		}
+		// Palette indices pixel group
+		else if (readByte == 0x7F)
+		{
+			pixelCount += 0x7F;
+			i += 0x7F;
+		}
+		else
+		{
+			pixelCount += readByte;
+			pixelGroups.push_back(CelPixelGroup(pixelCount, false));
+			globalPixelCount += pixelCount;
+			if (pixelCount > biggestGroupPixelCount)
+			{
+				biggestGroupPixelCount = pixelCount;
+			}
+			pixelCount = 0;
+			i += readByte;
+		}
+	}
+
+	// Going through pixel groups to find pixel-lines wraps
+	uint16_t width = 0;
+	pixelCount = 0;
+	for (size_t i = 1; i < pixelGroups.size(); i++)
+	{
+		pixelCount += pixelGroups[i - 1].getPixelCount();
+
+		if (pixelGroups[i - 1].isTransparent() == pixelGroups[i].isTransparent())
+		{
+			// If width == 0 then it's the first pixel-line wrap and width needs to be set
+			// If pixelCount is less than width then the width has to be set to the new value
+			if (width == 0 || pixelCount < width)
+			{
+				width = pixelCount;
+			}
+			// If the pixelCount of the last group is less than the current pixel group
+			// then width is equal to this last pixel group's pixel count.
+			// Mostly useful for small frames like the "J" frame in smaltext.cel
+			if (i == pixelGroups.size() - 1 && pixelGroups[i].getPixelCount() < pixelCount)
+			{
+				width = pixelGroups[i].getPixelCount();
+			}
+			pixelCount = 0;
+		}
+		// If last pixel group is being processed and width is still unknown
+		// then set the width to the pixelCount of the last two pixel groups
+		if (i == pixelGroups.size() - 1 && width == 0)
+		{
+			width = pixelGroups[i - 1].getPixelCount() + pixelGroups[i].getPixelCount();
+		}
+	}
+	// If width wasn't found return 0
+	if (width == 0)
+	{
+		return 0;
+	}
+	// If width is consistent
+	if (globalPixelCount % width == 0)
+	{
+		return width;
+	}
+	// If width is inconsistent
 	else
 	{
-		for (framePos = 256; framePos < frame.size(); framePos++)
+		// Try to find  relevant width by adding pixel groups' pixel counts iteratively
+		pixelCount = 0;
+		for (const auto& pixelGroup : pixelGroups)
 		{
-			imagePushBack(frame[framePos], pal, rawImage);
+			pixelCount += pixelGroup.getPixelCount();
+			if (pixelCount > 1 &&
+				globalPixelCount % pixelCount == 0 &&
+				pixelCount >= biggestGroupPixelCount)
+			{
+				return pixelCount;
+			}
+		}
+		// If still no width found return 0
+		return 0;
+	}
+}
+
+sf::Image2 CelImageContainer::decode(const gsl::span<const uint8_t> frameData,
+	unsigned width, unsigned height, CelFrameType frameType, const PaletteArray* palette)
+{
+	uint32_t frameDataStartOffset = 0;
+	sf::Image2 img;
+
+	// If the frame size wasnt provided then it needs to be calculated
+	if (width == 0)
+	{
+		// Checking the presence of the {CEL FRAME HEADER}
+		if (frameData[0] == 0x0A && frameData[1] == 0x00)
+		{
+			frameDataStartOffset += 0x0A;
+			// If header is present, try to compute frame width from frame header
+			width = computeWidthFromHeader(frameData);
+		}
+		// If width could not be calculated with frame header,
+		// attempt to calculate it from the frame data (by identifying pixel groups line wraps)
+		if (width == 0)
+		{
+			width = computeWidthFromData(frameData);
+		}
+		// if CEL width was not found, return false
+		if (width == 0)
+		{
+			return img;
 		}
 	}
-}
 
-void decodeGreaterThan(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
-{
-	decodeGreaterLessThan(frame, pal, rawImage, false);
-}
+	// READ {CEL FRAME DATA}
+	// if it is a CEL level frame
+	if (frameType != CelFrameType::Regular)
+	{
+		img.create(width, height, sf::Color::Transparent);
 
-void decodeLessThan(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
-{
-	decodeGreaterLessThan(frame, pal, rawImage, true);
-}
+		// 0x400 frame
+		if (frameType == CelFrameType::LevelType0)
+		{
+			for (int j = 0; j < 32; j++)
+			{
+				for (int i = 0; i < 32; i++)
+				{
+					img.setPixel(i, 31 - j,
+						CelBaseImageContainer::getColor(frameData[j * 32 + i], palette));
+				}
+			}
+		}
+		// 0x220 or 0x320 frame
+		else
+		{
+			const bool* dataPattern = nullptr;
+			const uint16_t* dataPatternZeroedBytes = nullptr;
 
-size_t decodeRaw32(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
-{
-	for (int i = 0; i < frame.size(); i++)
-	{
-		imagePushBack(frame[i], pal, rawImage);
-	}
-	return 32;
-}
+			switch (frameType)
+			{
+			case CelFrameType::LevelType2:
+				dataPattern = CelLevelFrameType2;
+				dataPatternZeroedBytes = CelLevelFrameType2ZeroedBytes;
+				break;
+			case CelFrameType::LevelType3:
+				dataPattern = CelLevelFrameType3;
+				dataPatternZeroedBytes = CelLevelFrameType3ZeroedBytes;
+				break;
+			case CelFrameType::LevelType4:
+				dataPattern = CelLevelFrameType4;
+				dataPatternZeroedBytes = CelLevelFrameType4ZeroedBytes;
+				break;
+			case CelFrameType::LevelType5:
+				dataPattern = CelLevelFrameType5;
+				dataPatternZeroedBytes = CelLevelFrameType5ZeroedBytes;
+				break;
+			default:
+				return img;
+			}
 
-size_t decodeTileFrame(const std::vector<uint8_t>& frame, const PaletteArray* pal,
-	std::vector<sf::Color>& rawImage)
-{
-	if (frame.size() == 1024 /*&& frame_num != 2593*/)
-	{
-		// It's a fully opaque raw frame, width 32, from a level tileset
-		decodeRaw32(frame, pal, rawImage);
+			// Going through the data structure
+			int offset = 0;
+			int zeroedBytesIndex = 0;
+			unsigned currWidth = 0;
+			unsigned currHeight = 31;
+			for (size_t i = 0; i < 512; i++)
+			{
+				// if dataPattern[i] is true, then read and add 2 pixels to the line
+				if (dataPattern[i])
+				{
+					auto readByte = frameData[offset];
+					auto secondReadByte = frameData[offset + 1];
+
+					if (readByte == 0x00 && secondReadByte == 0x00
+						&& offset == dataPatternZeroedBytes[zeroedBytesIndex])
+					{
+						// Skip the 0x00 0x00 bytes
+						offset += 2;
+						// and read the next 2 bytes
+						readByte = frameData[offset];
+						secondReadByte = frameData[offset + 1];
+
+						// move forward in the zeroed bytes structure
+						zeroedBytesIndex += 2;
+					}
+
+					img.setPixel(currWidth++, currHeight,
+						CelBaseImageContainer::getColor(readByte, palette));
+					img.setPixel(currWidth++, currHeight,
+						CelBaseImageContainer::getColor(secondReadByte, palette));
+
+					offset += 2;
+				}
+				// else add 2 transparent pixels to the line
+				else
+				{
+					//img.setPixel(currWidth++, currHeight, sf::Color::Transparent);
+					//img.setPixel(currWidth++, currHeight, sf::Color::Transparent);
+					currWidth += 2;
+				}
+				// If it is the end of the pixel line, add the line to the frame
+				if (currWidth == 32)
+				{
+					currHeight--;
+					currWidth = 0;
+				}
+			}
+		}
+		return img;
 	}
-	else if (isLessThan(frame))
-	{
-		decodeLessThan(frame, pal, rawImage);
-	}
-	else if (isGreaterThan(frame))
-	{
-		decodeGreaterThan(frame, pal, rawImage);
-	}
+	// if it's a regular CEL frame
 	else
 	{
-		// pass zero as frameNum because it's only used for width calculation
-		// and width of tile frames is always 32
-		normalDecode(frame, 0, pal, rawImage, true);
-	}
-	return 32;
-}
-//end tile
-//begin CelImageContainer
-CelImageContainer::CelImageContainer(const char* filename, bool isCl2_, bool isTileCel_)
-	: isCl2(isCl2_), isTileCel(isTileCel_)
-{
-	sf::PhysFSStream file(filename);
+		std::vector<sf::Color> pixels;
+		pixels.reserve(width * width);
+		unsigned currWidth = 0;
+		for (ptrdiff_t i = frameDataStartOffset; i < frameData.size(); i++)
+		{
+			auto readByte = frameData[i];
 
-	if (file.hasError() == true)
+			// Transparent pixels group
+			if (readByte > 0x7F)
+			{
+				// A pixel line can't exceed the image width
+				if ((currWidth + (256u - readByte)) > width)
+				{
+					return img;
+				}
+				auto rangeEnd = (256u - readByte);
+				currWidth += rangeEnd;
+				for (size_t j = 0; j < rangeEnd; j++)
+				{
+					pixels.push_back(sf::Color::Transparent);
+				}
+			}
+			// Palette indices group
+			else
+			{
+				// A pixel line can't exceed the image width
+				if ((currWidth + readByte) > width)
+				{
+					return img;
+				}
+				currWidth += readByte;
+				for (size_t j = 0; j < readByte; j++)
+				{
+					i++;
+					pixels.push_back(CelBaseImageContainer::getColor(frameData[i], palette));
+				}
+			}
+			if (currWidth == width)
+			{
+				currWidth = 0;
+			}
+		}
+		if (height == 0)
+		{
+			height = pixels.size() / width;
+		}
+
+		img.create(width, height, (const sf::Uint8*)pixels.data());
+		img.flipVertically();
+		return img;
+	}
+}
+
+CelImageContainer::CelImageContainer(const char* fileName)
+{
+	type = CelType::V1Regular;
+
+	uint32_t firstDword = 0;
+	uint32_t fileSizeDword = 0;
+	uint32_t lastCelOffset = 0;
+	uint32_t lastCelFrameCount = 0;
+	uint32_t lastCelSize = 0;
+
+	uint32_t celOffset = 0;
+	uint32_t celFrameCount = 0;
+	uint32_t celFrameStartOffset = 0;
+	uint32_t celFrameEndOffset = 0;
+	uint32_t celFrameSize = 0;
+
+	{
+		sf::PhysFSStream file(fileName);
+		// Opening CL2 file with a QBuffer to load it in RAM
+		if (file.hasError() == true)
+		{
+			return;
+		}
+		fileData.resize((size_t)file.getSize());
+		file.read(fileData.data(), file.getSize());
+	}
+
+	LittleEndianStreamReader fileStream(fileData);
+
+	// CEL HEADER CHECKS
+
+	// Read first DWORD
+	fileStream.read(firstDword);
+
+	// Trying to find file size in CEL header
+	if (fileData.size() < (4 + firstDword * 4 + 4))
 	{
 		return;
 	}
 
-	uint32_t first;
-	file.read(&first, 4);
+	fileStream.seek(firstDword * 4 + 4);
+	fileStream.read(fileSizeDword);
 
-	// If the first uint16_t in the file is 32,
-	// then it is a cel archive, containing 8 cels,
-	// each of which is a collection of frames 
-	// representing an animation of an object at 
-	// one of the eight possible rotations.
-	// This is a side effect of cel archives containing
-	// a header like the normal cel header pointing to
-	// each of the cels it contains, and there always being
-	// 8 cels in each cel archive, so 8*4=32, the start
-	// of the first cel
-	if (first == 32)
+	// If the dword is not equal to the file size then
+	// check if it's a CEL compilation
+	if (fileData.size() != fileSizeDword)
 	{
-		if (isCl2 == true)
+		// Read offset of the last CEL of the CEL compilation
+		fileStream.seek(firstDword - 4);
+		fileStream.read(lastCelOffset);
+
+		// Go to last CEL of the CEL compilation
+		if (fileData.size() < (lastCelOffset + 8))
 		{
-			animLength = readCl2ArchiveFrames(file);
+			return;
+		}
+
+		fileStream.seek(lastCelOffset);
+
+		// Read last CEL header
+		fileStream.read(lastCelFrameCount);
+
+		// Read the last CEL size
+		if (fileData.size() < (lastCelOffset + 4 + lastCelFrameCount * 4 + 4))
+		{
+			return;
+		}
+
+		fileStream.seek(lastCelOffset + 4 + lastCelFrameCount * 4);
+		fileStream.read(lastCelSize);
+
+		// If the last CEL size plus the last CEL offset is equal to
+		// the file size then it's a CEL compilation
+		if (fileData.size() == (lastCelOffset + lastCelSize))
+		{
+			type = CelType::V1Compilation;
+			groupCount = firstDword / 4;
 		}
 		else
 		{
-			file.seek(32);
-			for (size_t i = 0; i < 8; i++)
+			return;
+		}
+	}
+	else
+	{
+		type = CelType::V1Regular;
+		groupCount = 1;
+	}
+
+	// CEL FRAMES OFFSETS CALCULATION
+
+	if (type == CelType::V1Compilation)
+	{
+		// Going through all CELs
+		for (size_t i = 0; i * 4 < firstDword; i++)
+		{
+			fileStream.seek(i * 4);
+			fileStream.read(celOffset);
+
+			fileStream.seek(celOffset);
+			fileStream.read(celFrameCount);
+
+			groupFrameIndexes.push_back(
+				std::make_pair((uint16_t)frameOffsets.size(),
+				(uint16_t)(frameOffsets.size() + celFrameCount - 1)));
+
+			// Going through all frames of the CEL
+			for (size_t j = 1; j <= celFrameCount; j++)
 			{
-				animLength = readNormalFrames(file);
+				celFrameStartOffset = 0;
+				celFrameEndOffset = 0;
+
+				fileStream.seek(celOffset + j * 4);
+				fileStream.read(celFrameStartOffset);
+				fileStream.read(celFrameEndOffset);
+
+				frameOffsets.push_back(
+					std::make_pair(celOffset + celFrameStartOffset,
+						celOffset + celFrameEndOffset));
 			}
 		}
 	}
 	else
 	{
-		file.seek(0);
-		animLength = readNormalFrames(file);
+		uint32_t level0x400FrameCount = 0;
+		uint32_t level0x320FrameCount = 0;
+		uint32_t level0x220FrameCount = 0;
+
+		// Going through all frames of the CEL
+		for (size_t i = 1; i <= firstDword; i++)
+		{
+			celFrameStartOffset = 0;
+			celFrameEndOffset = 0;
+
+			fileStream.seek(i * 4);
+			fileStream.read(celFrameStartOffset);
+			fileStream.read(celFrameEndOffset);
+
+			frameOffsets.push_back(std::make_pair(celFrameStartOffset, celFrameEndOffset));
+
+			// Level CEL Check
+			celFrameSize = celFrameEndOffset - celFrameStartOffset;
+			if (celFrameSize == 0x400)
+			{
+				level0x400FrameCount++;
+			}
+			else if (celFrameSize == 0x320)
+			{
+				level0x320FrameCount++;
+			}
+			else if (celFrameSize == 0x220)
+			{
+				level0x220FrameCount++;
+			}
+		}
+		// If there are more than 512 frames of 0x400, 0x320 and 0x220 size,
+		// then it's a level frame.
+		if (level0x400FrameCount + level0x320FrameCount + level0x220FrameCount > 512)
+		{
+			type = CelType::V1Level;
+		}
 	}
 }
 
 sf::Image2 CelImageContainer::get(size_t index, const PaletteArray* palette) const
 {
-	std::vector<sf::Color> rawImage;
-	size_t width = getFrame(mFrames[index], palette, index, rawImage);
-	size_t height;
-	if (defaultWidth > 0)
+	if (index >= frameOffsets.size())
 	{
-		width = defaultWidth;
-		height = defaultHeight;
+		return {};
 	}
+
+	auto frameSize = frameOffsets[index].second - frameOffsets[index].first;
+	gsl::span<const uint8_t> frameData(&fileData[frameOffsets[index].first], frameSize);
+
+	// If it's not a level CEL
+	if (type != CelType::V1Level)
+	{
+		return decode(frameData, 0, 0, CelFrameType::Regular, palette);
+	}
+	// If it's a level CEL
 	else
 	{
-		height = rawImage.size() / width;
-	}
-
-	sf::Image2 img;
-	img.create(width, height, sf::Color::Transparent);
-
-	for (size_t y = 0; y < height; y++)
-	{
-		for (size_t x = 0; x < width; x++)
+		auto frameType = CelFrameType::Regular;
+		switch (frameSize)
 		{
-			auto color = rawImage[x + (height - 1 - y) * width];
-			img.setPixel(x, y, color);
+		case 0x400:
+			frameType = getLevelFrame400Type(frameData);
+			break;
+		case 0x320:
+			frameType = getLevelFrame320Type(frameData);
+			break;
+		case 0x220:
+			frameType = getLevelFrame220Type(frameData);
+			break;
+		default:
+			break;
 		}
+		return decode(frameData, 32, 32, frameType, palette);
 	}
-	return img;
 }
-
-size_t CelImageContainer::getFrame(const std::vector<uint8_t>& frame, const PaletteArray* palette,
-	size_t frameNum, std::vector<sf::Color>& rawImage) const
-{
-	if (isCl2 == true)
-	{
-		return cl2Decode(frame, palette, rawImage);
-	}
-	if (isTileCel == true)
-	{
-		return decodeTileFrame(frame, palette, rawImage);
-	}
-	return normalDecode(frame, frameNum, palette, rawImage, false);
-}
-
-size_t CelImageContainer::readCl2ArchiveFrames(sf::InputStream& file)
-{
-	file.seek(0);
-
-	std::vector<uint32_t> headerOffsets(8);
-	file.read(&headerOffsets[0], 32);
-
-	uint32_t numFrames = 0;
-
-	for (size_t i = 0; i < 8; i++)
-	{
-		file.seek(headerOffsets[i]);
-		file.read(&numFrames, 4);
-
-		std::vector<uint32_t> frameOffsets(numFrames + 1);
-
-		for (size_t j = 0; j <= numFrames; j++)
-		{
-			file.read(&frameOffsets[j], 4);
-		}
-
-		file.seek(headerOffsets[i] + frameOffsets[0]);
-
-		for (size_t j = 0; j < numFrames; j++)
-		{
-			mFrames.push_back(std::vector<uint8_t>(frameOffsets[j + 1] - frameOffsets[j]));
-			file.read(&mFrames[mFrames.size() - 1][0], frameOffsets[j + 1] - frameOffsets[j]);
-		}
-	}
-	return numFrames;
-}
-
-size_t CelImageContainer::readNormalFrames(sf::InputStream& file)
-{
-	uint32_t numFrames;
-
-	file.read(&numFrames, 4);
-
-	std::vector<uint32_t> frameOffsets(numFrames + 1);
-
-	for (size_t i = 0; i < numFrames; i++)
-	{
-		file.read(&frameOffsets[i], 4);
-	}
-
-	file.read(&frameOffsets[numFrames], 4);
-
-	for (size_t i = 0; i < numFrames; i++)
-	{
-		mFrames.push_back(std::vector<uint8_t>(frameOffsets[i + 1] - frameOffsets[i]));
-		file.read(&mFrames.back()[0], frameOffsets[i + 1] - frameOffsets[i]);
-	}
-	return numFrames;
-}
-//end CelImageContainer

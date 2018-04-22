@@ -40,7 +40,8 @@ void Level::updateLevelObjectPositions()
 		const auto& mapPosition = obj->MapPosition();
 		if (map.isMapCoordValid(mapPosition) == true)
 		{
-			map[mapPosition].addBack(obj.get());
+			obj->MapPosition(*this, mapPosition);
+			obj->updateDrawPosition(*this);
 		}
 	}
 }
@@ -255,7 +256,15 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		{
 			for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
 			{
-				auto index = map[x][y].TileIndexBack();
+				int16_t index;
+				if (map.isMapCoordValid(x, y) == false)
+				{
+					index = map.getOutOfBoundsTileIndexBack(x, y);
+				}
+				else
+				{
+					index = map[x][y].TileIndexBack();
+				}
 				if (index < 0)
 				{
 					continue;
@@ -305,31 +314,39 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
 		{
-			auto coords = map.getCoord(MapCoord(x, y));
-			bool drewObj = false;
-
-			for (const auto& drawObj : map[x][y])
+			int16_t index;
+			if (map.isMapCoordValid(x, y) == false)
 			{
-				if (drawObj != nullptr)
-				{
-					target.draw(*drawObj, states);
-					drewObj = true;
-				}
+				index = map.getOutOfBoundsTileIndexFront(x, y);
 			}
-			if (drewObj == true &&
-				palette != nullptr)
+			else
 			{
-				Shaders::Palette.setUniform("palette", *palette);
+				index = map[x][y].TileIndexFront();
+				bool drewObj = false;
+
+				for (const auto& drawObj : map[x][y])
+				{
+					if (drawObj != nullptr)
+					{
+						target.draw(*drawObj, states);
+						drewObj = true;
+					}
+				}
+				if (drewObj == true &&
+					palette != nullptr)
+				{
+					Shaders::Palette.setUniform("palette", *palette);
+				}
 			}
 			if (tiles != nullptr)
 			{
-				size_t index = map[x][y].TileIndexFront();
 				if (index < 0)
 				{
 					continue;
 				}
 				if (tiles->get((size_t)index, ti) == true)
 				{
+					auto coords = map.getCoord(MapCoord(x, y));
 					coords.y -= (float)(ti.textureRect.height - tileHeight);
 					coords += ti.offset;
 					tileRect.left = coords.x;
@@ -376,24 +393,10 @@ void Level::updateVisibleArea()
 	auto mapBL = map.getTile(BL);
 	auto mapBR = map.getTile(BR);
 
-	if (mapTL.x > 0)
-	{
-		visibleStart.x = std::max((Coord)0, mapTL.x - 2);
-	}
-	else
-	{
-		visibleStart.x = 0;
-	}
-	visibleEnd.x = std::clamp(mapBR.x + 12, 0, map.Width());
-	if (mapTR.y > 0)
-	{
-		visibleStart.y = std::max((Coord)0, mapTR.y - 2);
-	}
-	else
-	{
-		visibleStart.y = 0;
-	}
-	visibleEnd.y = std::clamp(mapBL.y + 12, 0, map.Height());
+	visibleStart.x = mapTL.x - 2;
+	visibleEnd.x = mapBR.x + 12;
+	visibleStart.y = mapTR.y - 2;
+	visibleEnd.y = mapBL.y + 12;
 }
 
 void Level::updateMouse(const Game& game)
@@ -583,8 +586,16 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
+	case str2int16("id"):
+		var = Variable(id);
+		return true;
+		break;
 	case str2int16("name"):
 		var = Variable(name);
+		return true;
+		break;
+	case str2int16("path"):
+		var = Variable(path);
 		return true;
 		break;
 	case str2int16("player"):
@@ -1038,4 +1049,19 @@ uint32_t Level::getLevelFromExperience(uint32_t experience) const
 		}
 	}
 	return experiencePoints.size();
+}
+
+const char* Level::getPropertyName(uint16_t hash16) const
+{
+	const auto elem = propertyNames.find(hash16);
+	if (elem != propertyNames.cend())
+	{
+		return elem->second.c_str();
+	}
+	return "";
+}
+
+void Level::setPropertyName(uint16_t hash16, const std::string& prop)
+{
+	propertyNames[hash16] = prop;
 }

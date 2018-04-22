@@ -14,6 +14,8 @@ private:
 
 public:
 	LevelCell() : tileIndexes{ -1, -1, 0 } {}
+	LevelCell(int16_t back, int16_t front, int16_t sol)
+		: tileIndexes{ back, front, sol } {}
 
 	using iterator = std::vector<LevelObject*>::iterator;
 	using const_iterator = std::vector<LevelObject*>::const_iterator;

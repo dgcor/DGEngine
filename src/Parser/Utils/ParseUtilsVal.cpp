@@ -223,6 +223,10 @@ namespace Parser
 			}
 			catch (std::exception ex) {}
 		}
+		else if (elem.IsUint() == true)
+		{
+			return SFMLUtils::rgbaToColor(elem.GetUint());
+		}
 		return val;
 	}
 

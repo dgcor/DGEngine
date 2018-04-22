@@ -3,6 +3,7 @@
 #include "Actions/Action.h"
 #include "BaseLevelObject.h"
 #include <memory>
+#include "Save/SaveSimpleLevelObject.h"
 
 class SimpleLevelObject : public LevelObject
 {
@@ -13,6 +14,9 @@ private:
 
 	std::string id;
 	std::string name;
+
+	friend void Save::serialize(void* serializeObj, const Level& level,
+		const SimpleLevelObject& obj, bool skipDefaults);
 
 public:
 	SimpleLevelObject() noexcept {}
@@ -46,6 +50,11 @@ public:
 
 	virtual bool Hoverable() const noexcept { return base.enableHover; }
 	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
+
+	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const
+	{
+		Save::serialize(serializeObj, level, *this, skipDefaults);
+	}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{

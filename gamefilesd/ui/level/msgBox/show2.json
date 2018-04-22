@@ -48,6 +48,7 @@
     "horizontalSpaceOffset": 1,
     "text": "{1}"
   },
+  "action": { "name": "game.draw" },
   "event": {
     "id": "closeMsgBox",
     "action": { "name": "resource.pop", "id": "msgBox" },

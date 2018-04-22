@@ -1128,6 +1128,17 @@ unsigned Player::countFreeSlots(const ItemClass& itemClass) const
 	return count;
 }
 
+std::unique_ptr<Item> Player::SelectedItem(std::unique_ptr<Item> item) noexcept
+{
+	auto old = std::move(selectedItem);
+	selectedItem = std::move(item);
+	if (selectedItem != nullptr)
+	{
+		selectedItem->MapPosition({ -1, -1 });
+	}
+	return old;
+}
+
 bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item)
 {
 	std::unique_ptr<Item> oldItem;

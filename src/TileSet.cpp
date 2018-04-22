@@ -1,24 +1,45 @@
 #include "TileSet.h"
 #include "PhysFSStream.h"
+#include "StreamReader.h"
 
-TileSet::TileSet(const std::string& filename)
+int16_t TileBlock::getTileIndex(int32_t xCoord, int32_t yCoord) const noexcept
 {
-	sf::PhysFSStream file(filename);
+	if (xCoord % 2)
+	{
+		if (yCoord % 2)
+			return std::get<3>(*this);
+		else
+			return std::get<1>(*this);
+	}
+	else
+	{
+		if (yCoord % 2)
+			return std::get<2>(*this);
+		else
+			return std::get<0>(*this);
+	}
+}
 
+TileSet::TileSet(const std::string& fileName)
+{
+	sf::PhysFSStream file(fileName);
 	if (file.hasError() == true)
 	{
 		return;
 	}
+	std::vector<uint8_t> fileData((size_t)file.getSize());
+	file.read(fileData.data(), file.getSize());
 
-	size_t numBlocks = (size_t)file.getSize() / (4 * 2);
+	LittleEndianStreamReader fileStream(fileData);
 
-	file.seek(0);
+	size_t numTiles = fileData.size() / (4 * 2);
 
-	TilBlock tmp(4);
-
-	for (size_t i = 0; i < numBlocks; i++)
+	tiles.resize(numTiles);
+	for (auto& tile : tiles)
 	{
-		file.read(&tmp[0], 8);
-		blocks.push_back(tmp);
+		fileStream.read(std::get<0>(tile));
+		fileStream.read(std::get<1>(tile));
+		fileStream.read(std::get<2>(tile));
+		fileStream.read(std::get<3>(tile));
 	}
 }

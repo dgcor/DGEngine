@@ -1,0 +1,7 @@
+{
+  "event": {
+    "id": "colorCycle",
+    "action": { "name": "palette.shiftLeft", "id": "colorCycle", "shift": 1, "range": [1, 32] },
+    "time": 60
+  }
+}

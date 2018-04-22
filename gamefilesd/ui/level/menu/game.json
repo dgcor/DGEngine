@@ -15,6 +15,12 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 2,
+      "onClick": [
+        "menu.saveAndCloseAction",
+        { "name": "load", "file": ["ui/level/msgBox/show.json", "saving..."] },
+        { "name": "load", "file": ["ui/singlePlayer/save.json", "|currentLevel|currentPlayer.name|"] },
+        { "name": "loadJson", "json": { "action": "closeMsgBox" } }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -51,13 +57,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 2,
-      "onClick": [
-        { "name": "resource.popAll" },
-        { "name": "game.setProperty", "property": "musicVolume", "value": 100 },
-        { "name": "game.setProperty", "property": "soundVolume", "value": 100 },
-        { "name": "load", "file": "ui/mainMenu.json" },
-        { "name": "load", "file": "ui/singlePlayer/main.json" }
-      ],
+      "onClick": { "name": "load", "file": "ui/level/newGame.json" },
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"
@@ -74,6 +74,10 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 2,
+      "onClick": [
+        "menu.saveAndCloseAction",
+        { "name": "load", "file": ["level/load2.json", "|currentLevel|path|"] }
+      ],
       "onFocus": [
         "anchorLeftPentagram",
         "anchorRightPentagram"

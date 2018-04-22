@@ -4,6 +4,7 @@
 #include "BaseLevelObject.h"
 #include "ItemCollection.h"
 #include "PlayerClass.h"
+#include "Save/SavePlayer.h"
 #include <SFML/Audio/Sound.hpp>
 
 class Player : public LevelObject
@@ -130,6 +131,9 @@ private:
 
 	void playSound(int16_t soundIdx);
 
+	friend void Save::serialize(void* serializeObj, const Level& level,
+		const Player& player, bool skipDefaults);
+
 public:
 	Player(const PlayerClass* class__, const Level& level);
 
@@ -161,6 +165,11 @@ public:
 
 	virtual bool Hoverable() const noexcept { return base.enableHover; }
 	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
+
+	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const
+	{
+		Save::serialize(serializeObj, level, *this, skipDefaults);
+	}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -281,12 +290,7 @@ public:
 	void resetAnimationTime() noexcept { base.animation.currentTime = speed.animation; }
 
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
-	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept
-	{
-		auto old = std::move(selectedItem);
-		selectedItem = std::move(item);
-		return old;
-	}
+	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;
 
 	ItemCollection& getInventory(PlayerInventory inv) noexcept { return inventories[(size_t)inv]; }
 	const ItemCollection& getInventory(PlayerInventory inv) const noexcept { return inventories[(size_t)inv]; }

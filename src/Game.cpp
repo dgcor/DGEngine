@@ -397,15 +397,14 @@ bool Game::drawLoadingScreen()
 	return true;
 }
 
-void Game::drawAndUpdate()
+void Game::update()
 {
 	for (auto& res : reverse(resourceManager))
 	{
 		if (((int)res.ignore & (int)IgnoreResource::Update) == 0)
 		{
-			for (auto it2 = res.drawables.rbegin(); it2 != res.drawables.rend(); ++it2)
+			for (auto& obj : reverse(res.drawables))
 			{
-				auto& obj = *(it2);
 				if (paused == false && res.ignore != IgnoreResource::Update)
 				{
 					obj.second->update(*this);
@@ -417,6 +416,10 @@ void Game::drawAndUpdate()
 			break;
 		}
 	}
+}
+
+void Game::drawUI()
+{
 	for (auto& res : resourceManager)
 	{
 		if (((int)res.ignore & (int)IgnoreResource::Draw) == 0)
@@ -431,6 +434,12 @@ void Game::drawAndUpdate()
 			break;
 		}
 	}
+}
+
+void Game::drawAndUpdate()
+{
+	update();
+	drawUI();
 }
 
 void Game::drawCursor()
@@ -457,6 +466,14 @@ void Game::drawWindow()
 	windowTex.display();
 	window.draw(windowSprite);
 	window.display();
+}
+
+void Game::draw()
+{
+	drawUI();
+	drawCursor();
+	drawFadeEffect();
+	drawWindow();
 }
 
 void Game::SmoothScreen(bool smooth_)

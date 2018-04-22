@@ -11,6 +11,7 @@ class Palette
 {
 private:
 	void loadTexture();
+	void updateTexture();
 
 public:
 	sf::Texture texture;
@@ -22,4 +23,7 @@ public:
 	Palette(const Palette& pal, const std::vector<sf::Uint8> trn);
 
 	const sf::Color& operator[](size_t index) const noexcept { return palette[index]; }
+
+	bool shiftLeft(size_t shift, size_t startIdx, size_t stopIdx);
+	bool shiftRight(size_t shift, size_t startIdx, size_t stopIdx);
 };

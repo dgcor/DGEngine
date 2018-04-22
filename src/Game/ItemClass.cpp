@@ -43,6 +43,22 @@ void ItemClass::setDefault(const char* prop, LevelObjValue val)
 	defaults.push_back(std::make_pair(propertyHash, val));
 }
 
+bool ItemClass::isDefault(const LevelObjProperty& prop) const noexcept
+{
+	for (const auto& elem : defaults)
+	{
+		if (elem.first == prop.first)
+		{
+			if (elem.second == prop.second)
+			{
+				return true;
+			}
+			break;
+		}
+	}
+	return false;
+}
+
 LevelObjValue ItemClass::getDefaultByHash(uint16_t propHash) const noexcept
 {
 	LevelObjValue value = 0;

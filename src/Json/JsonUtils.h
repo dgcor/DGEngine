@@ -4,9 +4,6 @@
 #include <functional>
 #include "JsonParser.h"
 #include "Queryable.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
 #include <string>
 #include "Variable.h"
 
@@ -56,11 +53,11 @@ namespace JsonUtils
 		writer.StartObject();
 		for (const auto& elem : container)
 		{
-			writer.String(elem.first.c_str());
+			writer.String(elem.first);
 			const Variable& var = elem.second;
 			if (std::holds_alternative<std::string>(var))
 			{
-				writer.String(std::get<std::string>(var).c_str());
+				writer.String(std::get<std::string>(var));
 			}
 			else if (std::holds_alternative<int64_t>(var))
 			{

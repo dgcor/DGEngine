@@ -71,7 +71,8 @@
   },
   "level": {
     "id": "level",
-    "name": "Town Center",
+    "path": "l1",
+    "name": "Dungeon",
     "texturePackBottom": "levelBack",
     "texturePackTop": "levelBack",
     "map": {

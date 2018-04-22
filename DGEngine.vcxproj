@@ -60,9 +60,15 @@
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
     <ClCompile Include="src\Game\Quest.cpp" />
+    <ClCompile Include="src\Game\Save\SaveItem.cpp" />
+    <ClCompile Include="src\Game\Save\SaveLevel.cpp" />
+    <ClCompile Include="src\Game\Save\SavePlayer.cpp" />
+    <ClCompile Include="src\Game\Save\SaveSimpleLevelObject.cpp" />
     <ClCompile Include="src\Game\SimpleLevelObject.cpp" />
     <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\ImageContainers\CelBaseImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\CelImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\Cl2ImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\SimpleImageContainer.cpp" />
     <ClCompile Include="src\ImageUtils.cpp" />
     <ClCompile Include="src\InputText.cpp" />
@@ -175,6 +181,7 @@
     <ClInclude Include="src\Actions\ActLoadingScreen.h" />
     <ClInclude Include="src\Actions\ActMenu.h" />
     <ClInclude Include="src\Actions\ActMovie.h" />
+    <ClInclude Include="src\Actions\ActPalette.h" />
     <ClInclude Include="src\Actions\ActPlayer.h" />
     <ClInclude Include="src\Actions\ActQuest.h" />
     <ClInclude Include="src\Actions\ActRandom.h" />
@@ -191,6 +198,13 @@
     <ClInclude Include="src\BaseAnimation.h" />
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
+    <ClInclude Include="src\endian\big_endian.hpp" />
+    <ClInclude Include="src\endian\helpers.hpp" />
+    <ClInclude Include="src\endian\is_big_endian.hpp" />
+    <ClInclude Include="src\endian\little_endian.hpp" />
+    <ClInclude Include="src\endian\stream.hpp" />
+    <ClInclude Include="src\endian\stream_reader.hpp" />
+    <ClInclude Include="src\endian\stream_writer.hpp" />
     <ClInclude Include="src\FadeInOut.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\Font.h" />
@@ -221,12 +235,18 @@
     <ClInclude Include="src\Game\Player.h" />
     <ClInclude Include="src\Game\PlayerClass.h" />
     <ClInclude Include="src\Game\Quest.h" />
+    <ClInclude Include="src\Game\Save\SaveItem.h" />
+    <ClInclude Include="src\Game\Save\SaveLevel.h" />
+    <ClInclude Include="src\Game\Save\SavePlayer.h" />
+    <ClInclude Include="src\Game\Save\SaveSimpleLevelObject.h" />
     <ClInclude Include="src\Game\SimpleLevelObject.h" />
     <ClInclude Include="src\Game\stlastar.h" />
     <ClInclude Include="src\IgnoreResource.h" />
     <ClInclude Include="src\Image.h" />
     <ClInclude Include="src\Image2.h" />
+    <ClInclude Include="src\ImageContainers\CelBaseImageContainer.h" />
     <ClInclude Include="src\ImageContainers\CelImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\Cl2ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\SimpleImageContainer.h" />
     <ClInclude Include="src\ImageUtils.h" />
@@ -318,6 +338,7 @@
     <ClInclude Include="src\Shaders.h" />
     <ClInclude Include="src\Sol.h" />
     <ClInclude Include="src\Sprite2.h" />
+    <ClInclude Include="src\StreamReader.h" />
     <ClInclude Include="src\StringButton.h" />
     <ClInclude Include="src\StringText.h" />
     <ClInclude Include="src\Text2.h" />
@@ -337,6 +358,17 @@
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\VarOrPredicate.h" />
     <ClInclude Include="src\View2.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\gsl\gsl" />
+    <None Include="src\gsl\gsl_algorithm" />
+    <None Include="src\gsl\gsl_assert" />
+    <None Include="src\gsl\gsl_byte" />
+    <None Include="src\gsl\gsl_util" />
+    <None Include="src\gsl\multi_span" />
+    <None Include="src\gsl\pointers" />
+    <None Include="src\gsl\span" />
+    <None Include="src\gsl\string_span" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B30255A6-E921-4847-9FB1-26842AB465A4}</ProjectGuid>

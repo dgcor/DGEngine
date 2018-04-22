@@ -8,7 +8,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	std::unique_ptr<Item> parseItemObj(Game& game,
-		const Level& level, const Value& elem)
+		Level& level, const Value& elem)
 	{
 		if (isValidString(elem, "class") == false)
 		{
@@ -32,7 +32,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						item->setInt(it->name.GetString(),
+						auto nameHash = str2int16(it->name.GetString());
+						level.setPropertyName(nameHash, it->name.GetString());
+						item->setIntByHash(nameHash,
 							getMinMaxIntVal<LevelObjValue>(it->value));
 					}
 				}

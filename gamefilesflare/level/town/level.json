@@ -290,6 +290,7 @@
   },
   "level": {
     "id": "level",
+    "path": "town",
     "name": "Town Center",
     "texturePackBottom": "levelBack",
     "texturePackTop": "levelBack",

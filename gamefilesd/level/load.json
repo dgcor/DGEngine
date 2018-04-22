@@ -5,7 +5,7 @@
       "name": "game.fadeOut",
       "action": [
         { "name": "resource.popAll", "id": "currentLevel" },
-        { "name": "load", "file": "loadingScreens/{1}.json" },
+        { "name": "load", "file": "loadingScreens/{4}.json" },
         { "name": "game.fadeIn",
           "action": [
             { "name": "level.pause", "pause": false },
@@ -13,13 +13,12 @@
             { "name": "resource.add", "id": "currentLevel" },
             { "name": "load", "file": "level/clearPlayers.json" },
             { "name": "level.clearObjects" },
-            { "name": "load", "file": "level/{2}/level.json" },
-            { "name": "loadingScreen.setProgress", "progress": 70 },
-            { "name": "load", "file": "level/{2}/sounds.json" },
+            { "name": "load", "file": "level/{1}/sounds.json" },
+            { "name": "loadingScreen.setProgress", "progress": 45 },
+            { "name": "load", "file": "level/{1}/level.json" },
             { "name": "loadingScreen.setProgress", "progress": 80 },
-            { "name": "load", "file": "level/{2}/players.json" },
-            { "name": "load", "file": "level/{2}/music.json" },
-            { "name": "load", "file": ["level/afterLevelLoad.json", "{2}", "{3}", "{4}"] },
+            { "name": "load", "file": "level/{1}/music.json" },
+            { "name": "load", "file": ["level/afterLevelLoad.json", "{1}", "{2}", "{3}"] },
             { "name": "loadingScreen.setProgress", "progress": 100 },
             "clearPanelText"
           ]

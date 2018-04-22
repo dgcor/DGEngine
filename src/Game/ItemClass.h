@@ -18,6 +18,7 @@ private:
 	std::pair<size_t, size_t> dropTextureIndexRange;
 	size_t inventoryIdx;
 
+	std::string id;
 	std::string name;
 	std::string shortName;
 	std::string type;
@@ -74,6 +75,7 @@ public:
 
 	const std::vector<LevelObjProperty>& Defaults() const noexcept { return defaults; }
 	void setDefault(const char* prop, LevelObjValue val);
+	bool isDefault(const LevelObjProperty& prop) const noexcept;
 
 	LevelObjValue getDefaultByHash(uint16_t propHash) const noexcept;
 	LevelObjValue getDefault(const char* prop) const noexcept;
@@ -89,6 +91,7 @@ public:
 		return getDefault(prop.c_str(), value);
 	}
 
+	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return shortName; }
 	const std::string& Type() const noexcept { return type; }
@@ -100,6 +103,7 @@ public:
 	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
 	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
 
+	void Id(const std::string id_) { id = id_; }
 	void Name(const std::string name_) { name = name_; }
 	void ShortName(const std::string name_) { shortName = name_; }
 	void Type(const std::string type_)

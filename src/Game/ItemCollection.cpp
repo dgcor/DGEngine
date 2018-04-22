@@ -142,6 +142,10 @@ bool ItemCollection::set(const ItemXY& position,
 bool ItemCollection::setAndDontEnforceItemSize(size_t idx,
 	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
+	if (item != nullptr)
+	{
+		item->MapPosition({ -1, -1 });
+	}
 	oldItem = std::move(items[idx].first);
 	items[idx].first = std::move(item);
 	items[idx].second = -1;
@@ -232,6 +236,10 @@ bool ItemCollection::setAndEnforceItemSize(const ItemXY& position,
 			{
 				items[idx].second = newIdx;
 				continue;
+			}
+			if (item != nullptr)
+			{
+				item->MapPosition({ -1, -1 });
 			}
 			items[idx].first = std::move(item);
 			items[idx].second = -1;

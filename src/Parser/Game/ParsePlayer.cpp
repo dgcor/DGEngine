@@ -9,7 +9,7 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parsePlayerItem(Game& game, const Level& level,
+	void parsePlayerItem(Game& game, Level& level,
 		const ItemCollection& inventory, Player& player, size_t invIdx, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
@@ -42,7 +42,7 @@ namespace Parser
 		player.setItem(invIdx, itemIdx, item);
 	}
 
-	void parsePlayerInventory(Game& game, const Level& level,
+	void parsePlayerInventory(Game& game, Level& level,
 		Player& player, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
@@ -197,7 +197,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						player->setNumber(it->name.GetString(),
+						auto nameHash = str2int16(it->name.GetString());
+						level->setPropertyName(nameHash, it->name.GetString());
+						player->setNumberByHash(nameHash,
 							getMinMaxNumber32Val(it->value), level);
 					}
 				}

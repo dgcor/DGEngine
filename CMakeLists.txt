@@ -97,6 +97,7 @@ set(SOURCE_FILES
     src/Sol.cpp
     src/Sol.h
     src/Sprite2.h
+    src/StreamReader.h
     src/StringButton.cpp
     src/StringButton.h
     src/StringText.cpp
@@ -135,6 +136,7 @@ set(SOURCE_FILES
     src/Actions/ActLoadingScreen.h
     src/Actions/ActMenu.h
     src/Actions/ActMovie.h
+    src/Actions/ActPalette.h
     src/Actions/ActPlayer.h
     src/Actions/ActQuest.h
     src/Actions/ActRandom.h
@@ -143,6 +145,13 @@ set(SOURCE_FILES
     src/Actions/ActText.h
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
+    src/endian/big_endian.hpp
+    src/endian/helpers.hpp
+    src/endian/is_big_endian.hpp
+    src/endian/little_endian.hpp
+    src/endian/stream.hpp
+    src/endian/stream_reader.hpp
+    src/endian/stream_writer.hpp
     src/Game/BaseClass.cpp
     src/Game/BaseClass.h
     src/Game/BaseLevelObject.cpp
@@ -187,8 +196,29 @@ set(SOURCE_FILES
     src/Game/SimpleLevelObject.cpp
     src/Game/SimpleLevelObject.h
     src/Game/stlastar.h
+    src/Game/Save/SaveItem.cpp
+    src/Game/Save/SaveItem.h
+    src/Game/Save/SaveLevel.cpp
+    src/Game/Save/SaveLevel.h
+    src/Game/Save/SavePlayer.cpp
+    src/Game/Save/SavePlayer.h
+    src/Game/Save/SaveSimpleLevelObject.cpp
+    src/Game/Save/SaveSimpleLevelObject.h
+    src/gsl/gsl
+    src/gsl/gsl_algorithm
+    src/gsl/gsl_assert
+    src/gsl/gsl_byte
+    src/gsl/gsl_util
+    src/gsl/multi_span
+    src/gsl/pointers
+    src/gsl/span
+    src/gsl/string_span
+    src/ImageContainers/CelBaseImageContainer.cpp
+    src/ImageContainers/CelBaseImageContainer.h
     src/ImageContainers/CelImageContainer.cpp
     src/ImageContainers/CelImageContainer.h
+    src/ImageContainers/Cl2ImageContainer.cpp
+    src/ImageContainers/Cl2ImageContainer.h
     src/ImageContainers/ImageContainer.h
     src/ImageContainers/SimpleImageContainer.cpp
     src/ImageContainers/SimpleImageContainer.h

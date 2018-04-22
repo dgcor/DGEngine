@@ -23,6 +23,16 @@ public:
 	}
 };
 
+class ActGameDraw : public Action
+{
+public:
+	virtual bool execute(Game& game)
+	{
+		game.draw();
+		return true;
+	}
+};
+
 class ActGameEnableInput : public Action
 {
 private:

@@ -324,6 +324,7 @@
           "then": { "name": "variable.set", "key": "colorCycling", "val": true },
           "else": { "name": "variable.set", "key": "colorCycling", "val": false }
         },
+        { "name": "load", "file": "res/level/actions/colorCycling.json" },
         "updateColorCyclingLabel",
         "anchorLeftPentagram",
         "anchorRightPentagram"

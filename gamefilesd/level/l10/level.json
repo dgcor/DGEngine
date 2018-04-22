@@ -3,14 +3,20 @@
     {
       "id": "l3pwater",
       "file":"levels/l3data/l3pwater.pal"
+    },
+    {
+      "id": "colorCycle",
+      "fromId":"l3pwater"
     }
   ],
   "level": {
     "id": "level",
+    "path": "l10",
     "name": "Foul Water",
     "palette": "l3pwater",
     "file": "levels/l3data/l3.cel",
-    "map": { "file": "levels/l3data/foulwatr.dun" },
+    "outOfBoundsTileTop": 7,
+    "map": { "file": "levels/l3data/foulwatr.dun", "defaultTile": 6 },
     "til": "levels/l3data/l3.til",
     "min": "levels/l3data/l3.min",
     "minBlocks": 10,

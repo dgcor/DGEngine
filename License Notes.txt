@@ -1,9 +1,13 @@
 This project's license is zLib. It uses parts of another
-projact called freeablo (CEL decoding) licensed under GPLv3.
+project called freeablo (CEL decoding) licensed under GPLv3.
 The project's author has granted permission to use that code in
 this project under the zLib license.
 
 https://github.com/wheybags/freeablo
+
+The new CEL decoding code is based on Diablo 1 Graphics Tool by savagesteel.
+
+https://github.com/savagesteel/d1-graphics-tool
 
 the A* algorithm by Justin Heyes-Jones uses the MIT license.
 
@@ -13,6 +17,14 @@ A part of the BitmapFont class is based on a bitmap font implementation for SDL
 by Lazy Foo' Productions. The license is incompatible with GPL like licenses.
 
 http://lazyfoo.net
+
+endian uses the BSD license.
+
+https://github.com/steinwurf/endian
+
+GSL: Guideline Support Library uses the MIT license.
+
+https://github.com/Microsoft/GSL
 
 The Liberation Serif Regular font uses the SIL Open Font License.
 
@@ -53,10 +65,6 @@ https://github.com/SFML/SFML
 
 Other SFML code snippets were taken from the wiki
 and should have a permissive license.
-
-Mapbox Variant uses the BSD license.
-
-https://github.com/mapbox/variant/
 
 FindFFmpeg.cmake was taken from Dolphin that uses the GPL v2 license.
 https://github.com/dolphin-emu/dolphin

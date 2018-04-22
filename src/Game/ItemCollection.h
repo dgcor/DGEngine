@@ -65,7 +65,8 @@ public:
 		inline void begin(const ItemCollection* ref)
 		{
 			idx = 0;
-			if (ref->items[idx].first == nullptr)
+			if (ref->items.empty() == false &&
+				ref->items[idx].first == nullptr)
 			{
 				next(ref);
 			}

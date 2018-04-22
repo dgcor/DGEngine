@@ -1,26 +1,30 @@
 #include "Min.h"
 #include "PhysFSStream.h"
+#include "StreamReader.h"
 
-Min::Min(const std::string& filename, size_t minSize)
+Min::Min(const std::string& fileName, size_t minSize)
 {
-	sf::PhysFSStream file(filename);
-
+	sf::PhysFSStream file(fileName);
 	if (file.hasError() == true)
 	{
 		return;
 	}
+	std::vector<uint8_t> fileData((size_t)file.getSize());
+	file.read(fileData.data(), file.getSize());
 
-	auto numPillars = file.getSize() / (minSize * 2);
+	LittleEndianStreamReader fileStream(fileData);
 
-	file.seek(0);
+	auto numPillars = fileData.size() / (minSize * 2);
+	auto pillarHeight = minSize / 2;
 
-	std::vector<int16_t> temp(minSize);
-
-	for (size_t i = 0; i < numPillars; i++)
+	pillars.resize(numPillars);
+	for (auto& pillar : pillars)
 	{
-		if (file.read(&temp[0], minSize * 2) > 0)
+		pillar.resize(pillarHeight);
+		for (auto& tile : pillar)
 		{
-			pillars.push_back(std::vector<int16_t>(temp));
+			fileStream.read(tile.first);
+			fileStream.read(tile.second);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 #include "Palette.h"
+#include <algorithm>
 #include "PhysFSStream.h"
 #include "Shaders.h"
 
@@ -36,4 +37,39 @@ void Palette::loadTexture()
 	sf::Image img;
 	img.create(palette.size(), 1, (const sf::Uint8*)&palette);
 	texture.loadFromImage(img);
+}
+
+void Palette::updateTexture()
+{
+	texture.update((const sf::Uint8*)&palette, palette.size(), 1, 0, 0);
+}
+
+bool Palette::shiftLeft(size_t shift, size_t startIdx, size_t stopIdx)
+{
+	if (stopIdx <= palette.size() &&
+		startIdx < stopIdx)
+	{
+		auto range = stopIdx - startIdx;
+		std::rotate(palette.begin() + startIdx,
+			palette.begin() + startIdx + (shift % range),
+			palette.begin() + stopIdx);
+		updateTexture();
+		return true;
+	}
+	return false;
+}
+
+bool Palette::shiftRight(size_t shift, size_t startIdx, size_t stopIdx)
+{
+	if (stopIdx <= palette.size() &&
+		startIdx < stopIdx)
+	{
+		auto range = stopIdx - startIdx;
+		std::rotate(palette.rbegin() + (palette.size() - stopIdx),
+			palette.rbegin() + (palette.size() - stopIdx + (shift % range)),
+			palette.rbegin() + (palette.size() - startIdx));
+		updateTexture();
+		return true;
+	}
+	return false;
 }

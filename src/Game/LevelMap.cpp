@@ -1,12 +1,27 @@
 #include "LevelMap.h"
 #include "PathFinder.h"
 
-LevelMap::LevelMap(Coord width_, Coord height_) : mapSize(width_, height_)
+LevelMap::LevelMap(const std::string& tilFileName, const std::string& solFileName,
+	Coord width_, Coord height_, int16_t defaultTile)
+	: mapSize(width_, height_), tileSet(tilFileName), sol(solFileName)
 {
-	resize();
+	resize(defaultTile);
 }
 
-void LevelMap::resize()
+LevelMap::LevelMap(Coord width_, Coord height_, int16_t defaultTile)
+	: mapSize(width_, height_)
+{
+	resize(defaultTile);
+}
+
+void LevelMap::resize(Coord width_, Coord height_, int16_t defaultTile)
+{
+	mapSize.x = width_;
+	mapSize.y = height_;
+	resize(defaultTile);
+}
+
+void LevelMap::resize(int16_t defaultTile)
 {
 	if (mapSize.x == std::numeric_limits<Coord>::max())
 	{
@@ -16,14 +31,36 @@ void LevelMap::resize()
 	{
 		mapSize.y--;
 	}
-	cells.resize(mapSize.x * mapSize.y);
+	if (defaultTile >= 0)
+	{
+		if ((size_t)defaultTile < tileSet.size())
+		{
+			resize(tileSet[defaultTile]);
+		}
+		else
+		{
+			cells.resize(mapSize.x * mapSize.y, { defaultTile, -1, 0 });
+		}
+	}
+	else
+	{
+		cells.resize(mapSize.x * mapSize.y);
+	}
 }
 
-void LevelMap::resize(Coord width_, Coord height_)
+void LevelMap::resize(const TileBlock& defaultTile)
 {
-	mapSize.x = width_;
-	mapSize.y = height_;
-	resize();
+	cells.resize(mapSize.x * mapSize.y);
+	for (Coord j = 0; j < mapSize.y; j++)
+	{
+		for (Coord i = 0; i < mapSize.x; i++)
+		{
+			auto tileIdx = defaultTile.getTileIndex(i, j);
+			(*this)[i][j].TileIndex(0, tileIdx);
+			(*this)[i][j].TileIndex(1, tileIdx);
+			(*this)[i][j].TileIndex(2, sol.get(tileIdx));
+		}
+	}
 }
 
 void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
@@ -32,13 +69,13 @@ void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
 	blockHeight = tileHeight_ / 2;
 }
 
-void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, const Sol& sol)
+void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
 {
 	auto dWidth = dun.Width() * 2;
 	auto dHeight = dun.Height() * 2;
-	for (size_t i = 0; i < dWidth; i++)
+	for (size_t j = 0; j < dHeight; j++)
 	{
-		for (size_t j = 0; j < dHeight; j++)
+		for (size_t i = 0; i < dWidth; i++)
 		{
 			size_t xDunIndex = i;
 			size_t xTilIndex = 0;
@@ -58,24 +95,27 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 			}
 			yDunIndex /= 2;
 
-			size_t tilIndex;
+			int32_t dunIndex = dun[xDunIndex][yDunIndex];
+			if (dunIndex < 0 || (size_t)dunIndex >= tileSet.size())
+			{
+				continue;
+			}
 
+			int16_t tileIndex = 0;
 			if (xTilIndex)
 			{
 				if (yTilIndex)
-					tilIndex = 3; // bottom
+					tileIndex = std::get<3>(tileSet[dunIndex]); // bottom
 				else
-					tilIndex = 1; // left
+					tileIndex = std::get<1>(tileSet[dunIndex]); // left
 			}
 			else
 			{
 				if (yTilIndex)
-					tilIndex = 2; // right
+					tileIndex = std::get<2>(tileSet[dunIndex]); // right
 				else
-					tilIndex = 0; // top
+					tileIndex = std::get<0>(tileSet[dunIndex]); // top
 			}
-
-			int32_t dunIndex = dun[xDunIndex][yDunIndex] - 1;
 
 			auto cellX = x + (Coord)i;
 			auto cellY = y + (Coord)j;
@@ -96,7 +136,6 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 			}
 			else
 			{
-				auto tileIndex = til[dunIndex][tilIndex];
 				cell.TileIndexBack(tileIndex);
 				cell.TileIndexFront(tileIndex);
 				cell.Sol(sol.get(tileIndex));
@@ -105,11 +144,11 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const TileSet& til, con
 	}
 }
 
-void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const Sol& sol)
+void LevelMap::setSimpleArea(Coord x, Coord y, const Dun& dun)
 {
-	for (size_t i = 0; i < dun.Width(); i++)
+	for (size_t j = 0; j < dun.Height(); j++)
 	{
-		for (size_t j = 0; j < dun.Height(); j++)
+		for (size_t i = 0; i < dun.Width(); i++)
 		{
 			auto cellX = x + (Coord)i;
 			auto cellY = y + (Coord)j;
@@ -130,15 +169,15 @@ void LevelMap::setArea(Coord x, Coord y, const Dun& dun, const Sol& sol)
 	}
 }
 
-void LevelMap::setArea(Coord x, Coord y, size_t index, const Dun& dun)
+void LevelMap::setSimpleArea(Coord x, Coord y, size_t index, const Dun& dun)
 {
 	if (index > 2)
 	{
 		return;
 	}
-	for (size_t i = 0; i < dun.Width(); i++)
+	for (size_t j = 0; j < dun.Height(); j++)
 	{
-		for (size_t j = 0; j < dun.Height(); j++)
+		for (size_t i = 0; i < dun.Width(); i++)
 		{
 			auto cellX = x + (Coord)i;
 			auto cellY = y + (Coord)j;
@@ -161,9 +200,15 @@ void LevelMap::setArea(Coord x, Coord y, size_t index, const Dun& dun)
 	}
 }
 
+bool LevelMap::isMapCoordValid(Coord x, Coord y) const noexcept
+{
+	return x >= 0 && x < mapSize.x &&
+		y >= 0 && y < mapSize.y;
+}
+
 bool LevelMap::isMapCoordValid(const MapCoord& mapCoord) const noexcept
 {
-	return mapCoord.x < mapSize.x && mapCoord.y < mapSize.y;
+	return isMapCoordValid(mapCoord.x, mapCoord.y);
 }
 
 sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
@@ -235,6 +280,36 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const noexcept
 	int32_t isoPosY = flatGridY - lineOriginPosY;
 
 	return MapCoord((Coord)isoPosX, (Coord)isoPosY);
+}
+
+void LevelMap::setOutOfBoundsTileBack(int16_t tile) noexcept
+{
+	if (tile >= 0)
+	{
+		if ((size_t)tile < tileSet.size())
+		{
+			outOfBoundsTileBack = tileSet[tile];
+		}
+	}
+	else
+	{
+		outOfBoundsTileBack = {};
+	}
+}
+
+void LevelMap::setOutOfBoundsTileFront(int16_t tile) noexcept
+{
+	if (tile >= 0)
+	{
+		if ((size_t)tile < tileSet.size())
+		{
+			outOfBoundsTileFront = tileSet[tile];
+		}
+	}
+	else
+	{
+		outOfBoundsTileFront = {};
+	}
 }
 
 std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const

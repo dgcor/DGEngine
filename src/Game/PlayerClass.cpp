@@ -39,8 +39,14 @@ void PlayerClass::getTextureAnimationRange(size_t idx,
 			baseAnim.textureIndexRange = tex->second[animIdx].range;
 			baseAnim.animType = tex->second[animIdx].animType;
 			baseAnim.backDirection = false;
-			return;
 		}
+		else
+		{
+			baseAnim.textureIndexRange = std::make_pair(0, tex->first->size() - 1);
+			baseAnim.animType = AnimationType::Looped;
+			baseAnim.backDirection = false;
+		}
+		return;
 	}
 	baseAnim.textureIndexRange = std::make_pair(0, 0);
 	baseAnim.animType = AnimationType::PlayOnce;
@@ -49,20 +55,24 @@ void PlayerClass::getTextureAnimationRange(size_t idx,
 
 void PlayerClass::setDefault(const char* prop, const Number32& val)
 {
-	auto propertyHash = str2int16(prop);
-	if (propertyHash == str2int16(""))
+	setDefaultByHash(str2int16(prop), val);
+}
+
+void PlayerClass::setDefaultByHash(uint16_t propHash, const Number32& val)
+{
+	if (propHash == str2int16(""))
 	{
 		return;
 	}
 	for (auto& elem : defaults)
 	{
-		if (elem.first == propertyHash)
+		if (elem.first == propHash)
 		{
 			elem.second = val;
 			return;
 		}
 	}
-	defaults.push_back(std::make_pair(propertyHash, val));
+	defaults.push_back(std::make_pair(propHash, val));
 }
 
 AnimationSpeed PlayerClass::getSpeed(PlayerAnimation animation) const noexcept
