@@ -34,6 +34,15 @@ sf::PhysFSStream::~PhysFSStream()
 	}
 }
 
+bool sf::PhysFSStream::load(const char* fileName)
+{
+	if (file == NULL)
+	{
+		file = PHYSFS_openRead(fileName);
+	}
+	return (file != NULL);
+}
+
 sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size) noexcept
 {
 #if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))

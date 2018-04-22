@@ -4,6 +4,9 @@
 
 namespace ItemProp
 {
+	const uint16_t Identified = str2int16("identified");
+	const uint16_t Magical = str2int16("magical");
+
 	const uint16_t Gold = str2int16("gold");
 	const uint16_t GoldMax = str2int16("goldMax");
 

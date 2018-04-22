@@ -97,6 +97,8 @@ namespace Parser
 			return;
 		}
 
+		itemClass->Id(id);
+
 		if (elem.HasMember("dropTextureIndexRange") == true)
 		{
 			itemClass->setDropTextureIndexRange(
@@ -147,13 +149,19 @@ namespace Parser
 					if (it->name.GetStringLength() > 0)
 					{
 						auto nameStr = it->name.GetString();
+						auto nameHash = str2int16(nameStr);
+						level->setPropertyName(nameHash, nameStr);
 						LevelObjValue val;
-						switch (str2int16(nameStr))
+						switch (nameHash)
 						{
 						case ItemProp::UseOn:
 						case ItemProp::UseOp:
-							val = str2int16(getStringCharVal(it->value));
+						{
+							auto opStr = getStringCharVal(it->value);
+							val = str2int16(opStr);
+							level->setPropertyName(val, opStr);
 							break;
+						}
 						default:
 							val = getMinMaxIntVal<LevelObjValue>(it->value);
 							break;

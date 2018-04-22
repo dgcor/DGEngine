@@ -125,6 +125,7 @@ namespace Parser
 		{
 			auto playerClassPtr = std::make_unique<PlayerClass>();
 			playerClass = playerClassPtr.get();
+			playerClass->Id(id);
 			level->addPlayerClass(id, std::move(playerClassPtr));
 		}
 
@@ -196,7 +197,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						playerClass->setDefault(it->name.GetString(),
+						auto nameHash = str2int16(it->name.GetString());
+						level->setPropertyName(nameHash, it->name.GetString());
+						playerClass->setDefaultByHash(nameHash,
 							getMinMaxNumber32Val(it->value));
 					}
 				}

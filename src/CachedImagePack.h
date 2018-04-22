@@ -1,8 +1,10 @@
 #pragma once
 
+#include <cassert>
 #include "ImageContainers/ImageContainer.h"
-#include <map>
 #include <memory>
+#include <optional>
+#include <vector>
 
 class CachedImagePack
 {
@@ -11,25 +13,28 @@ private:
 	std::shared_ptr<Palette> palette;
 	bool isIndexed{ false };
 
-	std::map<size_t, sf::Image> cache;
+	mutable std::vector<std::optional<sf::Image>> cache;
 
 public:
 	CachedImagePack() noexcept {}
 	CachedImagePack(const ImageContainer* imgContainer_,
 		const std::shared_ptr<Palette>& palette_, bool isIndexed_ = false)
-		: imgContainer(imgContainer_), palette(palette_), isIndexed(isIndexed_) {}
+		: imgContainer(imgContainer_), palette(palette_), isIndexed(isIndexed_)
+	{
+		cache.resize(imgContainer_->size());
+	}
 
 	sf::Image& get(size_t index) { return (*this)[index]; }
 
 	sf::Image& operator[] (size_t index)
 	{
-		if (cache.count(index))
+		assert(index < imgContainer->size());
+		if (!cache[index])
 		{
-			return cache[index];
+			cache[index] = imgContainer->get(index,
+				(isIndexed == true ? nullptr : &palette->palette));
 		}
-		cache[index] = imgContainer->get(index,
-			(isIndexed == true ? nullptr : &palette->palette));
-		return cache[index];
+		return *cache[index];
 	}
 
 	const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }

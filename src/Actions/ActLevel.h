@@ -168,6 +168,31 @@ public:
 	}
 };
 
+class ActLevelSave : public Action
+{
+private:
+	std::string id;
+	std::string file;
+	bool skipDefaults;
+	bool skipCurrentPlayer;
+
+public:
+	ActLevelSave(const std::string& id_, const std::string& file_,
+		bool skipDefaults_, bool skipCurrentPlayer_)
+		: id(id_), file(file_), skipDefaults(skipDefaults_),
+		skipCurrentPlayer(skipCurrentPlayer_) {}
+
+	virtual bool execute(Game& game) noexcept
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->save(file, skipDefaults, skipCurrentPlayer);
+		}
+		return true;
+	}
+};
+
 class ActLevelZoom : public Action
 {
 private:

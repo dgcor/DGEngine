@@ -12,9 +12,9 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	Dun getDunFromLayer(const Value& elem, int16_t indexOffset)
+	Dun getDunFromLayer(const Value& elem, int16_t indexOffset, int16_t defaultTile)
 	{
-		Dun dun(getUIntKey(elem, "width"), getUIntKey(elem, "height"));
+		Dun dun(getUIntKey(elem, "width"), getUIntKey(elem, "height"), defaultTile);
 
 		if (dun.Width() == 0 ||
 			dun.Height() == 0 ||
@@ -31,7 +31,7 @@ namespace Parser
 	}
 
 	void parseTiledMap(const Value& elem, LevelMap& map,
-		const std::string& file, const Sol& sol, bool resizeToFit)
+		const std::string& file, int16_t defaultTile, bool resizeToFit)
 	{
 		Document doc;
 		if (JsonUtils::loadFile(file, doc) == false ||
@@ -49,7 +49,9 @@ namespace Parser
 
 		for (const auto& elemLayer : doc["layers"])
 		{
-			Dun dun = getDunFromLayer(elemLayer, (int16_t)getIntKey(elem, "indexOffset"));
+			Dun dun = getDunFromLayer(elemLayer,
+				(int16_t)getIntKey(elem, "indexOffset"),
+				defaultTile);
 
 			if (dun.Width() > 0 && dun.Height() > 0)
 			{
@@ -64,41 +66,37 @@ namespace Parser
 				}
 				if (doc["layers"].Size() == 1)
 				{
-					map.setArea(pos2.x, pos2.y, dun, sol);
+					map.setSimpleArea(pos2.x, pos2.y, dun);
 					continue;
 				}
 				auto name = getStringKey(elemLayer, "name");
 				if (backName == name)
 				{
-					map.setArea(pos2.x, pos2.y, 0, dun);
+					map.setSimpleArea(pos2.x, pos2.y, 0, dun);
 				}
 				if (frontName == name)
 				{
-					map.setArea(pos2.x, pos2.y, 1, dun);
+					map.setSimpleArea(pos2.x, pos2.y, 1, dun);
 				}
 				if (solName == name)
 				{
-					map.setArea(pos2.x, pos2.y, 2, dun);
+					map.setSimpleArea(pos2.x, pos2.y, 2, dun);
 				}
 			}
 		}
 	}
 
-	void parseMap(const Value& elem, LevelMap& map,
-		const TileSet& til, const Sol& sol, bool resizeToFit)
+	void parseMap(const Value& elem, LevelMap& map, int16_t defaultTile, bool resizeToFit)
 	{
 		auto file = getStringKey(elem, "file");
 
 		if (Utils::endsWith(Utils::toLower(file), ".json") == true)
 		{
-			parseTiledMap(elem, map, file, sol, resizeToFit);
+			parseTiledMap(elem, map, file, defaultTile, resizeToFit);
 			return;
 		}
-		if (til.size() == 0)
-		{
-			return;
-		}
-		Dun dun(file);
+		defaultTile = (int16_t)getIntKey(elem, "defaultTile", defaultTile);
+		Dun dun(file, defaultTile);
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
 			auto pos = getVector2uKey<MapCoord>(elem, "position");
@@ -106,19 +104,26 @@ namespace Parser
 			{
 				map.resize((Coord)(pos.x + (dun.Width() * 2)), (Coord)(pos.y + (dun.Height() * 2)));
 			}
-			map.setArea(pos.x, pos.y, dun, til, sol);
+			map.setTileSetArea(pos.x, pos.y, dun);
 		}
 	}
 
 	void parseLevelMap(Game& game, const Value& elem, Level& level)
 	{
-		TileSet til(getStringKey(elem, "til"));
-		Sol sol(getStringKey(elem, "sol"));
-
-		bool resizeToFit = elem.HasMember("mapSize") == false;
+		auto til = getStringKey(elem, "til");
+		auto sol = getStringKey(elem, "sol");
 		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize", MapCoord(96, 96));
-		LevelMap map(mapSize.x, mapSize.y);
+		auto defaultTile = (int16_t)getIntKey(elem, "defaultTile", -1);
+		LevelMap map(til, sol, mapSize.x, mapSize.y, defaultTile);
 
+		if (elem.HasMember("outOfBoundsTileBottom") == true)
+		{
+			map.setOutOfBoundsTileBack((int16_t)getIntVal(elem["outOfBoundsTileBottom"], -1));
+		}
+		if (elem.HasMember("outOfBoundsTileTop") == true)
+		{
+			map.setOutOfBoundsTileFront((int16_t)getIntVal(elem["outOfBoundsTileTop"], -1));
+		}
 		if (elem.HasMember("map") == true)
 		{
 			const auto& mapElem = elem["map"];
@@ -126,12 +131,13 @@ namespace Parser
 			{
 				for (const auto& val : mapElem)
 				{
-					parseMap(val, map, til, sol, false);
+					parseMap(val, map, defaultTile, false);
 				}
 			}
 			else if (mapElem.IsObject() == true)
 			{
-				parseMap(mapElem, map, til, sol, resizeToFit);
+				bool resizeToFit = elem.HasMember("mapSize") == false;
+				parseMap(mapElem, map, defaultTile, resizeToFit);
 			}
 		}
 
@@ -188,11 +194,13 @@ namespace Parser
 			}
 			level = levelPtr.get();
 			game.Resources().setCurrentLevel(level);
+			level->Id(id);
 		}
 
 		parseLevelMap(game, elem, *level);
 
 		level->Name(getStringKey(elem, "name"));
+		level->Path(getStringKey(elem, "path"));
 
 		if (elem.HasMember("followCurrentPlayer") == true)
 		{

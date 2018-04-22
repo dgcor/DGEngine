@@ -5,7 +5,6 @@
       "texture": "smaltext",
       "palette": "town",
       "file": "ctrlpan/smaltext.cel",
-      "celSize": [13, 11],
       "charMapFile": "res/level/smaltextCharMap.bin",
       "charSizeFile": "res/level/smaltextSize.bin"
     },

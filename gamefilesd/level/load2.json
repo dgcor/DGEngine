@@ -1,0 +1,17 @@
+{
+  "action": [
+    { "name": "level.pause", "pause": true },
+    { "name": "load", "file": ["ui/level/msgBox/show.json", "loading..."] },
+    { "name": "resource.popAll", "id": "currentLevel" },
+    { "name": "level.pause", "pause": false },
+    { "name": "resource.add", "id": "currentLevel" },
+    { "name": "load", "file": "level/clearPlayers.json" },
+    { "name": "level.clearObjects" },
+    { "name": "load", "file": "level/{1}/sounds.json" },
+    { "name": "load", "file": "level/{1}/level.json" },
+    { "name": "load", "file": "level/{1}/music.json" },
+    { "name": "load", "file": ["level/afterLevelLoad.json", "{1}", "{2}", "{3}"] },
+    { "name": "loadJson", "json": { "action": "closeMsgBox" } },
+    "clearPanelText"
+  ]
+}

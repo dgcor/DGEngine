@@ -181,6 +181,31 @@ public:
 	}
 };
 
+class ActPlayerSave : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	std::string file;
+	bool skipDefaults;
+
+public:
+	ActPlayerSave(const std::string& idPlayer_, const std::string& idLevel_,
+		const std::string& file_, bool skipDefaults_) : idPlayer(idPlayer_),
+		idLevel(idLevel_), file(file_), skipDefaults(skipDefaults_) {}
+
+	virtual bool execute(Game& game) noexcept
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto obj = level->getPlayerOrCurrent(idPlayer);
+			level->save(file, *obj, skipDefaults);
+		}
+		return true;
+	}
+};
+
 class ActPlayerSetDefaultSpeed : public Action
 {
 private:

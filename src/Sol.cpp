@@ -1,10 +1,9 @@
 #include "Sol.h"
 #include "PhysFSStream.h"
 
-Sol::Sol(const std::string& path)
+Sol::Sol(const std::string& fileName)
 {
-	sf::PhysFSStream file(path);
-
+	sf::PhysFSStream file(fileName);
 	if (file.hasError() == true)
 	{
 		return;
@@ -12,8 +11,7 @@ Sol::Sol(const std::string& path)
 
 	auto size = (unsigned)file.getSize();
 	data.resize(size);
-
-	file.read(&data[0], size);
+	file.read(data.data(), size);
 }
 
 uint8_t Sol::get(size_t index) const

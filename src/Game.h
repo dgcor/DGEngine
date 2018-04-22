@@ -92,6 +92,8 @@ private:
 	void updateMouse(const sf::Vector2i mousePos);
 	void updateEvents();
 	void drawCursor();
+	void drawUI();
+	void update();
 	void drawAndUpdate();
 	void drawFadeEffect();
 	void drawWindow();
@@ -280,6 +282,7 @@ public:
 		loadingScreen = std::move(loadingScreen_);
 	}
 
+	void draw();
 	bool drawLoadingScreen();
 
 	FadeInOut* getFadeInOut() const noexcept { return fadeInOut.get(); }

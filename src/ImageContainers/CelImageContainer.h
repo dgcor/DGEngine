@@ -1,39 +1,48 @@
 #pragma once
 
-#include <cstdint>
-#include "ImageContainer.h"
-#include <vector>
+#include "CelBaseImageContainer.h"
+#include "gsl/gsl"
 
-class CelImageContainer : public ImageContainer
+class CelImageContainer : public CelBaseImageContainer
 {
 private:
-	std::vector<std::vector<uint8_t>> mFrames;
-	size_t animLength{ 0 };
-	size_t defaultWidth{ 0 };
-	size_t defaultHeight{ 0 };
-	bool isCl2;
-	bool isTileCel;
+	// Class used only for CEL frame width calculation
+	class CelPixelGroup
+	{
+	private:
+		uint16_t pixelCount;
+		bool transparent;
 
-	size_t getFrame(const std::vector<uint8_t>& frame, const PaletteArray* palette,
-		size_t frameNum, std::vector<sf::Color>& rawImage) const;
+	public:
+		CelPixelGroup(uint16_t pixelCount_, bool transparent_) :
+			pixelCount(pixelCount_), transparent(transparent_) {}
 
-	size_t readNormalFrames(sf::InputStream& file);
-	size_t readCl2ArchiveFrames(sf::InputStream& file);
+		uint16_t getPixelCount() const noexcept { return pixelCount; }
+		bool isTransparent() const noexcept { return transparent; }
+	};
+
+	enum class CelFrameType
+	{
+		Regular,	// == LEVEL_TYPE_1
+		LevelType0,	// 0x400 full opaque
+		LevelType2,	// 0x220 left transparency
+		LevelType3,	// 0x220 right transparency
+		LevelType4,	// 0x320 left transparency
+		LevelType5	// 0x320 right transparency
+	};
+
+	static CelFrameType getLevelFrame220Type(const gsl::span<const uint8_t> frameData);
+	static CelFrameType getLevelFrame320Type(const gsl::span<const uint8_t> frameData);
+	static CelFrameType getLevelFrame400Type(const gsl::span<const uint8_t> frameData);
+	static uint16_t computeWidthFromHeader(const gsl::span<const uint8_t> frameData);
+	static uint16_t computeWidthFromData(const gsl::span<const uint8_t> frameData);
+
+	static sf::Image2 decode(const gsl::span<const uint8_t> frameData,
+		unsigned width, unsigned height, CelFrameType frameType,
+		const PaletteArray* palette);
 
 public:
-	CelImageContainer(const char* filename, bool isCl2_, bool isTileCel_);
+	CelImageContainer(const char* fileName);
 
-	// if palette is null, gets an indexed image with the index in the red channel.
-	virtual sf::Image2 get(size_t index, const PaletteArray* palette) const;
-
-	void setDefaultSize(size_t defaultWidth_, size_t defaultHeight_) noexcept
-	{
-		defaultWidth = defaultWidth_;
-		defaultHeight = defaultHeight_;
-	}
-
-	virtual size_t size() const noexcept { return mFrames.size(); }
-
-	///< if normal cel file, returns same as numFrames(), for an archive, the number of frames in each subcel
-	size_t AnimLength() const noexcept { return animLength; }
+	virtual sf::Image2 get(size_t index, const PaletteArray * palette) const;
 };

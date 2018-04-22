@@ -222,7 +222,7 @@ bool Item::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 {
 	switch (propHash)
 	{
-	case str2int16("identified"):
+	case ItemProp::Identified:
 		value = (LevelObjValue)identified;
 		break;
 	case str2int16("indestructible"):
@@ -265,7 +265,7 @@ void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
 {
 	switch (propHash)
 	{
-	case str2int16("identified"):
+	case ItemProp::Identified:
 		identified = value != 0;
 		break;
 	default:

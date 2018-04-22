@@ -1,6 +1,11 @@
 #pragma once
 
+#define RAPIDJSON_HAS_STDSTRING 1
+
 #include "rapidjson/document.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
 
 namespace rapidjson
 {

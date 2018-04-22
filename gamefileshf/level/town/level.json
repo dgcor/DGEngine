@@ -1,6 +1,7 @@
 {
   "level": {
     "id": "level",
+    "path": "town",
     "name": "Town Center",
     "palette": "town",
     "file": "Nlevels/TownData/Town.CEL",
@@ -17,5 +18,6 @@
     "sol": "Nlevels/TownData/Town.SOL"
   },
   "load": "level/town/levelObjects.json",
-  "load": "level/town/items.json"
+  "load": "level/town/items.json",
+  "load": "level/town/players.json"
 }

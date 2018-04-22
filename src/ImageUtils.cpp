@@ -56,6 +56,11 @@ namespace ImageUtils
 	sf::Image loadImage(const ImageContainer& imgContainer,
 		const std::shared_ptr<Palette>& pal)
 	{
+		if (imgContainer.size() == 1)
+		{
+			return imgContainer.get(0, &pal->palette);
+		}
+
 		CachedImagePack imgCache(&imgContainer, pal);
 
 		size_t imgWidth = 0;

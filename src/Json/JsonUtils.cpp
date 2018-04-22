@@ -13,7 +13,7 @@ namespace JsonUtils
 		if (std::holds_alternative<std::string>(var) == true)
 		{
 			const auto& str = std::get<std::string>(var);
-			elem.SetString(str.c_str(), str.size(), allocator);
+			elem.SetString(str, allocator);
 		}
 		else if (std::holds_alternative<int64_t>(var) == true)
 		{
@@ -52,7 +52,7 @@ namespace JsonUtils
 
 		if (elem.GetString() != str1)
 		{
-			elem.SetString(str1.c_str(), str1.size(), allocator);
+			elem.SetString(str1, allocator);
 		}
 	}
 
@@ -90,7 +90,7 @@ namespace JsonUtils
 		if (hadMatch == true &&
 			elem.GetString() != str2)
 		{
-			elem.SetString(str2.c_str(), str2.size(), allocator);
+			elem.SetString(str2, allocator);
 		}
 	}
 
@@ -104,7 +104,7 @@ namespace JsonUtils
 			Utils::replaceStringInPlace(str2, oldStr, newStr);
 			if (str1 != str2)
 			{
-				elem.SetString(str2.c_str(), str2.size(), allocator);
+				elem.SetString(str2, allocator);
 			}
 		}
 		else if (elem.IsObject() == true)
@@ -184,7 +184,7 @@ namespace JsonUtils
 			if (hadMatch == true &&
 				elem.GetString() != str2)
 			{
-				elem.SetString(str2.c_str(), str2.size(), allocator);
+				elem.SetString(str2, allocator);
 			}
 		}
 		else if (elem.IsObject() == true)

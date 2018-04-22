@@ -3,6 +3,7 @@
 #include "Actions/Action.h"
 #include "BaseLevelObject.h"
 #include "ItemClass.h"
+#include "Save/SaveItem.h"
 
 class Player;
 
@@ -34,6 +35,9 @@ private:
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 		uint16_t valueMaxHash, Player& player, const Level* level) const;
+
+	friend void Save::serialize(void* serializeObj, const Level& level,
+		const Item& item, bool skipDefaults);
 
 public:
 	using iterator = ItemProperties::iterator;
@@ -88,6 +92,11 @@ public:
 
 	virtual bool Hoverable() const noexcept { return base.enableHover; }
 	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
+
+	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const
+	{
+		Save::serialize(serializeObj, level, *this, skipDefaults);
+	}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{

@@ -31,6 +31,7 @@ private:
 
 	PlayerAI ai;
 
+	std::string id;
 	std::string name;
 	std::string type;
 	std::string description;
@@ -103,6 +104,7 @@ public:
 
 	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const noexcept { return defaults; }
 	void setDefault(const char* prop, const Number32& val);
+	void setDefaultByHash(uint16_t propHash, const Number32& val);
 
 	AnimationSpeed getSpeed(PlayerAnimation animation) const noexcept;
 	void setSpeed(PlayerAnimation animation, const AnimationSpeed& speed);
@@ -126,10 +128,12 @@ public:
 	void setDefaultHitSound(int16_t soundIdx) noexcept { defaultHitSound = soundIdx; }
 	void setDefaultWalkSound(int16_t soundIdx) noexcept { defaultWalkSound = soundIdx; }
 
+	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& Type() const noexcept { return type; }
 	const std::string& Description() const noexcept { return description; }
 
+	void Id(const std::string& id_) { id = id_; }
 	void Name(const std::string& name_) { name = name_; }
 	void Type(const std::string& type_) { type = type_; }
 	void Description(const std::string& description_) { description = description_; }

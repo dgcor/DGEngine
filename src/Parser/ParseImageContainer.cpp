@@ -1,5 +1,6 @@
 #include "ParseImageContainer.h"
 #include "ImageContainers/CelImageContainer.h"
+#include "ImageContainers/Cl2ImageContainer.h"
 #include "ImageContainers/SimpleImageContainer.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -17,15 +18,20 @@ namespace Parser
 
 		std::string fileName = elem["file"].GetString();
 		auto fileNameLower = Utils::toLower(fileName);
-		bool isCel = Utils::endsWith(fileNameLower, "cel");
-		bool isCl2 = Utils::endsWith(fileNameLower, "cl2");
 
-		if (isCel == false && isCl2 == false)
+		if (Utils::endsWith(fileNameLower, "cel") == true)
 		{
-			auto frames = getFramesKey(elem, "frames");
+			auto imgContainer = std::make_shared<CelImageContainer>(fileName.c_str());
 
-			auto imgContainer = std::make_shared<SimpleImageContainer>(
-				fileName.c_str(), frames.first, frames.second);
+			if (imgContainer->size() == 0)
+			{
+				return nullptr;
+			}
+			return imgContainer;
+		}
+		else if (Utils::endsWith(fileNameLower, "cl2") == true)
+		{
+			auto imgContainer = std::make_shared<Cl2ImageContainer>(fileName.c_str());
 
 			if (imgContainer->size() == 0)
 			{
@@ -35,18 +41,14 @@ namespace Parser
 		}
 		else
 		{
-			auto isTileCel = getBoolKey(elem, "isTileCel", elem.HasMember("min"));
-			auto imgContainer = std::make_shared<CelImageContainer>(
-				fileName.c_str(), isCl2, isTileCel);
+			auto frames = getFramesKey(elem, "frames");
+
+			auto imgContainer = std::make_shared<SimpleImageContainer>(
+				fileName, frames.first, frames.second);
 
 			if (imgContainer->size() == 0)
 			{
 				return nullptr;
-			}
-			if (elem.HasMember("celSize") == true)
-			{
-				auto size = getVector2uVal<sf::Vector2u>(elem["celSize"]);
-				imgContainer->setDefaultSize(size.x, size.y);
 			}
 			return imgContainer;
 		}

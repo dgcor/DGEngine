@@ -20,6 +20,7 @@
 #include "Actions/ActLoadingScreen.h"
 #include "Actions/ActMenu.h"
 #include "Actions/ActMovie.h"
+#include "Actions/ActPalette.h"
 #include "Actions/ActPlayer.h"
 #include "Actions/ActQuest.h"
 #include "Actions/ActRandom.h"
@@ -559,6 +560,10 @@ namespace Parser
 		{
 			return std::make_shared<ActGameClose>();
 		}
+		case str2int16("game.draw"):
+		{
+			return std::make_shared<ActGameDraw>();
+		}
 		case str2int16("game.enableInput"):
 		{
 			return std::make_shared<ActGameEnableInput>(getBoolKey(elem, "enable", true));
@@ -851,6 +856,14 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getBoolKey(elem, "pause", true));
 		}
+		case str2int16("level.save"):
+		{
+			return std::make_shared<ActLevelSave>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "file"),
+				getBoolKey(elem, "skipDefaults"),
+				getBoolKey(elem, "skipCurrentPlayer"));
+		}
 		case str2int16("level.zoom"):
 		{
 			return std::make_shared<ActLevelZoom>(
@@ -963,6 +976,20 @@ namespace Parser
 		{
 			return std::make_shared<ActMoviePlay>(getStringKey(elem, "id"));
 		}
+		case str2int16("palette.shiftLeft"):
+		{
+			return std::make_shared<ActPaletteShiftLeft>(
+				getStringKey(elem, "id"),
+				getUIntKey(elem, "shift", 1),
+				getVector2uKey<std::pair<size_t, size_t>>(elem, "range", { 0, 256 }));
+		}
+		case str2int16("palette.shiftRight"):
+		{
+			return std::make_shared<ActPaletteShiftRight>(
+				getStringKey(elem, "id"),
+				getUIntKey(elem, "shift", 1),
+				getVector2uKey<std::pair<size_t, size_t>>(elem, "range", {0, 256}));
+		}
 		case str2int16("player.addGold"):
 		{
 			return std::make_shared<ActPlayerAddGold>(
@@ -993,6 +1020,14 @@ namespace Parser
 			return std::make_shared<ActPlayerMoveToClick>(
 				getStringKey(elem, "player"),
 				getStringKey(elem, "level"));
+		}
+		case str2int16("player.save"):
+		{
+			return std::make_shared<ActPlayerSave>(
+				getStringKey(elem, "player"),
+				getStringKey(elem, "level"),
+				getStringKey(elem, "file"),
+				getBoolKey(elem, "skipDefaults"));
 		}
 		case str2int16("player.setDefaultSpeed"):
 		{

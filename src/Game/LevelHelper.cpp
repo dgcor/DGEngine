@@ -42,33 +42,29 @@ namespace LevelHelper
 	}
 
 	bool drawMinPillar(sf::Image& s, int x, int y,
-		const std::vector<int16_t>& pillar, CachedImagePack& tileset, bool top)
+		const MinPillar& pillar,
+		CachedImagePack& tileset, bool top)
 	{
-		size_t i, lim;
+		size_t i, size;
 
 		if (top == true)
 		{
-			// compensate for maps using 5-row min files
-			if (pillar.size() == 10)
-			{
-				y += 3 * 32;
-			}
 			i = 0;
-			lim = pillar.size() - 2;
+			size = pillar.size() - 1;
 		}
 		else
 		{
-			i = pillar.size() - 2;
-			lim = pillar.size();
+			i = pillar.size() - 1;
+			size = pillar.size();
 		}
 
 		bool notTransparent = false;
 
 		// Each iteration draw one row of the min
-		for (; i < lim; i += 2)
+		for (; i < size; i++)
 		{
-			int16_t l = (pillar[i] & 0x0FFF) - 1;
-			int16_t r = (pillar[i + 1] & 0x0FFF) - 1;
+			int16_t l = pillar.getLeftTile(i);
+			int16_t r = pillar.getRightTile(i);
 
 			notTransparent |= drawMinTile(s, tileset, x, y, l, r);
 
@@ -81,16 +77,22 @@ namespace LevelHelper
 		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
 	{
 		auto texturePack = std::make_shared<VectorTexturePack>(
-			min.size() - 1, imgPack.getPalette(), imgPack.IsIndexed());
+			min.size(), imgPack.getPalette(), imgPack.IsIndexed());
 
 		bool hasTile = true;
 		sf::Image2 newPillar;
+		unsigned pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
+		if (top == true)
+		{
+			sf::Vector2f offset(0.f, -32.f);
+			texturePack->setOffset(offset);
+		}
 
-		for (size_t i = 0; i < min.size() - 1; i++)
+		for (size_t i = 0; i < min.size(); i++)
 		{
 			if (hasTile == true)
 			{
-				newPillar.create(64, (top == true ? 256 : 32), sf::Color::Transparent);
+				newPillar.create(64, pillarHeight, sf::Color::Transparent);
 				hasTile = false;
 			}
 
@@ -127,16 +129,22 @@ namespace LevelHelper
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 		}
 
-		sf::Image2 newPillar;
+		unsigned pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
+		if (pillarHeight > 1024)
+		{
+			return texturePack;
+		}
 		size_t i = 0;
 		size_t xMax = 16;
-		size_t yMax = (top == true ? 4 : 32);
-		sf::Vector2f offset;
+		size_t yMax = (top == true ? (1024 / pillarHeight) : 32);
+		unsigned sheetHeight = pillarHeight * yMax;
+		sf::Vector2f offset(0.f, (top == true ? -32.f : 0.f));
+		sf::Image2 newPillar;
 
 		bool mainLoop = true;
 		while (mainLoop == true)
 		{
-			newPillar.create(1024, 1024, sf::Color::Transparent);
+			newPillar.create(1024, sheetHeight, sf::Color::Transparent);
 
 			bool loop = true;
 			size_t x = 0;
@@ -144,7 +152,7 @@ namespace LevelHelper
 			while (loop == true)
 			{
 				size_t newX = x * 64;
-				size_t newY = y * (top == true ? 256 : 32);
+				size_t newY = y * pillarHeight;
 
 				bool hasTile = drawMinPillar(newPillar, newX, newY, min[i], imgPack, top);
 
@@ -169,7 +177,7 @@ namespace LevelHelper
 				}
 
 				i++;
-				if (i >= (min.size() - 1))
+				if (i >= min.size())
 				{
 					loop = false;
 					mainLoop = false;
@@ -202,6 +210,7 @@ namespace LevelHelper
 		size_t file = 1;
 		size_t xMax = 16;
 		size_t yMax = (bottomTopOrBoth != 0 ? 4 : 32);
+		size_t topPillarHeight = (min[0].size() - 1) * 32;
 
 		bool mainLoop = true;
 		while (mainLoop == true)
@@ -219,7 +228,7 @@ namespace LevelHelper
 
 				if (bottomTopOrBoth < 0)
 				{
-					hasTile = drawMinPillar(newPillar, newX, newY + 224, min[i], imgPack, false);
+					hasTile = drawMinPillar(newPillar, newX, newY + topPillarHeight, min[i], imgPack, false);
 					hasTile |= drawMinPillar(newPillar, newX, newY, min[i], imgPack, true);
 				}
 				else
@@ -243,7 +252,7 @@ namespace LevelHelper
 				}
 
 				i++;
-				if (i >= (min.size() - 1))
+				if (i >= min.size())
 				{
 					loop = false;
 					mainLoop = false;

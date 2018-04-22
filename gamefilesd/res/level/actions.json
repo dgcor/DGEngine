@@ -1,5 +1,6 @@
 {
   "load": "res/level/actions/sounds.json",
+  "load": "res/level/actions/colorCycling.json",
   "load": "res/level/actions/resizeLevel.json",
   "load": "res/level/actions/itemPanel.json",
   "load": "res/level/actions/basePanel.json",

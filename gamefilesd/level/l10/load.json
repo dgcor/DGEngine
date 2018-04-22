@@ -1,3 +1,3 @@
 {
-  "load": ["level/load.json", "cut3", "l10", "{1}", "{2}" ]
+  "load": ["level/load.json", "l10", "{1}", "{2}", "cut3"]
 }

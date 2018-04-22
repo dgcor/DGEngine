@@ -38,6 +38,8 @@ public:
 	virtual void setOutlineOnHover(bool outlineOnHover) = 0;
 	virtual void setPalette(const std::shared_ptr<Palette>& palette) = 0;
 
+	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const = 0;
+
 	// Update
 	virtual void update(Game& game, Level& level) = 0;
 

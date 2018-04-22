@@ -31,6 +31,8 @@ public:
 	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { palette = pal; }
 	bool hasPalette() const noexcept { return palette != nullptr; }
 
+	const sf::Color& getOutline() const noexcept { return outline; }
+	const sf::Color& getOutlineIgnore() const noexcept { return ignore; }
 	void setOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
 	{
 		outline = outline_;

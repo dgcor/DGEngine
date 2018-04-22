@@ -6,6 +6,7 @@
 
 #include "Pcx.h"
 #include <cstdint>
+#include "endian/little_endian.hpp"
 #include "PhysFSStream.h"
 #include <vector>
 
@@ -84,6 +85,12 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 	{
 		return {};
 	}
+
+	// little endian handling
+	header->x = endian::little_endian::get<uint16_t>((const uint8_t*)&header->x);
+	header->y = endian::little_endian::get<uint16_t>((const uint8_t*)&header->y);
+	header->width = endian::little_endian::get<uint16_t>((const uint8_t*)&header->width);
+	header->height = endian::little_endian::get<uint16_t>((const uint8_t*)&header->height);
 
 	auto palette = &buffer[paletteStartPos + 1];
 	auto width = header->width - header->x + 1u;
