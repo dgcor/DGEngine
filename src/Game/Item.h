@@ -36,7 +36,7 @@ private:
 	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 		uint16_t valueMaxHash, Player& player, const Level* level) const;
 
-	friend void Save::serialize(void* serializeObj, Properties& props,
+	friend void Save::serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level, const Item& item);
 
 public:

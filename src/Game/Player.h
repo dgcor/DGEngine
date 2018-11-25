@@ -134,7 +134,7 @@ private:
 
 	void playSound(int16_t soundIdx);
 
-	friend void Save::serialize(void* serializeObj, Properties& props,
+	friend void Save::serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level, const Player& player);
 
 public:
