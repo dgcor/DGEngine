@@ -3,6 +3,7 @@
 #include "Alignment.h"
 #include "Anchor.h"
 #include "AnimationType.h"
+#include <cstddef>
 #include "Game/GameProperties.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
