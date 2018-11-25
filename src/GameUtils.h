@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include "Alignment.h"
 #include "Anchor.h"
 #include "AnimationType.h"

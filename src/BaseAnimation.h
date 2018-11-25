@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include "AnimationType.h"
 #include <SFML/System/Time.hpp>
 #include <utility>
