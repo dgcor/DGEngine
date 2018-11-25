@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "25",
     "texts/wirt/quests/magicRock.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy18.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

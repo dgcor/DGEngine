@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "25",
     "texts/griswold/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bsmith17.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

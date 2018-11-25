@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "25",
     "texts/pepin/quests/magicRock.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer18.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

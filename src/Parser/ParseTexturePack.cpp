@@ -1,9 +1,12 @@
 #include "ParseTexturePack.h"
+#include "FileUtils.h"
 #include "Game/LevelHelper.h"
 #include "ImageContainers/CelImageContainer.h"
 #include "Min.h"
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
+#include "Shaders.h"
+#include "TexturePacks/BitmapFontTexturePack.h"
 #include "TexturePacks/CachedTexturePack.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/RectTexturePack.h"
@@ -27,7 +30,7 @@ namespace Parser
 					auto obj = game.Resources().getTexturePack(fromId);
 					if (obj != nullptr)
 					{
-						game.Resources().addTexturePack(id, obj);
+						game.Resources().addTexturePack(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -173,36 +176,60 @@ namespace Parser
 		return texturePack;
 	}
 
-	void parseTexturePack(Game& game, const Value& elem)
+	std::shared_ptr<BitmapFontTexturePack> parseBitmapFontTexturePackObj(
+		Game& game, const Value& elem)
 	{
-		if (parseTexturePackFromId(game, elem) == true)
+		sf::Image img;
+		auto textureId = getStringKey(elem, "texture");
+		auto texture = game.Resources().getTexture(textureId);
+		if (texture == nullptr)
 		{
-			return;
+			img = parseTextureImg(game, elem);
+			auto imgSize = img.getSize();
+			if (imgSize.x == 0 || imgSize.y == 0)
+			{
+				return nullptr;
+			}
+			texture = parseTextureObj(game, elem, img);
+			if (texture == nullptr)
+			{
+				return nullptr;
+			}
+			if (isValidId(textureId) == true)
+			{
+				game.Resources().addTexture(textureId, texture, getStringViewKey(elem, "resource"));
+			}
 		}
-		std::string id;
-		if (isValidString(elem, "id") == true)
+
+		auto rows = getIntKey(elem, "rows", 16);
+		auto cols = getIntKey(elem, "cols", 16);
+		bool isVertical = getStringKey(elem, "direction") == "vertical";
+
+		std::shared_ptr<BitmapFontTexturePack> texturePack;
+
+		if (elem.HasMember("charSizeFile") == true)
 		{
-			id = elem["id"].GetString();
+			auto charSizes = FileUtils::readChar(elem["charSizeFile"].GetString(), 258);
+			texturePack = std::make_shared<BitmapFontTexturePack>(
+				texture, rows, cols, isVertical, charSizes);
 		}
 		else
 		{
-			if (isValidString(elem, "file") == false)
+			if (img.getSize().x == 0)
 			{
-				return;
+				img = texture->copyToImage();
 			}
-			std::string file(elem["file"].GetString());
-			if (getIdFromFile(file, id) == false)
-			{
-				return;
-			}
+			texturePack = std::make_shared<BitmapFontTexturePack>(
+				texture, rows, cols, isVertical, img);
 		}
-		if (isValidId(id) == false)
+		return texturePack;
+	}
+
+	std::shared_ptr<TexturePack> parseTexturePackObj(Game& game, const Value& elem)
+	{
+		if (getBoolKey(elem, "font") == true)
 		{
-			return;
-		}
-		if (game.Resources().hasTexturePack(id) == true)
-		{
-			return;
+			return parseBitmapFontTexturePackObj(game, elem);
 		}
 
 		std::unique_ptr<TexturePack> texturePack;
@@ -228,7 +255,7 @@ namespace Parser
 		}
 		if (texturePack == nullptr)
 		{
-			return;
+			return nullptr;
 		}
 		if (isValidArray(elem, "rects") == true)
 		{
@@ -288,15 +315,66 @@ namespace Parser
 			}
 			texturePack = std::move(texturePack2);
 		}
-		game.Resources().addTexturePack(id, std::move(texturePack));
+		return texturePack;
 	}
 
-	void getOrParseLevelTexturePack(Game& game, const Value& elem,
-		const char* idKeyBottom, const char* idKeyTop,
-		std::shared_ptr<TexturePack>& texturePackBottom,
-		std::shared_ptr<TexturePack>& texturePackTop,
+	void parseTexturePack(Game& game, const Value& elem)
+	{
+		if (parseTexturePackFromId(game, elem) == true)
+		{
+			return;
+		}
+		std::string id;
+		if (isValidString(elem, "id") == true)
+		{
+			id = elem["id"].GetString();
+		}
+		else
+		{
+			if (isValidString(elem, "file") == false)
+			{
+				return;
+			}
+			std::string file(elem["file"].GetString());
+			if (getIdFromFile(file, id) == false)
+			{
+				return;
+			}
+		}
+		if (isValidId(id) == false)
+		{
+			return;
+		}
+		if (game.Resources().hasTexturePack(id) == true)
+		{
+			return;
+		}
+		auto texturePack = parseTexturePackObj(game, elem);
+		if (texturePack == nullptr)
+		{
+			return;
+		}
+		game.Resources().addTexturePack(id, std::move(texturePack), getStringViewKey(elem, "resource"));
+	}
+
+	void parseLevelLayer(Game& game, const Value& elem,
+		std::vector<std::shared_ptr<TexturePack>>& texturePackLayers)
+	{
+		size_t index = getUIntKey(elem, "index");
+		if (index < texturePackLayers.size())
+		{
+			texturePackLayers[index] = game.Resources().getTexturePack(
+				getStringKey(elem, "texturePack"));
+		}
+	}
+
+	bool getOrParseLevelTexturePack(Game& game, const Value& elem,
+		const char* idKeyLayers, std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
 		std::pair<uint32_t, uint32_t>& tileSize)
 	{
+		texturePackLayers.resize(Level::NumberOfLayers - 1);
+		bool success = false;
+
 		if (isValidString(elem, "min") == true)
 		{
 			// l4.min and town.min contain 16 blocks, all others 10.
@@ -305,47 +383,57 @@ namespace Parser
 			{
 				minBlocks = 10;
 			}
-			Min min(elem["min"].GetString(), minBlocks);
+			Min min(getStringViewVal(elem["min"]), minBlocks);
 			if (min.size() == 0)
 			{
-				return;
+				return false;
 			}
 
 			auto pal = game.Resources().getPalette(elem["palette"].GetString());
 			if (pal == nullptr)
 			{
-				return;
+				return false;
 			}
 
 			std::shared_ptr<ImageContainer> imgCont;
 			getOrParseImageContainer(game, elem, "imageContainer", imgCont);
 			if (imgCont == nullptr)
 			{
-				return;
+				return false;
 			}
 
 			bool useIndexedImages = Shaders::supportsPalettes();
 			CachedImagePack imgPack(imgCont.get(), pal, useIndexedImages);
 
-			texturePackBottom = LevelHelper::loadTilesetSprite(imgPack, min, false, false, true);
-			texturePackTop = LevelHelper::loadTilesetSprite(imgPack, min, true, true, true);
+			texturePackLayers[0] = LevelHelper::loadTilesetSprite(imgPack, min, false, false, true);
+			texturePackLayers[1] = LevelHelper::loadTilesetSprite(imgPack, min, true, true, true);
 
 			tileSize.first = 64;
 			tileSize.second = 32;
+			success = true;
 		}
 		else
 		{
-			if (isValidString(elem, idKeyBottom) == true)
-			{
-				texturePackBottom = game.Resources().getTexturePack(elem[idKeyBottom].GetString());
-			}
-			if (isValidString(elem, idKeyTop) == true)
-			{
-				texturePackTop = game.Resources().getTexturePack(elem[idKeyTop].GetString());
-			}
-
 			tileSize = getVector2uKey<std::pair<uint32_t, uint32_t>>(
 				elem, "tileSize", std::make_pair(64u, 32u));
 		}
+
+		if (elem.HasMember(idKeyLayers) == true)
+		{
+			const auto& layersElem = elem[idKeyLayers];
+			if (layersElem.IsArray() == true)
+			{
+				for (const auto& val : layersElem)
+				{
+					parseLevelLayer(game, val, texturePackLayers);
+				}
+			}
+			else if (layersElem.IsObject() == true)
+			{
+				parseLevelLayer(game, layersElem, texturePackLayers);
+			}
+			success = true;
+		}
+		return success;
 	}
 }

@@ -1,0 +1,56 @@
+{
+  "action": { "name": "resource.add", "id": "charPanelSpells" },
+  "image": [
+    {
+      "id": "spell1",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 18]
+    },
+    {
+      "id": "spell2",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 61]
+    },
+    {
+      "id": "spell3",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 104]
+    },
+    {
+      "id": "spell4",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 147]
+    },
+    {
+      "id": "spell5",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 190]
+    },
+    {
+      "id": "spell6",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 233]
+    },
+    {
+      "id": "spell7",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 276]
+    }
+  ],
+  "action": [
+    { "name": "image.setTexture", "id": "spell1", "query": "currentLevel.currentPlayer.spell.itemRepair" },
+    { "name": "image.setTexture", "id": "spell2", "query": "currentLevel.currentPlayer.spell.firebolt" },
+    { "name": "image.setTexture", "id": "spell3", "query": "currentLevel.currentPlayer.spell.chargedBolt" },
+    { "name": "image.setTexture", "id": "spell4", "query": "currentLevel.currentPlayer.spell.holyBolt" },
+    { "name": "image.setTexture", "id": "spell5", "query": "currentLevel.currentPlayer.spell.healing" },
+    { "name": "image.setTexture", "id": "spell6", "query": "currentLevel.currentPlayer.spell.healOther" },
+    { "name": "image.setTexture", "id": "spell7", "query": "currentLevel.currentPlayer.spell.inferno" }
+  ]
+}

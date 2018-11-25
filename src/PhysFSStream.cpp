@@ -28,7 +28,7 @@ sf::PhysFSStream::PhysFSStream(const char* fileName)
 
 sf::PhysFSStream::~PhysFSStream()
 {
-	if (file != NULL)
+	if (file != nullptr)
 	{
 		PHYSFS_close(file);
 	}
@@ -36,20 +36,16 @@ sf::PhysFSStream::~PhysFSStream()
 
 bool sf::PhysFSStream::load(const char* fileName)
 {
-	if (file == NULL)
+	if (file == nullptr)
 	{
 		file = PHYSFS_openRead(fileName);
 	}
-	return (file != NULL);
+	return (file != nullptr);
 }
 
 sf::Int64 sf::PhysFSStream::read(void* data, sf::Int64 size) noexcept
 {
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 	return PHYSFS_readBytes(file, data, (PHYSFS_uint64)size);
-#else
-	return PHYSFS_read(file, data, 1, (PHYSFS_uint32)size);
-#endif
 }
 
 sf::Int64 sf::PhysFSStream::seek(sf::Int64 position) noexcept

@@ -1,0 +1,62 @@
+{
+  "classifier": [
+    {
+      "id": "levelNameDownCrypt",
+      "values": [
+        {
+          "property": "level",
+          "value": { "min": "min", "max": "max", "value": "Down to crypt level %level%" }
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelNameUpCrypt",
+      "values": [
+        {
+          "property": "level",
+          "value": { "min": "min", "max": "max", "value": "Up to crypt level %level%" }
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelNameUpNest",
+      "values": [
+        {
+          "property": "level",
+          "value": { "min": "min", "max": "max", "value": "Up to nest level %level%" }
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelPathCrypt",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "crypt%level%" },
+            { "min": 0, "max": 0, "value": "town" },
+            { "min": 1, "max": "max", "value": "crypt%level%" }
+          ]
+        },
+        { "value": { "value": "%text1%" } }
+      ]
+    },
+    {
+      "id": "levelPathNest",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "nest%level%" },
+            { "min": 0, "max": 0, "value": "town" },
+            { "min": 1, "max": "max", "value": "nest%level%" }
+          ]
+        },
+        { "value": { "value": "%text1%" } }
+      ]
+    }
+  ]
+}

@@ -22,9 +22,7 @@
   "text": [
     {
       "id": "panelTitle1",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -33,9 +31,7 @@
     },
     {
       "id": "panelText1",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 178],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -45,19 +41,16 @@
     {
       "id": "panelText2",
       "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 202],
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "but it will cost %WirtSeePrice% gold"
+      "text": "but it will cost |WirtSeePrice| gold"
     },
     {
       "id": "panelText3",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [476, 226],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -68,9 +61,7 @@
   "button": [
     {
       "id": "talk",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textBlue%",
+      "font": "smaltextBlue",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
@@ -123,7 +114,7 @@
   "action": [
     {
       "name": "if.equal",
-      "param1": "|currentLevel|player.wirt.hasItem.0.0|",
+      "param1": "%currentLevel.player.wirt.hasItem.0.0%",
       "param2": true,
       "else": [
         { "name": "drawable.visible", "id": "panelText1", "visible": false },

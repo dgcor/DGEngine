@@ -58,13 +58,6 @@ namespace Parser
 		image->setOutline(outline, outlineIgnore);
 		image->setOutlineEnabled(getBoolKey(elem, "enableOutline"));
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, image);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, image);
-		}
+		game.Resources().addDrawable(id, image, getStringViewKey(elem, "resource"));
 	}
 }

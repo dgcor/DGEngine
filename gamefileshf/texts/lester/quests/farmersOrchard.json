@@ -1,0 +1,32 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%currentLevel.quest.farmersOrchard.state%",
+    "case": [
+      {
+        "value": 0,
+        "action": { "name": "load", "file": "texts/lester/quests/farmersOrchard1.json" }
+      },
+      {
+        "value": 1,
+        "action": { "name": "load", "file": "texts/lester/quests/farmersOrchard2.json" }
+      },
+      {
+        "value": 2,
+        "action": { "name": "load", "file": "texts/lester/quests/farmersOrchard3.json" }
+      },
+      {
+        "value": 3,
+        "action": { "name": "load", "file": "texts/lester/quests/farmersOrchard4.json" }
+      },
+      {
+        "value": -1,
+        "action": [
+          { "name": "load", "file": "texts/lester/quests/farmersOrchard5.json" },
+          { "name": "quest.delete", "quest": "farmersOrchard" }
+        ]
+      }
+    ],
+    "default": 0
+  }
+}

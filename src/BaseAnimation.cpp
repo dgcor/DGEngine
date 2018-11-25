@@ -53,17 +53,22 @@ bool BaseAnimation::update(sf::Time elapsedTime) noexcept
 		return false;
 	}
 
-	// add delta time
 	currentTime += elapsedTime;
 
-	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
+	if (currentTime < frameTime)
 	{
-		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
-
-		updateFrameIndex();
-		return true;
+		return false;
 	}
-	return false;
+	do
+	{
+		currentTime -= frameTime;
+		updateFrameIndex();
+		if (animType == AnimationType::PlayOnce &&
+			currentTextureIdx >= textureIndexRange.second)
+		{
+			break;
+		}
+	} while (currentTime >= frameTime);
+
+	return true;
 }

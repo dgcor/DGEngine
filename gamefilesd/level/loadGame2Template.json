@@ -1,0 +1,3 @@
+{
+  "load": ["level/loadFull.json", "cutstart", "{1}", "{2}"]
+}

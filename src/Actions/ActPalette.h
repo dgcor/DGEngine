@@ -6,6 +6,33 @@
 #include <memory>
 #include <string>
 
+class ActPaletteReplace : public Action
+{
+private:
+	std::string idDstPal;
+	std::string idSrcPal;
+	size_t srcStart;
+	size_t size;
+	size_t dstStart;
+
+public:
+	ActPaletteReplace(const std::string& idDstPal_, const std::string& idSrcPal_,
+		size_t srcStart_, size_t size_, size_t dstStart_) noexcept
+		: idDstPal(idDstPal_), idSrcPal(idSrcPal_), srcStart(srcStart_),
+		size(size_), dstStart(dstStart_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto dstPal = game.Resources().getPalette(idDstPal);
+		auto srcPal = game.Resources().getPalette(idSrcPal);
+		if (dstPal != nullptr && srcPal != nullptr)
+		{
+			dstPal->replaceRange(*srcPal, srcStart, size, dstStart);
+		}
+		return false;
+	}
+};
+
 class ActPaletteShiftLeft : public Action
 {
 private:

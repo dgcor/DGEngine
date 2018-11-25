@@ -3,7 +3,25 @@
 #include "GameUtils.h"
 #include "Utils/Utils.h"
 
-std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16) const noexcept
+bool Movie::load()
+{
+#ifndef USE_SFML_MOVIE_STUB
+	if (file == nullptr || file->hasError() == true)
+	{
+		return false;
+	}
+	bool ret = movie.openFromStream(*file);
+	if (ret == true)
+	{
+		size = movie.getSize();
+	}
+	return ret;
+#else
+	return true;
+#endif
+}
+
+std::shared_ptr<Action> Movie::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
 	{
@@ -14,7 +32,7 @@ std::shared_ptr<Action> Movie2::getAction(uint16_t nameHash16) const noexcept
 	}
 }
 
-bool Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
+bool Movie::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
 {
 	switch (nameHash16)
 	{
@@ -27,7 +45,7 @@ bool Movie2::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& actio
 	return true;
 }
 
-void Movie2::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Movie::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == true)
 	{
@@ -35,7 +53,7 @@ void Movie2::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-void Movie2::updateSize(const Game& game)
+void Movie::updateSize(const Game& game)
 {
 	if (game.StretchToFit() == true)
 	{
@@ -59,7 +77,7 @@ void Movie2::updateSize(const Game& game)
 #endif
 }
 
-void Movie2::update(Game& game)
+void Movie::update(Game& game)
 {
 	if (visible == false)
 	{
@@ -78,12 +96,12 @@ void Movie2::update(Game& game)
 #endif
 }
 
-bool Movie2::getProperty(const std::string& prop, Variable& var) const
+bool Movie::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first), props.second, var);
 }

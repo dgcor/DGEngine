@@ -1,4 +1,3 @@
-
 /*
  *  TimerPriorities.hpp
  *  sfeMovie project
@@ -22,12 +21,12 @@
  *
  */
 
-#ifndef SFEMOVIE_TIMER_PRIORITIES_HPP
-#define SFEMOVIE_TIMER_PRIORITIES_HPP
+#pragma once
 
-extern const int DefaultTimerPriority;
-extern const int DemuxerTimerPriority;
-extern const int ActiveStreamTimerPriority;
-extern const int PassiveStreamTimerPriority;
-
-#endif
+namespace sfe
+{
+	constexpr int DefaultTimerPriority = 0;
+	constexpr int DemuxerTimerPriority = -5;		// Demuxer always notified first!
+	constexpr int ActiveStreamTimerPriority = 5;
+	constexpr int PassiveStreamTimerPriority = 10;	// Always last
+}

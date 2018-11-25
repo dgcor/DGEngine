@@ -1,0 +1,10 @@
+{
+  "imageContainer": [
+    { "file": "ctrlpan/spelicon.cel" },
+    { "file": "data/spelli2.cel" }
+  ],
+  "texturePack": [
+    { "id": "spelicon", "imageContainer": "spelicon", "palette": "town" },
+    { "id": "spelli2", "imageContainer": "spelli2", "palette": "town" }
+  ]
+}

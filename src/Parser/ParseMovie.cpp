@@ -16,7 +16,7 @@ namespace Parser
 			return;
 		}
 
-		std::string file(elem["file"].GetString());
+		auto file = getStringViewVal(elem["file"]);
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
@@ -37,7 +37,7 @@ namespace Parser
 		{
 			action = parseAction(game, elem["onComplete"]);
 		}
-		auto movie = std::make_shared<Movie2>(file);
+		auto movie = std::make_shared<Movie>(file);
 		if (movie->load() == false)
 		{
 			if (action != nullptr)
@@ -79,22 +79,8 @@ namespace Parser
 
 		movie->Visible(getBoolKey(elem, "visible", true));
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, movie);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, movie);
-		}
+		game.Resources().addDrawable(id, movie, getStringViewKey(elem, "resource"));
 
-		try
-		{
-			movie->play();
-		}
-		catch (std::exception ex)
-		{
-			std::cerr << ex.what();
-		}
+		movie->play();
 	}
 }

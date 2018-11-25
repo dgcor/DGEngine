@@ -15,6 +15,8 @@ public:
 
 	virtual bool get(size_t index, TextureInfo& ti) const;
 
+	TexturePack* getTexturePack() const noexcept { return texturePack.get(); }
+
 	void mapTextureIndex(size_t mapIndex);
 	void mapTextureIndex(size_t mapIndex, size_t toIndex);
 

@@ -1,0 +1,107 @@
+{
+  "classifier": [
+    {
+      "id": "levelNameDown",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "Down to level %level%" },
+            { "min": 0, "max": 0, "value": "Down to town" },
+            { "min": 1, "max": 1, "value": "Down to dungeon" },
+            { "min": 2, "max": "max", "value": "Down to level %level%" }
+          ]
+        },
+        {
+          "property": "text1",
+          "value": [
+            { "text": "poisonWater", "value": "A Dark Passage" },
+            { "text": "skeletonKing", "value": "To King Leoric's Tomb" },
+            { "text": "chamberBone", "value": "To The Chamber of Bone" }
+          ]
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelNameUp",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "Up to level %level%" },
+            { "min": 0, "max": 0, "value": "Up to town" },
+            { "min": 1, "max": "max", "value": "Up to level %level%" }
+          ]
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelNameBack",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "Back to level %level%" },
+            { "min": 0, "max": 0, "value": "Back to town" },
+            { "min": 1, "max": "max", "value": "Back to level %level%" }
+          ]
+        },
+        { "value": { "value": "%simpleName%" } }
+      ]
+    },
+    {
+      "id": "levelPath",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": -1, "value": "l%level%" },
+            { "min": 0, "max": 0, "value": "town" },
+            { "min": 1, "max": "max", "value": "l%level%" }
+          ]
+        },
+        { "value": { "value": "%text1%" } }
+      ]
+    },
+    {
+      "id": "loadingScreenText2",
+      "values": "%text2%"
+    },
+    {
+      "id": "loadingScreenDown",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": 1, "value": "cuttt" },
+            { "min": 2, "max": 5, "value": "cutl1d" },
+            { "min": 6, "max": 9, "value": "cut2" },
+            { "min": 10, "max": 13, "value": "cut3" },
+            { "min": 14, "max": 15, "value": "cut4" },
+            { "min": 16, "max": 16, "value": "cutgate" },
+            { "min": 17, "max": "max", "value": "cut4" }
+          ]
+        },
+        { "value": { "value": "%text2%" } }
+      ]
+    },
+    {
+      "id": "loadingScreenUp",
+      "values": [
+        {
+          "property": "level",
+          "value": [
+            { "min": "min", "max": 0, "value": "cuttt" },
+            { "min": 1, "max": 3, "value": "cutl1d" },
+            { "min": 4, "max": 7, "value": "cut2" },
+            { "min": 8, "max": 11, "value": "cut3" },
+            { "min": 12, "max": "max", "value": "cut4" }
+          ]
+        },
+        { "value": { "value": "%text2%" } }
+      ]
+    }
+  ]
+}

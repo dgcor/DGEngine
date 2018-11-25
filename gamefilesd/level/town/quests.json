@@ -1,0 +1,11 @@
+{
+  "quest": [
+    {
+      "id": "ogdenInit"
+    },
+    {
+      "id": "theButcher",
+      "name": "The Butcher"
+    }
+  ]
+}

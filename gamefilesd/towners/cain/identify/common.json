@@ -34,9 +34,7 @@
   ],
   "text": {
     "id": "panelTitle",
-    "replaceVars": true,
-    "font": "smaltext",
-    "color": "%textGold%",
+    "font": "smaltextGold",
     "position": [320, 46],
     "anchor": "none",
     "horizontalAlign": "center",

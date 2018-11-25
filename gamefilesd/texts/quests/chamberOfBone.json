@@ -5,10 +5,5 @@
     "50",
     "texts/quests/chamberOfBone.txt"
   ],
-  "load": [
-    "res/player/sound/load.json",
-    "|currentLevel|currentPlayer.class|",
-    1,
-    "playAudio"
-  ]
+  "load": ["res/player/sound/load.json", 1, "", "playAudio", ""]
 }

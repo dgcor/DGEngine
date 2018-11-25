@@ -2,6 +2,7 @@
 
 #include "LevelObject.h"
 #include <string>
+#include <string_view>
 #include <variant>
 #include <vector>
 
@@ -28,7 +29,7 @@ private:
 
 public:
 	Formula() noexcept {}
-	Formula(const std::string& formula);
+	Formula(const std::string_view formula);
 
 	bool empty() const  noexcept { return elements.empty(); }
 

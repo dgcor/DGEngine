@@ -25,5 +25,5 @@ void BitmapButton::update(Game& game)
 		return;
 	}
 	auto contains = sprite.getGlobalBounds().contains(game.MousePositionf());
-	Button::update(game, contains);
+	Button::updateEvents(game, contains);
 }

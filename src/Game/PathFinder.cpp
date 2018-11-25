@@ -2,33 +2,27 @@
 #include <cmath>
 #include "LevelMap.h"
 
+MapSearchNode::MapSearchNode(const LevelMap& map, int16_t x_, int16_t y_,
+	const PlayerDirection& direction_) noexcept : x(x_), y(y_), direction(direction_)
+{
+	if (map.isMapCoordValid(x_, y_) == true)
+	{
+		cost = map[(Coord)x_][(Coord)y_].Passable() ? NodePassable : NodeNotPassable;
+	}
+	else
+	{
+		cost = NodeInvalid;
+	}
+}
+
 bool MapSearchNode::IsValid() const noexcept
 {
-	return (x >= 0 &&
-		x < map->Width() &&
-		y >= 0 &&
-		y < map->Height());
+	return cost != NodeInvalid;
 }
 
-bool MapSearchNode::IsPassableIgnoreObject() const noexcept
+bool MapSearchNode::IsPassable() const
 {
-	if (IsValid() == true)
-	{
-		return (*map)[(Coord)x][(Coord)y].PassableIgnoreObject();
-	}
-	return false;
-}
-
-bool MapSearchNode::IsPassable(int16_t x_, int16_t y_) const
-{
-	if (x_ >= 0 &&
-		x_ < map->Width() &&
-		y_ >= 0 &&
-		y_ < map->Height())
-	{
-		return (*map)[(Coord)x_][(Coord)y_].Passable();
-	}
-	return false;
+	return cost == NodePassable;
 }
 
 bool MapSearchNode::IsSameState(MapSearchNode& rhs) noexcept
@@ -54,7 +48,11 @@ bool MapSearchNode::IsGoal(MapSearchNode& nodeGoal) noexcept
 bool MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 	int16_t x_, int16_t y_, int16_t parent_x, int16_t parent_y)
 {
-	if ((IsPassable(x_, y_) == true) && !((parent_x == x_) && (parent_y == y_)))
+	const auto& map = *((PathFinder*)astarsearch)->map;
+
+	if ((map.isMapCoordValid(x_, y_) == true) &&
+		(map[(Coord)x_][(Coord)y_].Passable() == true) &&
+		!((parent_x == x_) && (parent_y == y_)))
 	{
 		auto direction_ = getPlayerDirection(
 			MapCoord((Coord)parent_x, (Coord)parent_y),
@@ -109,11 +107,7 @@ bool MapSearchNode::GetSuccessors(AStarSearch<MapSearchNode>* astarsearch, MapSe
 
 float MapSearchNode::GetCost() const
 {
-	if (IsPassable(x, y) == true)
-	{
-		return 1.f;
-	}
-	return 9.f;
+	return cost;
 }
 
 float MapSearchNode::GetCost(MapSearchNode& successor)
@@ -121,10 +115,10 @@ float MapSearchNode::GetCost(MapSearchNode& successor)
 	return GetCost();
 }
 
-const bool addNearestSuccessor(std::vector<MapSearchNode>& neighbours,
+const bool addNearestSuccessor(const LevelMap& map, std::vector<MapSearchNode>& neighbours,
 	int16_t x_, int16_t y_, MapSearchNode parent)
 {
-	MapSearchNode neighbour(parent);
+	MapSearchNode neighbour(map, x_, y_, parent.direction);
 	neighbour.x = x_;
 	neighbour.y = y_;
 	if ((neighbour.IsPassable() == true) && !((parent.x == x_) && (parent.y == y_)))
@@ -135,35 +129,36 @@ const bool addNearestSuccessor(std::vector<MapSearchNode>& neighbours,
 	return false;
 }
 
-bool getNearestPassableEndNode(const MapSearchNode& start, MapSearchNode& end)
+bool getNearestPassableEndNode(const LevelMap& map,
+	const MapSearchNode& start, MapSearchNode& end)
 {
 	std::vector<MapSearchNode> neighbours;
 
-	bool canWalkLeft = addNearestSuccessor(neighbours, end.x - 1, end.y, end);
-	bool canWalkRight = addNearestSuccessor(neighbours, end.x + 1, end.y, end);
-	bool canWalkUp = addNearestSuccessor(neighbours, end.x, end.y - 1, end);
-	bool canWalkDown = addNearestSuccessor(neighbours, end.x, end.y + 1, end);
+	bool canWalkLeft = addNearestSuccessor(map, neighbours, end.x - 1, end.y, end);
+	bool canWalkRight = addNearestSuccessor(map, neighbours, end.x + 1, end.y, end);
+	bool canWalkUp = addNearestSuccessor(map, neighbours, end.x, end.y - 1, end);
+	bool canWalkDown = addNearestSuccessor(map, neighbours, end.x, end.y + 1, end);
 
 	if (canWalkLeft == true)
 	{
 		if (canWalkUp == true)
 		{
-			addNearestSuccessor(neighbours, end.x - 1, end.y - 1, end);
+			addNearestSuccessor(map, neighbours, end.x - 1, end.y - 1, end);
 		}
 		if (canWalkDown == true)
 		{
-			addNearestSuccessor(neighbours, end.x - 1, end.y + 1, end);
+			addNearestSuccessor(map, neighbours, end.x - 1, end.y + 1, end);
 		}
 	}
 	if (canWalkRight == true)
 	{
 		if (canWalkUp == true)
 		{
-			addNearestSuccessor(neighbours, end.x + 1, end.y - 1, end);
+			addNearestSuccessor(map, neighbours, end.x + 1, end.y - 1, end);
 		}
 		if (canWalkDown == true)
 		{
-			addNearestSuccessor(neighbours, end.x + 1, end.y + 1, end);
+			addNearestSuccessor(map, neighbours, end.x + 1, end.y + 1, end);
 		}
 	}
 

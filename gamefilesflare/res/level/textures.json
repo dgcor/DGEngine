@@ -47,8 +47,17 @@
       "size": [1, 1]
     },
     {
+      "id": "golddrop",
+      "color": "0x505A58CC",
+      "size": [1, 1]
+    },
+    {
       "id": "tab_active",
       "file": "images/menus/tab_active.png"
+    },
+    {
+      "id": "automap",
+      "file": "res/level/automap.png"
     }
   ],
   "texturePack": {

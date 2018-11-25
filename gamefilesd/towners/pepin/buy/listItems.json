@@ -26,7 +26,7 @@
     "visibleItems": 4,
     "verticalPad": 38,
     "items": {
-      "load": "currentLevel|pepin.inventory.0",
+      "load": "currentLevel.pepin.inventory.0",
       "text": "%price%",
       "executeAction": {
         "name": "load",

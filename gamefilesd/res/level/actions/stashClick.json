@@ -7,7 +7,7 @@
       "updateStashItems",
       {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": "updateSelectedItem",
         "else": "update{1}Text"

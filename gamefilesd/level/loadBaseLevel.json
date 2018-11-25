@@ -3,6 +3,7 @@
     "id": "level",
     "anchor": "all",
     "size": [640, 352],
+    "automapPlayerDirectionIndex": 1024,
     "playerClassClearIndex": 1,
     "playerClearIndex": 1,
     "onHoverEnter": "levelHoverAction",
@@ -64,6 +65,5 @@
       1583495809
     ]
   },
-  "load": "ui/level/char/panel.json",
-  "load": "level/quests.json"
+  "load": "ui/level/char/panel.json"
 }

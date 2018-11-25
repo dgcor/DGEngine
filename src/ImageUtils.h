@@ -9,14 +9,14 @@ namespace ImageUtils
 	void applyMask(sf::Image& image,
 		const sf::Color& transparencyMask = sf::Color::Transparent);
 
-	sf::Image loadImage(const std::string& fileName,
+	sf::Image loadImage(const std::string_view fileName,
 		const sf::Color& transparencyMask = sf::Color::Transparent);
 
 	sf::Image loadImage(const ImageContainer& imgContainer,
 		const std::shared_ptr<Palette>& pal);
 
 	sf::Image loadImageFrame(const ImageContainer& imgContainer,
-		const Palette& pal, size_t frameIdx);
+		const PaletteArray* pal, size_t frameIdx);
 
 	sf::Image loadBitmapFontImage(const ImageContainer& imgContainer,
 		const char* fileNameBin, const std::shared_ptr<Palette>& pal);

@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cutl1d",
-    "file":"gendata/cutl1d.pal"
+    "file": "gendata/cutl1d.pal"
   },
   "texture": {
     "id": "cutl1d",
-    "file":"gendata/cutl1d.cel",
+    "file": "gendata/cutl1d.cel",
     "palette": "cutl1d"
   },
   "loadingScreen": {

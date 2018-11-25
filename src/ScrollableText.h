@@ -4,8 +4,8 @@
 #include "DrawableText.h"
 #include <memory>
 #include <SFML/Graphics.hpp>
+#include "SFML/View2.h"
 #include "UIObject.h"
-#include "View2.h"
 
 class ScrollableText : public UIObject
 {
@@ -24,13 +24,7 @@ private:
 public:
 	ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_);
 
-	void reset()
-	{
-		text->Position(sf::Vector2f(0.f, 0.f));
-		const auto& vSize = view.getSize();
-		view.reset(sf::FloatRect(0, -vSize.y, vSize.x, vSize.y));
-		height = vSize.y;
-	}
+	void reset();
 
 	void setLoop(bool loop_) noexcept { loop = loop_; }
 	void setPause(bool pause_) noexcept { pause = pause_; }
@@ -56,5 +50,5 @@ public:
 
 	virtual void updateViewPort(const Game& game) { view.updateViewport(game); }
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

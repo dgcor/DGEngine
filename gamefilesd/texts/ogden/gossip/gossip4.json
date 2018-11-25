@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "25",
     "texts/ogden/gossip/gossip4.txt"
   ],
   "audio": {
     "file": "sfx/Towners/tavown40.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "level": {
+    "id": "level",
+    "path": "crypt2",
+    "name": "Crypt 2",
+    "map": { "file": "level/crypt2/crypt2.json", "indexOffset": -1 }
+  },
+  "load": "level/crypt2/levelObjects2.json",
+  "load": "level/crypt2/monsters2.json"
+}

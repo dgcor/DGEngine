@@ -34,7 +34,6 @@
   "text": [
     {
       "id": "thisItemIs",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [320, 118],
       "anchor": "none",
@@ -44,7 +43,6 @@
     },
     {
       "id": "itemInfo",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [51, 166],
       "anchor": "none",

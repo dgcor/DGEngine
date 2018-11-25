@@ -215,14 +215,14 @@ void Menu::update(Game& game)
 	}
 }
 
-bool Menu::getProperty(const std::string& prop, Variable& var) const
+bool Menu::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
 	case str2int16("itemCount"):
@@ -237,7 +237,7 @@ bool Menu::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("item"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
-		auto btnIdx = std::strtoul(props2.first.c_str(), NULL, 10);
+		auto btnIdx = Utils::strtou(props2.first);
 		if (btnIdx < items.size())
 		{
 			auto button = items[btnIdx].get();

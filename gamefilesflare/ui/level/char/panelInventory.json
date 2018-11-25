@@ -334,7 +334,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [337, 77]
@@ -344,7 +344,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [569, 77]
@@ -354,7 +354,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [453, 77]
@@ -364,7 +364,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [453, -10]
@@ -374,7 +374,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [511, 5]
@@ -384,7 +384,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [354, 150]
@@ -394,7 +394,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [555, 150]

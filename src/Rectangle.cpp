@@ -16,12 +16,12 @@ void Rectangle::updateSize(const Game& game)
 	setSize(size);
 }
 
-bool Rectangle::getProperty(const std::string& prop, Variable& var) const
+bool Rectangle::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first), props.second, var);
 }

@@ -6,6 +6,7 @@
     { "id": "whereWouldIPutThis", "file": "Sfx/Monk/Monk16.wav" },
     { "id": "cantCastThatHere", "file": "Sfx/Monk/Monk27.wav" },
     { "id": "dontHaveASpellReady", "file": "Sfx/Monk/Monk34.wav" },
-    { "id": "notEnoughMana", "file": "Sfx/Monk/Monk35.wav" }
+    { "id": "notEnoughMana", "file": "Sfx/Monk/Monk35.wav" },
+    { "id": "die", "file": "Sfx/Monk/Monk71.wav" }
   ]
 }

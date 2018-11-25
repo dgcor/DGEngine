@@ -5,10 +5,5 @@
     "50",
     "texts/quests/arkainesValor.txt"
   ],
-  "load": [
-    "res/player/sound/load.json",
-    "|currentLevel|currentPlayer.class|",
-    10,
-    "playAudio"
-  ]
+  "load": ["res/player/sound/load.json", 10, "", "playAudio", ""]
 }

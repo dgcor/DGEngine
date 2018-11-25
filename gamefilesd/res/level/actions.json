@@ -1,9 +1,10 @@
 {
   "load": "res/level/actions/sounds.json",
-  "load": "res/level/actions/colorCycling.json",
   "load": "res/level/actions/resizeLevel.json",
   "load": "res/level/actions/itemPanel.json",
   "load": "res/level/actions/basePanel.json",
+  "load": "res/level/actions/automap.json",
+  "load": "res/level/actions/automapZoom.json",
   "load": "res/level/actions/charPanel.json",
   "load": "res/level/actions/playerTexture.json",
   "load": "res/level/actions/playerBelt.json",

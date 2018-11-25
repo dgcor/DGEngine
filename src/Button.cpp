@@ -322,10 +322,8 @@ void Button::onTouchEnded(Game& game, bool contains)
 	}
 }
 
-void Button::update(Game& game, bool contains)
+void Button::updateEvents(Game& game, bool contains)
 {
-	onHover(game, contains);
-
 	if (game.wasMousePressed() == true)
 	{
 		onMouseButtonPressed(game, contains);
@@ -336,6 +334,7 @@ void Button::update(Game& game, bool contains)
 	}
 	if (game.wasMouseMoved() == true)
 	{
+		onHover(game, contains);
 		onMouseMoved(game);
 	}
 	if (game.hasTouchBegan() == true)
@@ -344,6 +343,7 @@ void Button::update(Game& game, bool contains)
 	}
 	if (game.hasTouchMoved() == true)
 	{
+		onHover(game, contains);
 		onMouseMoved(game);
 	}
 	if (game.hasTouchEnded() == true)
@@ -351,8 +351,8 @@ void Button::update(Game& game, bool contains)
 		onTouchEnded(game, contains);
 	}
 	if (contains == true &&
-		captureInputEvents == true)
+		captureInputEvents != InputEvent::None)
 	{
-		game.clearInputEvents();
+		game.clearInputEvents(captureInputEvents);
 	}
 }

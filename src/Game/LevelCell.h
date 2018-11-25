@@ -7,15 +7,20 @@
 
 class LevelCell
 {
+public:
+	// number of layers + sol
+	static constexpr size_t NumberOfLayers = 6;
+	static constexpr size_t SolLayer = NumberOfLayers - 1;
+
 private:
-	// 0 - back, 1 - front, 2 - sol
-	std::array<int16_t, 3> tileIndexes;
+	std::array<int16_t, NumberOfLayers> tileIndexes;
 	std::vector<LevelObject*> objects;
 
 public:
-	LevelCell() : tileIndexes{ -1, -1, 0 } {}
-	LevelCell(int16_t back, int16_t front, int16_t sol)
-		: tileIndexes{ back, front, sol } {}
+	LevelCell() : tileIndexes{ -1, -1, -1, -1, -1, 0 } {}
+	LevelCell(int16_t layer1, int16_t layer2, int16_t layer3,
+		int16_t layer4, int16_t layer5, int16_t layer6)
+		: tileIndexes{ layer1, layer2, layer3, layer4, layer5, layer6 } {}
 
 	using iterator = std::vector<LevelObject*>::iterator;
 	using const_iterator = std::vector<LevelObject*>::const_iterator;
@@ -35,15 +40,12 @@ public:
 	const_reverse_iterator crbegin() const noexcept { return objects.crbegin(); }
 	const_reverse_iterator crend() const noexcept { return objects.crend(); }
 
-	int16_t TileIndexBack() const noexcept { return tileIndexes[0]; }
-	int16_t TileIndexFront() const noexcept { return tileIndexes[1]; }
+	int16_t getTileIndex(size_t layer) const noexcept { return tileIndexes[layer]; }
 
-	void TileIndex(size_t index, int16_t tileIndex_) noexcept { tileIndexes[index] = tileIndex_; }
-	void TileIndexBack(int16_t tileIndex_) noexcept { tileIndexes[0] = tileIndex_; }
-	void TileIndexFront(int16_t tileIndex_) noexcept { tileIndexes[1] = tileIndex_; }
-	void Sol(int16_t sol_) noexcept { tileIndexes[2] = sol_; }
+	void setTileIndex(int16_t tileIndex_) noexcept;
+	void setTileIndex(size_t layer, int16_t tileIndex_) noexcept { tileIndexes[layer] = tileIndex_; }
 
-	bool PassableIgnoreObject() const noexcept { return !(tileIndexes[2] & 0x01); }
+	bool PassableIgnoreObject() const noexcept { return !(tileIndexes[SolLayer] & 0x01); }
 	bool PassableIgnoreObject(const LevelObject* ignoreObj) const;
 	bool Passable() const;
 

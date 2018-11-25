@@ -1,0 +1,6 @@
+{
+  "load": "level/levelObject/classifiers.json",
+  "load": "level/levelObject/classifiershf.json",
+  "load": "level/levelObject/classes2.json",
+  "load": "level/levelObject/classeshf.json"
+}

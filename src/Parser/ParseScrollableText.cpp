@@ -40,8 +40,8 @@ namespace Parser
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		scrollable->setAnchor(anchor);
-		auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
@@ -65,13 +65,6 @@ namespace Parser
 			scrollable->setAction(str2int16("complete"), parseAction(game, elem["onComplete"]));
 		}
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, scrollable);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, scrollable);
-		}
+		game.Resources().addDrawable(id, scrollable, getStringViewKey(elem, "resource"));
 	}
 }

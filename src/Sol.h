@@ -11,7 +11,7 @@ private:
 
 public:
 	Sol() {}
-	Sol(const std::string& fileName);
+	Sol(const std::string_view fileName);
 
 	uint8_t get(size_t index) const;
 	bool passable(size_t index) const;

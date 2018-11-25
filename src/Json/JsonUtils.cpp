@@ -29,10 +29,8 @@ namespace JsonUtils
 		}
 	}
 
-	std::regex regexPercent(R"((\%[\w.]+\%))");
-
 	void replaceStringWithVariable(Value& elem,
-		Value::AllocatorType& allocator, const std::string& str,
+		Value::AllocatorType& allocator, const std::string_view str,
 		const Variable& var, bool changeValueType)
 	{
 		if (elem.IsString() == false ||
@@ -40,7 +38,7 @@ namespace JsonUtils
 		{
 			return;
 		}
-		std::string str1(elem.GetString());
+		std::string str1(elem.GetString(), elem.GetStringLength());
 
 		if (changeValueType == true &&
 			str1 == str)
@@ -61,18 +59,36 @@ namespace JsonUtils
 		const Queryable& obj, bool changeValueType)
 	{
 		if (elem.IsString() == false ||
-			elem.GetStringLength() == 0)
+			elem.GetStringLength() <= 2)
 		{
 			return;
 		}
-		std::string str1(elem.GetString());
-		std::string str2(str1);
-		std::smatch match;
+
+		std::string_view str(elem.GetString(), elem.GetStringLength());
+		std::string str2;
+		size_t firstTokenStart = 0;
 		bool hadMatch = false;
-		while (std::regex_search(str1, match, regexPercent) == true)
+		while (true)
 		{
-			hadMatch = true;
-			auto strProp = match[1].str();
+			firstTokenStart = str.find('%', firstTokenStart);
+			if (firstTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t firstTokenStop = firstTokenStart + 1;
+			size_t secondTokenStart = str.find_first_of('%', firstTokenStop);
+			if (secondTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t secondTokenStop = secondTokenStart + 1;
+			if (hadMatch == false)
+			{
+				hadMatch = true;
+				str2 = str;
+			}
+
+			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
 			Variable var;
 			if (obj.getProperty(strProp.substr(1, strProp.size() - 2), var) == true)
 			{
@@ -82,25 +98,24 @@ namespace JsonUtils
 					replaceValueWithVariable(elem, allocator, var);
 					return;
 				}
-				Utils::replaceStringInPlace(
-					str2, strProp, VarUtils::toString(var));
+				Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
 			}
-			str1 = match.suffix().str();
+			firstTokenStart = secondTokenStop;
 		}
 		if (hadMatch == true &&
-			elem.GetString() != str2)
+			str != str2)
 		{
 			elem.SetString(str2, allocator);
 		}
 	}
 
 	void replaceValueWithString(Value& elem, Value::AllocatorType& allocator,
-		const std::string& oldStr, const std::string& newStr)
+		const std::string_view oldStr, const std::string_view newStr)
 	{
 		if (elem.IsString() == true)
 		{
-			std::string str1(elem.GetString());
-			auto str2(str1);
+			std::string_view str1(elem.GetString(), elem.GetStringLength());
+			std::string str2(str1);
 			Utils::replaceStringInPlace(str2, oldStr, newStr);
 			if (str1 != str2)
 			{
@@ -151,24 +166,45 @@ namespace JsonUtils
 		}
 	}
 
-	std::regex regexPercent2(R"((\%\w+\%))");
-
 	void replaceValueWithGameVar(Value& elem,
 		Value::AllocatorType& allocator,
-		const Game& game, bool changeValueType)
+		const Game& game, bool changeValueType, char token)
 	{
 		if (elem.IsString() == true)
 		{
-			std::string str1(elem.GetString());
-			std::string str2(str1);
-			std::smatch match;
-			bool hadMatch = false;
-			while (std::regex_search(str1, match, regexPercent2) == true)
+			if (elem.IsString() == false ||
+				elem.GetStringLength() <= 2)
 			{
-				hadMatch = true;
-				auto strProp = match[1].str();
+				return;
+			}
+
+			std::string_view str(elem.GetString(), elem.GetStringLength());
+			std::string str2;
+			size_t firstTokenStart = 0;
+			bool hadMatch = false;
+			while (true)
+			{
+				firstTokenStart = str.find(token, firstTokenStart);
+				if (firstTokenStart == std::string_view::npos)
+				{
+					break;
+				}
+				size_t firstTokenStop = firstTokenStart + 1;
+				size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
+				if (secondTokenStart == std::string_view::npos)
+				{
+					break;
+				}
+				size_t secondTokenStop = secondTokenStart + 1;
+				if (hadMatch == false)
+				{
+					hadMatch = true;
+					str2 = str;
+				}
+				std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+				std::string strProp2(strProp.substr(1, strProp.size() - 2));
 				Variable var;
-				if (game.getVariable(strProp, var) == true)
+				if (game.getVarOrPropNoToken(strProp2, var) == true)
 				{
 					if (changeValueType == true &&
 						strProp == str2)
@@ -176,13 +212,12 @@ namespace JsonUtils
 						replaceValueWithVariable(elem, allocator, var);
 						return;
 					}
-					Utils::replaceStringInPlace(
-						str2, strProp, VarUtils::toString(var));
+					Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
 				}
-				str1 = match.suffix().str();
+				firstTokenStart = secondTokenStop;
 			}
 			if (hadMatch == true &&
-				elem.GetString() != str2)
+				str != str2)
 			{
 				elem.SetString(str2, allocator);
 			}
@@ -191,14 +226,14 @@ namespace JsonUtils
 		{
 			for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
 			{
-				replaceValueWithGameVar(it->value, allocator, game);
+				replaceValueWithGameVar(it->value, allocator, game, changeValueType, token);
 			}
 		}
 		else if (elem.IsArray() == true)
 		{
 			for (auto it = elem.Begin(); it != elem.End(); ++it)
 			{
-				replaceValueWithGameVar(*it, allocator, game);
+				replaceValueWithGameVar(*it, allocator, game, changeValueType, token);
 			}
 		}
 	}
@@ -207,11 +242,11 @@ namespace JsonUtils
 	{
 		if (elem.IsString() == true)
 		{
-			return elem.GetString();
+			return { elem.GetString(), elem.GetStringLength() };
 		}
 		else if (elem.IsInt64() == true)
 		{
-			return std::to_string(elem.GetInt64());
+			return Utils::toString(elem.GetInt64());
 		}
 		else if (elem.IsDouble() == true)
 		{
@@ -234,7 +269,7 @@ namespace JsonUtils
 		}
 		else if (elem.IsUint64() == true)
 		{
-			return std::to_string(elem.GetUint64());
+			return Utils::toString(elem.GetUint64());
 		}
 		return jsonToString(elem);
 	}
@@ -244,30 +279,30 @@ namespace JsonUtils
 		StringBuffer buffer;
 		Writer<StringBuffer> writer(buffer);
 		elem.Accept(writer);
-		return std::string(buffer.GetString());
+		return std::string(buffer.GetString(), buffer.GetSize());
 	}
 
-	bool loadFile(const std::string& file, Document& doc)
+	bool loadFile(const std::string_view file, Document& doc)
 	{
 		if (file.empty() == true)
 		{
 			return false;
 		}
-		return loadJson(FileUtils::readText(file.c_str()), doc);
+		return loadJson(FileUtils::readText(file.data()), doc);
 	}
 
-	bool loadJson(const std::string& json, Document& doc)
+	bool loadJson(const std::string_view json, Document& doc)
 	{
 		if (json.empty() == true)
 		{
 			return false;
 		}
 		// Default template parameter uses UTF8 and MemoryPoolAllocator.
-		return (doc.Parse(json.c_str()).HasParseError() == false);
+		return (doc.Parse(json.data(), json.size()).HasParseError() == false);
 	}
 
-	void saveToFile(const std::string& file, const Value& elem)
+	void saveToFile(const std::string_view file, const Value& elem)
 	{
-		FileUtils::saveText(file.c_str(), jsonToString(elem));
+		FileUtils::saveText(file, jsonToString(elem));
 	}
 }

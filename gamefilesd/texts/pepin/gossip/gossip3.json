@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/Towners/healer40.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

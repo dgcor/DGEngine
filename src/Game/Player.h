@@ -2,10 +2,14 @@
 
 #include "Actions/Action.h"
 #include "BaseLevelObject.h"
-#include "ItemCollection.h"
+#include "Inventories.h"
 #include "PlayerClass.h"
 #include "Save/SavePlayer.h"
+#include "Spell.h"
 #include <SFML/Audio/Sound.hpp>
+#include <unordered_map>
+#include "Utils/FixedMap.h"
+#include "Utils/LRUCache.h"
 
 class Player : public LevelObject
 {
@@ -20,7 +24,7 @@ private:
 
 	std::vector<MapCoord> walkPath;
 
-	PlayerAction playerAction{ PlayerAction::Stand };
+	PlayerStatus playerStatus{ PlayerStatus::Stand };
 
 	PlayerDirection direction{ PlayerDirection::All };
 	PlayerAnimation animation{ PlayerAnimation::Size };
@@ -39,18 +43,23 @@ private:
 	bool useAI{ false };
 
 	std::unique_ptr<Item> selectedItem;
+	Spell* selectedSpell{ nullptr };
 
-	std::array<ItemCollection, (size_t)PlayerInventory::Size> inventories;
+	Inventories<(size_t)PlayerInventory::Size> inventories;
 	size_t bodyInventoryIdx{ (size_t)PlayerInventory::Size };
 
+	std::unordered_map<std::string, std::unique_ptr<Spell>> spells;
+
 	std::string id;
-	std::string name;
+	mutable std::string name;
+	mutable std::array<std::string, 2> descriptions;
+
+	mutable bool updateNameAndDescr{ true };
 
 	uint32_t currentLevel{ 0 };
 	uint32_t experience{ 0 };
 	uint32_t expNextLevel{ 0 };
 	uint32_t points{ 0 };
-	uint32_t gold{ 0 };
 
 	LevelObjValue strength{ 0 };
 	LevelObjValue strengthItems{ 0 };
@@ -61,7 +70,7 @@ private:
 	LevelObjValue vitality{ 0 };
 	LevelObjValue vitalityItems{ 0 };
 
-	LevelObjValue life{ 0 };
+	LevelObjValue life{ 1 };
 	LevelObjValue lifeItems{ 0 };
 	LevelObjValue lifeDamage{ 0 };
 	LevelObjValue mana{ 0 };
@@ -86,8 +95,9 @@ private:
 	LevelObjValue resistLightning{ 0 };
 	LevelObjValue resistLightningItems{ 0 };
 
-	std::array<std::pair<uint16_t, Number32>, 8> customProperties;
-	size_t customPropsSize{ 0 };
+	FixedMap<uint16_t, Number32, 8> customProperties;
+
+	mutable LRUCache<uint16_t, uint32_t, 3> itemQuantityCache;
 
 	sf::Sound currentSound;
 
@@ -101,16 +111,15 @@ private:
 
 	void updateAI(Level& level);
 
+	void updateNameAndDescriptions() const;
+
 	void updateSpeed();
 
 	void updateWalkPathStep(sf::Vector2f& newDrawPos);
 	void updateWalkPath(Game& game, Level& level);
 
-	bool parseInventoryAndItem(const std::string& str,
-		std::string& props, size_t& invIdx, size_t& itemIdx) const;
-
-	void updateGoldAdd(const Item* item);
-	void updateGoldRemove(const Item* item);
+	bool parseInventoryAndItem(const std::string_view str,
+		std::string_view& props, size_t& invIdx, size_t& itemIdx) const;
 
 	void updateBodyItemValues();
 
@@ -120,19 +129,13 @@ private:
 	void updateAttack(Game& game, Level& level);
 	void updateDead(Game& game, Level& level);
 
-	void updateExperience(const Level& level);
-
 	bool getCustomIntByHash(uint16_t propHash, Number32& value) const noexcept;
-	bool getCustomInt(const char* prop, Number32& value) const noexcept;
-	bool getCustomInt(const std::string& prop, Number32& value) const noexcept
-	{
-		return getCustomInt(prop.c_str(), value);
-	}
+	bool getCustomInt(const std::string_view prop, Number32& value) const noexcept;
 
 	void playSound(int16_t soundIdx);
 
-	friend void Save::serialize(void* serializeObj, const Level& level,
-		const Player& player, bool skipDefaults);
+	friend void Save::serialize(void* serializeObj, Properties& props,
+		const Game& game, const Level& level, const Player& player);
 
 public:
 	Player(const PlayerClass* class__, const Level& level);
@@ -150,10 +153,11 @@ public:
 
 	const MapCoord& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
 
+	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const char* prop, Number32& value) const noexcept;
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const noexcept;
 	virtual bool Passable() const noexcept { return false; }
-	virtual void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
 	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
 	{
@@ -166,9 +170,10 @@ public:
 	virtual bool Hoverable() const noexcept { return base.enableHover; }
 	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
 
-	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const
+	virtual void serialize(void* serializeObj, Save::Properties& props,
+		const Game& game, const Level& level) const
 	{
-		Save::serialize(serializeObj, level, *this, skipDefaults);
+		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -177,54 +182,29 @@ public:
 	}
 	virtual void update(Game& game, Level& level);
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual void setProperty(const std::string& prop, const Variable& val);
-	virtual const Queryable* getQueryable(const std::string& prop) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	virtual void setProperty(const std::string_view prop, const Variable& val);
+	virtual const Queryable* getQueryable(const std::string_view prop) const;
+
+	virtual std::string_view getId() const { return id; }
+	virtual std::string_view getClassId() const { return class_->Id(); }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;
-	bool hasInt(const char* prop) const noexcept;
-	bool hasInt(const std::string& prop) const noexcept
-	{
-		return hasInt(prop.c_str());
-	}
+	bool hasInt(const std::string_view prop) const noexcept;
 
 	bool getIntByHash(uint16_t propHash, LevelObjValue& value) const noexcept;
-	bool getInt(const char* prop, LevelObjValue& value) const noexcept;
-	bool getInt(const std::string& prop, LevelObjValue& value) const noexcept
-	{
-		return getInt(prop.c_str(), value);
-	}
+	bool getInt(const std::string_view prop, LevelObjValue& value) const noexcept;
 	bool getUIntByHash(uint16_t propHash, uint32_t& value) const noexcept;
-	bool getUInt(const char* prop, uint32_t& value) const noexcept;
-	bool getUInt(const std::string& prop, uint32_t& value) const noexcept
-	{
-		return getUInt(prop.c_str(), value);
-	}
+	bool getUInt(const std::string_view prop, uint32_t& value) const noexcept;
 	bool setIntByHash(uint16_t propHash, LevelObjValue value, const Level* level) noexcept;
-	bool setInt(const char* prop, LevelObjValue value, const Level* level) noexcept;
-	bool setInt(const std::string& prop, LevelObjValue value, const Level* level) noexcept
-	{
-		return setInt(prop.c_str(), value, level);
-	}
+	bool setInt(const std::string_view prop, LevelObjValue value, const Level* level) noexcept;
 	bool setUIntByHash(uint16_t propHash, uint32_t value, const Level* level) noexcept;
-	bool setUInt(const char* prop, uint32_t value, const Level* level) noexcept;
-	bool setUInt(const std::string& prop, uint32_t value, const Level* level) noexcept
-	{
-		return setUInt(prop.c_str(), value, level);
-	}
+	bool setUInt(const std::string_view prop, uint32_t value, const Level* level) noexcept;
 	bool getNumberByHash(uint16_t propHash, Number32& value) const noexcept;
 	bool setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level) noexcept;
 	bool setNumberByHash(uint16_t propHash, const Number32& value, const Level* level) noexcept;
-	bool setNumber(const char* prop, LevelObjValue value, const Level* level) noexcept;
-	bool setNumber(const char* prop, const Number32& value, const Level* level) noexcept;
-	bool setNumber(const std::string& prop, LevelObjValue value, const Level* level) noexcept
-	{
-		return setNumber(prop.c_str(), value, level);
-	}
-	bool setNumber(const std::string& prop, const Number32& value, const Level* level) noexcept
-	{
-		return setNumber(prop.c_str(), value, level);
-	}
+	bool setNumber(const std::string_view prop, LevelObjValue value, const Level* level) noexcept;
+	bool setNumber(const std::string_view prop, const Number32& value, const Level* level) noexcept;
 
 	void updateDrawPosition(const Level& level) { base.updateDrawPosition(level, drawPosA); }
 
@@ -240,6 +220,8 @@ public:
 		base.animation.frameTime = speed.animation;
 		updateSpeed();
 	}
+
+	PlayerDirection getDirection() const noexcept { return direction; }
 
 	void setDirection(PlayerDirection direction_)
 	{
@@ -269,10 +251,9 @@ public:
 		}
 	}
 
-	void setRestStatus(uint16_t restStatus_) noexcept
-	{
-		restStatus = std::min(restStatus_, (uint16_t)1);
-	}
+	void setRestStatus(uint16_t restStatus_) noexcept;
+
+	void setStatus(PlayerStatus status_) noexcept;
 
 	void setStandAnimation()
 	{
@@ -292,11 +273,14 @@ public:
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;
 
-	ItemCollection& getInventory(PlayerInventory inv) noexcept { return inventories[(size_t)inv]; }
-	const ItemCollection& getInventory(PlayerInventory inv) const noexcept { return inventories[(size_t)inv]; }
+	Spell* SelectedSpell() const noexcept { return selectedSpell; }
+	void SelectedSpell(const std::string& id) noexcept;
 
-	ItemCollection& getInventory(size_t idx) noexcept { return inventories[idx]; }
-	const ItemCollection& getInventory(size_t idx) const noexcept { return inventories[idx]; }
+	Inventory& getInventory(PlayerInventory inv) noexcept { return inventories[(size_t)inv]; }
+	const Inventory& getInventory(PlayerInventory inv) const noexcept { return inventories[(size_t)inv]; }
+
+	Inventory& getInventory(size_t idx) noexcept { return inventories[idx]; }
+	const Inventory& getInventory(size_t idx) const noexcept { return inventories[idx]; }
 
 	size_t getInventorySize() const noexcept { return inventories.size(); }
 
@@ -305,18 +289,33 @@ public:
 		bodyInventoryIdx = std::min(idx, (size_t)PlayerInventory::Size);
 	}
 
-	bool hasEquipedItemType(const std::string& type) const;
-	bool hasEquipedItemSubType(const std::string& type) const;
+	bool hasSpell(const std::string& key) const
+	{
+		return spells.find(key) != spells.end();
+	}
 
-	bool getFreeItemSlot(const Item& item, size_t& invIdx, size_t& itemIdx,
-		InventoryPosition invPos = InventoryPosition::TopLeft) const;
+	void addSpell(const std::string key, std::unique_ptr<Spell> obj)
+	{
+		spells.insert(std::make_pair(key, std::move(obj)));
+	}
+
+	Spell* getSpell(const std::string& key) const
+	{
+		auto it = spells.find(key);
+		if (it != spells.end())
+		{
+			return it->second.get();
+		}
+		return nullptr;
+	}
+
+	bool hasEquipedItemType(const std::string_view type) const;
+	bool hasEquipedItemSubType(const std::string_view type) const;
+
+	bool getFreeItemSlot(const Item& item, size_t& invIdx,
+		size_t& itemIdx, InventoryPosition invPos) const;
 
 	bool hasFreeItemSlot(const Item& item) const;
-
-	bool findItem(uint16_t itemTypeHash16, size_t& invIdx,
-		size_t& itemIdx, Item*& item) const;
-
-	unsigned countFreeSlots(const ItemClass& itemClass) const;
 
 	bool setItem(PlayerInventory inv, size_t itemIdx, std::unique_ptr<Item>& item)
 	{
@@ -332,12 +331,20 @@ public:
 		std::unique_ptr<Item>& oldItem);
 
 	bool setItemInFreeSlot(PlayerInventory inv, std::unique_ptr<Item>& item,
-		InventoryPosition invPos = InventoryPosition::TopLeft)
+		InventoryPosition invPos, bool splitIntoMultipleQuantities)
 	{
-		return setItemInFreeSlot((size_t)inv, item, invPos);
+		return setItemInFreeSlot((size_t)inv, item, invPos, splitIntoMultipleQuantities);
 	}
+
+	// sets an item in a free slot. If the item has quantity/capacity
+	// it tries to fit into the smallest quantity item of the same class first
+	// if splitIntoMultiple is true, it tries to fit into all items of the same class.
 	bool setItemInFreeSlot(size_t invIdx, std::unique_ptr<Item>& item,
-		InventoryPosition invPos = InventoryPosition::TopLeft);
+		InventoryPosition invPos, bool splitIntoMultiple);
+
+	// updates the player's current level, experience required for the
+	// next level and points added for having advanced n levels.
+	void updateLevelFromExperience(const Level& level, bool updatePoints);
 
 	void updateProperties();
 
@@ -345,9 +352,14 @@ public:
 
 	bool canUseItem(const Item& item) const;
 
-	bool addGold(const Level& level, LevelObjValue amount);
+	// returns the remaining quantity to add/remove. 0 if all quantity was added.
+	LevelObjValue addItemQuantity(const ItemClass& itemClass,
+		const LevelObjValue amount, InventoryPosition invPos);
 
-	uint32_t getMaxGoldCapacity(const Level& level) const;
+	void updateItemQuantityCache(uint16_t classIdHash16, LevelObjValue amount) noexcept;
+	void updateItemQuantityCache(uint16_t classIdHash16) noexcept;
+
+	uint32_t getMaxItemCapacity(const ItemClass& itemClass) const;
 
 	const PlayerClass* getPlayerClass() const noexcept { return class_; }
 
@@ -363,8 +375,9 @@ public:
 	void setWalkSounds(int16_t soundIdx) noexcept { walkSound = soundIdx; }
 
 	const std::string& Id() const noexcept { return id; }
-	const std::string& Name() const noexcept { return name; }
-	const std::string& Class() const noexcept { return class_->Name(); }
+	const std::string& Name() const;
+	const std::string& SimpleName() const noexcept { return class_->Name(); }
+	const std::string& Class() const noexcept { return class_->Id(); }
 
 	LevelObjValue StrengthNow() const noexcept { return strength + strengthItems; }
 	LevelObjValue MagicNow() const noexcept { return magic + magicItems; }
@@ -374,8 +387,8 @@ public:
 	LevelObjValue LifeNow() const noexcept { return life + lifeItems - lifeDamage; }
 	LevelObjValue ManaNow() const noexcept { return mana + manaItems - manaDamage; }
 
-	void Id(const std::string& id_) { id = id_; }
-	void Name(const std::string& name_) { name = name_; }
+	void Id(const std::string_view id_) { id = id_; }
+	void Name(const std::string_view name_) { name = name_; }
 
 	void CurrentLevel(uint32_t level_) noexcept { currentLevel = level_; }
 	void Experience(uint32_t experience_) noexcept { experience = experience_; }

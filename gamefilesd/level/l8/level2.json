@@ -1,0 +1,16 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l8",
+    "name": "8",
+    "map": { "file": "level/l8/l8.json", "indexOffset": -1, "defaultTile": 2 }
+  },
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/l8/levelObjects2Beta.json" },
+    "else": { "name": "load", "file": "level/l8/levelObjects2.json" }
+  },
+  "load": "level/l8/monsters2.json"
+}

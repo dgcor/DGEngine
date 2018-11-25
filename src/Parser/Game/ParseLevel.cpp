@@ -30,24 +30,46 @@ namespace Parser
 		return dun;
 	}
 
-	void parseTiledMap(const Value& elem, LevelMap& map,
-		const std::string& file, int16_t defaultTile, bool resizeToFit)
+	void parseLayerIndexName(const Value& elem,
+		std::vector<std::pair<std::string, size_t>>& layerNameIndexes)
 	{
-		Document doc;
-		if (JsonUtils::loadFile(file, doc) == false ||
-			isValidArray(doc, "layers") == false ||
-			doc["layers"].Empty() == true)
+		layerNameIndexes.push_back(
+			std::make_pair(getStringKey(elem, "name"), getUIntKey(elem, "index"))
+		);
+	}
+
+	void parseMapLayers(const Value& elem, const Value& elemLayers,
+		LevelMap& map, int16_t defaultTile, bool resizeToFit, bool mapToNames)
+	{
+		std::vector<std::pair<std::string, size_t>> layerNameIndexes;
+
+		if (mapToNames == true)
 		{
-			return;
+			// if the layer data comes from a different file (Tiled map),
+			// get a map of names to indexes
+			if (elem.HasMember("layers") == true)
+			{
+				const auto& namesElem = elem["layers"];
+				if (namesElem.IsArray() == true)
+				{
+					for (const auto& val : namesElem)
+					{
+						parseLayerIndexName(val, layerNameIndexes);
+					}
+				}
+				else if (namesElem.IsObject() == true)
+				{
+					parseLayerIndexName(namesElem, layerNameIndexes);
+				}
+			}
 		}
 
-		auto backName = getStringKey(elem, "back");
-		auto frontName = getStringKey(elem, "front");
-		auto solName = getStringKey(elem, "sol");
+		auto automapName = getStringViewKey(elem, "automap");
+		auto solName = getStringViewKey(elem, "sol");
 		auto pos = getVector2iKey<MapCoord>(elem, "position");
 		bool wasResized = false;
 
-		for (const auto& elemLayer : doc["layers"])
+		for (const auto& elemLayer : elemLayers)
 		{
 			Dun dun = getDunFromLayer(elemLayer,
 				(int16_t)getIntKey(elem, "indexOffset"),
@@ -64,38 +86,79 @@ namespace Parser
 					map.resize((Coord)(pos2.x + dun.Width()), (Coord)(pos2.y + dun.Height()));
 					wasResized = true;
 				}
-				if (doc["layers"].Size() == 1)
+				if (elemLayers.Size() == 1)
 				{
 					map.setSimpleArea(pos2.x, pos2.y, dun);
 					continue;
 				}
-				auto name = getStringKey(elemLayer, "name");
-				if (backName == name)
+
+				if (mapToNames == false)
 				{
-					map.setSimpleArea(pos2.x, pos2.y, 0, dun);
+					auto index = getUIntKey(elemLayer, "index");
+					if (index < LevelCell::NumberOfLayers)
+					{
+						map.setSimpleArea(pos2.x, pos2.y, index, dun, false);
+					}
 				}
-				if (frontName == name)
+				else
 				{
-					map.setSimpleArea(pos2.x, pos2.y, 1, dun);
-				}
-				if (solName == name)
-				{
-					map.setSimpleArea(pos2.x, pos2.y, 2, dun);
+					auto name = getStringViewKey(elemLayer, "name");
+
+					for (const auto& layerNameIndex : layerNameIndexes)
+					{
+						if (layerNameIndex.first == name &&
+							layerNameIndex.second < LevelCell::NumberOfLayers)
+						{
+							map.setSimpleArea(pos2.x, pos2.y, layerNameIndex.second, dun);
+						}
+					}
+					if (automapName == name)
+					{
+						map.setSimpleArea(pos2.x, pos2.y, Level::AutomapLayer, dun);
+					}
+					if (solName == name)
+					{
+						map.setSimpleArea(pos2.x, pos2.y, LevelCell::SolLayer, dun);
+					}
 				}
 			}
 		}
 	}
 
+	void parseTiledMap(const Value& elem, LevelMap& map,
+		const std::string_view file, int16_t defaultTile, bool resizeToFit)
+	{
+		Document doc;
+		if (JsonUtils::loadFile(file, doc) == false ||
+			isValidArray(doc, "layers") == false ||
+			doc["layers"].Empty() == true)
+		{
+			return;
+		}
+
+		parseMapLayers(elem, doc["layers"], map, defaultTile, resizeToFit, true);
+	}
+
 	void parseMap(const Value& elem, LevelMap& map, int16_t defaultTile, bool resizeToFit)
 	{
-		auto file = getStringKey(elem, "file");
+		defaultTile = (int16_t)getIntKey(elem, "defaultTile", defaultTile);
 
+		if (elem.HasMember("file") == false)
+		{
+			if (elem.HasMember("layers") == true)
+			{
+				parseMapLayers(elem, elem["layers"], map, defaultTile, resizeToFit, false);
+			}
+			return;
+		}
+
+		auto file = getStringViewVal(elem["file"]);
 		if (Utils::endsWith(Utils::toLower(file), ".json") == true)
 		{
 			parseTiledMap(elem, map, file, defaultTile, resizeToFit);
 			return;
 		}
-		defaultTile = (int16_t)getIntKey(elem, "defaultTile", defaultTile);
+
 		Dun dun(file, defaultTile);
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
@@ -110,45 +173,109 @@ namespace Parser
 
 	void parseLevelMap(Game& game, const Value& elem, Level& level)
 	{
-		auto til = getStringKey(elem, "til");
-		auto sol = getStringKey(elem, "sol");
-		auto mapSize = getVector2uKey<MapCoord>(elem, "mapSize", MapCoord(96, 96));
+		auto mapPtr = &level.Map();
 		auto defaultTile = (int16_t)getIntKey(elem, "defaultTile", -1);
-		LevelMap map(til, sol, mapSize.x, mapSize.y, defaultTile);
+		MapCoord mapSize = getVector2uKey<MapCoord>(elem, "mapSize", mapPtr->MapSize());
 
-		if (elem.HasMember("outOfBoundsTileBottom") == true)
+		if (isValidString(elem, "til") == true &&
+			isValidString(elem, "sol") == true)
 		{
-			map.setOutOfBoundsTileBack((int16_t)getIntVal(elem["outOfBoundsTileBottom"], -1));
+			auto til = getStringViewVal(elem["til"]);
+			auto sol = getStringViewVal(elem["sol"]);
+			*mapPtr = LevelMap(til, sol, mapSize.x, mapSize.y, defaultTile);
 		}
-		if (elem.HasMember("outOfBoundsTileTop") == true)
+		else
 		{
-			map.setOutOfBoundsTileFront((int16_t)getIntVal(elem["outOfBoundsTileTop"], -1));
+			if (mapSize != mapPtr->MapSize())
+			{
+				mapPtr->resize(mapSize.x, mapSize.y, defaultTile);
+			}
+		}
+
+		if (elem.HasMember("outOfBoundsTileLayer1") == true)
+		{
+			mapPtr->setOutOfBoundsTileIndex(0, (int16_t)getIntVal(elem["outOfBoundsTileLayer1"], -1));
+		}
+		if (elem.HasMember("outOfBoundsTileLayer2") == true)
+		{
+			mapPtr->setOutOfBoundsTileIndex(1, (int16_t)getIntVal(elem["outOfBoundsTileLayer2"], -1));
+		}
+		if (elem.HasMember("outOfBoundsTileLayer3") == true)
+		{
+			mapPtr->setOutOfBoundsTileIndex(2, (int16_t)getIntVal(elem["outOfBoundsTileLayer3"], -1));
+		}
+		if (elem.HasMember("outOfBoundsTileAutomap") == true)
+		{
+			mapPtr->setOutOfBoundsTileIndex(3, (int16_t)getIntVal(elem["outOfBoundsTileAutomap"], -1));
 		}
 		if (elem.HasMember("map") == true)
 		{
 			const auto& mapElem = elem["map"];
 			if (mapElem.IsArray() == true)
 			{
+				bool resizeToFit = getBoolKey(elem, "resizeToFit", false);
 				for (const auto& val : mapElem)
 				{
-					parseMap(val, map, defaultTile, false);
+					parseMap(val, *mapPtr, defaultTile, resizeToFit);
 				}
 			}
 			else if (mapElem.IsObject() == true)
 			{
-				bool resizeToFit = elem.HasMember("mapSize") == false;
-				parseMap(mapElem, map, defaultTile, resizeToFit);
+				bool resizeToFit = getBoolKey(elem, "resizeToFit", true);
+				parseMap(mapElem, *mapPtr, defaultTile, resizeToFit);
 			}
 		}
 
-		std::shared_ptr<TexturePack> tilesBottom;
-		std::shared_ptr<TexturePack> tilesTop;
+		std::vector<std::shared_ptr<TexturePack>> texturePackLayers;
 		std::pair<uint32_t, uint32_t> tileSize;
 
-		getOrParseLevelTexturePack(game, elem,
-			"texturePackBottom", "texturePackTop", tilesBottom, tilesTop, tileSize);
+		if (getOrParseLevelTexturePack(game, elem, "layers", texturePackLayers, tileSize) == true)
+		{
+			level.Init(std::move(*mapPtr), texturePackLayers, tileSize.first, tileSize.second);
+		}
+		else
+		{
+			level.Init();
+		}
+	}
 
-		level.Init(std::move(map), tilesBottom, tilesTop, tileSize.first, tileSize.second);
+	void parseLevelAutomap(Game& game, const Value& elem, Level& level)
+	{
+		if (isValidString(elem, "automap") == true)
+		{
+			auto automap = game.Resources().getTexturePack(elem["automap"].GetString());
+			if (automap != nullptr)
+			{
+				auto automapTileSize = getVector2uKey<std::pair<uint32_t, uint32_t>>(
+					elem, "automapTileSize", std::make_pair(64u, 32u));
+
+				level.setAutomap(automap, automapTileSize.first, automapTileSize.second);
+			}
+		}
+		if (elem.HasMember("automapBackground") == true)
+		{
+			auto color = getColorVal(elem["automapBackground"], sf::Color::Transparent);
+			level.setAutomapBackgroundColor(color);
+		}
+		if (elem.HasMember("automapPosition") == true)
+		{
+			auto pos = getVector2iVal<sf::Vector2i>(elem["automapPosition"]);
+			level.setAutomapRelativePosition(pos);
+		}
+		if (elem.HasMember("automapSize") == true)
+		{
+			auto size = getVector2iVal<sf::Vector2i>(elem["automapSize"], { 100, 100 });
+			level.setAutomapRelativeSize(size);
+		}
+		if (elem.HasMember("automapPlayerDirectionIndex") == true)
+		{
+			auto index = getIntVal(elem["automapPlayerDirectionIndex"], -1);
+			level.setAutomapPlayerDirectionBaseIndex(index);
+		}
+		if (elem.HasMember("showAutomap") == true)
+		{
+			level.ShowAutomap(getBoolVal(elem["showAutomap"]));
+		}
 	}
 
 	void parsePosSize(const Game& game, const Value& elem, Level& level)
@@ -183,28 +310,10 @@ namespace Parser
 				return;
 			}
 			auto levelPtr = std::make_shared<Level>();
-			game.Resources().addDrawable(id, levelPtr);
-			if (isValidString(elem, "resource") == true)
-			{
-				game.Resources().addDrawable(elem["resource"].GetString(), id, levelPtr);
-			}
-			else
-			{
-				game.Resources().addDrawable(id, levelPtr);
-			}
+			game.Resources().addDrawable(id, levelPtr, getStringViewKey(elem, "resource"));
 			level = levelPtr.get();
 			game.Resources().setCurrentLevel(level);
 			level->Id(id);
-		}
-
-		parseLevelMap(game, elem, *level);
-
-		level->Name(getStringKey(elem, "name"));
-		level->Path(getStringKey(elem, "path"));
-
-		if (elem.HasMember("followCurrentPlayer") == true)
-		{
-			level->FollowCurrentPlayer(getBoolVal(elem["followCurrentPlayer"]));
 		}
 
 		if (existingLevel == false)
@@ -212,12 +321,28 @@ namespace Parser
 			parsePosSize(game, elem, *level);
 		}
 
+		parseLevelMap(game, elem, *level);
+		parseLevelAutomap(game, elem, *level);
+
+		if (elem.HasMember("name") == true)
+		{
+			level->Name(getStringVal(elem["name"]));
+		}
+		if (elem.HasMember("path") == true)
+		{
+			level->Path(getStringVal(elem["path"]));
+		}
+		if (elem.HasMember("followCurrentPlayer") == true)
+		{
+			level->FollowCurrentPlayer(getBoolVal(elem["followCurrentPlayer"]));
+		}
+
 		level->resetView();
 		level->updateViewport(game);
 
 		if (elem.HasMember("captureInputEvents"))
 		{
-			level->setCaptureInputEvents(getBoolVal(elem["captureInputEvents"]));
+			level->setCaptureInputEvents(getInputEventVal(elem["captureInputEvents"]));
 		}
 		if (elem.HasMember("onLeftClick"))
 		{

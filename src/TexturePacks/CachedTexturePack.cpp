@@ -20,6 +20,7 @@ bool CachedTexturePack::get(size_t index, TextureInfo& ti) const
 	}
 	ti.texture = &cache[index];
 	updateTextureInfo(ti);
+	ti.palette = palette;
 	return true;
 }
 
@@ -60,6 +61,7 @@ bool CachedMultiTexturePack::get(size_t index, TextureInfo& ti) const
 	}
 	ti.texture = &cache[index];
 	updateTextureInfo(ti);
+	ti.palette = palette;
 	return true;
 }
 

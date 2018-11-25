@@ -14,7 +14,7 @@ public:
 	void addBack(const std::shared_ptr<Action>& action) { events.push_back(action); }
 	void addFront(const std::shared_ptr<Action>& action) { events.push_front(action); }
 
-	bool exists(const std::string& id) const
+	bool exists(const std::string_view id) const
 	{
 		if (id.empty() == false)
 		{

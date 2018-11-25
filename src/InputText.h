@@ -3,6 +3,7 @@
 #include "Actions/Action.h"
 #include "DrawableText.h"
 #include <memory>
+#include <optional>
 #include <regex>
 #include <SFML/Graphics.hpp>
 #include "UIObject.h"
@@ -13,15 +14,18 @@ private:
 	std::unique_ptr<DrawableText> text;
 	std::shared_ptr<Action> actionChange;
 	std::shared_ptr<Action> actionEnter;
-	std::shared_ptr<Action> actionMinSize;
-	unsigned minSize;
-	unsigned maxSize;
-	bool hasRegex{ false };
-	std::regex regex;
+	std::shared_ptr<Action> actionMinLength;
+	size_t minLength{ 0 };
+	size_t maxLength{ 0 };
+	std::optional<Variable> minValue;
+	std::optional<Variable> maxValue;
+	std::optional<std::regex> regex;
+
+	bool isValidMin(const std::string& str) const noexcept;
+	bool isValidMax(const std::string& str) const noexcept;
 
 public:
-	InputText(std::unique_ptr<DrawableText> text_, unsigned minSize_, unsigned maxSize_)
-		: text(std::move(text_)), minSize(minSize_), maxSize(maxSize_) {}
+	InputText(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
 
 	void setText(const std::string& string) { text->setText(string); }
 	void setColor(const sf::Color& color) { text->setColor(color); }
@@ -41,15 +45,11 @@ public:
 	virtual sf::Vector2f Size() const { return text->Size(); }
 	virtual void Size(const sf::Vector2f& size) noexcept {}
 
-	void setRegex(const std::string& regex_)
-	{
-		hasRegex = false;
-		if (regex_.size() > 0)
-		{
-			regex.assign(regex_, std::regex::ECMAScript);
-			hasRegex = true;
-		}
-	}
+	void setMinLength(size_t length) noexcept { minLength = length; }
+	void setMaxLength(size_t length) noexcept { maxLength = length; }
+	void setMinValue(const Variable& var) { minValue = var; }
+	void setMaxValue(const Variable& var) { maxValue = var; }
+	void setRegex(const std::string& regex_);
 
 	void click(Game& game);
 
@@ -63,5 +63,5 @@ public:
 
 	virtual void update(Game& game);
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

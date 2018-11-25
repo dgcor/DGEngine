@@ -1,16 +1,16 @@
 {
   "action": [
     { "name": "resource.add", "id": "gameMenu2" },
-    { "name": "variable.setIfNull", "key": "jog", "val": false },
+    { "name": "variable.setIfNull", "key": "jog", "value": false },
     {
       "name": "action.set",
       "id": "updateAudioProgressBar",
       "action": [
         { "name": "drawable.resizeToPositionX", "id": "progressBar1", "idToPosition": "option1", "offset": 14 },
-        { "name": "game.setProperty", "property": "musicVolume", "value": "|progressBar1|size.x|", "propRange": [0, 100], "valueRange": [14, 270] },
+        { "name": "game.setProperty", "property": "musicVolume", "value": "%progressBar1.size.x%", "propRange": [0, 100], "valueRange": [14, 270] },
         {
           "name": "if.equal",
-          "param1": "|game|musicVolume|",
+          "param1": "%game.musicVolume%",
           "param2": 0,
           "then": { "name": "audio.stop", "id": "main" },
           "else": { "name": "audio.play", "id": "main" }
@@ -22,13 +22,16 @@
       "id": "updateSoundProgressBar",
       "action": [
         { "name": "drawable.resizeToPositionX", "id": "progressBar2", "idToPosition": "option2", "offset": 14 },
-        { "name": "game.setProperty", "property": "soundVolume", "value": "|progressBar2|size.x|", "propRange": [0, 100], "valueRange": [14, 270] }
+        { "name": "game.setProperty", "property": "soundVolume", "value": "%progressBar2.size.x%", "propRange": [0, 100], "valueRange": [14, 270] }
       ]
     },
     {
       "name": "action.set",
       "id": "updateGammaProgressBar",
-      "action": { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 }
+      "action": [
+        { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 },
+        { "name": "game.setProperty", "property": "gamma", "value": "%progressBar3.size.x%", "propRange": [30, 100], "valueRange": [14, 270] }
+      ]
     },
     {
       "name": "action.set",
@@ -104,7 +107,7 @@
       "name": "action.set",
       "id": "updateJogLeftKeyboardShortcut",
       "action": [
-        { "name": "variable.set", "key": "jog", "val": false },
+        { "name": "variable.set", "key": "jog", "value": false },
         "updateJog"
       ]
     },
@@ -112,7 +115,7 @@
       "name": "action.set",
       "id": "updateJogRightKeyboardShortcut",
       "action": [
-        { "name": "variable.set", "key": "jog", "val": true },
+        { "name": "variable.set", "key": "jog", "value": true },
         "updateJog"
       ]
     }
@@ -135,7 +138,7 @@
     },
     {
       "id": "option",
-      "file":"data/option.cel",
+      "file": "data/option.cel",
       "palette": "town"
     }
   ],
@@ -174,49 +177,49 @@
       "id": "optbar1",
       "position": [261, 119],
       "anchor": "none",
-      "texture":"optbar"
+      "texture": "optbar"
     },
     {
       "id": "option1",
       "position": [263, 121],
       "anchor": "none",
-      "texture":"option"
+      "texture": "option"
     },
     {
       "id": "optbar2",
       "position": [261, 164],
       "anchor": "none",
-      "texture":"optbar"
+      "texture": "optbar"
     },
     {
       "id": "option2",
       "position": [263, 166],
       "anchor": "none",
-      "texture":"option"
+      "texture": "option"
     },
     {
       "id": "optbar3",
       "position": [261, 209],
       "anchor": "none",
-      "texture":"optbar"
+      "texture": "optbar"
     },
     {
       "id": "option3",
       "position": [263, 211],
       "anchor": "none",
-      "texture":"option"
+      "texture": "option"
     },
     {
       "id": "optbar4",
       "position": [261, 254],
       "anchor": "none",
-      "texture":"optbar"
+      "texture": "optbar"
     },
     {
       "id": "option4",
       "position": [263, 256],
       "anchor": "none",
-      "texture":"option"
+      "texture": "option"
     }
   ],
   "button": [
@@ -275,8 +278,8 @@
           "name": "if.equal",
           "param1": "%jog%",
           "param2": false,
-          "then": { "name": "variable.set", "key": "jog", "val": true },
-          "else": { "name": "variable.set", "key": "jog", "val": false }
+          "then": { "name": "variable.set", "key": "jog", "value": true },
+          "else": { "name": "variable.set", "key": "jog", "value": false }
         },
         "updateJog"
       ]
@@ -414,7 +417,7 @@
       "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "resource.pop" },
-        { "name": "load", "file": "ui/level/saveSettings.json" },
+        "saveSettings",
         { "name": "load", "file": "ui/level/menu/game.json" }
       ],
       "onFocus": [
@@ -427,9 +430,11 @@
     "anchorLeftPentagram",
     "updateJog",
     { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },
-    { "name": "drawable.moveX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "position": "|game|musicVolume|", "max": 100, "steps": 17 },
-    { "name": "drawable.moveX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "position": "|game|soundVolume|", "max": 100, "steps": 17 },
+    { "name": "drawable.moveX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "position": "%game.musicVolume%", "max": 100, "steps": 17 },
+    { "name": "drawable.moveX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "position": "%game.soundVolume%", "max": 100, "steps": 17 },
+    { "name": "drawable.moveX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "position": "%game.gamma%", "min": 30, "max": 100, "steps": 15 },
     { "name": "drawable.anchorSizeX", "id": "progressBar1", "idAnchorTo": "option1", "offset": 14 },
-    { "name": "drawable.anchorSizeX", "id": "progressBar2", "idAnchorTo": "option2", "offset": 14 }
+    { "name": "drawable.anchorSizeX", "id": "progressBar2", "idAnchorTo": "option2", "offset": 14 },
+    { "name": "drawable.anchorSizeX", "id": "progressBar3", "idAnchorTo": "option3", "offset": 14 }
   ]
 }

@@ -2,28 +2,23 @@
   "palette": [
     {
       "id": "l1_1",
-      "file":"levels/l1data/l1_1.pal"
+      "file": "levels/l1data/l1_1.pal"
     }
   ],
+  "load": ["level/l1/l1s.json", "l1_1"],
   "level": {
     "id": "level",
-    "path": "l1",
-    "name": "King Leoric's Lair",
     "palette": "l1_1",
     "file": "levels/l1data/l1.cel",
-    "outOfBoundsTileTop": 21,
-    "map": { "file": "levels/l1data/sklkng1.dun", "defaultTile": 12 },
+    "layers": { "index": 2, "texturePack": "l1s" },
+    "outOfBoundsTileLayer2": 21,
     "til": "levels/l1data/l1.til",
     "min": "levels/l1data/l1.min",
     "minBlocks": 10,
     "sol": "levels/l1data/l1.sol"
   },
-  "action": {
-    "name": "if.equal",
-    "param1": "%beta%",
-    "param2": true,
-    "then": { "name": "load", "file": "level/l1/levelObjectsBeta.json" },
-    "else": { "name": "load", "file": "level/l1/levelObjects.json" }
-  },
-  "load": "level/l1/monsters.json"
+  "load": "level/automap/l1/load.json",
+  "load": "level/l1/levelObjects.json",
+  "load": "level/l1/monsters.json",
+  "load": "level/l1/level2.json"
 }

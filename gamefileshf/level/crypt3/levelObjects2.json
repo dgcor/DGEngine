@@ -1,0 +1,24 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownCrypt",
+      "mapPosition": [77, 86],
+      "properties": {
+        "x": 79,
+        "y": 66,
+        "level": 4
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpCrypt",
+      "mapPosition": [76, 71],
+      "properties": {
+        "x": 81,
+        "y": 73,
+        "level": 2
+      }
+    }
+  ]
+}

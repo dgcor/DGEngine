@@ -13,5 +13,5 @@ namespace LevelHelper
 
 	// bottomTopOrBoth : -1 for both, 0 for bottom, 1 for top
 	void saveTilesetSprite(const std::string& path, CachedImagePack& imgPack,
-		const Min& min, int bottomTopOrBoth, bool skipBlankTiles);
+		const Min& min, int bottomTopOrBoth, bool skipBlankTiles, unsigned maxTextureSize = 1024u);
 }

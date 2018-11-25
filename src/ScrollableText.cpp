@@ -3,6 +3,14 @@
 #include "GameUtils.h"
 #include "Utils/Utils.h"
 
+void ScrollableText::reset()
+{
+	text->Position(sf::Vector2f(0.f, 0.f));
+	const auto& vSize = view.getVisibleSize();
+	view.reset(sf::FloatRect(0, -vSize.y, vSize.x, vSize.y));
+	height = vSize.y;
+}
+
 ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_) :
 	text(std::move(text_)), frameTime(frameTime_)
 {
@@ -58,14 +66,11 @@ void ScrollableText::update(Game& game)
 		return;
 	}
 
-	// add delta time
 	currentTime += game.getElapsedTime();
 
-	// if current time is bigger then the frame time advance one frame
-	if (currentTime >= frameTime)
+	while (currentTime >= frameTime)
 	{
-		// reset time, but keep the remainder
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
+		currentTime -= frameTime;
 
 		auto rect = view.getCenter();
 		auto yy = (int)text->Size().y;
@@ -89,12 +94,12 @@ void ScrollableText::update(Game& game)
 	}
 }
 
-bool ScrollableText::getProperty(const std::string& prop, Variable& var) const
+bool ScrollableText::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first), props.second, var);
 }

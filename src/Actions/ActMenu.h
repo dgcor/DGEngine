@@ -207,19 +207,19 @@ public:
 			{
 				auto newFont = game.Resources().getFont(idFont);
 				auto text = button->getDrawableText();
-				if (hasNullFont(newFont) == false &&
+				if (holdsNullFont(newFont) == false &&
 					text != nullptr)
 				{
 					auto bitmapText = dynamic_cast<BitmapText*>(text);
 					if (bitmapText != nullptr &&
-						hasBitmapFont(newFont) == true)
+						holdsBitmapFont(newFont) == true)
 					{
 						bitmapText->setFont(std::get<std::shared_ptr<BitmapFont>>(newFont));
 						return true;
 					}
 					auto stringText = dynamic_cast<StringText*>(text);
 					if (stringText != nullptr &&
-						hasFreeTypeFont(newFont) == true)
+						holdsFreeTypeFont(newFont) == true)
 					{
 						stringText->setFont(*std::get<std::shared_ptr<FreeTypeFont>>(newFont));
 					}
@@ -245,7 +245,7 @@ public:
 		auto menu = game.Resources().getResource<Menu>(id);
 		if (menu != nullptr)
 		{
-			auto idx = (size_t)game.getVarOrPropLong(idxVar);
+			auto idx = (size_t)game.getVarOrPropLongV(idxVar);
 			menu->setCurrentIdx(idx);
 		}
 		return true;

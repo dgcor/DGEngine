@@ -3,13 +3,13 @@
 #include "PhysFSStream.h"
 #include "Shaders.h"
 
-Palette::Palette(const char* file)
+Palette::Palette(const std::string_view file)
 {
-	sf::PhysFSStream stream(file);
+	sf::PhysFSStream stream(file.data());
 
 	if (stream.hasError() == true || stream.getSize() < 768)
 	{
-		return;
+		throw std::exception();
 	}
 
 	for (auto& color : palette)
@@ -41,6 +41,10 @@ void Palette::loadTexture()
 
 void Palette::updateTexture()
 {
+	if (Shaders::supportsPalettes() == false)
+	{
+		return;
+	}
 	texture.update((const sf::Uint8*)&palette, palette.size(), 1, 0, 0);
 }
 
@@ -68,6 +72,21 @@ bool Palette::shiftRight(size_t shift, size_t startIdx, size_t stopIdx)
 		std::rotate(palette.rbegin() + (palette.size() - stopIdx),
 			palette.rbegin() + (palette.size() - stopIdx + (shift % range)),
 			palette.rbegin() + (palette.size() - startIdx));
+		updateTexture();
+		return true;
+	}
+	return false;
+}
+
+bool Palette::replaceRange(const Palette& srcPal, size_t srcStartIdx,
+	size_t size, size_t dstStartIdx)
+{
+	if (srcStartIdx + size <= srcPal.palette.size() &&
+		dstStartIdx + size <= palette.size())
+	{
+		std::copy_n(srcPal.palette.begin() + srcStartIdx,
+			size,
+			palette.begin() + dstStartIdx);
 		updateTexture();
 		return true;
 	}

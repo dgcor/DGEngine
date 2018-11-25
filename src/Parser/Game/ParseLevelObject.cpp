@@ -9,18 +9,17 @@ namespace Parser
 
 	void parseLevelObject(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false)
-		{
-			return;
-		}
-		std::string id(elem["id"].GetString());
-		if (isValidId(id) == false)
-		{
-			return;
-		}
-
 		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
+		{
+			return;
+		}
+		if (isValidString(elem, "class") == false)
+		{
+			return;
+		}
+		auto class_ = level->getLevelObjectClass(elem["class"].GetString());
+		if (class_ == nullptr)
 		{
 			return;
 		}
@@ -38,51 +37,38 @@ namespace Parser
 			return;
 		}
 
-		std::unique_ptr<SimpleLevelObject> levelObj;
-
-		if (isValidString(elem, "texture") == true)
-		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetString());
-			if (texture == nullptr)
-			{
-				return;
-			}
-			levelObj = std::make_unique<SimpleLevelObject>(*texture);
-
-			if (elem.HasMember("textureRect") == true)
-			{
-				sf::IntRect rect(0, 0, 32, 32);
-				levelObj->setTextureRect(getIntRectKey(elem, "textureRect", rect));
-			}
-		}
-		else if (isValidString(elem, "texturePack") == true)
-		{
-			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetString());
-			if (texPack == nullptr)
-			{
-				return;
-			}
-			auto frames = std::make_pair(0u, texPack->size() - 1);
-			frames = getFramesKey(elem, "frames", frames);
-			auto refresh = getTimeKey(elem, "refresh", sf::milliseconds(50));
-			levelObj = std::make_unique<SimpleLevelObject>(
-				*texPack, frames, refresh, AnimationType::Looped);
-		}
-		else
-		{
-			levelObj = std::make_unique<SimpleLevelObject>();
-		}
+		auto levelObj = std::make_unique<SimpleLevelObject>(class_);
 
 		levelObj->MapPosition(mapPos);
-
 		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
 
-		levelObj->Id(id);
-		levelObj->Name(getStringKey(elem, "name"));
-
-		if (elem.HasMember("action") == true)
+		auto id = getStringViewKey(elem, "id");
+		if (isValidId(id) == false)
 		{
-			levelObj->setAction(parseAction(game, elem["action"]));
+			id = {};
+		}
+		levelObj->Id(id);
+		levelObj->Name(getStringViewKey(elem, "name"));
+		levelObj->Text1(getStringViewKey(elem, "text1", class_->Text1()));
+		levelObj->Text2(getStringViewKey(elem, "text2", class_->Text2()));
+
+		if (elem.HasMember("properties") == true)
+		{
+			const auto& props = elem["properties"];
+			if (props.IsObject() == true)
+			{
+				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
+				{
+					if (it->name.GetStringLength() > 0)
+					{
+						auto name = std::string(it->name.GetString(), it->name.GetStringLength());
+						auto nameHash = str2int16(name);
+						level->setPropertyName(nameHash, name);
+						levelObj->setIntByHash(nameHash,
+							getMinMaxIntVal<LevelObjValue>(it->value));
+					}
+				}
+			}
 		}
 
 		level->addLevelObject(std::move(levelObj), true);

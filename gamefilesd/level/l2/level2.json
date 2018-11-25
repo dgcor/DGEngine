@@ -1,0 +1,16 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l2",
+    "name": "2",
+    "map": { "file": "level/l2/l2.json", "indexOffset": -1, "defaultTile": 12 }
+  },
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/l2/levelObjects2Beta.json" },
+    "else": { "name": "load", "file": "level/l2/levelObjects2.json" }
+  },
+  "load": "level/l2/monsters2.json"
+}

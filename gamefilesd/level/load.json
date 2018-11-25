@@ -6,9 +6,9 @@
       "action": [
         { "name": "resource.popAll", "id": "currentLevel" },
         { "name": "load", "file": "loadingScreens/{4}.json" },
+        { "name": "load", "file": ["level/saveCurrentLevel.json", "%currentLevel.path%"] },
         { "name": "game.fadeIn",
           "action": [
-            { "name": "level.pause", "pause": false },
             { "name": "loadingScreen.setProgress", "progress": 35 },
             { "name": "resource.add", "id": "currentLevel" },
             { "name": "load", "file": "level/clearPlayers.json" },
@@ -16,9 +16,11 @@
             { "name": "load", "file": "level/{1}/sounds.json" },
             { "name": "loadingScreen.setProgress", "progress": 45 },
             { "name": "load", "file": "level/{1}/level.json" },
+            { "name": "load", "file": "res/level/actions/colorCycling.json" },
             { "name": "loadingScreen.setProgress", "progress": 80 },
             { "name": "load", "file": "level/{1}/music.json" },
-            { "name": "load", "file": ["level/afterLevelLoad.json", "{1}", "{2}", "{3}"] },
+            { "name": "load", "file": ["level/afterLevelLoad.json", "{2}", "{3}"] },
+            { "name": "level.pause", "pause": false },
             { "name": "loadingScreen.setProgress", "progress": 100 },
             "clearPanelText"
           ]

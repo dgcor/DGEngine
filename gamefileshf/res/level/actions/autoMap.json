@@ -1,0 +1,81 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "showMap",
+      "action": {
+        "name": "if.equal",
+        "param1": "%currentLevel.hasAutomap%",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "%currentLevel.showAutomap%",
+          "param2": true,
+          "then": [
+            { "name": "level.showAutomap", "show": false },
+            { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+          ],
+          "else": [
+            { "name": "level.showAutomap", "show": true },
+            { "name": "drawable.visible", "id": "txtMapLabel", "visible": true },
+            { "name": "if",
+              "params": [
+                "\\d*", "regex", "%currentLevel.name%",
+                "or",
+                "Crypt \\d*", "regex", "%currentLevel.name%",
+                "or",
+                "Nest \\d*", "regex", "%currentLevel.name%"
+              ],
+              "then": { "name": "text.setText", "id": "txtMapLabel", "binding": "%currentLevel.name%", "format": "Level: [1]" },
+              "else": { "name": "text.setText", "id": "txtMapLabel", "binding": "%currentLevel.name%", "format": "[1]" }
+            }
+          ]
+        },
+        "else": [
+          { "name": "if",
+            "params": [
+              "\\d*", "regex", "%currentLevel.name%",
+              "or",
+              "Crypt \\d*", "regex", "%currentLevel.name%",
+              "or",
+              "Nest \\d*", "regex", "%currentLevel.name%"
+            ],
+            "then": { "name": "load", "file": ["ui/level/noMap.json", "level ", "%currentLevel.name%"] },
+            "else": { "name": "load", "file": ["ui/level/noMap.json", "", "%currentLevel.name%"] }
+          },
+          { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateMap",
+      "action": {
+        "name": "if.equal",
+        "param1": "%currentLevel.hasAutomap%",
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": "%currentLevel.showAutomap%",
+          "param2": true,
+          "then": [
+            { "name": "drawable.visible", "id": "txtMapLabel", "visible": true },
+            { "name": "if",
+              "params": [
+                "\\d*", "regex", "%currentLevel.name%",
+                "or",
+                "Crypt \\d*", "regex", "%currentLevel.name%",
+                "or",
+                "Nest \\d*", "regex", "%currentLevel.name%"
+              ],
+              "then": { "name": "text.setText", "id": "txtMapLabel", "binding": "%currentLevel.name%", "format": "Level: [1]" },
+              "else": { "name": "text.setText", "id": "txtMapLabel", "binding": "%currentLevel.name%", "format": "[1]" }
+            }
+          ],
+          "else": { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+        },
+        "else": { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
+      }
+    }
+  ]
+}

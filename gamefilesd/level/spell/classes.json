@@ -1,0 +1,4 @@
+{
+  "load": "level/spell/textures.json",
+  "load": "level/spell/classes2.json"
+}

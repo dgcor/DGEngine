@@ -1,0 +1,60 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "viewMap" },
+    {
+      "name": "if.equal",
+      "param1": "%game.hasTexture.{1}%",
+      "param2": false,
+      "then": {
+        "name": "loadJson",
+        "json": {
+          "texture": {
+            "id": "{1}",
+            "resource": "currentLevel",
+            "file": "{2}",
+            "palette": "town"
+          }
+        }
+      }
+    }
+  ],
+  "keyboard": {
+    "key": "any",
+    "action": { "name": "button.click", "id": "viewMapButton" }
+  },
+  "image": {
+    "id": "mapImage",
+    "texture": "{1}",
+    "anchor": "none"
+  },
+  "button": [
+    {
+      "id": "viewMapButtonLevel",
+      "anchor": "all",
+      "textureRect": [640, 352],
+      "texture": "empty",
+      "captureInputEvents": true,
+      "resizable": true,
+      "onHoverEnter": "clearPanelText",
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "viewMapButton",
+      "anchor": "all",
+      "textureRect": [640, 480],
+      "texture": "empty",
+      "captureInputEvents": ["LeftClick", "MousePress", "MouseRelease"],
+      "resizable": true,
+      "onHoverEnter": [
+        "clearLevelHoverActions",
+        "clearPanelText"
+      ],
+      "onHoverLeave": [
+        "setLevelHoverActions",
+        "clearPanelText"
+      ],
+      "onClick": { "name": "resource.pop", "id": "viewMap" },
+      "onRightClick": { "name": "resource.pop", "id": "viewMap" }
+    }
+  ]
+}

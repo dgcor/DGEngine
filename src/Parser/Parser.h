@@ -5,5 +5,5 @@
 
 namespace Parser
 {
-	void parseGame(Game& game, std::string filePath, const std::string& fileName);
+	void parseGame(Game& game, std::string filePath, const std::string_view fileName);
 }

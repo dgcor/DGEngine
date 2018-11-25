@@ -1,0 +1,102 @@
+{
+  "itemClass": [
+    {
+      "id": "runeBomb",
+      "fromId": "baseItemhf",
+      "dropTexturePack": "bombs1",
+      "inventoryTextureIndex": 19,
+      "name": "Rune bomb",
+      "shortName": "Bomb",
+      "type": "Bomb",
+      "formulas": {
+        "sell": null
+      },
+      "actions": {
+        "levelDrop": [
+          {
+            "name": "if",
+            "params": [
+              "%currentLevel.path%", "==", "town",
+              "and",
+              "%currentLevel.levelObject.79,62.class%", "==", "runeBomb"
+            ],
+            "then": [
+              {
+                "name": "loadJson",
+                "json": {
+                  "audio": {
+                    "file": "Sfx/misc/NestXpld.wav",
+                    "resource": "currentLevel",
+                    "volume": "%game.soundVolume%",
+                    "play": true
+                  }
+                }
+              },
+              { "name": "load", "file": "level/town/levelNest.json" },
+              { "name": "quest.setState", "quest": "farmersOrchard", "state": -1 },
+              { "name": "levelObject.deleteByClass", "class": "runeBomb" }
+            ],
+            "else": [
+              { "name": "sound.play", "id": "fliprock" },
+              { "name": "quest.setState", "quest": "farmersOrchard", "state": 2 }
+            ]
+          }
+        ],
+        "levelPick": [
+          {
+            "name": "if.equal",
+            "param1": "%currentLevel.quest.farmersOrchard.state%",
+            "param2": 2,
+            "then": { "name": "quest.setState", "quest": "farmersOrchard", "state": 3 }
+          },
+          "clearPanelText"
+        ],
+        "inventoryDrop": { "name": "sound.play", "id": "invrock" }
+      }
+    },
+    {
+      "id": "cathedralMap",
+      "fromId": "baseItem",
+      "dropTexturePack": "scroll",
+      "inventoryTextureIndex": 107,
+      "name": "Cathedral map",
+      "shortName": "Map",
+      "type": "Map",
+      "defaults": {
+        "rightClick": true
+      },
+      "descriptions": { "index": 0, "name": "rightClickToView" },
+      "inventorySize": [2, 2],
+      "formulas": {
+        "sell": null
+      },
+      "actions": {
+        "levelDrop": [
+          {
+            "name": "if",
+            "params": [
+              "%currentLevel.path%", "==", "town",
+              "and",
+              { "name": "levelObject.isInRangeByClass", "class": "cathedralMap", "range": [35, 20, 4, 6] },
+              "==", true
+            ],
+            "then": [
+              { "name": "sound.play", "id": "sarc" },
+              { "name": "load", "file": "level/town/levelCrypt.json" },
+              { "name": "levelObject.deleteByClass", "class": "cathedralMap" }
+            ],
+            "else": [
+              { "name": "sound.play", "id": "flipscrl" }
+            ]
+          }
+        ],
+        "inventoryDrop": { "name": "sound.play", "id": "invscrol" },
+        "rightClick": [
+          "clearPanelText",
+          { "name": "load", "file": ["ui/level/viewMap.json", "mapztown", "Items/Map/MapZtown.CEL"] },
+          { "name": "sound.play", "id": "invscrol" }
+        ]
+      }
+    }
+  ]
+}

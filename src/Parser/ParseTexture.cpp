@@ -1,6 +1,7 @@
 #include "ParseTexture.h"
 #include "ParseImageContainer.h"
 #include "ImageUtils.h"
+#include "Shaders.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
 
@@ -47,12 +48,23 @@ namespace Parser
 		{
 			return false;
 		}
-		if (elem.HasMember("palette"))
+
+		auto path = getStringViewVal(elem["file"]);
+		auto pathLower = Utils::toLower(path);
+
+		if (Utils::endsWith(pathLower, ".cel") == true ||
+			Utils::endsWith(pathLower, ".cl2") == true)
 		{
-			auto pal = game.Resources().getPalette(getStringVal(elem["palette"]));
-			if (pal == nullptr)
+			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
+			PaletteArray* palArray = nullptr;
+			if (getBoolKey(elem, "indexed") == true &&
+				Shaders::supportsPalettes() == true)
 			{
-				return false;
+				pal = nullptr;
+			}
+			if (pal != nullptr)
+			{
+				palArray = &pal->palette;
 			}
 			auto imgContainer = parseImageContainerObj(game, elem);
 			if (imgContainer == nullptr)
@@ -67,7 +79,7 @@ namespace Parser
 			else if (elem.HasMember("frame") == true)
 			{
 				auto frameIdx = getUIntVal(elem["frame"]);
-				img = ImageUtils::loadImageFrame(*imgContainer, *pal, frameIdx);
+				img = ImageUtils::loadImageFrame(*imgContainer, palArray, frameIdx);
 			}
 			else
 			{
@@ -76,7 +88,6 @@ namespace Parser
 		}
 		else
 		{
-			auto path = getStringCharVal(elem["file"]);
 			auto mask = getColorKey(elem, "mask", sf::Color::Transparent);
 			if (cache != nullptr)
 			{
@@ -91,16 +102,17 @@ namespace Parser
 			{
 				img = ImageUtils::loadImage(path, mask);
 			}
-			if (elem.HasMember("split") == true)
+			if (isValidString(elem, "split") == true)
 			{
+				auto split = getStringViewVal(elem["split"]);
 				auto piecesX = getUIntKey(elem, "pieces", 1);
 
-				if (elem["split"].GetString() == std::string("horizontal"))
+				if (split == "horizontal")
 				{
 					img = ImageUtils::splitImageHorizontal(*imgPtr, piecesX);
 					imgPtr = &img;
 				}
-				else if (elem["split"].GetString() == std::string("vertical"))
+				else if (split == "vertical")
 				{
 					img = ImageUtils::splitImageVertical(*imgPtr, piecesX);
 					imgPtr = &img;
@@ -146,7 +158,7 @@ namespace Parser
 					auto obj = game.Resources().getTexture(fromId);
 					if (obj != nullptr)
 					{
-						game.Resources().addTexture(id, obj);
+						game.Resources().addTexture(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -217,7 +229,7 @@ namespace Parser
 			{
 				return;
 			}
-			std::string file(elem["file"].GetString());
+			auto file = getStringViewVal(elem["file"]);
 			if (getIdFromFile(file, id) == false)
 			{
 				return;
@@ -232,7 +244,7 @@ namespace Parser
 		{
 			return;
 		}
-		game.Resources().addTexture(id, texture);
+		game.Resources().addTexture(id, texture, getStringViewKey(elem, "resource"));
 	}
 
 	bool getOrParseTexture(Game& game, const Value& elem, const char* idKey,
@@ -256,7 +268,7 @@ namespace Parser
 			if (isValidId(id) == true &&
 				texture != nullptr)
 			{
-				game.Resources().addTexture(id, texture);
+				game.Resources().addTexture(id, texture, getStringViewKey(elem, "resource"));
 				return true;
 			}
 		}

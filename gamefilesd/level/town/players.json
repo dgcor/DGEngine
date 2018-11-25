@@ -7,16 +7,6 @@
       "then": { "name": "load", "file": "level/town/playerCelFilesBeta.json" },
       "else": { "name": "load", "file": "level/town/playerCelFiles.json" }
     },
-    { "name": "load", "file": "level/town/playerClasses.json" },
-    { "name": "load", "file": "level/town/players2.json" },
-    {
-      "name": "if.equal",
-      "param1": "%beta%",
-      "param2": true,
-      "then": [
-        { "name": "player.setDirection", "player": "griswold", "direction": "FrontLeft" },
-        { "name": "player.setDirection", "player": "ogden", "direction": "FrontLeft" }
-      ]
-    }
+    { "name": "load", "file": "level/town/playerClasses.json" }
   ]
 }

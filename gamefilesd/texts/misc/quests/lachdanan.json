@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "switch",
-    "param": "|currentLevel|quest.lachdanan.state|",
+    "param": "%currentLevel.quest.lachdanan.state%",
     "case": [
       {
         "value": 0,

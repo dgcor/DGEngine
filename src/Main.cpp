@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-	PHYSFS_init(NULL);
+	PHYSFS_init(nullptr);
 	PHYSFS_permitSymbolicLinks(1);
 
 	try

@@ -1,6 +1,7 @@
 #include "ParsePredicate.h"
 #include "Predicates/PredIO.h"
 #include "Predicates/PredItem.h"
+#include "Predicates/PredLevelObject.h"
 #include "Predicates/PredPlayer.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -16,7 +17,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		switch (str2int16(elem["name"].GetString()))
+		switch (str2int16(getStringViewVal(elem["name"])))
 		{
 		case str2int16("file.exists"):
 		{
@@ -28,6 +29,20 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getItemLocationKey(elem, "item"));
 		}
+		case str2int16("levelObject.isInRange"):
+		{
+			return std::make_shared<PredLevelObjIsInRange>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "object"),
+				getIntRectKey(elem, "range"));
+		}
+		case str2int16("levelObject.isInRangeByClass"):
+		{
+			return std::make_shared<PredLevelObjIsInRangeByClass>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "class"),
+				getIntRectKey(elem, "range"));
+		}
 		case str2int16("player.canUseItem"):
 		{
 			return std::make_shared<PredPlayerCanUse>(
@@ -35,11 +50,12 @@ namespace Parser
 				getStringKey(elem, "player"),
 				getItemLocationKey(elem, "item"));
 		}
-		case str2int16("player.getMaxGoldCapacity"):
+		case str2int16("player.getMaxItemCapacity"):
 		{
-			return std::make_shared<PredPlayerGetMaxGoldCapacity>(
+			return std::make_shared<PredPlayerGetMaxItemCapacity>(
 				getStringKey(elem, "level"),
-				getStringKey(elem, "player"));
+				getStringKey(elem, "player"),
+				getStringKey(elem, "itemClass"));
 		}
 		case str2int16("player.hasFreeItemSlot"):
 		{

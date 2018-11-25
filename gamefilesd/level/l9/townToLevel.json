@@ -1,0 +1,11 @@
+{
+  "levelObject": {
+    "id": "caves",
+    "class": "levelCaves",
+    "mapPosition": [17, 69],
+    "properties": {
+      "x": 49,
+      "y": 19
+    }
+  }
+}

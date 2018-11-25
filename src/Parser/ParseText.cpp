@@ -10,90 +10,70 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	std::unique_ptr<DrawableText> parseDrawableTextObj(Game& game, const rapidjson::Value& elem)
+	std::unique_ptr<DrawableText> parseDrawableTextObj(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "font") == false)
+		auto font = game.Resources().getFont(getStringKey(elem, "font"));
+		if (holdsNullFont(font) == true)
 		{
 			return nullptr;
 		}
 
 		std::string displayText;
 
-		if (elem.HasMember("text"))
+		if (elem.HasMember("text") == true)
 		{
 			displayText = getStringVal(elem["text"]);
 		}
-		else if (elem.HasMember("file"))
+		else if (elem.HasMember("file") == true)
 		{
 			displayText = FileUtils::readText(getStringCharVal(elem["file"]));
 		}
 
-		auto font = game.Resources().getFont(elem["font"].GetString());
-		if (hasNullFont(font) == true)
-		{
-			return nullptr;
-		}
+		std::unique_ptr<DrawableText> text;
 
-		if (hasFreeTypeFont(font) == true)
+		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
+		auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
+
+		if (holdsFreeTypeFont(font) == true)
 		{
 			auto fontSize = getUIntKey(elem, "fontSize", 12);
-			auto text = std::make_unique<StringText>(displayText,
+			text = std::make_unique<StringText>(displayText,
 				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
-			text->setColor(getColorKey(elem, "color", sf::Color::White));
-			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
 
-			auto anchor = getAnchorKey(elem, "anchor");
-			text->setAnchor(anchor);
-			auto size = text->Size();
-			auto pos = getPositionKey(elem, "position", size, game.RefSize());
-			if (getBoolKey(elem, "relativeCoords", true) == true)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-				if (game.StretchToFit() == false)
-				{
-					GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-				}
-			}
-			text->Position(pos);
-			text->Visible(getBoolKey(elem, "visible", true));
-
-			return std::move(text);
+			text->setHorizontalSpaceOffset(horizSpaceOffset);
+			text->setVerticalSpaceOffset(vertSpaceOffset);
 		}
 		else
 		{
-			auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
-			auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
-
-			auto text = std::make_unique<BitmapText>(displayText,
+			text = std::make_unique<BitmapText>(displayText,
 				std::get<std::shared_ptr<BitmapFont>>(font), horizSpaceOffset, vertSpaceOffset);
-			text->setColor(getColorKey(elem, "color", sf::Color::White));
-			text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
-			text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
-
-			auto anchor = getAnchorKey(elem, "anchor");
-			text->setAnchor(anchor);
-			auto pos = getVector2fKey<sf::Vector2f>(elem, "position");
-			if (getBoolKey(elem, "relativeCoords", true) == true)
-			{
-				auto size = text->Size();
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-				if (game.StretchToFit() == false)
-				{
-					GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-				}
-			}
-			text->Position(pos);
-			text->Visible(getBoolKey(elem, "visible", true));
-
-			return std::move(text);
 		}
-		return nullptr;
+
+		text->setColor(getColorKey(elem, "color", sf::Color::White));
+		text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
+		text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
+
+		auto anchor = getAnchorKey(elem, "anchor");
+		text->setAnchor(anchor);
+		auto size = text->Size();
+		auto pos = getPositionKey(elem, "position", size, game.RefSize());
+		if (getBoolKey(elem, "relativeCoords", true) == true)
+		{
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
+			if (game.StretchToFit() == false)
+			{
+				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
+			}
+		}
+		text->Position(pos);
+		text->Visible(getBoolKey(elem, "visible", true));
+
+		return text;
 	}
 
-	std::unique_ptr<Text2> parseText2Obj(Game& game, const rapidjson::Value& elem)
+	std::unique_ptr<Text> parseText2Obj(Game& game, const Value& elem)
 	{
-		auto text = std::make_unique<Text2>();
+		auto text = std::make_unique<Text>();
 		if (parseText2Obj(game, elem, *text) == false)
 		{
 			return nullptr;
@@ -101,7 +81,7 @@ namespace Parser
 		return text;
 	}
 
-	bool parseText2Obj(Game& game, const Value& elem, Text2& text)
+	bool parseText2Obj(Game& game, const Value& elem, Text& text)
 	{
 		auto drawableText = parseDrawableTextObj(game, elem);
 		if (drawableText == nullptr)
@@ -113,9 +93,9 @@ namespace Parser
 		auto hasBinding = elem.HasMember("binding") == true;
 		if (hasBinding == true)
 		{
-			text.setBinding(std::move(getStringVectorKey(elem, "binding")));
+			text.setBinding(getStringVectorKey(elem, "binding"));
 		}
-		text.setFormat(getStringKey(elem, "format", "[1]"));
+		text.setFormat(getStringViewKey(elem, "format", "[1]"));
 
 		if (elem.HasMember("onChange"))
 		{
@@ -139,18 +119,11 @@ namespace Parser
 		{
 			return;
 		}
-		std::shared_ptr<Text2> text(std::move(parseText2Obj(game, elem)));
+		std::shared_ptr<Text> text(parseText2Obj(game, elem));
 		if (text == nullptr)
 		{
 			return;
 		}
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, text);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, text);
-		}
+		game.Resources().addDrawable(id, text, getStringViewKey(elem, "resource"));
 	}
 }

@@ -11,6 +11,11 @@ public:
 	TileBlock() : std::tuple<int16_t, int16_t, int16_t, int16_t>(-1, -1, -1, -1) {}
 	TileBlock(int16_t tile) : std::tuple<int16_t, int16_t, int16_t, int16_t>(tile, tile, tile, tile) {}
 
+	TileBlock& operator=(const TileBlock&) = default;
+	TileBlock& operator=(TileBlock&&) = default;
+	TileBlock(const TileBlock&) = default;
+	TileBlock(TileBlock&&) = default;
+
 	int16_t getTileIndex(int32_t xCoord, int32_t yCoord) const noexcept;
 };
 
@@ -21,7 +26,7 @@ private:
 
 public:
 	TileSet() {}
-	TileSet(const std::string& fileName);
+	TileSet(const std::string_view fileName);
 	const TileBlock& operator[] (size_t index) const { return tiles[index]; }
 	bool empty() const noexcept { return tiles.empty(); }
 	size_t size() const noexcept { return tiles.size(); }

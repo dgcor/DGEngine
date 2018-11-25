@@ -1,0 +1,9 @@
+{
+  "action": { "name": "quest.setState", "quest": "poisonedWater", "state": -1 },
+  "audio": {
+    "file": "Sfx/misc/questdon.wav",
+    "resource": "currentLevel",
+    "volume": "%game.soundVolume%",
+    "play": true
+  }
+}

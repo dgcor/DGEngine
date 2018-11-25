@@ -8,26 +8,18 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseGame(Game& game, std::string filePath, const std::string& fileName)
+	void parseGame(Game& game, std::string filePath, const std::string_view fileName)
 	{
-		if (PHYSFS_mount(filePath.c_str(), NULL, 0) == 0)
+		if (PHYSFS_mount(filePath.c_str(), nullptr, 0) == 0)
 		{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			throw std::runtime_error(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
-#else
-			throw std::runtime_error(PHYSFS_getLastError());
-#endif
 		}
 
 		rapidjson::Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
-
-		if (doc.Parse(FileUtils::readText(fileName.c_str()).c_str()).HasParseError())
+		auto jsonText = FileUtils::readText(fileName.data());
+		if (doc.Parse(jsonText.data(), jsonText.size()).HasParseError())
 		{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			PHYSFS_unmount(filePath.c_str());
-#else
-			PHYSFS_removeFromSearchPath(filePath.c_str());
-#endif
 			return;
 		}
 

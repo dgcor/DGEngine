@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ImageContainer.h"
-#include <string>
+#include <string_view>
 
 class SimpleImageContainer : public ImageContainer
 {
@@ -14,7 +14,7 @@ private:
 	bool horizontalDirection{ false };
 
 public:
-	SimpleImageContainer(const std::string& fileName, size_t xFrames_,
+	SimpleImageContainer(const std::string_view fileName, size_t xFrames_,
 		size_t yFrames_, bool horizontalDirection_ = false,
 		const sf::Color& transparencyMask = sf::Color::Transparent);
 

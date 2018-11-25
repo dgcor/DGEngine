@@ -11,7 +11,7 @@
   },
   "texture": {
     "id": "credits",
-    "file":"ui_art/credits.pcx"
+    "file": "ui_art/credits.pcx"
   },
   "image": {
     "id": "credits",

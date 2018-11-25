@@ -27,7 +27,7 @@
     "verticalPad": 38,
     "items": [
       {
-        "load": "currentLevel|currentPlayer.inventory.stash",
+        "load": "currentLevel.currentPlayer.inventory.stash",
         "include": {
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]
@@ -39,7 +39,7 @@
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.belt",
+        "load": "currentLevel.currentPlayer.inventory.belt",
         "include": {
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]

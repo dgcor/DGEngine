@@ -30,9 +30,7 @@
   "text": [
     {
       "id": "panelTitle1",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -68,11 +66,14 @@
         ]
       },
       {
-        "load": "currentLevel|quests",
-        "exclude": {
-          "property": "id",
-          "value": ["gharbadTheWeak", "zharTheMad"]
-        },
+        "load": "currentLevel.quests",
+        "exclude": [
+          { "property": "state", "value": [-1, 0] },
+          {
+            "property": "id",
+            "value": ["gharbadTheWeak", "zharTheMad"]
+          }
+        ],
         "text": "%name%",
         "onClick": {
           "name": "load",
@@ -105,6 +106,6 @@
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram",
-    { "name": "menu.setColor", "id": "panelQuests", "index": 0, "color": "%textBlue%", "replaceVars": true }
+    { "name": "menu.setFont", "id": "panelQuests", "index": 0, "font": "smaltextBlue" }
   ]
 }

@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cuttt",
-    "file":"gendata/cuttt.pal"
+    "file": "gendata/cuttt.pal"
   },
   "texture": {
     "id": "cuttt",
-    "file":"gendata/cuttt.cel",
+    "file": "gendata/cuttt.cel",
     "palette": "cuttt"
   },
   "loadingScreen": {

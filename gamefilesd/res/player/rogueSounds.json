@@ -6,6 +6,7 @@
     { "id": "whereWouldIPutThis", "file": "sfx/rogue/rogue16.wav" },
     { "id": "cantCastThatHere", "file": "sfx/rogue/rogue27.wav" },
     { "id": "dontHaveASpellReady", "file": "sfx/rogue/rogue34.wav" },
-    { "id": "notEnoughMana", "file": "sfx/rogue/rogue35.wav" }
+    { "id": "notEnoughMana", "file": "sfx/rogue/rogue35.wav" },
+    { "id": "die", "file": "sfx/rogue/rogue71.wav" }
   ]
 }

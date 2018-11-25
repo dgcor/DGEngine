@@ -1,0 +1,9 @@
+{
+  "action": [
+    { "name": "quest.delete", "quest": "ogdenInit" }
+  ],
+  "quest": {
+    "id": "poisonedWater",
+    "name": "Poisoned Water Supply"
+  }
+}

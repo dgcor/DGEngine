@@ -1,42 +1,31 @@
 {
+  "variable": [
+    { "colorCycleSpeed": 60 },
+    { "colorCycleStart": 1 },
+    { "colorCycleStop": 32 }
+  ],
   "palette": [
     {
-      "id": "l4_4",
-      "file":"levels/l4data/l4_4.pal"
+      "id": "l4_3",
+      "file": "levels/l4data/l4_3.pal"
     },
     {
       "id": "colorCycle",
-      "fromId":"l4_4"
+      "fromId": "l4_3"
     }
   ],
   "level": {
     "id": "level",
-    "path": "l15",
-    "name": "Hell",
-    "palette": "l4_4",
+    "palette": "l4_3",
     "file": "levels/l4data/l4.cel",
-    "outOfBoundsTileTop": 19,
-    "defaultTile": 5,
-    "mapSize": [50, 50],
-    "map": [
-      { "file": "levels/l4data/warlord2.dun", "position": [0, 0] },
-      { "file": "levels/l4data/diab1.dun", "position": [10, 1] },
-      { "file": "levels/l4data/diab2b.dun", "position": [0, 15] },
-      { "file": "levels/l4data/diab3b.dun", "position": [21, 18] },
-      { "file": "levels/l4data/diab4b.dun", "position": [21, 0] },
-      { "file": "level/l15/redPentagram.json", "indexOffset": -1, "position": [27, 6] }
-    ],
+    "outOfBoundsTileLayer2": 19,
     "til": "levels/l4data/l4.til",
     "min": "levels/l4data/l4.min",
     "minBlocks": 16,
     "sol": "levels/l4data/l4.sol"
   },
-  "levelObject": {
-    "id": "town",
-    "name": "Up to town",
-    "mapPosition": [6, 7],
-    "texture": "empty",
-    "textureRect": [32, 32],
-    "action": { "name": "load", "file": ["level/town/load.json", "positionPlayer", "[42, 80]"] }
-  }
+  "load": "level/automap/l4/load.json",
+  "load": "level/l15/levelObjects.json",
+  "load": "level/l15/monsters.json",
+  "load": "level/l15/level2.json"
 }

@@ -4,19 +4,32 @@
     "id": "use{1}Item",
     "action": {
       "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.item.belt.{2}.isUsable|",
+      "param1": "%currentLevel.currentPlayer.item.belt.{2}.isUsable%",
       "param2": true,
       "then": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.canUseItem.belt.{2}|",
+        "param1": "%currentLevel.currentPlayer.canUseItem.belt.{2}%",
         "param2": true,
         "then": [
+          "closeRemoveGold",
           { "name": "item.use", "inventory": "belt", "item": {2} },
-          "updateAllPlayerStats"
+          "updateAllPlayerStats",
+          "clearPanelText"
         ],
         "else": "sCantUseThisYet"
       },
-      "else": "rightClickLevel"
+      "else": {
+        "name": "if.equal",
+        "param1": "%currentLevel.currentPlayer.item.belt.{2}.rightClick%",
+        "param2": 1,
+        "then": {
+          "name": "item.executeAction",
+          "inventory": "belt",
+          "item": {2},
+          "action": "rightClick"
+        },
+        "else": "sCantUseThisYet"
+      }
     }
   }
 }

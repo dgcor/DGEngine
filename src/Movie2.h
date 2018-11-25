@@ -8,7 +8,7 @@
 #include "sfeMovie/Movie.hpp"
 #endif
 
-class Movie2 : public UIObject
+class Movie : public UIObject
 {
 private:
 #ifndef USE_SFML_MOVIE_STUB
@@ -23,30 +23,17 @@ private:
 	std::shared_ptr<Action> actionComplete;
 
 public:
-	Movie2(const std::string& file_) : Movie2(file_.c_str()) {}
 #ifndef USE_SFML_MOVIE_STUB
-	Movie2(const char* file_) : file(std::make_unique<sf::PhysFSStream>(file_)) {}
+	Movie(const std::string_view file_) : file(std::make_unique<sf::PhysFSStream>(file_.data())) {}
 
-	bool load()
-	{
-		if (file == nullptr || file->hasError() == true)
-		{
-			return false;
-		}
-		bool ret = movie.openFromStream(*file);
-		if (ret == true)
-		{
-			size = movie.getSize();
-		}
-		return ret;
-	}
+	bool load();
 	void play() { movie.play(); }
 	void pause() { movie.pause(); }
 	void setVolume(float volume) { movie.setVolume(volume); }
 #else
-	Movie2(const char* file_) { movie.setFillColor(sf::Color::Black); }
+	Movie(const std::string_view file_) { movie.setFillColor(sf::Color::Black); }
 
-	bool load() noexcept { return true; }
+	bool load();
 	void play() noexcept {}
 	void pause() noexcept {}
 	void setVolume(float volume) noexcept {}
@@ -78,5 +65,5 @@ public:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void update(Game& game);
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

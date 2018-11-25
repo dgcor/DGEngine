@@ -1,9 +1,9 @@
 #include "Sol.h"
 #include "PhysFSStream.h"
 
-Sol::Sol(const std::string& fileName)
+Sol::Sol(const std::string_view fileName)
 {
-	sf::PhysFSStream file(fileName);
+	sf::PhysFSStream file(fileName.data());
 	if (file.hasError() == true)
 	{
 		return;

@@ -9,9 +9,9 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	ReplaceVars getReplaceVars(const std::string& str, ReplaceVars val)
+	ReplaceVars getReplaceVars(const std::string_view str, ReplaceVars val)
 	{
-		switch (str2int16(Utils::toLower(str).c_str()))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("none"):
 			return ReplaceVars::None;
@@ -24,7 +24,7 @@ namespace Parser
 		}
 	}
 
-	bool getIdFromFile(const std::string& file, std::string& id)
+	bool getIdFromFile(const std::string_view file, std::string& id)
 	{
 		id = FileUtils::getFileWithoutExt(FileUtils::getFileFromPath(file));
 		return (id.empty() == false);
@@ -37,7 +37,7 @@ namespace Parser
 			&& elem[key].Size() > 0);
 	}
 
-	bool isValidId(const std::string& id) noexcept
+	bool isValidId(const std::string_view id) noexcept
 	{
 		if (id.empty() == true)
 		{

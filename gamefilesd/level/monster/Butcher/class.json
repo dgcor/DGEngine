@@ -5,8 +5,8 @@
     "name": "The Butcher",
     "type": "Demon",
     "description": "Some Magic Resistances\nNo Immunities",
-    "defaultOutline": "%outlineEnemy%",
-    "defaultOutlineIgnore": "0x000000",
+    "outline": "|outlineEnemy|",
+    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 10,
       "experience": 710,

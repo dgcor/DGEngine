@@ -32,7 +32,6 @@
   "text": [
     {
       "id": "itemInfo",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [52, 130],
       "anchor": "none",
@@ -41,7 +40,6 @@
     },
     {
       "id": "itemPrice",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [571, 130],
       "anchor": "none",
@@ -72,15 +70,16 @@
       "text": "Yes",
       "onClick": [
         {
-          "name": "player.removeGold",
-          "gold": "|currentLevel|currentPlayer.item.{1}.{2}.price|"
+          "name": "player.removeItemQuantity",
+          "itemClass": "gold",
+          "value": "%currentLevel.currentPlayer.item.{1}.{2}.price%"
         },
         {
           "name": "item.setProperty",
           "inventory": "{1}",
           "item": {2},
           "property": "charges",
-          "value": "|currentLevel|currentPlayer.item.{1}.{2}.chargesMax|"
+          "value": "%currentLevel.currentPlayer.item.{1}.{2}.chargesMax%"
         },
         { "name": "resource.popAll", "id": "userPanelRecharge" },
         { "name": "load", "file": "towners/adria/recharge/panel.json" }
@@ -125,33 +124,32 @@
       "text": "%price%"
     },
     {
-      "replaceVars": true,
       "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.canUseItem.{1}.{2}|",
+      "param1": "%currentLevel.currentPlayer.canUseItem.{1}.{2}%",
       "param2": false,
       "then": [
-        { "name": "text.setColor", "id": "itemInfo", "color": "%textRed%" },
-        { "name": "text.setColor", "id": "itemPrice", "color": "%textRed%" }
+        { "name": "text.setFont", "id": "itemInfo", "font": "smaltextRed" },
+        { "name": "text.setFont", "id": "itemPrice", "font": "smaltextRed" }
       ],
       "else": {
         "name": "if.equal",
-        "param1": "|currentLevel|player.adria.item.{1}.{2}.unique|",
+        "param1": "%currentLevel.player.adria.item.{1}.{2}.unique%",
         "param2": 1,
         "then": [
-          { "name": "text.setColor", "id": "itemInfo", "color": "%textGold%" },
-          { "name": "text.setColor", "id": "itemPrice", "color": "%textGold%" }
+          { "name": "text.setFont", "id": "itemInfo", "font": "smaltextGold" },
+          { "name": "text.setFont", "id": "itemPrice", "font": "smaltextGold" }
         ],
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|player.adria.item.{1}.{2}.magical|",
+          "param1": "%currentLevel.player.adria.item.{1}.{2}.magical%",
           "param2": 1,
           "then": [
-            { "name": "text.setColor", "id": "itemInfo", "color": "%textBlue%" },
-            { "name": "text.setColor", "id": "itemPrice", "color": "%textBlue%" }
+            { "name": "text.setFont", "id": "itemInfo", "font": "smaltextBlue" },
+            { "name": "text.setFont", "id": "itemPrice", "font": "smaltextBlue" }
           ],
           "else": [
-            { "name": "text.setColor", "id": "itemInfo" },
-            { "name": "text.setColor", "id": "itemPrice" }
+            { "name": "text.setFont", "id": "itemInfo", "font": "smaltext" },
+            { "name": "text.setFont", "id": "itemPrice", "font": "smaltext" }
           ]
         }
       }

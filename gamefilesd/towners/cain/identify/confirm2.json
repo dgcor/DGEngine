@@ -32,7 +32,6 @@
   "text": [
     {
       "id": "itemInfo",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [51, 130],
       "anchor": "none",
@@ -47,7 +46,7 @@
       "anchor": "none",
       "horizontalAlign": "right",
       "horizontalSpaceOffset": 1,
-      "text": "%identifyPrice%"
+      "text": "|identifyPrice|"
     },
     {
       "id": "confirm",
@@ -73,8 +72,9 @@
       "text": "Yes",
       "onClick": [
         {
-          "name": "player.removeGold",
-          "gold": "%identifyPrice%"
+          "name": "player.removeItemQuantity",
+          "itemClass": "gold",
+          "value": "%identifyPrice%"
         },
         {
           "name": "item.setProperty",

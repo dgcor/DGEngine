@@ -2,20 +2,20 @@
   "action": [
     {
       "name": "if.inList",
-      "param": "|currentLevel|player.{1}.item.{2}.{3}.itemType|",
+      "param": "%currentLevel.player.{1}.item.{2}.{3}.itemType%",
       "list": ["Book", "Potion", "Scroll"],
       "else": [
         {
           "name": "if.equal",
-          "param1": "|currentLevel|player.{1}.item.{2}.{3}.identified|",
+          "param1": "%currentLevel.player.{1}.item.{2}.{3}.identified%",
           "param2": true,
           "then": {
             "name": "if.notEqual",
-            "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.1|",
+            "param1": "%currentLevel.player.{1}.item.{2}.{3}.d.1%",
             "param2": "",
             "then": {
               "name": "if.notEqual",
-              "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.2|",
+              "param1": "%currentLevel.player.{1}.item.{2}.{3}.d.2%",
               "param2": "",
               "then": {
                 "name": "menu.appendText",
@@ -34,7 +34,7 @@
             },
             "else": {
               "name": "if.notEqual",
-              "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.2|",
+              "param1": "%currentLevel.player.{1}.item.{2}.{3}.d.2%",
               "param2": "",
               "then": {
                 "name": "menu.appendText",
@@ -48,7 +48,7 @@
         },
         {
           "name": "if.notEqual",
-          "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.0|",
+          "param1": "%currentLevel.player.{1}.item.{2}.{3}.d.0%",
           "param2": "",
           "then": {
             "name": "menu.appendText",
@@ -62,7 +62,7 @@
     },
     {
       "name": "if.notEqual",
-      "param1": "|currentLevel|player.{1}.item.{2}.{3}.d.3|",
+      "param1": "%currentLevel.player.{1}.item.{2}.{3}.d.3%",
       "param2": "",
       "then": {
         "name": "menu.appendText",
@@ -80,7 +80,7 @@
     },
     {
       "name": "if.lower",
-      "param1": "|mainMenu|item.{4}.lineCount|",
+      "param1": "%mainMenu.item.{4}.lineCount%",
       "param2": 3,
       "then": {
         "name": "menu.appendText",
@@ -90,7 +90,6 @@
       }
     },
     {
-      "replaceVars": true,
       "name": "if.equal",
       "param1": {
         "name": "player.canUseItem",
@@ -98,18 +97,18 @@
       },
       "param2": false,
       "then": {
-        "name": "menu.setColor", "id": "mainMenu", "index": {4}, "color": "%textRed%" },
+        "name": "menu.setFont", "id": "mainMenu", "index": {4}, "font": "smaltextRed" },
       "else": {
         "name": "if.equal",
-        "param1": "|currentLevel|player.{1}.item.{2}.{3}.unique|",
+        "param1": "%currentLevel.player.{1}.item.{2}.{3}.unique%",
         "param2": 1,
-        "then": { "name": "menu.setColor", "id": "mainMenu", "index": {4}, "color": "%textGold%" },
+        "then": { "name": "menu.setFont", "id": "mainMenu", "index": {4}, "font": "smaltextGold" },
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|player.{1}.item.{2}.{3}.magical|",
+          "param1": "%currentLevel.player.{1}.item.{2}.{3}.magical%",
           "param2": 1,
-          "then": { "name": "menu.setColor", "id": "mainMenu", "index": {4}, "color": "%textBlue%" },
-          "else": { "name": "menu.setColor", "id": "mainMenu", "index": {4} }
+          "then": { "name": "menu.setFont", "id": "mainMenu", "index": {4}, "font": "smaltextBlue" },
+          "else": { "name": "menu.setFont", "id": "mainMenu", "index": {4}, "font": "smaltext" }
         }
       }
     }

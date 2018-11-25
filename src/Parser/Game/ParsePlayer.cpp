@@ -2,7 +2,6 @@
 #include "Game/Player.h"
 #include "GameUtils.h"
 #include "ParseItem.h"
-#include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 
 namespace Parser
@@ -10,7 +9,7 @@ namespace Parser
 	using namespace rapidjson;
 
 	void parsePlayerItem(Game& game, Level& level,
-		const ItemCollection& inventory, Player& player, size_t invIdx, const Value& elem)
+		const Inventory& inventory, Player& player, size_t invIdx, const Value& elem)
 	{
 		if (elem.HasMember("index") == false)
 		{
@@ -101,13 +100,19 @@ namespace Parser
 			const auto& classesElem = elem["allowedClassTypes"];
 			if (classesElem.IsString() == true)
 			{
-				inventory.allowType(Utils::toLower(classesElem.GetString()));
+				auto name = Utils::toLower(getStringViewVal(classesElem));
+				auto nameHash = str2int16(name);
+				level.setPropertyName(nameHash, name);
+				inventory.allowTypeByHash(nameHash);
 			}
 			else if (classesElem.IsArray() == true)
 			{
 				for (const auto& arrElem : classesElem)
 				{
-					inventory.allowType(Utils::toLower(getStringVal(arrElem)));
+					auto name = Utils::toLower(getStringViewVal(arrElem));
+					auto nameHash = str2int16(name);
+					level.setPropertyName(nameHash, name);
+					inventory.allowTypeByHash(nameHash);
 				}
 			}
 		}
@@ -126,6 +131,18 @@ namespace Parser
 				parsePlayerItem(game, level, inventory, player, invIdx, itemsElem);
 			}
 		}
+	}
+
+	void parsePlayerSpell(Game& game, Level& level,
+		Player& player, const Value& elem)
+	{
+		auto id = getStringKey(elem, "class");
+		auto spellClass = level.getSpellClass(id);
+		if (spellClass == nullptr)
+		{
+			return;
+		}
+		player.addSpell(id, std::make_unique<Spell>(spellClass));
 	}
 
 	void parsePlayer(Game& game, const Value& elem)
@@ -170,23 +187,24 @@ namespace Parser
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
 		player->setAnimation(getPlayerAnimationKey(elem, "animation"));
-		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));
 		player->setTextureIdx(getUIntKey(elem, "textureIndex"));
+		player->setStatus(getPlayerStatusKey(elem, "status"));
+		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));
 
-		auto outline = getColorKey(elem, "outline", class_->DefaultOutline());
-		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->DefaultOutlineIgnore());
+		auto outline = getColorKey(elem, "outline", class_->Outline());
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->OutlineIgnore());
 		player->setOutline(outline, outlineIgnore);
 		player->setOutlineOnHover(getBoolKey(elem, "outlineOnHover", true));
 
 		player->setAI(getBoolKey(elem, "AI"));
 
-		auto id = getStringKey(elem, "id");
+		auto id = getStringViewKey(elem, "id");
 		if (isValidId(id) == false)
 		{
-			id.clear();
+			id = {};
 		}
 		player->Id(id);
-		player->Name(getStringKey(elem, "name", class_->Name()));
+		player->Name(getStringViewKey(elem, "name"));
 
 		if (elem.HasMember("properties") == true)
 		{
@@ -197,18 +215,15 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto nameHash = str2int16(it->name.GetString());
-						level->setPropertyName(nameHash, it->name.GetString());
+						auto name = getStringViewVal(it->name);
+						auto nameHash = str2int16(name);
+						level->setPropertyName(nameHash, name);
 						player->setNumberByHash(nameHash,
-							getMinMaxNumber32Val(it->value), level);
+							getMinMaxNumber32Val(it->value), nullptr);
 					}
 				}
+				player->updateLevelFromExperience(*level, false);
 			}
-		}
-
-		if (elem.HasMember("action") == true)
-		{
-			player->setAction(parseAction(game, elem["action"]));
 		}
 
 		if (elem.HasMember("inventory") == true)
@@ -224,6 +239,22 @@ namespace Parser
 			else if (invElem.IsObject() == true)
 			{
 				parsePlayerInventory(game, *level, *player, invElem);
+			}
+		}
+
+		if (elem.HasMember("spell") == true)
+		{
+			const auto& spellElem = elem["spell"];
+			if (spellElem.IsArray() == true)
+			{
+				for (const auto& val : spellElem)
+				{
+					parsePlayerSpell(game, *level, *player, val);
+				}
+			}
+			else if (spellElem.IsObject() == true)
+			{
+				parsePlayerSpell(game, *level, *player, spellElem);
 			}
 		}
 

@@ -15,7 +15,7 @@
         {
           "name": "menu.setIndex",
           "id": "menuPrices",
-          "index": "|mainMenu|currentIdx|"
+          "index": "%mainMenu.currentIdx%"
         }
       ]
     },
@@ -70,7 +70,7 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "load": "currentLevel|currentPlayer.inventory.body",
+        "load": "currentLevel.currentPlayer.inventory.body",
         "exclude": {
           "property": "identified",
           "value": true
@@ -91,7 +91,7 @@
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.belt",
+        "load": "currentLevel.currentPlayer.inventory.belt",
         "exclude": {
           "property": "identified",
           "value": true
@@ -112,7 +112,7 @@
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.stash",
+        "load": "currentLevel.currentPlayer.inventory.stash",
         "exclude": {
           "property": "identified",
           "value": true
@@ -154,13 +154,13 @@
   },
   "action": {
     "name": "if.notEqual",
-    "param1": "|mainMenu|itemCount|",
+    "param1": "%mainMenu.itemCount%",
     "param2": 0,
     "then": [
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "Identify which item?            Your gold : [1]"
       },
       { "name": "load", "file": "towners/cain/identify/listItems.json" }
@@ -169,7 +169,7 @@
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "You have nothing to identify.            Your gold : [1]"
       },
       { "name": "load", "file": "towners/cain/identify/noItems.json" }

@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cutportl",
-    "file":"gendata/cutportl.pal"
+    "file": "gendata/cutportl.pal"
   },
   "texture": {
     "id": "cutportl",
-    "file":"gendata/Cutportl.cel",
+    "file": "gendata/Cutportl.cel",
     "palette": "cutportl"
   },
   "loadingScreen": {

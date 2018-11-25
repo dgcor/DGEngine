@@ -12,11 +12,11 @@
   "texture": [
     {
       "id": "credits1",
-      "file":"images/menus/credits_alpha_demo.png"
+      "file": "images/menus/credits_alpha_demo.png"
     },
     {
       "id": "credits2",
-      "file":"images/menus/credits_fantasycore.png"
+      "file": "images/menus/credits_fantasycore.png"
     }
   ],
   "image": [

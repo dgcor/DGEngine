@@ -23,7 +23,7 @@ namespace Parser
 		}
 		const auto& valElem = elem["value"];
 
-		auto conditionHash = str2int16(getStringCharKey(elem, "if"));
+		auto conditionHash = str2int16(getStringViewKey(elem, "if"));
 		auto property = getStringKey(elem, "property");
 
 		if (valElem.IsArray() == false)
@@ -168,7 +168,7 @@ namespace Parser
 		}
 
 		auto font = game.Resources().getFont(getStringKey(elem, "font"));
-		if (hasNullFont(font) == true)
+		if (holdsNullFont(font) == true)
 		{
 			return;
 		}
@@ -195,7 +195,7 @@ namespace Parser
 			{
 				std::string prop(val["load"].GetString());
 
-				auto props = Utils::splitStringIn2(prop, '|');
+				auto props = Utils::splitStringIn2(prop, '.');
 				const auto& uiObjId = props.first;
 				const auto& uiElemProps = props.second;
 
@@ -304,14 +304,14 @@ namespace Parser
 						if (invIdx < player->getInventorySize())
 						{
 							MemoryPoolAllocator<CrtAllocator> allocator;
-							const auto& itemCollection = player->getInventory(invIdx);
-							for (size_t i = 0; i < itemCollection.Size(); i++)
+							const auto& inventory = player->getInventory(invIdx);
+							for (size_t i = 0; i < inventory.Size(); i++)
 							{
-								if (itemCollection.isItemSlotInUse(i) == false)
+								if (inventory.isSlotInUse(i) == false)
 								{
 									continue;
 								}
-								const auto item = itemCollection.get(i);
+								const auto item = inventory.get(i);
 
 								if (filterList.empty() == false &&
 									getFilterResult(filterList, *item, include) == true)
@@ -393,13 +393,6 @@ namespace Parser
 		menu->updateVisibleItems();
 		menu->calculatePositions();
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, menu);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, menu);
-		}
+		game.Resources().addDrawable(id, menu, getStringViewKey(elem, "resource"));
 	}
 }

@@ -1,8 +1,8 @@
 {
   "action": {
     "name": ">=",
-    "param1": "|currentLevel|currentPlayer.gold|",
-    "param2": "|currentLevel|currentPlayer.item.{1}.{2}.price|",
+    "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
+    "param2": "%currentLevel.currentPlayer.item.{1}.{2}.price%",
     "then": {
       "name": "load",
       "file": [ "towners/griswold/repair/confirm2.json", "{1}", "{2}" ]

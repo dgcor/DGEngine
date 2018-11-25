@@ -34,7 +34,7 @@ namespace VarUtils
 		{
 			return (std::get<bool>(var) ? 1.0 : 0.0);
 		}
-		return std::atof(std::get<std::string>(var).c_str());
+		return Utils::strtod(std::get<std::string>(var));
 	}
 
 	int64_t toLong(const Variable& var) noexcept
@@ -51,7 +51,7 @@ namespace VarUtils
 		{
 			return (std::get<bool>(var) ? 1 : 0);
 		}
-		return std::atol(std::get<std::string>(var).c_str());
+		return Utils::strtoll(std::get<std::string>(var));
 	}
 
 	std::string toString(const Variable& var)
@@ -62,7 +62,7 @@ namespace VarUtils
 		}
 		else if (std::holds_alternative<int64_t>(var))
 		{
-			return std::to_string(std::get<int64_t>(var));
+			return Utils::toString(std::get<int64_t>(var));
 		}
 		else if (std::holds_alternative<double>(var))
 		{

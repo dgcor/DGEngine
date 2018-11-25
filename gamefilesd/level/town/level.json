@@ -1,29 +1,16 @@
 {
   "level": {
     "id": "level",
-    "path": "town",
-    "name": "Town Center",
     "palette": "town",
     "file": "levels/towndata/town.cel",
     "mapSize": [96, 96],
-    "map": [
-      { "file": "levels/towndata/sector1s.dun", "position": [46, 46] },
-      { "file": "levels/towndata/sector2s.dun", "position": [46, 0] },
-      { "file": "levels/towndata/sector3s.dun", "position": [0, 46] },
-      { "file": "levels/towndata/sector4s.dun", "position": [0, 0] }
-    ],
     "til": "levels/towndata/town.til",
     "min": "levels/towndata/town.min",
     "minBlocks": 16,
     "sol": "levels/towndata/town.sol"
   },
-  "action": {
-    "name": "if.equal",
-    "param1": "%beta%",
-    "param2": true,
-    "then": { "name": "load", "file": "level/town/levelObjectsBeta.json" },
-    "else": { "name": "load", "file": "level/town/levelObjects.json" }
-  },
-  "load": "level/town/items.json",
-  "load": "level/town/players.json"
+  "load": "level/town/levelObjects.json",
+  "load": "level/town/players.json",
+  "load": "level/town/level2.json",
+  "load": "level/town/levelPassages.json"
 }

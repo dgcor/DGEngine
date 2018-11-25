@@ -3,6 +3,25 @@
 #include "Action.h"
 #include "FileUtils.h"
 #include "Game.h"
+#include "GameUtils.h"
+
+class ActDirCopy : public Action
+{
+private:
+	std::string dirSrc;
+	std::string dirDst;
+
+public:
+	ActDirCopy(const std::string& dirSrc_, const std::string& dirDst_)
+		: dirSrc(dirSrc_), dirDst(dirDst_) {}
+
+	virtual bool execute(Game& game)
+	{
+		FileUtils::copyDir(GameUtils::replaceStringWithVarOrProp(dirSrc, game).c_str(),
+			GameUtils::replaceStringWithVarOrProp(dirDst, game).c_str());
+		return true;
+	}
+};
 
 class ActDirCreate : public Action
 {
@@ -14,7 +33,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::createDir(game.getVarOrPropString(dir).c_str());
+		FileUtils::createDir(GameUtils::replaceStringWithVarOrProp(dir, game).c_str());
 		return true;
 	}
 };
@@ -37,7 +56,8 @@ public:
 		if (filesRead.size() > 0)
 		{
 			const auto& fileRead = filesRead[0];
-			auto str = FileUtils::readText(game.getVarOrPropString(fileRead).c_str());
+			auto str = FileUtils::readText(
+				GameUtils::replaceStringWithVarOrProp(fileRead, game).c_str());
 
 			std::string param;
 			Variable var2;
@@ -50,20 +70,7 @@ public:
 					(varStr.front() == '%') &&
 					(varStr.back() == '%'))
 				{
-					if (game.getVariable(filesRead[i], var2) == true)
-					{
-						param = VarUtils::toString(var2);
-					}
-					else
-					{
-						param = nullText;
-					}
-				}
-				else if ((varStr.size() > 2) &&
-					(varStr.front() == '|') &&
-					(varStr.back() == '|'))
-				{
-					if (GameUtils::getObjectProperty(game, varStr, var2) == true)
+					if (game.getVarOrProp(varStr, var2) == true)
 					{
 						param = VarUtils::toString(var2);
 					}
@@ -76,24 +83,23 @@ public:
 				{
 					param = varStr;
 				}
-				Utils::replaceStringInPlace(str, "{" + std::to_string(i) + "}", param);
+				Utils::replaceStringInPlace(str, "{" + Utils::toString(i) + "}", param);
 			}
 
-			auto writePath = game.getVarOrPropString(dir);
+			auto writePath = GameUtils::replaceStringWithVarOrProp(dir, game);
 			if (writePath.size() > 0 && Utils::endsWith(writePath, "/") == false)
 			{
 				writePath += '/';
-				FileUtils::createDir(writePath.c_str());
 			}
 			if (fileWrite.size() > 0)
 			{
-				writePath += game.getVarOrPropString(fileWrite);
+				writePath += game.getVarOrPropStringS(fileWrite);
 			}
 			else
 			{
-				writePath += game.getVarOrPropString(FileUtils::getFileFromPath(fileRead));
+				writePath += game.getVarOrPropStringS(FileUtils::getFileFromPath(fileRead));
 			}
-			FileUtils::saveText(writePath.c_str(), str);
+			FileUtils::saveText(writePath, str);
 		}
 		return true;
 	}
@@ -109,7 +115,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::deleteFile(game.getVarOrPropString(dir).c_str());
+		FileUtils::deleteFile(GameUtils::replaceStringWithVarOrProp(dir, game).c_str());
 		return true;
 	}
 };
@@ -118,13 +124,15 @@ class ActIODeleteAll : public Action
 {
 private:
 	std::string dir;
+	bool deleteRoot;
 
 public:
-	ActIODeleteAll(const std::string& dir_) : dir(dir_) {}
+	ActIODeleteAll(const std::string& dir_, bool deleteRoot_)
+		: dir(dir_), deleteRoot(deleteRoot_) {}
 
 	virtual bool execute(Game& game)
 	{
-		FileUtils::deleteAll(game.getVarOrPropString(dir).c_str());
+		FileUtils::deleteAll(GameUtils::replaceStringWithVarOrProp(dir, game).c_str(), deleteRoot);
 		return true;
 	}
 };

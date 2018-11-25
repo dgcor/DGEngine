@@ -72,7 +72,13 @@ public:
     static_assert(std::is_assignable<T&, std::nullptr_t>::value, "T cannot be assigned nullptr.");
 
     template <typename U, typename = std::enable_if_t<std::is_convertible<U, T>::value>>
-    constexpr not_null(U&& u) : ptr_(std::forward<U>(u))
+    constexpr explicit not_null(U&& u) : ptr_(std::forward<U>(u))
+    {
+        Expects(ptr_ != nullptr);
+    }
+
+    template <typename = std::enable_if_t<!std::is_same<std::nullptr_t, T>::value>>
+    constexpr explicit not_null(T u) : ptr_(u)
     {
         Expects(ptr_ != nullptr);
     }
@@ -112,6 +118,11 @@ public:
 private:
     T ptr_;
 };
+
+template <class T>
+auto make_not_null(T&& t) {
+    return gsl::not_null<std::remove_cv_t<std::remove_reference_t<T>>>{std::forward<T>(t)};
+}
 
 template <class T>
 std::ostream& operator<<(std::ostream& os, const not_null<T>& val)

@@ -4,13 +4,43 @@
     "id": "use{1}Item",
     "action": {
       "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.item.stash.{2}.isUsable|",
+      "param1": "%currentLevel.currentPlayer.item.stash.{2}.isUsable%",
       "param2": true,
-      "then": [
-        { "name": "item.use", "inventory": "stash", "item": [{2}] },
-        "updateAllPlayerStats"
-      ],
-      "else": "rightClickLevel"
+      "then": {
+        "name": "if.equal",
+        "param1": "%currentLevel.currentPlayer.canUseItem.stash.{2}%",
+        "param2": true,
+        "then": [
+          "closeRemoveGold",
+          { "name": "item.use", "inventory": "stash", "item": [{2}] },
+          "updateAllPlayerStats",
+          "clearPanelText"
+        ],
+        "else": "sCantUseThisYet"
+      },
+      "else": {
+        "name": "if.equal",
+        "param1": "%currentLevel.currentPlayer.item.stash.{2}.rightClick%",
+        "param2": 1,
+        "then": {
+          "name": "item.executeAction",
+          "inventory": "stash",
+          "item": [{2}],
+          "action": "rightClick"
+        },
+        "else": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.item.stash.{2}.classId%",
+          "param2": "gold",
+          "then": {
+            "name": "load",
+            "file": ["ui/level/char/removeGold.json",
+                     "{2}",
+                     "%currentLevel.currentPlayer.item.stash.{2}.quantity%"]
+          },
+          "else": "rightClickLevel"
+        }
+      }
     }
   }
 }

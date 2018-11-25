@@ -1,0 +1,13 @@
+{
+  "classifier": {
+    "id": "goldTexture",
+    "values": {
+      "property": "quantity",
+      "value": [
+        { "min": "min", "max": 1000, "value": 15 },
+        { "min": 1001, "max": 2499, "value": 16 },
+        { "min": 2500, "max": "max", "value": 17 }
+      ]
+    }
+  }
+}

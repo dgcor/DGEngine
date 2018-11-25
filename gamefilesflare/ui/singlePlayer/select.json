@@ -84,14 +84,14 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "load": "game|saves",
+        "load": "game.saves",
         "text": "%save%",
         "onClick": [
-          { "name": "load", "file": ["ui/loadCharInfo.json", "|focus|text|"] },
+          { "name": "load", "file": ["ui/loadCharInfo.json", "%focus.text%"] },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
           "anchorPentagrams",
           { "name": "button.enable", "id": "delete" },
-          { "name": "text.setFont", "id": "delete", "idFont": "font30g" },
+          { "name": "text.setFont", "id": "delete", "font": "font30g" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },
@@ -104,7 +104,7 @@
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
           "anchorPentagrams",
           { "name": "button.enable", "id": "delete", "enable": false },
-          { "name": "text.setFont", "id": "delete", "idFont": "font30s" },
+          { "name": "text.setFont", "id": "delete", "font": "font30s" },
           "saveMenu.moveScrollbar"
         ],
         "onDoubleClick": { "name": "button.click", "id": "ok" },
@@ -120,13 +120,13 @@
       "anchor": "none",
       "onClick": {
         "name": "if.equal",
-        "param1": "|focus|text|",
+        "param1": "%focus.text%",
         "param2": "New Hero",
         "then": [
           { "name": "resource.pop" },
           { "name": "load", "file": "ui/singlePlayer/new.json" }
         ],
-        "else": { "name": "load", "file": ["level/loadGame.json", "|focus|text|"] }
+        "else": { "name": "load", "file": ["level/loadGame.json", "%focus.text%"] }
       },
       "sound": "titlslct",
       "text": "OK"
@@ -137,7 +137,7 @@
       "position": [378, 429],
       "anchor": "none",
       "onClick": [
-        { "name": "load", "file": ["ui/singlePlayer/delete.json", "|focus|text|"] }
+        { "name": "load", "file": ["ui/singlePlayer/delete.json", "%focus.text%"] }
       ],
       "sound": "titlslct",
       "text": "Delete"
@@ -184,7 +184,7 @@
           "id": "sb_thumb",
           "idAnchorTo": "btnDrag",
           "range": 133,
-          "steps": "|menuLoadGame|itemCount|"
+          "steps": "%menuLoadGame.itemCount%"
         },
         {
           "name": "menu.moveScrollbar",
@@ -217,7 +217,7 @@
     "focus.clickNoSound",
     {
       "name": "if.greater",
-      "param1": "|menuLoadGame|itemCount|",
+      "param1": "%menuLoadGame.itemCount%",
       "param2": 6,
       "then": [
         { "name": "drawable.visible", "id": "sb_bg", "visible": true },

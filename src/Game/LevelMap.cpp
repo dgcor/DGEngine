@@ -1,7 +1,7 @@
 #include "LevelMap.h"
 #include "PathFinder.h"
 
-LevelMap::LevelMap(const std::string& tilFileName, const std::string& solFileName,
+LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
 	Coord width_, Coord height_, int16_t defaultTile)
 	: mapSize(width_, height_), tileSet(tilFileName), sol(solFileName)
 {
@@ -39,7 +39,7 @@ void LevelMap::resize(int16_t defaultTile)
 		}
 		else
 		{
-			cells.resize(mapSize.x * mapSize.y, { defaultTile, -1, 0 });
+			cells.resize(mapSize.x * mapSize.y, { defaultTile, -1, -1, -1, -1, 0 });
 		}
 	}
 	else
@@ -56,17 +56,16 @@ void LevelMap::resize(const TileBlock& defaultTile)
 		for (Coord i = 0; i < mapSize.x; i++)
 		{
 			auto tileIdx = defaultTile.getTileIndex(i, j);
-			(*this)[i][j].TileIndex(0, tileIdx);
-			(*this)[i][j].TileIndex(1, tileIdx);
-			(*this)[i][j].TileIndex(2, sol.get(tileIdx));
+			(*this)[i][j].setTileIndex(tileIdx);
+			(*this)[i][j].setTileIndex(LevelCell::SolLayer, sol.get(tileIdx));
 		}
 	}
 }
 
-void LevelMap::setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
+void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
 {
-	blockWidth = tileWidth_ / 2;
-	blockHeight = tileHeight_ / 2;
+	defaultBlockWidth = std::max(1, tileWidth_ / 2);
+	defaultBlockHeight = std::max(1, tileHeight_ / 2);
 }
 
 void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
@@ -130,15 +129,13 @@ void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
 
 			if (dunIndex == -1)
 			{
-				cell.TileIndexBack(-1);
-				cell.TileIndexFront(-1);
-				cell.Sol(0);
+				cell.setTileIndex(-1);
+				cell.setTileIndex(LevelCell::SolLayer, 0);
 			}
 			else
 			{
-				cell.TileIndexBack(tileIndex);
-				cell.TileIndexFront(tileIndex);
-				cell.Sol(sol.get(tileIndex));
+				cell.setTileIndex(tileIndex);
+				cell.setTileIndex(LevelCell::SolLayer, sol.get(tileIndex));
 			}
 		}
 	}
@@ -162,16 +159,16 @@ void LevelMap::setSimpleArea(Coord x, Coord y, const Dun& dun)
 			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
 
 			auto tileIndex = dun[i][j];
-			cell.TileIndexBack(tileIndex);
-			cell.TileIndexFront(tileIndex);
-			cell.Sol((tileIndex >= 0 ? sol.get(tileIndex) : 0));
+			cell.setTileIndex(tileIndex);
+			cell.setTileIndex(LevelCell::SolLayer, (tileIndex >= 0 ? sol.get(tileIndex) : 0));
 		}
 	}
 }
 
-void LevelMap::setSimpleArea(Coord x, Coord y, size_t index, const Dun& dun)
+void LevelMap::setSimpleArea(Coord x, Coord y, size_t layer,
+	const Dun& dun, bool normalizeSolLayer)
 {
-	if (index > 2)
+	if (layer > LevelCell::NumberOfLayers)
 	{
 		return;
 	}
@@ -191,11 +188,12 @@ void LevelMap::setSimpleArea(Coord x, Coord y, size_t index, const Dun& dun)
 			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
 
 			auto tileIndex = dun[i][j];
-			if (index == 2) // sol
+			if (layer == LevelCell::SolLayer &&
+				normalizeSolLayer == true)
 			{
 				tileIndex = (tileIndex != 0 ? 1 : 0);
 			}
-			cell.TileIndex(index, tileIndex);
+			cell.setTileIndex(layer, tileIndex);
 		}
 	}
 }
@@ -213,6 +211,12 @@ bool LevelMap::isMapCoordValid(const MapCoord& mapCoord) const noexcept
 
 sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 {
+	return getCoord(tile, defaultBlockWidth, defaultBlockHeight);
+}
+
+sf::Vector2f LevelMap::getCoord(const MapCoord& tile,
+	int32_t blockWidth, int32_t blockHeight) const
+{
 	return sf::Vector2f(
 		(float)((tile.y*(-blockWidth)) + blockWidth * tile.x + mapSize.y * blockWidth - blockWidth),
 		(float)((tile.y * blockHeight) + blockHeight * tile.x)
@@ -220,6 +224,12 @@ sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
 }
 
 MapCoord LevelMap::getTile(const sf::Vector2f& coords) const noexcept
+{
+	return getTile(coords, defaultBlockWidth, defaultBlockHeight);
+}
+
+MapCoord LevelMap::getTile(const sf::Vector2f& coords,
+	int32_t blockWidth, int32_t blockHeight) const noexcept
 {
 	// Position on the map in pixels
 	int32_t flatX = (int32_t)coords.x;
@@ -282,33 +292,15 @@ MapCoord LevelMap::getTile(const sf::Vector2f& coords) const noexcept
 	return MapCoord((Coord)isoPosX, (Coord)isoPosY);
 }
 
-void LevelMap::setOutOfBoundsTileBack(int16_t tile) noexcept
+void LevelMap::setOutOfBoundsTileIndex(size_t layer, int16_t tile) noexcept
 {
-	if (tile >= 0)
+	if (tile >= 0 && (size_t)tile < tileSet.size())
 	{
-		if ((size_t)tile < tileSet.size())
-		{
-			outOfBoundsTileBack = tileSet[tile];
-		}
+		outOfBoundsTiles[layer] = tileSet[tile];
 	}
 	else
 	{
-		outOfBoundsTileBack = {};
-	}
-}
-
-void LevelMap::setOutOfBoundsTileFront(int16_t tile) noexcept
-{
-	if (tile >= 0)
-	{
-		if ((size_t)tile < tileSet.size())
-		{
-			outOfBoundsTileFront = tileSet[tile];
-		}
-	}
-	else
-	{
-		outOfBoundsTileFront = {};
+		outOfBoundsTiles[layer] = {};
 	}
 }
 
@@ -322,8 +314,8 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 		return path;
 	}
 
-	MapSearchNode start(this, a.x, a.y, PlayerDirection::All);
-	MapSearchNode end(this, b.x, b.y, PlayerDirection::All);
+	MapSearchNode start(*this, a.x, a.y, PlayerDirection::All);
+	MapSearchNode end(*this, b.x, b.y, PlayerDirection::All);
 	MapSearchNode endOrig(end);
 
 	if (end.IsValid() == false)
@@ -335,12 +327,12 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 		if (((*this)[b]).hasObjects() == true)
 		{
 			if (start.GoalDistanceEstimateC(end) == 1.f ||
-				getNearestPassableEndNode(start, end) == false)
+				getNearestPassableEndNode(*this, start, end) == false)
 			{
 				path.push_back(b);
 				return path;
 			}
-			if (end.IsPassableIgnoreObject() == false)
+			if ((*this)[end.x][end.y].PassableIgnoreObject() == false)
 			{
 				return path;
 			}
@@ -351,14 +343,14 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 		}
 	}
 
-	PathFinder pathFinder(PATH_FINDER_MAX);
+	PathFinder pathFinder(this);
 	pathFinder.SetStartAndGoalStates(start, end);
 
 	unsigned int SearchState;
 	do
 	{
 		SearchState = pathFinder.SearchStep();
-		if (pathFinder.GetStepCount() == PATH_FINDER_MAX)
+		if (pathFinder.GetStepCount() == PathFinder::MaxNodes)
 		{
 			pathFinder.CancelSearch();
 		}
@@ -396,7 +388,7 @@ std::string LevelMap::toCSV(bool zeroBasedIndex) const
 	{
 		for (int i = 0; i < mapSize.x; i++)
 		{
-			str += std::to_string((*this)[i][j].TileIndexBack() + inc) + ",";
+			str += Utils::toString((*this)[i][j].getTileIndex(0) + inc) + ",";
 		}
 		str += "\n";
 	}

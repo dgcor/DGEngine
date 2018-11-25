@@ -1,0 +1,20 @@
+{
+  "palette": {
+    "id": "l6base",
+    "file": "Nlevels/L6Data/L6Base.PAL"
+  },
+  "level": {
+    "id": "level",
+    "palette": "l6base",
+    "file": "Nlevels/L6Data/L6.CEL",
+    "outOfBoundsTileLayer2": 7,
+    "til": "Nlevels/L6Data/L6.TIL",
+    "min": "Nlevels/L6Data/L6.MIN",
+    "minBlocks": 10,
+    "sol": "Nlevels/L6Data/L6.SOL"
+  },
+  "load": "level/automap/l6/load.json",
+  "load": "level/nest1/levelObjects.json",
+  "load": "level/nest1/monsters.json",
+  "load": "level/nest1/level2.json"
+}

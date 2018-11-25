@@ -5,7 +5,7 @@
     "param2": 10,
     "then": {
       "name": "load",
-      "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "warior0{1}"]
+      "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "warior0{1}", "{4}"]
     },
     "else": {
       "name": "if.inList",
@@ -15,27 +15,36 @@
                 58, 60, 63, 64, 70, 71, 72, 74, 75, 76, 77, 78, 79 ],
       "then": {
         "name": "load",
-        "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "Warior{1}"]
+        "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "Warior{1}", "{4}"]
       },
       "else": {
+        "name": "if.equal",
+        "param1": {1},
+        "param2": 96,
+        "then": {
+          "name": "load",
+          "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "Wario{1}b", "{4}"]
+        },
+        "else": {
         "name": "if.inList",
         "param": {1},
         "list": [ 97, 98, 100, 101 ],
-        "then": {
-          "name": "load",
-          "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "Wario{1}"]
-        },
-        "else": {
-          "name": "if.equal",
-          "param1": {1},
-          "param2": 102,
           "then": {
             "name": "load",
-            "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "wario{1}"]
+            "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "Wario{1}", "{4}"]
           },
           "else": {
-            "name": "load",
-            "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "warior{1}"]
+            "name": "if.equal",
+            "param1": {1},
+            "param2": 102,
+            "then": {
+              "name": "load",
+              "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "wario{1}", "{4}"]
+            },
+            "else": {
+              "name": "load",
+              "file": ["res/player/sound/{3}.json", "{2}", "sfx/Warrior", "warior{1}", "{4}"]
+            }
           }
         }
       }

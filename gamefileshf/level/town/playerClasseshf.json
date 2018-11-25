@@ -1,0 +1,14 @@
+{
+  "playerClass": {
+    "id": "farmer",
+    "replaceVars": true,
+    "name": "Lester the farmer",
+    "type": "Human",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
+    "texturePacks": "farmrn2",
+    "actions": {
+      "action": { "name": "load", "file": "towners/lester/load.json" }
+    }
+  }
+}

@@ -10,19 +10,72 @@
 static void updateCursorWithItemImage(Game& game, const Item& item)
 {
 	TextureInfo ti;
-	if (item.Class()->getInventoryTexture(ti) == true)
+	if (item.getTexture(1, ti) == true)
 	{
-		auto image = std::make_shared<Image>(*ti.texture);
-		image->setTextureRect(ti.textureRect);
-		if (item.Class()->getInventoryTexturePack()->isIndexed() == true)
-		{
-			image->setPalette(item.Class()->getInventoryTexturePack()->getPalette());
-		}
+		auto image = std::make_shared<Image>();
+		image->setTexture(ti, true);
 		image->setOrigin();
 		game.Resources().addCursor(image);
 		game.updateCursorPosition();
 	}
 }
+
+class ActItemAddCursor : public Action
+{
+private:
+	std::string idLevel;
+	ItemLocation itemLocation;
+
+public:
+	ActItemAddCursor(const std::string& idLevel_, const ItemLocation& itemLocation_)
+		: idLevel(idLevel_), itemLocation(itemLocation_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto item = level->getItem(itemLocation);
+			if (item != nullptr)
+			{
+				updateCursorWithItemImage(game, *item);
+			}
+		}
+		return true;
+	}
+};
+
+class ActItemAddQuantity : public Action
+{
+private:
+	std::string idLevel;
+	ItemLocation itemLocation;
+	Variable quantity;
+	bool remove;
+
+public:
+	ActItemAddQuantity(const std::string& idLevel_, const ItemLocation& itemLocation_,
+		const Variable& quantity_, bool remove_) : idLevel(idLevel_),
+		itemLocation(itemLocation_), quantity(quantity_), remove(remove_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto quantVal = (LevelObjValue)game.getVarOrPropLongV(quantity);
+			if (quantVal != 0)
+			{
+				if (remove == true)
+				{
+					quantVal = -std::abs(quantVal);
+				}
+				level->addItemQuantity(itemLocation, quantVal);
+			}
+		}
+		return true;
+	}
+};
 
 class ActItemDelete : public Action
 {
@@ -83,32 +136,40 @@ public:
 	}
 };
 
-class ActItemExecuteDropAction : public Action
+class ActItemExecuteAction : public Action
 {
 private:
 	std::string idLevel;
-	std::string idPlayer;
+	ItemLocation itemLocation;
+	uint16_t actionHash16;
 
 public:
-	ActItemExecuteDropAction(const std::string& idLevel_, const std::string& idPlayer_)
-		: idLevel(idLevel_), idPlayer(idPlayer_) {}
+	ActItemExecuteAction(const std::string& idLevel_,
+		const ItemLocation& itemLocation_, uint16_t actionHash16_)
+		: idLevel(idLevel_), itemLocation(itemLocation_), actionHash16(actionHash16_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr &&
-				player->SelectedItem() == nullptr)
+			Player* player;
+			auto item = level->getItem(itemLocation, player);
+
+			if (holdsItemCoordInventory(itemLocation) == true &&
+				std::get<ItemCoordInventory>(itemLocation).isSelectedItem() == true &&
+				player != nullptr)
 			{
 				auto mapPos = player->MapPositionMoveTo();
-				auto item = level->getItem(mapPos);
-				if (item != nullptr)
+				item = level->getItem(mapPos);
+			}
+			if (item != nullptr)
+			{
+				if (actionHash16 == str2int16("levelDrop"))
 				{
 					item->resetDropAnimation(*level);
-					item->Class()->executeAction(game, str2int16("levelDrop"));
 				}
+				item->Class()->executeAction(game, actionHash16);
 			}
 		}
 		return true;
@@ -122,12 +183,13 @@ private:
 	ItemCoordInventory itemCoord;
 	InventoryPosition invPos{ InventoryPosition::TopLeft };
 	bool useInvPos{ false };
+	bool splitIntoMultiple{ false };
 	std::shared_ptr<Action> inventoryFullAction;
 
 public:
 	ActItemLoadFromLevel(const std::string& idLevel_,
-		const ItemCoordInventory& itemCoord_)
-		: idLevel(idLevel_), itemCoord(itemCoord_) {}
+		const ItemCoordInventory& itemCoord_, bool splitIntoMultiple_)
+		: idLevel(idLevel_), itemCoord(itemCoord_), splitIntoMultiple(splitIntoMultiple_) {}
 
 	void setInventoryPosition(InventoryPosition invPos_) noexcept
 	{
@@ -171,7 +233,8 @@ public:
 							size_t invIdx = itemCoord.getInventoryIdx();
 							if (invIdx < player->getInventorySize())
 							{
-								if (player->setItemInFreeSlot(invIdx, item2, invPos) == true)
+								if (player->setItemInFreeSlot(
+									invIdx, item2, invPos, splitIntoMultiple) == true)
 								{
 									item->Class()->executeAction(game, str2int16("levelPick"));
 								}
@@ -238,7 +301,7 @@ public:
 			auto item = level->getItem(itemLocation, player);
 			if (item != nullptr)
 			{
-				auto prop2 = game.getVarOrPropString(prop);
+				auto prop2 = game.getVarOrPropStringS(prop);
 				if (prop2.empty() == false)
 				{
 					auto value2 = game.getVarOrProp(value);
@@ -408,11 +471,14 @@ public:
 			if (item != nullptr &&
 				player != nullptr)
 			{
-				if (player->canUseItem(*item) == true &&
-					item->use(*player, level) == true)
+				uint32_t itemsLeft;
+				if (item->use(*player, level, itemsLeft) == true)
 				{
 					item->Class()->executeAction(game, str2int16("use"));
-					level->deleteItem(itemCoord);
+					if (itemsLeft == 0)
+					{
+						level->deleteItem(itemCoord);
+					}
 				}
 			}
 		}

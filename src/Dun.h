@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
+#include <string_view>
 #include "Utils/Helper2D.h"
 #include <vector>
 
@@ -19,7 +19,7 @@ private:
 
 public:
 	Dun() noexcept {}
-	Dun(const std::string& fileName, int16_t defaultTile = -1);
+	Dun(const std::string_view fileName, int16_t defaultTile = -1);
 	Dun(size_t width_, size_t height_, int16_t defaultTile = -1);
 
 	Misc::Helper2D<Dun, int16_t&, size_t> operator[] (size_t x) noexcept;

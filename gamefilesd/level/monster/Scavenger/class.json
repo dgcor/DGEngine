@@ -5,8 +5,8 @@
     "name": "Scavenger",
     "type": "Animal",
     "description": "Total Kills : %totalKills%",
-    "defaultOutline": "%outlineEnemy%",
-    "defaultOutlineIgnore": "0x000000",
+    "outline": "|outlineEnemy|",
+    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 2,
       "experience": 80,

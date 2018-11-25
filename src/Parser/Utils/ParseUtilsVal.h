@@ -4,6 +4,7 @@
 #include "Game/ItemLocation.h"
 #include "Game/Number.h"
 #include "IgnoreResource.h"
+#include "InputEvent.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
 #include <SFML/Graphics.hpp>
@@ -26,6 +27,8 @@ namespace Parser
 	const char* getStringCharVal(const rapidjson::Value& elem, const char* val = "");
 
 	std::string getStringVal(const rapidjson::Value& elem, const std::string& val = {});
+
+	std::string_view getStringViewVal(const rapidjson::Value& elem, const std::string_view val = "");
 
 	unsigned getUIntVal(const rapidjson::Value& elem, unsigned val = {});
 
@@ -96,6 +99,9 @@ namespace Parser
 
 	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem,
 		IgnoreResource val = IgnoreResource::None);
+
+	InputEvent getInputEventVal(const rapidjson::Value& elem,
+		InputEvent val = InputEvent::None);
 
 	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
 		PlayerInventory inv);

@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "if.equal",
-    "param1": "|game|hasResource.msgBox|",
+    "param1": "%game.hasResource.msgBox%",
     "param2": true,
     "then": [
       { "name": "event.resetTime", "id": "closeMsgBox" },

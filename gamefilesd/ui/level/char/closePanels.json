@@ -5,6 +5,7 @@
     { "name": "resource.pop", "id": "charPanelQuests" },
     { "name": "resource.pop", "id": "charPanelInventory" },
     { "name": "resource.pop", "id": "charPanelSpells" },
+    { "name": "resource.pop", "id": "removeGold" },
     { "name": "drawable.visible", "id": "charPanel", "visible": false },
     { "name": "drawable.visible", "id": "questPanel", "visible": false },
     { "name": "drawable.visible", "id": "invPanel", "visible": false },

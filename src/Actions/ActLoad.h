@@ -67,7 +67,7 @@ public:
 	{
 		if (args.size() > 0)
 		{
-			auto files = FileUtils::getFileList(args[0].c_str(), endsWith);
+			auto files = FileUtils::getFileList(args[0], endsWith);
 
 			if (files.size() > 0)
 			{

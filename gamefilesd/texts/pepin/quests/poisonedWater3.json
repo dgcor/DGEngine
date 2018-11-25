@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/pepin/quests/poisonedWater3.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/healer22.wav",
+    "play": true,
+    "volume": "%game.soundVolume%"
+  }
+}

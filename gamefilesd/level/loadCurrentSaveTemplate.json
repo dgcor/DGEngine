@@ -1,0 +1,3 @@
+{
+  "load": ["level/loadSavedGame.json", "{1}", "{2}"]
+}

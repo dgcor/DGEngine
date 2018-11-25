@@ -1,0 +1,9 @@
+{
+  "itemClass": {
+    "id": "baseItemhf",
+    "fromId": "baseItem",
+    "dropTexturePack": "ring",
+    "inventoryTexturePack": "itemIcons2",
+    "inventoryTextureIndex": 12
+  }
+}

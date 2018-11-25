@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/Towners/bsmith49.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

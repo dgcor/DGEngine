@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "switch",
-    "param": "|currentLevel|quest.zharTheMad.state|",
+    "param": "%currentLevel.quest.zharTheMad.state%",
     "case": [
       {
         "value": 0,

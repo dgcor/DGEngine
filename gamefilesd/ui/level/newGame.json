@@ -4,6 +4,7 @@
     { "name": "event.delete", "id": "colorCycle" },
     { "name": "game.setProperty", "property": "musicVolume", "value": 100 },
     { "name": "game.setProperty", "property": "soundVolume", "value": 100 },
+    { "name": "game.setProperty", "property": "gamma", "value": 30 },
     { "name": "load", "file": "ui/mainMenu.json" },
     { "name": "load", "file": "ui/singlePlayer/main.json" }
   ]

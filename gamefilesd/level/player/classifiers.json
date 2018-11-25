@@ -1,0 +1,12 @@
+{
+  "classifier": {
+    "id": "deadGuy",
+    "values": {
+      "property": "isDead",
+      "value": [
+        { "min": false, "max": false, "value": "Wounded Townsman" },
+        { "min": true, "max": true, "value": "Slain Townsman" }
+      ]
+    }
+  }
+}

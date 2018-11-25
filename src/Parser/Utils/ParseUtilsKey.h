@@ -35,6 +35,9 @@ namespace Parser
 	std::string getStringKey(const rapidjson::Value& elem,
 		const char* key, const std::string& val = {});
 
+	std::string_view getStringViewKey(const rapidjson::Value& elem,
+		const char* key, const std::string_view val = "");
+
 	unsigned getUIntKey(const rapidjson::Value& elem,
 		const char* key, unsigned val = {});
 
@@ -109,6 +112,9 @@ namespace Parser
 	IgnoreResource getIgnoreResourceKey(const rapidjson::Value& elem,
 		const char* key, IgnoreResource val = IgnoreResource::None);
 
+	InputEvent getInputEventKey(const rapidjson::Value& elem,
+		const char* key, InputEvent val = InputEvent::None);
+
 	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
 		const char* key, PlayerInventory inv);
 
@@ -142,6 +148,9 @@ namespace Parser
 
 	PlayerAnimation getPlayerAnimationKey(const rapidjson::Value& elem,
 		const char* key, PlayerAnimation val = PlayerAnimation::Stand1);
+
+	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
+		const char* key, PlayerStatus val = PlayerStatus::Stand);
 
 	ReplaceVars getReplaceVarsKey(const rapidjson::Value& elem,
 		const char* key, ReplaceVars val = ReplaceVars::None);

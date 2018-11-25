@@ -1,16 +1,16 @@
 #pragma once
 
-#include "BaseClass.h"
+#include "BaseClassDefaults.h"
+#include "Classifiers.h"
 #include "Formula.h"
 #include "GameProperties.h"
 #include "ItemXY.h"
-#include "Namer.h"
-#include "Queryable.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
+#include "Utils/FixedMap.h"
 #include "Utils/Utils.h"
 
-class ItemClass : public BaseClass
+class ItemClass : public BaseClassDefaults<LevelObjValue>
 {
 private:
 	std::shared_ptr<TexturePack> textureDrop;
@@ -23,23 +23,23 @@ private:
 	std::string shortName;
 	std::string type;
 	std::string subType;
+	uint16_t idHash16{ 0 };
 	uint16_t typeHash16{ 0 };
-
-	std::vector<LevelObjProperty> defaults;
 
 	ItemXY inventorySize;
 
-	Namer* prefix{ nullptr };
-	Namer* suffix{ nullptr };
+	Classifiers<8> classifiers;
 
-	std::array<std::pair<Namer*, uint16_t>, 5> descriptions;
+	FixedMap<uint16_t, Formula, 6> formulas;
 
-	std::array<std::pair<uint16_t, Formula>, 6> formulas;
-	size_t formulasSize{ 0 };
+	sf::Time animationSpeed{ sf::milliseconds(40) };
+	sf::Color outline{ sf::Color::Transparent };
+	sf::Color outlineIgnore{ sf::Color::Transparent };
 
-	sf::Time defaultAnimationSpeed{ sf::milliseconds(40) };
-	sf::Color defaultOutline{ sf::Color::Transparent };
-	sf::Color defaultOutlineIgnore{ sf::Color::Transparent };
+	static constexpr size_t InventoryTextureClassifier = 0;
+	static constexpr size_t PrefixClassifier = 1;
+	static constexpr size_t SuffixClassifier = 2;
+	static constexpr size_t DescriptionClassifier = 3;
 
 public:
 	ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
@@ -68,62 +68,47 @@ public:
 	const TexturePack* getDropTexturePack() const noexcept { return textureDrop.get(); }
 	const TexturePack* getInventoryTexturePack() const noexcept { return textureInventory.get(); }
 
-	bool getInventoryTexture(TextureInfo& ti) const
-	{
-		return textureInventory->get(inventoryIdx, ti);
-	}
-
-	const std::vector<LevelObjProperty>& Defaults() const noexcept { return defaults; }
-	void setDefault(const char* prop, LevelObjValue val);
-	bool isDefault(const LevelObjProperty& prop) const noexcept;
-
-	LevelObjValue getDefaultByHash(uint16_t propHash) const noexcept;
-	LevelObjValue getDefault(const char* prop) const noexcept;
-	LevelObjValue getDefault(const std::string& prop) const noexcept
-	{
-		return getDefault(prop.c_str());
-	}
-
-	bool getDefaultByHash(uint16_t propHash, LevelObjValue& value) const noexcept;
-	bool getDefault(const char* prop, LevelObjValue& value) const noexcept;
-	bool getDefault(const std::string& prop, LevelObjValue& value) const noexcept
-	{
-		return getDefault(prop.c_str(), value);
-	}
+	bool getInventoryTexture(const Queryable& item, TextureInfo& ti) const;
 
 	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return shortName; }
 	const std::string& Type() const noexcept { return type; }
 	const std::string& SubType() const noexcept { return subType; }
+	uint16_t IdHash16() const noexcept { return idHash16; }
 	uint16_t TypeHash16() const noexcept { return typeHash16; }
 	const ItemXY& InventorySize() const noexcept { return inventorySize; }
 
-	const sf::Time& DefaultAnimationSpeed() const noexcept { return defaultAnimationSpeed; }
-	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
-	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
+	const sf::Time& AnimationSpeed() const noexcept { return animationSpeed; }
+	const sf::Color& Outline() const noexcept { return outline; }
+	const sf::Color& OutlineIgnore() const noexcept { return outlineIgnore; }
 
-	void Id(const std::string id_) { id = id_; }
-	void Name(const std::string name_) { name = name_; }
-	void ShortName(const std::string name_) { shortName = name_; }
-	void Type(const std::string type_)
+	void setInventoryTexture(Classifier* classifier);
+	void setPrefix(Classifier* classifier);
+	void setSuffix(Classifier* classifier);
+
+	void Id(const std::string_view id_)
+	{
+		id = id_;
+		idHash16 = str2int16(id_);
+	}
+	void Name(const std::string_view name_) { name = name_; }
+	void ShortName(const std::string_view name_) { shortName = name_; }
+	void Type(const std::string_view type_)
 	{
 		type = type_;
-		typeHash16 = str2int16(Utils::toLower(type_).c_str());
+		typeHash16 = str2int16(Utils::toLower(type_));
 	}
-	void SubType(const std::string subType_) { subType = subType_; }
+	void SubType(const std::string_view subType_) { subType = subType_; }
 	void InventorySize(const ItemXY inventorySize_) noexcept { inventorySize = inventorySize_; }
 
-	void DefaultAnimationSpeed(const sf::Time time) noexcept { defaultAnimationSpeed = time; }
-	void DefaultOutline(const sf::Color color) noexcept { defaultOutline = color; }
-	void DefaultOutlineIgnore(const sf::Color color) noexcept { defaultOutlineIgnore = color; }
-
-	void setPrefix(Namer* namer) noexcept { prefix = namer; }
-	void setSuffix(Namer* namer) noexcept { suffix = namer; }
+	void AnimationSpeed(const sf::Time time) noexcept { animationSpeed = time; }
+	void Outline(const sf::Color color) noexcept { outline = color; }
+	void OutlineIgnore(const sf::Color color) noexcept { outlineIgnore = color; }
 
 	bool getFullName(const Queryable& item, std::string& fullName) const;
 
-	void setDescription(size_t idx, Namer* namer, uint16_t skipFirst);
+	void setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
 

@@ -53,28 +53,6 @@ void PlayerClass::getTextureAnimationRange(size_t idx,
 	baseAnim.backDirection = false;
 }
 
-void PlayerClass::setDefault(const char* prop, const Number32& val)
-{
-	setDefaultByHash(str2int16(prop), val);
-}
-
-void PlayerClass::setDefaultByHash(uint16_t propHash, const Number32& val)
-{
-	if (propHash == str2int16(""))
-	{
-		return;
-	}
-	for (auto& elem : defaults)
-	{
-		if (elem.first == propHash)
-		{
-			elem.second = val;
-			return;
-		}
-	}
-	defaults.push_back(std::make_pair(propHash, val));
-}
-
 AnimationSpeed PlayerClass::getSpeed(PlayerAnimation animation) const noexcept
 {
 	for (auto& elem : animationSpeeds)

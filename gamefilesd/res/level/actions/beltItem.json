@@ -5,42 +5,54 @@
     "replaceVars": true,
     "action": {
       "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
+      "param1": "%currentLevel.currentPlayer.hasItem.{2}.{3}%",
       "param2": true,
       "then": [
-        { "name": "image.setTexture", "id": "img{1}", "inventory": "{2}", "item": {3}, "resetRect": false },
+        { "name": "image.setTexture", "id": "img{1}", "query": "currentLevel.currentPlayer.item.{2}.{3}", "resetRect": false },
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.{2}.{3}|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.{2}.{3}%",
           "param2": false,
           "then": [
             { "name": "image.setPalette", "id": "img{1}", "palette": "infra", "color": "0xFF0000" },
-            { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineCantUse%", "ignore": "0x000000" }
+            { "name": "image.setOutline", "id": "img{1}", "outline": "|outlineCantUse|", "ignore": "0x000000" }
           ],
           "else": [
             { "name": "image.setPalette", "id": "img{1}", "palette": "town" },
             {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.{2}.{3}.magical|",
+              "param1": "%currentLevel.currentPlayer.item.{2}.{3}.magical%",
               "param2": 1,
-              "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
+              "then": { "name": "image.setOutline", "id": "img{1}", "outline": "|outlineItem|", "ignore": "0x000000" },
               "else": {
                 "name": "if.equal",
-                "param1": "|currentLevel|currentPlayer.item.{2}.{3}.unique|",
+                "param1": "%currentLevel.currentPlayer.item.{2}.{3}.unique%",
                 "param2": 1,
-                "then": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItem%", "ignore": "0x000000" },
-                "else": { "name": "image.setOutline", "id": "img{1}", "outline": "%outlineItemInv%", "ignore": "0x000000" }
+                "then": { "name": "image.setOutline", "id": "img{1}", "outline": "|outlineItem|", "ignore": "0x000000" },
+                "else": { "name": "image.setOutline", "id": "img{1}", "outline": "|outlineItemInv|", "ignore": "0x000000" }
               }
             }
           ]
         },
         { "name": "drawable.center", "id": "img{1}", "idCenterOn": "player{1}" },
         { "name": "image.setTexture", "id": "player{1}", "texture": "red" },
+        {
+          "name": "if.greater",
+          "param1": "%currentLevel.currentPlayer.item.{2}.{3}.quantity%",
+          "param2": 1,
+          "then": {
+            "name": "text.setText",
+            "id": "txtQuant{1}",
+            "text": "%currentLevel.currentPlayer.item.{2}.{3}.quantity%"
+          },
+          "else": { "name": "text.setText", "id": "txtQuant{1}", "text": "" }
+        },
         { "name": "drawable.visible", "id": "txt{1}", "visible": true }
       ],
       "else": [
         { "name": "image.setTexture", "id": "img{1}", "texture": "empty" },
         { "name": "image.setTexture", "id": "player{1}", "texture": "empty" },
+        { "name": "text.setText", "id": "txtQuant{1}", "text": "" },
         { "name": "drawable.visible", "id": "txt{1}", "visible": false }
       ]
     }

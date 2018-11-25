@@ -13,17 +13,17 @@
     "font": "font24g",
     "position": [308, 318],
     "anchor": "none",
-    "minSize": 1,
-    "maxSize": 15,
+    "minLength": 1,
+    "maxLength": 15,
     "regex": "[\\w ]*",
     "onClick": {
       "name": "if.equal",
-      "param1": { "name": "file.exists", "file": "|heroName|text|" },
+      "param1": { "name": "file.exists", "file": "%heroName.text%" },
       "param2": true,
-      "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "|heroName|text|"] },
+      "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "%heroName.text%"] },
       "else": { "name": "load", "file": "level/newGame.json" }
     },
-    "onMinSize": [
+    "onMinLength": [
       { "name": "resource.pop" },
       { "name": "load", "file": "ui/singlePlayer/newNameTooShort.json" }
     ],

@@ -4,6 +4,7 @@
 #include <memory>
 #include <SFML/System/Time.hpp>
 #include <string>
+#include <string_view>
 
 class Event : public Action
 {
@@ -19,7 +20,7 @@ public:
 		: action(action_), timeout(timeout_) {}
 
 	const std::string& getId() const noexcept { return id; }
-	void setId(const std::string& id_) { id = id_; }
+	void setId(const std::string_view id_) { id = id_; }
 
 	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 

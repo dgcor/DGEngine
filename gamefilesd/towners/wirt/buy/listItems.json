@@ -38,7 +38,7 @@
     "visibleItems": 1,
     "verticalPad": 38,
     "items": {
-      "load": "currentLevel|wirt.inventory.0",
+      "load": "currentLevel.wirt.inventory.0",
       "text": "%price%",
       "executeAction": {
         "name": "load",

@@ -1,0 +1,5 @@
+{
+  "load": "level/item/inventoryTextureshf.json",
+  "load": "level/item/dropTextureshf.json",
+  "load": "level/item/classeshf2.json"
+}

@@ -2,6 +2,7 @@
 
 #include "CelBaseImageContainer.h"
 #include "gsl/gsl"
+#include <string_view>
 
 class Cl2ImageContainer : public CelBaseImageContainer
 {
@@ -12,7 +13,7 @@ private:
 		const PaletteArray* palette);
 
 public:
-	Cl2ImageContainer(const char* fileName);
+	Cl2ImageContainer(const std::string_view fileName);
 
 	virtual sf::Image2 get(size_t index, const PaletteArray * palette) const;
 };

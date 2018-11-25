@@ -15,7 +15,7 @@
         {
           "name": "menu.setIndex",
           "id": "menuPrices",
-          "index": "|mainMenu|currentIdx|"
+          "index": "%mainMenu.currentIdx%"
         }
       ]
     },
@@ -69,7 +69,7 @@
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": {
-      "load": "currentLevel|currentPlayer.inventory.stash",
+      "load": "currentLevel.currentPlayer.inventory.stash",
       "include": {
         "property": "itemType",
         "value": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Sword"]
@@ -110,13 +110,13 @@
   },
   "action": {
     "name": "if.notEqual",
-    "param1": "|mainMenu|itemCount|",
+    "param1": "%mainMenu.itemCount%",
     "param2": 0,
     "then": [
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "Which item is for sale?            Your gold : [1]"
       },
       { "name": "load", "file": "towners/griswold/sell/listItems.json" }
@@ -125,7 +125,7 @@
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "You have nothing I want.            Your gold : [1]"
       },
       { "name": "load", "file": "towners/griswold/sell/noItems.json" }

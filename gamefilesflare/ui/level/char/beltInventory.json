@@ -95,7 +95,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [193, 357]
@@ -105,7 +105,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [225, 357]
@@ -115,7 +115,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [257, 357]
@@ -125,7 +125,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [289, 357]
@@ -135,7 +135,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [321, 357]
@@ -145,7 +145,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [353, 357]
@@ -155,7 +155,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [385, 357]
@@ -165,7 +165,7 @@
       "replaceVars": true,
       "texture": "empty",
       "textureRect": [32, 32],
-      "outline": "%outlineItemInv%",
+      "outline": "|outlineItemInv|",
       "outlineIgnore": "0x000000",
       "anchor": "bottom",
       "position": [417, 357]
@@ -235,6 +235,54 @@
       "position": [440, 374],
       "visible": false,
       "text": "8"
+    },
+    {
+      "id": "txtQuantBelt1",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [194, 354]
+    },
+    {
+      "id": "txtQuantBelt2",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [226, 354]
+    },
+    {
+      "id": "txtQuantBelt3",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [258, 354]
+    },
+    {
+      "id": "txtQuantBelt4",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [290, 354]
+    },
+    {
+      "id": "txtQuantBelt5",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [322, 354]
+    },
+    {
+      "id": "txtQuantBelt6",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [354, 354]
+    },
+    {
+      "id": "txtQuantBelt7",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [386, 354]
+    },
+    {
+      "id": "txtQuantBelt8",
+      "font": "smaltext",
+      "anchor": "bottom",
+      "position": [418, 354]
     }
   ]
 }

@@ -15,7 +15,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto movie = game.Resources().getResource<Movie2>(id);
+		auto movie = game.Resources().getResource<Movie>(id);
 		if (movie != nullptr)
 		{
 			movie->pause();
@@ -34,7 +34,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto movie = game.Resources().getResource<Movie2>(id);
+		auto movie = game.Resources().getResource<Movie>(id);
 		if (movie != nullptr)
 		{
 			movie->play();

@@ -1,0 +1,8 @@
+{
+  "imageContainer": { "file": "data/Inv/Objcurs2.CEL" },
+  "texturePack": {
+    "id": "itemIcons2",
+    "imageContainer": "Objcurs2",
+    "palette": "town"
+  }
+}

@@ -6,6 +6,7 @@
     { "id": "whereWouldIPutThis", "file": "sfx/sorceror/mage16.wav" },
     { "id": "cantCastThatHere", "file": "sfx/sorceror/mage27.wav" },
     { "id": "dontHaveASpellReady", "file": "sfx/sorceror/mage34.wav" },
-    { "id": "notEnoughMana", "file": "sfx/sorceror/mage35.wav" }
+    { "id": "notEnoughMana", "file": "sfx/sorceror/mage35.wav" },
+    { "id": "die", "file": "sfx/sorceror/mage71.wav" }
   ]
 }

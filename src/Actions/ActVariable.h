@@ -4,6 +4,40 @@
 #include "Game.h"
 #include "UIObject.h"
 
+class ActVariableAdd : public Action
+{
+private:
+	std::string key;
+	Variable value;
+
+public:
+	ActVariableAdd(const std::string& key_, const Variable& value_)
+		: key(key_), value(value_) {}
+
+	virtual bool execute(Game& game)
+	{
+		Variable value2;
+		if (game.getVariableNoToken(key, value2) == true)
+		{
+			if (std::holds_alternative<int64_t>(value2) == true &&
+				std::holds_alternative<int64_t>(value) == true)
+			{
+				auto val = std::get<int64_t>(value2) + std::get<int64_t>(value);
+				value2.emplace<int64_t>(val);
+				game.setVariable(key, value2);
+			}
+			else if (std::holds_alternative<double>(value2) == true &&
+				std::holds_alternative<double>(value) == true)
+			{
+				auto val = std::get<double>(value2) + std::get<double>(value);
+				value2.emplace<double>(val);
+				game.setVariable(key, value2);
+			}
+		}
+		return true;
+	}
+};
+
 class ActVariableClear : public Action
 {
 private:
@@ -106,7 +140,7 @@ public:
 		if (key.size() > 0)
 		{
 			Variable var;
-			if (game.getVariableNoPercentage(key, var) == false)
+			if (game.getVariableNoToken(key, var) == false)
 			{
 				game.setVariable(key, val);
 			}

@@ -16,7 +16,6 @@
   ],
   "menu": {
     "id": "menuPrices",
-    "replaceVars": true,
     "font": "smaltext",
     "sound": "titlslct",
     "position": [571, 94],
@@ -28,7 +27,7 @@
     "verticalPad": 38,
     "items": [
       {
-        "load": "currentLevel|currentPlayer.inventory.body",
+        "load": "currentLevel.currentPlayer.inventory.body",
         "exclude": {
           "property": "needsRecharge",
           "value": false
@@ -36,45 +35,46 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.body.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.body.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "menuPrices",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.body.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.body.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "menuPrices",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.body.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.body.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.belt",
+        "load": "currentLevel.currentPlayer.inventory.belt",
         "exclude": {
           "property": "needsRecharge",
           "value": false
@@ -82,45 +82,46 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.belt.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.belt.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "menuPrices",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.belt.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.belt.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "menuPrices",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.belt.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.belt.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.stash",
+        "load": "currentLevel.currentPlayer.inventory.stash",
         "exclude": {
           "property": "needsRecharge",
           "value": false
@@ -128,38 +129,39 @@
         "text": "%price%",
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.stash.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.stash.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "menuPrices",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.stash.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "menuPrices",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.stash.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "menuPrices",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }

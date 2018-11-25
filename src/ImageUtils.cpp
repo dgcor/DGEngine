@@ -32,17 +32,17 @@ namespace ImageUtils
 		}
 	}
 
-	sf::Image loadImage(const std::string& fileName, const sf::Color& transparencyMask)
+	sf::Image loadImage(const std::string_view fileName, const sf::Color& transparencyMask)
 	{
 		sf::Image image;
 
 		if (Utils::endsWith(Utils::toLower(fileName), ".pcx"))
 		{
-			image = LoadImagePCX(fileName.c_str());
+			image = LoadImagePCX(fileName.data());
 		}
 		else
 		{
-			sf::PhysFSStream file(fileName);
+			sf::PhysFSStream file(fileName.data());
 			if (file.hasError() == true)
 			{
 				return image;
@@ -58,7 +58,7 @@ namespace ImageUtils
 	{
 		if (imgContainer.size() == 1)
 		{
-			return imgContainer.get(0, &pal->palette);
+			return imgContainer.get(0, (pal == nullptr ? nullptr : &pal->palette));
 		}
 
 		CachedImagePack imgCache(&imgContainer, pal);
@@ -96,13 +96,13 @@ namespace ImageUtils
 	}
 
 	sf::Image loadImageFrame(const ImageContainer& imgContainer,
-		const Palette& pal, size_t frameIdx)
+		const PaletteArray* pal, size_t frameIdx)
 	{
 		if (imgContainer.size() > 0 && frameIdx < imgContainer.size())
 		{
-			return imgContainer.get(frameIdx, &pal.palette);
+			return imgContainer.get(frameIdx, pal);
 		}
-		return sf::Image();
+		return {};
 	}
 
 	sf::Image loadBitmapFontImage(const ImageContainer& imgContainer,
@@ -113,7 +113,7 @@ namespace ImageUtils
 		auto cacheSize = imgCache.size();
 		if (cacheSize == 0)
 		{
-			return sf::Image();
+			return {};
 		}
 
 		auto firstImgSize = imgCache[0].getSize();

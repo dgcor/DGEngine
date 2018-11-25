@@ -1,7 +1,7 @@
 {
   "action": {
     "name": ">=",
-    "param1": "|currentLevel|currentPlayer.gold|",
+    "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
     "param2": "%identifyPrice%",
     "then": {
       "name": "load",

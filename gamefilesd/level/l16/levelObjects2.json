@@ -1,0 +1,12 @@
+{
+  "levelObject": {
+    "id": "up",
+    "class": "levelUp",
+    "mapPosition": [56, 31],
+    "properties": {
+      "x": 25,
+      "y": 67,
+      "level": 15
+    }
+  }
+}

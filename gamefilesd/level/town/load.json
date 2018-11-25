@@ -1,3 +1,0 @@
-{
-  "load": ["level/load.json", "town", "{1}", "{2}", "cuttt"]
-}

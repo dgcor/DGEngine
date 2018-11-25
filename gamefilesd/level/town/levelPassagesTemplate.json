@@ -1,0 +1,23 @@
+{
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": {1},
+      "param2": true,
+      "then": { "name": "load", "file": "level/town/levelCatacombs.json" }
+    },
+    {
+      "name": "if.equal",
+      "param1": {2},
+      "param2": true,
+      "then": { "name": "load", "file": "level/town/levelCaves.json" }
+    },
+    {
+      "name": "if.equal",
+      "param1": {3},
+      "param2": true,
+      "then": { "name": "load", "file": "level/town/levelHell.json" }
+    },
+    { "name": "io.delete", "file": "%tempDir%/level/town/levelPassages.json" }
+  ]
+}

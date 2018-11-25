@@ -1,0 +1,18 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%currentLevel.hasQuest.ogdenInit%",
+    "param2": true,
+    "then": { "name": "load", "file": "texts/ogden/quests/ogdenInit.json" },
+    "else": {
+      "name": "if.equal",
+      "param1": "%currentLevel.quest.ogdensSign.state%",
+      "param2": 0,
+      "then": [
+        { "name": "load", "file": "texts/ogden/quests/ogdensSign.json" },
+        { "name": "quest.setState", "quest": "ogdensSign", "state": 1 }
+      ],
+      "else": { "name": "load", "file": "towners/ogden/panel.json" }
+    }
+  }
+}

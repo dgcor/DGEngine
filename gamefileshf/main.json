@@ -5,6 +5,7 @@
   "refWindowSize": [640, 480],
   "minWindowSize": [640, 480],
   "windowSize": [800, 600],
+  "framerate": 60,
   "keepAR": true,
   "stretchToFit": true,
   "smoothScreen": true,
@@ -38,7 +39,10 @@
             "name": "if.equal",
             "param1": { "name": "file.exists", "file": "ui_art/cursor.pcx" },
             "param2": true,
-            "then": { "name": "load", "file": "ui/loadMain.json" },
+            "then": [
+              { "name": "variable.set", "key": "colorCycling", "value": true },
+              { "name": "load", "file": "ui/loadMain.json" }
+            ],
             "else": { "name": "load", "file": "ui/betaNotSupported.json" }
           },
           "else": { "name": "load", "file": ["ui/dataMissing.json", "hfmusic"] }

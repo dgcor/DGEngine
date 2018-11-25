@@ -35,7 +35,6 @@ namespace Parser
 			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 		button->setResizable(getBoolKey(elem, "resizable"));
-		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 
 		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
 		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);
@@ -52,7 +51,6 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		button->setCaptureInputEvents(getBoolKey(elem, "captureInputEvents"));
 		return button;
 	}
 
@@ -109,6 +107,7 @@ namespace Parser
 
 		button->enable(getBoolKey(elem, "enable", true));
 		button->setClickUp(getBoolKey(elem, "clickUp"));
+		button->setCaptureInputEvents(getInputEventKey(elem, "captureInputEvents"));
 
 		if (elem.HasMember("onChange"))
 		{
@@ -159,14 +158,7 @@ namespace Parser
 			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetString()));
 		}
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, button);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, button);
-		}
+		game.Resources().addDrawable(id, button, getStringViewKey(elem, "resource"));
 
 		if (getBoolKey(elem, "focus") == true)
 		{

@@ -6,8 +6,8 @@
     "texts/pepin/quests/poisonedWater1.txt"
   ],
   "audio": {
-    "file": "sfx/Towners/healer21.wav",
+    "file": "sfx/Towners/healer20.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

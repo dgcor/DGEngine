@@ -45,15 +45,11 @@ namespace sf
 		virtual sf::Int64 tell() noexcept;
 		virtual sf::Int64 getSize() noexcept;
 
-		bool hasError() const noexcept { return file == NULL; }
+		bool hasError() const noexcept { return file == nullptr; }
 
 		const char* getLastError() const noexcept
 		{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
-#else
-			return PHYSFS_getLastError();
-#endif
 		}
 	};
 }

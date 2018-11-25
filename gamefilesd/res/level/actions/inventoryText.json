@@ -4,17 +4,17 @@
     "id": "update{1}Text",
     "action": {
       "name": "if.equal",
-      "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+      "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
       "param2": false,
       "then": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasItem.{2}.{3}|",
+        "param1": "%currentLevel.currentPlayer.hasItem.{2}.{3}%",
         "param2": true,
         "then": [
           { "name": "image.enableOutline", "id": "img{1}" },
           {
             "name": "if.inList",
-            "param": "|currentLevel|currentPlayer.item.{2}.{3}.itemType|",
+            "param": "%currentLevel.currentPlayer.item.{2}.{3}.itemType%",
             "list": ["Amulet", "Ring"],
             "then": {
               "name": "text.setText",
@@ -34,22 +34,22 @@
           "updatePanelTextSpacing",
           {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.{2}.{3}.magical|",
+            "param1": "%currentLevel.currentPlayer.item.{2}.{3}.magical%",
             "param2": 1,
             "then": "setPanelTextColorBlue",
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.{2}.{3}.unique|",
+              "param1": "%currentLevel.currentPlayer.item.{2}.{3}.unique%",
               "param2": 1,
               "then": [
                 "setPanelTextColorGold",
                 {
                   "name": "if.equal",
-                  "param1": "|currentLevel|currentPlayer.item.{2}.{3}.identified|",
+                  "param1": "%currentLevel.currentPlayer.item.{2}.{3}.identified%",
                   "param2": true,
                   "then": {
                     "name": "if.equal",
-                    "param1": "|currentLevel|currentPlayer.item.{2}.{3}.hasDescription.4|",
+                    "param1": "%currentLevel.currentPlayer.item.{2}.{3}.hasDescription.4%",
                     "param2": true,
                     "then": [
                       "showItemInfo",

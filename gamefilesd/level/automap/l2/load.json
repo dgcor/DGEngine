@@ -1,0 +1,57 @@
+{
+  "texturePack": [
+    {
+      "id": "automap0",
+      "fromId": "l2Automap0"
+    },
+    {
+      "id": "automap1",
+      "fromId": "l2Automap3"
+    },
+    {
+      "id": "automap2",
+      "fromId": "l2Automap5"
+    },
+    {
+      "id": "automap3",
+      "fromId": "l2Automap8"
+    },
+    {
+      "id": "automap4",
+      "fromId": "l2Automap10"
+    },
+    {
+      "id": "automap5",
+      "fromId": "l2Automap13"
+    },
+    {
+      "id": "automap6",
+      "fromId": "l2Automap15"
+    },
+    {
+      "id": "automap7",
+      "fromId": "l2Automap18"
+    },
+    {
+      "id": "automap8",
+      "fromId": "l2Automap20"
+    },
+    {
+      "id": "automap9",
+      "fromId": "l2Automap23"
+    },
+    {
+      "id": "automap10",
+      "fromId": "l2Automap25"
+    },
+    {
+      "id": "automap11",
+      "fromId": "l2Automap28"
+    },
+    {
+      "id": "automap12",
+      "fromId": "l2Automap30"
+    }
+  ],
+  "action": "updateAutomapZoom"
+}

@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "level.showAutomap", "show": {1} },
+    { "name": "variable.set", "key": "automapZoom", "value": {2} },
+    "updateAutomapZoom"
+  ]
+}

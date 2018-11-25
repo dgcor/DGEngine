@@ -1,4 +1,3 @@
-
 /*
  *  StreamSelection.hpp
  *  sfeMovie project
@@ -22,39 +21,26 @@
  *
  */
 
-#ifndef SFEMOVIE_STREAM_SELECTION_HPP
-#define SFEMOVIE_STREAM_SELECTION_HPP
+#pragma once
 
 #include <string>
-#include <vector>
 
 namespace sfe
 {
-    enum MediaType
-    {
-        Audio,
-        Video,
-        Unknown
-    };
-    
-    /** Structure that allows both knowing metadata about each stream, and identifying streams
-     * for selection through Movie::selectStream()
-     */
-    struct StreamDescriptor
-    {
-        /** Return a stream descriptor that identifies no stream. This allows disabling a specific stream kind
-         *
-         * @param type the stream kind (audio, video...) to disable
-         * @return a StreamDescriptor that can be used to disable the given stream kind
-         */
-        static StreamDescriptor NoSelection(MediaType type);
-        
-        MediaType type;            //!< Stream kind: video or audio
-        int identifier;            //!< Internal stream identifier in the media, used for choosing which stream to enable
-        std::string language;    //!< Language code defined by ISO 639-2, if set by the media
-    };
-    
-    typedef std::vector<StreamDescriptor> Streams;
-}
+	enum MediaType
+	{
+		Audio,
+		Video,
+		Unknown
+	};
 
-#endif
+	/** Structure that allows both knowing metadata about each stream, and identifying streams
+	 * for selection through Movie::selectStream()
+	 */
+	struct StreamDescriptor
+	{
+		MediaType type{ MediaType::Unknown };  //!< Stream kind: video or audio
+		int identifier{ -1 };                  //!< Internal stream identifier in the media, used for choosing which stream to enable
+		std::string language;                  //!< Language code defined by ISO 639-2, if set by the media
+	};
+}

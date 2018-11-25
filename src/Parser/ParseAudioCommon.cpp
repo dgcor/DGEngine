@@ -1,5 +1,4 @@
 #include "ParseAudioCommon.h"
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
 
@@ -69,7 +68,7 @@ namespace Parser
 		music.setMultiLoopPoints(loopPoints);
 	}
 
-	void updateAudioLoopString(const std::string& str,
+	void updateAudioLoopString(const std::string_view str,
 		const std::unordered_map<std::string, sf::Music::TimeSpan>& loopNames,
 		sf::MusicLoops& music)
 	{
@@ -118,4 +117,3 @@ namespace Parser
 		music.setMultiLoopPoints(loopPoints);
 	}
 }
-#endif

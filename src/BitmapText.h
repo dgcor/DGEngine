@@ -22,16 +22,16 @@ private:
 	unsigned lineCount{ 0 };
 	bool visible{ true };
 
-	void calcDrawPos() noexcept;
-	void calcSize();
+	void calculateDrawPosition() noexcept;
+	void calculateSize();
 
 public:
 	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont>& font_,
 		int horizSpaceOffset_ = 0, int vertSpaceOffset_ = 0) : text(text_), font(font_),
 		horizSpaceOffset(horizSpaceOffset_), vertSpaceOffset(vertSpaceOffset_)
 	{
-		calcSize();
-		calcDrawPos();
+		calculateSize();
+		calculateDrawPosition();
 	}
 
 	void setFont(const std::shared_ptr<BitmapFont>& font_) noexcept { font = font_; }
@@ -43,7 +43,7 @@ public:
 		if (anchor != anchor_)
 		{
 			anchor = anchor_;
-			calcDrawPos();
+			calculateDrawPosition();
 		}
 	}
 	virtual void updateSize(const Game& game) noexcept;
@@ -55,8 +55,8 @@ public:
 			return false;
 		}
 		text = str;
-		calcSize();
-		calcDrawPos();
+		calculateSize();
+		calculateDrawPosition();
 		return true;
 	}
 
@@ -69,7 +69,7 @@ public:
 	virtual void Position(const sf::Vector2f& position) noexcept
 	{
 		pos = position;
-		calcDrawPos();
+		calculateDrawPosition();
 	}
 	virtual sf::Vector2f Size() const noexcept { return size; }
 	virtual void Size(const sf::Vector2f& size_) noexcept {}
@@ -82,7 +82,7 @@ public:
 		if (horizAlign != align)
 		{
 			horizAlign = align;
-			calcDrawPos();
+			calculateDrawPosition();
 		}
 	}
 	virtual void setVerticalAlign(const VerticalAlign align) noexcept
@@ -90,7 +90,7 @@ public:
 		if (vertAlign != align)
 		{
 			vertAlign = align;
-			calcDrawPos();
+			calculateDrawPosition();
 		}
 	}
 
@@ -99,8 +99,8 @@ public:
 		if (horizSpaceOffset != offset)
 		{
 			horizSpaceOffset = offset;
-			calcSize();
-			calcDrawPos();
+			calculateSize();
+			calculateDrawPosition();
 		}
 	}
 	virtual void setVerticalSpaceOffset(int offset)
@@ -108,8 +108,8 @@ public:
 		if (vertSpaceOffset != offset)
 		{
 			vertSpaceOffset = offset;
-			calcSize();
-			calcDrawPos();
+			calculateSize();
+			calculateDrawPosition();
 		}
 	}
 
@@ -120,5 +120,5 @@ public:
 
 	void update(Game& game) noexcept {}
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

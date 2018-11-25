@@ -6,7 +6,7 @@
       "action": [
         {
           "name": "<=",
-          "param1": "|currentLevel|currentPlayer.life|",
+          "param1": "%currentLevel.currentPlayer.life%",
           "param2": 0,
           "then": [
             {
@@ -28,22 +28,22 @@
             {
               "name": "drawable.resizeY",
               "id": "lifeOrbEmpty",
-              "size": "|currentLevel|currentPlayer.lifeDamage|",
-              "inputRangeMax": "|currentLevel|currentPlayer.life|",
+              "size": "%currentLevel.currentPlayer.lifeDamage%",
+              "inputRangeMax": "%currentLevel.currentPlayer.life%",
               "range": [0, 88]
             },
             {
               "name": "image.inverseResizeY",
               "id": "lifeOrbFull",
-              "size": "|currentLevel|currentPlayer.lifeDamage|",
-              "inputRangeMax": "|currentLevel|currentPlayer.life|",
+              "size": "%currentLevel.currentPlayer.lifeDamage%",
+              "inputRangeMax": "%currentLevel.currentPlayer.life%",
               "range": [0, 88]
             }
           ]
         },
         {
           "name": "<=",
-          "param1": "|currentLevel|currentPlayer.mana|",
+          "param1": "%currentLevel.currentPlayer.mana%",
           "param2": 0,
           "then": [
             {
@@ -65,15 +65,15 @@
             {
               "name": "drawable.resizeY",
               "id": "manaOrbEmpty",
-              "size": "|currentLevel|currentPlayer.manaDamage|",
-              "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+              "size": "%currentLevel.currentPlayer.manaDamage%",
+              "inputRangeMax": "%currentLevel.currentPlayer.mana%",
               "range": [0, 88]
             },
             {
               "name": "image.inverseResizeY",
               "id": "manaOrbFull",
-              "size": "|currentLevel|currentPlayer.manaDamage|",
-              "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+              "size": "%currentLevel.currentPlayer.manaDamage%",
+              "inputRangeMax": "%currentLevel.currentPlayer.mana%",
               "range": [0, 88]
             }
           ]
@@ -88,7 +88,7 @@
         "updateBeltItems",
         {
           "name": "if.equal",
-          "param1": "|game|hasResource.charPanelInventory|",
+          "param1": "%game.hasResource.charPanelInventory%",
           "param2": true,
           "then": ["updateStashItems", "updateBodyItems"]
         },

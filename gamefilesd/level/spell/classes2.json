@@ -1,0 +1,4 @@
+{
+  "load": "level/spell/skills.json",
+  "load": "level/spell/spells.json"
+}

@@ -5,6 +5,18 @@
       "fromId": "font16g"
     },
     {
+      "id": "smaltextBlue",
+      "fromId": "font16g"
+    },
+    {
+      "id": "smaltextGold",
+      "fromId": "font16g"
+    },
+    {
+      "id": "smaltextRed",
+      "fromId": "font16g"
+    },
+    {
       "id": "medtexts",
       "fromId": "font16g"
     },

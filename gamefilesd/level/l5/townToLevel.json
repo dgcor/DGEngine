@@ -1,0 +1,11 @@
+{
+  "levelObject": {
+    "id": "catacombs",
+    "class": "levelCatacombs",
+    "mapPosition": [49, 21],
+    "properties": {
+      "x": 31,
+      "y": 26
+    }
+  }
+}

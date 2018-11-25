@@ -22,9 +22,7 @@
   "text": [
     {
       "id": "panelTitle1",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 58],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -33,9 +31,7 @@
     },
     {
       "id": "panelText",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [480, 142],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -46,9 +42,7 @@
   "button": [
     {
       "id": "talk",
-      "font": "smaltext",
-      "replaceVars": true,
-      "color": "%textBlue%",
+      "font": "smaltextBlue",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",

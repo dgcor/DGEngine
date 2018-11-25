@@ -37,6 +37,7 @@
     <ClCompile Include="src\BitmapFont.cpp" />
     <ClCompile Include="src\BitmapText.cpp" />
     <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\CachedImagePack.cpp" />
     <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\Dun.cpp" />
     <ClCompile Include="src\Event.cpp" />
@@ -44,18 +45,18 @@
     <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
-    <ClCompile Include="src\Game\BaseClass.cpp" />
+    <ClCompile Include="src\Game\BaseClassActions.cpp" />
     <ClCompile Include="src\Game\BaseLevelObject.cpp" />
+    <ClCompile Include="src\Game\Classifier.cpp" />
     <ClCompile Include="src\Game\Formula.cpp" />
     <ClCompile Include="src\Game\GameProperties.cpp" />
+    <ClCompile Include="src\Game\Inventory.cpp" />
     <ClCompile Include="src\Game\Item.cpp" />
     <ClCompile Include="src\Game\ItemClass.cpp" />
-    <ClCompile Include="src\Game\ItemCollection.cpp" />
     <ClCompile Include="src\Game\Level.cpp" />
     <ClCompile Include="src\Game\LevelCell.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
     <ClCompile Include="src\Game\LevelMap.cpp" />
-    <ClCompile Include="src\Game\Namer.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
@@ -64,7 +65,11 @@
     <ClCompile Include="src\Game\Save\SaveLevel.cpp" />
     <ClCompile Include="src\Game\Save\SavePlayer.cpp" />
     <ClCompile Include="src\Game\Save\SaveSimpleLevelObject.cpp" />
+    <ClCompile Include="src\Game\Save\SaveUtils.cpp" />
     <ClCompile Include="src\Game\SimpleLevelObject.cpp" />
+    <ClCompile Include="src\Game\Spell.cpp" />
+    <ClCompile Include="src\Game\SpellClass.cpp" />
+    <ClCompile Include="src\IfCondition.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\ImageContainers\CelBaseImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\CelImageContainer.cpp" />
@@ -78,17 +83,18 @@
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Min.cpp" />
     <ClCompile Include="src\Movie2.cpp" />
-    <ClCompile Include="src\Music2.cpp" />
-    <ClCompile Include="src\MusicLoops.cpp" />
     <ClCompile Include="src\Palette.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseClassifier.cpp" />
     <ClCompile Include="src\Parser\Game\ParseItem.cpp" />
     <ClCompile Include="src\Parser\Game\ParseItemClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevel.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevelObject.cpp" />
-    <ClCompile Include="src\Parser\Game\ParseNamer.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseLevelObjectClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayer.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayerClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseQuest.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseSpell.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseSpellClass.cpp" />
     <ClCompile Include="src\Parser\ParseAction.cpp" />
     <ClCompile Include="src\Parser\ParseAnimation.cpp" />
     <ClCompile Include="src\Parser\ParseAudio.cpp" />
@@ -131,21 +137,22 @@
     <ClCompile Include="src\ScrollableText.cpp" />
     <ClCompile Include="src\sfeMovie\AudioStream.cpp" />
     <ClCompile Include="src\sfeMovie\Demuxer.cpp" />
-    <ClCompile Include="src\sfeMovie\Macros.cpp" />
     <ClCompile Include="src\sfeMovie\Movie.cpp" />
     <ClCompile Include="src\sfeMovie\MovieImpl.cpp" />
     <ClCompile Include="src\sfeMovie\Stream.cpp" />
-    <ClCompile Include="src\sfeMovie\StreamSelection.cpp" />
     <ClCompile Include="src\sfeMovie\Timer.cpp" />
-    <ClCompile Include="src\sfeMovie\TimerPriorities.cpp" />
-    <ClCompile Include="src\sfeMovie\Utilities.cpp" />
     <ClCompile Include="src\sfeMovie\VideoStream.cpp" />
-    <ClCompile Include="src\SFMLUtils.cpp" />
+    <ClCompile Include="src\SFML\Music2.cpp" />
+    <ClCompile Include="src\SFML\MusicLoops.cpp" />
+    <ClCompile Include="src\SFML\SFMLUtils.cpp" />
+    <ClCompile Include="src\SFML\Sprite2.cpp" />
+    <ClCompile Include="src\SFML\View2.cpp" />
     <ClCompile Include="src\Shaders.cpp" />
     <ClCompile Include="src\Sol.cpp" />
     <ClCompile Include="src\StringButton.cpp" />
     <ClCompile Include="src\StringText.cpp" />
-    <ClCompile Include="src\Text2.cpp" />
+    <ClCompile Include="src\Text.cpp" />
+    <ClCompile Include="src\TexturePacks\BitmapFontTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\CachedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\IndexedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\RectTexturePack.cpp" />
@@ -156,7 +163,6 @@
     <ClCompile Include="src\TileSet.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
     <ClCompile Include="src\Variable.cpp" />
-    <ClCompile Include="src\View2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Actions\ActAction.h" />
@@ -168,6 +174,7 @@
     <ClInclude Include="src\Actions\ActEvent.h" />
     <ClInclude Include="src\Actions\ActFade.h" />
     <ClInclude Include="src\Actions\ActFocus.h" />
+    <ClInclude Include="src\Actions\ActFont.h" />
     <ClInclude Include="src\Actions\ActGame.h" />
     <ClInclude Include="src\Actions\ActImage.h" />
     <ClInclude Include="src\Actions\ActInputText.h" />
@@ -199,10 +206,10 @@
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\endian\big_endian.hpp" />
-    <ClInclude Include="src\endian\helpers.hpp" />
+    <ClInclude Include="src\endian\detail\helpers.hpp" />
+    <ClInclude Include="src\endian\detail\stream.hpp" />
     <ClInclude Include="src\endian\is_big_endian.hpp" />
     <ClInclude Include="src\endian\little_endian.hpp" />
-    <ClInclude Include="src\endian\stream.hpp" />
     <ClInclude Include="src\endian\stream_reader.hpp" />
     <ClInclude Include="src\endian\stream_writer.hpp" />
     <ClInclude Include="src\FadeInOut.h" />
@@ -210,25 +217,27 @@
     <ClInclude Include="src\Font.h" />
     <ClInclude Include="src\FreeTypeFont.h" />
     <ClInclude Include="src\GameUtils.h" />
-    <ClInclude Include="src\Game\BaseClass.h" />
+    <ClInclude Include="src\Game\BaseClassActions.h" />
+    <ClInclude Include="src\Game\BaseClassDefaults.h" />
     <ClInclude Include="src\Game\BaseLevelObject.h" />
+    <ClInclude Include="src\Game\Classifier.h" />
+    <ClInclude Include="src\Game\Classifiers.h" />
     <ClInclude Include="src\Game\Formula.h" />
-    <ClInclude Include="src\Game\fsa.h" />
+    <ClInclude Include="src\Game\GameHashes.h" />
     <ClInclude Include="src\Game\GameProperties.h" />
+    <ClInclude Include="src\Game\Inventories.h" />
+    <ClInclude Include="src\Game\Inventory.h" />
     <ClInclude Include="src\Game\Item.h" />
     <ClInclude Include="src\Game\ItemClass.h" />
-    <ClInclude Include="src\Game\ItemCollection.h" />
     <ClInclude Include="src\Game\ItemLocation.h" />
-    <ClInclude Include="src\Game\ItemProperties.h" />
-    <ClInclude Include="src\Game\ItemTypes.h" />
     <ClInclude Include="src\Game\ItemXY.h" />
     <ClInclude Include="src\Game\Level.h" />
     <ClInclude Include="src\Game\LevelCell.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
+    <ClInclude Include="src\Game\LevelObjectClass.h" />
     <ClInclude Include="src\Game\MapCoord.h" />
-    <ClInclude Include="src\Game\Namer.h" />
     <ClInclude Include="src\Game\Number.h" />
     <ClInclude Include="src\Game\PairXY.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
@@ -238,30 +247,37 @@
     <ClInclude Include="src\Game\Save\SaveItem.h" />
     <ClInclude Include="src\Game\Save\SaveLevel.h" />
     <ClInclude Include="src\Game\Save\SavePlayer.h" />
+    <ClInclude Include="src\Game\Save\SaveProperties.h" />
     <ClInclude Include="src\Game\Save\SaveSimpleLevelObject.h" />
+    <ClInclude Include="src\Game\Save\SaveUtils.h" />
     <ClInclude Include="src\Game\SimpleLevelObject.h" />
-    <ClInclude Include="src\Game\stlastar.h" />
+    <ClInclude Include="src\Game\Spell.h" />
+    <ClInclude Include="src\Game\SpellClass.h" />
+    <ClInclude Include="src\IfCondition.h" />
     <ClInclude Include="src\IgnoreResource.h" />
     <ClInclude Include="src\Image.h" />
-    <ClInclude Include="src\Image2.h" />
     <ClInclude Include="src\ImageContainers\CelBaseImageContainer.h" />
     <ClInclude Include="src\ImageContainers\CelImageContainer.h" />
     <ClInclude Include="src\ImageContainers\Cl2ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\SimpleImageContainer.h" />
     <ClInclude Include="src\ImageUtils.h" />
+    <ClInclude Include="src\InputEvent.h" />
     <ClInclude Include="src\InputText.h" />
     <ClInclude Include="src\Json\JsonParser.h" />
     <ClInclude Include="src\Json\JsonUtils.h" />
-    <ClInclude Include="src\MusicLoops.h" />
+    <ClInclude Include="src\Movie2.h" />
+    <ClInclude Include="src\Parser\Game\ParseClassifier.h" />
     <ClInclude Include="src\Parser\Game\ParseItem.h" />
     <ClInclude Include="src\Parser\Game\ParseItemClass.h" />
     <ClInclude Include="src\Parser\Game\ParseLevel.h" />
     <ClInclude Include="src\Parser\Game\ParseLevelObject.h" />
-    <ClInclude Include="src\Parser\Game\ParseNamer.h" />
+    <ClInclude Include="src\Parser\Game\ParseLevelObjectClass.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayer.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayerClass.h" />
     <ClInclude Include="src\Parser\Game\ParseQuest.h" />
+    <ClInclude Include="src\Parser\Game\ParseSpell.h" />
+    <ClInclude Include="src\Parser\Game\ParseSpellClass.h" />
     <ClInclude Include="src\Parser\ParseAction.h" />
     <ClInclude Include="src\Parser\ParseAnimation.h" />
     <ClInclude Include="src\Parser\ParseAudio.h" />
@@ -301,21 +317,19 @@
     <ClInclude Include="src\Predicates\Predicate.h" />
     <ClInclude Include="src\Predicates\PredIO.h" />
     <ClInclude Include="src\Predicates\PredItem.h" />
+    <ClInclude Include="src\Predicates\PredLevelObject.h" />
     <ClInclude Include="src\Predicates\PredPlayer.h" />
     <ClInclude Include="src\Queryable.h" />
     <ClInclude Include="src\Rectangle.h" />
     <ClInclude Include="src\sfeMovie\AudioStream.hpp" />
     <ClInclude Include="src\sfeMovie\Demuxer.hpp" />
-    <ClInclude Include="src\sfeMovie\Macros.hpp" />
     <ClInclude Include="src\sfeMovie\Movie.hpp" />
     <ClInclude Include="src\sfeMovie\MovieImpl.hpp" />
     <ClInclude Include="src\sfeMovie\Stream.hpp" />
     <ClInclude Include="src\sfeMovie\StreamSelection.hpp" />
     <ClInclude Include="src\sfeMovie\Timer.hpp" />
     <ClInclude Include="src\sfeMovie\TimerPriorities.hpp" />
-    <ClInclude Include="src\sfeMovie\Utilities.hpp" />
     <ClInclude Include="src\sfeMovie\VideoStream.hpp" />
-    <ClInclude Include="src\SFMLUtils.h" />
     <ClInclude Include="src\BitmapButton.h" />
     <ClInclude Include="src\BitmapFont.h" />
     <ClInclude Include="src\BitmapText.h" />
@@ -328,20 +342,24 @@
     <ClInclude Include="src\LoadingScreen.h" />
     <ClInclude Include="src\Menu.h" />
     <ClInclude Include="src\Min.h" />
-    <ClInclude Include="src\Movie2.h" />
-    <ClInclude Include="src\Music2.h" />
     <ClInclude Include="src\Palette.h" />
     <ClInclude Include="src\Pcx.h" />
     <ClInclude Include="src\PhysFSStream.h" />
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\ScrollableText.h" />
+    <ClInclude Include="src\SFML\Music2.h" />
+    <ClInclude Include="src\SFML\MusicLoops.h" />
+    <ClInclude Include="src\SFML\SFMLUtils.h" />
+    <ClInclude Include="src\SFML\Sprite2.h" />
+    <ClInclude Include="src\SFML\View2.h" />
     <ClInclude Include="src\Shaders.h" />
     <ClInclude Include="src\Sol.h" />
-    <ClInclude Include="src\Sprite2.h" />
     <ClInclude Include="src\StreamReader.h" />
     <ClInclude Include="src\StringButton.h" />
     <ClInclude Include="src\StringText.h" />
-    <ClInclude Include="src\Text2.h" />
+    <ClInclude Include="src\Text.h" />
+    <ClInclude Include="src\TextureInfo.h" />
+    <ClInclude Include="src\TexturePacks\BitmapFontTexturePack.h" />
     <ClInclude Include="src\TexturePacks\CachedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\IndexedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\RectTexturePack.h" />
@@ -351,13 +369,14 @@
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\TileSet.h" />
     <ClInclude Include="src\UIObject.h" />
+    <ClInclude Include="src\Utils\FixedMap.h" />
     <ClInclude Include="src\Utils\Helper2D.h" />
     <ClInclude Include="src\Utils\iterator_tpl.h" />
+    <ClInclude Include="src\Utils\LRUCache.h" />
     <ClInclude Include="src\Utils\ReverseIterable.h" />
     <ClInclude Include="src\Utils\Utils.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\VarOrPredicate.h" />
-    <ClInclude Include="src\View2.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\gsl\gsl" />
@@ -398,7 +417,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>LLVM-vs2017</PlatformToolset>
+    <PlatformToolset>llvm</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -513,6 +532,8 @@
       <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\FFmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-Xclang "-std=c++17" %(AdditionalOptions)</AdditionalOptions>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -581,7 +602,7 @@
       <GenerateDebugInformation>No</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>flac.lib;freetype.lib;gdi32.lib;jpeg.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network-s.lib;sfml-system-s.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;physfs-static.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>flac.lib;freetype.lib;gdi32.lib;ogg.lib;openal32.lib;opengl32.lib;winmm.lib;ws2_32.lib;sfml-audio-s.lib;sfml-graphics-s.lib;sfml-main.lib;sfml-network-s.lib;sfml-system-s.lib;sfml-window-s.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;physfs-static.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\FFmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Windows</SubSystem>
     </Link>

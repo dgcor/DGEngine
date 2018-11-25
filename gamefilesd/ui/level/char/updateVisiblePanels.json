@@ -3,25 +3,25 @@
     "updateBeltItems",
     {
       "name": "if.equal",
-      "param1": "|charPanel|visible|",
+      "param1": "%charPanel.visible%",
       "param2": true,
       "then": { "name": "load", "file": "ui/level/char/panelLabels.json" }
     },
     {
       "name": "if.equal",
-      "param1": "|invPanel|visible|",
+      "param1": "%invPanel.visible%",
       "param2": true,
       "then": { "name": "load", "file": "ui/level/char/panelInventory.json" }
     },
     {
       "name": "if.equal",
-      "param1": "|questPanel|visible|",
+      "param1": "%questPanel.visible%",
       "param2": true,
       "then": { "name": "load", "file": "ui/level/char/panelQuests.json" }
     },
     {
       "name": "if.equal",
-      "param1": "|spellPanel|visible|",
+      "param1": "%spellPanel.visible%",
       "param2": true,
       "then": { "name": "load", "file": "ui/level/char/panelSpells.json" }
     }

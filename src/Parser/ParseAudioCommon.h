@@ -1,8 +1,8 @@
 #pragma once
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 #include "Json/JsonParser.h"
-#include "MusicLoops.h"
+#include "SFML/MusicLoops.h"
 #include <string>
+#include <string_view>
 #include <vector>
 #include <unordered_map>
 
@@ -22,8 +22,7 @@ namespace Parser
 	void parseAudioLoopPointsVal(const rapidjson::Value& elem,
 		const char* key, sf::MusicLoops& music);
 
-	void updateAudioLoopString(const std::string& str,
+	void updateAudioLoopString(const std::string_view str,
 		const std::unordered_map<std::string, sf::Music::TimeSpan>& loopNames,
 		sf::MusicLoops& music);
 }
-#endif

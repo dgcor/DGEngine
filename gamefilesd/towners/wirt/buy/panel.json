@@ -28,7 +28,7 @@
     "size": [518, 186],
     "verticalPad": 14,
     "items": {
-      "load": "currentLevel|wirt.inventory.0",
+      "load": "currentLevel.wirt.inventory.0",
       "text": "%name%\n",
       "onClick": {
         "name": "load",
@@ -62,13 +62,13 @@
   },
   "action": {
     "name": "if.notEqual",
-    "param1": "|mainMenu|itemCount|",
+    "param1": "%mainMenu.itemCount%",
     "param2": 0,
     "then": [
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "I have this item for sale :           Your gold : [1]"
       },
       { "name": "load", "file": "towners/wirt/buy/listItems.json" }
@@ -77,7 +77,7 @@
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "I have no more items for sale.          Your gold : [1]"
       },
       { "name": "load", "file": "towners/wirt/buy/noItems.json" }

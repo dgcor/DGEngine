@@ -7,7 +7,6 @@
 #include <unordered_map>
 #include <variant>
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 struct SoundBufferLoops
 {
 	sf::SoundBuffer soundBuffer;
@@ -29,9 +28,3 @@ typedef std::variant<
 	std::shared_ptr<SoundBufferLoops>,
 	std::shared_ptr<SoundFileLoops>>
 	AudioSource;
-#else
-typedef std::variant<
-	std::shared_ptr<sf::SoundBuffer>,
-	std::shared_ptr<sf::PhysFSStream>>
-	AudioSource;
-#endif

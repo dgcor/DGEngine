@@ -3,9 +3,9 @@
 #include "PhysFSStream.h"
 #include "StreamReader.h"
 
-Dun::Dun(const std::string& fileName, int16_t defaultTile)
+Dun::Dun(const std::string_view fileName, int16_t defaultTile)
 {
-	sf::PhysFSStream file(fileName);
+	sf::PhysFSStream file(fileName.data());
 	if (file.hasError() == true)
 	{
 		return;
@@ -13,7 +13,7 @@ Dun::Dun(const std::string& fileName, int16_t defaultTile)
 	std::vector<uint8_t> fileData((size_t)file.getSize());
 	file.read(fileData.data(), file.getSize());
 
-	LittleEndianStreamReader fileStream(fileData);
+	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
 
 	width = fileStream.read<uint16_t>();
 	height = fileStream.read<uint16_t>();

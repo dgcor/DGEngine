@@ -1,0 +1,82 @@
+{
+  "levelObjectClass": [
+    {
+      "id": "levelDownCrypt",
+      "fromId": "levelDown",
+      "nameClassifier": "levelNameDownCrypt",
+      "text1": "crypt1",
+      "text2": "cutl5",
+      "descriptions": [
+        { "index": 0, "name": "levelPathCrypt" },
+        { "index": 1, "name": "loadingScreenText2" }
+      ]
+    },
+    {
+      "id": "levelDownNest",
+      "fromId": "levelDownCrypt",
+      "nameClassifier": "levelNameDown",
+      "text1": "nest1",
+      "text2": "cutl6",
+      "descriptions": [
+        { "index": 0, "name": "levelPathNest" }
+      ]
+    },
+    {
+      "id": "levelUpCrypt",
+      "fromId": "levelUp",
+      "nameClassifier": "levelNameUpCrypt",
+      "text1": "crypt1",
+      "text2": "cutl5",
+      "descriptions": [
+        { "index": 0, "name": "levelPathCrypt" },
+        { "index": 1, "name": "loadingScreenText2" }
+      ]
+    },
+    {
+      "id": "levelUpNest",
+      "fromId": "levelUpCrypt",
+      "nameClassifier": "levelNameUpNest",
+      "text1": "nest1",
+      "text2": "cutl6",
+      "descriptions": [
+        { "index": 0, "name": "levelPathNest" }
+      ]
+    },
+    {
+      "id": "levelCrypt",
+      "fromId": "levelTown",
+      "name": "Down to crypt",
+      "text1": "crypt1",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.crypt.d.0%",
+            "positionPlayer",
+            "[%currentLevel.levelObject.crypt.x%, %currentLevel.levelObject.crypt.y%]",
+            "cutl5"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelNest",
+      "fromId": "levelTown",
+      "name": "Down to hive",
+      "text1": "nest1",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.nest.d.0%",
+            "positionPlayer",
+            "[%currentLevel.levelObject.nest.x%, %currentLevel.levelObject.nest.y%]",
+            "cutl6"
+          ]
+        }
+      }
+    }
+  ]
+}

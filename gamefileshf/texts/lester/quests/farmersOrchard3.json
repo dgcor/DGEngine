@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/lester/quests/farmersOrchard3.txt"
+  ],
+  "audio": {
+    "file": "Sfx/Hellfire/Farmer3.wav",
+    "play": true,
+    "volume": "%game.soundVolume%"
+  }
+}

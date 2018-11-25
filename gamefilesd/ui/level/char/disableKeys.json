@@ -1,8 +1,7 @@
 {
   "keyboard": [
-    { "key": "b", "action": null },
-    { "key": "c", "action": null },
-    { "key": "i", "action": null },
-    { "key": "q", "action": null }
+    { "key": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "action": null },
+    { "key": ["enter", " ", "up", "w", "down", "s", "tab", "left", "a", "right", "d"], "action": null },
+    { "key": ["b", "c", "f", "g", "i", "q", "z"], "action": null }
   ]
 }

@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "25",
     "texts/farnham/quests/hallsOfTheBlind.txt"
   ],
   "audio": {
     "file": "sfx/Towners/drunk12.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

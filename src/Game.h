@@ -2,6 +2,7 @@
 
 #include "EventManager.h"
 #include "FadeInOut.h"
+#include "InputEvent.h"
 #include "LoadingScreen.h"
 #include <memory>
 #include "Menu.h"
@@ -37,15 +38,15 @@ private:
 	sf::Vector2i mousePositioni;
 	sf::Vector2f mousePositionf;
 
-	sf::Event::MouseButtonEvent mousePressEvt;
-	sf::Event::MouseButtonEvent mouseReleaseEvt;
-	sf::Event::MouseMoveEvent mouseMoveEvt;
-	sf::Event::MouseWheelScrollEvent mouseScrollEvt;
-	sf::Event::KeyEvent keyPressEvt;
-	sf::Event::TextEvent textEnteredEvt;
-	sf::Event::TouchEvent touchBeganEvt;
-	sf::Event::TouchEvent touchMovedEvt;
-	sf::Event::TouchEvent touchEndedEvt;
+	sf::Event::MouseButtonEvent mousePressEvt{};
+	sf::Event::MouseButtonEvent mouseReleaseEvt{};
+	sf::Event::MouseMoveEvent mouseMoveEvt{};
+	sf::Event::MouseWheelScrollEvent mouseScrollEvt{};
+	sf::Event::KeyEvent keyPressEvt{};
+	sf::Event::TextEvent textEnteredEvt{};
+	sf::Event::TouchEvent touchBeganEvt{};
+	sf::Event::TouchEvent touchMovedEvt{};
+	sf::Event::TouchEvent touchEndedEvt{};
 	bool mousePressed{ false };
 	bool mouseReleased{ false };
 	bool mouseMoved{ false };
@@ -58,6 +59,7 @@ private:
 
 	unsigned musicVolume{ 100 };
 	unsigned soundVolume{ 100 };
+	unsigned gamma{ 30 };
 
 	sf::Time elapsedTime;
 
@@ -100,8 +102,6 @@ private:
 
 	void updateSize();
 	void updateWindowTex();
-
-	std::map<std::string, Variable>::const_iterator findVariable(const std::string& key) const;
 
 public:
 	Game() noexcept : refSize(640, 480), minSize(640, 480), size(640, 480) {}
@@ -198,18 +198,7 @@ public:
 	void clearTouchMoved() noexcept { touchMoved = false; }
 	void clearTouchEnded() noexcept { touchEnded = false; }
 
-	void clearInputEvents() noexcept
-	{
-		mousePressed = false;
-		mouseReleased = false;
-		mouseMoved = false;
-		mouseScrolled = false;
-		keyPressed = false;
-		textEntered = false;
-		touchBegan = false;
-		touchMoved = false;
-		touchEnded = false;
-	}
+	void clearInputEvents(InputEvent e) noexcept;
 
 	void MinWidth(unsigned width_) noexcept { size.x = width_; }
 	void MinHeight(unsigned height_) noexcept { size.y = height_; }
@@ -242,6 +231,11 @@ public:
 	void SoundVolume(unsigned volume) noexcept
 	{
 		soundVolume = std::min(volume, 100u);
+	}
+	unsigned Gamma() const noexcept { return gamma; }
+	void Gamma(unsigned gamma_) noexcept
+	{
+		gamma = std::clamp(gamma_, 30u, 100u);
 	}
 
 	void addPlayingSound(const sf::SoundBuffer& obj);
@@ -298,8 +292,8 @@ public:
 
 	const std::map<std::string, Variable>& getVariables() const noexcept { return variables; }
 
-	bool getVariableNoPercentage(const std::string& key, Variable& var) const;
-	bool getVariable(const std::string& key, Variable& var) const;
+	// gets variable without tokens. ex: "var"
+	bool getVariableNoToken(const std::string& key, Variable& var) const;
 
 	template <class T, class U>
 	U getVarOrProp(const Variable& var, U defVal = U())
@@ -322,25 +316,28 @@ public:
 		return defVal;
 	}
 
-	bool getVarOrProp(const std::string& key, Variable& var) const;
+	bool getVarOrPropNoToken(const std::string& key, Variable& var) const;
+	bool getVarOrProp(const std::string_view key, Variable& var) const;
 	Variable getVarOrProp(const Variable& var) const;
-	bool getVarOrPropBool(const std::string& key) const;
-	bool getVarOrPropBool(const Variable& var) const;
-	double getVarOrPropDouble(const std::string& key) const;
-	double getVarOrPropDouble(const Variable& var) const;
-	int64_t getVarOrPropLong(const std::string& key) const;
-	int64_t getVarOrPropLong(const Variable& var) const;
-	std::string getVarOrPropString(const std::string& key) const;
-	std::string getVarOrPropString(const Variable& var) const;
+	bool getVarOrPropBoolS(const std::string_view key) const;
+	bool getVarOrPropBoolV(const Variable& var) const;
+	double getVarOrPropDoubleS(const std::string_view key) const;
+	double getVarOrPropDoubleV(const Variable& var) const;
+	int64_t getVarOrPropLongS(const std::string_view key) const;
+	int64_t getVarOrPropLongV(const Variable& var) const;
+	std::string getVarOrPropStringS(const std::string_view key) const;
+	std::string getVarOrPropStringV(const Variable& var) const;
 
+	// no tokens in key.
 	void clearVariable(const std::string& key);
 
+	// no tokens in key.
 	void setVariable(const std::string& key, const Variable& value);
 
 	void saveVariables(const std::string& filePath, const std::vector<std::string>& varNames) const;
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	void setProperty(const std::string& prop, const Variable& val);
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	void setProperty(const std::string_view prop, const Variable& val);
 
-	virtual const Queryable* getQueryable(const std::string& prop) const;
+	virtual const Queryable* getQueryable(const std::string_view prop) const;
 };

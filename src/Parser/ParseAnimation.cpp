@@ -102,13 +102,6 @@ namespace Parser
 		{
 			return;
 		}
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, animation);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, animation);
-		}
+		game.Resources().addDrawable(id, animation, getStringViewKey(elem, "resource"));
 	}
 }

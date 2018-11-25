@@ -3,6 +3,41 @@
 #include "Action.h"
 #include "Game.h"
 
+class ActGameAddToProperty : public Action
+{
+private:
+	std::string prop;
+	Variable value;
+
+public:
+	ActGameAddToProperty(const std::string& prop_, const Variable& value_)
+		: prop(prop_), value(value_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto prop2 = game.getVarOrPropStringS(prop);
+		Variable value2;
+		if (game.getProperty(prop, value2) == true)
+		{
+			if (std::holds_alternative<int64_t>(value2) == true &&
+				std::holds_alternative<int64_t>(value) == true)
+			{
+				auto val = std::get<int64_t>(value2) + std::get<int64_t>(value);
+				value2.emplace<int64_t>(val);
+				game.setProperty(prop2, value2);
+			}
+			else if (std::holds_alternative<double>(value2) == true &&
+				std::holds_alternative<double>(value) == true)
+			{
+				auto val = std::get<double>(value2) + std::get<double>(value);
+				value2.emplace<double>(val);
+				game.setProperty(prop2, value2);
+			}
+		}
+		return true;
+	}
+};
+
 class ActGameClearPlayingSounds : public Action
 {
 public:
@@ -63,6 +98,22 @@ public:
 	}
 };
 
+class ActGameSetGamma : public Action
+{
+private:
+	Variable gamma;
+
+public:
+	ActGameSetGamma(const Variable& gamma_) noexcept : gamma(gamma_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto val = game.getVarOrProp<int64_t, unsigned>(gamma, 30u);
+		game.Gamma(val);
+		return true;
+	}
+};
+
 class ActGameSetMusicVolume : public Action
 {
 private:
@@ -73,8 +124,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
-		game.MusicVolume(vol);
+		auto val = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
+		game.MusicVolume(val);
 		return true;
 	}
 };
@@ -106,7 +157,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto prop2 = game.getVarOrPropString(prop);
+		auto prop2 = game.getVarOrPropStringS(prop);
 		auto value2 = game.getVarOrProp(value);
 		if (std::holds_alternative<int64_t>(value2) == true)
 		{
@@ -133,8 +184,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
-		game.SoundVolume(vol);
+		auto val = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
+		game.SoundVolume(val);
 		return true;
 	}
 };

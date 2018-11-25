@@ -7,7 +7,12 @@ bool Event::execute(Game& game)
 	{
 		return true;
 	}
-
+	if (currentTime == sf::Time::Zero)
+	{
+		// prevents executing events created while loading big files immediately
+		currentTime = sf::microseconds(1);
+		return false;
+	}
 	currentTime += game.getElapsedTime();
 
 	if (currentTime >= timeout)

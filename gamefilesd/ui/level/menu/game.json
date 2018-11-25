@@ -18,7 +18,7 @@
       "onClick": [
         "menu.saveAndCloseAction",
         { "name": "load", "file": ["ui/level/msgBox/show.json", "saving..."] },
-        { "name": "load", "file": ["ui/singlePlayer/save.json", "|currentLevel|currentPlayer.name|"] },
+        { "name": "load", "file": "level/saveGame.json" },
         { "name": "loadJson", "json": { "action": "closeMsgBox" } }
       ],
       "onFocus": [
@@ -76,7 +76,7 @@
       "horizontalSpaceOffset": 2,
       "onClick": [
         "menu.saveAndCloseAction",
-        { "name": "load", "file": ["level/load2.json", "|currentLevel|path|"] }
+        { "name": "load", "file": "level/loadCurrentSave.json" }
       ],
       "onFocus": [
         "anchorLeftPentagram",

@@ -4,9 +4,8 @@
     "replaceVars": true,
     "name": "Bard",
     "type": "Human",
-    "description": "Bard",
-    "defaultOutline": "%outlineFriend%",
-    "defaultOutlineIgnore": "0x000000",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
     "defaults": {
       "experience": 0,
       "points": 0,
@@ -75,19 +74,23 @@
       { "name": "Defend4", "index": 4 },
       { "name": "Hit1", "index": 4 },
       { "name": "Hit2", "index": 4 },
-      { "name": "Die1", "index": 4 },
-      { "name": "Die2", "index": 4 }
+      { "name": "Die1", "index": 9 },
+      { "name": "Die2", "index": 9 }
     ],
     "animationSpeeds": [
       { "name": "Walk1", "animation": 20, "walk": 25 },
-      { "name": "Walk2", "animation": 20, "walk": 25 }
+      { "name": "Walk2", "animation": 20, "walk": 25 },
+      { "name": "Die1", "animation": 20 },
+      { "name": "Die2", "animation": 20 }
     ],
     "actions": {
       "levelChange": "updateCharPoints"
     },
     "sounds": [
-      { "index": 0, "id": "walk" }
+      { "index": 0, "id": "walk" },
+      { "index": 1, "id": "die" }
     ],
-    "defaultWalkSound": 0
+    "walkSound": 0,
+    "dieSound": 1
   }
 }

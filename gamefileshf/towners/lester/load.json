@@ -1,0 +1,24 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%currentLevel.hasQuest.farmersOrchard%",
+    "param2": true,
+    "then": {
+      "name": ">=",
+      "param1": "%currentLevel.currentPlayer.level%",
+      "param2": 15,
+      "then": {
+        "name": "if.equal",
+        "param1": "%currentLevel.quest.farmersOrchard.state%",
+        "param2": 0,
+        "then": [
+          { "name": "quest.setState", "quest": "farmersOrchard", "state": 1 },
+          { "name": "load", "file": "texts/lester/quests/farmersOrchard.json" },
+          { "name": "load", "file": "towners/lester/runeBomb.json" }
+        ],
+        "else": { "name": "load", "file": "texts/lester/quests/farmersOrchard.json" }
+      },
+      "else": { "name": "load", "file": "texts/lester/quests/farmersOrchard1.json" }
+    }
+  }
+}

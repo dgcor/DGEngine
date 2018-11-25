@@ -4,13 +4,14 @@
 #include "BaseLevelObject.h"
 #include "ItemClass.h"
 #include "Save/SaveItem.h"
+#include "Utils/FixedMap.h"
 
 class Player;
 
 class Item : public LevelObject
 {
 private:
-	typedef std::array<LevelObjProperty, 10> ItemProperties;
+	typedef FixedMap<uint16_t, LevelObjValue, 10> ItemProperties;
 
 	const ItemClass* class_;
 
@@ -23,7 +24,6 @@ private:
 	mutable std::string name;
 	mutable std::array<std::string, 5> descriptions;
 
-	size_t propertiesSize{ 0 };
 	ItemProperties properties;
 
 	bool identified{ false };
@@ -36,8 +36,8 @@ private:
 	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 		uint16_t valueMaxHash, Player& player, const Level* level) const;
 
-	friend void Save::serialize(void* serializeObj, const Level& level,
-		const Item& item, bool skipDefaults);
+	friend void Save::serialize(void* serializeObj, Properties& props,
+		const Game& game, const Level& level, const Item& item);
 
 public:
 	using iterator = ItemProperties::iterator;
@@ -46,16 +46,16 @@ public:
 	using const_reverse_iterator = ItemProperties::const_reverse_iterator;
 
 	iterator begin() noexcept { return properties.begin(); }
-	iterator end() noexcept { return properties.begin() + propertiesSize; }
+	iterator end() noexcept { return properties.end(); }
 	const_iterator begin() const noexcept { return properties.begin(); }
-	const_iterator end() const noexcept { return properties.begin() + propertiesSize; }
+	const_iterator end() const noexcept { return properties.end(); }
 	const_iterator cbegin() const noexcept { return properties.cbegin(); }
-	const_iterator cend() const noexcept { return properties.cbegin() + propertiesSize; }
-	reverse_iterator rbegin() noexcept { return properties.rend() - propertiesSize; }
+	const_iterator cend() const noexcept { return properties.cend(); }
+	reverse_iterator rbegin() noexcept { return properties.rbegin(); }
 	reverse_iterator rend() noexcept { return properties.rend(); }
-	const_reverse_iterator rbegin() const noexcept { return properties.rend() - propertiesSize; }
+	const_reverse_iterator rbegin() const noexcept { return properties.rbegin(); }
 	const_reverse_iterator rend() const noexcept { return properties.rend(); }
-	const_reverse_iterator crbegin() const noexcept { return properties.crend() - propertiesSize; }
+	const_reverse_iterator crbegin() const noexcept { return properties.crbegin(); }
 	const_reverse_iterator crend() const noexcept { return properties.crend(); }
 
 	Item(const ItemClass* class__);
@@ -68,8 +68,10 @@ public:
 	virtual const MapCoord& MapPosition() const noexcept { return base.mapPosition; }
 	virtual void MapPosition(const MapCoord& pos) noexcept { base.mapPosition = pos; }
 
+	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+
 	virtual void executeAction(Game& game) const;
-	virtual bool getNumberProp(const char* prop, Number32& value) const
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const
 	{
 		LevelObjValue val;
 		bool ret = getInt(prop, val);
@@ -80,7 +82,6 @@ public:
 		return ret;
 	}
 	virtual bool Passable() const noexcept { return true; }
-	virtual void setAction(const std::shared_ptr<Action>& action_) noexcept {}
 	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
 	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
 	{
@@ -93,9 +94,10 @@ public:
 	virtual bool Hoverable() const noexcept { return base.enableHover; }
 	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
 
-	virtual void serialize(void* serializeObj, const Level& level, bool skipDefaults) const
+	virtual void serialize(void* serializeObj, Save::Properties& props,
+		const Game& game, const Level& level) const
 	{
-		Save::serialize(serializeObj, level, *this, skipDefaults);
+		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -106,37 +108,24 @@ public:
 
 	void updateDrawPosition(const Level& level) { base.updateDrawPosition(level); }
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
-	virtual void setProperty(const std::string& prop, const Variable& val);
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	virtual void setProperty(const std::string_view prop, const Variable& val);
+
+	virtual std::string_view getId() const { return {}; }
+	virtual std::string_view getClassId() const { return class_->Id(); }
 
 	const ItemClass* Class() const noexcept { return class_; }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;
-	bool hasInt(const char* prop) const noexcept;
-	bool hasInt(const std::string& prop) const noexcept
-	{
-		return hasInt(prop.c_str());
-	}
+	bool hasInt(const std::string_view prop) const noexcept;
 
 	LevelObjValue getIntByHash(uint16_t propHash) const;
-	LevelObjValue getInt(const char* prop) const;
-	LevelObjValue getInt(const std::string& prop) const
-	{
-		return getInt(prop.c_str());
-	}
+	LevelObjValue getInt(const std::string_view prop) const;
 
 	bool getIntByHash(uint16_t propHash, LevelObjValue& value) const;
-	bool getInt(const char* prop, LevelObjValue& value) const;
-	bool getInt(const std::string& prop, LevelObjValue& value) const
-	{
-		return getInt(prop.c_str(), value);
-	}
+	bool getInt(const std::string_view prop, LevelObjValue& value) const;
 	void setIntByHash(uint16_t propHash, LevelObjValue value);
-	void setInt(const char* prop, LevelObjValue value);
-	void setInt(const std::string& prop, LevelObjValue value)
-	{
-		return setInt(prop.c_str(), value);
-	}
+	void setInt(const std::string_view prop, LevelObjValue value);
 
 	void applyDefaults();
 
@@ -144,7 +133,10 @@ public:
 	bool needsRepair() const;
 	bool isUsable() const noexcept;
 
-	bool use(Player& player, const Level* level) const;
+	bool use(Player& player, const Level* level, uint32_t& itemsLeft);
+
+	// returns the new item quantity. removes from the amount what was added/removed.
+	LevelObjValue addQuantity(LevelObjValue& amount);
 
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return class_->ShortName(); }

@@ -20,26 +20,29 @@ int16_t TileBlock::getTileIndex(int32_t xCoord, int32_t yCoord) const noexcept
 	}
 }
 
-TileSet::TileSet(const std::string& fileName)
+TileSet::TileSet(const std::string_view fileName)
 {
-	sf::PhysFSStream file(fileName);
+	sf::PhysFSStream file(fileName.data());
 	if (file.hasError() == true)
 	{
 		return;
 	}
-	std::vector<uint8_t> fileData((size_t)file.getSize());
-	file.read(fileData.data(), file.getSize());
 
-	LittleEndianStreamReader fileStream(fileData);
-
-	size_t numTiles = fileData.size() / (4 * 2);
+	auto fileSize = (size_t)file.getSize();
+	size_t numTiles = fileSize / (4 * 2);
 
 	tiles.resize(numTiles);
+	file.read(tiles.data(), file.getSize());
+
+	LittleEndianStreamReader fileStream((const uint8_t*)tiles.data(), fileSize);
+
 	for (auto& tile : tiles)
 	{
-		fileStream.read(std::get<0>(tile));
-		fileStream.read(std::get<1>(tile));
-		fileStream.read(std::get<2>(tile));
-		fileStream.read(std::get<3>(tile));
+		TileBlock temp;
+		fileStream.read(std::get<0>(temp));
+		fileStream.read(std::get<1>(temp));
+		fileStream.read(std::get<2>(temp));
+		fileStream.read(std::get<3>(temp));
+		tile = temp;
 	}
 }

@@ -70,12 +70,12 @@ public:
 			if (image != nullptr)
 			{
 				sf::Vector2i inputRange(
-					(int)game.getVarOrPropLong(inputRangeMin),
-					(int)game.getVarOrPropLong(inputRangeMax));
+					(int)game.getVarOrPropLongV(inputRangeMin),
+					(int)game.getVarOrPropLongV(inputRangeMax));
 
 				if (inputRange.y > inputRange.x)
 				{
-					auto newSize = (int)game.getVarOrPropLong(size);
+					auto newSize = (int)game.getVarOrPropLongV(size);
 					newSize = (int)Utils::normalizeNumber<sf::Vector2i>(
 						(long)newSize, inputRange, sizeRange);
 
@@ -197,54 +197,32 @@ public:
 	}
 };
 
-class ActImageSetTextureFromItem : public Action
+class ActImageSetTextureFromQueryable : public Action
 {
 private:
 	std::string id;
-	std::string idLevel;
-	ItemLocation itemLocation;
+	std::string query;
+	size_t textureIdx;
 	bool resetRect;
 
 public:
-	ActImageSetTextureFromItem(const std::string& id_, const std::string& idLevel_,
-		const ItemLocation& itemLocation_, bool resetRect_) : id(id_),
-		idLevel(idLevel_), itemLocation(itemLocation_), resetRect(resetRect_) {}
+	ActImageSetTextureFromQueryable(const std::string& id_,
+		const std::string& query_, size_t textureIdx_,
+		bool resetRect_) : id(id_), query(query_),
+		textureIdx(textureIdx_), resetRect(resetRect_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto image = game.Resources().getResource<Image>(id);
 		if (image != nullptr)
 		{
-			auto level = game.Resources().getLevel(idLevel);
-			if (level != nullptr)
+			auto queryable = game.getQueryable(query);
+			if (queryable != nullptr)
 			{
-				auto item = level->getItem(itemLocation);
-				if (item != nullptr)
+				TextureInfo ti;
+				if (queryable->getTexture(textureIdx, ti) == true)
 				{
-					TextureInfo ti;
-					if (item->Class()->getInventoryTexture(ti) == true)
-					{
-						image->setTexture(*ti.texture);
-						if (resetRect == true)
-						{
-							image->setTextureRect(ti.textureRect);
-						}
-						else
-						{
-							auto oldRect = image->getTextureRect();
-							oldRect.left = ti.textureRect.left;
-							oldRect.top = ti.textureRect.top;
-							image->setTextureRect(oldRect);
-						}
-					}
-					if (item->Class()->getInventoryTexturePack()->isIndexed() == true)
-					{
-						image->setPalette(item->Class()->getInventoryTexturePack()->getPalette());
-					}
-					else
-					{
-						image->setPalette(nullptr);
-					}
+					image->setTexture(ti, resetRect);
 				}
 			}
 		}
@@ -277,26 +255,7 @@ public:
 				TextureInfo ti;
 				if (tex->get(textureIdx, ti) == true)
 				{
-					image->setTexture(*ti.texture);
-					if (resetRect == true)
-					{
-						image->setTextureRect(ti.textureRect);
-					}
-					else
-					{
-						auto oldRect = image->getTextureRect();
-						oldRect.left = ti.textureRect.left;
-						oldRect.top = ti.textureRect.top;
-						image->setTextureRect(oldRect);
-					}
-				}
-				if (tex->isIndexed() == true)
-				{
-					image->setPalette(tex->getPalette());
-				}
-				else
-				{
-					image->setPalette(nullptr);
+					image->setTexture(ti, resetRect);
 				}
 			}
 		}

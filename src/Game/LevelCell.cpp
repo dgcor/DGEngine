@@ -1,5 +1,13 @@
 #include "LevelCell.h"
 
+void LevelCell::setTileIndex(int16_t tileIndex_) noexcept
+{
+	for (size_t i = 0; i < tileIndexes.size() - 1; i++)
+	{
+		tileIndexes[i] = tileIndex_;
+	}
+}
+
 bool LevelCell::PassableIgnoreObject(const LevelObject* ignoreObj) const
 {
 	if (PassableIgnoreObject() == false)
@@ -56,12 +64,18 @@ LevelObject* LevelCell::front() const
 
 void LevelCell::addFront(LevelObject* obj)
 {
-	objects.insert(objects.begin(), obj);
+	if (std::find(objects.begin(), objects.end(), obj) == objects.end())
+	{
+		objects.insert(objects.begin(), obj);
+	}
 }
 
 void LevelCell::addBack(LevelObject* obj)
 {
-	objects.push_back(obj);
+	if (std::find(objects.begin(), objects.end(), obj) == objects.end())
+	{
+		objects.push_back(obj);
+	}
 }
 
 void LevelCell::removeObject(const LevelObject* obj)

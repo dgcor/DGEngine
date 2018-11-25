@@ -1,0 +1,96 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "updateAutomapZoom",
+      "action": {
+        "name": "switch",
+        "param": "%automapZoom%",
+        "case": [
+          {
+            "value": 0,
+            "action": { "name": "level.setAutomap", "automap": "automap0", "tileSize": [16, 8] }
+          },
+          {
+            "value": 1,
+            "action": { "name": "level.setAutomap", "automap": "automap1", "tileSize": [20, 10] }
+          },
+          {
+            "value": 2,
+            "action": { "name": "level.setAutomap", "automap": "automap2", "tileSize": [24, 12] }
+          },
+          {
+            "value": 3,
+            "action": { "name": "level.setAutomap", "automap": "automap3", "tileSize": [28, 14] }
+          },
+          {
+            "value": 4,
+            "action": { "name": "level.setAutomap", "automap": "automap4", "tileSize": [32, 16] }
+          },
+          {
+            "value": 5,
+            "action": { "name": "level.setAutomap", "automap": "automap5", "tileSize": [36, 18] }
+          },
+          {
+            "value": 6,
+            "action": { "name": "level.setAutomap", "automap": "automap6", "tileSize": [40, 20] }
+          },
+          {
+            "value": 7,
+            "action": { "name": "level.setAutomap", "automap": "automap7", "tileSize": [44, 22] }
+          },
+          {
+            "value": 8,
+            "action": { "name": "level.setAutomap", "automap": "automap8", "tileSize": [48, 24] }
+          },
+          {
+            "value": 9,
+            "action": { "name": "level.setAutomap", "automap": "automap9", "tileSize": [52, 26] }
+          },
+          {
+            "value": 10,
+            "action": { "name": "level.setAutomap", "automap": "automap10", "tileSize": [56, 28] }
+          },
+          {
+            "value": 11,
+            "action": { "name": "level.setAutomap", "automap": "automap11", "tileSize": [60, 30] }
+          },
+          {
+            "value": 12,
+            "action": { "name": "level.setAutomap", "automap": "automap12", "tileSize": [64, 32] }
+          }
+        ],
+        "default": [
+          { "name": "level.setAutomap", "automap": "automap0", "tileSize": [16, 8] },
+          { "name": "variable.set", "key": "automapZoom", "value": 0 }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "automapZoomIn",
+      "action": {
+        "name": "if",
+        "params": ["%automapZoom%", ">=", 0, "and", "%automapZoom%", "<", 2],
+        "then": [
+          { "name": "variable.add", "key": "automapZoom", "value": 2 },
+          "updateAutomapZoom"
+        ],
+        "else": "updateAutomapZoom"
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "automapZoomOut",
+      "action": {
+        "name": "if",
+        "params": ["%automapZoom%", ">", 0, "and", "%automapZoom%", "<=", 2],
+        "then": [
+          { "name": "variable.add", "key": "automapZoom", "value": -2 },
+          "updateAutomapZoom"
+        ],
+        "else": "updateAutomapZoom"
+      }
+    }
+  ]
+}

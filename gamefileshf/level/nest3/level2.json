@@ -1,0 +1,10 @@
+{
+  "level": {
+    "id": "level",
+    "path": "nest3",
+    "name": "Nest 3",
+    "map": { "file": "level/nest3/nest3.json", "indexOffset": -1 }
+  },
+  "load": "level/nest3/levelObjects2.json",
+  "load": "level/nest3/monsters2.json"
+}

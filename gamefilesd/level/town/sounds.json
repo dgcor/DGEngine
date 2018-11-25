@@ -11,8 +11,8 @@
     { "id": "cow1", "file": "sfx/Towners/Cow1.wav" },
     { "id": "cow2", "file": "sfx/Towners/Cow2.wav" }
   ],
-  "load": ["res/player/sound/loadSetId.json", "|currentLevel|currentPlayer.class|", 49, "notThirsty"],
-  "load": ["res/player/sound/loadSetId.json", "|currentLevel|currentPlayer.class|", 50, "noMilkmaid"],
-  "load": ["res/player/sound/loadSetId.json", "|currentLevel|currentPlayer.class|", 52, "ThatsACowAlright"],
+  "load": ["res/player/sound/load.json", 49, "notThirsty", "loadSound", ""],
+  "load": ["res/player/sound/load.json", 50, "noMilkmaid", "loadSound", ""],
+  "load": ["res/player/sound/load.json", 52, "ThatsACowAlright", "loadSound", ""],
   "load": "level/town/sounds2.json"
 }

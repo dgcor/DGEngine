@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
 
 project(DGEngine)
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
+    add_definitions(-Wall -stdlib=libc++)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if(NOT BEOS)
         add_definitions(-Wall)
     endif()
@@ -16,7 +19,7 @@ if(DGENGINE_MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
 find_package(PhysFS REQUIRED)
-find_package(SFML 2.4 REQUIRED system window graphics network audio)
+find_package(SFML 2.5 REQUIRED system window graphics network audio)
 
 include_directories(./src)
 
@@ -38,6 +41,7 @@ set(SOURCE_FILES
     src/BitmapText.h
     src/Button.cpp
     src/Button.h
+    src/CachedImagePack.cpp
     src/CachedImagePack.h
     src/Circle.cpp
     src/Circle.h
@@ -57,12 +61,14 @@ set(SOURCE_FILES
     src/Game.h
     src/GameUtils.cpp
     src/GameUtils.h
+    src/IfCondition.cpp
+    src/IfCondition.h
     src/IgnoreResource.h
     src/Image.cpp
     src/Image.h
-    src/Image2.h
     src/ImageUtils.cpp
     src/ImageUtils.h
+    src/InputEvent.h
     src/InputText.cpp
     src/InputText.h
     src/LoadingScreen.cpp
@@ -73,10 +79,6 @@ set(SOURCE_FILES
     src/Min.h
     src/Movie2.cpp
     src/Movie2.h
-    src/Music2.cpp
-    src/Music2.h
-    src/MusicLoops.cpp
-    src/MusicLoops.h
     src/Palette.cpp
     src/Palette.h
     src/Pcx.cpp
@@ -90,20 +92,18 @@ set(SOURCE_FILES
     src/ResourceManager.h
     src/ScrollableText.cpp
     src/ScrollableText.h
-    src/SFMLUtils.cpp
-    src/SFMLUtils.h
     src/Shaders.cpp
     src/Shaders.h
     src/Sol.cpp
     src/Sol.h
-    src/Sprite2.h
     src/StreamReader.h
     src/StringButton.cpp
     src/StringButton.h
     src/StringText.cpp
     src/StringText.h
-    src/Text2.cpp
-    src/Text2.h
+    src/Text.cpp
+    src/Text.h
+    src/TextureInfo.h
     src/TextUtils.cpp
     src/TextUtils.h
     src/TileSet.cpp
@@ -112,8 +112,6 @@ set(SOURCE_FILES
     src/Variable.cpp
     src/Variable.h
     src/VarOrPredicate.h
-    src/View2.cpp
-    src/View2.h
     src/Actions/ActAction.h
     src/Actions/ActAudio.h
     src/Actions/ActButton.h
@@ -123,6 +121,7 @@ set(SOURCE_FILES
     src/Actions/ActEvent.h
     src/Actions/ActFade.h
     src/Actions/ActFocus.h
+    src/Actions/ActFont.h
     src/Actions/ActGame.h
     src/Actions/ActImage.h
     src/Actions/ActInputText.h
@@ -146,30 +145,34 @@ set(SOURCE_FILES
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
     src/endian/big_endian.hpp
-    src/endian/helpers.hpp
     src/endian/is_big_endian.hpp
     src/endian/little_endian.hpp
-    src/endian/stream.hpp
     src/endian/stream_reader.hpp
     src/endian/stream_writer.hpp
-    src/Game/BaseClass.cpp
-    src/Game/BaseClass.h
+    src/endian/detail/helpers.hpp
+    src/endian/detail/stream.hpp
+    src/Game/BaseClassActions.cpp
+    src/Game/BaseClassActions.h
+    src/Game/BaseClassDefaults.h
     src/Game/BaseLevelObject.cpp
     src/Game/BaseLevelObject.h
+    src/Game/Classifier.cpp
+    src/Game/Classifier.h
+    src/Game/Classifiers.h
     src/Game/Formula.cpp
     src/Game/Formula.h
     src/Game/fsa.h
+    src/Game/GameHashes.h
     src/Game/GameProperties.cpp
     src/Game/GameProperties.h
+    src/Game/Inventories.h
+    src/Game/Inventory.cpp
+    src/Game/Inventory.h
     src/Game/Item.cpp
     src/Game/Item.h
     src/Game/ItemClass.cpp
     src/Game/ItemClass.h
-    src/Game/ItemCollection.cpp
-    src/Game/ItemCollection.h
     src/Game/ItemLocation.h
-    src/Game/ItemProperties.h
-    src/Game/ItemTypes.h
     src/Game/ItemXY.h
     src/Game/Level.cpp
     src/Game/Level.h
@@ -180,9 +183,8 @@ set(SOURCE_FILES
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
     src/Game/LevelObject.h
+    src/Game/LevelObjectClass.h
     src/Game/MapCoord.h
-    src/Game/Namer.cpp
-    src/Game/Namer.h
     src/Game/Number.h
     src/Game/PairXY.h
     src/Game/PathFinder.cpp
@@ -195,6 +197,10 @@ set(SOURCE_FILES
     src/Game/Quest.h
     src/Game/SimpleLevelObject.cpp
     src/Game/SimpleLevelObject.h
+    src/Game/Spell.cpp
+    src/Game/Spell.h
+    src/Game/SpellClass.cpp
+    src/Game/SpellClass.h
     src/Game/stlastar.h
     src/Game/Save/SaveItem.cpp
     src/Game/Save/SaveItem.h
@@ -202,8 +208,11 @@ set(SOURCE_FILES
     src/Game/Save/SaveLevel.h
     src/Game/Save/SavePlayer.cpp
     src/Game/Save/SavePlayer.h
+    src/Game/Save/SaveProperties.h
     src/Game/Save/SaveSimpleLevelObject.cpp
     src/Game/Save/SaveSimpleLevelObject.h
+    src/Game/Save/SaveUtils.cpp
+    src/Game/Save/SaveUtils.h
     src/gsl/gsl
     src/gsl/gsl_algorithm
     src/gsl/gsl_assert
@@ -288,6 +297,8 @@ set(SOURCE_FILES
     src/Parser/ParseTexturePack.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
+    src/Parser/Game/ParseClassifier.cpp
+    src/Parser/Game/ParseClassifier.h
     src/Parser/Game/ParseItem.cpp
     src/Parser/Game/ParseItem.h
     src/Parser/Game/ParseItemClass.cpp
@@ -296,14 +307,18 @@ set(SOURCE_FILES
     src/Parser/Game/ParseLevel.h
     src/Parser/Game/ParseLevelObject.cpp
     src/Parser/Game/ParseLevelObject.h
-    src/Parser/Game/ParseNamer.cpp
-    src/Parser/Game/ParseNamer.h
+    src/Parser/Game/ParseLevelObjectClass.cpp
+    src/Parser/Game/ParseLevelObjectClass.h
     src/Parser/Game/ParsePlayer.cpp
     src/Parser/Game/ParsePlayer.h
     src/Parser/Game/ParsePlayerClass.cpp
     src/Parser/Game/ParsePlayerClass.h
     src/Parser/Game/ParseQuest.cpp
     src/Parser/Game/ParseQuest.h
+    src/Parser/Game/ParseSpell.cpp
+    src/Parser/Game/ParseSpell.h
+    src/Parser/Game/ParseSpellClass.cpp
+    src/Parser/Game/ParseSpellClass.h
     src/Parser/Utils/ParseUtils.cpp
     src/Parser/Utils/ParseUtils.h
     src/Parser/Utils/ParseUtilsIdx.cpp
@@ -315,6 +330,7 @@ set(SOURCE_FILES
     src/Predicates/Predicate.h
     src/Predicates/PredIO.h
     src/Predicates/PredItem.h
+    src/Predicates/PredLevelObject.h
     src/Predicates/PredPlayer.h
     src/rapidjson/allocators.h
     src/rapidjson/document.h
@@ -351,6 +367,19 @@ set(SOURCE_FILES
     src/rapidjson/internal/swap.h
     src/rapidjson/msinttypes/inttypes.h
     src/rapidjson/msinttypes/stdint.h
+    src/SFML/Image2.h
+    src/SFML/Music2.cpp
+    src/SFML/Music2.h
+    src/SFML/MusicLoops.cpp
+    src/SFML/MusicLoops.h
+    src/SFML/SFMLUtils.cpp
+    src/SFML/SFMLUtils.h
+    src/SFML/Sprite2.cpp
+    src/SFML/Sprite2.h
+    src/SFML/View2.cpp
+    src/SFML/View2.h
+    src/TexturePacks/BitmapFontTexturePack.cpp
+    src/TexturePacks/BitmapFontTexturePack.h
     src/TexturePacks/CachedTexturePack.cpp
     src/TexturePacks/CachedTexturePack.h
     src/TexturePacks/IndexedTexturePack.cpp
@@ -363,8 +392,10 @@ set(SOURCE_FILES
     src/TexturePacks/TexturePack.h
     src/TexturePacks/VectorTexturePack.cpp
     src/TexturePacks/VectorTexturePack.h
+    src/Utils/FixedMap.h
     src/Utils/Helper2D.h
     src/Utils/iterator_tpl.h
+    src/Utils/LRUCache.h
     src/Utils/ReverseIterable.h
     src/Utils/Utils.cpp
     src/Utils/Utils.h
@@ -376,22 +407,16 @@ if(FFmpeg_FOUND)
         src/sfeMovie/AudioStream.hpp
         src/sfeMovie/Demuxer.cpp
         src/sfeMovie/Demuxer.hpp
-        src/sfeMovie/Macros.cpp
-        src/sfeMovie/Macros.hpp
         src/sfeMovie/Movie.cpp
         src/sfeMovie/Movie.hpp
         src/sfeMovie/MovieImpl.cpp
         src/sfeMovie/MovieImpl.hpp
         src/sfeMovie/Stream.cpp
         src/sfeMovie/Stream.hpp
-        src/sfeMovie/StreamSelection.cpp
         src/sfeMovie/StreamSelection.hpp
         src/sfeMovie/Timer.cpp
         src/sfeMovie/Timer.hpp
-        src/sfeMovie/TimerPriorities.cpp
         src/sfeMovie/TimerPriorities.hpp
-        src/sfeMovie/Utilities.cpp
-        src/sfeMovie/Utilities.hpp
         src/sfeMovie/VideoStream.cpp
         src/sfeMovie/VideoStream.hpp
     )

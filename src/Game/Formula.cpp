@@ -1,35 +1,51 @@
 #include "Formula.h"
+#if (_MSC_VER >= 1914)
+#include <charconv>
+#else
+#include <cstdlib>
+#endif
 #include "Utils/Utils.h"
 
-Formula::Formula(const std::string& formula)
+Formula::Formula(const std::string_view formula)
 {
 	// tokenize formula
-	const std::string delimiters{ "+-*/()" };
-	std::string buffer;
-	std::vector<std::string> tokens;
-	for (auto c : formula)
+	const std::string_view delimiters{ "+-*/()" };
+	size_t bufferStart = 0;
+	size_t bufferSize = 0;
+	std::vector<std::string_view> tokens;
+	for (size_t i = 0; i < formula.size(); i++)
 	{
+		auto c = formula[i];
 		if (c == ' ')
 		{
+			if (bufferSize == 0)
+			{
+				bufferStart++;
+			}
 			continue;
 		}
 		if (delimiters.find(c) != std::string::npos)
 		{
-			if (buffer.size() > 0)
+			if (bufferSize > 0)
 			{
-				tokens.push_back(buffer);
+				tokens.push_back(std::string_view(formula.data() + bufferStart, bufferSize));
 			}
-			tokens.push_back(std::string(1, c));
-			buffer.clear();
+			tokens.push_back(std::string_view(&formula[i], 1));
+			bufferStart = i + 1;
+			bufferSize = 0;
 		}
 		else
 		{
-			buffer += c;
+			bufferSize++;
 		}
 	}
-	if (buffer.size() > 0 && buffer != ")")
+	if (bufferSize > 0)
 	{
-		tokens.push_back(buffer);
+		auto token = std::string_view(formula.data() + bufferStart, bufferSize);
+		if (token != ")")
+		{
+			tokens.push_back(token);
+		}
 	}
 
 	// create internal formula
@@ -71,18 +87,38 @@ Formula::Formula(const std::string& formula)
 		}
 		else
 		{
-			try
+#if (_MSC_VER >= 1914)
+			double val = 0.0;
+			auto err = std::from_chars(elem.data(), elem.data() + elem.size(), val);
+			if (err.ec == std::errc() ||
+				err.ec == std::errc::result_out_of_range)
 			{
-				elements.push_back({ std::stod(elem) });
+				elements.push_back({ val });
 			}
-			catch (std::out_of_range e)
+			else
+			{
+				elements.push_back(std::string(elem));
+			}
+#else
+			int& errno_ref = errno;
+			const char* sPtr = elem.data();
+			char* ePtr;
+			errno_ref = 0;
+			double val = std::strtod(sPtr, &ePtr);
+
+			if (errno_ref == ERANGE) // out of range
 			{
 				elements.push_back({ 0.0 });
 			}
-			catch (std::invalid_argument e)
+			else if (sPtr == ePtr) // invalid argument
 			{
-				elements.push_back({ elem });
+				elements.push_back(std::string(elem));
 			}
+			else
+			{
+				elements.push_back({ val });
+			}
+#endif
 		}
 	}
 	// remove trailing closing brackets (faster eval, same result)
