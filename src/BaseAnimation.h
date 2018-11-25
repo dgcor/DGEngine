@@ -4,6 +4,7 @@
 #pragma once
 
 #include "AnimationType.h"
+#include <cstddef>
 #include <SFML/System/Time.hpp>
 #include <utility>
 
