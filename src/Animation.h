@@ -1,7 +1,7 @@
 #pragma once
 
-#include <stddef.h>
 #include "BaseAnimation.h"
+#include <cstddef>
 #include "Image.h"
 #include <memory>
 #include "TexturePacks/TexturePack.h"
