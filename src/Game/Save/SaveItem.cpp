@@ -1,80 +1,81 @@
 #include "SaveItem.h"
+#include "Game/GameHashes.h"
 #include "Game/Level.h"
-#include "Game/ItemProperties.h"
 #include "Json/JsonParser.h"
+#include "SaveUtils.h"
 
 using namespace rapidjson;
+using namespace SaveUtils;
 
-void Save::serialize(void* serializeObj, const Level& level,
-	const Item& item, bool skipDefaults)
+void Save::serialize(void* serializeObj, Properties& props,
+	const Game& game, const Level& level, const Item& item)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
 	const auto& itemClass = *item.Class();
 
 	writer.StartObject();
 
-	writer.Key("class");
-	writer.String(itemClass.Id());
+	if (props.customProperty != nullptr)
+	{
+		writeUInt(writer, "index", *((size_t*)props.customProperty));
+	}
+
+	writeString(writer, "class", itemClass.Id());
 
 	if (item.MapPosition().x >= 0)
 	{
-		writer.Key("mapPosition");
-		writer.StartArray();
-		writer.Int(item.MapPosition().x);
-		writer.Int(item.MapPosition().y);
-		writer.EndArray();
+		writeVector2d<MapCoord>(writer, "mapPosition", item.MapPosition());
 	}
 
-	writer.Key("properties");
-	writer.StartObject();
-	if (skipDefaults == false ||
-		itemClass.isDefault({ ItemProp::Identified, item.Identified() }) == false)
+	if (item.properties.empty() == false)
 	{
-		writer.Key("identified");
-		writer.Bool(item.Identified());
-	}
-	for (const auto& prop : item)
-	{
-		if (skipDefaults == true && itemClass.isDefault(prop) == true)
+		writeKeyStringView(writer, "properties");
+		writer.StartObject();
+		if (props.saveDefaults == true ||
+			itemClass.isDefault({ ItemProp::Identified, item.Identified() }) == false)
 		{
-			continue;
+			writeBool(writer, "identified", item.Identified());
 		}
-		writer.Key(level.getPropertyName(prop.first));
-		switch (prop.first)
+		for (const auto& prop : item)
 		{
-		case ItemProp::UseOn:
-		case ItemProp::UseOp:
-			writer.String(level.getPropertyName(prop.second));
-			break;
-		case ItemProp::Magical:
-			writer.Bool(prop.second != 0);
-			break;
-		default:
-			writer.Int(prop.second);
-			break;
+			if (props.saveDefaults == false && itemClass.isDefault(prop) == true)
+			{
+				continue;
+			}
+			writeKeyStringView(writer, level.getPropertyName(prop.first));
+			switch (prop.first)
+			{
+			case ItemProp::UseOn:
+			case ItemProp::UseOp:
+				writeStringView(writer, level.getPropertyName(prop.second));
+				break;
+			case ItemProp::Magical:
+				writer.Bool(prop.second != 0);
+				break;
+			default:
+				writer.Int(prop.second);
+				break;
+			}
 		}
+		writer.EndObject();
 	}
-	writer.EndObject();
 
-	if (skipDefaults == false ||
-		item.base.sprite.getOutline() != itemClass.DefaultOutline())
+	if (props.saveDefaults == true ||
+		item.base.sprite.getOutline() != itemClass.Outline())
 	{
-		writer.Key("outline");
-		writer.Uint(item.base.sprite.getOutline().toInteger());
+		writeUInt(writer, "outline", item.base.sprite.getOutline().toInteger());
 	}
 
-	if (skipDefaults == false ||
-		item.base.sprite.getOutlineIgnore() != itemClass.DefaultOutlineIgnore())
+	if (props.saveDefaults == true ||
+		item.base.sprite.getOutlineIgnore() != itemClass.OutlineIgnore())
 	{
-		writer.Key("outlineIgnore");
-		writer.Uint(item.base.sprite.getOutlineIgnore().toInteger());
+		writeUInt(writer, "outlineIgnore", item.base.sprite.getOutlineIgnore().toInteger());
 	}
 
-	if (skipDefaults == false ||
+	if (props.saveDefaults == true ||
 		item.base.outlineOnHover != true)
 	{
-		writer.Key("outlineOnHover");
-		writer.Bool(item.base.outlineOnHover);
+		writeBool(writer, "outlineOnHover", item.base.outlineOnHover);
 	}
 
 	writer.EndObject();

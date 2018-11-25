@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cut4",
-    "file":"gendata/cut4.pal"
+    "file": "gendata/cut4.pal"
   },
   "texture": {
     "id": "cut4",
-    "file":"gendata/cut4.cel",
+    "file": "gendata/cut4.cel",
     "palette": "cut4"
   },
   "loadingScreen": {

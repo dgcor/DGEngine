@@ -3,12 +3,12 @@
     "name": "file.copy",
     "file": [
       "ui/settingsFile.json",
-      "|game|size.x|",
-      "|game|size.y|",
-      "|game|keepAR|",
-      "|game|stretchToFit|",
-      "|game|smoothScreen|",
-      "|game|framerate|",
+      "%game.size.x%",
+      "%game.size.y%",
+      "%game.keepAR%",
+      "%game.stretchToFit%",
+      "%game.smoothScreen%",
+      "%game.framerate%",
       "%skipIntro%"
     ],
     "nullText": "null",

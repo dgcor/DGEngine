@@ -1,15 +1,19 @@
 #include "GameUtils.h"
+#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+#include <charconv>
+#else
+#include <cstdlib>
+#endif
 #include "Game.h"
-#include <regex>
 #include "Utils/Utils.h"
 
 namespace GameUtils
 {
 	using namespace Utils;
 
-	AnimationType getAnimationType(const std::string& str, AnimationType val)
+	AnimationType getAnimationType(const std::string_view str, AnimationType val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("playonce"):
 			return AnimationType::PlayOnce;
@@ -134,43 +138,43 @@ namespace GameUtils
 		{
 			if (((int)anchor & (int)Anchor::Bottom) != 0)
 			{
-				size.y += std::round((float)newWindowSize.y - (float)oldWindowSize.y);
+				size.y = std::round(size.y + (float)newWindowSize.y - (float)oldWindowSize.y);
 			}
 		}
 		else
 		{
 			if (((int)anchor & (int)Anchor::Bottom) != 0)
 			{
-				pos.y += std::round((float)newWindowSize.y - (float)oldWindowSize.y);
+				pos.y = std::round(pos.y + (float)newWindowSize.y - (float)oldWindowSize.y);
 			}
 			else
 			{
-				pos.y += std::round(((float)newWindowSize.y - (float)oldWindowSize.y) / 2.f);
+				pos.y = std::round(pos.y + ((float)newWindowSize.y - (float)oldWindowSize.y) / 2.f);
 			}
 		}
 		if (((int)anchor & (int)Anchor::Left) != 0)
 		{
 			if (((int)anchor & (int)Anchor::Right) != 0)
 			{
-				size.x += std::round((float)newWindowSize.x - (float)oldWindowSize.x);
+				size.x = std::round(size.x + (float)newWindowSize.x - (float)oldWindowSize.x);
 			}
 		}
 		else
 		{
 			if (((int)anchor & (int)Anchor::Right) != 0)
 			{
-				pos.x += std::round((float)newWindowSize.x - (float)oldWindowSize.x);
+				pos.x = std::round(pos.x + (float)newWindowSize.x - (float)oldWindowSize.x);
 			}
 			else
 			{
-				pos.x += std::round(((float)newWindowSize.x - (float)oldWindowSize.x) / 2.f);
+				pos.x = std::round(pos.x + ((float)newWindowSize.x - (float)oldWindowSize.x) / 2.f);
 			}
 		}
 	}
 
-	Anchor getAnchor(const std::string& str, Anchor val)
+	Anchor getAnchor(const std::string_view str, Anchor val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("none"):
 			return Anchor::None;
@@ -197,9 +201,9 @@ namespace GameUtils
 		}
 	}
 
-	HorizontalAlign getHorizontalAlignment(const std::string& str, HorizontalAlign val)
+	HorizontalAlign getHorizontalAlignment(const std::string_view str, HorizontalAlign val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("left"):
 			return HorizontalAlign::Left;
@@ -212,9 +216,9 @@ namespace GameUtils
 		}
 	}
 
-	VerticalAlign getVerticalAlignment(const std::string& str, VerticalAlign val)
+	VerticalAlign getVerticalAlignment(const std::string_view str, VerticalAlign val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("top"):
 			return VerticalAlign::Top;
@@ -236,7 +240,7 @@ namespace GameUtils
 		return val;
 	}
 
-	sf::Keyboard::Key getKeyCode(const std::string& str, sf::Keyboard::Key val)
+	sf::Keyboard::Key getKeyCode(const std::string_view str, sf::Keyboard::Key val)
 	{
 		if (str.empty() == false)
 		{
@@ -247,26 +251,80 @@ namespace GameUtils
 				{
 					return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'A');
 				}
-				if (ch >= 'a' && ch <= 'z')
+				else if (ch >= 'a' && ch <= 'z')
 				{
 					return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'a');
 				}
-				if (ch >= '0' && ch <= '9')
+				else if (ch >= '0' && ch <= '9')
 				{
 					return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + ch - '0');
 				}
-				if (ch == ' ')
+				switch (ch)
 				{
+				case '[':
+					return sf::Keyboard::LBracket;
+				case ']':
+					return sf::Keyboard::RBracket;
+				case ';':
+					return sf::Keyboard::Semicolon;
+				case ',':
+					return sf::Keyboard::Comma;
+				case '.':
+					return sf::Keyboard::Period;
+				case '\'':
+					return sf::Keyboard::Quote;
+				case '\\':
+					return sf::Keyboard::Backslash;
+				case '~':
+					return sf::Keyboard::Tilde;
+				case '=':
+					return sf::Keyboard::Equal;
+				case ' ':
 					return sf::Keyboard::Space;
+				case '+':
+					return sf::Keyboard::Add;
+				case '-':
+					return sf::Keyboard::Subtract;
+				case '*':
+					return sf::Keyboard::Multiply;
+				case '/':
+					return sf::Keyboard::Divide;
+				default:
+					return val;
 				}
 			}
 			else
 			{
-				switch (str2int16(toLower(str).c_str()))
+				switch (str2int16(toLower(str)))
 				{
+				case str2int16("all"):
+				case str2int16("any"):
+					return sf::Keyboard::KeyCount;
 				case str2int16("esc"):
 				case str2int16("escape"):
 					return sf::Keyboard::Escape;
+				case str2int16("leftbracket"):
+					return sf::Keyboard::LBracket;
+				case str2int16("rightbracket"):
+					return sf::Keyboard::RBracket;
+				case str2int16("semicolon"):
+					return sf::Keyboard::Semicolon;
+				case str2int16("comma"):
+					return sf::Keyboard::Comma;
+				case str2int16("period"):
+					return sf::Keyboard::Period;
+				case str2int16("quote"):
+					return sf::Keyboard::Quote;
+				case str2int16("slash"):
+					return sf::Keyboard::Slash;
+				case str2int16("backslash"):
+					return sf::Keyboard::Backslash;
+				case str2int16("tilde"):
+					return sf::Keyboard::Tilde;
+				case str2int16("equal"):
+					return sf::Keyboard::Equal;
+				case str2int16("hyphen"):
+					return sf::Keyboard::Hyphen;
 				case str2int16("space"):
 					return sf::Keyboard::Space;
 				case str2int16("enter"):
@@ -288,6 +346,14 @@ namespace GameUtils
 					return sf::Keyboard::Insert;
 				case str2int16("delete"):
 					return sf::Keyboard::Delete;
+				case str2int16("add"):
+					return sf::Keyboard::Add;
+				case str2int16("subtract"):
+					return sf::Keyboard::Subtract;
+				case str2int16("multiply"):
+					return sf::Keyboard::Multiply;
+				case str2int16("divide"):
+					return sf::Keyboard::Divide;
 				case str2int16("left"):
 					return sf::Keyboard::Left;
 				case str2int16("right"):
@@ -336,9 +402,9 @@ namespace GameUtils
 		return val;
 	}
 
-	IgnoreResource getIgnoreResource(const std::string& str, IgnoreResource val)
+	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("none"):
 			return IgnoreResource::None;
@@ -358,9 +424,51 @@ namespace GameUtils
 		return val;
 	}
 
-	InventoryPosition getInventoryPosition(const std::string& str, InventoryPosition val)
+	InputEvent getInputEvent(const std::string_view str, InputEvent val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
+		{
+		case str2int16("none"):
+			return InputEvent::None;
+		case str2int16("leftclick"):
+			return InputEvent::LeftClick;
+		case str2int16("middleclick"):
+			return InputEvent::MiddleClick;
+		case str2int16("rightclick"):
+			return InputEvent::RightClick;
+		case str2int16("mousepress"):
+			return InputEvent::MousePress;
+		case str2int16("mousemove"):
+			return InputEvent::MouseMove;
+		case str2int16("mouserelease"):
+			return InputEvent::MouseRelease;
+		case str2int16("mousescroll"):
+			return InputEvent::MouseScroll;
+		case str2int16("keypress"):
+			return InputEvent::KeyPress;
+		case str2int16("textenter"):
+			return InputEvent::TextEnter;
+		case str2int16("touchbegin"):
+			return InputEvent::TouchBegin;
+		case str2int16("touchmove"):
+			return InputEvent::TouchMove;
+		case str2int16("touchend"):
+			return InputEvent::TouchEnd;
+		case str2int16("allleftclick"):
+			return InputEvent::All ^ (InputEvent::MiddleClick | InputEvent::RightClick);
+		case str2int16("allmiddleclick"):
+			return InputEvent::All ^ (InputEvent::LeftClick | InputEvent::RightClick);
+		case str2int16("allrightclick"):
+			return InputEvent::All ^ (InputEvent::LeftClick | InputEvent::MiddleClick);
+		case str2int16("all"):
+			return InputEvent::All;
+		}
+		return val;
+	}
+
+	InventoryPosition getInventoryPosition(const std::string_view str, InventoryPosition val)
+	{
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("topleft"):
 			return InventoryPosition::TopLeft;
@@ -374,9 +482,9 @@ namespace GameUtils
 		return val;
 	}
 
-	PlayerDirection getPlayerDirection(const std::string& str, PlayerDirection val)
+	PlayerDirection getPlayerDirection(const std::string_view str, PlayerDirection val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("all"):
 			return PlayerDirection::All;
@@ -401,9 +509,9 @@ namespace GameUtils
 		}
 	}
 
-	PlayerInventory getPlayerInventory(const std::string& str, PlayerInventory val)
+	PlayerInventory getPlayerInventory(const std::string_view str, PlayerInventory val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("body"):
 			return PlayerInventory::Body;
@@ -416,20 +524,42 @@ namespace GameUtils
 		}
 	}
 
-	size_t getPlayerInventoryIndex(const std::string& str, PlayerInventory val)
+	size_t getPlayerInventoryIndex(const std::string_view str, PlayerInventory val)
 	{
-		try
+#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+		size_t num = (size_t)val;
+		auto err = std::from_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc() ||
+			err.ec == std::errc::result_out_of_range)
 		{
-			return std::stoul(str);
+			return num;
 		}
-		catch (std::exception ex) {}
-
 		return (size_t)getPlayerInventory(str, val);
+#else
+		int& errno_ref = errno;
+		const char* sPtr = str.data();
+		char* ePtr;
+		errno_ref = 0;
+		size_t val2 = (size_t)std::strtoul(sPtr, &ePtr, 10);
+
+		if (errno_ref == ERANGE) // out of range
+		{
+			return (size_t)val;
+		}
+		else if (sPtr == ePtr) // invalid argument
+		{
+			return (size_t)getPlayerInventory(str, val);
+		}
+		else
+		{
+			return val2;
+		}
+#endif
 	}
 
-	PlayerItemMount getPlayerItemMount(const std::string& str, PlayerItemMount val)
+	PlayerItemMount getPlayerItemMount(const std::string_view str, PlayerItemMount val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("lefthand"):
 			return PlayerItemMount::LeftHand;
@@ -450,21 +580,42 @@ namespace GameUtils
 		}
 	}
 
-	size_t getPlayerItemMountIndex(const std::string& str,
-		PlayerItemMount val)
+	size_t getPlayerItemMountIndex(const std::string_view str, PlayerItemMount val)
 	{
-		try
+#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+		size_t num = (size_t)val;
+		auto err = std::from_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc() ||
+			err.ec == std::errc::result_out_of_range)
 		{
-			return std::stoul(str);
+			return num;
 		}
-		catch (std::exception ex) {}
-
 		return (size_t)getPlayerItemMount(str, val);
+#else
+		int& errno_ref = errno;
+		const char* sPtr = str.data();
+		char* ePtr;
+		errno_ref = 0;
+		size_t val2 = (size_t)std::strtoul(sPtr, &ePtr, 10);
+
+		if (errno_ref == ERANGE) // out of range
+		{
+			return (size_t)val;
+		}
+		else if (sPtr == ePtr) // invalid argument
+		{
+			return (size_t)getPlayerItemMount(str, val);
+		}
+		else
+		{
+			return val2;
+		}
+#endif
 	}
 
-	PlayerAnimation getPlayerAnimation(const std::string& str, PlayerAnimation val)
+	PlayerAnimation getPlayerAnimation(const std::string_view str, PlayerAnimation val)
 	{
-		switch (str2int16(toLower(str).c_str()))
+		switch (str2int16(toLower(str)))
 		{
 		case str2int16("stand1"):
 			return PlayerAnimation::Stand1;
@@ -503,6 +654,23 @@ namespace GameUtils
 		}
 	}
 
+	PlayerStatus getPlayerStatus(const std::string_view str, PlayerStatus val)
+	{
+		switch (str2int16(toLower(str)))
+		{
+		case str2int16("stand"):
+			return PlayerStatus::Stand;
+		case str2int16("walk"):
+			return PlayerStatus::Walk;
+		case str2int16("attack"):
+			return PlayerStatus::Attack;
+		case str2int16("dead"):
+			return PlayerStatus::Dead;
+		default:
+			return val;
+		}
+	}
+
 	sf::Time getTime(int fps)
 	{
 		fps = std::clamp(fps, 1, 1000);
@@ -510,7 +678,7 @@ namespace GameUtils
 	}
 
 	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
-		const std::string& prop, Variable& var)
+		const std::string_view prop, Variable& var)
 	{
 		switch (propHash16)
 		{
@@ -541,7 +709,7 @@ namespace GameUtils
 		}
 		break;
 		case str2int16("visible"):
-			var = Variable((bool)uiObject.Visible());
+			var = Variable(uiObject.Visible());
 			break;
 		default:
 			return false;
@@ -549,14 +717,11 @@ namespace GameUtils
 		return true;
 	}
 
-	bool getObjectProperty(const Game& game, const std::string& str, Variable& var)
+	bool getObjectProperty(const Game& game, const std::string_view str, Variable& var)
 	{
-		if ((str.size() > 3)
-			&& (str.front() == '|')
-			&& (str.back() == '|'))
+		if (str.size() > 1)
 		{
-			auto propStr = str.substr(1, str.size() - 2);
-			auto props = splitStringIn2(propStr, '|');
+			auto props = splitStringIn2(str, '.');
 			const auto& id = props.first;
 			const auto& uiElemProps = props.second;
 
@@ -564,7 +729,7 @@ namespace GameUtils
 			{
 				return game.getProperty(uiElemProps, var);
 			}
-			const UIObject* uiObject = game.Resources().getDrawable(id);
+			const UIObject* uiObject = game.Resources().getDrawable(std::string(id));
 			if (uiObject == nullptr)
 			{
 				if (id == "focus")
@@ -584,23 +749,62 @@ namespace GameUtils
 		return false;
 	}
 
-	std::regex regexPercent(R"((\%[\w.]+\%))");
-
-	std::string replaceStringWithQueryable(const std::string& str, const Queryable& obj)
+	std::string replaceStringWithQueryable(const std::string_view str, const Queryable& obj)
 	{
-		std::string str1(str);
-		std::string str2(str1);
-		std::smatch match;
-		while (std::regex_search(str1, match, regexPercent) == true)
+		std::string str2(str);
+		size_t firstTokenStart = 0;
+		while (true)
 		{
-			auto strProp = match[1].str();
+			firstTokenStart = str.find('%', firstTokenStart);
+			if (firstTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t firstTokenStop = firstTokenStart + 1;
+			size_t secondTokenStart = str.find_first_of('%', firstTokenStop);
+			if (secondTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t secondTokenStop = secondTokenStart + 1;
+
+			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
 			Variable var;
 			if (obj.getProperty(strProp.substr(1, strProp.size() - 2), var) == true)
 			{
-				Utils::replaceStringInPlace(
-					str2, strProp, VarUtils::toString(var));
+				Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
 			}
-			str1 = match.suffix().str();
+			firstTokenStart = secondTokenStop;
+		}
+		return str2;
+	}
+
+	std::string replaceStringWithVarOrProp(const std::string_view str, const Game& obj)
+	{
+		std::string str2(str);
+		size_t firstTokenStart = 0;
+		while (true)
+		{
+			firstTokenStart = str.find('%', firstTokenStart);
+			if (firstTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t firstTokenStop = firstTokenStart + 1;
+			size_t secondTokenStart = str.find_first_of('%', firstTokenStop);
+			if (secondTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t secondTokenStop = secondTokenStart + 1;
+
+			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+			Variable var;
+			if (obj.getVarOrProp(strProp, var) == true)
+			{
+				Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+			}
+			firstTokenStart = secondTokenStop;
 		}
 		return str2;
 	}

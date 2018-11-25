@@ -1,0 +1,11 @@
+{
+  "levelObject": {
+    "id": "nest",
+    "class": "levelNest",
+    "mapPosition": [80, 62],
+    "properties": {
+      "x": 69,
+      "y": 19
+    }
+  }
+}

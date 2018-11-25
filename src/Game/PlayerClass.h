@@ -2,7 +2,8 @@
 
 #include "AnimationType.h"
 #include "BaseAnimation.h"
-#include "BaseClass.h"
+#include "BaseClassDefaults.h"
+#include "Classifiers.h"
 #include "Formula.h"
 #include "GameProperties.h"
 #include <SFML/Audio/SoundBuffer.hpp>
@@ -15,7 +16,7 @@ struct PlayerAI
 	int16_t sightRadius{ 0 };
 };
 
-class PlayerClass : public BaseClass
+class PlayerClass : public BaseClassDefaults<Number32>
 {
 public:
 	struct Range
@@ -34,9 +35,8 @@ private:
 	std::string id;
 	std::string name;
 	std::string type;
-	std::string description;
 
-	std::vector<std::pair<uint16_t, Number32>> defaults;
+	Classifiers<3> classifiers;
 
 	LevelObjValue maxStrength{ 0 };
 	LevelObjValue maxMagic{ 0 };
@@ -55,14 +55,14 @@ private:
 
 	std::array<const sf::SoundBuffer*, 16> sounds{ {nullptr} };
 
-	int16_t defaultAttackSound{ -1 };
-	int16_t defaultDefendSound{ -1 };
-	int16_t defaultDieSound{ -1 };
-	int16_t defaultHitSound{ -1 };
-	int16_t defaultWalkSound{ -1 };
+	int16_t attackSound{ -1 };
+	int16_t defendSound{ -1 };
+	int16_t dieSound{ -1 };
+	int16_t hitSound{ -1 };
+	int16_t walkSound{ -1 };
 
-	sf::Color defaultOutline{ sf::Color::Transparent };
-	sf::Color defaultOutlineIgnore{ sf::Color::Transparent };
+	sf::Color outline{ sf::Color::Transparent };
+	sf::Color outlineIgnore{ sf::Color::Transparent };
 
 	LevelObjValue evalFormula(size_t idx,
 		const LevelObject& query, LevelObjValue default_) const;
@@ -102,10 +102,6 @@ public:
 		}
 	}
 
-	const std::vector<std::pair<uint16_t, Number32>>& Defaults() const noexcept { return defaults; }
-	void setDefault(const char* prop, const Number32& val);
-	void setDefaultByHash(uint16_t propHash, const Number32& val);
-
 	AnimationSpeed getSpeed(PlayerAnimation animation) const noexcept;
 	void setSpeed(PlayerAnimation animation, const AnimationSpeed& speed);
 
@@ -116,27 +112,40 @@ public:
 
 	void setSound(size_t idx, const sf::SoundBuffer& snd) noexcept;
 
-	int16_t getDefaultAttackSound() const noexcept { return defaultAttackSound; }
-	int16_t getDefaultDefendSound() const noexcept { return defaultDefendSound; }
-	int16_t getDefaultDieSound() const noexcept { return defaultDieSound; }
-	int16_t getDefaultHitSound() const noexcept { return defaultHitSound; }
-	int16_t getDefaultWalkSound() const noexcept { return defaultWalkSound; }
+	int16_t getAttackSound() const noexcept { return attackSound; }
+	int16_t getDefendSound() const noexcept { return defendSound; }
+	int16_t getDieSound() const noexcept { return dieSound; }
+	int16_t getHitSound() const noexcept { return hitSound; }
+	int16_t getWalkSound() const noexcept { return walkSound; }
 
-	void setDefaultAttackSound(int16_t soundIdx) noexcept { defaultAttackSound = soundIdx; }
-	void setDefaultDefendSound(int16_t soundIdx) noexcept { defaultDefendSound = soundIdx; }
-	void setDefaultDieSound(int16_t soundIdx) noexcept { defaultDieSound = soundIdx; }
-	void setDefaultHitSound(int16_t soundIdx) noexcept { defaultHitSound = soundIdx; }
-	void setDefaultWalkSound(int16_t soundIdx) noexcept { defaultWalkSound = soundIdx; }
+	void setAttackSound(int16_t soundIdx) noexcept { attackSound = soundIdx; }
+	void setDefendSound(int16_t soundIdx) noexcept { defendSound = soundIdx; }
+	void setDieSound(int16_t soundIdx) noexcept { dieSound = soundIdx; }
+	void setHitSound(int16_t soundIdx) noexcept { hitSound = soundIdx; }
+	void setWalkSound(int16_t soundIdx) noexcept { walkSound = soundIdx; }
 
 	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& Type() const noexcept { return type; }
-	const std::string& Description() const noexcept { return description; }
 
-	void Id(const std::string& id_) { id = id_; }
-	void Name(const std::string& name_) { name = name_; }
-	void Type(const std::string& type_) { type = type_; }
-	void Description(const std::string& description_) { description = description_; }
+	void Id(const std::string_view id_) { id = id_; }
+	void Name(const std::string_view name_) { name = name_; }
+	void Type(const std::string_view type_) { type = type_; }
+
+	bool getFullName(const Queryable& obj, std::string& fullName) const
+	{
+		return classifiers.getText(0, obj, fullName);
+	}
+	void setNameClassifier(Classifier* classifier) { classifiers.set(0, classifier, 0); }
+
+	bool getDescription(size_t idx, const Queryable& obj, std::string& description) const
+	{
+		return classifiers.getText(idx + 1, obj, description);
+	}
+	void setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst)
+	{
+		classifiers.set(idx + 1, classifier, skipFirst);
+	}
 
 	LevelObjValue MaxStrength() const noexcept { return maxStrength; }
 	LevelObjValue MaxMagic() const noexcept { return maxMagic; }
@@ -149,8 +158,8 @@ public:
 
 	uint32_t TotalKills() const noexcept { return totalKills; }
 
-	const sf::Color& DefaultOutline() const noexcept { return defaultOutline; }
-	const sf::Color& DefaultOutlineIgnore() const noexcept { return defaultOutlineIgnore; }
+	const sf::Color& Outline() const noexcept { return outline; }
+	const sf::Color& OutlineIgnore() const noexcept { return outlineIgnore; }
 
 	void MaxStrength(LevelObjValue val) noexcept { maxStrength = val; }
 	void MaxMagic(LevelObjValue val) noexcept { maxMagic = val; }
@@ -164,8 +173,8 @@ public:
 	void TotalKills(LevelObjValue val) noexcept { totalKills = val; }
 	void addKill() noexcept { totalKills++; }
 
-	void DefaultOutline(const sf::Color& color) noexcept { defaultOutline = color; }
-	void DefaultOutlineIgnore(const sf::Color& color) noexcept { defaultOutlineIgnore = color; }
+	void Outline(const sf::Color& color) noexcept { outline = color; }
+	void OutlineIgnore(const sf::Color& color) noexcept { outlineIgnore = color; }
 
 	void setLifeFormula(const Formula& formula) { formulas[0] = formula; }
 	void setManaFormula(const Formula& formula) { formulas[1] = formula; }

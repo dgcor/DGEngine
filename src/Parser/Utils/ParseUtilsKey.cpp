@@ -4,7 +4,7 @@
 #include "Json/JsonUtils.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "SFMLUtils.h"
+#include "SFML/SFMLUtils.h"
 #include "Utils/Utils.h"
 
 namespace Parser
@@ -119,6 +119,16 @@ namespace Parser
 		return val;
 	}
 
+	std::string_view getStringViewKey(const Value& elem,
+		const char* key, const std::string_view val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getStringViewVal(elem[key], val);
+		}
+		return val;
+	}
+
 	unsigned getUIntKey(const Value& elem, const char* key, unsigned val)
 	{
 		if (elem.HasMember(key) == true
@@ -222,7 +232,7 @@ namespace Parser
 			}
 			else if (elemVal.IsString() == true)
 			{
-				vec.push_back(elemVal.GetString());
+				vec.push_back({ elemVal.GetString(), elemVal.GetStringLength() });
 			}
 		}
 		return vec;
@@ -234,6 +244,16 @@ namespace Parser
 		if (elem.HasMember(key) == true)
 		{
 			return getIgnoreResourceVal(elem[key], val);
+		}
+		return val;
+	}
+
+	InputEvent getInputEventKey(const Value& elem,
+		const char* key, InputEvent val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getInputEventVal(elem[key], val);
 		}
 		return val;
 	}
@@ -331,7 +351,23 @@ namespace Parser
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerAnimation(keyElem.GetString(), val);
+				return GameUtils::getPlayerAnimation(
+					{ keyElem.GetString(), keyElem.GetStringLength() }, val);
+			}
+		}
+		return val;
+	}
+
+	PlayerStatus getPlayerStatusKey(const Value& elem,
+		const char* key, PlayerStatus val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			const auto& keyElem = elem[key];
+			if (keyElem.IsString() == true)
+			{
+				return GameUtils::getPlayerStatus(
+					{ keyElem.GetString(), keyElem.GetStringLength() }, val);
 			}
 		}
 		return val;

@@ -58,11 +58,30 @@ void main()
 }
 )" };
 
+const std::string Shaders::gammaText{ R"(
+#version 110
+uniform sampler2D tex;
+uniform float gamma;
+
+vec3 Gamma(vec3 value, float param)
+{
+	return vec3(pow(abs(value.r), param), pow(abs(value.g), param), pow(abs(value.b), param));
+}
+
+void main()
+{
+	vec4 pixel = texture2D(tex, gl_TexCoord[0].xy);
+	gl_FragColor = vec4(Gamma(pixel.rgb, gamma), pixel.a);
+}
+)" };
+
 bool Shaders::hasOutline{ false };
 bool Shaders::hasPalette{ false };
+bool Shaders::hasGamma{ false };
 
 sf::Shader Shaders::Outline;
 sf::Shader Shaders::Palette;
+sf::Shader Shaders::Gamma;
 
 void Shaders::init()
 {
@@ -84,5 +103,15 @@ void Shaders::init()
 			hasPalette = true;
 		}
 		Palette.setUniform("tex", sf::Shader::CurrentTexture);
+	}
+
+	if (hasGamma == false)
+	{
+		if (Gamma.isAvailable() == true &&
+			Gamma.loadFromMemory(gammaText, sf::Shader::Fragment) == true)
+		{
+			hasGamma = true;
+		}
+		Gamma.setUniform("tex", sf::Shader::CurrentTexture);
 	}
 }

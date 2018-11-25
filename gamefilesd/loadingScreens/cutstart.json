@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cutstart",
-    "file":"gendata/cutstart.pal"
+    "file": "gendata/cutstart.pal"
   },
   "texture": {
     "id": "cutstart",
-    "file":"gendata/cutstart.cel",
+    "file": "gendata/cutstart.cel",
     "palette": "cutstart"
   },
   "loadingScreen": {

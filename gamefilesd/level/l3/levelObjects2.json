@@ -1,0 +1,34 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDown",
+      "mapPosition": [77, 66],
+      "properties": {
+        "x": 51,
+        "y": 64,
+        "level": 4
+      }
+    },
+    {
+      "id": "down2",
+      "class": "levelDownDungeon2",
+      "mapPosition": [32, 55],
+      "text1": "skeletonKing",
+      "properties": {
+        "x": 83,
+        "y": 44
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUp",
+      "mapPosition": [48, 69],
+      "properties": {
+        "x": 71,
+        "y": 73,
+        "level": 2
+      }
+    }
+  ]
+}

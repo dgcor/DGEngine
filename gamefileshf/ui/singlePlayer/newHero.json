@@ -8,7 +8,7 @@
     { "name": "text.setText", "id": "txtMagic", "text": "10" },
     { "name": "text.setText", "id": "txtDexterity", "text": "20" },
     { "name": "text.setText", "id": "txtVitality", "text": "25" },
-    { "name": "variable.set", "key": "charClass", "val": "Warrior" }
+    { "name": "variable.set", "key": "charClass", "value": "Warrior" }
   ],
   "animation": [
     {
@@ -35,7 +35,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Warrior" },
+        { "name": "variable.set", "key": "charClass", "value": "Warrior" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "30" },
@@ -57,7 +57,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Rogue" },
+        { "name": "variable.set", "key": "charClass", "value": "Rogue" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "20" },
@@ -79,7 +79,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Sorceror" },
+        { "name": "variable.set", "key": "charClass", "value": "Sorceror" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "15" },
@@ -101,7 +101,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Monk" },
+        { "name": "variable.set", "key": "charClass", "value": "Monk" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "25" },
@@ -123,7 +123,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Bard" },
+        { "name": "variable.set", "key": "charClass", "value": "Bard" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "20" },
@@ -145,7 +145,7 @@
       "anchor": "none",
       "onClick": [
         { "name": "sound.play", "id": "titlemov" },
-        { "name": "variable.set", "key": "charClass", "val": "Barbarian" },
+        { "name": "variable.set", "key": "charClass", "value": "Barbarian" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
         { "name": "text.setText", "id": "txtStrength", "text": "40" },

@@ -1,3 +1,7 @@
 {
-  "load": ["level/loadBase.json", "cutstart", "town", "{1}"]
+  "action": [
+    { "name": "io.deleteAll", "file": "%tempDir%", "deleteRoot": false },
+    { "name": "dir.copy", "source": "{1}/level", "destination": "%tempDir%/level" }
+  ],
+  "load": ["level/loadGame2.json", "{1}"]
 }

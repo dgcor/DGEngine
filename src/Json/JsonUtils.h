@@ -4,20 +4,21 @@
 #include <functional>
 #include "JsonParser.h"
 #include "Queryable.h"
-#include <string>
+#include <string_view>
 #include "Variable.h"
 
 class Game;
 
 namespace JsonUtils
 {
+	// replaces "%str%" with obj.getProperty("str")
 	void replaceStringWithQueryable(rapidjson::Value& elem,
 		rapidjson::Value::AllocatorType& allocator,
 		const Queryable& obj, bool changeValueType = false);
 
 	void replaceStringWithVariable(rapidjson::Value& elem,
 		rapidjson::Value::AllocatorType& allocator,
-		const std::string& str, const Variable& var, bool changeValueType = false);
+		const std::string_view str, const Variable& var, bool changeValueType = false);
 
 	void replaceValueWithVariable(rapidjson::Value& elem,
 		rapidjson::Value::AllocatorType& allocator, const Variable& var);
@@ -28,22 +29,23 @@ namespace JsonUtils
 
 	void replaceValueWithString(rapidjson::Value& elem,
 		rapidjson::Value::AllocatorType& allocator,
-		const std::string& oldStr, const std::string& newStr);
+		const std::string_view oldStr, const std::string_view newStr);
 
+	// replaces "%str%" with game.getVarOrProp("str")
 	void replaceValueWithGameVar(rapidjson::Value& elem,
 	rapidjson::Value::AllocatorType& allocator,
-		const Game& obj, bool changeValueType = false);
+		const Game& obj, bool changeValueType, char token = '%');
 
 	std::string toString(const rapidjson::Value& elem);
 	std::string jsonToString(const rapidjson::Value& elem);
 
-	bool loadFile(const std::string& file, rapidjson::Document& doc);
-	bool loadJson(const std::string& json, rapidjson::Document& doc);
+	bool loadFile(const std::string_view file, rapidjson::Document& doc);
+	bool loadJson(const std::string_view json, rapidjson::Document& doc);
 
-	void saveToFile(const std::string& file, const rapidjson::Value& elem);
+	void saveToFile(const std::string_view file, const rapidjson::Value& elem);
 
 	template <class T>
-	void saveToFile(const std::string& file, const char* key, const T& container)
+	void saveToFile(const std::string_view file, const char* key, const T& container)
 	{
 		rapidjson::StringBuffer buffer;
 		rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
@@ -79,6 +81,6 @@ namespace JsonUtils
 		writer.EndObject();
 		writer.EndObject();
 
-		FileUtils::saveText(file.c_str(), buffer.GetString(), buffer.GetSize());
+		FileUtils::saveText(file, { buffer.GetString(), buffer.GetSize() });
 	}
 }

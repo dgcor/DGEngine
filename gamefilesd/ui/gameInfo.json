@@ -64,7 +64,7 @@
     {
       "id": "openGLVersion",
       "font": "font42g",
-      "binding": ["|game|openGL.majorVersion|", "|game|openGL.minorVersion|"],
+      "binding": ["%game.openGL.majorVersion%", "%game.openGL.minorVersion%"],
       "format": "OpenGL [1].[2]",
       "position": [319, 192],
       "anchor": "none",
@@ -119,28 +119,28 @@
   "action": [
     {
       "name": "if.equal",
-      "param1": "|game|openGL.hasShaders|",
+      "param1": "%game.openGL.hasShaders%",
       "param2": true,
       "then": { "name": "text.setText", "id": "hasShaders", "text": "Shaders: Yes" },
       "else": { "name": "text.setText", "id": "hasShaders", "text": "Shaders: No" }
     },
     {
       "name": "if.equal",
-      "param1": "|game|openGL.hasGeometryShaders|",
+      "param1": "%game.openGL.hasGeometryShaders%",
       "param2": true,
       "then": { "name": "text.setText", "id": "hasGeometryShaders", "text": "Geometry Shaders: Yes" },
       "else": { "name": "text.setText", "id": "hasGeometryShaders", "text": "Geometry Shaders: No" }
     },
     {
       "name": "if.equal",
-      "param1": "|game|supportsPalettes|",
+      "param1": "%game.supportsPalettes%",
       "param2": true,
       "then": { "name": "text.setText", "id": "supportsPalettes", "text": "Supports Palettes: Yes" },
       "else": { "name": "text.setText", "id": "supportsPalettes", "text": "Supports Palettes: No" }
     },
     {
       "name": "if.equal",
-      "param1": "|game|supportsOutlines|",
+      "param1": "%game.supportsOutlines%",
       "param2": true,
       "then": { "name": "text.setText", "id": "supportsOutlines", "text": "Supports Outlines: Yes" },
       "else": { "name": "text.setText", "id": "supportsOutlines", "text": "Supports Outlines: No" }

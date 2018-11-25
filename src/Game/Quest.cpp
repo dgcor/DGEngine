@@ -1,13 +1,13 @@
 #include "Quest.h"
 #include "Utils/Utils.h"
 
-bool Quest::getProperty(const std::string& prop, Variable& var) const noexcept
+bool Quest::getProperty(const std::string_view prop, Variable& var) const noexcept
 {
 	if (prop.empty() == true)
 	{
 		return false;
 	}
-	switch (str2int16(prop.c_str()))
+	switch (str2int16(prop))
 	{
 	case str2int16("id"):
 		var = Variable(id);

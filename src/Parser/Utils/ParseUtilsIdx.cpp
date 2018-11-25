@@ -66,6 +66,16 @@ namespace Parser
 		return val;
 	}
 
+	std::string_view getStringViewIdx(const Value& elem,
+		SizeType idx, const std::string_view val)
+	{
+		if (idx < elem.Size())
+		{
+			return getStringViewVal(elem[idx], val);
+		}
+		return val;
+	}
+
 	unsigned getUIntIdx(const Value& elem, SizeType idx, unsigned val)
 	{
 		if (idx < elem.Size()

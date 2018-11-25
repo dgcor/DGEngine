@@ -8,8 +8,8 @@
     "param2": true,
     "then": {
       "name": ">=",
-      "param1": "|currentLevel|currentPlayer.gold|",
-      "param2": "|currentLevel|player.pepin.item.{1}.{2}.price|",
+      "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
+      "param2": "%currentLevel.player.pepin.item.{1}.{2}.price%",
       "then": {
         "name": "load",
         "file": [ "towners/pepin/buy/confirm2.json", "{1}", "{2}" ]

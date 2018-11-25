@@ -1,0 +1,12 @@
+{
+  "action": {
+    "name": "if",
+    "params": [
+      "%currentLevel.quest.poisonedWater.state%", "==", 0,
+      "or",
+      "%currentLevel.quest.poisonedWater.state%", "==", -1
+    ],
+    "then": { "name": "load", "file": "texts/pepin/quests/poisonedWater.json" },
+    "else": { "name": "load", "file": "towners/pepin/panel.json" }
+  }
+}

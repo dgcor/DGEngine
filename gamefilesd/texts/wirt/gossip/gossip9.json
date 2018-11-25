@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/Towners/pegboy42.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

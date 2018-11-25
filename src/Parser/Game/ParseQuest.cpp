@@ -7,8 +7,8 @@ namespace Parser
 
 	Quest parseQuestObj(Game& game, const Value& elem)
 	{
-		return Quest(getStringKey(elem, "id"),
-			getStringKey(elem, "name"), getIntKey(elem, "state"));
+		return Quest(getStringViewKey(elem, "id"),
+			getStringViewKey(elem, "name"), getIntKey(elem, "state"));
 	}
 
 	void parseQuest(Game& game, const Value& elem)

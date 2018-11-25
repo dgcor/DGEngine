@@ -1,8 +1,8 @@
 #include "Item.h"
 #include "Game.h"
+#include "GameHashes.h"
 #include "GameUtils.h"
 #include "Game/Level.h"
-#include "ItemProperties.h"
 #include "Player.h"
 #include "Utils/Utils.h"
 
@@ -12,14 +12,10 @@ Item::Item(const ItemClass* class__) : class_(class__)
 	base.animation.textureIndexRange = class__->getDropTextureIndexRange();
 	base.animation.textureIndexRange.second--;
 	base.animation.currentTextureIdx = base.animation.textureIndexRange.second;
-	base.animation.frameTime = class_->DefaultAnimationSpeed();
+	base.animation.frameTime = class__->AnimationSpeed();
 	base.animation.animType = AnimationType::PlayOnce;
 	base.hoverCellSize = 1;
-	if (class__->getInventoryTexturePack()->isIndexed() == true)
-	{
-		base.sprite.setPalette(class__->getInventoryTexturePack()->getPalette());
-	}
-	base.sprite.setOutline(class__->DefaultOutline(), class__->DefaultOutlineIgnore());
+	base.sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
 	base.updateTexture();
 	applyDefaults();
 }
@@ -35,6 +31,19 @@ void Item::resetDropAnimation(Level& level) noexcept
 	if (base.updateTexture() == true)
 	{
 		base.updateDrawPosition(level);
+	}
+}
+
+bool Item::getTexture(size_t textureNumber, TextureInfo& ti) const
+{
+	switch (textureNumber)
+	{
+	case 0:
+		return base.getTexture(ti);
+	case 1:
+		return class_->getInventoryTexture(*this, ti);
+	default:
+		return false;
 	}
 }
 
@@ -63,16 +72,20 @@ void Item::update(Game& game, Level& level)
 	}
 }
 
-bool Item::getProperty(const std::string& prop, Variable& var) const
+bool Item::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.empty() == true)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("class"):
+	case str2int16("classId"):
+		var = Variable(class_->Id());
+		break;
 	case str2int16("shortName"):
 		var = Variable(ShortName());
 		break;
@@ -89,7 +102,7 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	case str2int16("description"):
 	{
 		updateNameAndDescriptions();
-		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
+		size_t idx = Utils::strtou(props.second);
 		if (idx >= descriptions.size())
 		{
 			idx = 0;
@@ -101,18 +114,18 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	{
 		updateNameAndDescriptions();
 		bool hasDescr = false;
-		size_t idx = std::strtoul(props.second.c_str(), NULL, 10);
+		size_t idx = Utils::strtou(props.second);
 		if (idx < descriptions.size())
 		{
 			hasDescr = descriptions[idx].empty() == false;
 		}
-		var = Variable((bool)hasDescr);
+		var = Variable(hasDescr);
 		break;
 	}
 	case str2int16("prices"):
 	{
 		LevelObjValue value;
-		if (class_->evalFormula(str2int16(props.second.c_str()), *this, value) == false)
+		if (class_->evalFormula(str2int16(props.second), *this, value) == false)
 		{
 			if (getIntByHash(propHash, value) == false)
 			{
@@ -123,7 +136,7 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		break;
 	}
 	case str2int16("identified"):
-		var = Variable((bool)identified);
+		var = Variable(identified);
 		break;
 	case str2int16("type"):
 		var = Variable(std::string("item"));
@@ -144,7 +157,7 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 		var = Variable(needsRepair());
 		break;
 	case str2int16("propertyCount"):
-		var = Variable((int64_t)propertiesSize);
+		var = Variable((int64_t)properties.size());
 		break;
 	case str2int16("hasProperty"):
 		var = Variable(hasInt(props.second));
@@ -166,7 +179,7 @@ bool Item::getProperty(const std::string& prop, Variable& var) const
 	return true;
 }
 
-void Item::setProperty(const std::string& prop, const Variable& val)
+void Item::setProperty(const std::string_view prop, const Variable& val)
 {
 	if (prop.empty() == true)
 	{
@@ -181,25 +194,15 @@ void Item::setProperty(const std::string& prop, const Variable& val)
 	{
 		val2 = (LevelObjValue)std::get<int64_t>(val);
 	}
-	setIntByHash(str2int16(prop.c_str()), val2);
+	setIntByHash(str2int16(prop), val2);
 }
 
 bool Item::hasIntByHash(uint16_t propHash) const noexcept
 {
-	if (propertiesSize > 0)
-	{
-		for (size_t i = 0; i < propertiesSize; i++)
-		{
-			if (properties[i].first == propHash)
-			{
-				return true;
-			}
-		}
-	}
-	return false;
+	return properties.hasValue(propHash);
 }
 
-bool Item::hasInt(const char* prop) const noexcept
+bool Item::hasInt(const std::string_view prop) const noexcept
 {
 	return hasIntByHash(str2int16(prop));
 }
@@ -211,7 +214,7 @@ LevelObjValue Item::getIntByHash(uint16_t propHash) const
 	return value;
 }
 
-LevelObjValue Item::getInt(const char* prop) const
+LevelObjValue Item::getInt(const std::string_view prop) const
 {
 	LevelObjValue value = 0;
 	getInt(prop, value);
@@ -234,31 +237,14 @@ bool Item::getIntByHash(uint16_t propHash, LevelObjValue& value) const
 			== std::numeric_limits<LevelObjValue>::max());
 		break;
 	default:
-	{
-		if (propertiesSize > 0)
-		{
-			for (size_t i = 0; i < propertiesSize; i++)
-			{
-				if (properties[i].first == propHash)
-				{
-					value = properties[i].second;
-					return true;
-				}
-			}
-		}
-		return false;
-	}
+		return properties.getValue(propHash, value);
 	}
 	return true;
 }
 
-bool Item::getInt(const char* prop, LevelObjValue& value) const
+bool Item::getInt(const std::string_view prop, LevelObjValue& value) const
 {
-	if (propertiesSize > 0)
-	{
-		return getIntByHash(str2int16(prop), value);
-	}
-	return false;
+	return getIntByHash(str2int16(prop), value);
 }
 
 void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
@@ -270,24 +256,7 @@ void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
 		break;
 	default:
 	{
-		bool noUpdate = true;
-		for (size_t i = 0; i < propertiesSize; i++)
-		{
-			if (properties[i].first == propHash)
-			{
-				properties[i].second = value;
-				noUpdate = false;
-				break;
-			}
-		}
-		if (noUpdate == true &&
-			propertiesSize < properties.size())
-		{
-			properties[propertiesSize] = std::make_pair(propHash, value);
-			propertiesSize++;
-			noUpdate = false;
-		}
-		if (noUpdate == true)
+		if (properties.setValue(propHash, value) == false)
 		{
 			return;
 		}
@@ -296,7 +265,7 @@ void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
 	updateNameAndDescr = true;
 }
 
-void Item::setInt(const char* prop, LevelObjValue value)
+void Item::setInt(const std::string_view prop, LevelObjValue value)
 {
 	setIntByHash(str2int16(prop), value);
 }
@@ -405,13 +374,23 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 	return useHelper(propHash, useOpHash, value, player, level);
 }
 
-bool Item::use(Player& player, const Level* level) const
+bool Item::use(Player& player, const Level* level, uint32_t& quantityLeft)
 {
+	quantityLeft = 0;
 	LevelObjValue useOn;
 	if (getIntByHash(ItemProp::UseOn, useOn) == false ||
-		useOn == str2int16(""))
+		useOn == str2int16("") ||
+		player.canUseItem(*this) == false)
 	{
 		return false;
+	}
+
+	LevelObjValue itemQuantity;
+	bool hasQuantity = getIntByHash(ItemProp::Quantity, itemQuantity);
+	if (hasQuantity == true &&
+		itemQuantity <= 0)
+	{
+		return true;
 	}
 
 	auto propHash = (uint16_t)useOn;
@@ -454,7 +433,58 @@ bool Item::use(Player& player, const Level* level) const
 	}
 	if (ret == true)
 	{
+		if (hasQuantity == true)
+		{
+			itemQuantity--;
+			setIntByHash(ItemProp::Quantity, itemQuantity);
+			quantityLeft = (uint32_t)itemQuantity;
+			player.updateItemQuantityCache(ItemProp::Quantity);
+		}
 		player.updateProperties();
 	}
 	return ret;
+}
+
+LevelObjValue Item::addQuantity(LevelObjValue& amount)
+{
+	LevelObjValue capacity;
+	if (amount == 0 ||
+		getIntByHash(ItemProp::Capacity, capacity) == false)
+	{
+		return 0;
+	}
+	auto quantity = getIntByHash(ItemProp::Quantity);
+	if (amount < 0)
+	{
+		auto absAmount = std::abs(amount);
+		if (absAmount <= quantity)
+		{
+			auto newQuant = quantity - absAmount;
+			setIntByHash(ItemProp::Quantity, newQuant);
+			amount = 0;
+			return newQuant;
+		}
+		else
+		{
+			setIntByHash(ItemProp::Quantity, 0);
+			amount += quantity;
+			return 0;
+		}
+	}
+	else
+	{
+		if (amount + quantity <= capacity)
+		{
+			auto newQuant = amount + quantity;
+			setIntByHash(ItemProp::Quantity, newQuant);
+			amount = 0;
+			return newQuant;
+		}
+		else
+		{
+			setIntByHash(ItemProp::Quantity, capacity);
+			amount -= (capacity - quantity);
+			return capacity;
+		}
+	}
 }

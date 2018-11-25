@@ -10,6 +10,7 @@ bool VectorTexturePack::get(size_t index, TextureInfo& ti) const
 	ti.texture = &textures[index];
 	updateTextureInfo(ti);
 	ti.offset += offset;
+	ti.palette = palette;
 	return true;
 }
 

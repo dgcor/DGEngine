@@ -32,8 +32,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto nameHash = str2int16(it->name.GetString());
-						level.setPropertyName(nameHash, it->name.GetString());
+						auto name = getStringViewVal(it->name);
+						auto nameHash = str2int16(name);
+						level.setPropertyName(nameHash, name);
 						item->setIntByHash(nameHash,
 							getMinMaxIntVal<LevelObjValue>(it->value));
 					}
@@ -41,8 +42,8 @@ namespace Parser
 			}
 		}
 
-		auto outline = getColorKey(elem, "outline", class_->DefaultOutline());
-		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->DefaultOutlineIgnore());
+		auto outline = getColorKey(elem, "outline", class_->Outline());
+		auto outlineIgnore = getColorKey(elem, "outlineIgnore", class_->OutlineIgnore());
 		item->setOutline(outline, outlineIgnore);
 		item->setOutlineOnHover(getBoolKey(elem, "outlineOnHover", true));
 

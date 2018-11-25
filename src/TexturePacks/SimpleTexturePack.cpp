@@ -82,6 +82,7 @@ bool SimpleTexturePack::get(size_t index, TextureInfo& ti) const noexcept
 		return false;
 	}
 	getTexture(t, index, ti);
+	ti.palette = palette;
 	return true;
 }
 
@@ -96,7 +97,13 @@ bool SimpleMultiTexturePack::get(size_t index, TextureInfo& ti) const
 	{
 		size_t indexX = index % numFrames;
 		size_t indexY = index / numFrames;
+		if (indexY >= texVec.size() ||
+			indexX >= texVec[indexY].numFrames)
+		{
+			return false;
+		}
 		getTexture(texVec[indexY], indexX, ti);
+		ti.palette = palette;
 		return true;
 	}
 	size_t indexX;
@@ -114,6 +121,7 @@ bool SimpleMultiTexturePack::get(size_t index, TextureInfo& ti) const
 	} while (indexX >= texVec[indexY].numFrames);
 
 	getTexture(texVec[indexY], indexX, ti);
+	ti.palette = palette;
 	return true;
 }
 

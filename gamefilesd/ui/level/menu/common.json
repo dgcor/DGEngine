@@ -50,7 +50,7 @@
   },
   "image": {
     "id": "diabsmal",
-    "texture":"diabsmal",
+    "texture": "diabsmal",
     "position": [172, 3],
     "anchor": "none"
   },

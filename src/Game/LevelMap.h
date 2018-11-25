@@ -15,12 +15,11 @@ private:
 	std::vector<LevelCell> cells;
 	MapCoord mapSize;
 
-	TileBlock outOfBoundsTileBack;
-	TileBlock outOfBoundsTileFront;
+	std::array<TileBlock, LevelCell::NumberOfLayers - 1> outOfBoundsTiles;
 
-	// a tile is 4 blocks
-	int32_t blockWidth{ 0 };
-	int32_t blockHeight{ 0 };
+	// default block size - a tile is 4 blocks
+	int32_t defaultBlockWidth{ 1 };
+	int32_t defaultBlockHeight{ 1 };
 
 	TileSet tileSet;
 	Sol sol;
@@ -59,17 +58,23 @@ public:
 	const_reverse_iterator crend() const noexcept { return cells.crend(); }
 
 	LevelMap() noexcept {}
-	LevelMap(const std::string& tilFileName, const std::string& solFileName,
+	LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
 		Coord width_, Coord height_, int16_t defaultTile = -1);
 	LevelMap(Coord width_, Coord height_, int16_t defaultTile = -1);
 
+	LevelMap& operator=(const LevelMap&) = default;
+	LevelMap& operator=(LevelMap&&) = default;
+	LevelMap(const LevelMap&) = default;
+	LevelMap(LevelMap&&) = default;
+
 	void resize(Coord width_, Coord height_, int16_t defaultTile = -1);
 
-	void setTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
+	void setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
 
 	void setTileSetArea(Coord x, Coord y, const Dun& dun);
 	void setSimpleArea(Coord x, Coord y, const Dun& dun);
-	void setSimpleArea(Coord x, Coord y, size_t index, const Dun& dun);
+	void setSimpleArea(Coord x, Coord y, size_t layer,
+		const Dun& dun, bool normalizeSolLayer = true);
 
 	Misc::Helper2D<LevelMap, LevelCell&, Coord> operator[] (Coord x) noexcept
 	{
@@ -92,19 +97,16 @@ public:
 	bool isMapCoordValid(const MapCoord& mapCoord) const noexcept;
 
 	sf::Vector2f getCoord(const MapCoord& tile) const;
+	sf::Vector2f getCoord(const MapCoord& tile, int32_t blockWidth, int32_t blockHeight) const;
 	MapCoord getTile(const sf::Vector2f& coords) const noexcept;
+	MapCoord getTile(const sf::Vector2f& coords, int32_t blockWidth, int32_t blockHeight) const noexcept;
 
-	int16_t getOutOfBoundsTileIndexBack(int32_t xCoord, int32_t yCoord) const noexcept
+	int16_t getOutOfBoundsTileIndex(size_t layer, int32_t xCoord, int32_t yCoord) const noexcept
 	{
-		return outOfBoundsTileBack.getTileIndex(xCoord, yCoord);
-	}
-	int16_t getOutOfBoundsTileIndexFront(int32_t xCoord, int32_t yCoord) const noexcept
-	{
-		return outOfBoundsTileFront.getTileIndex(xCoord, yCoord);
+		return outOfBoundsTiles[layer].getTileIndex(xCoord, yCoord);
 	}
 
-	void setOutOfBoundsTileBack(int16_t tile) noexcept;
-	void setOutOfBoundsTileFront(int16_t tile) noexcept;
+	void setOutOfBoundsTileIndex(size_t layer, int16_t tile) noexcept;
 
 	std::vector<MapCoord> getPath(const MapCoord& a, const MapCoord& b) const;
 

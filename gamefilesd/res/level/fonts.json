@@ -1,16 +1,47 @@
 {
+  "texture": {
+    "id": "smaltext",
+    "file": "ctrlpan/smaltext.cel",
+    "palette": "town",
+    "indexed": true,
+    "charMapFile": "res/level/smaltextCharMap.bin"
+  },
+  "texturePack": {
+    "id": "smaltext",
+    "font": true,
+    "texture": "smaltext",
+    "charSizeFile": "res/level/smaltextSize.bin",
+    "palette": "town"
+  },
   "font": [
     {
       "id": "smaltext",
-      "texture": "smaltext",
-      "palette": "town",
-      "file": "ctrlpan/smaltext.cel",
-      "charMapFile": "res/level/smaltextCharMap.bin",
-      "charSizeFile": "res/level/smaltextSize.bin"
+      "texturePack": "smaltext",
+      "fontPalette": "town"
+    },
+    {
+      "id": "smaltextBlue",
+      "replaceVars": true,
+      "texturePack": "smaltext",
+      "fontPalette": "textBlue",
+      "fontColor": "|textBlue|"
+    },
+    {
+      "id": "smaltextGold",
+      "replaceVars": true,
+      "texturePack": "smaltext",
+      "fontPalette": "textGold",
+      "fontColor": "|textGold|"
+    },
+    {
+      "id": "smaltextRed",
+      "replaceVars": true,
+      "texturePack": "smaltext",
+      "fontPalette": "textRed",
+      "fontColor": "|textRed|"
     },
     {
       "id": "medtexts",
-      "texture": "medtexts",
       "palette": "town",
       "file": "data/medtexts.cel",
       "charMapFile": "res/level/medtextsCharMap.bin",
@@ -18,7 +49,6 @@
     },
     {
       "id": "bigtgold",
-      "texture": "bigtgold",
       "palette": "town",
       "file": "data/bigtgold.cel",
       "charMapFile": "res/level/bigtgoldCharMap.bin",

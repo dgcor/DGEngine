@@ -6,52 +6,94 @@
 
 namespace FileUtils
 {
+	bool copyDir(const char* dirSrcName, const char* dirDstName)
+	{
+		PHYSFS_Stat stat;
+		if (PHYSFS_stat(dirSrcName, &stat) == 0 ||
+			stat.filetype != PHYSFS_FILETYPE_DIRECTORY)
+		{
+			return false;
+		}
+		if (PHYSFS_stat(dirDstName, &stat) != 0 &&
+			stat.filetype != PHYSFS_FILETYPE_DIRECTORY)
+		{
+			return false;
+		}
+
+		createDir(dirDstName);
+		auto paths = PHYSFS_enumerateFiles(dirSrcName);
+		if (paths != nullptr)
+		{
+			for (char** path = paths; *path != nullptr; path++)
+			{
+				auto fullSrcPath = std::string(dirSrcName) + '/' + *path;
+				auto fullDstPath = std::string(dirDstName) + '/' + *path;
+
+				if (PHYSFS_stat(fullSrcPath.c_str(), &stat) == 0)
+				{
+					continue;
+				}
+				if (stat.filetype == PHYSFS_FILETYPE_DIRECTORY)
+				{
+					copyDir(fullSrcPath.c_str(), fullDstPath.c_str());
+				}
+				else
+				{
+					// copy file (read source file and write destination)
+					sf::PhysFSStream fileRead(fullSrcPath);
+					auto fileWrite = PHYSFS_openWrite(fullDstPath.c_str());
+					if (fileRead.hasError() == false &&
+						fileWrite != nullptr)
+					{
+						std::vector<uint8_t> data((size_t)fileRead.getSize());
+						fileRead.read(data.data(), fileRead.getSize());
+						PHYSFS_writeBytes(fileWrite, data.data(), data.size());
+						PHYSFS_close(fileWrite);
+					}
+				}
+			}
+			PHYSFS_freeList(paths);
+			return true;
+		}
+		return false;
+	}
+
 	bool createDir(const char* dirName) noexcept
 	{
 		return PHYSFS_mkdir(dirName) != 0;
 	}
 
-	bool deleteAll(const char* filePath)
+	bool deleteAll(const char* filePath, bool deleteRoot)
 	{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		PHYSFS_Stat fileStat;
 		if (PHYSFS_stat(filePath, &fileStat) == 0)
 		{
 			return false;
 		}
-#endif
 		bool ret = false;
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY)
-#else
-		if (PHYSFS_isDirectory(filePath) != 0)
-#endif
 		{
 			auto paths = PHYSFS_enumerateFiles(filePath);
-			if (paths != NULL)
+			if (paths != nullptr)
 			{
 				auto writeDir = PHYSFS_getWriteDir();
-				if (writeDir != NULL)
+				if (writeDir != nullptr)
 				{
-					for (char** path = paths; *path != NULL; path++)
+					for (char** path = paths; *path != nullptr; path++)
 					{
 						auto fullPath = std::string(filePath) + '/' + *path;
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 						if (PHYSFS_stat(fullPath.c_str(), &fileStat) == 0)
 						{
 							continue;
 						}
 						if (fileStat.filetype == PHYSFS_FILETYPE_DIRECTORY)
-#else
-						if (PHYSFS_isDirectory(fullPath.c_str()) != 0)
-#endif
 						{
-							deleteAll(fullPath.c_str());
+							deleteAll(fullPath.c_str(), true);
 						}
 						else
 						{
 							auto realDir = PHYSFS_getRealDir(fullPath.c_str());
-							if (realDir != NULL)
+							if (realDir != nullptr)
 							{
 								if (std::strcmp(writeDir, realDir) == 0)
 								{
@@ -63,8 +105,15 @@ namespace FileUtils
 				}
 				PHYSFS_freeList(paths);
 			}
+			if (deleteRoot == true)
+			{
+				ret = PHYSFS_delete(filePath) != 0;
+			}
 		}
-		ret = PHYSFS_delete(filePath) != 0;
+		else
+		{
+			ret = PHYSFS_delete(filePath) != 0;
+		}
 		return ret;
 	}
 
@@ -72,7 +121,7 @@ namespace FileUtils
 	{
 		auto writeDir = PHYSFS_getWriteDir();
 		auto realDir = PHYSFS_getRealDir(filePath);
-		if (writeDir != NULL && realDir != NULL)
+		if (writeDir != nullptr && realDir != nullptr)
 		{
 			if (strcmp(writeDir, realDir) == 0)
 			{
@@ -87,16 +136,14 @@ namespace FileUtils
 		return PHYSFS_exists(filePath) != 0;
 	}
 
-	std::vector<std::string> getFileList(const std::string& filePath, const std::string& fileExt)
+	std::vector<std::string> getFileList(const std::string& filePath, const std::string_view fileExt)
 	{
 		std::vector<std::string> vec;
 		auto files = PHYSFS_enumerateFiles(filePath.c_str());
-		if (files != NULL)
+		if (files != nullptr)
 		{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 			PHYSFS_Stat fileStat;
-#endif
-			for (char** file = files; *file != NULL; file++)
+			for (char** file = files; *file != nullptr; file++)
 			{
 				auto file2 = filePath + '/' + std::string(*file);
 
@@ -104,7 +151,6 @@ namespace FileUtils
 				{
 					continue;
 				}
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 				if (PHYSFS_stat(file2.c_str(), &fileStat) == 0)
 				{
 					continue;
@@ -113,56 +159,54 @@ namespace FileUtils
 				{
 					vec.push_back(file2);
 				}
-#else
-				if (PHYSFS_isDirectory(file2.c_str()) == 0)
-				{
-					vec.push_back(file2);
-				}
-#endif
 			}
 			PHYSFS_freeList(files);
 		}
 		return vec;
 	}
 
-	struct MatchPathSeparator
+	std::string getFileFromPath(const std::string_view path)
 	{
-		bool operator()(char ch) const noexcept
+		auto found = path.find_last_of("/\\");
+		if (found != std::string::npos)
 		{
-			return ch == '\\' || ch == '/';
+			return std::string(path.substr(found + 1));
 		}
-	};
-
-	std::string getFileFromPath(const std::string& path)
-	{
-		return std::string(std::find_if(path.rbegin(), path.rend(), MatchPathSeparator()).base(), path.end());
+		return std::string(path);
 	}
 
-	std::string getFileWithoutExt(const std::string& fileName)
+	std::string getFileWithoutExt(const std::string_view fileName)
 	{
 		auto pos = fileName.rfind(".");
 		if (pos == 0 || pos == std::string::npos)
 		{
-			return fileName;
+			return std::string(fileName);
 		}
-		return fileName.substr(0, pos);
+		return std::string(fileName.substr(0, pos));
+	}
+
+	std::string getPathFromFile(const std::string_view path)
+	{
+		auto found = path.find_last_of("/\\");
+		if (found != std::string::npos)
+		{
+			return std::string(path.substr(0, found));
+		}
+		return {};
 	}
 
 	std::vector<std::string> getSaveDirList()
 	{
 		std::vector<std::string> vecDirs;
 		auto dirs = PHYSFS_enumerateFiles("");
-		if (dirs != NULL)
+		if (dirs != nullptr)
 		{
 			auto writeDir = PHYSFS_getWriteDir();
-			if (writeDir != NULL)
+			if (writeDir != nullptr)
 			{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 				PHYSFS_Stat fileStat;
-#endif
-				for (char** dir = dirs; *dir != NULL; dir++)
+				for (char** dir = dirs; *dir != nullptr; dir++)
 				{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 					if (PHYSFS_stat(*dir, &fileStat) == 0)
 					{
 						continue;
@@ -171,14 +215,12 @@ namespace FileUtils
 					{
 						continue;
 					}
-#else
-					if (PHYSFS_isDirectory(*dir) == 0)
+					if (**dir == '.')
 					{
 						continue;
 					}
-#endif
 					auto realDir = PHYSFS_getRealDir(*dir);
-					if (realDir != NULL)
+					if (realDir != nullptr)
 					{
 						if (strcmp(writeDir, realDir) == 0)
 						{
@@ -232,48 +274,28 @@ namespace FileUtils
 #ifdef __ANDROID__
 		auto userDir = "data/data/com.dgengine/files/";
 #else
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
 		auto userDir = PHYSFS_getPrefDir("DGEngine", dirName);
-#else
-		auto userDir = PHYSFS_getUserDir();
 #endif
-#endif
-#if (__ANDROID__) || (!(PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1)))
-		if (PHYSFS_setWriteDir(userDir) != 0)
-		{
-			if (PHYSFS_mkdir(dirName) != 0)
-			{
-				auto writeDir = std::string(userDir) + dirName;
-				return PHYSFS_setWriteDir(writeDir.c_str()) != 0;
-			}
-		}
-		return false;
-#else
-		if (userDir == NULL)
+		if (userDir == nullptr)
 		{
 			return false;
 		}
 		return PHYSFS_setWriteDir(userDir) != 0;
-#endif
 	}
 
-	bool saveText(const char* filePath, const char* str, size_t strLen) noexcept
+	bool saveText(const std::string_view filePath, const std::string_view str) noexcept
 	{
-		auto file = PHYSFS_openWrite(filePath);
-		if (file != NULL)
+		auto path = getPathFromFile(filePath);
+		if (path.empty() == false)
 		{
-#if (PHYSFS_VER_MAJOR > 2 || (PHYSFS_VER_MAJOR == 2 && PHYSFS_VER_MINOR >= 1))
-			PHYSFS_writeBytes(file, str, strLen);
-#else
-			PHYSFS_write(file, str, 1, strLen);
-#endif
+			createDir(path.c_str());
+		}
+		auto file = PHYSFS_openWrite(filePath.data());
+		if (file != nullptr)
+		{
+			PHYSFS_writeBytes(file, str.data(), str.size());
 			return PHYSFS_close(file) != 0;
 		}
 		return false;
-	}
-
-	bool saveText(const char* filePath, const std::string& str) noexcept
-	{
-		return saveText(filePath, str.c_str(), str.size());
 	}
 }

@@ -1,0 +1,10 @@
+{
+  "level": {
+    "id": "level",
+    "path": "chamberBone",
+    "name": "Bone Chamber",
+    "map": { "file": "levels/l2data/bonecha1.dun", "defaultTile": 2 }
+  },
+  "load": "level/chamberBone/levelObjects2.json",
+  "load": "level/chamberBone/monsters2.json"
+}

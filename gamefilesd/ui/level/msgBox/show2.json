@@ -39,9 +39,7 @@
   ],
   "text": {
     "id": "textMsg",
-    "replaceVars": true,
-    "font": "smaltext",
-    "color": "%textGold%",
+    "font": "smaltextGold",
     "position": [322, 172],
     "anchor": "none",
     "horizontalAlign": "center",

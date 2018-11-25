@@ -4,119 +4,131 @@
 #include "Game/SimpleLevelObject.h"
 #include "Json/JsonParser.h"
 #include "SaveItem.h"
+#include "SaveUtils.h"
 
 using namespace rapidjson;
+using namespace SaveUtils;
 
-void Save::save(const std::string& filePath, const Level& level,
-	bool skipDefaults, bool skipCurrentPlayer)
+void Save::save(const std::string_view filePath, Properties& props,
+	const Game& game, const Level& level)
 {
 	StringBuffer buffer(0, std::numeric_limits<uint16_t>::max());
 	PrettyWriter<StringBuffer> writer(buffer);
 	writer.SetIndent(' ', 2);
 
-	serialize(&writer, level, skipDefaults, skipCurrentPlayer);
+	serialize(&writer, props, game, level);
 
-	FileUtils::saveText(filePath.c_str(), buffer.GetString(), buffer.GetSize());
+	FileUtils::saveText(filePath, { buffer.GetString(), buffer.GetSize() });
 }
 
-void Save::save(const std::string& filePath, const Level& level,
-	const LevelObject& obj, bool skipDefaults)
-{
-	StringBuffer buffer(0, std::numeric_limits<uint16_t>::max());
-	PrettyWriter<StringBuffer> writer(buffer);
-	writer.SetIndent(' ', 2);
-
-	writer.StartObject();
-	Variable var;
-	if (obj.getProperty("type", var) == true)
-	{
-		writer.Key(std::get<std::string>(var));
-	}
-	else
-	{
-		writer.Key("levelObject");
-	}
-	obj.serialize(&writer, level, skipDefaults);
-	writer.EndObject();
-
-	FileUtils::saveText(filePath.c_str(), buffer.GetString(), buffer.GetSize());
-}
-
-void Save::serialize(void* serializeObj, const Level& level,
-	bool skipDefaults, bool skipCurrentPlayer)
+void Save::serialize(void* serializeObj, Properties& props,
+	const Game& game, const Level& level)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
 
+	// root
 	writer.StartObject();
 
-	writer.Key("level");
+	writeKeyStringView(writer, "level");
+	// level
 	writer.StartObject();
 
-	writer.Key("id");
-	writer.String(level.id);
+	writeStringView(writer, "id", level.id);
+	writeStringView(writer, "name", level.name);
+	writeStringView(writer, "path", level.path);
 
-	writer.Key("name");
-	writer.String(level.name);
+	writeVector2d<MapCoord>(writer, "mapSize", level.map.MapSize());
 
-	writer.Key("path");
-	writer.String(level.path);
-
-	writer.Key("mapPosition");
+	writeKeyStringView(writer, "map");
+	// map
+	writer.StartObject();
+	writeKeyStringView(writer, "layers");
 	writer.StartArray();
-	writer.Int(level.map.MapSize().x);
-	writer.Int(level.map.MapSize().y);
+	for (size_t i = 0; i < LevelCell::NumberOfLayers; i++)
+	{
+		// layer
+		writer.StartObject();
+
+		writeInt(writer, "index", i);
+		writeInt(writer, "width", level.map.Width());
+		writeInt(writer, "height", level.map.Height());
+
+		writeKeyStringView(writer, "data");
+		writer.SetFormatOptions(PrettyFormatOptions::kFormatSingleLineArray);
+		writer.StartArray();
+		for (const auto& cell : level.map)
+		{
+			writer.Int(cell.getTileIndex(i));
+		}
+		writer.EndArray();
+		writer.SetFormatOptions(PrettyFormatOptions::kFormatDefault);
+
+		// layer
+		writer.EndObject();
+	}
 	writer.EndArray();
-
-	//writer.Key("map");
-	//writer.StartArray();
-	//for (const auto& cell : level.map)
-	//{
-	//	writer.Int(cell.TileIndexBack());
-	//}
-	//writer.EndArray();
-
+	// map
 	writer.EndObject();
 
-	writer.Key("item");
+	// level
+	writer.EndObject();
+
+	if (props.saveQuests == true)
+	{
+		writeKeyStringView(writer, "quest");
+		writer.StartArray();
+		for (const auto& quest : level.quests)
+		{
+			writer.StartObject();
+			writeString(writer, "id", quest.Id());
+			writeString(writer, "name", quest.Name());
+			writeInt(writer, "state", quest.State());
+			writer.EndObject();
+		}
+		writer.EndArray();
+	}
+
+	writeKeyStringView(writer, "item");
 	writer.StartArray();
 	for (const auto& obj : level.levelObjects)
 	{
 		auto item = dynamic_cast<Item*>(obj.get());
 		if (item != nullptr)
 		{
-			serialize(serializeObj, level, *item, skipDefaults);
+			serialize(serializeObj, props, game, level, *item);
 		}
 	}
 	writer.EndArray();
 
-	writer.Key("levelObject");
+	writeKeyStringView(writer, "levelObject");
 	writer.StartArray();
 	for (const auto& obj : level.levelObjects)
 	{
 		auto levelObj = dynamic_cast<SimpleLevelObject*>(obj.get());
 		if (levelObj != nullptr)
 		{
-			serialize(serializeObj, level, *levelObj, skipDefaults);
+			serialize(serializeObj, props, game, level, *levelObj);
 		}
 	}
 	writer.EndArray();
 
-	writer.Key("player");
+	writeKeyStringView(writer, "player");
 	writer.StartArray();
 	for (const auto& obj : level.players)
 	{
 		auto player = obj.get();
 		if (player != nullptr)
 		{
-			if (skipCurrentPlayer == true &&
+			if (props.saveCurrentPlayer == false &&
 				player == level.getCurrentPlayer())
 			{
 				continue;
 			}
-			serialize(serializeObj, level, *player, skipDefaults);
+			serialize(serializeObj, props, game, level, *player);
 		}
 	}
 	writer.EndArray();
 
+	// root
 	writer.EndObject();
 }

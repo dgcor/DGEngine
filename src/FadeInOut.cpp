@@ -49,9 +49,9 @@ void FadeInOut::update(Game& game) noexcept
 
 	currentTime += game.getElapsedTime();
 
-	if (currentTime >= frameTime)
+	while (currentTime >= frameTime)
 	{
-		currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
+		currentTime -= frameTime;
 
 		auto color = getFillColor();
 
@@ -66,6 +66,7 @@ void FadeInOut::update(Game& game) noexcept
 				game.EnableInput(true);
 			}
 			game.setFadeInOut(nullptr);
+			return;
 		}
 		else
 		{

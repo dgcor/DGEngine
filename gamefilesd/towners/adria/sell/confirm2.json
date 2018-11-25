@@ -32,7 +32,6 @@
   "text": [
     {
       "id": "itemInfo",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [52, 130],
       "anchor": "none",
@@ -41,7 +40,6 @@
     },
     {
       "id": "itemPrice",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [571, 130],
       "anchor": "none",
@@ -71,7 +69,11 @@
       "horizontalSpaceOffset": 1,
       "text": "Yes",
       "onClick": [
-        { "name": "player.addGold", "gold": "|currentLevel|currentPlayer.item.{1}.{2}.prices.sell|" },
+        {
+          "name": "player.addItemQuantity",
+          "itemClass": "gold",
+          "value": "%currentLevel.currentPlayer.item.{1}.{2}.prices.sell%"
+        },
         { "name": "item.delete", "inventory": {1}, "item": {2} },
         "updateBeltItems",
         { "name": "resource.popAll", "id": "userPanelSell" },
@@ -102,7 +104,7 @@
   ],
   "load": ["towners/common/setItemInfo.json", "hero", "{1}", "{2}"],
   "load": ["towners/common/setPriceInfo.json", "hero", "{1}", "{2}",
-           "|currentLevel|currentPlayer.item.{1}.{2}.prices.sell|"],
+           "%currentLevel.currentPlayer.item.{1}.{2}.prices.sell%"],
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram"

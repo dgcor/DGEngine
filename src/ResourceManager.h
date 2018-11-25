@@ -9,16 +9,15 @@
 #include "ImageContainers/ImageContainer.h"
 #include <list>
 #include <memory>
-#include "Music2.h"
-#include "MusicLoops.h"
 #include "Palette.h"
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "SFML/Music2.h"
+#include "SFML/MusicLoops.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "UIObject.h"
 #include <unordered_map>
-#include <unordered_set>
 #include "Utils/ReverseIterable.h"
 #include <vector>
 
@@ -51,6 +50,7 @@ struct ResourceBundle
 
 	IgnoreResource ignore{ IgnoreResource::None };
 	std::string id;
+	std::shared_ptr<Action> anyKeyAction;
 	std::unordered_map<std::string, std::shared_ptr<Action>> actions;
 	std::unordered_map<sf::Event::KeyEvent, std::shared_ptr<Action>, CompareKeyEvent, CompareKeyEvent> keyboardActions;
 	std::unordered_map<std::string, Font> fonts;
@@ -61,8 +61,8 @@ struct ResourceBundle
 	std::unordered_map<std::string, std::shared_ptr<ImageContainer>> imageContainers;
 	std::unordered_map<std::string, std::shared_ptr<TexturePack>> texturePacks;
 
-	std::unordered_set<std::string> drawableIds;
-	std::vector<std::pair<std::string, std::shared_ptr<UIObject>>> drawables;
+	std::unordered_map<std::string, std::shared_ptr<UIObject>> drawableIds;
+	std::vector<UIObject*> drawables;
 	std::vector<std::shared_ptr<Button>> focusButtons;
 	size_t focusIdx{ 0 };
 };
@@ -143,7 +143,8 @@ public:
 	void popAllResources(bool popBaseResources);
 	void ignoreResources(const std::string& id, IgnoreResource ignore) noexcept;
 	void ignoreTopResource(IgnoreResource ignore);
-	bool resourceExists(const std::string& id) const noexcept;
+	bool resourceExists(const std::string_view id) const noexcept;
+	void moveResourceToTop(const std::string& id);
 
 	Image* getCursor() const;
 	Level* getCurrentLevel() const noexcept { return currentLevel; }
@@ -163,47 +164,30 @@ public:
 	void setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj);
 	void setAction(const std::string& key, const std::shared_ptr<Action>& obj);
 
-	bool addFont(const std::string& key, const Font& obj)
-	{
-		return addFont(resources.back(), key, obj);
-	}
-	bool addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj)
-	{
-		return addTexture(resources.back(), key, obj);
-	}
-	bool addAudioSource(const std::string& key, const AudioSource& obj)
-	{
-		return addAudioSource(resources.back(), key, obj);
-	}
-	bool addSong(const std::string& key, const std::shared_ptr<sf::Music2>& obj)
-	{
-		return addSong(resources.back(), key, obj);
-	}
-	bool addPalette(const std::string& key, const std::shared_ptr<Palette>& obj)
-	{
-		return addPalette(resources.back(), key, obj);
-	}
-	bool addImageContainer(const std::string& key, const std::shared_ptr<ImageContainer>& obj)
-	{
-		return addImageContainer(resources.back(), key, obj);
-	}
-	bool addTexturePack(const std::string& key, const std::shared_ptr<TexturePack>& obj)
-	{
-		return addTexturePack(resources.back(), key, obj);
-	}
+	bool addFont(const std::string& key, const Font& obj,
+		const std::string_view resourceId = {});
+	bool addTexture(const std::string& key, const std::shared_ptr<sf::Texture>& obj,
+		const std::string_view resourceId = {});
+	bool addAudioSource(const std::string& key, const AudioSource& obj,
+		const std::string_view resourceId = {});
+	bool addSong(const std::string& key, const std::shared_ptr<sf::Music2>& obj,
+		const std::string_view resourceId = {});
+	bool addPalette(const std::string& key, const std::shared_ptr<Palette>& obj,
+		const std::string_view resourceId = {});
+	bool addImageContainer(const std::string& key, const std::shared_ptr<ImageContainer>& obj,
+		const std::string_view resourceId = {});
+	bool addTexturePack(const std::string& key, const std::shared_ptr<TexturePack>& obj,
+		const std::string_view resourceId = {});
 
-	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj)
-	{
-		return addDrawable(resources.back(), key, obj);
-	}
-	void addDrawable(const std::string& resourceId,
-		const std::string& key, const std::shared_ptr<UIObject>& obj);
+	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj,
+		const std::string_view resourceId = {});
 
 	void addPlayingSound(const sf::Sound& obj, bool unique = false);
 
 	void clearFinishedSounds();
 	void clearPlayingSounds() noexcept { playingSounds.clear(); }
 
+	// if a sf::Keyboard::KeyCount key exists, any key will return this action.
 	std::shared_ptr<Action> getKeyboardAction(const sf::Event::KeyEvent& key) const;
 	std::shared_ptr<Action> getAction(const std::string& key) const;
 	Font getFont(const std::string& key) const;
@@ -215,6 +199,9 @@ public:
 	std::shared_ptr<ImageContainer> getImageContainer(const std::string& key) const;
 	std::shared_ptr<TexturePack> getTexturePack(const std::string& key) const;
 
+	bool hasFont(const std::string& key) const;
+	bool hasTexture(const std::string& key) const;
+	bool hasAudioSource(const std::string& key) const;
 	bool hasSong(const std::string& key, bool checkTopOnly = false) const;
 	bool hasPalette(const std::string& key) const;
 	bool hasImageContainer(const std::string& key) const;
@@ -229,12 +216,10 @@ public:
 	{
 		for (const auto& res : reverse(resources))
 		{
-			for (const auto& elem : res.drawables)
+			auto it = res.drawableIds.find(key);
+			if (it != res.drawableIds.cend())
 			{
-				if (elem.first == key)
-				{
-					return dynamic_cast<T*>(elem.second.get());
-				}
+				return dynamic_cast<T*>(it->second.get());
 			}
 		}
 		return nullptr;
@@ -245,12 +230,10 @@ public:
 	{
 		for (const auto& res : reverse(resources))
 		{
-			for (const auto& elem : res.drawables)
+			auto it = res.drawableIds.find(key);
+			if (it != res.drawableIds.cend())
 			{
-				if (elem.first == key)
-				{
-					return std::dynamic_pointer_cast<T>(elem.second);
-				}
+				return std::dynamic_pointer_cast<T>(it->second);
 			}
 		}
 		return nullptr;

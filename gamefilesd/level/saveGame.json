@@ -1,0 +1,51 @@
+{
+  "action": [
+    {
+      "name": "level.save",
+      "file": "%tempDir%/level/%currentLevel.path%/level2.json",
+      "saveCurrentPlayer": true,
+      "saveQuests": true
+    },
+    {
+      "name": "file.copy",
+      "dir": "%tempDir%/level",
+      "writeFile": "loadGame2.json",
+      "file": [
+        "level/loadGame2Template.json",
+        "%currentLevel.path%",
+        "%charName%"
+      ]
+    },
+    {
+      "name": "file.copy",
+      "dir": "%tempDir%/level",
+      "writeFile": "loadCurrentSave.json",
+      "file": [
+        "level/loadCurrentSaveTemplate.json",
+        "%currentLevel.path%",
+        "%charName%"
+      ]
+    },
+    {
+      "name": "file.copy",
+      "dir": "%tempDir%/level",
+      "writeFile": "showMap.json",
+      "file": [
+        "level/showMapTemplate.json",
+        "%currentLevel.showAutomap%",
+        "%automapZoom%"
+      ]
+    },
+    {
+      "name": "io.deleteAll",
+      "file": "%charName%/level",
+      "deleteRoot": false
+    },
+    {
+      "name": "dir.copy",
+      "source": "%tempDir%/level",
+      "destination": "%charName%/level"
+    },
+    { "name": "load", "file": "level/player/saveInfo.json" }
+  ]
+}

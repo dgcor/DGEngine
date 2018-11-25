@@ -1,0 +1,6 @@
+{
+  "load": "level/town/playerCelFiles.json",
+  "load": "level/town/playerCelFileshf.json",
+  "load": "level/town/playerClasses.json",
+  "load": "level/town/playerClasseshf.json"
+}

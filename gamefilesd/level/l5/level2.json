@@ -1,0 +1,16 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l5",
+    "name": "5",
+    "map": { "file": "level/l5/l5.json", "indexOffset": -1, "defaultTile": 2 }
+  },
+  "load": "level/l5/levelObjects2.json",
+  "load": "level/l5/monsters2.json",
+  "load": ["level/town/loadPassages.json", "true", "false", "false"],
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 96, "", "playAudio", "currentLevel"] }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "load": [
+    "ui/level/showText.json",
+    "questText",
+    "50",
+    "texts/ogden/quests/ogdenInit.txt"
+  ],
+  "audio": {
+    "file": "sfx/Towners/Tavown00.wav",
+    "play": true,
+    "volume": "%game.soundVolume%"
+  }
+}

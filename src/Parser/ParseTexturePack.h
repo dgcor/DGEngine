@@ -5,11 +5,14 @@
 
 namespace Parser
 {
+	std::shared_ptr<BitmapFontTexturePack> parseBitmapFontTexturePackObj(
+		Game& game, const rapidjson::Value& elem);
+
+	std::shared_ptr<TexturePack> parseTexturePackObj(Game& game, const rapidjson::Value& elem);
+
 	void parseTexturePack(Game& game, const rapidjson::Value& elem);
 
-	void getOrParseLevelTexturePack(Game& game, const rapidjson::Value& elem,
-		const char* idKeyBottom, const char* idKeyTop,
-		std::shared_ptr<TexturePack>& texturePackBottom,
-		std::shared_ptr<TexturePack>& texturePackTop,
+	bool getOrParseLevelTexturePack(Game& game, const rapidjson::Value& elem,
+		const char* idKeyLayers, std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
 		std::pair<uint32_t, uint32_t>& tileSize);
 }

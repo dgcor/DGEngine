@@ -1,6 +1,7 @@
 #include "ParseFont.h"
 #include "FileUtils.h"
 #include "Palette.h"
+#include "ParseAction.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -20,7 +21,7 @@ namespace Parser
 					auto obj = game.Resources().getPalette(fromId);
 					if (obj != nullptr)
 					{
-						game.Resources().addPalette(id, obj);
+						game.Resources().addPalette(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -36,66 +37,94 @@ namespace Parser
 			return;
 		}
 
-		if (isValidString(elem, "file") == true)
+		try
 		{
-			std::string file(elem["file"].GetString());
 			std::string id;
+			std::shared_ptr<Palette> palette;
 
-			if (isValidString(elem, "id") == true)
+			if (isValidString(elem, "file") == true)
 			{
+				auto file = getStringViewVal(elem["file"]);
+
+				if (isValidString(elem, "id") == true)
+				{
+					id = elem["id"].GetString();
+				}
+				else if (getIdFromFile(file, id) == false)
+				{
+					return;
+				}
+				if (isValidId(id) == false)
+				{
+					return;
+				}
+				if (game.Resources().hasPalette(id) == true)
+				{
+					return;
+				}
+
+				palette = std::make_shared<Palette>(file);
+			}
+			else if (isValidString(elem, "palette") == true
+				&& isValidString(elem, "trnFile") == true)
+			{
+				auto file = getStringViewVal(elem["trnFile"]);
+
+				if (isValidString(elem, "id") == true)
+				{
+					id = elem["id"].GetString();
+				}
+				else if (getIdFromFile(file, id) == false)
+				{
+					return;
+				}
+				if (isValidId(id) == false)
+				{
+					return;
+				}
+				if (game.Resources().hasPalette(id) == true)
+				{
+					return;
+				}
+
+				auto refPalette = game.Resources().getPalette(elem["palette"].GetString());
+				if (refPalette == nullptr)
+				{
+					return;
+				}
+				auto trnFile = FileUtils::readChar(file.data());
+				if (trnFile.size() < 256)
+				{
+					return;
+				}
+				palette = std::make_shared<Palette>(*refPalette.get(), trnFile);
+			}
+			else if (isValidString(elem, "clone") == true)
+			{
+				if (isValidString(elem, "id") == false)
+				{
+					return;
+				}
+				std::string clone(elem["clone"].GetString());
 				id = elem["id"].GetString();
+				if (clone == id || isValidId(id) == false)
+				{
+					return;
+				}
+				auto obj = game.Resources().getPalette(clone);
+				if (obj == nullptr)
+				{
+					return;
+				}
+				palette = std::make_shared<Palette>(*obj);
 			}
-			else if (getIdFromFile(file, id) == false)
-			{
-				return;
-			}
-			if (isValidId(id) == false)
-			{
-				return;
-			}
-			if (game.Resources().hasPalette(id) == true)
+			else
 			{
 				return;
 			}
 
-			auto palette = std::make_shared<Palette>(file);
-			game.Resources().addPalette(id, palette);
+			game.Resources().addPalette(id, palette, getStringViewKey(elem, "resource"));
 		}
-		else if (isValidString(elem, "palette") == true
-			&& isValidString(elem, "trnFile") == true)
-		{
-			std::string file(elem["trnFile"].GetString());
-			std::string id;
-
-			if (isValidString(elem, "id") == true)
-			{
-				id = elem["id"].GetString();
-			}
-			else if (getIdFromFile(file, id) == false)
-			{
-				return;
-			}
-			if (isValidId(id) == false)
-			{
-				return;
-			}
-			if (game.Resources().hasPalette(id) == true)
-			{
-				return;
-			}
-
-			auto refPalette = game.Resources().getPalette(elem["palette"].GetString());
-			if (refPalette == nullptr)
-			{
-				return;
-			}
-			auto trnFile = FileUtils::readChar(file.c_str());
-			if (trnFile.size() < 256)
-			{
-				return;
-			}
-			auto palette = std::make_shared<Palette>(*refPalette.get(), trnFile);
-			game.Resources().addPalette(id, palette);
-		}
+		catch (std::exception ex) {}
 	}
 }

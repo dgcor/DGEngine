@@ -9,19 +9,20 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	std::shared_ptr<ImageContainer> parseImageContainerObj(Game& game, const Value& elem)
+	std::shared_ptr<ImageContainer> parseImageContainerObj(Game& game,
+		const Value& elem, const char* fileElem)
 	{
-		if (isValidString(elem, "file") == false)
+		if (isValidString(elem, fileElem) == false)
 		{
 			return nullptr;
 		}
 
-		std::string fileName = elem["file"].GetString();
+		auto fileName = getStringViewVal(elem[fileElem]);
 		auto fileNameLower = Utils::toLower(fileName);
 
-		if (Utils::endsWith(fileNameLower, "cel") == true)
+		if (Utils::endsWith(fileNameLower, ".cel") == true)
 		{
-			auto imgContainer = std::make_shared<CelImageContainer>(fileName.c_str());
+			auto imgContainer = std::make_shared<CelImageContainer>(fileName);
 
 			if (imgContainer->size() == 0)
 			{
@@ -29,9 +30,9 @@ namespace Parser
 			}
 			return imgContainer;
 		}
-		else if (Utils::endsWith(fileNameLower, "cl2") == true)
+		else if (Utils::endsWith(fileNameLower, ".cl2") == true)
 		{
-			auto imgContainer = std::make_shared<Cl2ImageContainer>(fileName.c_str());
+			auto imgContainer = std::make_shared<Cl2ImageContainer>(fileName);
 
 			if (imgContainer->size() == 0)
 			{
@@ -67,7 +68,7 @@ namespace Parser
 					auto obj = game.Resources().getImageContainer(fromId);
 					if (obj != nullptr)
 					{
-						game.Resources().addImageContainer(id, obj);
+						game.Resources().addImageContainer(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -93,7 +94,7 @@ namespace Parser
 			{
 				return;
 			}
-			std::string file(elem["file"].GetString());
+			auto file = getStringViewVal(elem["file"]);
 			if (getIdFromFile(file, id) == false)
 			{
 				return;
@@ -112,11 +113,12 @@ namespace Parser
 		{
 			return;
 		}
-		game.Resources().addImageContainer(id, imgRes);
+		game.Resources().addImageContainer(id, imgRes, getStringViewKey(elem, "resource"));
 	}
 
 	bool getOrParseImageContainer(Game& game, const Value& elem,
-		const char* idKey, std::shared_ptr<ImageContainer>& imgContainer)
+		const char* idKey, std::shared_ptr<ImageContainer>& imgContainer,
+		const char* fileElem)
 	{
 		if (isValidString(elem, idKey) == true)
 		{
@@ -126,17 +128,17 @@ namespace Parser
 			{
 				return true;
 			}
-			imgContainer = parseImageContainerObj(game, elem);
+			imgContainer = parseImageContainerObj(game, elem, fileElem);
 			if (isValidId(id) == true &&
 				imgContainer != nullptr)
 			{
-				game.Resources().addImageContainer(id, imgContainer);
+				game.Resources().addImageContainer(id, imgContainer, getStringViewKey(elem, "resource"));
 				return true;
 			}
 		}
 		else
 		{
-			imgContainer = parseImageContainerObj(game, elem);
+			imgContainer = parseImageContainerObj(game, elem, fileElem);
 		}
 		return false;
 	}

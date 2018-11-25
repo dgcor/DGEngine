@@ -4,6 +4,73 @@
 #include "Game.h"
 #include "Game/LevelObject.h"
 
+class ActLevelObjDelete : public Action
+{
+private:
+	std::string idLevel;
+	std::string idObject;
+
+public:
+	ActLevelObjDelete(const std::string& idLevel_, const std::string& idObject_)
+		: idLevel(idLevel_), idObject(idObject_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			level->deleteLevelObjectById(idObject);
+		}
+		return true;
+	}
+};
+
+class ActLevelObjDeleteByClass : public Action
+{
+private:
+	std::string idLevel;
+	std::string idClass;
+
+public:
+	ActLevelObjDeleteByClass(const std::string& idLevel_, const std::string& idClass_)
+		: idLevel(idLevel_), idClass(idClass_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			level->deleteLevelObjectByClass(idClass);
+		}
+		return true;
+	}
+};
+
+class ActLevelObjExecuteAction : public Action
+{
+private:
+	std::string idLevel;
+	std::string idObject;
+
+public:
+	ActLevelObjExecuteAction(const std::string& idLevel_,
+		const std::string& idObject_) : idLevel(idLevel_), idObject(idObject_) {}
+
+	virtual bool execute(Game& game) noexcept
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto obj = level->getLevelObject(idObject);
+			if (obj != nullptr)
+			{
+				obj->executeAction(game);
+			}
+		}
+		return true;
+	}
+};
+
 class ActLevelObjSetOutline : public Action
 {
 private:

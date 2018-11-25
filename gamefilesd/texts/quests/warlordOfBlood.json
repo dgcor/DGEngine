@@ -5,10 +5,5 @@
     "50",
     "texts/quests/warlordOfBlood.txt"
   ],
-  "load": [
-    "res/player/sound/load.json",
-    "|currentLevel|currentPlayer.class|",
-    12,
-    "playAudio"
-  ]
+  "load": ["res/player/sound/load.json", 12, "", "playAudio", ""]
 }

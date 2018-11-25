@@ -7,6 +7,19 @@ bool BaseLevelObject::hasValidState() const noexcept
 	return (texturePack != nullptr);
 }
 
+bool BaseLevelObject::getTexture(TextureInfo& ti) const
+{
+	if (sprite.getTexture() != nullptr)
+	{
+		ti.texture = sprite.getTexture();
+		ti.textureRect = sprite.getTextureRect();
+		ti.offset = {};
+		ti.palette = sprite.getPalette();
+		return true;
+	}
+	return false;
+}
+
 void BaseLevelObject::updateDrawPosition(const Level& level)
 {
 	updateDrawPosition(level, level.Map().getCoord(mapPosition));
@@ -124,9 +137,8 @@ bool BaseLevelObject::updateTexture()
 	TextureInfo ti;
 	if (texturePack->get(animation.currentTextureIdx, ti) == true)
 	{
+		sprite.setTexture(ti, true);
 		offset = ti.offset;
-		sprite.setTexture(*ti.texture, false);
-		sprite.setTextureRect(ti.textureRect);
 		return true;
 	}
 	return false;
@@ -140,7 +152,7 @@ void BaseLevelObject::queueAction(const std::shared_ptr<Action>& action)
 	}
 }
 
-void BaseLevelObject::queueAction(const BaseClass& class_, uint16_t nameHash16)
+void BaseLevelObject::queueAction(const BaseClassActions& class_, uint16_t nameHash16)
 {
 	auto action = class_.getAction(nameHash16);
 	queueAction(action);

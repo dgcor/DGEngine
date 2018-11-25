@@ -8,8 +8,8 @@
     "param2": true,
     "then": {
       "name": ">=",
-      "param1": "|currentLevel|currentPlayer.gold|",
-      "param2": "|currentLevel|player.griswold.item.{1}.{2}.price|",
+      "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
+      "param2": "%currentLevel.player.griswold.item.{1}.{2}.price%",
       "then": {
         "name": "load",
         "file": [ "towners/griswold/buy/confirm2.json", "{1}", "{2}" ]

@@ -1,7 +1,7 @@
 #include "SimpleImageContainer.h"
 #include "ImageUtils.h"
 
-SimpleImageContainer::SimpleImageContainer(const std::string& fileName, size_t xFrames_,
+SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, size_t xFrames_,
 	size_t yFrames_, bool horizontalDirection_, const sf::Color& transparencyMask)
 	: horizontalDirection(horizontalDirection_)
 {

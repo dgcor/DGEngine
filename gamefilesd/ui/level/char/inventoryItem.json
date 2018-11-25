@@ -5,7 +5,7 @@
     "replaceVars": true,
     "texture": "empty",
     "textureRect": [28, 28],
-    "outline": "%outlineItemInv%",
+    "outline": "|outlineItemInv|",
     "outlineIgnore": "0x000000",
     "anchor": "right",
     "relativeCoords": false,

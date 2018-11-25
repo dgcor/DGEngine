@@ -1,0 +1,41 @@
+{ "backgroundcolor":"#000000",
+ "height":2,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[1175, 1176, 1177, 1178],
+         "height":2,
+         "id":1,
+         "name":"Tile Layer 1",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":2,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":2,
+ "nextobjectid":1,
+ "orientation":"isometric",
+ "renderorder":"right-down",
+ "tiledversion":"1.2.0",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":71,
+         "firstgid":1,
+         "image":"town.png",
+         "imageheight":4608,
+         "imagewidth":4544,
+         "margin":0,
+         "name":"town",
+         "spacing":0,
+         "tilecount":1278,
+         "tileheight":256,
+         "tilewidth":64
+        }],
+ "tilewidth":64,
+ "type":"map",
+ "version":1.2,
+ "width":2
+}

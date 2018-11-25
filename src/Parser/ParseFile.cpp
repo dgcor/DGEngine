@@ -2,6 +2,7 @@
 
 #include <cstdarg>
 #include "FileUtils.h"
+#include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "ParseAction.h"
 #include "ParseAnimation.h"
@@ -28,14 +29,16 @@
 #include "ParseText.h"
 #include "ParseTexture.h"
 #include "ParseTexturePack.h"
+#include "Parser/Game/ParseClassifier.h"
 #include "Parser/Game/ParseItem.h"
 #include "Parser/Game/ParseItemClass.h"
 #include "Parser/Game/ParseLevel.h"
 #include "Parser/Game/ParseLevelObject.h"
-#include "Parser/Game/ParseNamer.h"
+#include "Parser/Game/ParseLevelObjectClass.h"
 #include "Parser/Game/ParsePlayer.h"
 #include "Parser/Game/ParsePlayerClass.h"
 #include "Parser/Game/ParseQuest.h"
+#include "Parser/Game/ParseSpellClass.h"
 #include "PhysFSStream.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -50,14 +53,14 @@ namespace Parser
 	void parseDocumentElemHelper(Game& game, uint16_t nameHash16, const Value& elem,
 		ReplaceVars& replaceVars, MemoryPoolAllocator<CrtAllocator>& allocator);
 
-	void parseFile(Game& game, const std::string& fileName)
+	void parseFile(Game& game, const std::string_view fileName)
 	{
 		if (fileName == "null")
 		{
 			return;
 		}
 
-		parseJson(game, FileUtils::readText(fileName.c_str()));
+		parseJson(game, FileUtils::readText(fileName.data()));
 	}
 
 	void parseFile(Game& game, const std::vector<std::string>& params)
@@ -67,7 +70,7 @@ namespace Parser
 			return;
 		}
 
-		auto fileName = params[0];
+		auto fileName = GameUtils::replaceStringWithVarOrProp(params[0], game);
 		if (fileName == "null")
 		{
 			return;
@@ -76,8 +79,8 @@ namespace Parser
 		auto json = FileUtils::readText(fileName.c_str());
 		for (size_t i = 1; i < params.size(); i++)
 		{
-			auto param = game.getVarOrPropString(params[i]);
-			Utils::replaceStringInPlace(json, "{" + std::to_string(i) + "}", param);
+			auto param = GameUtils::replaceStringWithVarOrProp(params[i], game);
+			Utils::replaceStringInPlace(json, "{" + Utils::toString(i) + "}", param);
 		}
 		parseJson(game, json);
 	}
@@ -93,7 +96,9 @@ namespace Parser
 			return;
 		}
 
-		auto fileName = getStringIdx(params, 0);
+		auto fileName = GameUtils::replaceStringWithVarOrProp(
+			getStringViewIdx(params, 0), game
+		);
 		if (fileName == "null")
 		{
 			return;
@@ -102,13 +107,13 @@ namespace Parser
 		auto json = FileUtils::readText(fileName.c_str());
 		for (size_t i = 1; i < params.Size(); i++)
 		{
-			auto param = game.getVarOrPropString(getStringVal(params[i]));
-			Utils::replaceStringInPlace(json, "{" + std::to_string(i) + "}", param);
+			auto param = GameUtils::replaceStringWithVarOrProp(getStringVal(params[i]), game);
+			Utils::replaceStringInPlace(json, "{" + Utils::toString(i) + "}", param);
 		}
 		parseJson(game, json);
 	}
 
-	void parseJson(Game& game, const std::string& json)
+	void parseJson(Game& game, const std::string_view json)
 	{
 		Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
 
@@ -126,7 +131,7 @@ namespace Parser
 		MemoryPoolAllocator<CrtAllocator> allocator;
 		for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it)
 		{
-			parseDocumentElemHelper(game, str2int16(it->name.GetString()),
+			parseDocumentElemHelper(game, str2int16(getStringViewVal(it->name)),
 				it->value, replaceVars, allocator);
 		}
 	}
@@ -134,16 +139,19 @@ namespace Parser
 	void parseDocumentElemHelper(Game& game, uint16_t nameHash16, const Value& elem,
 		ReplaceVars& replaceVars, MemoryPoolAllocator<CrtAllocator>& allocator)
 	{
-		bool replaceVarsInElem = false;
+		auto replaceVarsInElem = replaceVars;
+		bool changeValueType = replaceVars == ReplaceVars::Value;
 		if (elem.IsObject() == true)
 		{
-			replaceVarsInElem = getBoolKey(elem, "replaceVars");
+			replaceVarsInElem = getReplaceVarsKey(elem, "replaceVars", replaceVarsInElem);
+			changeValueType = replaceVarsInElem == ReplaceVars::Value;
 		}
-		if (replaceVars != ReplaceVars::None || replaceVarsInElem == true)
+		if (replaceVarsInElem != ReplaceVars::None)
 		{
 			Value elemCopy(elem, allocator);
+			// if replaceVars is enabled, replace strings between | instead of %
 			JsonUtils::replaceValueWithGameVar(
-				elemCopy, allocator, game, replaceVars == ReplaceVars::Value);
+				elemCopy, allocator, game, changeValueType, '|');
 			parseDocumentElem(game, nameHash16, elemCopy, replaceVars, allocator);
 		}
 		else
@@ -360,6 +368,17 @@ namespace Parser
 			}
 			break;
 		}
+		case str2int16("levelObjectClass"): {
+			if (elem.IsArray() == false) {
+				parseLevelObjectClass(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
 		case str2int16("load"): {
 			if (elem.IsString()) {
 				parseFile(game, elem.GetString());
@@ -411,9 +430,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("namer"): {
+		case str2int16("classifier"): {
 			if (elem.IsArray() == false) {
-				parseNamer(game, elem);
+				parseClassifier(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -490,7 +509,7 @@ namespace Parser
 			auto saveDir = getStringVal(elem);
 			if (saveDir.size() > 0 && FileUtils::setSaveDir(saveDir.c_str()) == true)
 			{
-				PHYSFS_mount(PHYSFS_getWriteDir(), NULL, 0);
+				PHYSFS_mount(PHYSFS_getWriteDir(), nullptr, 0);
 			}
 			break;
 		}
@@ -512,6 +531,17 @@ namespace Parser
 		case str2int16("sound"): {
 			if (elem.IsArray() == false) {
 				parseSound(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("spellClass"): {
+			if (elem.IsArray() == false) {
+				parseSpellClass(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

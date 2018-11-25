@@ -160,5 +160,5 @@ public:
 
 	virtual void update(Game& game);
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

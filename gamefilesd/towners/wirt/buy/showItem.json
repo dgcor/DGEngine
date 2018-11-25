@@ -6,14 +6,14 @@
     { "name": "load", "file": "ui/level/panel/big.json" },
     {
       "name": "if.equal",
-      "param1": "|currentLevel|player.wirt.hasItem.0.0|",
+      "param1": "%currentLevel.player.wirt.hasItem.0.0%",
       "param2": true,
       "then": {
         "name": ">=",
-        "param1": "|currentLevel|currentPlayer.gold|",
+        "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "param2": "%WirtSeePrice%",
         "then": [
-          { "name": "player.removeGold", "gold": "%WirtSeePrice%" },
+          { "name": "player.removeItemQuantity", "itemClass": "gold", "value": "%WirtSeePrice%" },
           { "name": "load", "file": "towners/wirt/buy/common.json" },
           { "name": "load", "file": "towners/wirt/buy/panel.json" }
         ],

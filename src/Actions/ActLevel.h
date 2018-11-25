@@ -84,6 +84,25 @@ public:
 	}
 };
 
+class ActLevelClearQuests : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActLevelClearQuests(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearQuests();
+		}
+		return true;
+	}
+};
+
 class ActLevelMove : public Action
 {
 private:
@@ -173,21 +192,139 @@ class ActLevelSave : public Action
 private:
 	std::string id;
 	std::string file;
-	bool skipDefaults;
-	bool skipCurrentPlayer;
+	bool saveDefaults;
+	bool saveCurrentPlayer;
+	bool saveQuests;
 
 public:
 	ActLevelSave(const std::string& id_, const std::string& file_,
-		bool skipDefaults_, bool skipCurrentPlayer_)
-		: id(id_), file(file_), skipDefaults(skipDefaults_),
-		skipCurrentPlayer(skipCurrentPlayer_) {}
+		bool saveDefaults_, bool saveCurrentPlayer_, bool saveQuests_)
+		: id(id_), file(file_), saveDefaults(saveDefaults_),
+		saveCurrentPlayer(saveCurrentPlayer_), saveQuests(saveQuests_) {}
 
 	virtual bool execute(Game& game) noexcept
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->save(file, skipDefaults, skipCurrentPlayer);
+			Save::Properties props;
+			props.saveDefaults = saveDefaults;
+			props.saveCurrentPlayer = saveCurrentPlayer;
+			props.saveQuests = saveQuests;
+
+			level->save(GameUtils::replaceStringWithVarOrProp(file, game).c_str(),
+				props, game);
+		}
+		return true;
+	}
+};
+
+class ActLevelSetAutomap : public Action
+{
+private:
+	std::string id;
+	std::string idTexturePack;
+	std::pair<uint32_t, uint32_t> tileSize;
+
+public:
+	ActLevelSetAutomap(const std::string& id_, const std::string& idTexturePack_,
+		const std::pair<uint32_t, uint32_t>& tileSize_) : id(id_),
+		idTexturePack(idTexturePack_), tileSize(tileSize_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			auto automap = game.Resources().getTexturePack(idTexturePack);
+			if (automap != nullptr)
+			{
+				level->setAutomap(automap, tileSize.first, tileSize.second);
+			}
+		}
+		return true;
+	}
+};
+
+class ActLevelSetAutomapBackground : public Action
+{
+private:
+	std::string id;
+	sf::Color background;
+
+public:
+	ActLevelSetAutomapBackground(const std::string& id_, const sf::Color color_)
+		: id(id_), background(color_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->setAutomapBackgroundColor(background);
+		}
+		return true;
+	}
+};
+
+class ActLevelSetAutomapPosition : public Action
+{
+private:
+	std::string id;
+	sf::Vector2i position;
+
+public:
+	ActLevelSetAutomapPosition(const std::string& id_, const sf::Vector2i& position_)
+		: id(id_), position(position_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->setAutomapRelativePosition(position);
+		}
+		return true;
+	}
+};
+
+class ActLevelSetAutomapSize : public Action
+{
+private:
+	std::string id;
+	sf::Vector2i size;
+
+public:
+	ActLevelSetAutomapSize(const std::string& id_, const sf::Vector2i& size_)
+		: id(id_), size(size_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->setAutomapRelativeSize(size);
+		}
+		return true;
+	}
+};
+
+class ActLevelShowAutomap : public Action
+{
+private:
+	std::string id;
+	bool show;
+
+public:
+	ActLevelShowAutomap(const std::string& id_, bool show_)
+		: id(id_), show(show_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->ShowAutomap(show);
 		}
 		return true;
 	}

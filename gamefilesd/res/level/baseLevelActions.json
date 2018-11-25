@@ -5,7 +5,7 @@
       "id": "levelLeftClickAction",
       "action": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "item.drop" },
@@ -13,7 +13,7 @@
         ],
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|hasCurrentPlayer|",
+          "param1": "%currentLevel.hasCurrentPlayer%",
           "param2": true,
           "then": { "name": "player.moveToClick", "player": "hero" },
           "else": { "name": "level.moveToClick" }
@@ -30,13 +30,13 @@
       "id": "levelHoverAction",
       "action": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|currentLevel|hoverObject.name|" },
+          { "name": "text.setText", "id": "txtPanel", "text": "%currentLevel.hoverObject.name%" },
           {
             "name": "if.equal",
-            "param1": "|currentLevel|hoverObject.type|",
+            "param1": "%currentLevel.hoverObject.type%",
             "param2": "player",
             "then": {
               "name": "text.appendText",
@@ -49,12 +49,12 @@
           "updatePanelTextSpacing",
           {
             "name": "if.equal",
-            "param1": "|currentLevel|hoverObject.magical|",
+            "param1": "%currentLevel.hoverObject.magical%",
             "param2": 1,
             "then": "setPanelTextColorBlue",
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|hoverObject.unique|",
+              "param1": "%currentLevel.hoverObject.unique%",
               "param2": 1,
               "then": "setPanelTextColorGold",
               "else": "setPanelTextColorWhite"
@@ -68,13 +68,13 @@
       "id": "levelShowZoomAction",
       "action": {
         "name": "if.equal",
-        "param1": "|txtZoom|visible|",
+        "param1": "%txtZoom.visible%",
         "param2": false,
         "then": [
           { "name": "drawable.visible", "id": "txtZoom", "visible": true },
           {
             "name": "if.equal",
-            "param1": "|game|hasEvent.closeZoom|",
+            "param1": "%game.hasEvent.closeZoom%",
             "param2": false,
             "then": {
               "name": "event.add",
@@ -118,6 +118,17 @@
         { "name": "drawable.setAction", "id": "level", "event": "hoverEnter", "action": "levelHoverAction" },
         { "name": "drawable.setAction", "id": "level", "event": "hoverLeave", "action": "clearPanelText" }
       ]
+    },
+    {
+      "name": "action.set",
+      "id": "zoomLevel",
+      "action": {
+        "name": "if.equal",
+        "param1": "%currentLevel.zoomPercentage%",
+        "param2": 100,
+        "then": { "name": "level.zoom", "zoom": 200 },
+        "else": { "name": "level.zoom", "zoom": 100 }
+      }
     }
   ]
 }

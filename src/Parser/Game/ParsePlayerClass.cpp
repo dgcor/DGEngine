@@ -101,6 +101,15 @@ namespace Parser
 		playerClass.setSound((size_t)idx, *sndBuffer);
 	}
 
+	void parseDescriptionValue(PlayerClass& playerClass,
+		const Level& level, const Value& elem)
+	{
+		playerClass.setDescription(
+			getUIntKey(elem, "index"),
+			level.getClassifier(getStringKey(elem, "name")),
+			(uint16_t)getUIntKey(elem, "skip"));
+	}
+
 	void parsePlayerClass(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
@@ -183,9 +192,11 @@ namespace Parser
 		{
 			playerClass->Type(getStringVal(elem["type"]));
 		}
-		if (elem.HasMember("description") == true)
+
+		if (elem.HasMember("nameClassifier") == true)
 		{
-			playerClass->Description(getStringVal(elem["description"]));
+			playerClass->setNameClassifier(
+				level->getClassifier(getStringKey(elem, "nameClassifier")));
 		}
 
 		if (elem.HasMember("defaults") == true)
@@ -197,8 +208,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto nameHash = str2int16(it->name.GetString());
-						level->setPropertyName(nameHash, it->name.GetString());
+						auto name = getStringViewVal(it->name);
+						auto nameHash = str2int16(name);
+						level->setPropertyName(nameHash, name);
 						playerClass->setDefaultByHash(nameHash,
 							getMinMaxNumber32Val(it->value));
 					}
@@ -218,14 +230,30 @@ namespace Parser
 						std::shared_ptr<Action> action;
 						if (it->value.IsString() == true)
 						{
-							action = playerClass->getAction(str2int16(it->value.GetString()));
+							action = playerClass->getAction(str2int16(getStringViewVal(it->value)));
 						}
 						if (action == nullptr)
 						{
 							action = parseAction(game, it->value);
 						}
-						playerClass->setAction(str2int16(it->name.GetString()), action);
+						playerClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
+				}
+			}
+		}
+
+		if (elem.HasMember("descriptions") == true)
+		{
+			const auto& descriptions = elem["descriptions"];
+			if (descriptions.IsObject() == true)
+			{
+				parseDescriptionValue(*playerClass, *level, descriptions);
+			}
+			else if (descriptions.IsArray() == true)
+			{
+				for (const auto& val : descriptions)
+				{
+					parseDescriptionValue(*playerClass, *level, val);
 				}
 			}
 		}
@@ -262,25 +290,25 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("defaultAttackSound") == true)
+		if (elem.HasMember("aAttackSound") == true)
 		{
-			playerClass->setDefaultAttackSound((int16_t)getIntVal(elem["defaultAttackSound"], -1));
+			playerClass->setAttackSound((int16_t)getIntVal(elem["attackSound"], -1));
 		}
-		if (elem.HasMember("defaultDefendSound") == true)
+		if (elem.HasMember("defendSound") == true)
 		{
-			playerClass->setDefaultDefendSound((int16_t)getIntVal(elem["defaultDefendSound"], -1));
+			playerClass->setDefendSound((int16_t)getIntVal(elem["defendSound"], -1));
 		}
-		if (elem.HasMember("defaultDieSound") == true)
+		if (elem.HasMember("dieSound") == true)
 		{
-			playerClass->setDefaultDieSound((int16_t)getIntVal(elem["defaultDieSound"], -1));
+			playerClass->setDieSound((int16_t)getIntVal(elem["dieSound"], -1));
 		}
-		if (elem.HasMember("defaultHitSound") == true)
+		if (elem.HasMember("hitSound") == true)
 		{
-			playerClass->setDefaultHitSound((int16_t)getIntVal(elem["defaultHitSound"], -1));
+			playerClass->setHitSound((int16_t)getIntVal(elem["hitSound"], -1));
 		}
-		if (elem.HasMember("defaultWalkSound") == true)
+		if (elem.HasMember("walkSound") == true)
 		{
-			playerClass->setDefaultWalkSound((int16_t)getIntVal(elem["defaultWalkSound"], -1));
+			playerClass->setWalkSound((int16_t)getIntVal(elem["walkSound"], -1));
 		}
 
 		if (elem.HasMember("maxStrength") == true)
@@ -315,43 +343,43 @@ namespace Parser
 
 		if (elem.HasMember("lifeFormula") == true)
 		{
-			playerClass->setLifeFormula(getStringVal(elem["lifeFormula"]));
+			playerClass->setLifeFormula(getStringViewVal(elem["lifeFormula"]));
 		}
 		if (elem.HasMember("manaFormula") == true)
 		{
-			playerClass->setManaFormula(getStringVal(elem["manaFormula"]));
+			playerClass->setManaFormula(getStringViewVal(elem["manaFormula"]));
 		}
 		if (elem.HasMember("armorFormula") == true)
 		{
-			playerClass->setArmorFormula(getStringVal(elem["armorFormula"]));
+			playerClass->setArmorFormula(getStringViewVal(elem["armorFormula"]));
 		}
 		if (elem.HasMember("toHitFormula") == true)
 		{
-			playerClass->setToHitFormula(getStringVal(elem["toHitFormula"]));
+			playerClass->setToHitFormula(getStringViewVal(elem["toHitFormula"]));
 		}
 		if (elem.HasMember("damageFormula") == true)
 		{
-			playerClass->setDamageFormula(getStringVal(elem["damageFormula"]));
+			playerClass->setDamageFormula(getStringViewVal(elem["damageFormula"]));
 		}
 		if (elem.HasMember("resistMagicFormula") == true)
 		{
-			playerClass->setResistMagicFormula(getStringVal(elem["resistMagicFormula"]));
+			playerClass->setResistMagicFormula(getStringViewVal(elem["resistMagicFormula"]));
 		}
 		if (elem.HasMember("resistFireFormula") == true)
 		{
-			playerClass->setResistFireFormula(getStringVal(elem["resistFireFormula"]));
+			playerClass->setResistFireFormula(getStringViewVal(elem["resistFireFormula"]));
 		}
 		if (elem.HasMember("resistLightningFormula") == true)
 		{
-			playerClass->setResistLightningFormula(getStringVal(elem["resistLightningFormula"]));
+			playerClass->setResistLightningFormula(getStringViewVal(elem["resistLightningFormula"]));
 		}
-		if (elem.HasMember("defaultOutline") == true)
+		if (elem.HasMember("outline") == true)
 		{
-			playerClass->DefaultOutline(getColorVal(elem["defaultOutline"], sf::Color::Transparent));
+			playerClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
 		}
-		if (elem.HasMember("defaultOutlineIgnore") == true)
+		if (elem.HasMember("outlineIgnore") == true)
 		{
-			playerClass->DefaultOutlineIgnore(getColorVal(elem["defaultOutlineIgnore"], sf::Color::Transparent));
+			playerClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
 		}
 	}
 }

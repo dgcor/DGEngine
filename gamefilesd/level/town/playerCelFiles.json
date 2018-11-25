@@ -11,6 +11,11 @@
       "palette": "town"
     },
     {
+      "imageContainer": "deadguy",
+      "file": "towners/butch/deadguy.cel",
+      "palette": "town"
+    },
+    {
       "imageContainer": "healer",
       "file": "towners/healer/healer.cel",
       "palette": "town"

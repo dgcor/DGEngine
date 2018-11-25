@@ -1,0 +1,4 @@
+{
+  "load": "level/item/baseItemshf.json",
+  "load": "level/item/mischf.json"
+}

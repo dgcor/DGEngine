@@ -1,0 +1,16 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l9",
+    "name": "9",
+    "map": { "file": "level/l9/l9.json", "indexOffset": -1, "defaultTile": 6 }
+  },
+  "load": "level/l9/levelObjects2.json",
+  "load": "level/l9/monsters2.json",
+  "load": ["level/town/loadPassages.json", "true", "true", "false"],
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 98, "", "playAudio", "currentLevel"] }
+  }
+}

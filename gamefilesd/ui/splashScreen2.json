@@ -10,7 +10,7 @@
   "texture": [
     {
       "id": "title",
-      "file":"ui_art/title.pcx"
+      "file": "ui_art/title.pcx"
     },
     {
       "id": "logo",

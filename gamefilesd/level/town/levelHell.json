@@ -1,0 +1,8 @@
+{
+  "level": {
+    "id": "level",
+    "resizeToFit": false,
+    "map": { "file": "level/town/town_hell.json", "indexOffset": -1, "position": [36, 78] }
+  },
+  "load": "level/l13/townToLevel.json"
+}

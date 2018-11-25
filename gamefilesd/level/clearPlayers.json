@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "if.equal",
-    "param1": "|currentLevel|currentPlayer.id|",
+    "param1": "%currentLevel.currentPlayer.id%",
     "param2": "hero",
     "then": [
       { "name": "level.clearPlayers", "index": 1 },

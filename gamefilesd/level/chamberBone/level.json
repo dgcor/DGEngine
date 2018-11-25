@@ -1,0 +1,27 @@
+{
+  "palette": [
+    {
+      "id": "l2_5",
+      "file": "levels/l2data/l2_5.pal"
+    }
+  ],
+  "load": ["level/l5/l2s.json", "l2_5"],
+  "level": {
+    "id": "level",
+    "palette": "l2_5",
+    "file": "levels/l2data/l2.cel",
+    "layers": [
+      { "index": 2, "texturePack": "l2s" },
+      { "index": 3, "texturePack": "l2s_2" }
+    ],
+    "outOfBoundsTileLayer2": 11,
+    "til": "levels/l2data/l2.til",
+    "min": "levels/l2data/l2.min",
+    "minBlocks": 10,
+    "sol": "levels/l2data/l2.sol"
+  },
+  "load": "level/automap/l2/load.json",
+  "load": "level/chamberBone/levelObjects.json",
+  "load": "level/chamberBone/monsters.json",
+  "load": "level/chamberBone/level2.json"
+}

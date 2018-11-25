@@ -26,7 +26,7 @@
     "visibleItems": 4,
     "verticalPad": 38,
     "items": {
-      "load": "currentLevel|currentPlayer.inventory.stash",
+      "load": "currentLevel.currentPlayer.inventory.stash",
       "include": {
         "property": "itemType",
         "value": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Sword"]

@@ -1,0 +1,17 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "variable.set", "key": "charName", "value": "{3}" },
+      { "name": "resource.popAll" },
+      { "name": "load", "file": "loadingScreens/{1}.json" },
+      { "name": "load", "file": "gameSettings.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "load", "file": ["level/loadFull2.json", "{2}"] },
+          { "name": "loadingScreen.setProgress", "progress": 100 }
+        ]
+      }
+    ]
+  }
+}

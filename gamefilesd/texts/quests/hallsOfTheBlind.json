@@ -5,10 +5,5 @@
     "50",
     "texts/quests/hallsOfTheBlind.txt"
   ],
-  "load": [
-    "res/player/sound/load.json",
-    "|currentLevel|currentPlayer.class|",
-    11,
-    "playAudio"
-  ]
+  "load": ["res/player/sound/load.json", 11, "", "playAudio", ""]
 }

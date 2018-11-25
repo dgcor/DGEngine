@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/Towners/drunk23.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

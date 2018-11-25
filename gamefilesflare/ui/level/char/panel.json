@@ -4,7 +4,7 @@
       "name": "action.set",
       "id": "menu.saveAndCloseAction",
       "action": [
-        { "name": "load", "file": "ui/level/saveSettings.json" },
+        "saveSettings",
         { "name": "resource.popAll", "id": "gameMenuCommon" },
         { "name": "resource.ignore", "id": "level", "ignore": "none" },
         { "name": "level.pause", "pause": false }
@@ -135,10 +135,8 @@
   "text": [
     {
       "id": "itemInfoTitle",
-      "replaceVars": true,
-      "font": "smaltext",
+      "font": "smaltextGold",
       "anchor": "right",
-      "color": "%textGold%",
       "position": [160, 63],
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
@@ -160,25 +158,19 @@
     },
     {
       "id": "txtMapLabel",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [8, 10],
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|name|",
-      "format": "Level: [1]",
       "visible": false
     },
     {
       "id": "txtZoom",
-      "replaceVars": true,
       "anchor": "topRight",
-      "font": "smaltext",
-      "color": "%textGold%",
+      "font": "smaltextGold",
       "position": [632, 10],
       "horizontalAlign": "right",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|zoomPercentage|",
+      "binding": "%currentLevel.zoomPercentage%",
       "format": "Zoom: [1]%",
       "visible": false
     }
@@ -383,13 +375,14 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "|charPanel|visible|",
+          "param1": "%charPanel.visible%",
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "load", "file": "ui/level/char/panelLabels.json" },
             "showCharPanel",
-            "hideQuestPanel"
+            "hideQuestPanel",
+            { "name": "resource.moveToTop", "id": "removeGold" }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelLabels" },
@@ -403,7 +396,7 @@
       ],
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
@@ -424,13 +417,14 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "|questPanel|visible|",
+          "param1": "%questPanel.visible%",
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "load", "file": "ui/level/char/panelQuests.json" },
             "hideCharPanel",
-            "showQuestPanel"
+            "showQuestPanel",
+            { "name": "resource.moveToTop", "id": "removeGold" }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelLabels" },
@@ -444,7 +438,7 @@
       ],
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
@@ -465,7 +459,7 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "|invPanel|visible|",
+          "param1": "%invPanel.visible%",
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "charPanelSpells" },
@@ -474,6 +468,7 @@
             "hideSpellPanel"
           ],
           "else": [
+            { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
             { "name": "resource.pop", "id": "charPanelSpells" },
             "hideInvPanel",
@@ -485,7 +480,7 @@
       ],
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
@@ -506,9 +501,10 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "|spellPanel|visible|",
+          "param1": "%spellPanel.visible%",
           "param2": false,
           "then": [
+            { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
             { "name": "load", "file": "ui/level/char/panelSpells.json" },
             "hideInvPanel",
@@ -526,7 +522,7 @@
       ],
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
@@ -544,9 +540,10 @@
       "text": "Map",
       "verticalAlign": "center",
       "clickUp": true,
+      "onClick": "showMap",
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
@@ -567,7 +564,7 @@
       "clickUp": true,
       "onClick": {
         "name": "if.equal",
-        "param1": "|game|hasResource.gameMenuCommon|",
+        "param1": "%game.hasResource.gameMenuCommon%",
         "param2": true,
         "then": "menu.saveAndCloseAction",
         "else": [
@@ -577,7 +574,7 @@
       },
       "onHoverEnter": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
@@ -611,11 +608,26 @@
     { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
     { "key": "i", "action": { "name": "button.click", "id": "inv" } },
     { "key": "q", "action": { "name": "button.click", "id": "quest" } },
+    { "key": "z", "action": "zoomLevel" },
     { "key": "tab", "action": { "name": "button.click", "id": "map" } },
+    {
+      "key": "f",
+      "action": [
+        { "name": "game.addToProperty", "property": "gamma", "value": 5 },
+        "saveSettings"
+      ]
+    },
+    {
+      "key": "g",
+      "action": [
+        { "name": "game.addToProperty", "property": "gamma", "value": -5 },
+        "saveSettings"
+      ]
+    },
     {
       "key": "f1",
       "action": [
-        { "name": "player.addGold", "gold": -4000 },
+        { "name": "player.addItemQuantity", "itemClass": "gold", "value": -4000 },
         "updateStashItems",
         "updateCharLabels"
       ]
@@ -623,7 +635,7 @@
     {
       "key": "f2",
       "action": [
-        { "name": "player.addGold", "gold": 4000 },
+        { "name": "player.addItemQuantity", "itemClass": "gold", "value": 4000 },
         "updateStashItems",
         "updateCharLabels"
       ]

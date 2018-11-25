@@ -4,26 +4,26 @@
 
 namespace TextUtils
 {
-	std::string getFormatString(const Game& game, const std::string& format,
+	std::string getFormatString(const Game& game, const std::string_view format,
 		const std::vector<std::string>& bindings)
 	{
 		if (bindings.size() > 0)
 		{
 			if (format == "[1]")
 			{
-				return game.getVarOrPropString(bindings[0]);
+				return game.getVarOrPropStringS(bindings[0]);
 			}
 			else
 			{
-				std::string displayText = format;
+				std::string displayText(format);
 				if (format.size() > 2)
 				{
 					for (size_t i = 0; i < bindings.size(); i++)
 					{
-						auto str = game.getVarOrPropString(bindings[i]);
+						auto str = game.getVarOrPropStringS(bindings[i]);
 						Utils::replaceStringInPlace(
 							displayText,
-							"[" + std::to_string(i + 1) + "]",
+							"[" + Utils::toString(i + 1) + "]",
 							str);
 					}
 				}
@@ -33,18 +33,18 @@ namespace TextUtils
 		return "";
 	}
 
-	std::string getTextQueryable(const Game& game, const std::string& format,
-		const std::string& query)
+	std::string getTextQueryable(const Game& game, const std::string_view format,
+		const std::string_view query)
 	{
 		auto queryable = game.getQueryable(query);
 		if (queryable != nullptr)
 		{
 			return GameUtils::replaceStringWithQueryable(format, *queryable);
 		}
-		return format;
+		return std::string(format);
 	}
 
-	std::string getText(const Game& game, TextOp textOp, const std::string& textOrformat,
+	std::string getText(const Game& game, TextOp textOp, const std::string_view textOrformat,
 		const std::vector<std::string>& bindings)
 	{
 		std::string str;
@@ -53,7 +53,7 @@ namespace TextUtils
 	}
 
 	void appendText(const Game& game, TextOp textOp, std::string& str,
-		const std::string& textOrformat, const std::vector<std::string>& bindings)
+		const std::string_view textOrformat, const std::vector<std::string>& bindings)
 	{
 		switch (TextOp(((uint32_t)textOp) & 0x7u))
 		{
@@ -62,10 +62,10 @@ namespace TextUtils
 			str += textOrformat;
 			break;
 		case TextOp::Replace:
-			str += game.getVarOrPropString(textOrformat);
+			str += game.getVarOrPropStringS(textOrformat);
 			break;
 		case TextOp::ReplaceAll:
-			str += game.getVarOrPropString(textOrformat);
+			str += game.getVarOrPropStringS(textOrformat);
 			break;
 		case TextOp::Query:
 		{

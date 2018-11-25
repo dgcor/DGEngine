@@ -1,0 +1,11 @@
+{
+  "levelObject": {
+    "id": "crypt",
+    "class": "levelCrypt",
+    "mapPosition": [37, 23],
+    "properties": {
+      "x": 59,
+      "y": 86
+    }
+  }
+}

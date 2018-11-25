@@ -182,4 +182,28 @@ public:
 		}
 		return *this;
 	}
+
+	constexpr bool operator==(const Number32& right) const noexcept
+	{
+		return (type == right.type &&
+			intNum == right.intNum);
+	}
 };
+
+constexpr bool operator==(const Number32& left, const int32_t& right) noexcept
+{
+	return (left.isInt32() == true &&
+		left.getInt32() == right);
+}
+
+constexpr bool operator==(const Number32& left, const uint32_t& right) noexcept
+{
+	return (left.isUInt32() == true &&
+		left.getUInt32() == right);
+}
+
+constexpr bool operator==(const Number32& left, const float& right) noexcept
+{
+	return (left.isFloat() == true &&
+		left.getFloat() == right);
+}

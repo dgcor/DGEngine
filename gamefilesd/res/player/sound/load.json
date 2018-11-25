@@ -1,3 +1,57 @@
 {
-  "load": ["res/player/sound/loadSetId.json", "{1}", "{2}", ".", "{3}"]
+  "action": {
+    "name": "switch",
+    "param": "%currentLevel.currentPlayer.class%",
+    "case": [
+      {
+        "value": "Warrior",
+        "action": {
+          "name": "if.equal",
+          "param1": "{2}",
+          "param2": "",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadWarrior.json", "{1}", "warrior{1}", "{3}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadWarrior.json", "{1}", "{2}", "{3}", "{4}"]
+          }
+        }
+      },
+      {
+        "value": "Rogue",
+        "action": {
+          "name": "if.equal",
+          "param1": "{2}",
+          "param2": "",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadRogue.json", "{1}", "rogue{1}", "{3}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadRogue.json", "{1}", "{2}", "{3}", "{4}"]
+          }
+        }
+      },
+      {
+        "value": "Sorceror",
+        "action": {
+          "name": "if.equal",
+          "param1": "{2}",
+          "param2": "",
+          "then": {
+            "name": "load",
+            "file": ["res/player/sound/loadSorceror.json", "{1}", "sorceror{1}", "{3}", "{4}"]
+          },
+          "else": {
+            "name": "load",
+            "file": ["res/player/sound/loadSorceror.json", "{1}", "{2}", "{3}", "{4}"]
+          }
+        }
+      }
+    ],
+    "default": "Warrior"
+  }
 }

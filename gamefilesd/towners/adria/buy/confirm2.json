@@ -32,7 +32,6 @@
   "text": [
     {
       "id": "itemInfo",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [52, 130],
       "anchor": "none",
@@ -41,7 +40,6 @@
     },
     {
       "id": "itemPrice",
-      "replaceVars": true,
       "font": "smaltext",
       "position": [571, 130],
       "anchor": "none",
@@ -72,8 +70,9 @@
       "text": "Yes",
       "onClick": [
         {
-          "name": "player.removeGold",
-          "gold": "|currentLevel|player.adria.item.{1}.{2}.price|"
+          "name": "player.removeItemQuantity",
+          "itemClass": "gold",
+          "value": "%currentLevel.player.adria.item.{1}.{2}.price%"
         },
         {
           "name": "item.trade",
@@ -110,7 +109,7 @@
   ],
   "load": ["towners/common/setItemInfo.json", "adria", "{1}", "{2}"],
   "load": ["towners/common/setPriceInfo.json", "adria", "{1}", "{2}",
-           "|currentLevel|player.adria.item.{1}.{2}.price|"],
+           "%currentLevel.player.adria.item.{1}.{2}.price%"],
   "action": [
     "anchorLeftPentagram",
     "anchorRightPentagram"

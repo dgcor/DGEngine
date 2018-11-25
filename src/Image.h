@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Sprite2.h"
+#include "SFML/Sprite2.h"
 #include "UIObject.h"
 
 class Image : public virtual UIObject
@@ -41,6 +41,7 @@ public:
 	}
 	bool isOutlineEnabled() const noexcept { return sprite.isOutlineEnabled(); }
 
+	const std::shared_ptr<Palette>& getPalette() const noexcept { return sprite.getPalette(); }
 	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { sprite.setPalette(pal); }
 	bool hasPalette() const noexcept { return sprite.hasPalette(); }
 
@@ -48,6 +49,7 @@ public:
 
 	const sf::IntRect& getTextureRect() const { return sprite.getTextureRect(); }
 
+	void setTexture(const TextureInfo& ti, bool resetRect = false) { sprite.setTexture(ti, resetRect); }
 	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
@@ -79,5 +81,5 @@ public:
 		}
 	}
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

@@ -3,27 +3,10 @@
 #include "Action.h"
 #include "FileUtils.h"
 #include "Game.h"
+#include "IfCondition.h"
 #include "Image.h"
 #include "Parser/ParseVariable.h"
 #include "Utils/Utils.h"
-#include "VarOrPredicate.h"
-
-static Variable getVariable(const Game& game, const VarOrPredicate& varOrPred)
-{
-	if (std::holds_alternative<Variable>(varOrPred) == true)
-	{
-		return game.getVarOrProp(std::get<Variable>(varOrPred));
-	}
-	else
-	{
-		auto predicate = std::get<std::shared_ptr<Predicate>>(varOrPred).get();
-		if (predicate != nullptr)
-		{
-			return predicate->getResult(game);
-		}
-		return {};
-	}
-}
 
 class ActIfCondition : public Action
 {
@@ -33,25 +16,6 @@ private:
 	VarOrPredicate param2;
 	std::shared_ptr<Action> condThen;
 	std::shared_ptr<Action> condElse;
-
-	bool ifCondition(Game& game, bool condResult)
-	{
-		if (condResult == true)
-		{
-			if (condThen != nullptr)
-			{
-				return condThen->execute(game);
-			}
-		}
-		else
-		{
-			if (condElse != nullptr)
-			{
-				return condElse->execute(game);
-			}
-		}
-		return true;
-	}
 
 public:
 	ActIfCondition(uint16_t conditionHash16_,
@@ -64,24 +28,22 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto var1 = getVariable(game, param1);
-		auto var2 = getVariable(game, param2);
+		auto var1 = IfCondition::getVariable(game, param1);
+		auto var2 = IfCondition::getVariable(game, param2);
 
-		switch (conditionHash16)
+		if (IfCondition::evalCondition(conditionHash16, var1, var2) == true)
 		{
-		default:
-		case str2int16("=="):
-			return ifCondition(game, var1 == var2);
-		case str2int16("!="):
-			return ifCondition(game, var1 != var2);
-		case str2int16(">"):
-			return ifCondition(game, var1 > var2);
-		case str2int16(">="):
-			return ifCondition(game, var1 >= var2);
-		case str2int16("<"):
-			return ifCondition(game, var1 < var2);
-		case str2int16("<="):
-			return ifCondition(game, var1 <= var2);
+			if (condThen != nullptr)
+			{
+				return condThen->execute(game);
+			}
+		}
+		else
+		{
+			if (condElse != nullptr)
+			{
+				return condElse->execute(game);
+			}
 		}
 		return true;
 	}
@@ -104,10 +66,10 @@ public:
 	{
 		if (list.empty() == false)
 		{
-			auto var1 = getVariable(game, var);
+			auto var1 = IfCondition::getVariable(game, var);
 			for (const auto& elem : list)
 			{
-				if (var1 == getVariable(game, elem))
+				if (var1 == IfCondition::getVariable(game, elem))
 				{
 					if (condThen != nullptr)
 					{
@@ -120,6 +82,39 @@ public:
 		if (condElse != nullptr)
 		{
 			return condElse->execute(game);
+		}
+		return true;
+	}
+};
+
+class ActMultiIfCondition : public Action
+{
+private:
+	IfCondition conditions;
+	std::shared_ptr<Action> condThen;
+	std::shared_ptr<Action> condElse;
+
+public:
+	ActMultiIfCondition(const std::shared_ptr<Action>& then_,
+		const std::shared_ptr<Action>& else_) : condThen(then_), condElse(else_) {}
+
+	IfCondition& Conditions() noexcept { return conditions; }
+
+	virtual bool execute(Game& game)
+	{
+		if (conditions.eval(game) == true)
+		{
+			if (condThen != nullptr)
+			{
+				return condThen->execute(game);
+			}
+		}
+		else
+		{
+			if (condElse != nullptr)
+			{
+				return condElse->execute(game);
+			}
 		}
 		return true;
 	}
@@ -142,10 +137,10 @@ public:
 	{
 		if (conditions.empty() == false)
 		{
-			auto var1 = getVariable(game, var);
+			auto var1 = IfCondition::getVariable(game, var);
 			for (const auto& elem : conditions)
 			{
-				if (var1 == getVariable(game, elem.first))
+				if (var1 == IfCondition::getVariable(game, elem.first))
 				{
 					if (elem.second != nullptr)
 					{

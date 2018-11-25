@@ -633,7 +633,7 @@ sf::Image2 CelImageContainer::decode(const gsl::span<const uint8_t> frameData,
 	}
 }
 
-CelImageContainer::CelImageContainer(const char* fileName)
+CelImageContainer::CelImageContainer(const std::string_view fileName)
 {
 	type = CelType::V1Regular;
 
@@ -650,7 +650,7 @@ CelImageContainer::CelImageContainer(const char* fileName)
 	uint32_t celFrameSize = 0;
 
 	{
-		sf::PhysFSStream file(fileName);
+		sf::PhysFSStream file(fileName.data());
 		// Opening CL2 file with a QBuffer to load it in RAM
 		if (file.hasError() == true)
 		{
@@ -660,7 +660,7 @@ CelImageContainer::CelImageContainer(const char* fileName)
 		file.read(fileData.data(), file.getSize());
 	}
 
-	LittleEndianStreamReader fileStream(fileData);
+	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
 
 	// CEL HEADER CHECKS
 
@@ -668,12 +668,12 @@ CelImageContainer::CelImageContainer(const char* fileName)
 	fileStream.read(firstDword);
 
 	// Trying to find file size in CEL header
-	if (fileData.size() < (4 + firstDword * 4 + 4))
+	if (fileData.size() < ((uint64_t)firstDword * 4 + 4 + 4))
 	{
 		return;
 	}
 
-	fileStream.seek(firstDword * 4 + 4);
+	fileStream.seek((uint64_t)firstDword * 4 + 4);
 	fileStream.read(fileSizeDword);
 
 	// If the dword is not equal to the file size then
@@ -696,12 +696,12 @@ CelImageContainer::CelImageContainer(const char* fileName)
 		fileStream.read(lastCelFrameCount);
 
 		// Read the last CEL size
-		if (fileData.size() < (lastCelOffset + 4 + lastCelFrameCount * 4 + 4))
+		if (fileData.size() < ((uint64_t)lastCelOffset + 4 + (uint64_t)lastCelFrameCount * 4 + 4))
 		{
 			return;
 		}
 
-		fileStream.seek(lastCelOffset + 4 + lastCelFrameCount * 4);
+		fileStream.seek((uint64_t)lastCelOffset + 4 + (uint64_t)lastCelFrameCount * 4);
 		fileStream.read(lastCelSize);
 
 		// If the last CEL size plus the last CEL offset is equal to
@@ -729,7 +729,7 @@ CelImageContainer::CelImageContainer(const char* fileName)
 		// Going through all CELs
 		for (size_t i = 0; i * 4 < firstDword; i++)
 		{
-			fileStream.seek(i * 4);
+			fileStream.seek((uint64_t)i * 4);
 			fileStream.read(celOffset);
 
 			fileStream.seek(celOffset);
@@ -745,7 +745,7 @@ CelImageContainer::CelImageContainer(const char* fileName)
 				celFrameStartOffset = 0;
 				celFrameEndOffset = 0;
 
-				fileStream.seek(celOffset + j * 4);
+				fileStream.seek((uint64_t)celOffset + (uint64_t)j * 4);
 				fileStream.read(celFrameStartOffset);
 				fileStream.read(celFrameEndOffset);
 
@@ -767,7 +767,7 @@ CelImageContainer::CelImageContainer(const char* fileName)
 			celFrameStartOffset = 0;
 			celFrameEndOffset = 0;
 
-			fileStream.seek(i * 4);
+			fileStream.seek((uint64_t)i * 4);
 			fileStream.read(celFrameStartOffset);
 			fileStream.read(celFrameEndOffset);
 

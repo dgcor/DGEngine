@@ -1,0 +1,8 @@
+{
+  "audio": {
+    "id": "main",
+    "file": "music/dlvld.wav",
+    "loop": true,
+    "play": true
+  }
+}

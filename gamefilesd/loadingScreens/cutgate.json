@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cutgate",
-    "file":"gendata/cutgate.pal"
+    "file": "gendata/cutgate.pal"
   },
   "texture": {
     "id": "cutgate",
-    "file":"gendata/cutgate.cel",
+    "file": "gendata/cutgate.cel",
     "palette": "cutgate"
   },
   "loadingScreen": {

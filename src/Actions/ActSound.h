@@ -27,7 +27,7 @@ public:
 
 		if (sndBuffer == nullptr && id.empty() == false)
 		{
-			sndBuffer = Parser::parseSoundObj(game, id, file);
+			sndBuffer = Parser::parseSoundObj(game, id, file, {});
 		}
 		if (sndBuffer != nullptr)
 		{

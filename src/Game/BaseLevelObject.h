@@ -1,10 +1,10 @@
 #pragma once
 
 #include "BaseAnimation.h"
-#include "BaseClass.h"
+#include "BaseClassActions.h"
 #include "LevelObject.h"
 #include <list>
-#include "Sprite2.h"
+#include "SFML/Sprite2.h"
 #include "TexturePacks/TexturePack.h"
 
 struct BaseLevelObject
@@ -33,6 +33,7 @@ public:
 	}
 
 	bool hasValidState() const noexcept;
+	bool getTexture(TextureInfo& ti) const;
 	void updateDrawPosition(const Level& level);
 	void updateDrawPosition(const Level& level, const sf::Vector2f& drawPos);
 	void updateHover(Game& game, Level& level, LevelObject* levelObj);
@@ -41,7 +42,7 @@ public:
 	bool updateTexture();
 
 	void queueAction(const std::shared_ptr<Action>& action);
-	void queueAction(const BaseClass& class_, uint16_t nameHash16);
+	void queueAction(const BaseClassActions& class_, uint16_t nameHash16);
 	void processQueuedActions(Game& game);
 
 	BaseLevelObject() noexcept {}

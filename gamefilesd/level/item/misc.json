@@ -6,12 +6,13 @@
       "dropTexturePack": "goldflip",
       "inventoryTexturePack": "itemIcons",
       "inventoryTextureIndex": 17,
+      "inventoryTexture": "goldTexture",
       "name": "Gold",
       "shortName": "Gold",
       "type": "Gold",
       "defaults": {
-        "gold": 1,
-        "goldMax": 5000
+        "quantity": 1,
+        "capacity": 5000
       },
       "actions": {
         "levelDrop": { "name": "sound.play", "id": "gold" },

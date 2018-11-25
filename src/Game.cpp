@@ -2,7 +2,7 @@
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "Parser/ParseVariable.h"
-#include "SFMLUtils.h"
+#include "SFML/SFMLUtils.h"
 #include "Shaders.h"
 #include "Utils/ReverseIterable.h"
 #include "Utils/Utils.h"
@@ -197,9 +197,9 @@ void Game::updateSize()
 	}
 	for (auto& res : resourceManager)
 	{
-		for (auto& obj : res.drawables)
+		for (auto obj : res.drawables)
 		{
-			obj.second->updateSize(*this);
+			obj->updateSize(*this);
 		}
 	}
 }
@@ -403,11 +403,11 @@ void Game::update()
 	{
 		if (((int)res.ignore & (int)IgnoreResource::Update) == 0)
 		{
-			for (auto& obj : reverse(res.drawables))
+			for (auto obj : reverse(res.drawables))
 			{
 				if (paused == false && res.ignore != IgnoreResource::Update)
 				{
-					obj.second->update(*this);
+					obj->update(*this);
 				}
 			}
 		}
@@ -424,9 +424,9 @@ void Game::drawUI()
 	{
 		if (((int)res.ignore & (int)IgnoreResource::Draw) == 0)
 		{
-			for (auto& obj : res.drawables)
+			for (auto obj : res.drawables)
 			{
-				windowTex.draw(*obj.second);
+				windowTex.draw(*obj);
 			}
 		}
 		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
@@ -464,7 +464,14 @@ void Game::drawFadeEffect()
 void Game::drawWindow()
 {
 	windowTex.display();
-	window.draw(windowSprite);
+	sf::RenderStates states = sf::RenderStates::Default;
+	if (Shaders::supportsGamma() &&
+		gamma > 30 && gamma <= 100)
+	{
+		states.shader = &Shaders::Gamma;
+		Shaders::Gamma.setUniform("gamma", (float)(130 - gamma) * 0.01f);
+	}
+	window.draw(windowSprite, states);
 	window.display();
 }
 
@@ -474,6 +481,100 @@ void Game::draw()
 	drawCursor();
 	drawFadeEffect();
 	drawWindow();
+}
+
+void Game::clearInputEvents(InputEvent e) noexcept
+{
+	if (e == InputEvent::None)
+	{
+		return;
+	}
+	else if (e == InputEvent::All)
+	{
+		mousePressed = false;
+		mouseReleased = false;
+		mouseMoved = false;
+		mouseScrolled = false;
+		keyPressed = false;
+		textEntered = false;
+		touchBegan = false;
+		touchMoved = false;
+		touchEnded = false;
+		return;
+	}
+	if (mousePressed == true &&
+		((int)e & (int)InputEvent::MousePress) != 0)
+	{
+		if (((int)e & (int)InputEvent::LeftClick) != 0 &&
+			mousePressEvt.button == sf::Mouse::Button::Left)
+		{
+			mousePressed = false;
+		}
+		else if (((int)e & (int)InputEvent::MiddleClick) != 0 &&
+			mousePressEvt.button == sf::Mouse::Button::Middle)
+		{
+			mousePressed = false;
+		}
+		else if (((int)e & (int)InputEvent::RightClick) != 0 &&
+			mousePressEvt.button == sf::Mouse::Button::Right)
+		{
+			mousePressed = false;
+		}
+	}
+	if (mouseReleased == true &&
+		((int)e & (int)InputEvent::MouseRelease) != 0)
+	{
+		if (((int)e & (int)InputEvent::LeftClick) != 0 &&
+			mouseReleaseEvt.button == sf::Mouse::Button::Left)
+		{
+			mouseReleased = false;
+		}
+		else if (((int)e & (int)InputEvent::MiddleClick) != 0 &&
+			mouseReleaseEvt.button == sf::Mouse::Button::Middle)
+		{
+			mouseReleased = false;
+		}
+		else if (((int)e & (int)InputEvent::RightClick) != 0 &&
+			mouseReleaseEvt.button == sf::Mouse::Button::Right)
+		{
+			mouseReleased = false;
+		}
+	}
+	if (mouseMoved == true &&
+		((int)e & (int)InputEvent::MouseMove) != 0)
+	{
+		mouseMoved = false;
+	}
+	if (mouseScrolled == true &&
+		((int)e & (int)InputEvent::MouseScroll) != 0)
+	{
+		mouseScrolled = false;
+	}
+	if (keyPressed == true &&
+		((int)e & (int)InputEvent::KeyPress) != 0)
+	{
+		keyPressed = false;
+	}
+	if (textEntered == true &&
+		((int)e & (int)InputEvent::TextEnter) != 0)
+	{
+		textEntered = false;
+	}
+	if (touchBegan == true &&
+		((int)e & (int)InputEvent::TouchBegin) != 0)
+	{
+		touchBegan = false;
+	}
+	if (touchMoved == true &&
+		((int)e & (int)InputEvent::TouchMove) != 0)
+	{
+		touchMoved = false;
+	}
+	if (touchEnded == true &&
+		((int)e & (int)InputEvent::TouchEnd) != 0)
+	{
+		touchEnded = false;
+	}
 }
 
 void Game::SmoothScreen(bool smooth_)
@@ -564,7 +665,7 @@ void Game::addPlayingSound(const sf::SoundBuffer* obj)
 	}
 }
 
-bool Game::getVariableNoPercentage(const std::string& key, Variable& var) const
+bool Game::getVariableNoToken(const std::string& key, Variable& var) const
 {
 	auto it = variables.find(key);
 	if (it != variables.cend())
@@ -575,35 +676,29 @@ bool Game::getVariableNoPercentage(const std::string& key, Variable& var) const
 	return false;
 }
 
-bool Game::getVariable(const std::string& key, Variable& var) const
+bool Game::getVarOrPropNoToken(const std::string& key, Variable& var) const
 {
-	auto it = findVariable(key);
-	if (it != variables.cend())
+	if (getVariableNoToken(key, var) == true)
 	{
-		var = it->second;
 		return true;
 	}
-	return false;
+	return GameUtils::getObjectProperty(*this, key, var);
 }
 
-std::map<std::string, Variable>::const_iterator Game::findVariable(const std::string& key) const
+bool Game::getVarOrProp(const std::string_view key, Variable& var) const
 {
 	if ((key.size() > 2) &&
 		(key.front() == '%') &&
 		(key.back() == '%'))
 	{
-		return variables.find(key.substr(1, key.size() - 2));
+		auto key2 = key.substr(1, key.size() - 2);
+		if (getVariableNoToken(std::string(key2), var) == true)
+		{
+			return true;
+		}
+		return GameUtils::getObjectProperty(*this, key2, var);
 	}
-	return variables.end();
-}
-
-bool Game::getVarOrProp(const std::string& key, Variable& var) const
-{
-	if (getVariable(key, var) == true)
-	{
-		return true;
-	}
-	return GameUtils::getObjectProperty(*this, key, var);
+	return false;
 }
 
 Variable Game::getVarOrProp(const Variable& var) const
@@ -619,7 +714,7 @@ Variable Game::getVarOrProp(const Variable& var) const
 	return var;
 }
 
-bool Game::getVarOrPropBool(const std::string& key) const
+bool Game::getVarOrPropBoolS(const std::string_view key) const
 {
 	Variable var;
 	if (getVarOrProp(key, var) == true)
@@ -629,16 +724,16 @@ bool Game::getVarOrPropBool(const std::string& key) const
 	return false;
 }
 
-bool Game::getVarOrPropBool(const Variable& var) const
+bool Game::getVarOrPropBoolV(const Variable& var) const
 {
 	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropBool(std::get<std::string>(var));
+		return getVarOrPropBoolS(std::get<std::string>(var));
 	}
 	return VarUtils::toBool(var);
 }
 
-double Game::getVarOrPropDouble(const std::string& key) const
+double Game::getVarOrPropDoubleS(const std::string_view key) const
 {
 	Variable var;
 	if (getVarOrProp(key, var) == true)
@@ -648,16 +743,16 @@ double Game::getVarOrPropDouble(const std::string& key) const
 	return 0.0;
 }
 
-double Game::getVarOrPropDouble(const Variable& var) const
+double Game::getVarOrPropDoubleV(const Variable& var) const
 {
 	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropDouble(std::get<std::string>(var));
+		return getVarOrPropDoubleS(std::get<std::string>(var));
 	}
 	return VarUtils::toDouble(var);
 }
 
-int64_t Game::getVarOrPropLong(const std::string& key) const
+int64_t Game::getVarOrPropLongS(const std::string_view key) const
 {
 	Variable var;
 	if (getVarOrProp(key, var) == true)
@@ -667,53 +762,55 @@ int64_t Game::getVarOrPropLong(const std::string& key) const
 	return 0;
 }
 
-int64_t Game::getVarOrPropLong(const Variable& var) const
+int64_t Game::getVarOrPropLongV(const Variable& var) const
 {
 	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropLong(std::get<std::string>(var));
+		return getVarOrPropLongS(std::get<std::string>(var));
 	}
 	return VarUtils::toLong(var);
 }
 
-std::string Game::getVarOrPropString(const std::string& key) const
+std::string Game::getVarOrPropStringS(const std::string_view key) const
 {
-	Variable var;
-	if (getVariable(key, var) == true)
+	if ((key.size() > 2) &&
+		(key.front() == '%') &&
+		(key.back() == '%'))
 	{
-		if (std::holds_alternative<std::string>(var))
+		auto key2 = key.substr(1, key.size() - 2);
+		Variable var;
+		if (getVariableNoToken(std::string(key2), var) == true)
 		{
-			GameUtils::getObjectProperty(*this, std::get<std::string>(var), var);
+			if (std::holds_alternative<std::string>(var))
+			{
+				auto key3 = std::get<std::string>(var).substr(1, std::get<std::string>(var).size() - 2);
+				GameUtils::getObjectProperty(*this, key3, var);
+			}
+			return VarUtils::toString(var);
+		}
+		else if (GameUtils::getObjectProperty(*this, key2, var) == true)
+		{
+			return VarUtils::toString(var);
 		}
 	}
-	else if (GameUtils::getObjectProperty(*this, key, var) == false)
-	{
-		return key;
-	}
-	return VarUtils::toString(var);
+	return std::string(key);
 }
 
-std::string Game::getVarOrPropString(const Variable& var) const
+std::string Game::getVarOrPropStringV(const Variable& var) const
 {
 	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropString(std::get<std::string>(var));
+		return getVarOrPropStringS(std::get<std::string>(var));
 	}
 	return VarUtils::toString(var);
 }
 
 void Game::clearVariable(const std::string& key)
 {
-	if (key.size() > 1)
+	auto it = variables.find(key);
+	if (it != variables.end())
 	{
-		if ((key.front() == '%') && (key.back() == '%'))
-		{
-			auto it = variables.find(key.substr(1, key.size() - 2));
-			if (it != variables.end())
-			{
-				variables.erase(it);
-			}
-		}
+		variables.erase(it);
 	}
 }
 
@@ -743,29 +840,53 @@ void Game::saveVariables(const std::string& filePath, const std::vector<std::str
 	}
 }
 
-bool Game::getProperty(const std::string& prop, Variable& var) const
+bool Game::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int16(props.first.c_str()))
+	switch (str2int16(props.first))
 	{
 	case str2int16("framerate"):
 		var = Variable((int64_t)framerate);
 		break;
+	case str2int16("gamma"):
+		var = Variable((int64_t)gamma);
+		break;
 	case str2int16("hasDrawable"):
-		var = Variable((bool)resourceManager.hasDrawable(props.second));
+		var = Variable(resourceManager.hasDrawable(std::string(props.second)));
 		break;
 	case str2int16("hasEvent"):
-		var = Variable((bool)eventManager.exists(props.second));
+		var = Variable(eventManager.exists(props.second));
 		break;
 	case str2int16("hasResource"):
-		var = Variable((bool)resourceManager.resourceExists(props.second));
+		var = Variable(resourceManager.resourceExists(props.second));
+		break;
+	case str2int16("hasFont"):
+		var = Variable(resourceManager.hasFont(std::string(props.second)));
+		break;
+	case str2int16("hasTexture"):
+		var = Variable(resourceManager.hasTexture(std::string(props.second)));
+		break;
+	case str2int16("hasAudio"):
+		var = Variable(resourceManager.hasAudioSource(std::string(props.second)));
+		break;
+	case str2int16("hasSong"):
+		var = Variable(resourceManager.hasSong(std::string(props.second)));
+		break;
+	case str2int16("hasPalette"):
+		var = Variable(resourceManager.hasPalette(std::string(props.second)));
+		break;
+	case str2int16("hasImageContainer"):
+		var = Variable(resourceManager.hasImageContainer(std::string(props.second)));
+		break;
+	case str2int16("hasTexturePack"):
+		var = Variable(resourceManager.hasTexturePack(std::string(props.second)));
 		break;
 	case str2int16("keepAR"):
-		var = Variable((bool)keepAR);
+		var = Variable(keepAR);
 		break;
 	case str2int16("minSize"):
 	{
@@ -781,7 +902,7 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 	}
 	case str2int16("openGL"):
 	{
-		switch (str2int16(props.second.c_str()))
+		switch (str2int16(props.second))
 		{
 		case str2int16("antialiasingLevel"):
 			var = Variable((int64_t)getOpenGLAntialiasingLevel());
@@ -790,10 +911,10 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 			var = Variable((int64_t)getOpenGLDepthBits());
 			break;
 		case str2int16("hasGeometryShaders"):
-			var = Variable((bool)sf::Shader::isGeometryAvailable());
+			var = Variable(sf::Shader::isGeometryAvailable());
 			break;
 		case str2int16("hasShaders"):
-			var = Variable((bool)sf::Shader::isAvailable());
+			var = Variable(sf::Shader::isAvailable());
 			break;
 		case str2int16("majorVersion"):
 			var = Variable((int64_t)getOpenGLMajorVersion());
@@ -802,7 +923,7 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 			var = Variable((int64_t)getOpenGLMinorVersion());
 			break;
 		case str2int16("sRgbCapable"):
-			var = Variable((bool)getOpenGLSRgbCapable());
+			var = Variable(getOpenGLSRgbCapable());
 			break;
 		case str2int16("stencilBits"):
 			var = Variable((int64_t)getOpenGLStencilBits());
@@ -846,19 +967,19 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 		break;
 	}
 	case str2int16("smoothScreen"):
-		var = Variable((bool)smoothScreen);
+		var = Variable(smoothScreen);
 		break;
 	case str2int16("soundVolume"):
 		var = Variable((int64_t)soundVolume);
 		break;
 	case str2int16("stretchToFit"):
-		var = Variable((bool)stretchToFit);
+		var = Variable(stretchToFit);
 		break;
 	case str2int16("supportsOutlines"):
-		var = Variable((bool)Shaders::supportsOutlines());
+		var = Variable(Shaders::supportsOutlines());
 		break;
 	case str2int16("supportsPalettes"):
-		var = Variable((bool)Shaders::supportsPalettes());
+		var = Variable(Shaders::supportsPalettes());
 		break;
 	case str2int16("title"):
 		var = Variable(title);
@@ -872,19 +993,27 @@ bool Game::getProperty(const std::string& prop, Variable& var) const
 	return true;
 }
 
-void Game::setProperty(const std::string& prop, const Variable& val)
+void Game::setProperty(const std::string_view prop, const Variable& val)
 {
 	if (prop.size() <= 1)
 	{
 		return;
 	}
-	switch (str2int16(prop.c_str()))
+	switch (str2int16(prop))
 	{
 	case str2int16("framerate"):
 	{
 		if (std::holds_alternative<int64_t>(val) == true)
 		{
 			Framerate((unsigned)std::get<int64_t>(val));
+		}
+	}
+	break;
+	case str2int16("gamma"):
+	{
+		if (std::holds_alternative<int64_t>(val) == true)
+		{
+			Gamma((unsigned)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -944,7 +1073,7 @@ void Game::setProperty(const std::string& prop, const Variable& val)
 	}
 }
 
-const Queryable* Game::getQueryable(const std::string& prop) const
+const Queryable* Game::getQueryable(const std::string_view prop) const
 {
 	if (prop.empty() == true)
 	{
@@ -956,7 +1085,7 @@ const Queryable* Game::getQueryable(const std::string& prop) const
 	{
 		return this;
 	}
-	const Queryable* queryable = resourceManager.getDrawable(props.first);
+	const Queryable* queryable = resourceManager.getDrawable(std::string(props.first));
 	if (queryable == nullptr)
 	{
 		if (props.first == "focus")

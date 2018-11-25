@@ -1,6 +1,6 @@
 #include "ParseFont.h"
-#include "FileUtils.h"
-#include "ParseTexture.h"
+#include "ParseTexturePack.h"
+#include "Shaders.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -18,9 +18,9 @@ namespace Parser
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getFont(fromId);
-					if (hasNullFont(obj) == false)
+					if (holdsNullFont(obj) == false)
 					{
-						game.Resources().addFont(id, obj);
+						game.Resources().addFont(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -29,74 +29,57 @@ namespace Parser
 		return false;
 	}
 
-	void parseBitmapFont(Game& game, const Value& elem)
+	bool parseBitmapFont(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
 		{
-			return;
+			return false;
 		}
 		std::string id(elem["id"].GetString());
 		if (isValidId(id) == false)
 		{
-			return;
+			return false;
 		}
-		if (isValidString(elem, "texture") == false)
+		auto resource = getStringViewKey(elem, "resource");
+		auto texturePackId = getStringKey(elem, "texturePack");
+		auto texturePack_ = game.Resources().getTexturePack(texturePackId);
+		auto texturePack = std::dynamic_pointer_cast<BitmapFontTexturePack>(texturePack_);
+		if (texturePack == nullptr)
 		{
-			return;
+			texturePack = parseBitmapFontTexturePackObj(game, elem);
+			if (texturePack == nullptr)
+			{
+				return false;
+			}
+			if (isValidId(texturePackId) == true)
+			{
+				game.Resources().addTexturePack(texturePackId, texturePack, resource);
+			}
 		}
 
-		sf::Image img;
-		std::string textureId = elem["texture"].GetString();
-		auto texture = game.Resources().getTexture(textureId);
-		if (texture == nullptr)
-		{
-			if (isValidId(textureId) == false)
-			{
-				return;
-			}
-			img = parseTextureImg(game, elem);
-			auto imgSize = img.getSize();
-			if (imgSize.x == 0 || imgSize.y == 0)
-			{
-				return;
-			}
-			texture = parseTextureObj(game, elem, img);
-			if (texture == nullptr)
-			{
-				return;
-			}
-			game.Resources().addTexture(textureId, texture);
-		}
-
-		auto rows = getIntKey(elem, "rows", 16);
-		auto cols = getIntKey(elem, "cols", 16);
 		auto padding = getIntKey(elem, "padding");
-		bool isVertical = getStringKey(elem, "direction") == "vertical";
+		auto font = std::make_shared<BitmapFont>(texturePack, padding);
 
-		std::shared_ptr<BitmapFont> font;
-
-		if (elem.HasMember("charSizeFile"))
+		if (elem.HasMember("fontPalette") == true &&
+			Shaders::supportsPalettes() == true)
 		{
-			auto charSizes = FileUtils::readChar(elem["charSizeFile"].GetString(), 258);
-			font = std::make_shared<BitmapFont>(texture, rows, cols, padding, isVertical, charSizes);
+			auto palette = game.Resources().getPalette(getStringVal(elem["fontPalette"]));
+			font->setPalette(palette);
 		}
-		else
+		if (elem.HasMember("fontColor") == true)
 		{
-			if (img.getSize().x == 0)
-			{
-				img = texture->copyToImage();
-			}
-			font = std::make_shared<BitmapFont>(texture, rows, cols, padding, isVertical, img);
+			font->setColor(getColorVal(elem["fontColor"]));
 		}
 
-		game.Resources().addFont(id, font);
+		game.Resources().addFont(id, font, resource);
+		return true;
 	}
 
-	void parseFreeTypeFont(Game& game, const Value& elem)
+	bool parseFreeTypeFont(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "file") == false)
 		{
-			return;
+			return false;
 		}
 
 		std::string file(elem["file"].GetString());
@@ -108,20 +91,21 @@ namespace Parser
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
-			return;
+			return false;
 		}
 		if (isValidId(id) == false)
 		{
-			return;
+			return false;
 		}
 
 		auto font = std::make_shared<FreeTypeFont>(std::make_shared<sf::PhysFSStream>(file));
 		if (font->load() == false)
 		{
-			return;
+			return false;
 		}
 
-		game.Resources().addFont(id, font);
+		game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
+		return true;
 	}
 
 	void parseFont(Game& game, const Value& elem)
@@ -130,13 +114,10 @@ namespace Parser
 		{
 			return;
 		}
-		if (elem.HasMember("texture") == true)
+		if (parseBitmapFont(game, elem) == true)
 		{
-			parseBitmapFont(game, elem);
+			return;
 		}
-		else
-		{
-			parseFreeTypeFont(game, elem);
-		}
+		parseFreeTypeFont(game, elem);
 	}
 }

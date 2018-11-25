@@ -7,6 +7,7 @@ The provided project expects the following folders in the root of the
 project to build properly.
 
 /PhysicsFS - https://icculus.org/physfs
+             version >= 2.1
              Compile using MinSizeRel.
 
 /SFML - http://www.sfml-dev.org/
@@ -49,7 +50,7 @@ swscale-3.dll           (FFmpeg 2)
 Linux
 
 To compile in Linux (Ubuntu), you need gcc or clang with C++17 support
-and to have both PhysicsFS and SFML 2.5 installed.
+and to have both PhysicsFS >= 2.1 and SFML >= 2.5 installed.
 
 sudo apt install libphysfs-dev
 sudo apt install libsfml-dev
@@ -71,3 +72,8 @@ cmake CMakeLists.txt -DDGENGINE_MOVIE_SUPPORT:BOOL=FALSE
 
 Both PhysicsFS and SFML must be installed.
 FFmpeg is also required for movie support.
+
+Clang variant bug
+
+There's a bug in clang which affects libstdc++'s <variant>.
+I you get errors with clang, use -stdlib=libc++ instead.

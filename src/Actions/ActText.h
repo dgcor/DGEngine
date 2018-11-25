@@ -4,7 +4,7 @@
 #include "BitmapText.h"
 #include "Game.h"
 #include "StringText.h"
-#include "Text2.h"
+#include "Text.h"
 #include "TextUtils.h"
 
 class ActTextAppendText : public Action
@@ -36,7 +36,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text2>(id);
+		auto text = game.Resources().getResource<Text>(id);
 		if (text != nullptr)
 		{
 			auto str = text->getText();
@@ -58,7 +58,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text2>(id);
+		auto text = game.Resources().getResource<Text>(id);
 		if (text != nullptr)
 		{
 			text->setColor(color);
@@ -79,24 +79,24 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text2 = game.Resources().getResource<Text2>(id);
+		auto text2 = game.Resources().getResource<Text>(id);
 		if (text2 != nullptr)
 		{
 			auto newFont = game.Resources().getFont(idFont);
 			auto text = text2->getDrawableText();
-			if (hasNullFont(newFont) == false &&
+			if (holdsNullFont(newFont) == false &&
 				text != nullptr)
 			{
 				auto bitmapText = dynamic_cast<BitmapText*>(text);
 				if (bitmapText != nullptr &&
-					hasBitmapFont(newFont) == true)
+					holdsBitmapFont(newFont) == true)
 				{
 					bitmapText->setFont(std::get<std::shared_ptr<BitmapFont>>(newFont));
 					return true;
 				}
 				auto stringText = dynamic_cast<StringText*>(text);
 				if (stringText != nullptr &&
-					hasFreeTypeFont(newFont) == true)
+					holdsFreeTypeFont(newFont) == true)
 				{
 					stringText->setFont(*std::get<std::shared_ptr<FreeTypeFont>>(newFont));
 				}
@@ -132,7 +132,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text2>(id);
+		auto text = game.Resources().getResource<Text>(id);
 		if (text != nullptr)
 		{
 			if (hasHorizSpaceOffset == true)
@@ -177,7 +177,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text2>(id);
+		auto text = game.Resources().getResource<Text>(id);
 		if (text != nullptr)
 		{
 			text->setText(TextUtils::getText(game, textOp, textFormat, bindings));

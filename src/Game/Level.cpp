@@ -1,28 +1,73 @@
 #include "Level.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "Shaders.h"
+#include "Game/GameHashes.h"
+#include "SimpleLevelObject.h"
 #include "Utils/Utils.h"
 
 void Level::Init(LevelMap map_,
-	std::shared_ptr<TexturePack> tilesBottom_,
-	std::shared_ptr<TexturePack> tilesTop_,
-	int tileWidth_, int tileHeight_)
+	const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
+	int tileWidth, int tileHeight)
 {
 	map = std::move(map_);
-	tilesBottom = tilesBottom_;
-	tilesTop = tilesTop_;
 	clickedObject = nullptr;
 	hoverObject = nullptr;
 
-	tileWidth = tileWidth_;
-	tileHeight = tileHeight_;
-	map.setTileSize(tileWidth, tileHeight);
+	tileWidth = std::max(tileWidth, 2);
+	tileHeight = std::max(tileHeight, 2);
+
+	size_t numLayers = levelLayers.size() - 1;
+	for (size_t i = 0; i < numLayers; i++)
+	{
+		setTileLayer(i, &view, texturePackLayers[i], tileWidth, tileHeight, true);
+	}
+	setAutomap(nullptr, tileWidth, tileHeight);
+
+	map.setDefaultTileSize(tileWidth, tileHeight);
 
 	setCurrentMapPosition(MapCoord(map.Width() / 2, map.Height() / 2));
 
 	updateLevelObjectPositions();
-	updateViewPort = true;
+	viewPortNeedsUpdate = true;
+}
+
+void Level::Init()
+{
+	clickedObject = nullptr;
+	hoverObject = nullptr;
+
+	updateLevelObjectPositions();
+	viewPortNeedsUpdate = true;
+}
+
+void Level::setTileLayer(size_t layer, View2* view_,
+	std::shared_ptr<TexturePack> tiles,
+	int tileWidth, int tileHeight, bool visible_)
+{
+	levelLayers[layer].tiles = tiles;
+	levelLayers[layer].view = view_;
+	levelLayers[layer].tileWidth = tileWidth;
+	levelLayers[layer].tileHeight = tileHeight;
+	levelLayers[layer].blockWidth = tileWidth / 2;
+	levelLayers[layer].blockHeight = tileHeight / 2;
+	levelLayers[layer].visible = visible_;
+}
+
+void Level::setAutomap(std::shared_ptr<TexturePack> tiles, int tileWidth, int tileHeight)
+{
+	tileWidth = std::max(tileWidth, 2);
+	tileHeight = std::max(tileHeight, 2);
+
+	setTileLayer(AutomapLayer, &automapView, tiles,
+		tileWidth, tileHeight, levelLayers[AutomapLayer].visible);
+	viewPortNeedsUpdate = true;
+}
+
+void Level::setCurrentMapViewCenter(const sf::Vector2f& coord_)
+{
+	currentMapViewCenter = coord_;
+	currentAutomapViewCenter.x = std::round((coord_.x * (float)AutomapTileWidth()) / (float)TileWidth());
+	currentAutomapViewCenter.y = std::round((coord_.y * (float)AutomapTileHeight()) / (float)TileHeight());
 }
 
 void Level::updateLevelObjectPositions()
@@ -111,6 +156,49 @@ void Level::executeHoverLeaveAction(Game& game)
 	{
 		game.Events().addFront(hoverLeaveAction);
 	}
+}
+
+void Level::setAutomapRelativePosition(const sf::Vector2i& position) noexcept
+{
+	automapRelativePosition.x = std::clamp(position.x / 100.f, 0.f, 1.f);
+	automapRelativePosition.y = std::clamp(position.y / 100.f, 0.f, 1.f);
+	updateAutomapPosition(view.getPosition());
+}
+
+void Level::Position(const sf::Vector2f& position) noexcept
+{
+	view.setPosition(position);
+	updateAutomapPosition(position);
+}
+
+void Level::updateAutomapPosition(sf::Vector2f position)
+{
+	position.x = std::round(position.x + view.getSize().x * automapRelativePosition.x);
+	position.y = std::round(position.y + view.getSize().y * automapRelativePosition.y);
+	automapView.setPosition(position);
+	viewPortNeedsUpdate = true;
+}
+
+void Level::setAutomapRelativeSize(const sf::Vector2i& size)
+{
+	automapRelativeSize.x = std::clamp(size.x / 100.f, 0.f, 1.f);
+	automapRelativeSize.y = std::clamp(size.y / 100.f, 0.f, 1.f);
+	updateAutomapSize(Size());
+}
+
+void Level::Size(const sf::Vector2f& size)
+{
+	view.setSize(size);
+	updateAutomapPosition(view.getPosition());
+	updateAutomapSize(size);
+}
+
+void Level::updateAutomapSize(sf::Vector2f size)
+{
+	size.x = std::round(size.x * automapRelativeSize.x);
+	size.y = std::round(size.y * automapRelativeSize.y);
+	automapView.setSize(size);
+	viewPortNeedsUpdate = true;
 }
 
 void Level::Zoom(float factor, bool smooth) noexcept
@@ -222,6 +310,58 @@ void Level::addPlayer(std::unique_ptr<Player> player, const MapCoord& mapCoord)
 	players.push_back(std::move(player));
 }
 
+void Level::deleteLevelObjectById(const std::string_view id)
+{
+	if (id.empty() == true)
+	{
+		return;
+	}
+	for (auto it = levelObjects.begin(); it != levelObjects.end(); ++it)
+	{
+		if ((*it)->getId() == id)
+		{
+			auto obj = it->get();
+			map[obj->MapPosition()].removeObject(obj);
+			if (clickedObject == obj)
+			{
+				clickedObject = nullptr;
+			}
+			if (hoverObject == obj)
+			{
+				hoverObject = nullptr;
+			}
+			levelObjects.erase(it);
+			break;
+		}
+	}
+}
+
+void Level::deleteLevelObjectByClass(const std::string_view classId)
+{
+	if (classId.empty() == true)
+	{
+		return;
+	}
+	for (auto it = levelObjects.begin(); it != levelObjects.end(); ++it)
+	{
+		if ((*it)->getClassId() == classId)
+		{
+			auto obj = it->get();
+			map[obj->MapPosition()].removeObject(obj);
+			if (clickedObject == obj)
+			{
+				clickedObject = nullptr;
+			}
+			if (hoverObject == obj)
+			{
+				hoverObject = nullptr;
+			}
+			levelObjects.erase(it);
+			break;
+		}
+	}
+}
+
 void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (visible == false)
@@ -230,40 +370,90 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 
 	auto origView = target.getView();
-	target.setView(view.getView());
 
-	sf::Sprite sprite;
+	Sprite2 sprite;
 	TextureInfo ti;
 	sf::FloatRect tileRect;
-	const sf::Texture* palette = nullptr;
+	size_t layerToDrawLevelObjects = 0;
 
-	auto tiles = tilesBottom.get();
-	if (tiles != nullptr)
+	if (levelLayers[1].tiles != nullptr)
 	{
-		if (tiles->isIndexed() == true &&
-			tiles->getPalette() != nullptr &&
-			Shaders::supportsPalettes() == true)
+		layerToDrawLevelObjects = 1;
+	}
+	else if (levelLayers[2].tiles != nullptr)
+	{
+		layerToDrawLevelObjects = 2;
+	}
+
+	for (size_t i = 0; i < levelLayers.size(); i++)
+	{
+		const auto& layer = levelLayers[i];
+		auto tiles = layer.tiles.get();
+
+		if (layer.view == nullptr)
 		{
-			palette = &tiles->getPalette()->texture;
+			continue;
 		}
-		if (palette != nullptr)
+		if (layer.visible == false)
 		{
-			states.shader = &Shaders::Palette;
-			Shaders::Palette.setUniform("palette", *palette);
+			// don't skip layer (level objects are drawn in this layer)
+			if (i != layerToDrawLevelObjects)
+			{
+				continue;
+			}
+		}
+		else
+		{
+			if (layer.background != sf::Color::Transparent &&
+				tiles != nullptr)
+			{
+				target.setView(origView);
+				sf::RectangleShape background(layer.view->getSize());
+				background.setPosition(layer.view->getPosition());
+				background.setFillColor(layer.background);
+				target.draw(background);
+			}
 		}
 
-		for (Coord x = visibleStart.x; x < visibleEnd.x; x++)
+		target.setView(layer.view->getView());
+
+		if (tiles == nullptr)
 		{
-			for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
+			// don't skip layer (level objects are drawn in this layer)
+			if (i != layerToDrawLevelObjects)
+			{
+				continue;
+			}
+		}
+
+		for (Coord x = layer.visibleStart.x; x < layer.visibleEnd.x; x++)
+		{
+			for (Coord y = layer.visibleStart.y; y < layer.visibleEnd.y; y++)
 			{
 				int16_t index;
 				if (map.isMapCoordValid(x, y) == false)
 				{
-					index = map.getOutOfBoundsTileIndexBack(x, y);
+					index = map.getOutOfBoundsTileIndex(i, x, y);
 				}
 				else
 				{
-					index = map[x][y].TileIndexBack();
+					index = map[x][y].getTileIndex(i);
+
+					if (i == layerToDrawLevelObjects)	// draw level objets in this layer
+					{
+						for (const auto& drawObj : map[x][y])
+						{
+							if (drawObj != nullptr)
+							{
+								target.draw(*drawObj, states);
+							}
+						}
+						if (tiles == nullptr ||
+							layer.visible == false)
+						{
+							continue;
+						}
+					}
 				}
 				if (index < 0)
 				{
@@ -271,17 +461,16 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				}
 				if (tiles->get((size_t)index, ti) == true)
 				{
-					auto coords = map.getCoord(MapCoord(x, y));
-					coords.y -= (float)(ti.textureRect.height - tileHeight);
+					auto coords = map.getCoord(MapCoord(x, y), layer.blockWidth, layer.blockHeight);
+					coords.y -= (float)(ti.textureRect.height - layer.tileHeight);
 					coords += ti.offset;
 					tileRect.left = coords.x;
 					tileRect.top = coords.y;
 					tileRect.width = (float)ti.textureRect.width;
 					tileRect.height = (float)ti.textureRect.height;
-					if (visibleRect.intersects(tileRect) == true)
+					if (layer.visibleRect.intersects(tileRect) == true)
 					{
-						sprite.setTexture(*ti.texture);
-						sprite.setTextureRect(ti.textureRect);
+						sprite.setTexture(ti, true);
 						sprite.setPosition(coords);
 						target.draw(sprite, states);
 					}
@@ -290,113 +479,99 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		}
 	}
 
-	palette = nullptr;
-	tiles = tilesTop.get();
-
-	if (tiles != nullptr &&
-		tiles->isIndexed() == true &&
-		tiles->getPalette() != nullptr &&
-		Shaders::supportsPalettes() == true)
+	// draw player direction in automap, if enabled (baseIndex >= 0)
+	if (levelLayers[AutomapLayer].tiles != nullptr &&
+		levelLayers[AutomapLayer].visible == true &&
+		automapPlayerDirectionBaseIndex >= 0 &&
+		currentPlayer != nullptr)
 	{
-		palette = &tiles->getPalette()->texture;
-	}
-	if (palette != nullptr)
-	{
-		states.shader = &Shaders::Palette;
-		Shaders::Palette.setUniform("palette", *palette);
-	}
-	else
-	{
-		states.shader = NULL;
-	}
-
-	for (Coord x = visibleStart.x; x < visibleEnd.x; x++)
-	{
-		for (Coord y = visibleStart.y; y < visibleEnd.y; y++)
+		auto direction = (size_t)currentPlayer->getDirection();
+		auto index = (size_t)automapPlayerDirectionBaseIndex + direction;
+		if (direction < (size_t)PlayerDirection::All &&
+			levelLayers[AutomapLayer].tiles->get(index, ti) == true)
 		{
-			int16_t index;
-			if (map.isMapCoordValid(x, y) == false)
-			{
-				index = map.getOutOfBoundsTileIndexFront(x, y);
-			}
-			else
-			{
-				index = map[x][y].TileIndexFront();
-				bool drewObj = false;
+			target.setView(levelLayers[AutomapLayer].view->getView());
 
-				for (const auto& drawObj : map[x][y])
-				{
-					if (drawObj != nullptr)
-					{
-						target.draw(*drawObj, states);
-						drewObj = true;
-					}
-				}
-				if (drewObj == true &&
-					palette != nullptr)
-				{
-					Shaders::Palette.setUniform("palette", *palette);
-				}
-			}
-			if (tiles != nullptr)
+			auto coords = currentAutomapViewCenter;
+			coords.x -= (float)(ti.textureRect.width / 2);
+			coords.y -= (float)(ti.textureRect.height / 2);
+			coords += ti.offset;
+			tileRect.left = coords.x;
+			tileRect.top = coords.y;
+			tileRect.width = (float)ti.textureRect.width;
+			tileRect.height = (float)ti.textureRect.height;
+			if (levelLayers[AutomapLayer].visibleRect.intersects(tileRect) == true)
 			{
-				if (index < 0)
-				{
-					continue;
-				}
-				if (tiles->get((size_t)index, ti) == true)
-				{
-					auto coords = map.getCoord(MapCoord(x, y));
-					coords.y -= (float)(ti.textureRect.height - tileHeight);
-					coords += ti.offset;
-					tileRect.left = coords.x;
-					tileRect.top = coords.y;
-					tileRect.width = (float)ti.textureRect.width;
-					tileRect.height = (float)ti.textureRect.height;
-					if (visibleRect.intersects(tileRect) == true)
-					{
-						sprite.setTexture(*ti.texture);
-						sprite.setTextureRect(ti.textureRect);
-						sprite.setPosition(coords);
-						target.draw(sprite, states);
-					}
-				}
+				sprite.setTexture(ti, true);
+				sprite.setPosition(coords);
+				target.draw(sprite, states);
 			}
 		}
 	}
+
 	target.setView(origView);
 }
 
 void Level::updateSize(const Game& game)
 {
 	view.updateSize(game);
+	automapView.updateSize(game);
+	updateAutomapPosition(view.getPosition());
+	updateAutomapSize(view.getSize());
 	updateVisibleArea();
 }
 
 void Level::updateVisibleArea()
 {
-	const auto& viewCenter = view.getCenter();
-	const auto& viewSize = view.getVisibleSize();
+	sf::FloatRect visibleRect;
+	MapCoord visibleStart;
+	MapCoord visibleEnd;
+	int tileWidth{ 0 };
+	int tileHeight{ 0 };
+	View2* layerView{ nullptr };
 
-	visibleRect = sf::FloatRect(viewCenter.x - std::round(viewSize.x / 2),
-		viewCenter.y - std::round(viewSize.y / 2),
-		std::round(viewSize.x),
-		std::round(viewSize.y));
+	for (auto& layer : levelLayers)
+	{
+		if (layer.tileWidth == 0 &&
+			layer.tileHeight == 0)
+		{
+			continue;
+		}
+		if (layer.tileWidth != tileWidth ||
+			layer.tileHeight != tileHeight ||
+			layer.view != layerView)
+		{
+			tileWidth = layer.tileWidth;
+			tileHeight = layer.tileHeight;
+			layerView = layer.view;
 
-	sf::Vector2f TL{ visibleRect.left, visibleRect.top };
-	sf::Vector2f TR{ TL.x + visibleRect.width + tileWidth, TL.y };
-	sf::Vector2f BL{ TL.x, TL.y + visibleRect.height + tileHeight };
-	sf::Vector2f BR{ TR.x, BL.y };
+			const auto& viewCenter = layer.view->getCenter();
+			const auto& viewSize = layer.view->getVisibleSize();
 
-	auto mapTL = map.getTile(TL);
-	auto mapTR = map.getTile(TR);
-	auto mapBL = map.getTile(BL);
-	auto mapBR = map.getTile(BR);
+			visibleRect = sf::FloatRect(viewCenter.x - std::round(viewSize.x / 2),
+				viewCenter.y - std::round(viewSize.y / 2),
+				std::round(viewSize.x),
+				std::round(viewSize.y));
 
-	visibleStart.x = mapTL.x - 2;
-	visibleEnd.x = mapBR.x + 12;
-	visibleStart.y = mapTR.y - 2;
-	visibleEnd.y = mapBL.y + 12;
+			sf::Vector2f TL{ visibleRect.left, visibleRect.top };
+			sf::Vector2f TR{ TL.x + visibleRect.width + tileWidth, TL.y };
+			sf::Vector2f BL{ TL.x, TL.y + visibleRect.height + tileHeight };
+			sf::Vector2f BR{ TR.x, BL.y };
+
+			auto mapTL = map.getTile(TL, layer.blockWidth, layer.blockHeight);
+			auto mapTR = map.getTile(TR, layer.blockWidth, layer.blockHeight);
+			auto mapBL = map.getTile(BL, layer.blockWidth, layer.blockHeight);
+			auto mapBR = map.getTile(BR, layer.blockWidth, layer.blockHeight);
+
+			visibleStart.x = mapTL.x - 2;
+			visibleEnd.x = mapBR.x + 12;
+			visibleStart.y = mapTR.y - 2;
+			visibleEnd.y = mapBL.y + 12;
+		}
+		layer.visibleRect = visibleRect;
+		layer.visibleStart = visibleStart;
+		layer.visibleEnd = visibleEnd;
+	}
 }
 
 void Level::updateMouse(const Game& game)
@@ -488,10 +663,10 @@ void Level::update(Game& game)
 	{
 		return;
 	}
-	if (updateViewPort == true)
+	if (viewPortNeedsUpdate == true)
 	{
-		updateViewPort = false;
 		view.updateViewport(game);
+		automapView.updateViewport(game);
 		updateVisibleArea();
 	}
 	if (pause == true)
@@ -519,9 +694,9 @@ void Level::update(Game& game)
 		{
 			onTouchBegan(game);
 		}
-		if (captureInputEvents == true)
+		if (captureInputEvents != InputEvent::None)
 		{
-			game.clearInputEvents();
+			game.clearInputEvents(captureInputEvents);
 		}
 	}
 	else
@@ -539,23 +714,29 @@ void Level::update(Game& game)
 	if (followCurrentPlayer == true && currentPlayer != nullptr)
 	{
 		currentMapPosition = currentPlayer->MapPosition();
-		currentMapViewCenter = currentPlayer->getBasePosition();
+		setCurrentMapViewCenter(currentPlayer->getBasePosition());
 	}
-	if (view.getCenter() != currentMapViewCenter)
+	if (view.getCenter() != currentMapViewCenter ||
+		viewPortNeedsUpdate == true)
 	{
 		view.setCenter(currentMapViewCenter);
+		automapView.setCenter(currentAutomapViewCenter);
 		updateVisibleArea();
+	}
+	if (viewPortNeedsUpdate == true)
+	{
+		viewPortNeedsUpdate = false;
 	}
 }
 
-bool Level::getProperty(const std::string& prop, Variable& var) const
+bool Level::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
 	case str2int16("clickedObject"):
@@ -574,8 +755,16 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		}
 	}
 	break;
+	case str2int16("hasAutomap"):
+		var = Variable((levelLayers[AutomapLayer].tiles != nullptr));
+		return true;
+		break;
 	case str2int16("hasCurrentPlayer"):
-		var = Variable((bool)(currentPlayer != nullptr));
+		var = Variable((currentPlayer != nullptr));
+		return true;
+		break;
+	case str2int16("hasQuest"):
+		var = Variable(hasQuest(props.second));
 		return true;
 		break;
 	case str2int16("hoverObject"):
@@ -598,6 +787,16 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 		var = Variable(path);
 		return true;
 		break;
+	case str2int16("levelObject"):
+	{
+		std::string_view props2;
+		auto obj = parseLevelObjectIdOrMapPosition(props.second, props2);
+		if (obj != nullptr)
+		{
+			return obj->getProperty(props2, var);
+		}
+	}
+	break;
 	case str2int16("player"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
@@ -621,6 +820,10 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 			}
 		}
 	}
+	case str2int16("showAutomap"):
+		var = Variable(levelLayers[AutomapLayer].visible);
+		return true;
+		break;
 	case str2int16("zoom"):
 		var = Variable((double)stopZoomFactor);
 		return true;
@@ -635,14 +838,14 @@ bool Level::getProperty(const std::string& prop, Variable& var) const
 	return false;
 }
 
-const Queryable* Level::getQueryable(const std::string& prop) const
+const Queryable* Level::getQueryable(const std::string_view prop) const
 {
 	if (prop.empty() == true)
 	{
 		return this;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	const Queryable* queryable = nullptr;
 	switch (propHash)
 	{
@@ -700,6 +903,36 @@ const Queryable* Level::getQueryable(const std::string& prop) const
 	return queryable;
 }
 
+LevelObject* Level::parseLevelObjectIdOrMapPosition(
+	const std::string_view str, std::string_view& props) const
+{
+	auto strPair = Utils::splitStringIn2(str, '.');
+	auto strPair2 = Utils::splitStringIn2(strPair.first, ',');
+	if (strPair2.second.empty() == false)
+	{
+		MapCoord mapPos(Utils::strtou(strPair2.first), Utils::strtou(strPair2.second));
+		if (map.isMapCoordValid(mapPos) == true)
+		{
+			props = strPair.second;
+			return map[mapPos].getObject<LevelObject>();
+		}
+	}
+	else
+	{
+		for (const auto& obj : levelObjects)
+		{
+			auto simpleObj = dynamic_cast<SimpleLevelObject*>(obj.get());
+			if (simpleObj != nullptr &&
+				simpleObj->Id() == strPair2.first)
+			{
+				props = strPair.second;
+				return simpleObj;
+			}
+		}
+	}
+	return nullptr;
+}
+
 void Level::clearLevelObjects()
 {
 	for (const auto& obj : levelObjects)
@@ -713,7 +946,39 @@ void Level::clearLevelObjects()
 	levelObjects.clear();
 }
 
-Player* Level::getPlayer(const std::string& id) const noexcept
+LevelObject* Level::getLevelObject(const std::string_view id) const noexcept
+{
+	if (id.empty() == true)
+	{
+		return nullptr;
+	}
+	for (const auto& obj : levelObjects)
+	{
+		if (obj->getId() == id)
+		{
+			return obj.get();
+		}
+	}
+	return nullptr;
+}
+
+LevelObject* Level::getLevelObjectByClass(const std::string_view classId) const noexcept
+{
+	if (classId.empty() == true)
+	{
+		return nullptr;
+	}
+	for (const auto& obj : levelObjects)
+	{
+		if (obj->getClassId() == classId)
+		{
+			return obj.get();
+		}
+	}
+	return nullptr;
+}
+
+Player* Level::getPlayer(const std::string_view id) const noexcept
 {
 	for (const auto& player : players)
 	{
@@ -725,7 +990,7 @@ Player* Level::getPlayer(const std::string& id) const noexcept
 	return nullptr;
 }
 
-Player* Level::getPlayerOrCurrent(const std::string& id) const noexcept
+Player* Level::getPlayerOrCurrent(const std::string_view id) const noexcept
 {
 	if (id.empty() == true)
 	{
@@ -739,7 +1004,7 @@ void Level::clearPlayerClasses(size_t clearIdx)
 	if (clearIdx < playerClasses.size())
 	{
 		auto removeIfFunc = [&](const auto& cls) {
-			auto it = std::find_if(players.begin(), players.end(), [&](const auto& plr) {
+			auto it = std::find_if(players.begin(), players.end(), [&cls](const auto& plr) {
 				return plr->getPlayerClass() == cls.second.get();
 			});
 			return it == players.end();
@@ -843,7 +1108,7 @@ Item* Level::getItem(const ItemLocation& location) const
 
 Item* Level::getItem(const ItemLocation& location, Player*& player) const
 {
-	if (std::holds_alternative<MapCoord>(location) == true)
+	if (holdsMapCoord(location) == true)
 	{
 		player = nullptr;
 		return getItem(std::get<MapCoord>(location));
@@ -859,7 +1124,7 @@ std::unique_ptr<Item> Level::removeItem(const MapCoord& mapCoord)
 	if (map.isMapCoordValid(mapCoord) == true)
 	{
 		auto item = map[mapCoord].removeObject<Item>();
-		return deleteLevelObject<Item>(item);
+		return removeLevelObject<Item>(item);
 	}
 	return nullptr;
 }
@@ -905,7 +1170,7 @@ std::unique_ptr<Item> Level::removeItem(const ItemLocation& location)
 
 std::unique_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& player)
 {
-	if (std::holds_alternative<MapCoord>(location) == true)
+	if (holdsMapCoord(location) == true)
 	{
 		player = nullptr;
 		return removeItem(std::get<MapCoord>(location));
@@ -928,7 +1193,7 @@ bool Level::setItem(const MapCoord& mapCoord, std::unique_ptr<Item>& item)
 	{
 		if (oldItem != nullptr)
 		{
-			deleteLevelObject<Item>(oldItem);
+			removeLevelObject<Item>(oldItem);
 			mapCell.removeObject(oldItem);
 		}
 		return true;
@@ -975,7 +1240,7 @@ bool Level::setItem(const ItemCoordInventory& itemCoord, std::unique_ptr<Item>& 
 
 bool Level::setItem(const ItemLocation& location, std::unique_ptr<Item>& item)
 {
-	if (std::holds_alternative<MapCoord>(location) == true)
+	if (holdsMapCoord(location) == true)
 	{
 		return setItem(std::get<MapCoord>(location), item);
 	}
@@ -983,6 +1248,32 @@ bool Level::setItem(const ItemLocation& location, std::unique_ptr<Item>& item)
 	{
 		return setItem(std::get<ItemCoordInventory>(location), item);
 	}
+}
+
+LevelObjValue Level::addItemQuantity(const ItemLocation& location, LevelObjValue amount)
+{
+	Player* player;
+	auto item = getItem(location, player);
+	if (item != nullptr)
+	{
+		if (amount != 0)
+		{
+			LevelObjValue newAmount = amount;
+			auto newQuant = item->addQuantity(newAmount);
+
+			if (player != nullptr &&
+				std::get<ItemCoordInventory>(location).isSelectedItem() == false)
+			{
+				player->updateItemQuantityCache(
+					item->Class()->IdHash16(), (amount - newAmount));
+			}
+			if (newQuant == 0)
+			{
+				removeItem(location);
+			}
+		}
+	}
+	return amount;
 }
 
 void Level::addQuest(Quest quest_)
@@ -997,7 +1288,12 @@ void Level::addQuest(Quest quest_)
 	quests.push_back(std::move(quest_));
 }
 
-void Level::deleteQuest(const std::string& questId)
+void Level::clearQuests()
+{
+	quests.clear();
+}
+
+void Level::deleteQuest(const std::string_view questId)
 {
 	for (auto it = quests.begin(); it != quests.end(); ++it)
 	{
@@ -1009,7 +1305,19 @@ void Level::deleteQuest(const std::string& questId)
 	}
 }
 
-void Level::setQuestState(const std::string& questId, int state) noexcept
+bool Level::hasQuest(const std::string_view questId) const noexcept
+{
+	for (auto& quest : quests)
+	{
+		if (quest.Id() == questId)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void Level::setQuestState(const std::string_view questId, int state) noexcept
 {
 	for (auto& quest : quests)
 	{
@@ -1051,17 +1359,17 @@ uint32_t Level::getLevelFromExperience(uint32_t experience) const
 	return experiencePoints.size();
 }
 
-const char* Level::getPropertyName(uint16_t hash16) const
+const std::string_view Level::getPropertyName(uint16_t hash16) const
 {
 	const auto elem = propertyNames.find(hash16);
 	if (elem != propertyNames.cend())
 	{
-		return elem->second.c_str();
+		return elem->second;
 	}
-	return "";
+	return {};
 }
 
-void Level::setPropertyName(uint16_t hash16, const std::string& prop)
+void Level::setPropertyName(uint16_t hash16, const std::string_view prop)
 {
-	propertyNames[hash16] = prop;
+	propertyNames[hash16] = std::string(prop);
 }

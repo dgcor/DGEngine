@@ -1,5 +1,5 @@
 #include "ParseItemClass.h"
-#include "Game/ItemProperties.h"
+#include "Game/GameHashes.h"
 #include "Game/ItemClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
@@ -13,7 +13,7 @@ namespace Parser
 	{
 		itemClass.setDescription(
 			getUIntKey(elem, "index"),
-			level.getNamer(getStringKey(elem, "name")),
+			level.getClassifier(getStringKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
@@ -108,35 +108,35 @@ namespace Parser
 
 		if (elem.HasMember("name") == true)
 		{
-			itemClass->Name(getStringVal(elem["name"]));
+			itemClass->Name(getStringViewVal(elem["name"]));
 		}
 		if (elem.HasMember("shortName") == true)
 		{
-			itemClass->ShortName(getStringVal(elem["shortName"]));
+			itemClass->ShortName(getStringViewVal(elem["shortName"]));
 		}
 		if (elem.HasMember("type") == true)
 		{
-			itemClass->Type(getStringVal(elem["type"]));
+			itemClass->Type(getStringViewVal(elem["type"]));
 		}
 		if (elem.HasMember("subType") == true)
 		{
-			itemClass->SubType(getStringVal(elem["subType"]));
+			itemClass->SubType(getStringViewVal(elem["subType"]));
 		}
 		if (elem.HasMember("inventorySize") == true)
 		{
 			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], ItemXY(1, 1)));
 		}
-		if (elem.HasMember("defaultAnimationSpeed") == true)
+		if (elem.HasMember("animationSpeed") == true)
 		{
-			itemClass->DefaultAnimationSpeed(getTimeVal(elem["defaultAnimationSpeed"], sf::milliseconds(40)));
+			itemClass->AnimationSpeed(getTimeVal(elem["animationSpeed"], sf::milliseconds(40)));
 		}
-		if (elem.HasMember("defaultOutline") == true)
+		if (elem.HasMember("outline") == true)
 		{
-			itemClass->DefaultOutline(getColorVal(elem["defaultOutline"], sf::Color::Transparent));
+			itemClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
 		}
-		if (elem.HasMember("defaultOutlineIgnore") == true)
+		if (elem.HasMember("outlineIgnore") == true)
 		{
-			itemClass->DefaultOutlineIgnore(getColorVal(elem["defaultOutlineIgnore"], sf::Color::Transparent));
+			itemClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
 		}
 
 		if (elem.HasMember("defaults") == true)
@@ -148,7 +148,7 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto nameStr = it->name.GetString();
+						auto nameStr = std::string(it->name.GetString(), it->name.GetStringLength());
 						auto nameHash = str2int16(nameStr);
 						level->setPropertyName(nameHash, nameStr);
 						LevelObjValue val;
@@ -157,7 +157,7 @@ namespace Parser
 						case ItemProp::UseOn:
 						case ItemProp::UseOp:
 						{
-							auto opStr = getStringCharVal(it->value);
+							auto opStr = getStringViewVal(it->value);
 							val = str2int16(opStr);
 							level->setPropertyName(val, opStr);
 							break;
@@ -184,13 +184,13 @@ namespace Parser
 						std::shared_ptr<Action> action;
 						if (it->value.IsString() == true)
 						{
-							action = itemClass->getAction(str2int16(it->value.GetString()));
+							action = itemClass->getAction(str2int16(getStringViewVal(it->value)));
 						}
 						if (action == nullptr)
 						{
 							action = parseAction(game, it->value);
 						}
-						itemClass->setAction(str2int16(it->name.GetString()), action);
+						itemClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
 				}
 			}
@@ -203,7 +203,7 @@ namespace Parser
 			{
 				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
 				{
-					auto nameHash = str2int16(it->name.GetString());
+					auto nameHash = str2int16(getStringViewVal(it->name));
 					if (nameHash != str2int16(""))
 					{
 						if (it->value.IsNull() == true)
@@ -212,7 +212,7 @@ namespace Parser
 						}
 						else
 						{
-							itemClass->setFormula(nameHash, getStringVal(it->value));
+							itemClass->setFormula(nameHash, getStringViewVal(it->value));
 						}
 					}
 				}
@@ -235,15 +235,20 @@ namespace Parser
 			}
 		}
 
+		if (elem.HasMember("inventoryTexture") == true)
+		{
+			auto classifier = level->getClassifier(getStringVal(elem["inventoryTexture"]));
+			itemClass->setInventoryTexture(classifier);
+		}
 		if (elem.HasMember("prefix") == true)
 		{
-			auto namer = level->getNamer(getStringVal(elem["prefix"]));
-			itemClass->setPrefix(namer);
+			auto classifier = level->getClassifier(getStringVal(elem["prefix"]));
+			itemClass->setPrefix(classifier);
 		}
 		if (elem.HasMember("suffix") == true)
 		{
-			auto namer = level->getNamer(getStringVal(elem["suffix"]));
-			itemClass->setSuffix(namer);
+			auto classifier = level->getClassifier(getStringVal(elem["suffix"]));
+			itemClass->setSuffix(classifier);
 		}
 
 		level->addItemClass(id, std::move(itemClass));

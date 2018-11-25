@@ -2,9 +2,10 @@
 #include <algorithm>
 #include "Game.h"
 #include "GameUtils.h"
+#include <SFML/Config.hpp>
 #include "Utils/Utils.h"
 
-void StringText::calcLineCount()
+void StringText::calculateLineCount()
 {
 	if (text.getString().isEmpty() == true)
 	{
@@ -34,16 +35,53 @@ void StringText::updateSize(const Game& game)
 	calculateDrawPosition();
 }
 
-bool StringText::getProperty(const std::string& prop, Variable& var) const
+bool StringText::setText(const std::string& str)
+{
+	if (text.getString() == str)
+	{
+		return false;
+	}
+	text.setString(str);
+	calculateLineCount();
+	calculateDrawPosition();
+	return true;
+}
+
+void StringText::setHorizontalSpaceOffset(int offset) noexcept
+{
+	float factor = 1.f;
+	if (offset != 0)
+	{
+		factor = (float)(text.getCharacterSize() + offset) / (float)text.getCharacterSize();
+	}
+	text.setLetterSpacing(factor);
+	calculateDrawPosition();
+}
+
+void StringText::setVerticalSpaceOffset(int offset) noexcept
+{
+	float factor = 1.f;
+	if (offset != 0)
+	{
+		factor = (float)(text.getCharacterSize() + offset) / (float)text.getCharacterSize();
+	}
+	text.setLineSpacing(factor);
+	calculateDrawPosition();
+}
+
+bool StringText::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("length"):
+		var = Variable((int64_t)text.getString().getSize());
+		break;
 	case str2int16("lineCount"):
 		var = Variable((int64_t)lineCount);
 		break;

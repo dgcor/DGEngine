@@ -1,21 +1,21 @@
 {
-  "namer": [
+  "classifier": [
     {
       "id": "unique",
-      "names": [
+      "values": [
         {
           "property": "identified",
-          "value": { "min": false, "max": false, "text": "Not Identified" }
+          "value": { "min": false, "max": false, "value": "Not Identified" }
         },
         {
           "property": "unique",
-          "value": { "min": true, "max": true, "text": "Unique Item" }
+          "value": { "min": true, "max": true, "value": "Unique Item" }
         }
       ]
     },
     {
       "id": "arkanesValor",
-      "names": "Armor Class: %armor%\n+%vitality% to vitality\n%damageFromEnemies% damage from enemies\nfastest hit recovery"
+      "values": "Armor Class: %armor%\n+%vitality% to vitality\n%damageFromEnemies% damage from enemies\nfastest hit recovery"
     }
   ]
 }

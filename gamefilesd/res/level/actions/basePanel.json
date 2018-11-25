@@ -2,26 +2,28 @@
   "action": [
     {
       "name": "action.set",
-      "replaceVars": true,
+      "id": "saveSettings",
+      "action": { "name": "load", "file": "ui/level/saveSettings.json" }
+    },
+    {
+      "name": "action.set",
       "id": "setPanelTextColorBlue",
-      "action": { "name": "text.setColor", "id": "txtPanel", "color": "%textBlue%" }
+      "action": { "name": "text.setFont", "id": "txtPanel", "font": "smaltextBlue" }
     },
     {
       "name": "action.set",
-      "replaceVars": true,
       "id": "setPanelTextColorGold",
-      "action": { "name": "text.setColor", "id": "txtPanel", "color": "%textGold%" }
+      "action": { "name": "text.setFont", "id": "txtPanel", "font": "smaltextGold" }
     },
     {
       "name": "action.set",
-      "replaceVars": true,
       "id": "setPanelTextColorRed",
-      "action": { "name": "text.setColor", "id": "txtPanel", "color": "%textRed%" }
+      "action": { "name": "text.setFont", "id": "txtPanel", "font": "smaltextRed" }
     },
     {
       "name": "action.set",
       "id": "setPanelTextColorWhite",
-      "action": { "name": "text.setColor", "id": "txtPanel" }
+      "action": { "name": "text.setFont", "id": "txtPanel", "font": "smaltext" }
     },
     {
       "name": "action.set",
@@ -30,10 +32,15 @@
     },
     {
       "name": "action.set",
+      "id": "closeRemoveGold",
+      "action": { "name": "resource.pop", "id": "removeGold" }
+    },
+    {
+      "name": "action.set",
       "id": "clearPanelText",
       "action": {
         "name": "if.notEqual",
-        "param1": "|currentLevel|currentPlayer.hasSelectedItem|",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "txtPanel", "text": "" },
@@ -46,7 +53,7 @@
       "id": "updatePanelTextSpacing",
       "action": {
         "name": "switch",
-        "param": "|txtPanel|lineCount|",
+        "param": "%txtPanel.lineCount%",
         "case": [
           {
             "value": 2,
@@ -74,7 +81,7 @@
       "action": [
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseSelectedItem|",
+          "param1": "%currentLevel.currentPlayer.canUseSelectedItem%",
           "param2": false,
           "then": { "name": "cursor.setPalette", "palette": "infra", "color": "0xFF0000" },
           "else": { "name": "cursor.setPalette", "palette": "town" }
@@ -82,17 +89,17 @@
         {
           "name": "text.setText",
           "id": "txtPanel",
-          "text": "|currentLevel|currentPlayer.selectedItem.name|"
+          "text": "%currentLevel.currentPlayer.selectedItem.name%"
         },
         "updatePanelTextSpacing",
         {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.selectedItem.magical|",
+          "param1": "%currentLevel.currentPlayer.selectedItem.magical%",
           "param2": 1,
           "then": "setPanelTextColorBlue",
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.selectedItem.unique|",
+            "param1": "%currentLevel.currentPlayer.selectedItem.unique%",
             "param2": 1,
             "then": [
               "setPanelTextColorGold",

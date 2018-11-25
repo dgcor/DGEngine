@@ -1,36 +1,35 @@
 #include "ParseAudio.h"
 #include "ParseAudioCommon.h"
-#include "MusicLoops.h"
+#include "SFML/MusicLoops.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 	bool openMusicFromBuffer(Game& game, std::shared_ptr<sf::Music2>& music,
-		sf::SoundBuffer& buffer, const std::string& id)
+		sf::SoundBuffer& buffer, const std::string& id, const std::string_view resource)
 	{
 		if (music->openFromSoundBuffer(buffer) == true)
 		{
-			if (game.Resources().addSong(id, music) == true)
+			if (game.Resources().addSong(id, music, resource) == true)
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-#endif
 
 	bool openMusicFromFile(Game& game, std::shared_ptr<sf::Music2> music,
-		sf::PhysFSStream& stream, const AudioSource audioSource, const std::string& id)
+		sf::PhysFSStream& stream, const AudioSource audioSource,
+		const std::string& id, const std::string_view resource)
 	{
 		if (music->openFromStream(stream) == true &&
 			game.Resources().hasSong(id, true) == false)
 		{
-			if (game.Resources().addAudioSource(id, audioSource) == true)
+			if (game.Resources().addAudioSource(id, audioSource, resource) == true)
 			{
-				game.Resources().addSong(id, music);
+				game.Resources().addSong(id, music, resource);
 				return true;
 			}
 		}
@@ -52,14 +51,14 @@ namespace Parser
 			}
 
 			auto music = std::make_shared<sf::Music2>();
+			auto resource = getStringViewKey(elem, "resource");
 
-			if (openMusicFromFile(game, music, *stream, stream, id) == true)
+			if (openMusicFromFile(game, music, *stream, stream, id, resource) == true)
 			{
 				return music.get();
 			}
 			return nullptr;
 		}
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 		auto sndFile = std::make_shared<SoundFileLoops>(file);
 		if (sndFile->file.hasError() == true)
 		{
@@ -68,9 +67,10 @@ namespace Parser
 
 		auto music = std::make_shared<sf::MusicLoops>();
 		auto music2 = std::dynamic_pointer_cast<sf::Music2>(music);
+		auto resource = getStringViewKey(elem, "resource");
 
 		if (openMusicFromFile(game, music2,
-			sndFile->file, sndFile, id) == true)
+			sndFile->file, sndFile, id, resource) == true)
 		{
 			if (hasLoopNames == true)
 			{
@@ -86,13 +86,12 @@ namespace Parser
 			else if (isValidString(elem, "playText") == true)
 			{
 				updateAudioLoopString(
-					elem["playText"].GetString(),
+					getStringViewVal(elem["playText"]),
 					sndFile->loops,
 					*music);
 			}
 			return music.get();
 		}
-#endif
 		return nullptr;
 	}
 
@@ -106,7 +105,6 @@ namespace Parser
 		}
 		bool validId = isValidId(id);
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 		if (isValidString(elem, "sourceId") == true &&
 			validId == true)
 		{
@@ -136,7 +134,8 @@ namespace Parser
 				{
 					music = std::make_shared<sf::Music2>();
 				}
-				if (openMusicFromBuffer(game, music, *sndBuffer, id) == true)
+				auto resource = getStringViewKey(elem, "resource");
+				if (openMusicFromBuffer(game, music, *sndBuffer, id, resource) == true)
 				{
 					return music.get();
 				}
@@ -152,9 +151,10 @@ namespace Parser
 
 				auto music = std::make_shared<sf::MusicLoops>();
 				auto music2 = std::dynamic_pointer_cast<sf::Music2>(music);
+				auto resource = getStringViewKey(elem, "resource");
 
 				if (openMusicFromBuffer(game, music2,
-					sndBuffer->soundBuffer, id) == true)
+					sndBuffer->soundBuffer, id, resource) == true)
 				{
 					if (isValidString(elem, "loopPoints") == true)
 					{
@@ -166,7 +166,7 @@ namespace Parser
 					else if (isValidString(elem, "playText") == true)
 					{
 						updateAudioLoopString(
-							elem["playText"].GetString(),
+							getStringViewVal(elem["playText"]),
 							sndBuffer->loops,
 							*music);
 					}
@@ -175,9 +175,6 @@ namespace Parser
 			}
 		}
 		else if (isValidString(elem, "file") == true)
-#else
-		if (isValidString(elem, "file") == true)
-#endif
 		{
 			std::string file(elem["file"].GetString());
 
@@ -210,7 +207,7 @@ namespace Parser
 					auto obj = game.Resources().getSong(fromId);
 					if (obj != nullptr)
 					{
-						game.Resources().addSong(id, obj);
+						game.Resources().addSong(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -234,14 +231,12 @@ namespace Parser
 
 		music->setLoop(getBoolKey(elem, "loop"));
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 		auto musicLoop = dynamic_cast<sf::MusicLoops*>(music);
 		if (musicLoop != nullptr)
 		{
 			musicLoop->setLoop(music->getLoop());
 			music->setLoop(true);
 		}
-#endif
 		auto volume = getVariableKey(elem, "volume");
 		auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 		if (vol > 100)

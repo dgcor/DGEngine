@@ -15,7 +15,7 @@
         {
           "name": "menu.setIndex",
           "id": "menuPrices",
-          "index": "|mainMenu|currentIdx|"
+          "index": "%mainMenu.currentIdx%"
         }
       ]
     },
@@ -69,7 +69,7 @@
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": {
-      "load": "currentLevel|pepin.inventory.0",
+      "load": "currentLevel.pepin.inventory.0",
       "text": "%name%\n",
       "onClick": {
         "name": "load",
@@ -106,13 +106,13 @@
   },
   "action": {
     "name": "if.notEqual",
-    "param1": "|mainMenu|itemCount|",
+    "param1": "%mainMenu.itemCount%",
     "param2": 0,
     "then": [
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "I have these items for sale :           Your gold : [1]"
       },
       { "name": "load", "file": "towners/pepin/buy/listItems.json" }
@@ -121,7 +121,7 @@
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "I have no more items for sale.          Your gold : [1]"
       },
       { "name": "load", "file": "towners/pepin/buy/noItems.json" }

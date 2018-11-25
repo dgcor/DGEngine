@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/monsters/garbud03.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

@@ -1,9 +1,0 @@
-{
-  "action": {
-    "name": "if.equal",
-    "param1": "%showMap%",
-    "param2": true,
-    "then": { "name": "drawable.visible", "id": "txtMapLabel", "visible": true },
-    "else": { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
-  }
-}

@@ -46,7 +46,7 @@
           "index": [0, 3],
           "class": "gold",
           "properties": {
-            "gold": 100
+            "quantity": 100
           }
         }
       }

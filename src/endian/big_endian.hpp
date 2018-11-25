@@ -10,7 +10,7 @@
 #include <cstdint>
 #include <limits>
 
-#include "helpers.hpp"
+#include "detail/helpers.hpp"
 
 namespace endian
 {

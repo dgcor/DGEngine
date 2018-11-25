@@ -5,8 +5,8 @@
     "name": "The Skeleton King",
     "type": "Undead",
     "description": "Some Magic Resistances\nSome Magic Immunities",
-    "defaultOutline": "%outlineEnemy%",
-    "defaultOutlineIgnore": "0x000000",
+    "outline": "|outlineEnemy|",
+    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 14,
       "experience": 570,

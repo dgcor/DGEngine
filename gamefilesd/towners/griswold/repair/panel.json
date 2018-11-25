@@ -15,7 +15,7 @@
         {
           "name": "menu.setIndex",
           "id": "menuPrices",
-          "index": "|mainMenu|currentIdx|"
+          "index": "%mainMenu.currentIdx%"
         }
       ]
     },
@@ -54,7 +54,6 @@
   ],
   "menu": {
     "id": "mainMenu",
-    "replaceVars": true,
     "font": "smaltext",
     "sound": "titlslct",
     "position": [52, 94],
@@ -71,7 +70,7 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "load": "currentLevel|currentPlayer.inventory.body",
+        "load": "currentLevel.currentPlayer.inventory.body",
         "exclude": {
           "property": "needsRepair",
           "value": false
@@ -92,45 +91,46 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.body.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.body.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "mainMenu",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.body.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.body.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "mainMenu",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.body.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.body.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.belt",
+        "load": "currentLevel.currentPlayer.inventory.belt",
         "exclude": {
           "property": "needsRepair",
           "value": false
@@ -151,45 +151,46 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.belt.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.belt.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "mainMenu",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.belt.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.belt.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "mainMenu",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.belt.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.belt.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }
         }
       },
       {
-        "load": "currentLevel|currentPlayer.inventory.stash",
+        "load": "currentLevel.currentPlayer.inventory.stash",
         "exclude": {
           "property": "needsRepair",
           "value": false
@@ -210,38 +211,39 @@
         ],
         "executeAction": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.canUseItem.stash.%idx%|",
+          "param1": "%currentLevel.currentPlayer.canUseItem.stash.%idx%%",
           "param2": false,
           "then": {
-            "name": "menu.setColor",
+            "name": "menu.setFont",
             "id": "mainMenu",
             "index": "%menuIdx%",
-            "color": "%textRed%"
+            "font": "smaltextRed"
           },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.item.stash.%idx%.unique|",
+            "param1": "%currentLevel.currentPlayer.item.stash.%idx%.unique%",
             "param2": 1,
             "then": {
-              "name": "menu.setColor",
+              "name": "menu.setFont",
               "id": "mainMenu",
               "index": "%menuIdx%",
-              "color": "%textGold%"
+              "font": "smaltextGold"
             },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.item.stash.%idx%.magical|",
+              "param1": "%currentLevel.currentPlayer.item.stash.%idx%.magical%",
               "param2": 1,
               "then": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
                 "index": "%menuIdx%",
-                "color": "%textBlue%"
+                "font": "smaltextBlue"
               },
               "else": {
-                "name": "menu.setColor",
+                "name": "menu.setFont",
                 "id": "mainMenu",
-                "index": "%menuIdx%"
+                "index": "%menuIdx%",
+                "font": "smaltext"
               }
             }
           }
@@ -269,13 +271,13 @@
   },
   "action": {
     "name": "if.notEqual",
-    "param1": "|mainMenu|itemCount|",
+    "param1": "%mainMenu.itemCount%",
     "param2": 0,
     "then": [
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "Repair which item?            Your gold : [1]"
       },
       { "name": "load", "file": "towners/griswold/repair/listItems.json" }
@@ -284,7 +286,7 @@
       {
         "name": "text.setText",
         "id": "panelTitle",
-        "binding": "|currentLevel|currentPlayer.gold|",
+        "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
         "format": "You have nothing to repair.            Your gold : [1]"
       },
       { "name": "load", "file": "towners/griswold/repair/noItems.json" }

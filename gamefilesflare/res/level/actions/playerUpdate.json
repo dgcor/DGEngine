@@ -6,7 +6,7 @@
       "action": [
         {
           "name": "<=",
-          "param1": "|currentLevel|currentPlayer.life|",
+          "param1": "%currentLevel.currentPlayer.life%",
           "param2": 0,
           "then": {
             "name": "drawable.resizeX",
@@ -18,14 +18,14 @@
           "else": {
             "name": "drawable.resizeX",
             "id": "lifeOrbFull",
-            "size": "|currentLevel|currentPlayer.lifeNow|",
-            "inputRangeMax": "|currentLevel|currentPlayer.life|",
+            "size": "%currentLevel.currentPlayer.lifeNow%",
+            "inputRangeMax": "%currentLevel.currentPlayer.life%",
             "range": [0, 106]
           }
         },
         {
           "name": "<=",
-          "param1": "|currentLevel|currentPlayer.mana|",
+          "param1": "%currentLevel.currentPlayer.mana%",
           "param2": 0,
           "then": {
             "name": "drawable.resizeX",
@@ -37,8 +37,8 @@
           "else": {
             "name": "drawable.resizeX",
             "id": "manaOrbFull",
-            "size": "|currentLevel|currentPlayer.manaNow|",
-            "inputRangeMax": "|currentLevel|currentPlayer.mana|",
+            "size": "%currentLevel.currentPlayer.manaNow%",
+            "inputRangeMax": "%currentLevel.currentPlayer.mana%",
             "range": [0, 106]
           }
         }
@@ -52,7 +52,7 @@
         "updateBeltItems",
         {
           "name": "if.equal",
-          "param1": "|game|hasResource.charPanelInventory|",
+          "param1": "%game.hasResource.charPanelInventory%",
           "param2": true,
           "then": ["updateStashItems", "updateBodyItems"]
         },

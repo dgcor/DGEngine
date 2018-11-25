@@ -6,8 +6,8 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	sf::SoundBuffer* parseSoundObj(Game& game,
-		const std::string& id, const std::string& file)
+	sf::SoundBuffer* parseSoundObj(Game& game, const std::string& id,
+		const std::string& file, const std::string_view resource)
 	{
 		sf::PhysFSStream stream(file);
 		if (stream.hasError() == true)
@@ -21,14 +21,13 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		if (game.Resources().addAudioSource(id, sndBuffer, resource) == true)
 		{
 			return sndBuffer.get();
 		}
 		return nullptr;
 	}
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 	sf::SoundBuffer* parseSoundLoopsObj(Game& game, const Value& elem,
 		const std::string& id, const std::string& file)
 	{
@@ -44,7 +43,8 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		auto resource = getStringViewKey(elem, "resource");
+		if (game.Resources().addAudioSource(id, sndBuffer, resource) == true)
 		{
 			parseAudioLoopNamesVal(elem, "loopNames", sndBuffer->loops);
 
@@ -52,7 +52,6 @@ namespace Parser
 		}
 		return nullptr;
 	}
-#endif
 
 	sf::SoundBuffer* parseSingleSoundObj(Game& game, const Value& elem)
 	{
@@ -71,18 +70,15 @@ namespace Parser
 		{
 			return nullptr;
 		}
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 		if (elem.HasMember("loopNames") == true)
 		{
 			return parseSoundLoopsObj(game, elem, id, file);
 		}
-#endif
-		return parseSoundObj(game, id, file);
+		return parseSoundObj(game, id, file, getStringViewKey(elem, "resource"));
 	}
 
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
-	sf::SoundBuffer* parseMultiSoundObj(Game& game,
-		const std::string& id, const sf::Int16* samples,
+	sf::SoundBuffer* parseMultiSoundObj(Game& game, const std::string& id,
+		const std::string_view resource, const sf::Int16* samples,
 		sf::Uint64 sampleCount, unsigned channelCount, unsigned sampleRate)
 	{
 		auto sndBuffer = std::make_shared<sf::SoundBuffer>();
@@ -92,7 +88,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		if (game.Resources().addAudioSource(id, sndBuffer, resource) == true)
 		{
 			return sndBuffer.get();
 		}
@@ -110,7 +106,8 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (game.Resources().addAudioSource(id, sndBuffer) == true)
+		auto resource = getStringViewKey(elem, "resource");
+		if (game.Resources().addAudioSource(id, sndBuffer, resource) == true)
 		{
 			parseAudioLoopNamesVal(elem, "loopNames", sndBuffer->loops);
 
@@ -272,13 +269,12 @@ namespace Parser
 
 		if (elem.HasMember("loopNames") == false)
 		{
-			return parseMultiSoundObj(game, id, samplesBuffer.data(),
-				samplesBuffer.size(), channelCount, sampleRate);
+			return parseMultiSoundObj(game, id, getStringViewKey(elem, "resource"),
+				samplesBuffer.data(), samplesBuffer.size(), channelCount, sampleRate);
 		}
 		return parseMultiSoundLoopsObj(game, elem, id, samplesBuffer.data(),
 			samplesBuffer.size(), channelCount, sampleRate);
 	}
-#endif
 
 	bool parseSoundFromId(Game& game, const Value& elem)
 	{
@@ -293,7 +289,7 @@ namespace Parser
 					auto obj = game.Resources().getAudioSource(fromId);
 					if (std::holds_alternative<std::shared_ptr<sf::SoundBuffer>>(obj) == true)
 					{
-						game.Resources().addAudioSource(id, obj);
+						game.Resources().addAudioSource(id, obj, getStringViewKey(elem, "resource"));
 					}
 				}
 			}
@@ -315,12 +311,10 @@ namespace Parser
 		{
 			sndBuffer = parseSingleSoundObj(game, elem);
 		}
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 		else if (isValidArray(elem, "file") == true)
 		{
 			sndBuffer = parseMultiSoundObj(game, elem);
 		}
-#endif
 		if (sndBuffer == nullptr)
 		{
 			return;

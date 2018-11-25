@@ -1,6 +1,6 @@
 {
   "texturePack": {
-    "id": "levelBack",
+    "id": "l1Layer1",
     "texture": [
       {
         "file": "images/tilesets/tileset_cave.png",
@@ -71,16 +71,12 @@
   },
   "level": {
     "id": "level",
-    "path": "l1",
-    "name": "Dungeon",
-    "texturePackBottom": "levelBack",
-    "texturePackTop": "levelBack",
-    "map": {
-      "file": "level/l1/mineshaft_longsword.json",
-      "back": "background",
-      "front": "object",
-      "sol": "collision"
-    }
+    "layers": [
+      { "index": 0, "texturePack": "l1Layer1" },
+      { "index": 1, "texturePack": "l1Layer1" }
+    ]
   },
-  "load": "level/l1/levelObjects.json"
+  "load": "level/automap/load.json",
+  "load": "level/l1/levelObjects.json",
+  "load": "level/l1/level2.json"
 }

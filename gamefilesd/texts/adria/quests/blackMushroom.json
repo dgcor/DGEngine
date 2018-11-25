@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "switch",
-    "param": "|currentLevel|quest.blackMushroom.state|",
+    "param": "%currentLevel.quest.blackMushroom.state%",
     "case": [
       {
         "value": 0,

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "DrawableText.h"
+#include <SFML/Graphics/Text.hpp>
 
 class StringText : public DrawableText
 {
@@ -14,14 +14,14 @@ private:
 	unsigned lineCount{ 0 };
 	bool visible{ true };
 
-	void calcLineCount();
+	void calculateLineCount();
 	void calculateDrawPosition();
 
 public:
 	StringText(const sf::String& text_, const sf::Font& font, unsigned int characterSize = 30)
 		: text(text_, font, characterSize)
 	{
-		calcLineCount();
+		calculateLineCount();
 	}
 
 	virtual void setAnchor(const Anchor anchor_)
@@ -34,17 +34,7 @@ public:
 	}
 	virtual void updateSize(const Game& game);
 
-	virtual bool setText(const std::string& str)
-	{
-		if (text.getString() == str)
-		{
-			return false;
-		}
-		text.setString(str);
-		calcLineCount();
-		calculateDrawPosition();
-		return true;
-	}
+	virtual bool setText(const std::string& str);
 
 	virtual unsigned getLineCount() const noexcept { return lineCount; }
 
@@ -73,7 +63,11 @@ public:
 		pos = position;
 		calculateDrawPosition();
 	}
-	virtual sf::Vector2f Size() const { return sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height); }
+	virtual sf::Vector2f Size() const
+	{
+		auto bounds = text.getGlobalBounds();
+		return sf::Vector2f(bounds.width, bounds.height);
+	}
 	virtual void Size(const sf::Vector2f& size) noexcept {}
 
 	virtual void setHorizontalAlign(const HorizontalAlign align)
@@ -93,8 +87,8 @@ public:
 		}
 	}
 
-	virtual void setHorizontalSpaceOffset(int offset) noexcept {}
-	virtual void setVerticalSpaceOffset(int offset) noexcept {}
+	virtual void setHorizontalSpaceOffset(int offset) noexcept;
+	virtual void setVerticalSpaceOffset(int offset) noexcept;
 
 	void setRotation(float angle) { text.setRotation(angle); }
 	void setScale(float factorX, float factorY) { text.setScale(factorX, factorY); }
@@ -123,5 +117,5 @@ public:
 		}
 	}
 
-	virtual bool getProperty(const std::string& prop, Variable& var) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

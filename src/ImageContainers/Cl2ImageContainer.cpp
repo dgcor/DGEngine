@@ -140,14 +140,14 @@ sf::Image2 Cl2ImageContainer::decode(const gsl::span<const uint8_t> frameData,
 	return img;
 }
 
-Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
+Cl2ImageContainer::Cl2ImageContainer(const std::string_view fileName)
 {
 	type = CelType::V2MultipleGroups;
 	uint32_t firstDword = 0;
 	uint32_t fileSizeDword = 0;
 
 	{
-		sf::PhysFSStream file(fileName);
+		sf::PhysFSStream file(fileName.data());
 		// Opening CL2 file with a QBuffer to load it in RAM
 		if (file.hasError() == true)
 		{
@@ -157,7 +157,7 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 		file.read(fileData.data(), file.getSize());
 	}
 
-	LittleEndianStreamReader fileStream(fileData);
+	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
 
 	// CL2 HEADER CHECKS
 
@@ -165,12 +165,12 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 	fileStream.read(firstDword);
 
 	// Trying to find file size in CL2 header
-	if (fileData.size() < (firstDword * 4 + 4 + 4))
+	if (fileData.size() < ((uint64_t)firstDword * 4 + 4 + 4))
 	{
 		return;
 	}
 
-	fileStream.seek(firstDword * 4 + 4);
+	fileStream.seek((uint64_t)firstDword * 4 + 4);
 	fileStream.read(fileSizeDword);
 
 	// If the dword is not equal to the file size then
@@ -198,7 +198,7 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 			return;
 		}
 
-		fileStream.seek(lastGroupHeaderOffset + lastGroupFrameCount * 4 + 4);
+		fileStream.seek((uint64_t)lastGroupHeaderOffset + (uint64_t)lastGroupFrameCount * 4 + 4);
 		fileStream.read(fileSizeDword);
 		// The offset is from the beginning of the last group header
 		// so we need to add the offset of the lasr group header
@@ -232,7 +232,7 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 			uint32_t groupOffset;
 			uint32_t groupFrameCount;
 
-			fileStream.seek(i * 4);
+			fileStream.seek((uint64_t)i * 4);
 			fileStream.read(groupOffset);
 
 			fileStream.seek(groupOffset);
@@ -248,7 +248,7 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 				uint32_t frameStartOffset = 0;
 				uint32_t frameEndOffset = 0;
 
-				fileStream.seek(groupOffset + j * 4);
+				fileStream.seek((uint64_t)groupOffset + (uint64_t)j * 4);
 				fileStream.read(frameStartOffset);
 				fileStream.read(frameEndOffset);
 
@@ -266,7 +266,7 @@ Cl2ImageContainer::Cl2ImageContainer(const char* fileName)
 			uint32_t frameStartOffset;
 			uint32_t frameEndOffset;
 
-			fileStream.seek(i * 4);
+			fileStream.seek((uint64_t)i * 4);
 			fileStream.read(frameStartOffset);
 			fileStream.read(frameEndOffset);
 

@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "switch",
-    "param": "|currentLevel|quest.snotspill.state|",
+    "param": "%currentLevel.quest.snotspill.state%",
     "case": [
       {
         "value": 0,

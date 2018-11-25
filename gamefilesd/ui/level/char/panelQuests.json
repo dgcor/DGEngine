@@ -62,7 +62,8 @@
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": {
-      "load": "currentLevel|quests",
+      "load": "currentLevel.quests",
+      "exclude": { "property": "state", "value": [-1, 0] },
       "text": "%name%",
       "onClick": [
         {
@@ -72,7 +73,8 @@
           "then": [
             { "name": "game.clearPlayingSounds" },
             { "name": "button.click", "id": "quest" },
-            { "name": "load", "file": "texts/quests/%id%.json" }
+            { "name": "load", "file": "texts/quests/%id%.json" },
+            { "name": "resource.moveToTop", "id": "removeGold" }
           ]
         },
         { "name": "sound.play", "id": "titlslct" }

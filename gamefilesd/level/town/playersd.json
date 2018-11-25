@@ -1,0 +1,328 @@
+{
+  "player": [
+    {
+      "id": "pepin",
+      "class": "healer",
+      "mapPosition": [55, 79],
+      "inventory": {
+        "index": 0,
+        "size": 16,
+        "item": [
+          {
+            "index": 0,
+            "class": "potionOfHealing"
+          },
+          {
+            "index": 1,
+            "class": "potionOfFullHealing"
+          },
+          {
+            "index": 2,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 3,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 4,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 5,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 6,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 7,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 8,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 9,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 10,
+            "class": "scrollOfHealing"
+          },
+          {
+            "index": 11,
+            "class": "scrollOfHealing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cain",
+      "class": "storyTeller",
+      "mapPosition": [62, 71]
+    },
+    {
+      "id": "griswold",
+      "class": "blacksmith",
+      "mapPosition": [62, 63],
+      "inventory": [
+        {
+          "index": 0,
+          "size": 20,
+          "item": [
+            {
+              "index": 0,
+              "class": "cap"
+            },
+            {
+              "index": 1,
+              "class": "cape",
+              "properties": {
+                "armor": 4
+              }
+            },
+            {
+              "index": 2,
+              "class": "cape",
+              "properties": {
+                "armor": 3
+              }
+            },
+            {
+              "index": 3,
+              "class": "rags"
+            },
+            {
+              "index": 4,
+              "class": "quiltedArmor"
+            },
+            {
+              "index": 5,
+              "class": "buckler",
+              "properties": {
+                "armor": 3
+              }
+            },
+            {
+              "index": 6,
+              "class": "shortSword"
+            },
+            {
+              "index": 7,
+              "class": "falchion"
+            },
+            {
+              "index": 8,
+              "class": "claymore"
+            },
+            {
+              "index": 9,
+              "class": "blade"
+            },
+            {
+              "index": 10,
+              "class": "sabre"
+            },
+            {
+              "index": 11,
+              "class": "axe"
+            },
+            {
+              "index": 12,
+              "class": "mace"
+            },
+            {
+              "index": 13,
+              "class": "mace"
+            },
+            {
+              "index": 14,
+              "class": "morningStar"
+            },
+            {
+              "index": 15,
+              "class": "warHammer"
+            },
+            {
+              "index": 16,
+              "class": "warHammer"
+            },
+            {
+              "index": 17,
+              "class": "spikedClub"
+            },
+            {
+              "index": 18,
+              "class": "spikedClub"
+            },
+            {
+              "index": 19,
+              "class": "club"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "size": 6,
+          "item": [
+            {
+              "index": 0,
+              "class": "club",
+              "properties": {
+                "toHit": 5,
+                "price": 540,
+                "magical": true
+              }
+            },
+            {
+              "index": 1,
+              "class": "bucklerShield",
+              "properties": {
+                "armor": 4,
+                "strength": 4,
+                "price": 860,
+                "magical": true
+              }
+            },
+            {
+              "index": 2,
+              "class": "bucklerShield",
+              "properties": {
+                "armor": 2,
+                "toArmor": 21,
+                "price": 648,
+                "magical": true
+              }
+            },
+            {
+              "index": 3,
+              "class": "dagger",
+              "properties": {
+                "dexterity": 4,
+                "price": 920,
+                "magical": true
+              }
+            },
+            {
+              "index": 4,
+              "class": "cape",
+              "properties": {
+                "life": 12,
+                "price": 850,
+                "magical": true
+              }
+            },
+            {
+              "index": 5,
+              "class": "morningStar",
+              "properties": {
+                "toHit": 5,
+                "price": 1100,
+                "magical": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ogden",
+      "class": "tavernOwner",
+      "mapPosition": [55, 62]
+    },
+    {
+      "id": "farnham",
+      "class": "drunk",
+      "mapPosition": [71, 84]
+    },
+    {
+      "id": "gillian",
+      "class": "barmaid",
+      "mapPosition": [43, 66]
+    },
+    {
+      "id": "wirt",
+      "class": "boy",
+      "mapPosition": [11, 53],
+      "inventory": {
+        "index": 0,
+        "size": 1,
+        "item": {
+          "index": 0,
+          "class": "dagger",
+          "properties": {
+            "magic": 1,
+            "price": 480,
+            "magical": true
+          }
+        }
+      }
+    },
+    {
+      "id": "adria",
+      "class": "witch",
+      "mapPosition": [80, 20],
+      "inventory": {
+        "index": 0,
+        "size": 16,
+        "item": [
+          {
+            "index": 0,
+            "class": "potionOfMana"
+          },
+          {
+            "index": 1,
+            "class": "potionOfFullMana"
+          },
+          {
+            "index": 2,
+            "class": "scroll"
+          },
+          {
+            "index": 3,
+            "class": "potionOfRejuvenation"
+          },
+          {
+            "index": 6,
+            "class": "book"
+          },
+          {
+            "index": 7,
+            "class": "shortStaff",
+            "properties": {
+              "magic": 5,
+              "price": 650,
+              "magical": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "deadGuy",
+      "class": "deadGuy",
+      "mapPosition": [24, 32]
+    },
+    {
+      "id": "cow1",
+      "class": "cow",
+      "direction": "BackLeft",
+      "mapPosition": [56, 14]
+    },
+    {
+      "id": "cow2",
+      "class": "cow",
+      "direction": "FrontLeft",
+      "mapPosition": [58, 16]
+    },
+    {
+      "id": "cow3",
+      "class": "cow",
+      "direction": "Back",
+      "mapPosition": [59, 20]
+    }
+  ]
+}

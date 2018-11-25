@@ -1,6 +1,5 @@
 {
   "action": {
-    "replaceVars": true,
     "name": "if.equal",
     "param1": {
       "name": "player.canUseItem",
@@ -8,35 +7,36 @@
     },
     "param2": false,
     "then": {
-      "name": "menu.setColor",
+      "name": "menu.setFont",
       "id": "menuPrices",
       "index": {4},
-      "color": "%textRed%"
+      "font": "smaltextRed"
     },
     "else": {
       "name": "if.equal",
-      "param1": "|currentLevel|player.{1}.item.{2}.{3}.unique|",
+      "param1": "%currentLevel.player.{1}.item.{2}.{3}.unique%",
       "param2": 1,
       "then": {
-        "name": "menu.setColor",
+        "name": "menu.setFont",
         "id": "menuPrices",
         "index": {4},
-        "color": "%textGold%"
+        "font": "smaltextGold"
       },
       "else": {
         "name": "if.equal",
-        "param1": "|currentLevel|player.{1}.item.{2}.{3}.magical|",
+        "param1": "%currentLevel.player.{1}.item.{2}.{3}.magical%",
         "param2": 1,
         "then": {
-          "name": "menu.setColor",
+          "name": "menu.setFont",
           "id": "menuPrices",
           "index": {4},
-          "color": "%textBlue%"
+          "font": "smaltextBlue"
         },
         "else": {
-          "name": "menu.setColor",
+          "name": "menu.setFont",
           "id": "menuPrices",
-          "index": {4}
+          "index": {4},
+          "font": "smaltext"
         }
       }
     }

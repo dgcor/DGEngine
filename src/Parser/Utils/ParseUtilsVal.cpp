@@ -5,7 +5,7 @@
 #include <cctype>
 #include "FileUtils.h"
 #include "GameUtils.h"
-#include "SFMLUtils.h"
+#include "SFML/SFMLUtils.h"
 #include "Utils/Utils.h"
 
 namespace Parser
@@ -71,15 +71,24 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return elem.GetString();
+			return { elem.GetString(), elem.GetStringLength() };
 		}
 		else if (elem.IsInt64() == true)
 		{
-			return std::to_string(elem.GetInt64());
+			return Utils::toString(elem.GetInt64());
 		}
 		else if (elem.IsDouble() == true)
 		{
 			return Utils::toString(elem.GetDouble());
+		}
+		return val;
+	}
+
+	std::string_view getStringViewVal(const Value& elem, const std::string_view val)
+	{
+		if (elem.IsString() == true)
+		{
+			return { elem.GetString(), elem.GetStringLength() };
 		}
 		return val;
 	}
@@ -145,7 +154,8 @@ namespace Parser
 			}
 			else if (elem[0].IsString() == true)
 			{
-				switch (GameUtils::getHorizontalAlignment(elem[0].GetString()))
+				std::string_view strView(elem[0].GetString(), elem[0].GetStringLength());
+				switch (GameUtils::getHorizontalAlignment(strView))
 				{
 				case HorizontalAlign::Left:
 				default:
@@ -164,7 +174,8 @@ namespace Parser
 			}
 			else if (elem[1].IsString() == true)
 			{
-				switch (GameUtils::getVerticalAlignment(elem[1].GetString()))
+				std::string_view strView(elem[1].GetString(), elem[1].GetStringLength());
+				switch (GameUtils::getVerticalAlignment(strView))
 				{
 				case VerticalAlign::Top:
 				default:
@@ -217,11 +228,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			try
-			{
-				return SFMLUtils::stringToColor(elem.GetString());
-			}
-			catch (std::exception ex) {}
+			return SFMLUtils::stringToColor({ elem.GetString(), elem.GetStringLength() });
 		}
 		else if (elem.IsUint() == true)
 		{
@@ -238,7 +245,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getKeyCode(elem.GetString(), val);
+			return GameUtils::getKeyCode({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
 	}
@@ -256,8 +263,7 @@ namespace Parser
 		return val;
 	}
 
-	IgnoreResource getIgnoreResourceVal(const Value& elem,
-		IgnoreResource val)
+	IgnoreResource getIgnoreResourceVal(const Value& elem, IgnoreResource val)
 	{
 		if (elem.IsBool() == true)
 		{
@@ -272,13 +278,42 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getIgnoreResource(elem.GetString(), val);
+			return GameUtils::getIgnoreResource({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
 	}
 
-	size_t getInventoryItemIndexVal(const Value& elem,
-		PlayerInventory inv)
+	InputEvent getInputEventVal(const Value& elem, InputEvent val)
+	{
+		if (elem.IsBool() == true)
+		{
+			if (elem.GetBool() == true)
+			{
+				return InputEvent::All;
+			}
+			else
+			{
+				return InputEvent::None;
+			}
+		}
+		else if (elem.IsString() == true)
+		{
+			return GameUtils::getInputEvent({ elem.GetString(), elem.GetStringLength() }, val);
+		}
+		else if (elem.IsArray() == true)
+		{
+			InputEvent ret = InputEvent::None;
+			for (const auto& arrElem : elem)
+			{
+				ret |= GameUtils::getInputEvent(
+					{ arrElem.GetString(), arrElem.GetStringLength() }, val);
+			}
+			return ret;
+		}
+		return val;
+	}
+
+	size_t getInventoryItemIndexVal(const Value& elem, PlayerInventory inv)
 	{
 		size_t itemIdx = 0;
 		if (elem.IsUint() == true)
@@ -289,7 +324,7 @@ namespace Parser
 		{
 			if (inv == PlayerInventory::Body)
 			{
-				itemIdx = (size_t)GameUtils::getPlayerItemMount(elem.GetString());
+				itemIdx = (size_t)GameUtils::getPlayerItemMount({ elem.GetString(), elem.GetStringLength() });
 			}
 		}
 		return itemIdx;
@@ -299,7 +334,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return GameUtils::getInventoryPosition(elem.GetString(), val);
+			return GameUtils::getInventoryPosition({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
 	}
@@ -325,11 +360,11 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			if (elem.GetString() == std::string("min"))
+			if (elem.GetString() == std::string_view("min"))
 			{
 				num.setInt32(std::numeric_limits<int32_t>::min());
 			}
-			else if (elem.GetString() == std::string("max"))
+			else if (elem.GetString() == std::string_view("max"))
 			{
 				num.setInt32(std::numeric_limits<int32_t>::max());
 			}
@@ -357,11 +392,11 @@ namespace Parser
 
 	ItemCoordInventory getItemCoordInventoryVal(const Value& elem)
 	{
-		std::string playerId;
+		std::string_view playerId("");
 		if (elem.HasMember("player") == true &&
 			elem["player"].IsString() == true)
 		{
-			playerId = elem["player"].GetString();
+			playerId = { elem["player"].GetString(), elem["player"].GetStringLength() };
 		}
 		PlayerInventory inv = PlayerInventory::Body;
 		if (elem.HasMember("inventory") == true)
@@ -421,7 +456,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getPlayerInventory(elem.GetString(), val);
+			return GameUtils::getPlayerInventory({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
 	}
@@ -441,7 +476,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return getReplaceVars(elem.GetString(), val);
+			return getReplaceVars({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
 	}
@@ -451,7 +486,7 @@ namespace Parser
 		Variable var;
 		if (elem.IsString() == true)
 		{
-			var.emplace<std::string>(std::string(elem.GetString()));
+			var.emplace<std::string>(std::string(elem.GetString(), elem.GetStringLength()));
 		}
 		else if (elem.IsInt64() == true)
 		{

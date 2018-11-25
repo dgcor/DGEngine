@@ -8,6 +8,6 @@
   "audio": {
     "file": "sfx/Towners/storyt27.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

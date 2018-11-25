@@ -6,37 +6,44 @@
 #include "Game/Level.h"
 #include <string>
 
-class ActPlayerAddGold : public Action
+class ActPlayerAddItemQuantity : public Action
 {
 private:
 	std::string idPlayer;
 	std::string idLevel;
-	Variable gold;
+	std::string itemClass;
+	InventoryPosition invPos{ InventoryPosition::TopLeft };
+	Variable quantity;
 	bool remove;
 
 public:
-	ActPlayerAddGold(const std::string& idPlayer_, const std::string& idLevel_,
-		const Variable& gold_, bool remove_) : idPlayer(idPlayer_), idLevel(idLevel_),
-		gold(gold_), remove(remove_) {}
+	ActPlayerAddItemQuantity(const std::string& idPlayer_, const std::string& idLevel_,
+		const std::string& itemClass_, InventoryPosition invPos_, const Variable& quantity_,
+		bool remove_) : idPlayer(idPlayer_), idLevel(idLevel_), itemClass(itemClass_),
+		invPos(invPos_), quantity(quantity_), remove(remove_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr)
+			auto itemClassPtr = level->getItemClass(itemClass);
+			if (itemClassPtr != nullptr)
 			{
-				auto goldVal = (LevelObjValue)game.getVarOrPropLong(gold);
-				if (goldVal != 0)
+				auto player = level->getPlayerOrCurrent(idPlayer);
+				if (player != nullptr)
 				{
-					if (remove == true)
+					auto quantVal = (LevelObjValue)game.getVarOrPropLongV(quantity);
+					if (quantVal != 0)
 					{
-						player->addGold(*level, -std::abs(goldVal));
-					}
-					else
-					{
-						player->addGold(*level, goldVal);
+						if (remove == true)
+						{
+							player->addItemQuantity(*itemClassPtr, -std::abs(quantVal), invPos);
+						}
+						else
+						{
+							player->addItemQuantity(*itemClassPtr, quantVal, invPos);
+						}
 					}
 				}
 			}
@@ -67,7 +74,7 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				auto propVal = game.getVarOrPropString(prop);
+				auto propVal = game.getVarOrPropStringS(prop);
 				if (propVal.empty() == false)
 				{
 					auto value2 = game.getVarOrProp(value);
@@ -181,26 +188,28 @@ public:
 	}
 };
 
-class ActPlayerSave : public Action
+class ActPlayerSelectSpell : public Action
 {
 private:
 	std::string idPlayer;
 	std::string idLevel;
-	std::string file;
-	bool skipDefaults;
+	std::string spell;
 
 public:
-	ActPlayerSave(const std::string& idPlayer_, const std::string& idLevel_,
-		const std::string& file_, bool skipDefaults_) : idPlayer(idPlayer_),
-		idLevel(idLevel_), file(file_), skipDefaults(skipDefaults_) {}
+	ActPlayerSelectSpell(const std::string& idPlayer_,
+		const std::string& idLevel_, const std::string& spell_)
+		: idPlayer(idPlayer_), idLevel(idLevel_), spell(spell_) {}
 
-	virtual bool execute(Game& game) noexcept
+	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto obj = level->getPlayerOrCurrent(idPlayer);
-			level->save(file, *obj, skipDefaults);
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->SelectedSpell(spell);
+			}
 		}
 		return true;
 	}
@@ -281,7 +290,7 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				auto prop2 = game.getVarOrPropString(prop);
+				auto prop2 = game.getVarOrPropStringS(prop);
 				if (prop2.empty() == false)
 				{
 					auto value2 = game.getVarOrProp(value);
@@ -341,6 +350,7 @@ public:
 			if (player != nullptr)
 			{
 				player->setTextureIdx(idx);
+				player->updateTexture();
 			}
 		}
 		return true;

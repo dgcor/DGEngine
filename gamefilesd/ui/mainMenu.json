@@ -168,16 +168,16 @@
     "onHoverLeave": {
       "name": "text.setText",
       "id": "versionInfo",
-      "binding": ["|game|title|", "|game|version|"],
+      "binding": ["%game.title%", "%game.version%"],
       "format": "[1] v[2]"
     }
   },
   "action": [
-    { "name": "menu.setFont", "id": "menu", "index": 1, "idFont": "font42y" },
+    { "name": "menu.setFont", "id": "menu", "index": 1, "font": "font42y" },
     {
       "name": "text.setText",
       "id": "versionInfo",
-      "binding": ["|game|title|", "|game|version|"],
+      "binding": ["%game.title%", "%game.version%"],
       "format": "[1] v[2]"
     }
   ]

@@ -2,7 +2,7 @@
 
 #include "Predicate.h"
 #include "Game.h"
-#include "Game/ItemProperties.h"
+#include "Game/GameHashes.h"
 
 class PredItemHasRequiredStats : public Predicate
 {

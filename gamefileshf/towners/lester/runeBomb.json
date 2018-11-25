@@ -1,0 +1,7 @@
+{
+  "item": {
+    "class": "runeBomb",
+    "mapPosition": [63, 16]
+  },
+  "action": { "name": "item.executeAction", "action": "levelDrop", "mapPosition": [63, 16] }
+}

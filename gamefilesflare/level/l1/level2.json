@@ -1,0 +1,17 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l1",
+    "name": "Dungeon",
+    "map": {
+      "file": "level/l1/mineshaft_longsword.json",
+      "layers": [
+        { "index": 0, "name": "background" },
+        { "index": 1, "name": "object" }
+      ],
+      "automap": "collision",
+      "sol": "collision"
+    }
+  },
+  "load": "level/l1/levelObjects2.json"
+}

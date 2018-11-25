@@ -2,33 +2,34 @@
 
 #include "Alignment.h"
 #include <memory>
+#include "Palette.h"
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "TexturePacks/BitmapFontTexturePack.h"
 #include <vector>
 
 class BitmapFont
 {
 private:
-	std::shared_ptr<sf::Texture> texture;
-	sf::IntRect chars[256];
+	std::shared_ptr<BitmapFontTexturePack> charTextures;
+	std::shared_ptr<Palette> palette;
+	sf::Color defaultColor{ sf::Color::White };
 	int newLine{ 0 };
 	int space{ 0 };
-	int rows{ 0 };
-	int columns{ 0 };
+	int tab{ 0 };
 	int padding{ 0 };
 
-	void calculateCharSizes(const sf::Image& img, bool verticalDirection);
 	float calculateLineLength(const char* text, int horizSpaceOffset) const noexcept;
 
 public:
-	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
-		int padding_, bool verticalDirection);
-	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
-		int padding_, bool verticalDirection, const sf::Image& img);
-	BitmapFont(const std::shared_ptr<sf::Texture>& tex, int rows_, int columns_,
-		int padding_, bool verticalDirection, const std::vector<uint8_t>& charSizes);
+	BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_);
 
 	int getNewLine() const noexcept { return newLine; }
+
+	void setColor(const sf::Color& color_) { defaultColor = color_; }
+
+	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { palette = pal; }
+	bool hasPalette() const noexcept { return palette != nullptr; }
 
 	sf::Vector2f calculateSize(const std::string& text) const;
 	sf::Vector2f calculateSize(const std::string& text,

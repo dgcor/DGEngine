@@ -2,6 +2,7 @@
 
 #include "Json/JsonParser.h"
 #include <string>
+#include <string_view>
 
 namespace Parser
 {
@@ -18,6 +19,9 @@ namespace Parser
 
 	std::string getStringIdx(const rapidjson::Value& elem,
 		rapidjson::SizeType idx, const std::string& val = "");
+
+	std::string_view getStringViewIdx(const rapidjson::Value& elem,
+		rapidjson::SizeType idx, const std::string_view val = "");
 
 	unsigned getUIntIdx(const rapidjson::Value& elem,
 		rapidjson::SizeType idx, unsigned val = 0);

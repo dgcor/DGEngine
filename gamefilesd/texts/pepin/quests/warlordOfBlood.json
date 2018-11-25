@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "16",
     "texts/pepin/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer16.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

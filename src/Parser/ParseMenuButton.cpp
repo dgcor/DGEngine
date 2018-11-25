@@ -31,7 +31,7 @@ namespace Parser
 	{
 		auto button = std::make_shared<StringButton>();
 		std::unique_ptr<DrawableText> drawableText;
-		if (hasFreeTypeFont(font) == true)
+		if (holdsFreeTypeFont(font) == true)
 		{
 			drawableText = std::make_unique<StringText>("",
 				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
@@ -108,5 +108,5 @@ namespace Parser
 			button->focusEnabled(focusOnClick);
 			game.Resources().addFocused(button);
 		}
-	};
+	}
 }

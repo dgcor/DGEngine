@@ -55,7 +55,7 @@
           "id": "sb_thumb",
           "idAnchorTo": "btnDrag",
           "range": 180,
-          "steps": "|mainMenu|itemCount|"
+          "steps": "%mainMenu.itemCount%"
         },
         {
           "name": "menu.moveScrollbar",

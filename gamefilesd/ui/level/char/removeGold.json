@@ -1,0 +1,108 @@
+{
+  "action": [
+    "closeRemoveGold",
+    { "name": "resource.add", "id": "removeGold" }
+  ],
+  "load": "ui/level/char/disableKeys.json",
+  "keyboard": [
+    {
+      "key": "enter",
+      "action": { "name": "inputText.click", "id": "goldQuantity" }
+    },
+    {
+      "key": "esc",
+      "action": "closeRemoveGold"
+    }
+  ],
+  "button": [
+    {
+      "id": "disableInv",
+      "texture": "empty",
+      "anchor": "right",
+      "position": [320, 0],
+      "textureRect": [320, 350],
+      "captureInputEvents": ["LeftClick", "MousePress", "MouseRelease"],
+      "resizable": true
+    },
+    {
+      "id": "disableBelt",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [192, 355],
+      "textureRect": [258, 36],
+      "captureInputEvents": ["LeftClick", "MousePress", "MouseRelease"],
+      "resizable": true
+    }
+  ],
+  "image": {
+    "id": "golddrop",
+    "position": [351, 43],
+    "anchor": "right",
+    "texture": "golddrop",
+    "textureRect": [261, 136]
+  },
+  "text": [
+    {
+      "id": "goldInfo1",
+      "font": "smaltextGold",
+      "position": [483, 77],
+      "anchor": "right",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "You have {2} gold"
+    },
+    {
+      "id": "goldInfo2",
+      "font": "smaltextGold",
+      "position": [483, 93],
+      "anchor": "right",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1
+    },
+    {
+      "id": "goldInfo3",
+      "font": "smaltextGold",
+      "position": [483, 111],
+      "anchor": "right",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "you want to remove?"
+    }
+  ],
+  "inputText": {
+    "id": "goldQuantity",
+    "font": "smaltext",
+    "position": [388, 130],
+    "anchor": "right",
+    "horizontalSpaceOffset": 1,
+    "minLength": 1,
+    "maxLength": 4,
+    "maxValue": {2},
+    "regex": "[1-9]\\d*",
+    "onClick": [
+      { "name": "load", "file": ["ui/level/char/addGold.json", "{1}", "%goldQuantity.text%"] },
+      "closeRemoveGold"
+    ],
+    "onChange": {
+      "name": "drawable.anchor",
+      "anchor": "right",
+      "offset": [1, 0],
+      "id": "caret",
+      "idAnchor": "goldQuantity"
+    }
+  },
+  "animation": {
+    "id": "caret",
+    "texturePack": "pentspn2",
+    "position": [380, 130],
+    "anchor": "right",
+    "refresh": 50
+  },
+  "action": {
+    "name": "if.equal",
+    "param1": "{2}",
+    "param2": "1",
+    "then": { "name": "text.setText", "id": "goldInfo2", "text": "piece.  How many do" },
+    "else": { "name": "text.setText", "id": "goldInfo2", "text": "pieces.  How many do" }
+  }
+}

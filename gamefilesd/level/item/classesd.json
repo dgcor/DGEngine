@@ -1,0 +1,17 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/item/inventoryTexturesBeta.json" },
+    "else": { "name": "load", "file": "level/item/inventoryTextures.json" }
+  },
+  "load": "level/item/actions.json",
+  "load": "level/item/dropTextures.json",
+  "load": "level/item/prefixes.json",
+  "load": "level/item/suffixes.json",
+  "load": "level/item/descriptions.json",
+  "load": "level/item/descriptionsUnique.json",
+  "load": "level/item/imageClassifiers.json",
+  "load": "level/item/classesd2.json"
+}

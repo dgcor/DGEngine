@@ -13,7 +13,7 @@ namespace Parser
 			return;
 		}
 
-		auto icon = ImageUtils::loadImage(elem["file"].GetString());
+		auto icon = ImageUtils::loadImage(getStringViewVal(elem["file"]));
 		auto iconSize = icon.getSize();
 		if (iconSize.x == 0 || iconSize.y == 0)
 		{

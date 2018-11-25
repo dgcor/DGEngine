@@ -48,7 +48,7 @@
       "anchor": "left",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "binding": "|currentLevel|currentPlayer.gold|"
+      "binding": "%currentLevel.currentPlayer.itemQuantity.gold%"
     },
     {
       "id": "charStr",
@@ -124,9 +124,7 @@
     },
     {
       "id": "charPoints",
-      "replaceVars": true,
-      "font": "smaltext",
-      "color": "%textRed%",
+      "font": "smaltextRed",
       "position": [111, 256],
       "anchor": "left",
       "horizontalAlign": "center",

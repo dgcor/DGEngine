@@ -37,13 +37,14 @@ class ActAudioPlay : public Action
 {
 private:
 	std::string id;
+	Variable volume;
 	bool clear;
 	bool loop{ false };
 	bool hasLoop{ false };
 
 public:
-	ActAudioPlay(const std::string& id_, bool clear_)
-		: id(id_), clear(clear_) {}
+	ActAudioPlay(const std::string& id_, const Variable& volume_,
+		bool clear_) : id(id_), volume(volume_), clear(clear_) {}
 
 	void setLoop(bool loop_) noexcept
 	{
@@ -63,18 +64,21 @@ public:
 			if (hasLoop == true)
 			{
 				song->setLoop(loop);
-#if (SFML_VERSION_MAJOR > 2 || (SFML_VERSION_MAJOR == 2 && SFML_VERSION_MINOR >= 5))
 				auto musicLoop = dynamic_cast<sf::MusicLoops*>(song.get());
 				if (musicLoop != nullptr)
 				{
 					musicLoop->setLoop(loop);
 					song->setLoop(true);
 				}
-#endif
 			}
-			song->setVolume((float)game.MusicVolume());
-			if (song->getStatus() != sf::Music::Playing)
+			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
+			song->setVolume((float)vol);
+
+			if (song->getStatus() != sf::Music::Playing ||
+				song->getPlayingOffset() == sf::Time::Zero ||
+				song->getPlayingOffset() >= song->getDuration())
 			{
+				song->stop();
 				song->play();
 			}
 		}

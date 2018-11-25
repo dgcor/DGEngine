@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <vector>
 
 class Game;
@@ -20,23 +21,23 @@ namespace TextUtils
 
 	using T = std::underlying_type_t<TextOp>;
 
-	inline TextOp operator~ (TextOp a) noexcept { return (TextOp)~static_cast<T>(a); }
-	inline TextOp operator| (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) | static_cast<T>(b)); }
-	inline TextOp operator& (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) & static_cast<T>(b)); }
-	inline TextOp operator^ (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); }
-	inline TextOp& operator|= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) | static_cast<T>(b)); return a; }
-	inline TextOp& operator&= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) & static_cast<T>(b)); return a; }
-	inline TextOp& operator^= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
+	constexpr TextOp operator~ (TextOp a) noexcept { return (TextOp)~static_cast<T>(a); }
+	constexpr TextOp operator| (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) | static_cast<T>(b)); }
+	constexpr TextOp operator& (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) & static_cast<T>(b)); }
+	constexpr TextOp operator^ (TextOp a, TextOp b) noexcept { return (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); }
+	constexpr TextOp& operator|= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) | static_cast<T>(b)); return a; }
+	constexpr TextOp& operator&= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) & static_cast<T>(b)); return a; }
+	constexpr TextOp& operator^= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
 
-	std::string getFormatString(const Game& game, const std::string& format,
+	std::string getFormatString(const Game& game, const std::string_view format,
 		const std::vector<std::string>& bindings);
 
-	std::string getTextQueryable(const Game& game, const std::string& format,
-		const std::string& query);
+	std::string getTextQueryable(const Game& game, const std::string_view format,
+		const std::string_view query);
 
-	std::string getText(const Game& game, TextOp textOp, const std::string& textOrformat,
+	std::string getText(const Game& game, TextOp textOp, const std::string_view textOrformat,
 		const std::vector<std::string>& bindings);
 
 	void appendText(const Game& game, TextOp textOp, std::string& str,
-		const std::string& textOrformat, const std::vector<std::string>& bindings);
+		const std::string_view textOrformat, const std::vector<std::string>& bindings);
 }

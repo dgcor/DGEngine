@@ -2,7 +2,8 @@
   "audio": {
     "id": "{1}",
     "file": "{2}/{3}.wav",
+    "resource": "{4}",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

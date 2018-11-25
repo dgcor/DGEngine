@@ -1,8 +1,0 @@
-{
-  "action": {
-    "name": "level.save",
-    "file": "{1}/save.json",
-    "skipDefaults": true,
-    "skipCurrentPlayer": false
-  }
-}

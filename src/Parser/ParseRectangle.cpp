@@ -56,13 +56,6 @@ namespace Parser
 		rectangle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		rectangle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, rectangle);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, rectangle);
-		}
+		game.Resources().addDrawable(id, rectangle, getStringViewKey(elem, "resource"));
 	}
 }

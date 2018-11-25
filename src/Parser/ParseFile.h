@@ -6,9 +6,9 @@
 
 namespace Parser
 {
-	void parseFile(Game& game, const std::string& fileName);
+	void parseFile(Game& game, const std::string_view fileName);
 	void parseFile(Game& game, const std::vector<std::string>& params);
 	void parseDocument(Game& game, const rapidjson::Document& doc,
 		ReplaceVars replaceVars_ = ReplaceVars::None);
-	void parseJson(Game& game, const std::string& json);
+	void parseJson(Game& game, const std::string_view json);
 }

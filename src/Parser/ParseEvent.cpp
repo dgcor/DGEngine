@@ -19,13 +19,19 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			std::string id(elem["id"].GetString());
+			auto id = getStringViewVal(elem["id"]);
 			if (isValidId(id) == true)
 			{
 				evt->setId(id);
 			}
 		}
-
-		game.Events().addBack(evt);
+		if (getBoolKey(elem, "addToFront") == true)
+		{
+			game.Events().addFront(evt);
+		}
+		else
+		{
+			game.Events().addBack(evt);
+		}
 	}
 }

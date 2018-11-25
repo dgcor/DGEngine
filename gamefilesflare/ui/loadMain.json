@@ -1,7 +1,8 @@
 {
   "icon": {
-    "file":"images/logo/icon.png"
+    "file": "images/logo/icon.png"
   },
+  "load": "level/setupTempFolder.json",
   "load": "res/actions.json",
   "load": "res/fonts.json",
   "load": "res/music.json",

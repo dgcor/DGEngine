@@ -1,0 +1,11 @@
+{
+  "levelObject": {
+    "id": "hell",
+    "class": "levelHell",
+    "mapPosition": [41, 79],
+    "properties": {
+      "x": 86,
+      "y": 70
+    }
+  }
+}

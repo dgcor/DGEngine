@@ -3,83 +3,154 @@
     {
       "id": "healer",
       "replaceVars": true,
-      "name": "Healer",
+      "name": "Pepin the healer",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "healer"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "healer",
+      "actions": {
+        "action": { "name": "load", "file": "towners/pepin/load.json" }
+      }
     },
     {
       "id": "storyTeller",
       "replaceVars": true,
-      "name": "Story teller",
+      "name": "Cain the elder",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "strytell"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "strytell",
+      "actions": {
+        "action": { "name": "load", "file": "towners/cain/panel.json" }
+      }
     },
     {
       "id": "blacksmith",
       "replaceVars": true,
-      "name": "Blacksmith",
+      "name": "Griswold the blacksmith",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "smithn"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "smithn",
+      "actions": {
+        "action": { "name": "load", "file": "towners/griswold/panel.json" }
+      }
     },
     {
       "id": "tavernOwner",
       "replaceVars": true,
-      "name": "Tavern owner",
+      "name": "Ogden the tavern owner",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "twnfn"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "twnfn",
+      "actions": {
+        "action": { "name": "load", "file": "towners/ogden/load.json" }
+      }
     },
     {
       "id": "drunk",
       "replaceVars": true,
-      "name": "Drunk",
+      "name": "Farnham the drunk",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "twndrunk"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "twndrunk",
+      "actions": {
+        "action": { "name": "load", "file": "towners/farnham/panel.json" }
+      }
     },
     {
       "id": "barmaid",
       "replaceVars": true,
-      "name": "Barmaid",
+      "name": "Gillian the barmaid",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "wmnn"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "wmnn",
+      "actions": {
+        "action": { "name": "load", "file": "towners/gillian/panel.json" }
+      }
     },
     {
       "id": "boy",
       "replaceVars": true,
-      "name": "Boy",
+      "name": "Wirt the peg-legged boy",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "pegkid1"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "pegkid1",
+      "actions": {
+        "action": { "name": "load", "file": "towners/wirt/panel.json" }
+      }
     },
     {
       "id": "witch",
       "replaceVars": true,
-      "name": "Witch",
+      "name": "Adria the witch",
       "type": "Human",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "witch"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "witch",
+      "actions": {
+        "action": { "name": "load", "file": "towners/adria/panel.json" }
+      }
+    },
+    {
+      "id": "deadGuy",
+      "replaceVars": true,
+      "nameClassifier": "deadGuy",
+      "type": "Human",
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "deadguy",
+      "actions": {
+        "action": { "name": "load", "file": "towners/deadGuy/load.json" }
+      }
     },
     {
       "id": "cow",
       "replaceVars": true,
       "name": "Cow",
       "type": "Animal",
-      "defaultOutline": "%outlineFriend%",
-      "defaultOutlineIgnore": "0x000000",
-      "texturePacks": "cow"
+      "outline": "|outlineFriend|",
+      "outlineIgnore": "0x000000",
+      "texturePacks": "cow",
+      "actions": {
+        "action": {
+          "name": "random",
+          "action1": [
+            { "name": "sound.play", "id": "cow1", "unique": true },
+            {
+              "name": "random",
+              "percentage": 0.1,
+              "action1": {
+                "name": "randomList",
+                "actions": [
+                  { "name": "sound.play", "id": "notThirsty", "unique": true },
+                  { "name": "sound.play", "id": "noMilkmaid", "unique": true },
+                  { "name": "sound.play", "id": "ThatsACowAlright", "unique": true }
+                ]
+              }
+            }
+          ],
+          "action2": [
+            { "name": "sound.play", "id": "cow2", "unique": true },
+            {
+              "name": "random",
+              "percentage": 0.1,
+              "action1": {
+                "name": "randomList",
+                "actions": [
+                  { "name": "sound.play", "id": "notThirsty", "unique": true },
+                  { "name": "sound.play", "id": "noMilkmaid", "unique": true },
+                  { "name": "sound.play", "id": "ThatsACowAlright", "unique": true }
+                ]
+              }
+            }
+          ]
+        }
+      }
     }
   ]
 }

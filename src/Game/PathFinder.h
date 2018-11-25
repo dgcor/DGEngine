@@ -3,31 +3,42 @@
 #include "GameProperties.h"
 #include "stlastar.h"
 
-#define PATH_FINDER_MAX 150
-
 class LevelMap;
+
+template <class T>
+class AStarMapSearch : public AStarSearch<T>
+{
+public:
+	const LevelMap* map{ nullptr };
+
+	static constexpr int MaxNodes = 150;
+
+	AStarMapSearch(const LevelMap* map_) : AStarSearch<T>(MaxNodes), map(map_) {}
+};
 
 class MapSearchNode
 {
 private:
+	static constexpr float NodeInvalid = std::numeric_limits<float>::max();
+	static constexpr float NodeNotPassable = 9.f;
+	static constexpr float NodePassable = 1.f;
+
 	bool addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 		int16_t x_, int16_t y_, int16_t parent_x, int16_t parent_y);
 
 public:
-	const LevelMap* map = nullptr;
 	int16_t x;
 	int16_t y;
+	float cost;
 	PlayerDirection direction;
 
-	MapSearchNode() noexcept : map(nullptr), x(0), y(0), direction(PlayerDirection::All) {}
-	MapSearchNode(const LevelMap* map_, int16_t x_, int16_t y_,
-		const PlayerDirection& direction_) noexcept : map(map_), x(x_), y(y_), direction(direction_) {}
+	MapSearchNode() noexcept : x(0), y(0), cost(NodeNotPassable), direction(PlayerDirection::All) {}
+	MapSearchNode(const LevelMap& map, int16_t x_, int16_t y_,
+		const PlayerDirection& direction_) noexcept;
 
 	bool IsValid() const noexcept;
 
-	bool IsPassableIgnoreObject() const noexcept;
-	bool IsPassable() const { return IsPassable(x, y); }
-	bool IsPassable(int16_t x_, int16_t y_) const;
+	bool IsPassable() const;
 
 	float GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const noexcept;
 	float GetCost() const;
@@ -39,6 +50,7 @@ public:
 	bool IsSameState(MapSearchNode& rhs) noexcept;
 };
 
-bool getNearestPassableEndNode(const MapSearchNode& start, MapSearchNode& end);
+bool getNearestPassableEndNode(const LevelMap& map,
+	const MapSearchNode& start, MapSearchNode& end);
 
-typedef AStarSearch<MapSearchNode> PathFinder;
+typedef AStarMapSearch<MapSearchNode> PathFinder;

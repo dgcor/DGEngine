@@ -1,0 +1,21 @@
+{
+  "item": {
+    "class": "gold",
+    "properties": {
+      "quantity": {2}
+    }
+  },
+  "action": [
+    {
+      "name": "item.addQuantity",
+      "inventory": "stash",
+      "item": [{1}],
+      "value": {2},
+      "remove": true
+    },
+    { "name": "item.addCursor" },
+    "updateStashItems",
+    "updateCharLabels",
+    "updateSelectedItem"
+  ]
+}

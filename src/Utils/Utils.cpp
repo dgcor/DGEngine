@@ -1,8 +1,16 @@
 #include "Utils.h"
 #include <algorithm>
+#include <array>
+#if (_MSC_VER >= 1914)
+#include <charconv>
+#elif (__GNUC__ >= 8)
+#include <charconv>
+#include <cstdlib>
+#else
+#include <cstdlib>
+#endif
 #include <iostream>
 #include <iterator>
-#include <regex>
 #include <sstream>
 #include <string>
 
@@ -11,7 +19,7 @@ namespace Utils
 	std::random_device Random::rd;
 	std::mt19937 Random::mt(rd());
 
-	bool endsWith(const std::string& value, const std::string& ending)
+	bool endsWith(const std::string_view value, const std::string_view ending)
 	{
 		if (ending.size() > value.size()) return false;
 		return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
@@ -39,7 +47,7 @@ namespace Utils
 		return source;
 	}
 
-	void replaceStringInPlace(std::string& subject, const std::string& search, const std::string& replace)
+	void replaceStringInPlace(std::string& subject, const std::string_view search, const std::string_view replace)
 	{
 		size_t pos = 0;
 		while ((pos = subject.find(search, pos)) != std::string::npos)
@@ -49,25 +57,19 @@ namespace Utils
 		}
 	}
 
-	std::vector<std::string> getStringVector(const std::string& regexStr, const std::string& str)
-	{
-		std::regex reg(regexStr, std::regex_constants::ECMAScript);
-		return std::vector<std::string>(std::sregex_token_iterator(str.begin(), str.end(), reg), std::sregex_token_iterator());
-	}
-
-	std::vector<std::string> splitString(const std::string& str, char delimiter)
+	std::vector<std::string> splitString(const std::string_view str, char delimiter)
 	{
 		std::vector<std::string> strings;
 
-		std::string::size_type pos = 0;
-		std::string::size_type prev = 0;
+		std::string_view::size_type pos = 0;
+		std::string_view::size_type prev = 0;
 		while ((pos = str.find(delimiter, prev)) != std::string::npos)
 		{
-			strings.push_back(str.substr(prev, pos - prev));
+			strings.push_back(std::string(str.substr(prev, pos - prev)));
 			prev = pos + 1;
 		}
 
-		strings.push_back(str.substr(prev));
+		strings.push_back(std::string(str.substr(prev)));
 
 		return strings;
 	}
@@ -82,23 +84,163 @@ namespace Utils
 		return std::make_pair(str, "");
 	}
 
-	std::string toLower(const std::string& str)
+	std::pair<std::string_view, std::string_view> splitStringIn2(
+		const std::string_view str, char delimiter)
 	{
-		auto ret = str;
+		auto pos = str.find(delimiter, 0);
+		if (pos != std::string::npos)
+		{
+			return std::make_pair(str.substr(0, pos), str.substr(pos + 1, str.size() - pos));
+		}
+		return std::make_pair(str, "");
+	}
+
+#if (_MSC_VER >= 1914)
+	float strtof(std::string_view str) noexcept
+	{
+		float val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	double strtod(std::string_view str) noexcept
+	{
+		double val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	long double strtold(std::string_view str) noexcept
+	{
+		long double val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+#else
+	float strtof(std::string_view str) noexcept
+	{
+		return std::strtof(str.data(), nullptr);
+	}
+
+	double strtod(std::string_view str) noexcept
+	{
+		return std::strtod(str.data(), nullptr);
+	}
+
+	long double strtold(std::string_view str) noexcept
+	{
+		return std::strtold(str.data(), nullptr);
+	}
+#endif
+
+#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+	int strtoi(std::string_view str) noexcept
+	{
+		int val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	long strtol(std::string_view str) noexcept
+	{
+		long val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	long long strtoll(std::string_view str) noexcept
+	{
+		long long val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	unsigned strtou(std::string_view str) noexcept
+	{
+		unsigned val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	unsigned long strtoul(std::string_view str) noexcept
+	{
+		unsigned long val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+
+	unsigned long long strtoull(std::string_view str) noexcept
+	{
+		unsigned long long val = 0;
+		std::from_chars(str.data(), str.data() + str.size(), val);
+		return val;
+	}
+#else
+	int strtoi(std::string_view str) noexcept
+	{
+		return (int)std::strtol(str.data(), nullptr, 10);
+	}
+
+	long strtol(std::string_view str) noexcept
+	{
+		return std::strtol(str.data(), nullptr, 10);
+	}
+
+	long long strtoll(std::string_view str) noexcept
+	{
+		return std::strtoll(str.data(), nullptr, 10);
+	}
+
+	unsigned strtou(std::string_view str) noexcept
+	{
+		return (unsigned)std::strtoul(str.data(), nullptr, 10);
+	}
+
+	unsigned long strtoul(std::string_view str) noexcept
+	{
+		return std::strtoul(str.data(), nullptr, 10);
+	}
+
+	unsigned long long strtoull(std::string_view str) noexcept
+	{
+		return std::strtoull(str.data(), nullptr, 10);
+	}
+#endif
+
+	std::string toLower(const std::string_view str)
+	{
+		std::string ret(str);
 		std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
 		return ret;
 	}
 
-	std::string toUpper(const std::string& str)
+	std::string toUpper(const std::string_view str)
 	{
-		auto ret = str;
+		std::string ret(str);
 		std::transform(ret.begin(), ret.end(), ret.begin(), ::toupper);
 		return ret;
 	}
 
-	std::string toString(double d)
+#if (_MSC_VER >= 1916)
+	std::string toString(double num)
 	{
-		std::string str{ std::to_string(d) };
+		std::array<char, 24> str;
+		auto err = std::to_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc())
+		{
+			std::string ret(str.data(), err.ptr - str.data());
+			if (ret.find('.') == std::string::npos)
+			{
+				ret += ".0";
+			}
+			return ret;
+		}
+		return { "0.0" };
+	}
+#else
+	std::string toString(double num)
+	{
+		std::string str{ std::to_string(num) };
 		int offset{ 1 };
 		if (str.find_last_not_of('0') == str.find('.'))
 		{
@@ -107,27 +249,144 @@ namespace Utils
 		str.erase(str.find_last_not_of('0') + offset, std::string::npos);
 		return str;
 	}
-
-	std::string trimStart(const std::string& str, const std::string& chars)
+#endif
+#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+	std::string toString(int num)
 	{
-		auto ret(str);
+		if constexpr (sizeof(int) == 8)
+		{
+			return toString((long long)num);
+		}
+		std::array<char, 11> str;
+		auto err = std::to_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc())
+		{
+			return std::string(str.data(), err.ptr - str.data());
+		}
+		return { "0" };
+	}
+
+	std::string toString(long num)
+	{
+		if constexpr (sizeof(long) <= 4)
+		{
+			return toString((int)num);
+		}
+		else
+		{
+			return toString((long long)num);
+		}
+	}
+
+	std::string toString(long long num)
+	{
+		if constexpr (sizeof(long long) == 4)
+		{
+			return toString((int)num);
+		}
+		std::array<char, 21> str;
+		auto err = std::to_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc())
+		{
+			auto str2 = std::string(str.data(), err.ptr - str.data());
+			return str2;
+		}
+		return { "0" };
+	}
+
+	std::string toString(unsigned int num)
+	{
+		if constexpr (sizeof(unsigned int) == 8)
+		{
+			return toString((unsigned long long)num);
+		}
+		std::array<char, 11> str;
+		auto err = std::to_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc())
+		{
+			return std::string(str.data(), err.ptr - str.data());
+		}
+		return { "0" };
+	}
+
+	std::string toString(unsigned long num)
+	{
+		if constexpr (sizeof(unsigned long) <= 4)
+		{
+			return toString((unsigned int)num);
+		}
+		else
+		{
+			return toString((unsigned long long)num);
+		}
+	}
+
+	std::string toString(unsigned long long num)
+	{
+		if constexpr (sizeof(unsigned long long) == 4)
+		{
+			return toString((unsigned int)num);
+		}
+		std::array<char, 21> str;
+		auto err = std::to_chars(str.data(), str.data() + str.size(), num);
+		if (err.ec == std::errc())
+		{
+			return std::string(str.data(), err.ptr - str.data());
+		}
+		return { "0" };
+	}
+#else
+	std::string toString(int num)
+	{
+		return std::to_string(num);
+	}
+
+	std::string toString(long num)
+	{
+		return std::to_string(num);
+	}
+
+	std::string toString(long long num)
+	{
+		return std::to_string(num);
+	}
+
+	std::string toString(unsigned int num)
+	{
+		return std::to_string(num);
+	}
+
+	std::string toString(unsigned long num)
+	{
+		return std::to_string(num);
+	}
+
+	std::string toString(unsigned long long num)
+	{
+		return std::to_string(num);
+	}
+#endif
+
+	std::string trimStart(const std::string_view str, const std::string_view chars)
+	{
+		std::string ret(str);
 		ret.erase(ret.find_last_not_of(chars) + 1);
 		return ret;
 	}
 
-	std::string trimEnd(const std::string& str, const std::string& chars)
+	std::string trimEnd(const std::string_view str, const std::string_view chars)
 	{
-		auto ret(str);
+		std::string ret(str);
 		ret.erase(0, ret.find_first_not_of(chars));
 		return ret;
 	}
 
-	std::string trim(const std::string& str, const std::string& chars)
+	std::string trim(const std::string_view str, const std::string_view chars)
 	{
 		return trimStart(trimEnd(str, chars), chars);
 	}
 
-	std::string removeEmptyLines(const std::string& str)
+	std::string removeEmptyLines(const std::string_view str)
 	{
 		auto ret = trim(str, "\n");
 		ret.erase(std::unique(ret.begin(), ret.end(),

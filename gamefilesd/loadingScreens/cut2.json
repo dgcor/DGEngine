@@ -2,11 +2,11 @@
   "action": { "name": "resource.add", "id": "loadingScreen" },
   "palette": {
     "id": "cut2",
-    "file":"gendata/cut2.pal"
+    "file": "gendata/cut2.pal"
   },
   "texture": {
     "id": "cut2",
-    "file":"gendata/cut2.cel",
+    "file": "gendata/cut2.cel",
     "palette": "cut2"
   },
   "loadingScreen": {

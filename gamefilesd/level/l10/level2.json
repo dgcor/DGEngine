@@ -1,0 +1,10 @@
+{
+  "level": {
+    "id": "level",
+    "path": "l10",
+    "name": "10",
+    "map": { "file": "level/l10/l10.json", "indexOffset": -1, "defaultTile": 6 }
+  },
+  "load": "level/l10/levelObjects2.json",
+  "load": "level/l10/monsters2.json"
+}

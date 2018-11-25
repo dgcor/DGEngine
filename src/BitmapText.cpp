@@ -3,12 +3,12 @@
 #include "GameUtils.h"
 #include "Utils/Utils.h"
 
-void BitmapText::calcDrawPos() noexcept
+void BitmapText::calculateDrawPosition() noexcept
 {
 	drawPos = GameUtils::getAlignmentPosition(pos, size, horizAlign, vertAlign);
 }
 
-void BitmapText::calcSize()
+void BitmapText::calculateSize()
 {
 	size = font->calculateSize(text, horizSpaceOffset, vertSpaceOffset, &lineCount);
 }
@@ -20,7 +20,7 @@ void BitmapText::updateSize(const Game& game) noexcept
 		return;
 	}
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
-	calcDrawPos();
+	calculateDrawPosition();
 }
 
 void BitmapText::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -32,16 +32,19 @@ void BitmapText::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-bool BitmapText::getProperty(const std::string& prop, Variable& var) const
+bool BitmapText::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	auto propHash = str2int16(props.first.c_str());
+	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("length"):
+		var = Variable((int64_t)text.size());
+		break;
 	case str2int16("lineCount"):
 		var = Variable((int64_t)lineCount);
 		break;

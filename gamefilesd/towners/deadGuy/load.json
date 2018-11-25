@@ -1,0 +1,33 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%currentLevel.quest.theButcher.state%",
+    "case": [
+      {
+        "value": 0,
+        "action": [
+          { "name": "resource.add", "id": "panelDeadGuy" },
+          {
+            "name": "action.set",
+            "id": "afterShowText",
+            "action": {
+              "name": "player.addToProperty",
+              "player": "deadGuy" ,
+              "property": "lifeDamage",
+              "value": 1
+            }
+          },
+          { "name": "quest.setState", "quest": "theButcher", "state": 1 },
+          { "name": "load", "file": "texts/quests/theButcher.json" }
+        ]
+      },
+      {
+        "value": 1,
+        "action": [
+          { "name": "load", "file": ["res/player/sound/load.json", 8, "yourDeathAvenged", "loadAudio", "currentLevel"] },
+          { "name": "audio.play", "id": "yourDeathAvenged", "volume": "%game.soundVolume%" }
+        ]
+      }
+    ]
+  }
+}

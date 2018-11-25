@@ -1,4 +1,3 @@
-
 /*
  *  MovieImpl.hpp
  *  sfeMovie project
@@ -22,140 +21,120 @@
  *
  */
 
-#ifndef SFEMOVIE_MOVIEIMPL_HPP
-#define SFEMOVIE_MOVIEIMPL_HPP
+#pragma once
 
-#include <cstring>
 #include <memory>
-#include <string>
-#include <stdexcept>
-#include <SFML/Config.hpp>
+#include <string_view>
 #include "VideoStream.hpp"
 
 namespace sfe
 {
-    class Demuxer;
-    
-    class MovieImpl : public VideoStream::Delegate, public sf::Drawable
-    {
-    public:
-        MovieImpl(sf::Transformable& movieView);
-        virtual ~MovieImpl();
-        
-        /** @see Movie::openFromFile()
-         */
-        bool openFromFile(const std::string& filename);
-        
-        /** @see Movie::openFromStream()
-        */
-        bool openFromStream(sf::InputStream& stream);
-        
-        /** @see Movie::getStreams()
-         */
-        const Streams& getStreams(MediaType type) const;
-        
-        /** @see Movie::selectStream()
-         */
-        bool selectStream(const StreamDescriptor& streamDescriptor);
-        
-        /** @see Movie::play()
-         */
-        void play();
-        
-        
-        /** @see Movie::pause()
-         */
-        void pause();
-        
-        
-        /** @see Movie::stop()
-         */
-        void stop();
-        
-        
-        /** Update the media status and eventually decode frames
-         */
-        void update();
-        
-        
-        /** @see Movie::setVolume()
-         */
-        void setVolume(float volume);
-        
-        
-        /** @see Movie::getVolume()
-         */
-        float getVolume() const;
-        
-        
-        /** @see Movie::getDuration()
-         */
-        sf::Time getDuration() const;
-        
-        
-        /** @see Movie::getSize()
-         */
-        sf::Vector2f getSize() const;
-        
-        
-        /** @see fit(sf::FloatRect, bool)
-         */
-        void fit(float x, float y, float width, float height, bool preserveRatio = true);
-        
-        
-        /** @see Movie::fit()
-         */
-        void fit(sf::FloatRect frame, bool preserveRatio = true);
-        
-        
-        /** @see Movie::getFramerate()
-         */
-        float getFramerate() const;
-        
-        
-        /** @see Movie::getSampleRate()
-         */
-        unsigned int getSampleRate() const;
-        
-        
-        /** @see Movie::getChannelCount()
-         */
-        unsigned int getChannelCount() const;
-        
-        
-        /** @see Movie::getStatus()
-         */
-        Status getStatus() const;
-        
-        
-        /** @see Movie::getPlayingOffset()
-         */
-        sf::Time getPlayingOffset() const;
-        
-        /** @see Movie::setPlayingOffset()
-         */
-        bool setPlayingOffset(const sf::Time& targetSeekTime);
-        
-        /** @see Movie::getCurrentImage()
-         */
-        const sf::Texture& getCurrentImage() const;
-        
-        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-        void didUpdateVideo(const VideoStream& sender, const sf::Texture& image) override;
-        
-    private:
+	class Demuxer;
 
-        bool open();
+	class MovieImpl : public VideoStream::Delegate, public sf::Drawable
+	{
+	public:
+		MovieImpl(sf::Transformable& movieView);
+		virtual ~MovieImpl();
 
-        sf::Transformable& m_movieView;
-        std::shared_ptr<Demuxer> m_demuxer;
-        std::shared_ptr<Timer> m_timer;
-        sf::Sprite m_videoSprite;
-        Streams m_audioStreamsDesc;
-        Streams m_videoStreamsDesc;
-        sf::FloatRect m_displayFrame;
-    };
-    
+		/** @see Movie::openFromFile()
+		 */
+		bool openFromFile(const std::string_view filename);
+
+		/** @see Movie::openFromStream()
+		*/
+		bool openFromStream(sf::InputStream& stream);
+
+		/** @see Movie::getStreams()
+		 */
+		const std::vector<StreamDescriptor>& getStreams(MediaType type) const;
+
+		/** @see Movie::selectStream()
+		 */
+		bool selectStream(const StreamDescriptor& streamDescriptor);
+
+		/** @see Movie::play()
+		 */
+		void play();
+
+		/** @see Movie::pause()
+		 */
+		void pause();
+
+		/** @see Movie::stop()
+		 */
+		void stop();
+
+		/** Update the media status and eventually decode frames
+		 */
+		void update();
+
+		/** @see Movie::setVolume()
+		 */
+		void setVolume(float volume);
+
+		/** @see Movie::getVolume()
+		 */
+		float getVolume() const;
+
+		/** @see Movie::getDuration()
+		 */
+		sf::Time getDuration() const;
+
+		/** @see Movie::getSize()
+		 */
+		sf::Vector2f getSize() const;
+
+		/** @see fit(sf::FloatRect, bool)
+		 */
+		void fit(float x, float y, float width, float height, bool preserveRatio = true);
+
+		/** @see Movie::fit()
+		 */
+		void fit(sf::FloatRect frame, bool preserveRatio = true);
+
+		/** @see Movie::getFramerate()
+		 */
+		float getFramerate() const;
+
+		/** @see Movie::getSampleRate()
+		 */
+		unsigned int getSampleRate() const;
+
+		/** @see Movie::getChannelCount()
+		 */
+		unsigned int getChannelCount() const;
+
+		/** @see Movie::getStatus()
+		 */
+		Status getStatus() const;
+
+		/** @see Movie::getPlayingOffset()
+		 */
+		sf::Time getPlayingOffset() const;
+
+		/** @see Movie::setPlayingOffset()
+		 */
+		bool setPlayingOffset(const sf::Time& targetSeekTime);
+
+		/** @see Movie::getCurrentImage()
+		 */
+		const sf::Texture& getCurrentImage() const;
+
+		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		void didUpdateVideo(const VideoStream& sender, const sf::Texture& image) override;
+
+	private:
+
+		bool open();
+
+		sf::Transformable& m_movieView;
+		std::unique_ptr<Demuxer> m_demuxer;
+		std::unique_ptr<Timer> m_timer;
+		sf::Sprite m_videoSprite;
+		std::vector<StreamDescriptor> m_audioStreamsDesc;
+		std::vector<StreamDescriptor> m_videoStreamsDesc;
+		std::vector<StreamDescriptor> m_noStreamsDesc;
+		sf::FloatRect m_displayFrame;
+	};
 }
-
-#endif

@@ -1,6 +1,6 @@
 {
   "texturePack": {
-    "id": "levelBack",
+    "id": "townLayer1",
     "texture": [
       {
         "file": "images/tilesets/tileset_grassland.png",
@@ -290,17 +290,12 @@
   },
   "level": {
     "id": "level",
-    "path": "town",
-    "name": "Town Center",
-    "texturePackBottom": "levelBack",
-    "texturePackTop": "levelBack",
-    "map": {
-      "file": "level/town/frontier_outpost.json",
-      "back": "background",
-      "front": "object",
-      "sol": "collision"
-    }
+    "layers": [
+      { "index": 0, "texturePack": "townLayer1" },
+      { "index": 1, "texturePack": "townLayer1" }
+    ]
   },
+  "load": "level/automap/load.json",
   "load": "level/town/levelObjects.json",
-  "load": "level/town/items.json"
+  "load": "level/town/level2.json"
 }

@@ -26,7 +26,7 @@
     "visibleItems": 4,
     "verticalPad": 38,
     "items": {
-      "load": "currentLevel|griswold.inventory.1",
+      "load": "currentLevel.griswold.inventory.1",
       "text": "%price%",
       "executeAction": {
         "name": "load",

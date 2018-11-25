@@ -23,16 +23,13 @@
         "index": "Belt",
         "size": 8,
         "allowedClassTypes": ["Potion", "Scroll"],
-        "item": [
-          {
-            "index": 0,
-            "class": "potionOfHealing"
-          },
-          {
-            "index": 1,
-            "class": "potionOfHealing"
+        "item": {
+          "index": 0,
+          "class": "potionOfHealing",
+          "properties": {
+            "quantity": 2
           }
-        ]
+        }
       },
       {
         "index": "Stash",
@@ -42,7 +39,7 @@
           "index": [0, 3],
           "class": "gold",
           "properties": {
-            "gold": 100
+            "quantity": 100
           }
         }
       }

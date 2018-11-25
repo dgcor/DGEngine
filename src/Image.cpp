@@ -1,7 +1,7 @@
 #include "Image.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include "SFMLUtils.h"
+#include "SFML/SFMLUtils.h"
 #include "Utils/Utils.h"
 
 void Image::setOrigin()
@@ -27,12 +27,12 @@ void Image::updateSize(const Game& game)
 	sprite.setPosition(pos);
 }
 
-bool Image::getProperty(const std::string& prop, Variable& var) const
+bool Image::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 1)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int16(props.first.c_str()), props.second, var);
+	return GameUtils::getUIObjProp(*this, str2int16(props.first), props.second, var);
 }

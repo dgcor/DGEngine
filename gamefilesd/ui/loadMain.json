@@ -1,6 +1,6 @@
 {
   "icon": {
-    "file":"res/icon.png"
+    "file": "res/icon.png"
   },
   "cursor": {
     "show": false
@@ -9,8 +9,9 @@
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "ui_art/cursor.pcx" },
     "param2": true,
-    "else": { "name": "variable.set", "key": "beta", "val": true }
+    "else": { "name": "variable.set", "key": "beta", "value": true }
   },
+  "load": "level/setupTempFolder.json",
   "load": "res/actions.json",
   "load": "res/fonts.json",
   "load": "res/music.json",

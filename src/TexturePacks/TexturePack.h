@@ -2,14 +2,7 @@
 
 #include <memory>
 #include "Palette.h"
-#include <SFML/Graphics/Texture.hpp>
-
-struct TextureInfo
-{
-	const sf::Texture* texture;
-	sf::IntRect textureRect;
-	sf::Vector2f offset;
-};
+#include "TextureInfo.h"
 
 class TexturePack
 {
@@ -17,6 +10,9 @@ protected:
 	static void updateTextureInfo(TextureInfo& ti);
 
 public:
+	virtual ~TexturePack() = default;
+
+	// if texture is an index texture, sets the palette in TextureInfo
 	virtual bool get(size_t index, TextureInfo& ti) const = 0;
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept = 0;

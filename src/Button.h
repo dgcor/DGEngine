@@ -1,5 +1,6 @@
 #pragma once
 
+#include "InputEvent.h"
 #include <memory>
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "UIObject.h"
@@ -27,7 +28,7 @@ protected:
 	bool beingDragged{ false };
 	bool wasLeftClicked{ false };
 	bool wasRightClicked{ false };
-	bool captureInputEvents{ false };
+	InputEvent captureInputEvents{ InputEvent::None };
 
 	void onHover(Game& game, bool contains);
 	void onMouseButtonPressed(Game& game, bool contains);
@@ -36,9 +37,11 @@ protected:
 	void onTouchBegan(Game& game, bool contains);
 	void onTouchEnded(Game& game, bool contains);
 
+	void updateEvents(Game& game, bool contains);
+
 public:
-	bool getCaptureInputEvents() const noexcept { return captureInputEvents; }
-	void setCaptureInputEvents(bool captureEvents) noexcept { captureInputEvents = captureEvents; }
+	InputEvent getCaptureInputEvents() const noexcept { return captureInputEvents; }
+	void setCaptureInputEvents(InputEvent e) noexcept { captureInputEvents = e; }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
@@ -51,8 +54,6 @@ public:
 	void setClickSound(const sf::SoundBuffer* buffer) noexcept { clickSound = buffer; }
 	void setClickUp(bool clickUp_) noexcept { clickUp = clickUp_; }
 	void setFocusSound(const sf::SoundBuffer* buffer) noexcept { focusSound = buffer; }
-
-	void update(Game& game, bool contains);
 
 	virtual void setColor(const sf::Color& color_) = 0;
 };

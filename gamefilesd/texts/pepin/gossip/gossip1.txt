@@ -1,1 +1,6 @@
-I have made a very interesting discovery. Unlike us, the creatures in the Labyrinth can heal themselves without the aid of potions or magic. If you hurt one of the monsters, make sure it is dead or it very well may regenerate itself.
+I have made a very interesting discovery.
+Unlike us, the creatures in the Labyrinth
+can heal themselves without the aid of
+potions or magic. If you hurt one of the
+monsters, make sure it is dead or it very
+well may regenerate itself.

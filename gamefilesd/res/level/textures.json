@@ -1,6 +1,11 @@
 {
   "texture": [
     {
+      "id": "golddrop",
+      "file": "ctrlpan/golddrop.cel",
+      "palette": "town"
+    },
+    {
       "id": "p8bulbs",
       "file": "ctrlpan/p8bulbs.cel",
       "palette": "town"
@@ -65,6 +70,16 @@
       "file": "data/textslid.cel",
       "frame": 13,
       "palette": "town"
+    },
+    {
+      "id": "noSpell",
+      "file": "ctrlpan/spelicon.cel",
+      "frame": 26,
+      "palette": "spell4"
+    },
+    {
+      "id": "automap",
+      "file": "res/level/automap.png"
     }
   ],
   "texturePack": {

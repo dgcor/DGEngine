@@ -1,0 +1,6 @@
+{
+  "action": {
+    "name": "level.save",
+    "file": "%tempDir%/level/{1}/level2.json"
+  }
+}

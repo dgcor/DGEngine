@@ -2,29 +2,40 @@
 #include "PhysFSStream.h"
 #include "StreamReader.h"
 
-Min::Min(const std::string& fileName, size_t minSize)
+Min::Min(const std::string_view fileName, size_t minSize)
 {
-	sf::PhysFSStream file(fileName);
+	sf::PhysFSStream file(fileName.data());
 	if (file.hasError() == true)
 	{
 		return;
 	}
-	std::vector<uint8_t> fileData((size_t)file.getSize());
-	file.read(fileData.data(), file.getSize());
 
-	LittleEndianStreamReader fileStream(fileData);
+	auto fileSize = (size_t)file.getSize();
+	numPillars = fileSize / (minSize * 2);
+	pillarHeight = minSize / 2;
 
-	auto numPillars = fileData.size() / (minSize * 2);
-	auto pillarHeight = minSize / 2;
+	pillars.resize(numPillars * pillarHeight);
+	file.read(pillars.data(), file.getSize());
 
-	pillars.resize(numPillars);
+	LittleEndianStreamReader fileStream((const uint8_t*)pillars.data(), fileSize);
+
+	MinPillar minPillar(pillars.data(), pillarHeight);
+	size_t count = 0;
 	for (auto& pillar : pillars)
 	{
-		pillar.resize(pillarHeight);
-		for (auto& tile : pillar)
+		std::pair<uint16_t, uint16_t> temp;
+		fileStream.read(temp.first);
+		fileStream.read(temp.second);
+		pillar = temp;
+		count++;
+		if (count == pillarHeight)
 		{
-			fileStream.read(tile.first);
-			fileStream.read(tile.second);
+			if (minPillar.isTopBlank() == true)
+			{
+				numBlankTopPillars++;
+			}
+			count = 0;
+			minPillar = MinPillar(&pillar + 1, pillarHeight);
 		}
 	}
 }

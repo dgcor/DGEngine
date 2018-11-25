@@ -2,12 +2,12 @@
   "load": [
     "ui/level/showText.json",
     "questText",
-    "50",
+    "16",
     "texts/ogden/quests/anvilOfFury.txt"
   ],
   "audio": {
     "file": "sfx/Towners/tavown12.wav",
     "play": true,
-    "volume": "|game|soundVolume|"
+    "volume": "%game.soundVolume%"
   }
 }

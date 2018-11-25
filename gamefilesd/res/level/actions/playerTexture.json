@@ -4,37 +4,37 @@
     "id": "updatePlayerTexture",
     "action": {
       "name": "switch",
-      "param": "|currentLevel|currentPlayer.item.body.Armor.itemSubType|",
+      "param": "%currentLevel.currentPlayer.item.body.Armor.itemSubType%",
       "case": [
         {
           "value": "Leather",
           "action": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Axe|",
+            "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Axe%",
             "param2": true,
             "then": { "name": "player.setTextureIndex", "index": 10 },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Bow|",
+              "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Bow%",
               "param2": true,
               "then": { "name": "player.setTextureIndex", "index": 11 },
               "else": {
                 "name": "if.equal",
-                "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Staff|",
+                "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Staff%",
                 "param2": true,
                 "then": { "name": "player.setTextureIndex", "index": 16 },
                 "else": {
                   "name": "if.equal",
-                  "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Shield|",
+                  "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Shield%",
                   "param2": true,
                   "then": {
                     "name": "if.equal",
-                    "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                    "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                     "param2": true,
                     "then": { "name": "player.setTextureIndex", "index": 13 },
                     "else": {
                       "name": "if.equal",
-                      "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                      "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                       "param2": true,
                       "then": { "name": "player.setTextureIndex", "index": 12 },
                       "else": { "name": "player.setTextureIndex", "index": 17 }
@@ -42,12 +42,12 @@
                   },
                   "else": {
                     "name": "if.equal",
-                    "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                    "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                     "param2": true,
                     "then": { "name": "player.setTextureIndex", "index": 14 },
                     "else": {
                       "name": "if.equal",
-                      "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                      "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                       "param2": true,
                       "then": { "name": "player.setTextureIndex", "index": 15 },
                       "else": { "name": "player.setTextureIndex", "index": 9 }
@@ -62,31 +62,31 @@
           "value": "Plate",
           "action": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Axe|",
+            "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Axe%",
             "param2": true,
             "then": { "name": "player.setTextureIndex", "index": 19 },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Bow|",
+              "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Bow%",
               "param2": true,
               "then": { "name": "player.setTextureIndex", "index": 20 },
               "else": {
                 "name": "if.equal",
-                "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Staff|",
+                "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Staff%",
                 "param2": true,
                 "then": { "name": "player.setTextureIndex", "index": 25 },
                 "else": {
                   "name": "if.equal",
-                  "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Shield|",
+                  "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Shield%",
                   "param2": true,
                   "then": {
                     "name": "if.equal",
-                    "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                    "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                     "param2": true,
                     "then": { "name": "player.setTextureIndex", "index": 22 },
                     "else": {
                       "name": "if.equal",
-                      "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                      "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                       "param2": true,
                       "then": { "name": "player.setTextureIndex", "index": 21 },
                       "else": { "name": "player.setTextureIndex", "index": 26 }
@@ -94,12 +94,12 @@
                   },
                   "else": {
                     "name": "if.equal",
-                    "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                    "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                     "param2": true,
                     "then": { "name": "player.setTextureIndex", "index": 23 },
                     "else": {
                       "name": "if.equal",
-                      "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                      "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                       "param2": true,
                       "then": { "name": "player.setTextureIndex", "index": 24 },
                       "else": { "name": "player.setTextureIndex", "index": 18 }
@@ -113,31 +113,31 @@
       ],
       "default": {
         "name": "if.equal",
-        "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Axe|",
+        "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Axe%",
         "param2": true,
         "then": { "name": "player.setTextureIndex", "index": 1 },
         "else": {
           "name": "if.equal",
-          "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Bow|",
+          "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Bow%",
           "param2": true,
           "then": { "name": "player.setTextureIndex", "index": 2 },
           "else": {
             "name": "if.equal",
-            "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Staff|",
+            "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Staff%",
             "param2": true,
             "then": { "name": "player.setTextureIndex", "index": 7 },
             "else": {
               "name": "if.equal",
-              "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Shield|",
+              "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Shield%",
               "param2": true,
               "then": {
                 "name": "if.equal",
-                "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                 "param2": true,
                 "then": { "name": "player.setTextureIndex", "index": 4 },
                 "else": {
                   "name": "if.equal",
-                  "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                  "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                   "param2": true,
                   "then": { "name": "player.setTextureIndex", "index": 3 },
                   "else": { "name": "player.setTextureIndex", "index": 8 }
@@ -145,12 +145,12 @@
               },
               "else": {
                 "name": "if.equal",
-                "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Club|",
+                "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Club%",
                 "param2": true,
                 "then": { "name": "player.setTextureIndex", "index": 5 },
                 "else": {
                   "name": "if.equal",
-                  "param1": "|currentLevel|currentPlayer.hasEquipedItemType.Sword|",
+                  "param1": "%currentLevel.currentPlayer.hasEquipedItemType.Sword%",
                   "param2": true,
                   "then": { "name": "player.setTextureIndex", "index": 6 },
                   "else": { "name": "player.setTextureIndex", "index": 0 }

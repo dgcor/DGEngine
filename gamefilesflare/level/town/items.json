@@ -114,7 +114,7 @@
       "class": "gold",
       "mapPosition": [46, 45],
       "properties": {
-        "gold": 4800
+        "quantity": 4800
       }
     }
   ]

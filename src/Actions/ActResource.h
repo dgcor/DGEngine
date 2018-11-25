@@ -49,6 +49,24 @@ public:
 	}
 };
 
+class ActResourceMoveToTop : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActResourceMoveToTop(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		if (id.empty() == false)
+		{
+			game.Resources().moveResourceToTop(id);
+		}
+		return true;
+	}
+};
+
 class ActResourcePop : public Action
 {
 private:

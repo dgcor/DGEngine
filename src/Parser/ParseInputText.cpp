@@ -21,8 +21,28 @@ namespace Parser
 		}
 
 		auto text = parseDrawableTextObj(game, elem);
-		auto inputText = std::make_shared<InputText>(std::move(text),
-			getUIntKey(elem, "minSize"), getUIntKey(elem, "maxSize"));
+		auto inputText = std::make_shared<InputText>(std::move(text));
+
+		if (elem.HasMember("minLength") == true)
+		{
+			inputText->setMinLength(getUIntVal(elem["minLength"]));
+		}
+		if (elem.HasMember("maxLength") == true)
+		{
+			inputText->setMaxLength(getUIntVal(elem["maxLength"]));
+		}
+		if (elem.HasMember("minValue") == true)
+		{
+			inputText->setMinValue(getVariableVal(elem["minValue"]));
+		}
+		if (elem.HasMember("maxValue") == true)
+		{
+			inputText->setMaxValue(getVariableVal(elem["maxValue"]));
+		}
+		if (isValidString(elem, "regex") == true)
+		{
+			inputText->setRegex(elem["regex"].GetString());
+		}
 
 		if (elem.HasMember("onClick"))
 		{
@@ -32,23 +52,11 @@ namespace Parser
 		{
 			inputText->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
 		}
-		if (elem.HasMember("onMinSize"))
+		if (elem.HasMember("onMinLength"))
 		{
-			inputText->setAction(str2int16("minSize"), parseAction(game, elem["onMinSize"]));
+			inputText->setAction(str2int16("minLength"), parseAction(game, elem["onMinLength"]));
 		}
 
-		if (isValidString(elem, "regex") == true)
-		{
-			inputText->setRegex(elem["regex"].GetString());
-		}
-
-		if (isValidString(elem, "resource") == true)
-		{
-			game.Resources().addDrawable(elem["resource"].GetString(), id, inputText);
-		}
-		else
-		{
-			game.Resources().addDrawable(id, inputText);
-		}
+		game.Resources().addDrawable(id, inputText, getStringViewKey(elem, "resource"));
 	}
 }

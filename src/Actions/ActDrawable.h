@@ -369,14 +369,15 @@ private:
 	std::string idAnchorTo;
 	unsigned range;
 	Variable position;
+	unsigned min;
 	unsigned max;
 	Variable steps;
 
 public:
 	ActDrawableMoveX(const std::string& id_, const std::string& idAnchorTo_,
-		unsigned range_, const Variable& position_, unsigned max_, const Variable& steps_)
-		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
-		position(position_), max(max_), steps(steps_) {}
+		unsigned range_, const Variable& position_, unsigned min_, unsigned max_,
+		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
+		position(position_), min(min_), max(max_), steps(steps_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -387,8 +388,9 @@ public:
 			auto itemPos = itemAnchor->DrawPosition();
 			auto itemAnchorPos = itemPos;
 			auto newRange = (float)std::max(0, (int)range - (int)item->Size().x);
-			auto offset = (float)game.getVarOrProp<int64_t, unsigned>(position, max);
-			offset = std::round((offset * newRange) / (float)max);
+			auto offset = (float)std::clamp(game.getVarOrProp<int64_t, unsigned>(position), min, max) - min;
+			auto newMax = max - min;
+			offset = std::round((offset * newRange) / (float)newMax);
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
@@ -418,14 +420,15 @@ private:
 	std::string idAnchorTo;
 	unsigned range;
 	Variable position;
+	unsigned min;
 	unsigned max;
 	Variable steps;
 
 public:
 	ActDrawableMoveY(const std::string& id_, const std::string& idAnchorTo_,
-		unsigned range_, const Variable& position_, unsigned max_, const Variable& steps_)
-		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
-		position(position_), max(max_), steps(steps_) {}
+		unsigned range_, const Variable& position_, unsigned min_, unsigned max_,
+		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
+		position(position_), min(min_), max(max_), steps(steps_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -436,8 +439,9 @@ public:
 			auto itemPos = itemAnchor->DrawPosition();
 			auto itemAnchorPos = itemPos;
 			auto newRange = (float)std::max(0, (int)range - (int)item->Size().y);
-			auto offset = (float)game.getVarOrProp<int64_t, unsigned>(position, max);
-			offset = std::round((offset * newRange) / (float)max);
+			auto offset = (float)std::clamp(game.getVarOrProp<int64_t, unsigned>(position), min, max) - min;
+			auto newMax = max - min;
+			offset = std::round((offset * newRange) / (float)newMax);
 			auto numSteps = game.getVarOrProp<int64_t, int>(steps, -1);
 			if (numSteps > 1)
 			{
@@ -583,12 +587,12 @@ public:
 			if (item != nullptr)
 			{
 				sf::Vector2i inputRange(
-					(int)game.getVarOrPropLong(inputRangeMin),
-					(int)game.getVarOrPropLong(inputRangeMax));
+					(int)game.getVarOrPropLongV(inputRangeMin),
+					(int)game.getVarOrPropLongV(inputRangeMax));
 
 				if (inputRange.y > inputRange.x)
 				{
-					auto newSize = game.getVarOrPropLong(size);
+					auto newSize = game.getVarOrPropLongV(size);
 					newSize = (int64_t)Utils::normalizeNumber<sf::Vector2i>(
 						(long)newSize, inputRange, sizeRange);
 
@@ -734,7 +738,7 @@ private:
 
 public:
 	ActDrawableSetAction(const std::string& id_,
-		const char* name, const std::shared_ptr<Action>& action_)
+		const std::string_view name, const std::shared_ptr<Action>& action_)
 		: id(id_), nameHash(str2int16(name)), action(action_) {}
 
 	virtual bool execute(Game& game) noexcept

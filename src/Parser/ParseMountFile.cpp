@@ -14,35 +14,82 @@ namespace Parser
 		{
 			return;
 		}
+
 		file = game.getPath() + file;
-		auto mount = getStringCharKey(elem, "mount");
-		int append = (int)getBoolKey(elem, "append", true);
-		if (PHYSFS_mount(file.c_str(), mount, append) != 0)
+
+		if (getBoolKey(elem, "prependSaveDir") == true)
 		{
-			return;
+			std::string saveDir = FileUtils::getSaveDir();
+
+			if (Utils::endsWith(saveDir, "\\") == false &&
+				Utils::endsWith(saveDir, "/") == false)
+			{
+				saveDir += PHYSFS_getDirSeparator();
+			}
+			file = saveDir + file;
 		}
-		auto fileNoExt = FileUtils::getFileWithoutExt(file);
-		if (fileNoExt.length() != file.length())
+		if (getBoolKey(elem, "unmount") == false)
 		{
-			if (PHYSFS_mount(fileNoExt.c_str(), mount, append) != 0)
+			auto mount = getStringCharKey(elem, "mount");
+			int append = (int)getBoolKey(elem, "append", true);
+
+			if (PHYSFS_mount(file.c_str(), mount, append) != 0)
+			{
+				return;
+			}
+			auto fileNoExt = FileUtils::getFileWithoutExt(file);
+			if (fileNoExt.length() != file.length())
+			{
+				if (PHYSFS_mount(fileNoExt.c_str(), mount, append) != 0)
+				{
+					return;
+				}
+			}
+			auto fileMPQ = fileNoExt + ".mpq";
+			if (PHYSFS_mount(fileMPQ.c_str(), mount, append) != 0)
+			{
+				return;
+			}
+			auto fileZip = fileNoExt + ".zip";
+			if (PHYSFS_mount(fileZip.c_str(), mount, append) != 0)
+			{
+				return;
+			}
+			auto file7Zip = fileNoExt + ".7z";
+			if (PHYSFS_mount(file7Zip.c_str(), mount, append) != 0)
 			{
 				return;
 			}
 		}
-		auto fileMPQ = fileNoExt + ".mpq";
-		if (PHYSFS_mount(fileMPQ.c_str(), mount, append) != 0)
+		else
 		{
-			return;
-		}
-		auto fileZip = fileNoExt + ".zip";
-		if (PHYSFS_mount(fileZip.c_str(), mount, append) != 0)
-		{
-			return;
-		}
-		auto file7Zip = fileNoExt + ".7z";
-		if (PHYSFS_mount(file7Zip.c_str(), mount, append) != 0)
-		{
-			return;
+			if (PHYSFS_unmount(file.c_str()) != 0)
+			{
+				return;
+			}
+			auto fileNoExt = FileUtils::getFileWithoutExt(file);
+			if (fileNoExt.length() != file.length())
+			{
+				if (PHYSFS_unmount(fileNoExt.c_str()) != 0)
+				{
+					return;
+				}
+			}
+			auto fileMPQ = fileNoExt + ".mpq";
+			if (PHYSFS_unmount(fileMPQ.c_str()) != 0)
+			{
+				return;
+			}
+			auto fileZip = fileNoExt + ".zip";
+			if (PHYSFS_unmount(fileZip.c_str()) != 0)
+			{
+				return;
+			}
+			auto file7Zip = fileNoExt + ".7z";
+			if (PHYSFS_unmount(file7Zip.c_str()) != 0)
+			{
+				return;
+			}
 		}
 	}
 }

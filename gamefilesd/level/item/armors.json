@@ -241,6 +241,15 @@
         "identified": false,
         "unique": true
       },
+      "actions": {
+        "levelPick": [
+          {
+            "name": "load",
+            "file": ["res/player/sound/load.json", 91, "valor", "loadAudio", "currentLevel"]
+          },
+          { "name": "audio.play", "id": "valor", "volume": "%game.soundVolume%" }
+        ]
+      },
       "prefix": null,
       "suffix": null
     }

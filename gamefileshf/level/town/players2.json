@@ -1,0 +1,4 @@
+{
+  "load": "level/town/playersd.json",
+  "load": "level/town/playershf.json"
+}

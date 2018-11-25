@@ -1,7 +1,7 @@
 {
   "action": {
     "name": "switch",
-    "param": "|currentLevel|quest.skeletonKing.state|",
+    "param": "%currentLevel.quest.skeletonKing.state%",
     "case": [
       {
         "value": 0,

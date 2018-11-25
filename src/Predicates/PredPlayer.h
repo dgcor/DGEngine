@@ -34,26 +34,31 @@ public:
 	}
 };
 
-class PredPlayerGetMaxGoldCapacity : public Predicate
+class PredPlayerGetMaxItemCapacity : public Predicate
 {
 private:
 	std::string idLevel;
 	std::string idPlayer;
+	std::string itemClass;
 
 public:
-	PredPlayerGetMaxGoldCapacity(const std::string& idLevel_,
-		const std::string& idPlayer_)
-		: idLevel(idLevel_), idPlayer(idPlayer_) {}
+	PredPlayerGetMaxItemCapacity(const std::string& idLevel_,
+		const std::string& idPlayer_, const std::string& itemClass_)
+		: idLevel(idLevel_), idPlayer(idPlayer_), itemClass(itemClass_) {}
 
 	virtual Variable getResult(const Game& game) const
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr)
+			auto itemClassPtr = level->getItemClass(itemClass);
+			if (itemClassPtr != nullptr)
 			{
-				return { (int64_t)player->getMaxGoldCapacity(*level) };
+				auto player = level->getPlayerOrCurrent(idPlayer);
+				if (player != nullptr)
+				{
+					return { (int64_t)player->getMaxItemCapacity(*itemClassPtr) };
+				}
 			}
 		}
 		return { (int64_t)0 };
