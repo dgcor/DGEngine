@@ -6,6 +6,7 @@
     "type": "Human",
     "outline": "|outlineFriend|",
     "outlineIgnore": "0x000000",
+    "light": [100, 255, 20],
     "defaults": {
       "experience": 0,
       "points": 0,

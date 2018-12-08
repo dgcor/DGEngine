@@ -4,20 +4,67 @@
 #include "Game.h"
 #include "Game/Level.h"
 
-class ActLevelClearObjects : public Action
+class ActLevelClearAllObjects : public Action
 {
 private:
 	std::string id;
+	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearObjects(const std::string& id_) : id(id_) {}
+	ActLevelClearAllObjects(const std::string& id_,
+		const std::vector<std::string>& excludeIds_)
+		: id(id_), excludeIds(excludeIds_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->clearLevelObjects();
+			level->clearLevelObjects<LevelObject>(excludeIds);
+		}
+		return true;
+	}
+};
+
+class ActLevelClearItems : public Action
+{
+private:
+	std::string id;
+	std::vector<std::string> excludeIds;
+
+public:
+	ActLevelClearItems(const std::string& id_,
+		const std::vector<std::string>& excludeIds_)
+		: id(id_), excludeIds(excludeIds_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearLevelObjects<Item>(excludeIds);
+		}
+		return true;
+	}
+};
+
+class ActLevelClearLevelObjects : public Action
+{
+private:
+	std::string id;
+	std::vector<std::string> excludeIds;
+
+public:
+	ActLevelClearLevelObjects(const std::string& id_,
+		const std::vector<std::string>& excludeIds_)
+		: id(id_), excludeIds(excludeIds_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->clearLevelObjects<LevelObject>(excludeIds);
 		}
 		return true;
 	}
@@ -27,18 +74,16 @@ class ActLevelClearPlayerClasses : public Action
 {
 private:
 	std::string id;
-	size_t clearIdx;
 
 public:
-	ActLevelClearPlayerClasses(const std::string& id_, size_t clearIdx_)
-		: id(id_), clearIdx(clearIdx_) {}
+	ActLevelClearPlayerClasses(const std::string& id_) : id(id_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->clearPlayerClasses(clearIdx);
+			level->clearPlayerClasses();
 		}
 		return true;
 	}
@@ -48,18 +93,19 @@ class ActLevelClearPlayers : public Action
 {
 private:
 	std::string id;
-	size_t clearIdx;
+	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearPlayers(const std::string& id_, size_t clearIdx_)
-		: id(id_), clearIdx(clearIdx_) {}
+	ActLevelClearPlayers(const std::string& id_,
+		const std::vector<std::string>& excludeIds_)
+		: id(id_), excludeIds(excludeIds_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->clearPlayers(clearIdx);
+			level->clearLevelObjects<Player>(excludeIds);
 		}
 		return true;
 	}
@@ -157,7 +203,7 @@ public:
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			auto player = level->getPlayer(idPlayer);
+			auto player = level->getLevelObject<Player>(idPlayer);
 			if (player != nullptr)
 			{
 				level->move(player->MapPosition());

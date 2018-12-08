@@ -293,7 +293,8 @@
     "layers": [
       { "index": 0, "texturePack": "townLayer1" },
       { "index": 1, "texturePack": "townLayer1" }
-    ]
+    ],
+    "defaultLight": 100
   },
   "load": "level/automap/load.json",
   "load": "level/town/levelObjects.json",

@@ -278,6 +278,16 @@ namespace Parser
 		return val;
 	}
 
+	LightSource getLightSourceKey(const rapidjson::Value& elem,
+		const char* key, LightSource val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getLightSourceVal(elem[key], val);
+		}
+		return val;
+	}
+
 	ItemCoordInventory getItemCoordInventoryKey(const Value& elem, const char* key)
 	{
 		if (elem.HasMember(key) == true)

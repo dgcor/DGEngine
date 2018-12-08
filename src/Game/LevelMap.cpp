@@ -1,5 +1,6 @@
 #include "LevelMap.h"
 #include "PathFinder.h"
+#include "Utils/EasingFunctions.h"
 
 LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
 	Coord width_, Coord height_, int16_t defaultTile)
@@ -64,8 +65,183 @@ void LevelMap::resize(const TileBlock& defaultTile)
 
 void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
 {
+	defaultTileWidth = tileWidth_;
+	defaultTileHeight = tileHeight_;
 	defaultBlockWidth = std::max(1, tileWidth_ / 2);
 	defaultBlockHeight = std::max(1, tileHeight_ / 2);
+}
+
+uint8_t LevelMap::getTileLight(size_t layer, const LevelCell& cell) const
+{
+	auto tileIndex = cell.getTileIndex(layer);
+	if (tileIndex < 0)
+	{
+		return 0;
+	}
+	return lightMap.get((size_t)tileIndex);
+}
+
+void LevelMap::addLight(MapCoord lightPos, LightSource lightSource)
+{
+	if (lightSource.maxLight == 0 ||
+		lightSource.minLight > lightSource.maxLight)
+	{
+		return;
+	}
+	pendingLights.push_back({ lightPos, lightSource, false });
+}
+
+void LevelMap::removeLight(MapCoord lightPos, LightSource lightSource)
+{
+	if (lightSource.maxLight == 0 ||
+		lightSource.minLight > lightSource.maxLight)
+	{
+		return;
+	}
+	pendingLights.push_back({ lightPos, lightSource, true });
+}
+
+void LevelMap::doLight(MapCoord lightPos, LightSource ls,
+	const std::function<void(LevelCell*, uint8_t)>& doLightFunc)
+{
+	if (defaultSource.maxLight == 255 ||
+		ls.maxLight == 0 ||
+		ls.minLight > ls.maxLight)
+	{
+		return;
+	}
+
+	// limit real radius
+	int32_t radius = std::min(128, (int32_t)ls.radius);
+	int32_t radiusSquared = radius * radius;
+	double range = ((double)ls.maxLight - (double)ls.minLight);
+
+	MapCoord mapPosStart(lightPos.x - radius, lightPos.y - radius);
+	MapCoord mapPosEnd(lightPos.x + radius + 1, lightPos.y + radius + 1);
+
+	mapPosStart.x = std::max(mapPosStart.x, 0);
+	mapPosStart.y = std::max(mapPosStart.y, 0);
+	mapPosEnd.x = std::min(mapPosEnd.x, mapSize.x);
+	mapPosEnd.y = std::min(mapPosEnd.y, mapSize.y);
+
+	auto easingFunc = EasingFunctions::easeLinear<double>;
+
+	switch (ls.easing)
+	{
+	default:
+	case LightEasing::Linear:
+		easingFunc = EasingFunctions::easeLinear<double>;
+		break;
+	case LightEasing::Sine:
+		easingFunc = EasingFunctions::easeInSine<double>;
+		break;
+	case LightEasing::Quad:
+		easingFunc = EasingFunctions::easeInQuad<double>;
+		break;
+	case LightEasing::Cubic:
+		easingFunc = EasingFunctions::easeInCubic<double>;
+		break;
+	case LightEasing::Quart:
+		easingFunc = EasingFunctions::easeInQuart<double>;
+		break;
+	case LightEasing::Quint:
+		easingFunc = EasingFunctions::easeInQuint<double>;
+		break;
+	case LightEasing::Expo:
+		easingFunc = EasingFunctions::easeInExpo<double>;
+		break;
+	case LightEasing::Circ:
+		easingFunc = EasingFunctions::easeInCirc<double>;
+		break;
+	}
+
+	MapCoord mapPos;
+
+	for (mapPos.y = mapPosStart.y; mapPos.y < mapPosEnd.y; mapPos.y++)
+	{
+		for (mapPos.x = mapPosStart.x; mapPos.x < mapPosEnd.x; mapPos.x++)
+		{
+			auto dist_y = mapPos.y - lightPos.y;
+			auto dist_x = mapPos.x - lightPos.x;
+			auto xxyy = (dist_x * dist_x) + (dist_y * dist_y);
+			if (xxyy <= radiusSquared)
+			{
+				double distance = std::sqrt(xxyy);
+				auto easedLight = easingFunc(
+					distance,
+					(double)ls.maxLight,
+					-range,
+					(double)ls.radius);
+				auto light = (uint8_t)std::round(easedLight);
+				doLightFunc(&(*this)[mapPos], light);
+			}
+		}
+	}
+}
+
+void LevelMap::doDefaultLight(MapCoord lightPos, LightSource lightSource)
+{
+	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::setDefaultLight;
+	doLight(lightPos, lightSource, func);
+}
+
+void LevelMap::doLight(MapCoord lightPos, LightSource lightSource)
+{
+	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::addLight;
+	doLight(lightPos, lightSource, func);
+}
+
+void LevelMap::undoLight(MapCoord lightPos, LightSource lightSource)
+{
+	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::subtractLight;
+	doLight(lightPos, lightSource, func);
+}
+
+void LevelMap::initLights()
+{
+	for (auto& cell : cells)
+	{
+		cell.clearLights(defaultSource.maxLight);
+	}
+	if (defaultSource.maxLight == 255)
+	{
+		return;
+	}
+	LightSource ls = defaultSource;
+	for (int j = 0; j < mapSize.y; j++)
+	{
+		for (int i = 0; i < mapSize.x; i++)
+		{
+			auto& cell = (*this)[i][j];
+			ls.maxLight = lightMap.get(cell.getTileIndex(0));
+			doDefaultLight(MapCoord(i, j), ls);
+			for (auto& obj : cell)
+			{
+				auto lightSource = obj->getLightSource();
+				addLight(obj->MapPosition(), lightSource);
+			}
+		}
+	}
+}
+
+void LevelMap::updateLights()
+{
+	if (pendingLights.empty() == true)
+	{
+		return;
+	}
+	for (auto& l : pendingLights)
+	{
+		if (l.remove == false)
+		{
+			doLight(l.mapPos, l.lightSource);
+		}
+		else
+		{
+			undoLight(l.mapPos, l.lightSource);
+		}
+	}
+	pendingLights.clear();
 }
 
 void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
@@ -302,6 +478,16 @@ void LevelMap::setOutOfBoundsTileIndex(size_t layer, int16_t tile) noexcept
 	{
 		outOfBoundsTiles[layer] = {};
 	}
+}
+
+bool LevelMap::addLevelObject(std::unique_ptr<LevelObject> obj)
+{
+	return obj->MapPosition(*this, obj->MapPosition());
+}
+
+bool LevelMap::removeLevelObject(const LevelObject* obj)
+{
+	return obj->remove(*this);
 }
 
 std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const

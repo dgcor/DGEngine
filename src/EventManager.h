@@ -52,6 +52,17 @@ public:
 		}
 	}
 
+	void removeAll()
+	{
+		for (auto& evt : events)
+		{
+			if (dynamic_cast<Event*>(evt.get()) != nullptr)
+			{
+				evt = nullptr;
+			}
+		}
+	}
+
 	void resetTime(const std::string& id)
 	{
 		if (id.empty() == true)
@@ -75,8 +86,10 @@ public:
 	{
 		for (auto it = events.begin(); it != events.end();)
 		{
-			if ((*it) == nullptr ||
-				(*it)->execute(game) == true)
+			auto evt = it->get();
+			if (evt == nullptr ||
+				evt->execute(game) == true ||
+				dynamic_cast<Event*>(evt) == nullptr)
 			{
 				it = events.erase(it);
 			}

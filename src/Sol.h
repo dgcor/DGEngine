@@ -1,21 +1,11 @@
 #pragma once
 
-#include <cstdint>
-#include <string>
-#include <vector>
+#include "Utils/NumberVector.h"
 
-class Sol
+class Sol : public NumberVector<uint8_t>
 {
-private:
-	std::vector<uint8_t> data;
-
 public:
-	Sol() {}
-	Sol(const std::string_view fileName);
+	using NumberVector<uint8_t>::NumberVector;
 
-	uint8_t get(size_t index) const;
 	bool passable(size_t index) const;
-
-	bool empty() const noexcept { return data.empty(); }
-	size_t size() const noexcept { return data.size(); }
 };

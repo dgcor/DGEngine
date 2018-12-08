@@ -684,32 +684,63 @@ namespace GameUtils
 		{
 		case str2int16("position"):
 		{
-			auto movePos = uiObject.Position();
 			if (prop == "x")
 			{
-				var = Variable((int64_t)movePos.x);
+				var = Variable((int64_t)uiObject.Position().x);
 			}
 			else
 			{
-				var = Variable((int64_t)movePos.y);
+				var = Variable((int64_t)uiObject.Position().y);
 			}
 		}
 		break;
 		case str2int16("size"):
 		{
-			auto moveSize = uiObject.Size();
 			if (prop == "x")
 			{
-				var = Variable((int64_t)moveSize.x);
+				var = Variable((int64_t)uiObject.Size().x);
 			}
 			else
 			{
-				var = Variable((int64_t)moveSize.y);
+				var = Variable((int64_t)uiObject.Size().y);
 			}
 		}
 		break;
 		case str2int16("visible"):
 			var = Variable(uiObject.Visible());
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
+
+	bool getLevelObjProp(const LevelObject& levelObject, const uint16_t propHash16,
+		const std::string_view prop, Variable& var)
+	{
+		switch (propHash16)
+		{
+		case str2int16("class"):
+		case str2int16("classId"):
+			var = Variable(levelObject.getClassId());
+			break;
+		case str2int16("id"):
+			var = Variable(levelObject.getId());
+			break;
+		case str2int16("mapPosition"):
+		{
+			if (prop == "x")
+			{
+				var = Variable((int64_t)levelObject.MapPosition().x);
+			}
+			else
+			{
+				var = Variable((int64_t)levelObject.MapPosition().y);
+			}
+			break;
+		}
+		case str2int16("type"):
+			var = Variable(std::string(levelObject.getType()));
 			break;
 		default:
 			return false;

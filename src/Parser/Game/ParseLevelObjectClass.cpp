@@ -1,5 +1,5 @@
 #include "ParseLevelObjectClass.h"
-#include "Game/LevelObjectClass.h"
+#include "Game/SimpleLevelObjectClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 
@@ -7,7 +7,7 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	std::unique_ptr<LevelObjectClass> parseLevelObjectClassHelper(const Game& game,
+	std::unique_ptr<SimpleLevelObjectClass> parseLevelObjectClassHelper(const Game& game,
 		const Level& level, const Value& elem, std::string& id)
 	{
 		if (isValidString(elem, "id") == false)
@@ -19,7 +19,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (level.hasLevelObjectClass(id) == true)
+		if (level.hasClass(id) == true)
 		{
 			return nullptr;
 		}
@@ -29,16 +29,16 @@ namespace Parser
 			std::string fromId(elem["fromId"].GetString());
 			if (fromId != id)
 			{
-				auto obj = level.getLevelObjectClass(fromId);
+				auto obj = level.getClass<SimpleLevelObjectClass>(fromId);
 				if (obj == nullptr)
 				{
 					return nullptr;
 				}
-				return std::make_unique<LevelObjectClass>(*obj);
+				return std::make_unique<SimpleLevelObjectClass>(*obj);
 			}
 		}
 
-		std::unique_ptr<LevelObjectClass> levelObjClass;
+		std::unique_ptr<SimpleLevelObjectClass> levelObjClass;
 
 		if (isValidString(elem, "texture") == true)
 		{
@@ -47,7 +47,7 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			levelObjClass = std::make_unique<LevelObjectClass>(*texture);
+			levelObjClass = std::make_unique<SimpleLevelObjectClass>(*texture);
 
 			if (elem.HasMember("textureRect") == true)
 			{
@@ -66,13 +66,13 @@ namespace Parser
 			auto frames = std::make_pair(0u, texPack->size() - 1);
 			frames = getFramesKey(elem, "frames", frames);
 			auto refresh = getTimeKey(elem, "refresh", sf::milliseconds(50));
-			levelObjClass = std::make_unique<LevelObjectClass>(
+			levelObjClass = std::make_unique<SimpleLevelObjectClass>(
 				texPack, frames, refresh, AnimationType::Looped);
 		}
 		return levelObjClass;
 	}
 
-	void parseDescriptionValue(LevelObjectClass& levelObjClass,
+	void parseDescriptionValue(SimpleLevelObjectClass& levelObjClass,
 		const Level& level, const Value& elem)
 	{
 		levelObjClass.setDescription(
@@ -175,6 +175,6 @@ namespace Parser
 			}
 		}
 
-		level->addLevelObjectClass(id, std::move(levelObjClass));
+		level->addClass(id, std::move(levelObjClass));
 	}
 }

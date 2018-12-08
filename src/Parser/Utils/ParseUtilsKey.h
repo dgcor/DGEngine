@@ -121,6 +121,9 @@ namespace Parser
 	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
 		const char* key, InventoryPosition val = InventoryPosition::TopLeft);
 
+	LightSource getLightSourceKey(const rapidjson::Value& elem,
+		const char* key, LightSource val = {});
+
 	template <class T>
 	T getMinMaxIntKey(const rapidjson::Value& elem, const char* key, T val = {})
 	{

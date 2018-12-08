@@ -14,5 +14,5 @@ namespace Parser
 
 	bool getOrParseLevelTexturePack(Game& game, const rapidjson::Value& elem,
 		const char* idKeyLayers, std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-		std::pair<uint32_t, uint32_t>& tileSize);
+		std::pair<int32_t, int32_t>& tileSize);
 }

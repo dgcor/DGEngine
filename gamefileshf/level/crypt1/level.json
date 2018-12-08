@@ -24,7 +24,8 @@
     "til": "Nlevels/L5Data/L5.TIL",
     "min": "Nlevels/L5Data/L5.MIN",
     "minBlocks": 10,
-    "sol": "Nlevels/L5Data/L5.SOL"
+    "sol": "Nlevels/L5Data/L5.SOL",
+    "defaultLight": 0
   },
   "load": "level/automap/l5/load.json",
   "load": "level/crypt1/levelObjects.json",

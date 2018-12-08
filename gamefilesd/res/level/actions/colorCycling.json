@@ -10,7 +10,7 @@
         "name": "event.add",
         "id": "colorCycle",
         "action": {
-          "name": "palette.shiftRight",
+          "name": "palette.shiftLeft",
           "id": "colorCycle",
           "shift": 1,
           "range": ["|colorCycleStart|", "|colorCycleStop|"]

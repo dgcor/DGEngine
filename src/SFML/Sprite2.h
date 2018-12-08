@@ -37,4 +37,5 @@ public:
 	using sf::Sprite::setTexture;
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states, uint8_t light) const;
 };

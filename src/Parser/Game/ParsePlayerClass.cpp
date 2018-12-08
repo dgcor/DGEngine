@@ -128,14 +128,18 @@ namespace Parser
 			return;
 		}
 
-		PlayerClass* playerClass = level->getPlayerClass(id);
+		PlayerClass* playerClass = level->getClass<PlayerClass>(id);
 
 		if (playerClass == nullptr)
 		{
+			if (level->hasClass(id) == true)
+			{
+				return;
+			}
 			auto playerClassPtr = std::make_unique<PlayerClass>();
 			playerClass = playerClassPtr.get();
 			playerClass->Id(id);
-			level->addPlayerClass(id, std::move(playerClassPtr));
+			level->addClass(id, std::move(playerClassPtr));
 		}
 
 		if (elem.HasMember("texturePacks") == true &&
@@ -380,6 +384,12 @@ namespace Parser
 		if (elem.HasMember("outlineIgnore") == true)
 		{
 			playerClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
+		}
+		if (elem.HasMember("light") == true)
+		{
+			playerClass->setLightSource(
+				getLightSourceVal(elem["light"], { 0, 255, 16, LightEasing::Linear })
+			);
 		}
 	}
 }

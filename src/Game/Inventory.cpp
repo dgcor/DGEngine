@@ -164,7 +164,7 @@ bool Inventory::setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& ite
 	Item* itemPtr = item.get();
 	if (item != nullptr)
 	{
-		item->MapPosition({ -1, -1 });
+		item->clearMapPosition();
 	}
 	oldItem = std::move(items[idx].first);
 	items[idx].first = std::move(item);
@@ -266,7 +266,7 @@ bool Inventory::setAndEnforceItemSize(const ItemXY& position,
 			}
 			if (item != nullptr)
 			{
-				item->MapPosition({ -1, -1 });
+				item->clearMapPosition();
 			}
 			items[idx].first = std::move(item);
 			items[idx].second = -1;
@@ -431,6 +431,18 @@ bool Inventory::hasFreeSlot(const Item& item) const
 {
 	size_t itemIdx;
 	return getFreeSlot(item, itemIdx, InventoryPosition::TopLeft);
+}
+
+bool Inventory::hasItem(uint16_t classIdHash16) const
+{
+	for (const auto& item : (*this))
+	{
+		if (item.Class()->IdHash16() == classIdHash16)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Inventory::findByClass(uint16_t classIdHash16, size_t& idx, Item*& item) const
@@ -742,6 +754,9 @@ bool Inventory::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	case str2int16("enforceItemSize"):
 		var = Variable(enforceItemSize);
+		break;
+	case str2int16("hasItemClass"):
+		var = Variable(hasItem(str2int16(props.second)));
 		break;
 	case str2int16("isFull"):
 		var = Variable(isFull());

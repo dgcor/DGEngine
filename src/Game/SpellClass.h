@@ -1,13 +1,13 @@
 #pragma once
 
-#include "BaseClassDefaults.h"
 #include "Classifier.h"
+#include "LevelObjectClassDefaults.h"
 #include "Queryable.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "Utils/Utils.h"
 
-class SpellClass : public BaseClassDefaults<LevelObjValue>
+class SpellClass : public LevelObjectClassDefaults<LevelObjValue>
 {
 private:
 	std::shared_ptr<TexturePack> texturePack1;

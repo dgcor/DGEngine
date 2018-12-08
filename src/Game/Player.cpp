@@ -5,40 +5,34 @@
 #include "Level.h"
 #include "Utils/Utils.h"
 
-Player::Player(const PlayerClass* class__, const Level& level) : class_(class__)
+Player::Player(const PlayerClass* class__, const Level& level) : LevelObject(class__)
 {
-	base.animation.animType = AnimationType::Looped;
-	base.hoverCellSize = 2;
-	base.sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
-	action = class__->getAction(str2int16("action"));
+	animation.animType = AnimationType::Looped;
+	hoverCellSize = 2;
+	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
 	calculateRange();
 	applyDefaults(level);
 }
 
 void Player::calculateRange()
 {
-	base.texturePack = class_->getTexturePack(textureIdx);
-	if (base.texturePack != nullptr
-		&& direction < PlayerDirection::Size)
+	texturePack = Class()->getTexturePack(textureIdx);
+	if (texturePack != nullptr
+		&& playerDirection < PlayerDirection::Size)
 	{
-		class_->getTextureAnimationRange(textureIdx, animation, base.animation);
-		if (direction != PlayerDirection::All)
+		Class()->getTextureAnimationRange(textureIdx, playerAnimation, animation);
+		if (playerDirection != PlayerDirection::All)
 		{
-			auto period = (((base.animation.textureIndexRange.second + 1) - base.animation.textureIndexRange.first) / 8);
-			base.animation.textureIndexRange.first += ((size_t)direction * period);
-			base.animation.textureIndexRange.second = base.animation.textureIndexRange.first + period - 1;
+			auto period = (((animation.textureIndexRange.second + 1) - animation.textureIndexRange.first) / 8);
+			animation.textureIndexRange.first += ((size_t)playerDirection * period);
+			animation.textureIndexRange.second = animation.textureIndexRange.first + period - 1;
 		}
 	}
 	else
 	{
-		base.animation.clear();
+		animation.clear();
 	}
-	base.animation.reset();
-}
-
-void Player::updateTexture()
-{
-	base.updateTexture();
+	animation.reset();
 }
 
 void Player::updateSpeed()
@@ -48,7 +42,7 @@ void Player::updateSpeed()
 		if (defaultSpeed.animation != sf::Time::Zero)
 		{
 			speed.animation = defaultSpeed.animation;
-			base.animation.frameTime = speed.animation;
+			animation.frameTime = speed.animation;
 		}
 		if (defaultSpeed.walk != sf::Time::Zero)
 		{
@@ -77,7 +71,7 @@ void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
 	}
 }
 
-void Player::updateWalkPath(Game& game, Level& level)
+void Player::updateWalkPath(Game& game, LevelMap& map)
 {
 	currentWalkTime += game.getElapsedTime();
 
@@ -100,7 +94,7 @@ void Player::updateWalkPath(Game& game, Level& level)
 				const auto& nextMapPos = walkPath.back();
 				if (walkPath.size() == 1)
 				{
-					const auto levelObj = level.Map()[nextMapPos].front();
+					const auto levelObj = map[nextMapPos].front();
 					if (levelObj != nullptr)
 					{
 						levelObj->executeAction(game);
@@ -112,15 +106,15 @@ void Player::updateWalkPath(Game& game, Level& level)
 						return;
 					}
 				}
-				if (nextMapPos == base.mapPosition)
+				if (nextMapPos == mapPosition)
 				{
 					walkPath.pop_back();
 					continue;
 				}
 				playSound(walkSound);
 				setWalkAnimation();
-				setDirection(getPlayerDirection(base.mapPosition, nextMapPos));
-				MapPosition(level, nextMapPos);
+				setDirection(getPlayerDirection(mapPosition, nextMapPos));
+				MapPosition(map, nextMapPos);
 				currPositionStep = 0.1f;
 				updateWalkPathStep(newDrawPos);
 				break;
@@ -130,7 +124,7 @@ void Player::updateWalkPath(Game& game, Level& level)
 		{
 			updateWalkPathStep(newDrawPos);
 		}
-		base.updateDrawPosition(level, newDrawPos);
+		LevelObject::updateDrawPosition(map, newDrawPos);
 	}
 }
 
@@ -172,7 +166,7 @@ void Player::setStatus(PlayerStatus status_) noexcept
 	{
 	case PlayerStatus::Dead:
 	{
-		base.animation.currentTextureIdx = base.animation.textureIndexRange.second;
+		animation.currentTextureIdx = animation.textureIndexRange.second;
 		break;
 	}
 	default:
@@ -185,41 +179,47 @@ bool Player::getTexture(size_t textureNumber, TextureInfo& ti) const
 	switch (textureNumber)
 	{
 	case 0:
-		return base.getTexture(ti);
+		return getCurrentTexture(ti);
 	default:
 		return false;
 	}
 }
 
-void Player::executeAction(Game& game) const
+bool Player::MapPosition(LevelMap& map, const MapCoord& pos)
 {
-	if (action != nullptr)
+	drawPosA = map.getCoord(mapPosition);
+	drawPosB = map.getCoord(pos);
+	bool success = false;
+	if (mapPosition != pos)
 	{
-		game.Events().addBack(action);
+		success = updateMapPositionBack(map, pos);
 	}
-}
-
-void Player::MapPosition(Level& level, const MapCoord& pos)
-{
-	drawPosA = level.Map().getCoord(base.mapPosition);
-	drawPosB = level.Map().getCoord(pos);
-	base.updateMapPositionBack(level, pos, this);
-}
-
-void Player::move(Level& level, const MapCoord& pos)
-{
-	if (base.mapPosition == pos ||
-		playerStatus == PlayerStatus::Dead)
+	if (success == true || map.isMapCoordValid(pos) == true)
 	{
-		return;
+		updateDrawPosition(map);
+	}
+	return success;
+}
+
+bool Player::move(LevelMap& map, const MapCoord& pos)
+{
+	if (mapPosition == pos ||
+		playerStatus == PlayerStatus::Dead ||
+		map.isMapCoordValid(pos) == false)
+	{
+		return false;
 	}
 	clearWalkPath();
 	setStandAnimation();
 	playerStatus = PlayerStatus::Stand;
 	resetAnimationTime();
-	drawPosA = drawPosB = level.Map().getCoord(pos);
-	base.updateMapPositionBack(level, pos, this);
-	updateDrawPosition(level);
+	drawPosA = drawPosB = map.getCoord(pos);
+	bool success = updateMapPositionBack(map, pos);
+	if (success == true)
+	{
+		updateDrawPosition(map);
+	}
+	return success;
 }
 
 void Player::updateAI(Level& level)
@@ -234,13 +234,13 @@ void Player::updateAI(Level& level)
 	auto plr = level.getCurrentPlayer();
 	if (plr != nullptr)
 	{
-		setWalkPath(level.Map().getPath(base.mapPosition, plr->MapPosition()));
+		setWalkPath(level.Map().getPath(mapPosition, plr->MapPosition()));
 	}
 }
 
 void Player::updateWalk(Game& game, Level& level)
 {
-	updateWalkPath(game, level);
+	updateWalkPath(game, level.Map());
 	updateAnimation(game);
 }
 
@@ -251,12 +251,12 @@ void Player::updateAttack(Game& game, Level& level)
 
 void Player::updateDead(Game& game, Level& level)
 {
-	if (animation != PlayerAnimation::Die1)
+	if (playerAnimation != PlayerAnimation::Die1)
 	{
-		base.animation.currentTextureIdx = 0;
+		animation.currentTextureIdx = 0;
 		setAnimation(PlayerAnimation::Die1);
 	}
-	if (base.animation.currentTextureIdx >= base.animation.textureIndexRange.second)
+	if (animation.currentTextureIdx >= animation.textureIndexRange.second)
 	{
 		return;
 	}
@@ -265,17 +265,17 @@ void Player::updateDead(Game& game, Level& level)
 
 void Player::updateAnimation(const Game& game)
 {
-	if (base.animation.update(game.getElapsedTime()))
+	if (animation.update(game.getElapsedTime()))
 	{
-		base.updateTexture();
+		updateTexture();
 	}
 }
 
 void Player::update(Game& game, Level& level)
 {
-	base.processQueuedActions(game);
+	processQueuedActions(game);
 
-	if (base.hasValidState() == false)
+	if (hasValidState() == false)
 	{
 		return;
 	}
@@ -308,7 +308,7 @@ void Player::update(Game& game, Level& level)
 		break;
 	}
 
-	base.updateHover(game, level, this);
+	updateHover(game, level);
 }
 
 const std::string& Player::Name() const
@@ -324,14 +324,13 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	switch (str2int16(props.first))
+	auto propHash = str2int16(props.first);
+	if (GameUtils::getLevelObjProp(*this, propHash, props.second, var) == true)
 	{
-	case str2int16("type"):
-		var = Variable(std::string("player"));
-		break;
-	case str2int16("id"):
-		var = Variable(id);
-		break;
+		return true;
+	}
+	switch (propHash)
+	{
 	case str2int16("name"):
 		var = Variable(Name());
 		break;
@@ -350,12 +349,8 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(descriptions[idx]);
 		break;
 	}
-	case str2int16("class"):
-	case str2int16("classId"):
-		var = Variable(class_->Id());
-		break;
 	case str2int16("totalKills"):
-		var = Variable((int64_t)class_->TotalKills());
+		var = Variable((int64_t)Class()->TotalKills());
 		break;
 	case str2int16("hasMaxStats"):
 		var = Variable(hasMaxStats());
@@ -409,6 +404,9 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		}
 		return false;
 	}
+	case str2int16("hasItemClass"):
+		var = Variable(inventories.hasItem(str2int16(props.second)));
+		break;
 	case str2int16("isItemSlotInUse"):
 	{
 		std::string_view props2;
@@ -745,25 +743,25 @@ bool Player::getIntByHash(uint16_t propHash, LevelObjValue& value) const noexcep
 		value = resistLightningItems;
 		break;
 	case str2int16("maxStrength"):
-		value = class_->MaxStrength();
+		value = Class()->MaxStrength();
 		break;
 	case str2int16("maxMagic"):
-		value = class_->MaxMagic();
+		value = Class()->MaxMagic();
 		break;
 	case str2int16("maxDexterity"):
-		value = class_->MaxDexterity();
+		value = Class()->MaxDexterity();
 		break;
 	case str2int16("maxVitality"):
-		value = class_->MaxVitality();
+		value = Class()->MaxVitality();
 		break;
 	case str2int16("maxResistMagic"):
-		value = class_->MaxResistMagic();
+		value = Class()->MaxResistMagic();
 		break;
 	case str2int16("maxResistFire"):
-		value = class_->MaxResistFire();
+		value = Class()->MaxResistFire();
 		break;
 	case str2int16("maxResistLightning"):
-		value = class_->MaxResistLightning();
+		value = Class()->MaxResistLightning();
 		break;
 	default:
 		return false;
@@ -808,16 +806,16 @@ bool Player::setIntByHash(uint16_t propHash, LevelObjValue value, const Level* l
 	switch (propHash)
 	{
 	case str2int16("strength"):
-		strength = std::clamp(value, 0, class_->MaxStrength());
+		strength = std::clamp(value, 0, Class()->MaxStrength());
 		break;
 	case str2int16("magic"):
-		magic = std::clamp(value, 0, class_->MaxMagic());
+		magic = std::clamp(value, 0, Class()->MaxMagic());
 		break;
 	case str2int16("dexterity"):
-		dexterity = std::clamp(value, 0, class_->MaxDexterity());
+		dexterity = std::clamp(value, 0, Class()->MaxDexterity());
 		break;
 	case str2int16("vitality"):
-		vitality = std::clamp(value, 0, class_->MaxVitality());
+		vitality = std::clamp(value, 0, Class()->MaxVitality());
 		break;
 	case str2int16("lifeDamage"):
 		lifeDamage = std::max(value, 0);
@@ -944,14 +942,14 @@ void Player::updateNameAndDescriptions() const
 	if (updateNameAndDescr == true)
 	{
 		updateNameAndDescr = false;
-		if (class_->getFullName(*this, name) == false &&
+		if (Class()->getFullName(*this, name) == false &&
 			name.empty() == true)
 		{
 			name = SimpleName();
 		}
 		for (size_t i = 0; i < descriptions.size(); i++)
 		{
-			class_->getDescription(i, *this, descriptions[i]);
+			Class()->getDescription(i, *this, descriptions[i]);
 		}
 	}
 }
@@ -1043,7 +1041,7 @@ std::unique_ptr<Item> Player::SelectedItem(std::unique_ptr<Item> item) noexcept
 	selectedItem = std::move(item);
 	if (selectedItem != nullptr)
 	{
-		selectedItem->MapPosition({ -1, -1 });
+		selectedItem->clearMapPosition();
 	}
 	return old;
 }
@@ -1074,6 +1072,7 @@ bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
 		if (itemPtr != nullptr)
 		{
 			updateItemQuantityCache(itemPtr->Class()->IdHash16());
+			itemPtr->clearMapPosition();
 		}
 		else if (oldItem != nullptr)
 		{
@@ -1267,34 +1266,34 @@ void Player::updateProperties()
 {
 	updateBodyItemValues();
 
-	life = class_->getActualLife(*this, life);
-	mana = class_->getActualMana(*this, mana);
-	armor += class_->getActualArmor(*this, 0);
-	toHit = class_->getActualToHit(*this, toHit);
+	life = Class()->getActualLife(*this, life);
+	mana = Class()->getActualMana(*this, mana);
+	armor += Class()->getActualArmor(*this, 0);
+	toHit = Class()->getActualToHit(*this, toHit);
 
-	resistMagic = class_->getActualResistMagic(*this, resistMagicItems);
-	resistMagic = std::clamp(resistMagic, 0, class_->MaxResistMagic());
-	resistFire = class_->getActualResistFire(*this, resistFireItems);
-	resistFire = std::clamp(resistFire, 0, class_->MaxResistFire());
-	resistLightning = class_->getActualResistLightning(*this, resistLightningItems);
-	resistLightning = std::clamp(resistLightning, 0, class_->MaxResistLightning());
+	resistMagic = Class()->getActualResistMagic(*this, resistMagicItems);
+	resistMagic = std::clamp(resistMagic, 0, Class()->MaxResistMagic());
+	resistFire = Class()->getActualResistFire(*this, resistFireItems);
+	resistFire = std::clamp(resistFire, 0, Class()->MaxResistFire());
+	resistLightning = Class()->getActualResistLightning(*this, resistLightningItems);
+	resistLightning = std::clamp(resistLightning, 0, Class()->MaxResistLightning());
 
-	auto damage = class_->getActualDamage(*this, 0);
+	auto damage = Class()->getActualDamage(*this, 0);
 	damageMin += damage;
 	damageMax += damage;
 }
 
 void Player::applyDefaults(const Level& level) noexcept
 {
-	for (const auto& prop : class_->Defaults())
+	for (const auto& prop : Class()->Defaults())
 	{
 		setNumberByHash(prop.first, prop.second, &level);
 	}
-	attackSound = class_->getAttackSound();
-	defendSound = class_->getDefendSound();
-	dieSound = class_->getDieSound();
-	hitSound = class_->getHitSound();
-	walkSound = class_->getWalkSound();
+	attackSound = Class()->getAttackSound();
+	defendSound = Class()->getDefendSound();
+	dieSound = Class()->getDieSound();
+	hitSound = Class()->getHitSound();
+	walkSound = Class()->getWalkSound();
 }
 
 bool Player::canUseItem(const Item& item) const
@@ -1341,7 +1340,7 @@ void Player::playSound(int16_t soundIdx)
 	{
 		return;
 	}
-	auto sndBuffer = class_->getSound((size_t)soundIdx);
+	auto sndBuffer = Class()->getSound((size_t)soundIdx);
 	if (sndBuffer == nullptr)
 	{
 		return;
@@ -1365,15 +1364,15 @@ void Player::updateLevelFromExperience(const Level& level, bool updatePoints)
 		if (getNumberByHash(ItemProp::LevelUp, levelUp) == true)
 		{
 			points += levelUp.getUInt32() * (currentLevel - oldLevel);
-			base.queueAction(*class_, str2int16("levelChange"));
+			queueAction(*class_, str2int16("levelChange"));
 		}
 	}
 }
 
 bool Player::hasMaxStats() const noexcept
 {
-	return (strength >= class_->MaxStrength() &&
-		magic >= class_->MaxMagic() &&
-		dexterity >= class_->MaxDexterity() &&
-		vitality >= class_->MaxVitality());
+	return (strength >= Class()->MaxStrength() &&
+		magic >= Class()->MaxMagic() &&
+		dexterity >= Class()->MaxDexterity() &&
+		vitality >= Class()->MaxVitality());
 }

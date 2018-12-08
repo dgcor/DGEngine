@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "BaseLevelObject.h"
 #include "Inventories.h"
+#include "LevelObject.h"
 #include "PlayerClass.h"
 #include "Save/SavePlayer.h"
 #include "Spell.h"
@@ -14,9 +14,6 @@
 class Player : public LevelObject
 {
 private:
-	const PlayerClass* class_{ nullptr };
-
-	BaseLevelObject base;
 	MapCoord mapPositionMoveTo;
 	sf::Vector2f drawPosA;
 	sf::Vector2f drawPosB;
@@ -26,8 +23,8 @@ private:
 
 	PlayerStatus playerStatus{ PlayerStatus::Stand };
 
-	PlayerDirection direction{ PlayerDirection::All };
-	PlayerAnimation animation{ PlayerAnimation::Size };
+	PlayerDirection playerDirection{ PlayerDirection::All };
+	PlayerAnimation playerAnimation{ PlayerAnimation::Size };
 
 	uint16_t restStatus{ 0 };
 
@@ -37,8 +34,6 @@ private:
 	AnimationSpeed defaultSpeed{ sf::Time::Zero, sf::Time::Zero };
 
 	sf::Time currentWalkTime;
-
-	std::shared_ptr<Action> action;
 
 	bool useAI{ false };
 
@@ -50,7 +45,6 @@ private:
 
 	std::unordered_map<std::string, std::unique_ptr<Spell>> spells;
 
-	std::string id;
 	mutable std::string name;
 	mutable std::array<std::string, 2> descriptions;
 
@@ -116,7 +110,7 @@ private:
 	void updateSpeed();
 
 	void updateWalkPathStep(sf::Vector2f& newDrawPos);
-	void updateWalkPath(Game& game, Level& level);
+	void updateWalkPath(Game& game, LevelMap& map);
 
 	bool parseInventoryAndItem(const std::string_view str,
 		std::string_view& props, size_t& invIdx, size_t& itemIdx) const;
@@ -140,35 +134,22 @@ private:
 public:
 	Player(const PlayerClass* class__, const Level& level);
 
-	const sf::Vector2f& getBasePosition() const noexcept { return base.basePosition; }
+	constexpr const PlayerClass* Class() const noexcept
+	{
+		return (PlayerClass*)class_;
+	}
 
-	virtual const sf::Vector2f& Position() const { return base.sprite.getPosition(); }
-	virtual sf::Vector2f Size() const { return base.getSize(); }
-
-	virtual const MapCoord& MapPosition() const noexcept { return base.mapPosition; }
-	virtual void MapPosition(const MapCoord& pos) noexcept { base.mapPosition = pos; }
-	void MapPosition(Level& level, const MapCoord& pos);
-
-	void move(Level& level, const MapCoord& pos);
+	using LevelObject::MapPosition;
+	virtual bool MapPosition(LevelMap& map, const MapCoord& pos);
+	using LevelObject::move;
+	virtual bool move(LevelMap& map, const MapCoord& pos);
 
 	const MapCoord& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
 
 	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 
-	virtual void executeAction(Game& game) const;
 	virtual bool getNumberProp(const std::string_view prop, Number32& value) const noexcept;
 	virtual bool Passable() const noexcept { return false; }
-	virtual void setColor(const sf::Color& color) { base.sprite.setColor(color); }
-	virtual void setOutline(const sf::Color& outline, const sf::Color& ignore) noexcept
-	{
-		base.sprite.setOutline(outline, ignore);
-	}
-	virtual void setOutlineOnHover(bool outlineOnHover_) noexcept { base.outlineOnHover = outlineOnHover_; }
-	virtual void setPalette(const std::shared_ptr<Palette>& palette) noexcept { base.sprite.setPalette(palette); }
-	virtual bool hasPalette() const noexcept { return base.sprite.hasPalette(); }
-
-	virtual bool Hoverable() const noexcept { return base.enableHover; }
-	virtual void Hoverable(bool hoverable) noexcept { base.enableHover = hoverable; }
 
 	virtual void serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level) const
@@ -176,18 +157,13 @@ public:
 		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		target.draw(base.sprite, states);
-	}
 	virtual void update(Game& game, Level& level);
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 	virtual void setProperty(const std::string_view prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string_view prop) const;
 
-	virtual std::string_view getId() const { return id; }
-	virtual std::string_view getClassId() const { return class_->Id(); }
+	virtual const std::string_view getType() const { return "player"; }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;
 	bool hasInt(const std::string_view prop) const noexcept;
@@ -206,38 +182,34 @@ public:
 	bool setNumber(const std::string_view prop, LevelObjValue value, const Level* level) noexcept;
 	bool setNumber(const std::string_view prop, const Number32& value, const Level* level) noexcept;
 
-	void updateDrawPosition(const Level& level) { base.updateDrawPosition(level, drawPosA); }
-
-	void updateTexture();
-
 	void clearWalkPath() noexcept { walkPath.clear(); }
 	void setWalkPath(const std::vector<MapCoord>& walkPath_);
 
 	void setDefaultSpeed(const AnimationSpeed& speed_)
 	{
 		defaultSpeed = speed_;
-		speed = class_->getSpeed(animation);
-		base.animation.frameTime = speed.animation;
+		speed = Class()->getSpeed(playerAnimation);
+		animation.frameTime = speed.animation;
 		updateSpeed();
 	}
 
-	PlayerDirection getDirection() const noexcept { return direction; }
+	PlayerDirection getDirection() const noexcept { return playerDirection; }
 
 	void setDirection(PlayerDirection direction_)
 	{
-		if (direction != direction_)
+		if (playerDirection != direction_)
 		{
-			direction = direction_;
+			playerDirection = direction_;
 			calculateRange();
 		}
 	}
 	void setAnimation(PlayerAnimation animation_)
 	{
-		if (animation != animation_)
+		if (playerAnimation != animation_)
 		{
-			animation = animation_;
-			speed = class_->getSpeed(animation);
-			base.animation.frameTime = speed.animation;
+			playerAnimation = animation_;
+			speed = Class()->getSpeed(playerAnimation);
+			animation.frameTime = speed.animation;
 			updateSpeed();
 			calculateRange();
 		}
@@ -265,10 +237,11 @@ public:
 	}
 	bool hasWalkingAnimation() noexcept
 	{
-		return animation >= PlayerAnimation::Walk1 && animation <= PlayerAnimation::Walk2;
+		return playerAnimation >= PlayerAnimation::Walk1 &&
+			playerAnimation <= PlayerAnimation::Walk2;
 	}
 
-	void resetAnimationTime() noexcept { base.animation.currentTime = speed.animation; }
+	void resetAnimationTime() noexcept { animation.currentTime = speed.animation; }
 
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;
@@ -361,8 +334,6 @@ public:
 
 	uint32_t getMaxItemCapacity(const ItemClass& itemClass) const;
 
-	const PlayerClass* getPlayerClass() const noexcept { return class_; }
-
 	bool isAI() const noexcept { return useAI; }
 	void setAI(bool ai_) noexcept { useAI = ai_; }
 
@@ -376,8 +347,7 @@ public:
 
 	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const;
-	const std::string& SimpleName() const noexcept { return class_->Name(); }
-	const std::string& Class() const noexcept { return class_->Id(); }
+	const std::string& SimpleName() const noexcept { return Class()->Name(); }
 
 	LevelObjValue StrengthNow() const noexcept { return strength + strengthItems; }
 	LevelObjValue MagicNow() const noexcept { return magic + magicItems; }

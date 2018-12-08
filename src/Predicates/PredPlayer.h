@@ -51,7 +51,7 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto itemClassPtr = level->getItemClass(itemClass);
+			auto itemClassPtr = level->getClass<ItemClass>(itemClass);
 			if (itemClassPtr != nullptr)
 			{
 				auto player = level->getPlayerOrCurrent(idPlayer);

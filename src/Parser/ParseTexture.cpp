@@ -74,7 +74,7 @@ namespace Parser
 			if (elem.HasMember("charMapFile") == true)
 			{
 				img = ImageUtils::loadBitmapFontImage(
-					*imgContainer, elem["charMapFile"].GetString(), pal);
+					*imgContainer, getStringViewVal(elem["charMapFile"]), pal);
 			}
 			else if (elem.HasMember("frame") == true)
 			{

@@ -1,6 +1,6 @@
 {
   "variable": [
-    { "colorCycleSpeed": 60 },
+    { "colorCycleSpeed": 50 },
     { "colorCycleStart": 1 },
     { "colorCycleStop": 32 }
   ],
@@ -22,7 +22,8 @@
     "til": "levels/l4data/l4.til",
     "min": "levels/l4data/l4.min",
     "minBlocks": 16,
-    "sol": "levels/l4data/l4.sol"
+    "sol": "levels/l4data/l4.sol",
+    "defaultLight": 0
   },
   "load": "level/automap/l4/load.json",
   "load": "level/l16/levelObjects.json",

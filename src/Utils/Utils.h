@@ -62,6 +62,47 @@ namespace Utils
 	unsigned long strtoul(const std::string_view str) noexcept;
 	unsigned long long strtoull(const std::string_view str) noexcept;
 
+	template<class T>
+	T strtonumber(const std::string_view str) noexcept
+	{
+		if constexpr (std::is_integral<T>::value == true)
+		{
+			if constexpr (std::is_signed<T>::value == true)
+			{
+				if constexpr (sizeof(T) <= 4)
+				{
+					return (T)strtoi(str);
+				}
+				else
+				{
+					return (T)strtoll(str);
+				}
+			}
+			else
+			{
+				if constexpr (sizeof(T) <= 4)
+				{
+					return (T)strtou(str);
+				}
+				else
+				{
+					return (T)strtoull(str);
+				}
+			}
+		}
+		else if constexpr (std::is_floating_point<T>::value == true)
+		{
+			if constexpr (sizeof(T) <= 4)
+			{
+				return (T)strtof(str);
+			}
+			else
+			{
+				return (T)strtod(str);
+			}
+		}
+	}
+
 	std::string toLower(const std::string_view str);
 	std::string toUpper(const std::string_view str);
 

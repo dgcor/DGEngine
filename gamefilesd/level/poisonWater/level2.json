@@ -6,6 +6,5 @@
     "map": { "file": "levels/l3data/foulwatr.dun", "defaultTile": 6 }
   },
   "load": "level/poisonWater/levelObjects2.json",
-  "load": "level/poisonWater/monsters2.json",
-  "load": "level/poisonWater/quests.json"
+  "load": "level/poisonWater/monsters2.json"
 }

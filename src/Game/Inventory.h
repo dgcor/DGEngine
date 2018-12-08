@@ -145,6 +145,8 @@ public:
 
 	bool hasFreeSlot(const Item& item) const;
 
+	bool hasItem(uint16_t classIdHash16) const;
+
 	// finds an item by the item's class id
 	// returns true if successful and sets both index and item
 	bool findByClass(uint16_t classIdHash16, size_t& idx, Item*& item) const;

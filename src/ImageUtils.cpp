@@ -1,8 +1,8 @@
 #include "ImageUtils.h"
-#include "FileUtils.h"
 #include "CachedImagePack.h"
 #include "Pcx.h"
 #include "PhysFSStream.h"
+#include "Utils/NumberVector.h"
 #include "Utils/Utils.h"
 
 namespace ImageUtils
@@ -106,7 +106,7 @@ namespace ImageUtils
 	}
 
 	sf::Image loadBitmapFontImage(const ImageContainer& imgContainer,
-		const char* fileNameBin, const std::shared_ptr<Palette>& pal)
+		const std::string_view fileNameCharMap, const std::shared_ptr<Palette>& pal)
 	{
 		CachedImagePack imgCache(&imgContainer, pal);
 
@@ -119,11 +119,11 @@ namespace ImageUtils
 		auto firstImgSize = imgCache[0].getSize();
 		sf::Image img;
 		img.create(firstImgSize.x * 16, firstImgSize.y * 16, sf::Color::Transparent);
-		auto charMapping = FileUtils::readChar(fileNameBin, 256);
+		NumberVector<uint8_t> charMapping(fileNameCharMap, 0, 256);
 
 		size_t xx = 0;
 		size_t yy = 0;
-		for (auto charMap : charMapping)
+		for (auto charMap : charMapping.getContainer())
 		{
 			if (charMap != 0xFF && charMap < cacheSize)
 			{

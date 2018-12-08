@@ -2,10 +2,10 @@
 
 #include "AnimationType.h"
 #include "BaseAnimation.h"
-#include "BaseClassDefaults.h"
 #include "Classifiers.h"
 #include "Formula.h"
 #include "GameProperties.h"
+#include "LevelObjectClassDefaults.h"
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <string>
 #include "TexturePacks/TexturePack.h"
@@ -16,7 +16,7 @@ struct PlayerAI
 	int16_t sightRadius{ 0 };
 };
 
-class PlayerClass : public BaseClassDefaults<Number32>
+class PlayerClass : public LevelObjectClassDefaults<Number32>
 {
 public:
 	struct Range
@@ -32,7 +32,6 @@ private:
 
 	PlayerAI ai;
 
-	std::string id;
 	std::string name;
 	std::string type;
 
@@ -124,11 +123,9 @@ public:
 	void setHitSound(int16_t soundIdx) noexcept { hitSound = soundIdx; }
 	void setWalkSound(int16_t soundIdx) noexcept { walkSound = soundIdx; }
 
-	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& Type() const noexcept { return type; }
 
-	void Id(const std::string_view id_) { id = id_; }
 	void Name(const std::string_view name_) { name = name_; }
 	void Type(const std::string_view type_) { type = type_; }
 

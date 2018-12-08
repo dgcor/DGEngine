@@ -46,6 +46,7 @@ const std::string Shaders::paletteText{ R"(
 #version 110
 uniform sampler2D palette;
 uniform sampler2D tex;
+uniform vec4 light;
 
 void main()
 {
@@ -54,7 +55,19 @@ void main()
 	{
 		pixel = texture2D(palette, vec2(pixel.r, 0.0));
 	}
-	gl_FragColor = pixel;
+	gl_FragColor = pixel - light;
+}
+)" };
+
+const std::string Shaders::lightingText{ R"(
+#version 110
+uniform sampler2D tex;
+uniform vec4 light;
+
+void main()
+{
+	vec4 pixel = texture2D(tex, gl_TexCoord[0].xy);
+	gl_FragColor = pixel - light;
 }
 )" };
 
@@ -77,10 +90,12 @@ void main()
 
 bool Shaders::hasOutline{ false };
 bool Shaders::hasPalette{ false };
+bool Shaders::hasLighting{ false };
 bool Shaders::hasGamma{ false };
 
 sf::Shader Shaders::Outline;
 sf::Shader Shaders::Palette;
+sf::Shader Shaders::Lighting;
 sf::Shader Shaders::Gamma;
 
 void Shaders::init()
@@ -103,6 +118,16 @@ void Shaders::init()
 			hasPalette = true;
 		}
 		Palette.setUniform("tex", sf::Shader::CurrentTexture);
+	}
+
+	if (hasLighting == false)
+	{
+		if (Lighting.isAvailable() == true &&
+			Lighting.loadFromMemory(lightingText, sf::Shader::Fragment) == true)
+		{
+			hasLighting = true;
+		}
+		Lighting.setUniform("tex", sf::Shader::CurrentTexture);
 	}
 
 	if (hasGamma == false)

@@ -1,0 +1,20 @@
+{
+  "action": {
+    "name": "if",
+    "params": [
+      "%currentLevel.currentPlayer.hasItemClass.cathedralMap%", "==", true,
+      "and",
+      "%currentLevel.hasQuest.graveMatters%", "==", true
+    ],
+    "then": [
+      {
+        "name": "if.equal",
+        "param1": "%currentLevel.quest.graveMatters.state%",
+        "param2": 0,
+        "then": { "name": "quest.setState", "quest": "graveMatters", "state": 1 }
+      },
+      { "name": "load", "file": "texts/gillian/quests/graveMatters.json" }
+    ],
+    "else": { "name": "load", "file": "towners/gillian/panel.json" }
+  }
+}
