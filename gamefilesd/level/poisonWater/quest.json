@@ -1,0 +1,57 @@
+{
+  "action": {
+    "name": "<",
+    "param1": "%currentLevel.quest.poisonedWater.state%",
+    "param2": 0,
+    "then": {
+      "name": "palette.replace",
+      "id": "l3pfoul",
+      "idSource": "l3pwater",
+      "srcStart": 0,
+      "size": 32,
+      "dstStart": 0
+    },
+    "else": {
+      "name": "loadJson",
+      "json": {
+        "event": {
+          "time": 1.0,
+          "addToFront": true,
+          "action": {
+            "name": "if",
+            "params": [
+              "%currentLevel.quest.poisonedWater.state%", ">=", 0,
+              "and",
+              "%currentLevel.currentPlayer.mapPosition.y%", "<", 20
+            ],
+            "then": {
+              "name": "loadJson",
+              "json": {
+                "event": {
+                  "time": 50,
+                  "addToFront": true,
+                  "action": {
+                    "name": "palette.replace",
+                    "id": "l3pfoul",
+                    "idSource": "l3pwater",
+                    "srcStart": 0,
+                    "size": 32,
+                    "dstStart": 0,
+                    "stepReplace": true
+                  }
+                },
+                "action": { "name": "quest.setState", "quest": "poisonedWater", "state": -1 },
+                "audio": {
+                  "file": "Sfx/misc/questdon.wav",
+                  "resource": "currentLevel",
+                  "volume": "%game.soundVolume%",
+                  "play": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

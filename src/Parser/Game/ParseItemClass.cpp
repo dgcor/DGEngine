@@ -29,7 +29,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (level.hasItemClass(id) == true)
+		if (level.hasClass(id) == true)
 		{
 			return nullptr;
 		}
@@ -41,7 +41,7 @@ namespace Parser
 			std::string fromId(elem["fromId"].GetString());
 			if (fromId != id)
 			{
-				auto obj = level.getItemClass(fromId);
+				auto obj = level.getClass<ItemClass>(fromId);
 				if (obj == nullptr)
 				{
 					return nullptr;
@@ -251,6 +251,6 @@ namespace Parser
 			itemClass->setSuffix(classifier);
 		}
 
-		level->addItemClass(id, std::move(itemClass));
+		level->addClass(id, std::move(itemClass));
 	}
 }

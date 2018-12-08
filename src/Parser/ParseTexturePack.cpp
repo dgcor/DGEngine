@@ -11,6 +11,7 @@
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/RectTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
+#include "Utils/NumberVector.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -209,9 +210,9 @@ namespace Parser
 
 		if (elem.HasMember("charSizeFile") == true)
 		{
-			auto charSizes = FileUtils::readChar(elem["charSizeFile"].GetString(), 258);
+			NumberVector<uint8_t> charSizes(getStringViewVal(elem["charSizeFile"]), 0, 258);
 			texturePack = std::make_shared<BitmapFontTexturePack>(
-				texture, rows, cols, isVertical, charSizes);
+				texture, rows, cols, isVertical, charSizes.getContainer());
 		}
 		else
 		{
@@ -370,7 +371,7 @@ namespace Parser
 
 	bool getOrParseLevelTexturePack(Game& game, const Value& elem,
 		const char* idKeyLayers, std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-		std::pair<uint32_t, uint32_t>& tileSize)
+		std::pair<int32_t, int32_t>& tileSize)
 	{
 		texturePackLayers.resize(Level::NumberOfLayers - 1);
 		bool success = false;
@@ -414,8 +415,8 @@ namespace Parser
 		}
 		else
 		{
-			tileSize = getVector2uKey<std::pair<uint32_t, uint32_t>>(
-				elem, "tileSize", std::make_pair(64u, 32u));
+			tileSize = getVector2uKey<std::pair<int32_t, int32_t>>(
+				elem, "tileSize", std::make_pair(64, 32));
 		}
 
 		if (elem.HasMember(idKeyLayers) == true)

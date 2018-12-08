@@ -114,9 +114,9 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 	writeKeyStringView(writer, "player");
 	writer.StartArray();
-	for (const auto& obj : level.players)
+	for (const auto& obj : level.levelObjects)
 	{
-		auto player = obj.get();
+		auto player = dynamic_cast<Player*>(obj.get());
 		if (player != nullptr)
 		{
 			if (props.saveCurrentPlayer == false &&

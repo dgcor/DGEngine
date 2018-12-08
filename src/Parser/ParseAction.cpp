@@ -526,6 +526,10 @@ namespace Parser
 		{
 			return std::make_shared<ActEventDelete>(getStringKey(elem, "id"));
 		}
+		case str2int16("event.deleteAll"):
+		{
+			return std::make_shared<ActEventDeleteAll>();
+		}
 		case str2int16("event.resetTime"):
 		{
 			return std::make_shared<ActEventResetTime>(getStringKey(elem, "id"));
@@ -862,21 +866,34 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getItemCoordInventoryVal(elem));
 		}
-		case str2int16("level.clearObjects"):
+		case str2int16("level.clearAllObjects"):
 		{
-			return std::make_shared<ActLevelClearObjects>(getStringKey(elem, "level"));
+			return std::make_shared<ActLevelClearAllObjects>(
+				getStringKey(elem, "level"),
+				getStringVectorKey(elem, "exclude"));
+		}
+		case str2int16("level.clearItems"):
+		{
+			return std::make_shared<ActLevelClearItems>(
+				getStringKey(elem, "level"),
+				getStringVectorKey(elem, "exclude"));
+		}
+		case str2int16("level.clearLevelObjects"):
+		{
+			return std::make_shared<ActLevelClearLevelObjects>(
+				getStringKey(elem, "level"),
+				getStringVectorKey(elem, "exclude"));
 		}
 		case str2int16("level.clearPlayerClasses"):
 		{
 			return std::make_shared<ActLevelClearPlayerClasses>(
-				getStringKey(elem, "level"),
-				(size_t)getUIntKey(elem, "index"));
+				getStringKey(elem, "level"));
 		}
 		case str2int16("level.clearPlayers"):
 		{
 			return std::make_shared<ActLevelClearPlayers>(
 				getStringKey(elem, "level"),
-				(size_t)getUIntKey(elem, "index"));
+				getStringVectorKey(elem, "exclude"));
 		}
 		case str2int16("level.clearPlayerTextures"):
 		{
@@ -1087,7 +1104,8 @@ namespace Parser
 				getStringKey(elem, "idSource"),
 				getUIntKey(elem, "srcStart", 0),
 				getUIntKey(elem, "size", 256),
-				getUIntKey(elem, "dstStart", 0));
+				getUIntKey(elem, "dstStart", 0),
+				getBoolKey(elem, "stepReplace", false));
 		}
 		case str2int16("palette.shiftLeft"):
 		{

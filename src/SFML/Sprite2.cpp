@@ -43,6 +43,11 @@ void Sprite2::setTexture(const TextureInfo& ti, bool resetRect)
 
 void Sprite2::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	draw(target, states, 255);
+}
+
+void Sprite2::draw(sf::RenderTarget& target, sf::RenderStates states, uint8_t light) const
+{
 	if (outlineEnabled == true &&
 		hasOutline() == true)
 	{
@@ -58,6 +63,14 @@ void Sprite2::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		states.shader = &Shaders::Palette;
 		Shaders::Palette.setUniform("palette", palette->texture);
+		sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
+		Shaders::Palette.setUniform("light", sf::Glsl::Vec4(lightColor));
+	}
+	else if (light != 255)
+	{
+		states.shader = &Shaders::Lighting;
+		sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
+		Shaders::Lighting.setUniform("light", sf::Glsl::Vec4(lightColor));
 	}
 	target.draw(static_cast<sf::Sprite>(*this), states);
 }

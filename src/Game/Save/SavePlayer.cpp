@@ -12,7 +12,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	const Game& game, const Level& level, const Player& player)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
-	const auto& playerClass = *player.getPlayerClass();
+	const auto& playerClass = *player.Class();
 
 	writer.StartObject();
 
@@ -56,7 +56,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	}
 
 	writeKeyStringView(writer, "direction");
-	switch (player.direction)
+	switch (player.playerDirection)
 	{
 	case PlayerDirection::Front:
 		writeStringView(writer, "Front");
@@ -89,7 +89,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	}
 
 	writeKeyStringView(writer, "animation");
-	switch (player.animation)
+	switch (player.playerAnimation)
 	{
 	default:
 	case PlayerAnimation::Stand1:
@@ -145,9 +145,9 @@ void Save::serialize(void* serializeObj, Properties& props,
 	writeVector2d<MapCoord>(writer, "mapPosition", player.MapPosition());
 
 	if (props.saveDefaults == true ||
-		player.base.enableHover == false)
+		player.enableHover == false)
 	{
-		writeBool(writer, "enableHover", player.base.enableHover);
+		writeBool(writer, "enableHover", player.enableHover);
 	}
 
 	if (props.saveDefaults == true ||

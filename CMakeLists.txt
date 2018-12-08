@@ -151,11 +151,6 @@ set(SOURCE_FILES
     src/endian/stream_writer.hpp
     src/endian/detail/helpers.hpp
     src/endian/detail/stream.hpp
-    src/Game/BaseClassActions.cpp
-    src/Game/BaseClassActions.h
-    src/Game/BaseClassDefaults.h
-    src/Game/BaseLevelObject.cpp
-    src/Game/BaseLevelObject.h
     src/Game/Classifier.cpp
     src/Game/Classifier.h
     src/Game/Classifiers.h
@@ -182,8 +177,13 @@ set(SOURCE_FILES
     src/Game/LevelHelper.h
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
+    src/Game/LevelObject.cpp
     src/Game/LevelObject.h
+    src/Game/LevelObjectClass.cpp
     src/Game/LevelObjectClass.h
+    src/Game/LevelObjectClassDefaults.h
+    src/Game/LightMap.h
+    src/Game/LightSource.h
     src/Game/MapCoord.h
     src/Game/Number.h
     src/Game/PairXY.h
@@ -197,6 +197,7 @@ set(SOURCE_FILES
     src/Game/Quest.h
     src/Game/SimpleLevelObject.cpp
     src/Game/SimpleLevelObject.h
+    src/Game/SimpleLevelObjectClass.h
     src/Game/Spell.cpp
     src/Game/Spell.h
     src/Game/SpellClass.cpp
@@ -392,10 +393,12 @@ set(SOURCE_FILES
     src/TexturePacks/TexturePack.h
     src/TexturePacks/VectorTexturePack.cpp
     src/TexturePacks/VectorTexturePack.h
+    src/Utils/EasingFunctions.h
     src/Utils/FixedMap.h
     src/Utils/Helper2D.h
     src/Utils/iterator_tpl.h
     src/Utils/LRUCache.h
+    src/Utils/NumberVector.h
     src/Utils/ReverseIterable.h
     src/Utils/Utils.cpp
     src/Utils/Utils.h

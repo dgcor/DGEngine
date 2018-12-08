@@ -225,9 +225,19 @@ namespace Parser
 				parseMap(mapElem, *mapPtr, defaultTile, resizeToFit);
 			}
 		}
+		if (elem.HasMember("lightMap") == true)
+		{
+			mapPtr->loadLightMap(getStringViewVal(elem["lightMap"]));
+		}
+		if (elem.HasMember("defaultLight") == true)
+		{
+			mapPtr->setDefaultLightSource(
+				getLightSourceVal(elem["defaultLight"], {0, 255, 10, LightEasing::Linear})
+			);
+		}
 
 		std::vector<std::shared_ptr<TexturePack>> texturePackLayers;
-		std::pair<uint32_t, uint32_t> tileSize;
+		std::pair<int32_t, int32_t> tileSize;
 
 		if (getOrParseLevelTexturePack(game, elem, "layers", texturePackLayers, tileSize) == true)
 		{

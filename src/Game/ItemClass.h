@@ -1,16 +1,15 @@
 #pragma once
 
-#include "BaseClassDefaults.h"
 #include "Classifiers.h"
 #include "Formula.h"
 #include "GameProperties.h"
 #include "ItemXY.h"
+#include "LevelObjectClassDefaults.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "Utils/FixedMap.h"
-#include "Utils/Utils.h"
 
-class ItemClass : public BaseClassDefaults<LevelObjValue>
+class ItemClass : public LevelObjectClassDefaults<LevelObjValue>
 {
 private:
 	std::shared_ptr<TexturePack> textureDrop;
@@ -18,12 +17,10 @@ private:
 	std::pair<size_t, size_t> dropTextureIndexRange;
 	size_t inventoryIdx;
 
-	std::string id;
 	std::string name;
 	std::string shortName;
 	std::string type;
 	std::string subType;
-	uint16_t idHash16{ 0 };
 	uint16_t typeHash16{ 0 };
 
 	ItemXY inventorySize;
@@ -70,12 +67,10 @@ public:
 
 	bool getInventoryTexture(const Queryable& item, TextureInfo& ti) const;
 
-	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return shortName; }
 	const std::string& Type() const noexcept { return type; }
 	const std::string& SubType() const noexcept { return subType; }
-	uint16_t IdHash16() const noexcept { return idHash16; }
 	uint16_t TypeHash16() const noexcept { return typeHash16; }
 	const ItemXY& InventorySize() const noexcept { return inventorySize; }
 
@@ -87,11 +82,6 @@ public:
 	void setPrefix(Classifier* classifier);
 	void setSuffix(Classifier* classifier);
 
-	void Id(const std::string_view id_)
-	{
-		id = id_;
-		idHash16 = str2int16(id_);
-	}
 	void Name(const std::string_view name_) { name = name_; }
 	void ShortName(const std::string_view name_) { shortName = name_; }
 	void Type(const std::string_view type_)

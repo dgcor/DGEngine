@@ -52,6 +52,18 @@ public:
 	}
 };
 
+class ActEventDeleteAll : public Action
+{
+public:
+	ActEventDeleteAll() {}
+
+	virtual bool execute(Game& game)
+	{
+		game.Events().removeAll();
+		return true;
+	}
+};
+
 class ActEventResetTime : public Action
 {
 private:

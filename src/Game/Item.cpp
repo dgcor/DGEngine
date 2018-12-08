@@ -6,31 +6,36 @@
 #include "Player.h"
 #include "Utils/Utils.h"
 
-Item::Item(const ItemClass* class__) : class_(class__)
+Item::Item(const ItemClass* class__) : LevelObject(class__)
 {
-	base.texturePack = class__->getDropTexturePack();
-	base.animation.textureIndexRange = class__->getDropTextureIndexRange();
-	base.animation.textureIndexRange.second--;
-	base.animation.currentTextureIdx = base.animation.textureIndexRange.second;
-	base.animation.frameTime = class__->AnimationSpeed();
-	base.animation.animType = AnimationType::PlayOnce;
-	base.hoverCellSize = 1;
-	base.sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
-	base.updateTexture();
+	texturePack = class__->getDropTexturePack();
+	animation.textureIndexRange = class__->getDropTextureIndexRange();
+	animation.textureIndexRange.second--;
+	animation.currentTextureIdx = animation.textureIndexRange.second;
+	animation.frameTime = class__->AnimationSpeed();
+	animation.animType = AnimationType::PlayOnce;
+	hoverCellSize = 1;
+	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
+	updateTexture();
 	applyDefaults();
 }
 
 void Item::resetDropAnimation(Level& level) noexcept
 {
-	base.animation.currentTextureIdx = base.animation.textureIndexRange.first;
-	if (base.enableHover == true)
+	resetDropAnimation(level.Map());
+}
+
+void Item::resetDropAnimation(LevelMap& map) noexcept
+{
+	animation.currentTextureIdx = animation.textureIndexRange.first;
+	if (enableHover == true)
 	{
 		wasHoverEnabledOnItemDrop = true;
-		base.enableHover = false;
+		enableHover = false;
 	}
-	if (base.updateTexture() == true)
+	if (updateTexture() == true)
 	{
-		base.updateDrawPosition(level);
+		updateDrawPosition(map);
 	}
 }
 
@@ -39,35 +44,30 @@ bool Item::getTexture(size_t textureNumber, TextureInfo& ti) const
 	switch (textureNumber)
 	{
 	case 0:
-		return base.getTexture(ti);
+		return getCurrentTexture(ti);
 	case 1:
-		return class_->getInventoryTexture(*this, ti);
+		return Class()->getInventoryTexture(*this, ti);
 	default:
 		return false;
 	}
 }
 
-void Item::executeAction(Game& game) const
-{
-	class_->executeAction(game, str2int16("action"));
-}
-
 void Item::update(Game& game, Level& level)
 {
-	base.processQueuedActions(game);
-	base.updateHover(game, level, this);
+	processQueuedActions(game);
+	updateHover(game, level);
 
-	if (base.hasValidState() == true &&
-		base.animation.update(game.getElapsedTime()) == true)
+	if (hasValidState() == true &&
+		animation.update(game.getElapsedTime()) == true)
 	{
 		if (wasHoverEnabledOnItemDrop == true)
 		{
-			base.enableHover = true;
+			enableHover = true;
 			wasHoverEnabledOnItemDrop = false;
 		}
-		if (base.updateTexture() == true)
+		if (updateTexture() == true)
 		{
-			base.updateDrawPosition(level);
+			updateDrawPosition(level.Map());
 		}
 	}
 }
@@ -80,12 +80,12 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	auto propHash = str2int16(props.first);
+	if (GameUtils::getLevelObjProp(*this, propHash, props.second, var) == true)
+	{
+		return true;
+	}
 	switch (propHash)
 	{
-	case str2int16("class"):
-	case str2int16("classId"):
-		var = Variable(class_->Id());
-		break;
 	case str2int16("shortName"):
 		var = Variable(ShortName());
 		break;
@@ -125,7 +125,7 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("prices"):
 	{
 		LevelObjValue value;
-		if (class_->evalFormula(str2int16(props.second), *this, value) == false)
+		if (Class()->evalFormula(str2int16(props.second), *this, value) == false)
 		{
 			if (getIntByHash(propHash, value) == false)
 			{
@@ -137,9 +137,6 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	}
 	case str2int16("identified"):
 		var = Variable(identified);
-		break;
-	case str2int16("type"):
-		var = Variable(std::string("item"));
 		break;
 	case str2int16("itemType"):
 		var = Variable(ItemType());
@@ -281,21 +278,21 @@ void Item::updateNameAndDescriptions() const
 		}
 		else
 		{
-			if (class_->getFullName(*this, name) == false)
+			if (Class()->getFullName(*this, name) == false)
 			{
 				name = SimpleName();
 			}
 		}
 		for (size_t i = 0; i < descriptions.size(); i++)
 		{
-			class_->getDescription(i, *this, descriptions[i]);
+			Class()->getDescription(i, *this, descriptions[i]);
 		}
 	}
 }
 
 void Item::applyDefaults()
 {
-	for (const auto& prop : class_->Defaults())
+	for (const auto& prop : Class()->Defaults())
 	{
 		setIntByHash(prop.first, prop.second);
 	}
@@ -362,12 +359,12 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 	uint16_t valueMaxHash, Player& player, const Level* level) const
 {
 	LevelObjValue value;
-	if (class_->evalFormula(valueHash, *this, player, value) == false)
+	if (Class()->evalFormula(valueHash, *this, player, value) == false)
 	{
 		return false;
 	}
 	LevelObjValue valueMax;
-	if (class_->evalFormula(valueMaxHash, *this, player, valueMax) == true)
+	if (Class()->evalFormula(valueMaxHash, *this, player, valueMax) == true)
 	{
 		value = Utils::Random::get<LevelObjValue>(value, valueMax);
 	}
@@ -410,12 +407,12 @@ bool Item::use(Player& player, const Level* level, uint32_t& quantityLeft)
 	case ItemProp::AllAttributes:
 	{
 		LevelObjValue value;
-		if (class_->evalFormula(ItemProp::Value, *this, player, value) == false)
+		if (Class()->evalFormula(ItemProp::Value, *this, player, value) == false)
 		{
 			break;
 		}
 		LevelObjValue valueMax;
-		if (class_->evalFormula(ItemProp::ValueMax, *this, player, valueMax) == true)
+		if (Class()->evalFormula(ItemProp::ValueMax, *this, player, valueMax) == true)
 		{
 			value = Utils::Random::get<LevelObjValue>(value, valueMax);
 		}

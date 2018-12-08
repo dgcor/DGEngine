@@ -74,7 +74,8 @@
     "layers": [
       { "index": 0, "texturePack": "l1Layer1" },
       { "index": 1, "texturePack": "l1Layer1" }
-    ]
+    ],
+    "defaultLight": 0
   },
   "load": "level/automap/load.json",
   "load": "level/l1/levelObjects.json",

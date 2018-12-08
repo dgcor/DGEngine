@@ -19,7 +19,7 @@ namespace ImageUtils
 		const PaletteArray* pal, size_t frameIdx);
 
 	sf::Image loadBitmapFontImage(const ImageContainer& imgContainer,
-		const char* fileNameBin, const std::shared_ptr<Palette>& pal);
+		const std::string_view fileNameCharMap, const std::shared_ptr<Palette>& pal);
 
 	sf::Image splitImageHorizontal(const sf::Image& img, unsigned pieces = 1);
 	sf::Image splitImageVertical(const sf::Image& img, unsigned pieces = 1);

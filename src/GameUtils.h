@@ -5,6 +5,7 @@
 #include "AnimationType.h"
 #include <cstddef>
 #include "Game/GameProperties.h"
+#include "Game/LevelObject.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
 #include <SFML/System/Vector2.hpp>
@@ -70,7 +71,12 @@ namespace GameUtils
 
 	sf::Time getTime(int fps);
 
+	// gets common UIObject.getProperty properties;
 	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
+		const std::string_view prop, Variable& var);
+
+	// gets common LevelObject.getProperty properties;
+	bool getLevelObjProp(const LevelObject& levelObject, const uint16_t propHash16,
 		const std::string_view prop, Variable& var);
 
 	// gets game's UIObject property. str has no tokens. ex: "game.title"

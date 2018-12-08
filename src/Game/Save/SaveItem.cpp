@@ -61,21 +61,21 @@ void Save::serialize(void* serializeObj, Properties& props,
 	}
 
 	if (props.saveDefaults == true ||
-		item.base.sprite.getOutline() != itemClass.Outline())
+		item.sprite.getOutline() != itemClass.Outline())
 	{
-		writeUInt(writer, "outline", item.base.sprite.getOutline().toInteger());
+		writeUInt(writer, "outline", item.sprite.getOutline().toInteger());
 	}
 
 	if (props.saveDefaults == true ||
-		item.base.sprite.getOutlineIgnore() != itemClass.OutlineIgnore())
+		item.sprite.getOutlineIgnore() != itemClass.OutlineIgnore())
 	{
-		writeUInt(writer, "outlineIgnore", item.base.sprite.getOutlineIgnore().toInteger());
+		writeUInt(writer, "outlineIgnore", item.sprite.getOutlineIgnore().toInteger());
 	}
 
 	if (props.saveDefaults == true ||
-		item.base.outlineOnHover != true)
+		item.outlineOnHover != true)
 	{
-		writeBool(writer, "outlineOnHover", item.base.outlineOnHover);
+		writeBool(writer, "outlineOnHover", item.outlineOnHover);
 	}
 
 	writer.EndObject();

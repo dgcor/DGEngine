@@ -1,12 +1,12 @@
 #pragma once
 
-#include "BaseClassActions.h"
+#include "LevelObjectClass.h"
 #include <string_view>
 #include <vector>
 #include "Utils/Utils.h"
 
 template <class T>
-class BaseClassDefaults : public BaseClassActions
+class LevelObjectClassDefaults : public LevelObjectClass
 {
 private:
 	std::vector<std::pair<uint16_t, T>> defaults;

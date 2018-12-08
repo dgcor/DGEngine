@@ -15,7 +15,8 @@
     "til": "levels/l1data/l1.til",
     "min": "levels/l1data/l1.min",
     "minBlocks": 10,
-    "sol": "levels/l1data/l1.sol"
+    "sol": "levels/l1data/l1.sol",
+    "defaultLight": 0
   },
   "load": "level/automap/l1/load.json",
   "load": "level/l4/levelObjects.json",

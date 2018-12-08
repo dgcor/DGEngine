@@ -137,7 +137,7 @@ namespace Parser
 		Player& player, const Value& elem)
 	{
 		auto id = getStringKey(elem, "class");
-		auto spellClass = level.getSpellClass(id);
+		auto spellClass = level.getClass<SpellClass>(id);
 		if (spellClass == nullptr)
 		{
 			return;
@@ -171,7 +171,7 @@ namespace Parser
 			return;
 		}
 
-		auto class_ = level->getPlayerClass(elem["class"].GetString());
+		auto class_ = level->getClass<PlayerClass>(elem["class"].GetString());
 
 		if (class_ == nullptr ||
 			class_->hasTextures() == false)
@@ -179,9 +179,19 @@ namespace Parser
 			return;
 		}
 
+		auto id = getStringKey(elem, "id");
+		if (isValidId(id) == false)
+		{
+			id = {};
+		}
+		if (id.empty() == false && level->getLevelObject(id) != nullptr)
+		{
+			return;
+		}
+
 		auto player = std::make_unique<Player>(class_, *level);
 
-		player->MapPosition(mapPos);
+		player->Id(id);
 
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
 
@@ -198,12 +208,6 @@ namespace Parser
 
 		player->setAI(getBoolKey(elem, "AI"));
 
-		auto id = getStringViewKey(elem, "id");
-		if (isValidId(id) == false)
-		{
-			id = {};
-		}
-		player->Id(id);
 		player->Name(getStringViewKey(elem, "name"));
 
 		if (elem.HasMember("properties") == true)
@@ -258,6 +262,7 @@ namespace Parser
 			}
 		}
 
+		player->MapPosition(*level, mapPos);
 		player->updateProperties();
 		player->updateTexture();
 
@@ -266,6 +271,6 @@ namespace Parser
 			level->setCurrentPlayer(player.get());
 		}
 
-		level->addPlayer(std::move(player));
+		level->addLevelObject(std::move(player));
 	}
 }

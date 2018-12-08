@@ -18,7 +18,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto class_ = level->getLevelObjectClass(elem["class"].GetString());
+		auto class_ = level->getClass<SimpleLevelObjectClass>(elem["class"].GetString());
 		if (class_ == nullptr)
 		{
 			return;
@@ -37,17 +37,20 @@ namespace Parser
 			return;
 		}
 
-		auto levelObj = std::make_unique<SimpleLevelObject>(class_);
-
-		levelObj->MapPosition(mapPos);
-		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
-
-		auto id = getStringViewKey(elem, "id");
+		auto id = getStringKey(elem, "id");
 		if (isValidId(id) == false)
 		{
 			id = {};
 		}
+		if (id.empty() == false && level->getLevelObject(id) != nullptr)
+		{
+			return;
+		}
+
+		auto levelObj = std::make_unique<SimpleLevelObject>(class_);
+
 		levelObj->Id(id);
+		levelObj->Hoverable(getBoolKey(elem, "enableHover", true));
 		levelObj->Name(getStringViewKey(elem, "name"));
 		levelObj->Text1(getStringViewKey(elem, "text1", class_->Text1()));
 		levelObj->Text2(getStringViewKey(elem, "text2", class_->Text2()));
@@ -71,6 +74,8 @@ namespace Parser
 			}
 		}
 
-		level->addLevelObject(std::move(levelObj), true);
+		levelObj->MapPosition(*level, mapPos);
+
+		level->addLevelObject(std::move(levelObj));
 	}
 }

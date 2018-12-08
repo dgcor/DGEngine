@@ -975,6 +975,12 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("stretchToFit"):
 		var = Variable(stretchToFit);
 		break;
+	case str2int16("supportsGamma"):
+		var = Variable(Shaders::supportsGamma());
+		break;
+	case str2int16("supportsLighting"):
+		var = Variable((bool)(Shaders::supportsPalettes() | Shaders::supportsLighting()));
+		break;
 	case str2int16("supportsOutlines"):
 		var = Variable(Shaders::supportsOutlines());
 		break;

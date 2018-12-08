@@ -60,6 +60,18 @@ public:
 		return false;
 	}
 
+	bool hasItem(uint16_t classIdHash16) const
+	{
+		for (const auto& inv : (*this))
+		{
+			if (inv.hasItem(classIdHash16) == true)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
 	unsigned countFreeSlots(uint16_t classIdHash16) const
 	{
 		unsigned count = 0;

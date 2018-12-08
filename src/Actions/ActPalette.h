@@ -14,12 +14,14 @@ private:
 	size_t srcStart;
 	size_t size;
 	size_t dstStart;
+	int step;
+	bool stepReplace;
 
 public:
 	ActPaletteReplace(const std::string& idDstPal_, const std::string& idSrcPal_,
-		size_t srcStart_, size_t size_, size_t dstStart_) noexcept
+		size_t srcStart_, size_t size_, size_t dstStart_, bool stepReplace_) noexcept
 		: idDstPal(idDstPal_), idSrcPal(idSrcPal_), srcStart(srcStart_),
-		size(size_), dstStart(dstStart_) {}
+		size(size_), dstStart(dstStart_), step((int)size_), stepReplace(stepReplace_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -27,9 +29,24 @@ public:
 		auto srcPal = game.Resources().getPalette(idSrcPal);
 		if (dstPal != nullptr && srcPal != nullptr)
 		{
-			dstPal->replaceRange(*srcPal, srcStart, size, dstStart);
+			if (stepReplace == false)
+			{
+				dstPal->replaceRange(*srcPal, srcStart, size, dstStart);
+			}
+			else
+			{
+				if (step > 0)
+				{
+					step--;
+					dstPal->replaceRange(*srcPal, srcStart, size - (size_t)step, dstStart);
+				}
+				if (step > 0)
+				{
+					return false;
+				}
+			}
 		}
-		return false;
+		return true;
 	}
 };
 

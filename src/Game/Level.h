@@ -61,10 +61,10 @@ private:
 		sf::FloatRect visibleRect;
 		MapCoord visibleStart;
 		MapCoord visibleEnd;
-		int tileWidth{ 0 };
-		int tileHeight{ 0 };
-		int blockWidth{ 0 };		// a tile is 4 blocks
-		int blockHeight{ 0 };
+		int32_t tileWidth{ 0 };		// same size for all layers except for automap
+		int32_t tileHeight{ 0 };
+		int32_t blockWidth{ 0 };	// a tile is 4 blocks
+		int32_t blockHeight{ 0 };
 		bool visible{ false };		// currently, only used for automap
 	};
 
@@ -87,17 +87,14 @@ private:
 	MapCoord clickedMapPosition;
 
 	std::vector<std::unique_ptr<LevelObject>> levelObjects;
-	std::vector<std::unique_ptr<Player>> players;
+	std::unordered_map<std::string, LevelObject*> levelObjectIds;
 
 	LevelObject* clickedObject{ nullptr };
 	LevelObject* hoverObject{ nullptr };
 	Player* currentPlayer{ nullptr };
 
 	std::unordered_map<std::string, std::unique_ptr<Classifier>> classifiers;
-	std::unordered_map<std::string, std::unique_ptr<ItemClass>> itemClasses;
 	std::unordered_map<std::string, std::unique_ptr<LevelObjectClass>> levelObjectClasses;
-	std::unordered_map<std::string, std::unique_ptr<SpellClass>> spellClasses;
-	std::vector<std::pair<std::string, std::unique_ptr<PlayerClass>>> playerClasses;
 
 	bool followCurrentPlayer{ true };
 
@@ -125,9 +122,10 @@ private:
 		setCurrentMapViewCenter(map.getCoord(currentMapPosition));
 	}
 
-	void addLevelObject(std::unique_ptr<LevelObject> obj, const MapCoord& mapCoord, bool addToFront);
-	void addLevelObject(std::unique_ptr<LevelObject> obj, LevelCell& mapCell, bool addToFront);
-	void addPlayer(std::unique_ptr<Player> player, const MapCoord& mapCoord);
+	void addLevelObject(std::unique_ptr<LevelObject> obj, const MapCoord& mapCoord);
+
+	// clears the clickedObject, hoverObject, currentPlayer if they're pointing to the given object.
+	void clearCache(const LevelObject* obj) noexcept;
 
 	// Removes level object from level. Object still needs to be deleted from map.
 	// Returns the removed object.
@@ -142,18 +140,15 @@ private:
 				auto oldObjPtr = dynamic_cast<T*>(it->get());
 				it->release();
 				oldObj.reset(oldObjPtr);
+				if (oldObjPtr->getId().empty() == false)
+				{
+					levelObjectIds.erase(oldObjPtr->getId());
+				}
 				levelObjects.erase(it);
 				break;
 			}
 		}
-		if (clickedObject == obj)
-		{
-			clickedObject = nullptr;
-		}
-		if (hoverObject == obj)
-		{
-			hoverObject = nullptr;
-		}
+		clearCache(obj);
 		return oldObj;
 	}
 
@@ -181,7 +176,7 @@ private:
 public:
 	void Init(LevelMap map_,
 		const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-		int tileWidth, int tileHeight);
+		int32_t tileWidth, int32_t tileHeight);
 	void Init();
 
 	void setAutomap(std::shared_ptr<TexturePack> tiles, int tileWidth, int tileHeight);
@@ -204,9 +199,71 @@ public:
 	void Name(const std::string_view name_) { name = name_; }
 	void Path(const std::string_view path_) { path = path_; }
 
-	void clearLevelObjects();
+	void clearAllLevelObjects();
 
-	LevelObject* getLevelObject(const std::string_view id) const noexcept;
+	template <class T>
+	void clearLevelObjects()
+	{
+		auto it = levelObjects.begin();
+		while (it != levelObjects.end())
+		{
+			if (dynamic_cast<T*>(it->get()) != nullptr)
+			{
+				const auto& mapPos = (*it)->MapPosition();
+				if (map.isMapCoordValid(mapPos) == true)
+				{
+					map[mapPos].removeObject(it->get());
+				}
+				if ((*it)->getId().empty() == false)
+				{
+					levelObjectIds.erase((*it)->getId());
+				}
+				clearCache(it->get());
+				it = levelObjects.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
+	template <class T>
+	void clearLevelObjects(const std::vector<std::string>& excludeIds)
+	{
+		auto it = levelObjects.begin();
+		while (it != levelObjects.end())
+		{
+			if (dynamic_cast<T*>(it->get()) != nullptr
+				&& std::find(excludeIds.begin(), excludeIds.end(),
+				(*it)->getId()) == excludeIds.end())
+			{
+				const auto& mapPos = (*it)->MapPosition();
+				if (map.isMapCoordValid(mapPos) == true)
+				{
+					map[mapPos].removeObject(it->get());
+				}
+				if ((*it)->getId().empty() == false)
+				{
+					levelObjectIds.erase((*it)->getId());
+				}
+				clearCache(it->get());
+				it = levelObjects.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+	}
+
+	template <class T>
+	T* getLevelObject(const std::string id) const
+	{
+		return dynamic_cast<T*>(getLevelObject(id));
+	}
+
+	LevelObject* getLevelObject(const std::string id) const;
 	LevelObject* getLevelObjectByClass(const std::string_view classId) const noexcept;
 
 	void addClassifier(const std::string key, std::unique_ptr<Classifier> obj)
@@ -224,94 +281,33 @@ public:
 		return nullptr;
 	}
 
-	bool hasItemClass(const std::string& key) const
-	{
-		return itemClasses.find(key) != itemClasses.end();
-	}
-
-	void addItemClass(const std::string key, std::unique_ptr<ItemClass> obj)
-	{
-		itemClasses.insert(std::make_pair(key, std::move(obj)));
-	}
-
-	ItemClass* getItemClass(const std::string& key) const
-	{
-		auto it = itemClasses.find(key);
-		if (it != itemClasses.end())
-		{
-			return it->second.get();
-		}
-		return nullptr;
-	}
-
-	bool hasLevelObjectClass(const std::string& key) const
+	bool hasClass(const std::string& key) const
 	{
 		return levelObjectClasses.find(key) != levelObjectClasses.end();
 	}
 
-	void addLevelObjectClass(const std::string key, std::unique_ptr<LevelObjectClass> obj)
+	void addClass(const std::string key, std::unique_ptr<LevelObjectClass> obj)
 	{
 		levelObjectClasses.insert(std::make_pair(key, std::move(obj)));
 	}
 
-	LevelObjectClass* getLevelObjectClass(const std::string& key) const
+	template <class T>
+	T* getClass(const std::string& key) const
 	{
 		auto it = levelObjectClasses.find(key);
 		if (it != levelObjectClasses.end())
 		{
-			return it->second.get();
+			return dynamic_cast<T*>(it->second.get());
 		}
 		return nullptr;
 	}
 
-	bool hasSpellClass(const std::string& key) const
-	{
-		return spellClasses.find(key) != spellClasses.end();
-	}
-
-	void addSpellClass(const std::string key, std::unique_ptr<SpellClass> obj)
-	{
-		spellClasses.insert(std::make_pair(key, std::move(obj)));
-	}
-
-	SpellClass* getSpellClass(const std::string& key) const
-	{
-		auto it = spellClasses.find(key);
-		if (it != spellClasses.end())
-		{
-			return it->second.get();
-		}
-		return nullptr;
-	}
-
-	void addPlayerClass(const std::string key, std::unique_ptr<PlayerClass> obj)
-	{
-		playerClasses.push_back(std::make_pair(key, std::move(obj)));
-	}
-
-	PlayerClass* getPlayerClass(const std::string& key) const noexcept
-	{
-		for (const auto& player : playerClasses)
-		{
-			if (player.first == key)
-			{
-				return player.second.get();
-			}
-		}
-		return nullptr;
-	}
-
-	std::vector<std::unique_ptr<Player>>& Players() noexcept { return players; }
-	const std::vector<std::unique_ptr<Player>>& Players() const noexcept { return players; }
-
-	Player* getPlayer(const std::string_view id) const noexcept;
-	Player* getPlayerOrCurrent(const std::string_view id) const noexcept;
+	Player* getPlayerOrCurrent(const std::string id) const noexcept;
 
 	// doesn't clear currently used player classes
-	void clearPlayerClasses(size_t clearIdx);
+	void clearPlayerClasses();
 	// doesn't clear currently used player classes
 	void clearPlayerTextures() noexcept;
-	void clearPlayers(size_t clearIdx);
 
 	void resetView()
 	{
@@ -362,7 +358,7 @@ public:
 		automapView.updateViewport(game);
 	}
 
-	void addLevelObject(std::unique_ptr<LevelObject> obj, bool addToFront);
+	void addLevelObject(std::unique_ptr<LevelObject> obj);
 
 	// Deletes level object by id. If id is empty, no action is performed.
 	void deleteLevelObjectById(const std::string_view id);
@@ -381,8 +377,6 @@ public:
 		setCurrentMapViewCenter(mousePositionf);
 	}
 
-	void addPlayer(std::unique_ptr<Player> player);
-
 	Player* getCurrentPlayer() const noexcept { return currentPlayer; }
 	void setCurrentPlayer(Player* player_) noexcept
 	{
@@ -395,11 +389,11 @@ public:
 
 	void FollowCurrentPlayer(bool follow) noexcept { followCurrentPlayer = follow; }
 
-	int TileWidth() const noexcept { return levelLayers[0].tileWidth; }
-	int TileHeight() const noexcept { return levelLayers[0].tileHeight; }
+	int32_t TileWidth() const noexcept { return levelLayers[0].tileWidth; }
+	int32_t TileHeight() const noexcept { return levelLayers[0].tileHeight; }
 
-	int AutomapTileWidth() const noexcept { return levelLayers[AutomapLayer].tileWidth; }
-	int AutomapTileHeight() const noexcept { return levelLayers[AutomapLayer].tileHeight; }
+	int32_t AutomapTileWidth() const noexcept { return levelLayers[AutomapLayer].tileWidth; }
+	int32_t AutomapTileHeight() const noexcept { return levelLayers[AutomapLayer].tileHeight; }
 
 	virtual bool Pause() const noexcept { return pause; }
 	virtual void Pause(bool pause_) noexcept { pause = pause_; }

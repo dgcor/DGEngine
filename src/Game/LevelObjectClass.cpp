@@ -1,7 +1,7 @@
-#include "BaseClassActions.h"
+#include "LevelObjectClass.h"
 #include "Game.h"
 
-std::shared_ptr<Action> BaseClassActions::getAction(uint16_t nameHash16) const noexcept
+std::shared_ptr<Action> LevelObjectClass::getAction(uint16_t nameHash16) const noexcept
 {
 	for (const auto& elem : actions)
 	{
@@ -13,7 +13,7 @@ std::shared_ptr<Action> BaseClassActions::getAction(uint16_t nameHash16) const n
 	return nullptr;
 }
 
-void BaseClassActions::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_)
+void LevelObjectClass::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action_)
 {
 	if (nameHash16 == str2int16("") ||
 		action_ == nullptr)
@@ -31,7 +31,7 @@ void BaseClassActions::setAction(uint16_t nameHash16, const std::shared_ptr<Acti
 	actions.push_back(std::make_pair(nameHash16, action_));
 }
 
-void BaseClassActions::executeAction(Game& game, uint16_t nameHash16, bool executeNow) const
+void LevelObjectClass::executeAction(Game& game, uint16_t nameHash16, bool executeNow) const
 {
 	for (const auto& elem : actions)
 	{

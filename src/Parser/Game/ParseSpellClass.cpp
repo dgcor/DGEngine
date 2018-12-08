@@ -29,7 +29,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (level.hasSpellClass(id) == true)
+		if (level.hasClass(id) == true)
 		{
 			return nullptr;
 		}
@@ -41,7 +41,7 @@ namespace Parser
 			std::string fromId(elem["fromId"].GetString());
 			if (fromId != id)
 			{
-				auto obj = level.getSpellClass(fromId);
+				auto obj = level.getClass<SpellClass>(fromId);
 				if (obj == nullptr)
 				{
 					return nullptr;
@@ -163,6 +163,6 @@ namespace Parser
 			}
 		}
 
-		level->addSpellClass(id, std::move(spellClass));
+		level->addClass(id, std::move(spellClass));
 	}
 }

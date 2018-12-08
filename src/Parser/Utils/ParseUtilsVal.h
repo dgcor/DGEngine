@@ -2,6 +2,7 @@
 
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
+#include "Game/LightSource.h"
 #include "Game/Number.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
@@ -108,6 +109,8 @@ namespace Parser
 
 	InventoryPosition getInventoryPositionVal(const rapidjson::Value& elem,
 		InventoryPosition val = InventoryPosition::TopLeft);
+
+	LightSource getLightSourceVal(const rapidjson::Value& elem, LightSource val = {});
 
 	template <class T>
 	T getMinMaxIntVal(const rapidjson::Value& elem, T val = {})

@@ -4,6 +4,7 @@
     "action": [
       { "name": "variable.set", "key": "charName", "value": "{3}" },
       { "name": "resource.popAll" },
+      { "name": "event.deleteAll" },
       { "name": "load", "file": "loadingScreens/{1}.json" },
       { "name": "load", "file": "gameSettings.json" },
       { "name": "game.fadeIn",

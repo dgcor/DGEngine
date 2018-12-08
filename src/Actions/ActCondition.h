@@ -35,17 +35,18 @@ public:
 		{
 			if (condThen != nullptr)
 			{
-				return condThen->execute(game);
+				condThen->execute(game);
 			}
+			return true;
 		}
 		else
 		{
 			if (condElse != nullptr)
 			{
-				return condElse->execute(game);
+				condElse->execute(game);
 			}
+			return false;
 		}
-		return true;
 	}
 };
 
@@ -73,7 +74,7 @@ public:
 				{
 					if (condThen != nullptr)
 					{
-						return condThen->execute(game);
+						condThen->execute(game);
 					}
 					return true;
 				}
@@ -81,9 +82,9 @@ public:
 		}
 		if (condElse != nullptr)
 		{
-			return condElse->execute(game);
+			condElse->execute(game);
 		}
-		return true;
+		return false;
 	}
 };
 
@@ -106,17 +107,18 @@ public:
 		{
 			if (condThen != nullptr)
 			{
-				return condThen->execute(game);
+				condThen->execute(game);
 			}
+			return true;
 		}
 		else
 		{
 			if (condElse != nullptr)
 			{
-				return condElse->execute(game);
+				condElse->execute(game);
 			}
+			return false;
 		}
-		return true;
 	}
 };
 
@@ -144,7 +146,7 @@ public:
 				{
 					if (elem.second != nullptr)
 					{
-						return elem.second->execute(game);
+						elem.second->execute(game);
 					}
 					return true;
 				}
@@ -152,8 +154,8 @@ public:
 		}
 		if (defaultAction != nullptr)
 		{
-			return defaultAction->execute(game);
+			defaultAction->execute(game);
 		}
-		return true;
+		return false;
 	}
 };

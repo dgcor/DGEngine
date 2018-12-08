@@ -45,8 +45,6 @@
     <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameUtils.cpp" />
-    <ClCompile Include="src\Game\BaseClassActions.cpp" />
-    <ClCompile Include="src\Game\BaseLevelObject.cpp" />
     <ClCompile Include="src\Game\Classifier.cpp" />
     <ClCompile Include="src\Game\Formula.cpp" />
     <ClCompile Include="src\Game\GameProperties.cpp" />
@@ -57,6 +55,8 @@
     <ClCompile Include="src\Game\LevelCell.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp" />
     <ClCompile Include="src\Game\LevelMap.cpp" />
+    <ClCompile Include="src\Game\LevelObject.cpp" />
+    <ClCompile Include="src\Game\LevelObjectClass.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
@@ -217,9 +217,6 @@
     <ClInclude Include="src\Font.h" />
     <ClInclude Include="src\FreeTypeFont.h" />
     <ClInclude Include="src\GameUtils.h" />
-    <ClInclude Include="src\Game\BaseClassActions.h" />
-    <ClInclude Include="src\Game\BaseClassDefaults.h" />
-    <ClInclude Include="src\Game\BaseLevelObject.h" />
     <ClInclude Include="src\Game\Classifier.h" />
     <ClInclude Include="src\Game\Classifiers.h" />
     <ClInclude Include="src\Game\Formula.h" />
@@ -237,6 +234,9 @@
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
     <ClInclude Include="src\Game\LevelObjectClass.h" />
+    <ClInclude Include="src\Game\LevelObjectClassDefaults.h" />
+    <ClInclude Include="src\Game\LightMap.h" />
+    <ClInclude Include="src\Game\LightSource.h" />
     <ClInclude Include="src\Game\MapCoord.h" />
     <ClInclude Include="src\Game\Number.h" />
     <ClInclude Include="src\Game\PairXY.h" />
@@ -251,6 +251,7 @@
     <ClInclude Include="src\Game\Save\SaveSimpleLevelObject.h" />
     <ClInclude Include="src\Game\Save\SaveUtils.h" />
     <ClInclude Include="src\Game\SimpleLevelObject.h" />
+    <ClInclude Include="src\Game\SimpleLevelObjectClass.h" />
     <ClInclude Include="src\Game\Spell.h" />
     <ClInclude Include="src\Game\SpellClass.h" />
     <ClInclude Include="src\IfCondition.h" />
@@ -369,10 +370,12 @@
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\TileSet.h" />
     <ClInclude Include="src\UIObject.h" />
+    <ClInclude Include="src\Utils\EasingFunctions.h" />
     <ClInclude Include="src\Utils\FixedMap.h" />
     <ClInclude Include="src\Utils\Helper2D.h" />
     <ClInclude Include="src\Utils\iterator_tpl.h" />
     <ClInclude Include="src\Utils\LRUCache.h" />
+    <ClInclude Include="src\Utils\NumberVector.h" />
     <ClInclude Include="src\Utils\ReverseIterable.h" />
     <ClInclude Include="src\Utils\Utils.h" />
     <ClInclude Include="src\Variable.h" />

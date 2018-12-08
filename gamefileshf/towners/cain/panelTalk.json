@@ -1,0 +1,111 @@
+{
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "userPanelTalk",
+      "ignorePrevious": true
+    },
+    {
+      "name": "action.set",
+      "id": "afterShowText",
+      "action": { "name": "resource.ignore", "id": "userPanel", "ignore": false }
+    }
+  ],
+  "animation": [
+    {
+      "texturePack": "pentspn2",
+      "id": "pent1",
+      "position": [67, 140],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "texturePack": "pentspn2",
+      "id": "pent2",
+      "position": [537, 140],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "text": [
+    {
+      "id": "panelTitle1",
+      "font": "smaltextGold",
+      "position": [480, 58],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "horizontalSpaceOffset": 1,
+      "text": "Talk to Cain"
+    }
+  ],
+  "menu": {
+    "id": "panelQuests",
+    "font": "smaltext",
+    "position": [480, 195],
+    "horizontalAlign": "center",
+    "verticalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "anchor": "none",
+    "focus": true,
+    "focusSound": "titlemov",
+    "visibleItems": 8,
+    "size": [256, 180],
+    "verticalPad": 14,
+    "onScrollDown": "focus.moveDown",
+    "onScrollUp": "focus.moveUp",
+    "items": [
+      {
+        "text": "Gossip",
+        "onClick": {
+          "name": "load",
+          "file": ["towners/common/loadRandom.json", "cain"]
+        },
+        "onFocus": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram"
+        ]
+      },
+      {
+        "load": "currentLevel.quests",
+        "exclude": [
+          { "property": "state", "value": [-1, 0] },
+          {
+            "property": "id",
+            "value": ["farmersOrchard", "gharbadTheWeak", "zharTheMad"]
+          }
+        ],
+        "text": "%name%",
+        "onClick": {
+          "name": "load",
+          "file": ["towners/common/loadQuest.json", "texts/cain/quests/%id%.json"]
+        },
+        "onFocus": [
+          "anchorLeftPentagram",
+          "anchorRightPentagram"
+        ]
+      }
+    ]
+  },
+  "button": {
+    "id": "back",
+    "font": "smaltext",
+    "sound": "titlslct",
+    "focus": true,
+    "focusSound": "titlemov",
+    "position": [480, 298],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1,
+    "text": "Back",
+    "onClick": { "name": "resource.pop" },
+    "onFocus": [
+      "anchorLeftPentagram",
+      "anchorRightPentagram"
+    ]
+  },
+  "action": [
+    "anchorLeftPentagram",
+    "anchorRightPentagram",
+    { "name": "menu.setFont", "id": "panelQuests", "index": 0, "font": "smaltextBlue" }
+  ]
+}

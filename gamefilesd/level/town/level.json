@@ -7,10 +7,12 @@
     "til": "levels/towndata/town.til",
     "min": "levels/towndata/town.min",
     "minBlocks": 16,
-    "sol": "levels/towndata/town.sol"
+    "sol": "levels/towndata/town.sol",
+    "defaultLight": 255
   },
   "load": "level/town/levelObjects.json",
   "load": "level/town/players.json",
   "load": "level/town/level2.json",
-  "load": "level/town/levelPassages.json"
+  "load": "level/town/levelPassages.json",
+  "load": "level/town/updateLevel.json"
 }

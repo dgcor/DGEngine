@@ -2,25 +2,24 @@
 #include "Game.h"
 #include "Game/Level.h"
 
-SimpleLevelObject::SimpleLevelObject(const LevelObjectClass* class__) : class_(class__)
+SimpleLevelObject::SimpleLevelObject(const SimpleLevelObjectClass* class__) : LevelObject(class__)
 {
 	if (class__->getTexture() != nullptr)
 	{
-		base.sprite.setTexture(*class__->getTexture());
-		base.sprite.setTextureRect(class__->getTextureRect());
+		sprite.setTexture(*class__->getTexture());
+		sprite.setTextureRect(class__->getTextureRect());
 	}
 	else
 	{
-		base.texturePack = class__->getTexturePack();
-		base.animation.textureIndexRange = class__->getTextureIndexRange();
-		base.animation.frameTime = class__->getFrameTime();
-		base.animation.animType = class__->getAnimationType();
-		base.hoverCellSize = 1;
-		base.updateTexture();
+		texturePack = class__->getTexturePack();
+		animation.textureIndexRange = class__->getTextureIndexRange();
+		animation.frameTime = class__->getFrameTime();
+		animation.animType = class__->getAnimationType();
+		hoverCellSize = 1;
+		updateTexture();
 	}
-	action = class__->getAction(str2int16("action"));
 
-	for (const auto& prop : class_->Defaults())
+	for (const auto& prop : class__->Defaults())
 	{
 		setIntByHash(prop.first, prop.second);
 	}
@@ -31,32 +30,24 @@ bool SimpleLevelObject::getTexture(size_t textureNumber, TextureInfo& ti) const
 	switch (textureNumber)
 	{
 	case 0:
-		return base.getTexture(ti);
+		return getCurrentTexture(ti);
 	default:
 		return false;
 	}
 }
 
-void SimpleLevelObject::executeAction(Game& game) const
-{
-	if (action != nullptr)
-	{
-		game.Events().addBack(action);
-	}
-}
-
 void SimpleLevelObject::update(Game& game, Level& level)
 {
-	base.updateHover(game, level, this);
+	updateHover(game, level);
 
-	const auto& rect = base.sprite.getTextureRect();
+	const auto& rect = sprite.getTextureRect();
 	if (rect.width > 0 && rect.height > 0)
 	{
-		base.updateDrawPosition(level);
+		updateDrawPosition(level.Map());
 	}
-	if (base.hasValidState() == true)
+	if (hasValidState() == true)
 	{
-		base.animation.update(game.getElapsedTime());
+		animation.update(game.getElapsedTime());
 	}
 }
 
@@ -74,14 +65,12 @@ bool SimpleLevelObject::getProperty(const std::string_view prop, Variable& var) 
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	auto propHash = str2int16(props.first);
+	if (GameUtils::getLevelObjProp(*this, propHash, props.second, var) == true)
+	{
+		return true;
+	}
 	switch (propHash)
 	{
-	case str2int16("type"):
-		var = Variable(std::string("levelObject"));
-		break;
-	case str2int16("id"):
-		var = Variable(id);
-		break;
 	case str2int16("name"):
 		var = Variable(Name());
 		break;
@@ -173,14 +162,14 @@ void SimpleLevelObject::updateNameAndDescriptions() const
 	if (updateNameAndDescr == true)
 	{
 		updateNameAndDescr = false;
-		if (class_->getFullName(*this, name) == false &&
+		if (Class()->getFullName(*this, name) == false &&
 			name.empty() == true)
 		{
 			name = SimpleName();
 		}
 		for (size_t i = 0; i < descriptions.size(); i++)
 		{
-			class_->getDescription(i, *this, descriptions[i]);
+			Class()->getDescription(i, *this, descriptions[i]);
 		}
 	}
 }

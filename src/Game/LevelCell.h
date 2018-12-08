@@ -15,6 +15,9 @@ public:
 private:
 	std::array<int16_t, NumberOfLayers> tileIndexes;
 	std::vector<LevelObject*> objects;
+	uint8_t defaultLight{ 0 };
+	uint8_t currentLight{ 0 };
+	std::vector<uint8_t> lights;
 
 public:
 	LevelCell() : tileIndexes{ -1, -1, -1, -1, -1, 0 } {}
@@ -45,6 +48,18 @@ public:
 	void setTileIndex(int16_t tileIndex_) noexcept;
 	void setTileIndex(size_t layer, int16_t tileIndex_) noexcept { tileIndexes[layer] = tileIndex_; }
 
+	uint8_t getDefaultLight() const noexcept { return defaultLight; }
+	void setDefaultLight(uint8_t light_) noexcept
+	{
+		defaultLight = std::max(defaultLight, light_);
+	}
+
+	uint8_t getCurrentLight() const noexcept { return currentLight; }
+
+	void clearLights(uint8_t defaultLight_) noexcept;
+	void addLight(uint8_t light_) noexcept;
+	void subtractLight(uint8_t light_) noexcept;
+
 	bool PassableIgnoreObject() const noexcept { return !(tileIndexes[SolLayer] & 0x01); }
 	bool PassableIgnoreObject(const LevelObject* ignoreObj) const;
 	bool Passable() const;
@@ -70,7 +85,7 @@ public:
 
 	void addFront(LevelObject* obj);
 	void addBack(LevelObject* obj);
-	void removeObject(const LevelObject* obj);
+	bool removeObject(const LevelObject* obj);
 
 	template <class T>
 	T* removeObject()

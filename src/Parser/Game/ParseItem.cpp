@@ -15,7 +15,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto class_ = level.getItemClass(elem["class"].GetString());
+		auto class_ = level.getClass<ItemClass>(elem["class"].GetString());
 		if (class_ == nullptr)
 		{
 			return nullptr;

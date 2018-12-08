@@ -2,7 +2,9 @@
 
 #include <cstdint>
 #include "Dun.h"
+#include <functional>
 #include "LevelCell.h"
+#include "LightMap.h"
 #include "MapCoord.h"
 #include "Sol.h"
 #include "TileSet.h"
@@ -12,17 +14,33 @@
 class LevelMap
 {
 private:
+
+	struct LightStruct
+	{
+		MapCoord mapPos;
+		LightSource lightSource;
+		bool remove{ false };
+	};
+
 	std::vector<LevelCell> cells;
 	MapCoord mapSize;
 
 	std::array<TileBlock, LevelCell::NumberOfLayers - 1> outOfBoundsTiles;
 
+	// default tile size is the same for all map layers except automap
+	int32_t defaultTileWidth{ 1 };
+	int32_t defaultTileHeight{ 1 };
 	// default block size - a tile is 4 blocks
 	int32_t defaultBlockWidth{ 1 };
 	int32_t defaultBlockHeight{ 1 };
 
+	LightSource defaultSource;
+
 	TileSet tileSet;
 	Sol sol;
+	LightMap lightMap;
+
+	std::vector<LightStruct> pendingLights;
 
 	using Coord = decltype(mapSize.x);
 
@@ -37,6 +55,23 @@ private:
 
 	void resize(int16_t defaultTile);
 	void resize(const TileBlock& defaultTile);
+
+	// get the Tile's light for the layer, ignoring any object's light.
+	// returns 0 if tile index is invalid.
+	uint8_t getTileLight(size_t layer, const LevelCell& cell) const;
+
+	// applies light function to map position.
+	void doLight(MapCoord lightPos, LightSource lightSource,
+		const std::function<void(LevelCell*, uint8_t)>& doLightFunc);
+
+	// adds light to map position.
+	void doDefaultLight(MapCoord lightPos, LightSource lightSource);
+
+	// adds light to map position.
+	void doLight(MapCoord lightPos, LightSource lightSource);
+
+	// subtracts light from map position.
+	void undoLight(MapCoord lightPos, LightSource lightSource);
 
 public:
 	using iterator = std::vector<LevelCell>::iterator;
@@ -71,6 +106,18 @@ public:
 
 	void setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
 
+	uint8_t getDefaultLight() const noexcept { return defaultSource.maxLight; }
+	void setDefaultLightSource(LightSource light_) noexcept { defaultSource = light_; }
+
+	void addLight(MapCoord lightPos, LightSource lightSource);
+	void removeLight(MapCoord lightPos, LightSource lightSource);
+
+	void loadLightMap(const std::string_view fileName) { lightMap.load(fileName, 0, 0xFFFF); }
+	uint8_t getLight(size_t index) const { return std::max(getDefaultLight(), lightMap.get(index)); }
+
+	void initLights();
+	void updateLights();
+
 	void setTileSetArea(Coord x, Coord y, const Dun& dun);
 	void setSimpleArea(Coord x, Coord y, const Dun& dun);
 	void setSimpleArea(Coord x, Coord y, size_t layer,
@@ -93,6 +140,11 @@ public:
 
 	const MapCoord& MapSize() const noexcept { return mapSize; }
 
+	int32_t DefaultTileWidth() const noexcept { return defaultTileWidth; }
+	int32_t DefaultTileHeight() const noexcept { return defaultTileHeight; }
+	int32_t DefaultBlockWidth() const noexcept { return defaultBlockWidth; }
+	int32_t DefaultBlockHeight() const noexcept { return defaultBlockHeight; }
+
 	bool isMapCoordValid(Coord x, Coord y) const noexcept;
 	bool isMapCoordValid(const MapCoord& mapCoord) const noexcept;
 
@@ -107,6 +159,24 @@ public:
 	}
 
 	void setOutOfBoundsTileIndex(size_t layer, int16_t tile) noexcept;
+
+	bool addLevelObject(std::unique_ptr<LevelObject> obj);
+	bool removeLevelObject(const LevelObject* obj);
+
+	template <class T>
+	T* removeLevelObject(const MapCoord& mapCoord)
+	{
+		if (isMapCoordValid(mapCoord) == true)
+		{
+			auto obj = (*this)[mapCoord].removeObject<T>();
+			if (obj != nullptr)
+			{
+				removeLight(mapCoord, obj->getLightSource());
+				return obj;
+			}
+		}
+		return nullptr;
+	}
 
 	std::vector<MapCoord> getPath(const MapCoord& a, const MapCoord& b) const;
 

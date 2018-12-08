@@ -12,7 +12,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	const Game& game, const Level& level, const SimpleLevelObject& obj)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
-	const auto& objClass = *obj.class_;
+	const auto& objClass = *obj.Class();
 
 	writer.StartObject();
 

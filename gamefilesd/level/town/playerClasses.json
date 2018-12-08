@@ -69,7 +69,7 @@
       "outlineIgnore": "0x000000",
       "texturePacks": "wmnn",
       "actions": {
-        "action": { "name": "load", "file": "towners/gillian/panel.json" }
+        "action": { "name": "load", "file": "towners/gillian/load.json" }
       }
     },
     {

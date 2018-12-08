@@ -1,0 +1,11 @@
+{
+  "action": {
+    "name": "if",
+    "params": [
+      "%currentLevel.hasQuest.farmersOrchard%", "==", false,
+      "and",
+      "%currentLevel.player.lester.id%", "==", "lester"
+    ],
+    "then": { "name": "levelObject.delete", "object": "lester" }
+  }
+}

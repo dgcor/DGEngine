@@ -290,11 +290,7 @@ namespace Parser
 					else
 					{
 						auto props2 = Utils::splitStringIn2(uiElemProps, '.');
-						auto player = level->getPlayer(props2.first);
-						if (player == nullptr)
-						{
-							player = level->getCurrentPlayer();
-						}
+						auto player = level->getPlayerOrCurrent(props2.first);
 						if (player == nullptr)
 						{
 							return;

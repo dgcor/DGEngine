@@ -71,6 +71,13 @@
         "sell": null
       },
       "actions": {
+        "levelPick": [
+          {
+            "name": "load",
+            "file": ["res/player/sound/load.json", 79, "hmmhmm", "loadAudio", "currentLevel"]
+          },
+          { "name": "audio.play", "id": "hmmhmm", "volume": "%game.soundVolume%" }
+        ],
         "levelDrop": [
           {
             "name": "if",
@@ -83,7 +90,8 @@
             "then": [
               { "name": "sound.play", "id": "sarc" },
               { "name": "load", "file": "level/town/levelCrypt.json" },
-              { "name": "levelObject.deleteByClass", "class": "cathedralMap" }
+              { "name": "levelObject.deleteByClass", "class": "cathedralMap" },
+              { "name": "quest.delete", "quest": "graveMatters" }
             ],
             "else": [
               { "name": "sound.play", "id": "flipscrl" }
