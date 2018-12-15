@@ -24,7 +24,7 @@ namespace Parser
 		if (elem.HasMember("color") == true)
 		{
 			const auto& colorElem = elem["color"];
-			auto size = getVector2uKey(elem, "size", game.WindowTexSize());
+			auto size = getVector2uKey(elem, "size", game.DrawRegionSize());
 
 			if (colorElem.IsArray() == true &&
 				colorElem.Size() == (size.x * size.y))

@@ -200,8 +200,6 @@ set(SOURCE_FILES
     src/Game/SimpleLevelObjectClass.h
     src/Game/Spell.cpp
     src/Game/Spell.h
-    src/Game/SpellClass.cpp
-    src/Game/SpellClass.h
     src/Game/stlastar.h
     src/Game/Save/SaveItem.cpp
     src/Game/Save/SaveItem.h
@@ -318,8 +316,6 @@ set(SOURCE_FILES
     src/Parser/Game/ParseQuest.h
     src/Parser/Game/ParseSpell.cpp
     src/Parser/Game/ParseSpell.h
-    src/Parser/Game/ParseSpellClass.cpp
-    src/Parser/Game/ParseSpellClass.h
     src/Parser/Utils/ParseUtils.cpp
     src/Parser/Utils/ParseUtils.h
     src/Parser/Utils/ParseUtilsIdx.cpp

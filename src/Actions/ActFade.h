@@ -29,7 +29,7 @@ public:
 		auto fade = game.getFadeInOut();
 		if (fade == nullptr)
 		{
-			auto newFade = std::make_unique<FadeInOut>(game.WindowTexSizef(),
+			auto newFade = std::make_unique<FadeInOut>(game.DrawRegionSizef(),
 				isFadeOut,
 				enableInput,
 				color,

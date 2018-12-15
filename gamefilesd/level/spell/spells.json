@@ -1,57 +1,24 @@
 {
-  "spellClass": [
+  "spell": [
     {
-      "id": "identify",
+      "id": "firebolt",
       "texturePack1": "spelli2",
       "texturePack2": "spelicon",
-      "textureIndex1": 4,
-      "textureIndex2": 4,
-      "name": "Identify",
-      "type": "Skill",
+      "textureIndex1": 0,
+      "textureIndex2": 0,
+      "name": "Firebolt",
+      "type": "Spell",
       "defaults": {
         "damageMin": 2,
         "damageMax": 10
       }
     },
     {
-      "id": "itemRepair",
-      "fromId": "identify",
-      "textureIndex1": 25,
-      "textureIndex2": 25,
-      "name": "Item Repair",
-      "defaults": {
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "rage",
-      "fromId": "identify",
-      "textureIndex1": 22,
-      "textureIndex2": 22,
-      "name": "Rage",
-      "defaults": {
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "search",
-      "fromId": "identify",
-      "textureIndex1": 8,
-      "textureIndex2": 8,
-      "name": "Search",
-      "defaults": {
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "staffRecharge",
-      "fromId": "identify",
-      "textureIndex1": 28,
-      "textureIndex2": 28,
-      "name": "Staff Recharge",
+      "id": "chargedBolt",
+      "fromId": "firebolt",
+      "textureIndex1": 38,
+      "textureIndex2": 38,
+      "name": "Charged Bolt",
       "defaults": {
         "price": 150,
         "damageMin": 2,
@@ -59,11 +26,251 @@
       }
     },
     {
-      "id": "trapDisarm",
-      "fromId": "identify",
-      "textureIndex1": 36,
-      "textureIndex2": 36,
-      "name": "Trap Disarm",
+      "id": "holyBolt",
+      "fromId": "firebolt",
+      "textureIndex1": 41,
+      "textureIndex2": 41,
+      "name": "Holy Bolt",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "healing",
+      "fromId": "firebolt",
+      "textureIndex1": 1,
+      "textureIndex2": 1,
+      "name": "Healing",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "healOther",
+      "fromId": "firebolt",
+      "textureIndex1": 9,
+      "textureIndex2": 9,
+      "name": "Heal Other",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "inferno",
+      "fromId": "firebolt",
+      "textureIndex1": 14,
+      "textureIndex2": 14,
+      "name": "Inferno",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "firewall",
+      "fromId": "firebolt",
+      "textureIndex1": 5,
+      "textureIndex2": 5,
+      "name": "Firewall",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "telekinesis",
+      "fromId": "firebolt",
+      "textureIndex1": 39,
+      "textureIndex2": 39,
+      "name": "Telekinesis",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "lightning",
+      "fromId": "firebolt",
+      "textureIndex1": 2,
+      "textureIndex2": 2,
+      "name": "Lightning",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "townPortal",
+      "fromId": "firebolt",
+      "textureIndex1": 6,
+      "textureIndex2": 6,
+      "name": "Town Portal",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "flash",
+      "fromId": "firebolt",
+      "textureIndex1": 3,
+      "textureIndex2": 3,
+      "name": "Flash",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "stoneCurse",
+      "fromId": "firebolt",
+      "textureIndex1": 7,
+      "textureIndex2": 7,
+      "name": "Stone Curse",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "phasing",
+      "fromId": "firebolt",
+      "textureIndex1": 27,
+      "textureIndex2": 27,
+      "name": "Phasing",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "manaShield",
+      "fromId": "firebolt",
+      "textureIndex1": 12,
+      "textureIndex2": 12,
+      "name": "Mana Shield",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "elemental",
+      "fromId": "firebolt",
+      "textureIndex1": 37,
+      "textureIndex2": 37,
+      "name": "Elemental",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "fireball",
+      "fromId": "firebolt",
+      "textureIndex1": 11,
+      "textureIndex2": 11,
+      "name": "Fireball",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "flameWave",
+      "fromId": "firebolt",
+      "textureIndex1": 13,
+      "textureIndex2": 13,
+      "name": "Flame Wave",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "chainLightning",
+      "fromId": "firebolt",
+      "textureIndex1": 15,
+      "textureIndex2": 15,
+      "name": "Chain Lightning",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "guardian",
+      "fromId": "firebolt",
+      "textureIndex1": 17,
+      "textureIndex2": 17,
+      "name": "Guardian",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "golem",
+      "fromId": "firebolt",
+      "textureIndex1": 20,
+      "textureIndex2": 20,
+      "name": "Golem",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "teleport",
+      "fromId": "firebolt",
+      "textureIndex1": 23,
+      "textureIndex2": 23,
+      "name": "Teleport",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "boneSpirit",
+      "fromId": "firebolt",
+      "textureIndex1": 29,
+      "textureIndex2": 29,
+      "name": "Bone Spirit",
+      "defaults": {
+        "price": 150,
+        "damageMin": 2,
+        "damageMax": 10
+      }
+    },
+    {
+      "id": "bloodStar",
+      "fromId": "firebolt",
+      "textureIndex1": 35,
+      "textureIndex2": 35,
+      "name": "Blood Star",
       "defaults": {
         "price": 150,
         "damageMin": 2,

@@ -472,7 +472,7 @@ public:
 				player != nullptr)
 			{
 				uint32_t itemsLeft;
-				if (item->use(*player, level, itemsLeft) == true)
+				if (item->use(*player, *level, itemsLeft) == true)
 				{
 					item->Class()->executeAction(game, str2int16("use"));
 					if (itemsLeft == 0)

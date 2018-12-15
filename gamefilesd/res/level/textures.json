@@ -41,6 +41,11 @@
       "palette": "town"
     },
     {
+      "id": "spellbkb",
+      "file": "data/spellbkb.cel",
+      "palette": "town"
+    },
+    {
       "id": "pentspn2",
       "file": "data/pentspn2.cel",
       "palette": "town"

@@ -43,7 +43,7 @@ private:
 	Inventories<(size_t)PlayerInventory::Size> inventories;
 	size_t bodyInventoryIdx{ (size_t)PlayerInventory::Size };
 
-	std::unordered_map<std::string, std::unique_ptr<Spell>> spells;
+	std::unordered_map<std::string, Spell*> spells;
 
 	mutable std::string name;
 	mutable std::array<std::string, 2> descriptions;
@@ -267,9 +267,9 @@ public:
 		return spells.find(key) != spells.end();
 	}
 
-	void addSpell(const std::string key, std::unique_ptr<Spell> obj)
+	void addSpell(const std::string key, Spell* obj)
 	{
-		spells.insert(std::make_pair(key, std::move(obj)));
+		spells.insert(std::make_pair(key, obj));
 	}
 
 	Spell* getSpell(const std::string& key) const
@@ -277,7 +277,7 @@ public:
 		auto it = spells.find(key);
 		if (it != spells.end())
 		{
-			return it->second.get();
+			return it->second;
 		}
 		return nullptr;
 	}

@@ -47,23 +47,23 @@ void View2::setSize(sf::Vector2f size_)
 
 void View2::setViewport(const Game& game)
 {
-	const auto& windowSize = game.WindowTex().getSize();
-	const auto& gameSize = game.WindowSize();
+	const auto& drawRegionSize = game.DrawRegionSize();
+	const auto& gameWindowSize = game.WindowSize();
 	auto x = position.x;
-	if (windowSize.x > gameSize.x)
+	if (drawRegionSize.x > gameWindowSize.x)
 	{
-		x += ((float)windowSize.x / 2.f) - ((float)gameSize.x / 2.f);
+		x += ((float)drawRegionSize.x / 2.f) - ((float)gameWindowSize.x / 2.f);
 	}
-	x /= (float)windowSize.x;
+	x /= (float)drawRegionSize.x;
 	auto y = position.y;
-	if (windowSize.y > gameSize.y)
+	if (drawRegionSize.y > gameWindowSize.y)
 	{
-		y += ((float)windowSize.y / 2.f) - ((float)gameSize.y / 2.f);
+		y += ((float)drawRegionSize.y / 2.f) - ((float)gameWindowSize.y / 2.f);
 	}
-	y /= (float)windowSize.y;
+	y /= (float)drawRegionSize.y;
 
-	auto w = roundedSizeNoZoom.x / (float)windowSize.x;
-	auto h = roundedSizeNoZoom.y / (float)windowSize.y;
+	auto w = roundedSizeNoZoom.x / (float)drawRegionSize.x;
+	auto h = roundedSizeNoZoom.y / (float)drawRegionSize.y;
 
 	view.setViewport(sf::FloatRect(x, y, w, h));
 }

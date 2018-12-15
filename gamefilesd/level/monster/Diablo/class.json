@@ -4,7 +4,7 @@
     "replaceVars": true,
     "name": "The Dark Lord",
     "type": "Demon",
-    "description": "Some Magic Resistances\nSome Magic Immunities",
+    "descriptions": { "index": 0, "name": "resistImune" },
     "outline": "|outlineEnemy|",
     "outlineIgnore": "0x000000",
     "defaults": {

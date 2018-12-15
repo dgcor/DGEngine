@@ -136,13 +136,17 @@ namespace Parser
 	void parsePlayerSpell(Game& game, Level& level,
 		Player& player, const Value& elem)
 	{
-		auto id = getStringKey(elem, "class");
-		auto spellClass = level.getClass<SpellClass>(id);
-		if (spellClass == nullptr)
+		if (elem.IsObject() == false)
 		{
 			return;
 		}
-		player.addSpell(id, std::make_unique<Spell>(spellClass));
+		auto id = getStringKey(elem, "class");
+		auto spell = level.getClass<Spell>(id);
+		if (spell == nullptr)
+		{
+			return;
+		}
+		player.addSpell(id, spell);
 	}
 
 	void parsePlayer(Game& game, const Value& elem)

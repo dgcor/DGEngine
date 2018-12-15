@@ -79,7 +79,8 @@
         { "name": "drawable.visible", "id": "spellPanel", "visible": false },
         { "name": "drawable.visible", "id": "spellPanel2", "visible": false }
       ]
-    }
+    },
+    { "name": "resource.add", "id": "levelOverlay" }
   ],
   "text": {
     "id": "txtLevelUp",
@@ -305,6 +306,16 @@
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
       "onRightClick": "rightClickLevel"
+    }
+  ],
+  "load": "ui/level/char/panelSpellImages.json",
+  "action": { "name": "resource.add", "id": "panel" },
+  "image": [
+    {
+      "id": "mapImage",
+      "texture": "empty",
+      "anchor": "none",
+      "visible": false
     },
     {
       "id": "panel",
@@ -321,9 +332,7 @@
       "textureRect": [0, 348, 640, 4],
       "anchor": "bottom",
       "onRightClick": "rightClickLevel"
-    }
-  ],
-  "image": [
+    },
     {
       "id": "lifeOrbEmpty",
       "texture": "bar_hp_background",
@@ -465,6 +474,7 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             { "name": "load", "file": "ui/level/char/panelInventory.json" },
             "showInvPanel",
+            "hideSpellImages",
             "hideSpellPanel"
           ],
           "else": [
@@ -473,6 +483,7 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             "hideInvPanel",
             "hideSpellPanel",
+            "hideSpellImages",
             "setLevelHoverActions"
           ]
         },
@@ -515,6 +526,7 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             "hideInvPanel",
             "hideSpellPanel",
+            "hideSpellImages",
             "setLevelHoverActions"
           ]
         },

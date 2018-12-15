@@ -19,6 +19,6 @@ namespace Parser
 		{
 			return;
 		}
-		game.Window().setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+		game.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	}
 }

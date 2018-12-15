@@ -15,7 +15,6 @@
 #include "Save/SaveLevel.h"
 #include "SFML/View2.h"
 #include "Sol.h"
-#include "SpellClass.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "UIObject.h"

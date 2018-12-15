@@ -27,10 +27,15 @@ private:
 	void updateNameAndDescriptions() const;
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash,
-		LevelObjValue value, Player& player, const Level* level) const noexcept;
+		LevelObjValue value, Player& player, const Level& level) const noexcept;
 
 	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
-		uint16_t valueMaxHash, Player& player, const Level* level) const;
+		uint16_t valueMaxHash, Player& player, const Level& level) const;
+
+	bool useItem(Player& player, const Level& level,
+		uint16_t useOpHash, uint32_t& quantityLeft);
+	bool useSpell(Player& player, const Level& level,
+		uint16_t useOpHash, uint32_t& quantityLeft);
 
 	friend void Save::serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level, const Item& item);
@@ -110,10 +115,13 @@ public:
 	bool needsRepair() const;
 	bool isUsable() const noexcept;
 
-	bool use(Player& player, const Level* level, uint32_t& itemsLeft);
+	bool use(Player& player, const Level& level, uint32_t& quantityLeft);
 
 	// returns the new item quantity. removes from the amount what was added/removed.
 	LevelObjValue addQuantity(LevelObjValue& amount);
+
+	bool hasSpell() const noexcept { return Class()->hasSpell(); }
+	Spell* getSpell() const noexcept { return Class()->getSpell(); }
 
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return Class()->ShortName(); }

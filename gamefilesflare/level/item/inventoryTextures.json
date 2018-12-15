@@ -3,7 +3,6 @@
     "id": "itemIcons",
     "texture": {
       "id": "icons",
-      "file": "images/icons/icons.png",
       "frames": [8, 32],
       "direction": "horizontal"
     },

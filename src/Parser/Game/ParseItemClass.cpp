@@ -1,6 +1,7 @@
 #include "ParseItemClass.h"
 #include "Game/GameHashes.h"
 #include "Game/ItemClass.h"
+#include "Game/Spell.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 
@@ -249,6 +250,11 @@ namespace Parser
 		{
 			auto classifier = level->getClassifier(getStringVal(elem["suffix"]));
 			itemClass->setSuffix(classifier);
+		}
+		if (elem.HasMember("spell") == true)
+		{
+			auto spell = level->getClass<Spell>(getStringVal(elem["spell"]));
+			itemClass->setSpell(spell);
 		}
 
 		level->addClass(id, std::move(itemClass));

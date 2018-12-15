@@ -1,0 +1,55 @@
+{
+  "image": [
+    {
+      "id": "spellBook1",
+      "visible": false,
+      "anchor": "right",
+      "texture": "spellbkb",
+      "position": [327, 320],
+      "textureRect": [0, 0, 61, 29]
+    },
+    {
+      "id": "spellBook2",
+      "visible": false,
+      "anchor": "right",
+      "texture": "spellbkb",
+      "position": [388, 320],
+      "textureRect": [0, 29, 61, 29]
+    },
+    {
+      "id": "spellBook3",
+      "visible": false,
+      "anchor": "right",
+      "texture": "spellbkb",
+      "position": [449, 320],
+      "textureRect": [0, 58, 61, 29]
+    },
+    {
+      "id": "spellBook4",
+      "visible": false,
+      "anchor": "right",
+      "texture": "spellbkb",
+      "position": [510, 320],
+      "textureRect": [0, 87, 61, 29]
+    },
+    {
+      "id": "spellBook5",
+      "visible": false,
+      "anchor": "right",
+      "texture": "spellbkb",
+      "position": [571, 320],
+      "textureRect": [0, 116, 61, 29]
+    }
+  ],
+  "action": {
+    "name": "action.set",
+    "id": "hideSpellImages",
+    "action": [
+      { "name": "drawable.visible", "id": "spellBook1", "visible": false },
+      { "name": "drawable.visible", "id": "spellBook2", "visible": false },
+      { "name": "drawable.visible", "id": "spellBook3", "visible": false },
+      { "name": "drawable.visible", "id": "spellBook4", "visible": false },
+      { "name": "drawable.visible", "id": "spellBook5", "visible": false }
+    ]
+  }
+}

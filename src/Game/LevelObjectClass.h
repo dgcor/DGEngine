@@ -8,7 +8,7 @@
 
 class LevelObjectClass
 {
-private:
+protected:
 	std::vector<std::pair<uint16_t, std::shared_ptr<Action>>> actions;
 
 	std::string id;
