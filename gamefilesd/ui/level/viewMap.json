@@ -1,6 +1,11 @@
 {
   "action": [
     { "name": "resource.add", "id": "viewMap" },
+    { "name": "resource.ignore", "id": "levelOverlay", "ignore": "draw" },
+    { "name": "resource.ignore", "id": "charPanelInventory", "ignore": "draw" },
+    { "name": "resource.ignore", "id": "charPanelLabels", "ignore": "draw" },
+    { "name": "resource.ignore", "id": "charPanelQuests", "ignore": "draw" },
+    { "name": "resource.ignore", "id": "charPanelSpells", "ignore": "draw" },
     {
       "name": "if.equal",
       "param1": "%game.hasTexture.{1}%",
@@ -16,16 +21,14 @@
           }
         }
       }
-    }
+    },
+    { "name": "image.setTexture", "id": "mapImage", "texture": "empty" },
+    { "name": "image.setTexture", "id": "mapImage", "texture": "{1}", "resetRect": true },
+    { "name": "drawable.visible", "id": "mapImage", "visible": true }
   ],
   "keyboard": {
     "key": "any",
     "action": { "name": "button.click", "id": "viewMapButton" }
-  },
-  "image": {
-    "id": "mapImage",
-    "texture": "{1}",
-    "anchor": "none"
   },
   "button": [
     {
@@ -53,8 +56,17 @@
         "setLevelHoverActions",
         "clearPanelText"
       ],
-      "onClick": { "name": "resource.pop", "id": "viewMap" },
-      "onRightClick": { "name": "resource.pop", "id": "viewMap" }
+      "onClick": [
+        { "name": "image.setTexture", "id": "mapImage", "texture": "empty" },
+        { "name": "resource.visible", "id": "mapImage", "visible": false },
+        { "name": "resource.pop", "id": "viewMap" },
+        { "name": "resource.ignore", "id": "levelOverlay", "ignore": false },
+        { "name": "resource.ignore", "id": "charPanelInventory", "ignore": false },
+        { "name": "resource.ignore", "id": "charPanelLabels", "ignore": false },
+        { "name": "resource.ignore", "id": "charPanelQuests", "ignore": false },
+        { "name": "resource.ignore", "id": "charPanelSpells", "ignore": false }
+      ],
+      "onRightClick": { "name": "button.click", "id": "viewMapButton" }
     }
   ]
 }

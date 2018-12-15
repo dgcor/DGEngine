@@ -8,7 +8,7 @@
 template <class T>
 class LevelObjectClassDefaults : public LevelObjectClass
 {
-private:
+protected:
 	std::vector<std::pair<uint16_t, T>> defaults;
 
 public:

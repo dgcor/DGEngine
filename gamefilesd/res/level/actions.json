@@ -11,5 +11,6 @@
   "load": "res/level/actions/playerStash.json",
   "load": "res/level/actions/playerBody.json",
   "load": "res/level/actions/playerBeltUse.json",
-  "load": "res/level/actions/playerStashUse.json"
+  "load": "res/level/actions/playerStashUse.json",
+  "load": "res/level/actions/charPanel2.json"
 }

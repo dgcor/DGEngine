@@ -1,10 +1,6 @@
 #include "Spell.h"
+#include "GameUtils.h"
 #include "Utils/Utils.h"
-
-Spell::Spell(const SpellClass* class__) : class_(class__)
-{
-	applyDefaults();
-}
 
 bool Spell::getProperty(const std::string_view prop, Variable& var) const
 {
@@ -16,12 +12,13 @@ bool Spell::getProperty(const std::string_view prop, Variable& var) const
 	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("id"):
 	case str2int16("class"):
 	case str2int16("classId"):
-		var = Variable(class_->Id());
+		var = Variable(id);
 		break;
 	case str2int16("name"):
-		var = Variable(Name());
+		var = Variable(name);
 		break;
 	case str2int16("d"):
 	case str2int16("description"):
@@ -51,7 +48,7 @@ bool Spell::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(std::string("spell"));
 		break;
 	case str2int16("spellType"):
-		var = Variable(SpellType());
+		var = Variable(spellType);
 		break;
 	case str2int16("propertyCount"):
 		var = Variable((int64_t)properties.size());
@@ -76,15 +73,42 @@ bool Spell::getProperty(const std::string_view prop, Variable& var) const
 	return true;
 }
 
+void Spell::setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst)
+{
+	if (idx < descriptionClassifiers.size())
+	{
+		descriptionClassifiers[idx] = std::make_pair(classifier, skipFirst);
+	}
+}
+
+bool Spell::getDescription(size_t idx, const Queryable& item, std::string& description) const
+{
+	if (idx >= descriptionClassifiers.size())
+	{
+		return false;
+	}
+	auto classifier = descriptionClassifiers[idx].first;
+	if (classifier == nullptr)
+	{
+		return false;
+	}
+	description = VarUtils::toString(classifier->get(item, descriptionClassifiers[idx].second));
+	if (description.empty() == false)
+	{
+		description = GameUtils::replaceStringWithQueryable(description, item);
+	}
+	return true;
+}
+
 bool Spell::getTexture(size_t textureNumber, TextureInfo& ti) const
 {
 	switch (textureNumber)
 	{
 	case 0:
 	case 1:
-		return class_->getTexture1(ti);
+		return getTexture1(ti);
 	case 2:
-		return class_->getTexture2(ti);
+		return getTexture2(ti);
 	default:
 		return false;
 	}
@@ -145,15 +169,7 @@ void Spell::updateDescriptions() const
 		updateDescr = false;
 		for (size_t i = 0; i < descriptions.size(); i++)
 		{
-			class_->getDescription(i, *this, descriptions[i]);
+			getDescription(i, *this, descriptions[i]);
 		}
-	}
-}
-
-void Spell::applyDefaults()
-{
-	for (const auto& prop : class_->Defaults())
-	{
-		setIntByHash(prop.first, prop.second);
 	}
 }

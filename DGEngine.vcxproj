@@ -68,7 +68,6 @@
     <ClCompile Include="src\Game\Save\SaveUtils.cpp" />
     <ClCompile Include="src\Game\SimpleLevelObject.cpp" />
     <ClCompile Include="src\Game\Spell.cpp" />
-    <ClCompile Include="src\Game\SpellClass.cpp" />
     <ClCompile Include="src\IfCondition.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\ImageContainers\CelBaseImageContainer.cpp" />
@@ -94,7 +93,6 @@
     <ClCompile Include="src\Parser\Game\ParsePlayerClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseQuest.cpp" />
     <ClCompile Include="src\Parser\Game\ParseSpell.cpp" />
-    <ClCompile Include="src\Parser\Game\ParseSpellClass.cpp" />
     <ClCompile Include="src\Parser\ParseAction.cpp" />
     <ClCompile Include="src\Parser\ParseAnimation.cpp" />
     <ClCompile Include="src\Parser\ParseAudio.cpp" />
@@ -253,7 +251,6 @@
     <ClInclude Include="src\Game\SimpleLevelObject.h" />
     <ClInclude Include="src\Game\SimpleLevelObjectClass.h" />
     <ClInclude Include="src\Game\Spell.h" />
-    <ClInclude Include="src\Game\SpellClass.h" />
     <ClInclude Include="src\IfCondition.h" />
     <ClInclude Include="src\IgnoreResource.h" />
     <ClInclude Include="src\Image.h" />
@@ -278,7 +275,6 @@
     <ClInclude Include="src\Parser\Game\ParsePlayerClass.h" />
     <ClInclude Include="src\Parser\Game\ParseQuest.h" />
     <ClInclude Include="src\Parser\Game\ParseSpell.h" />
-    <ClInclude Include="src\Parser\Game\ParseSpellClass.h" />
     <ClInclude Include="src\Parser\ParseAction.h" />
     <ClInclude Include="src\Parser\ParseAnimation.h" />
     <ClInclude Include="src\Parser\ParseAudio.h" />

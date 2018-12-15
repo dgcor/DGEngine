@@ -89,6 +89,43 @@
       ]
     },
     {
+      "id": "spellSuffix",
+      "values": {
+        "property": "spell.class",
+        "value": [
+          { "text": "identify", "value": "Of Identify" },
+          { "text": "itemRepair", "value": "Of Item Repair" },
+          { "text": "rage", "value": "Of Rage" },
+          { "text": "search", "value": "Of Search" },
+          { "text": "staffRecharge", "value": "Of Staff Recharge" },
+          { "text": "trapDisarm", "value": "Of Trap Disarm" },
+          { "text": "firebolt", "value": "Of Firebolt" },
+          { "text": "chargedBolt", "value": "Of Charged Bolt" },
+          { "text": "holyBolt", "value": "Of Holy Bolt" },
+          { "text": "healing", "value": "Of Healing" },
+          { "text": "healOther", "value": "Of Heal Other" },
+          { "text": "inferno", "value": "Of Inferno" },
+          { "text": "firewall", "value": "Of Firewall" },
+          { "text": "telekinesis", "value": "Of Telekinesis" },
+          { "text": "lightning", "value": "Of lightning" },
+          { "text": "townPortal", "value": "Of Town Portal" },
+          { "text": "flash", "value": "Of Flash" },
+          { "text": "stoneCurse", "value": "Of Stone Curse" },
+          { "text": "phasing", "value": "Of Phasing" },
+          { "text": "manaShield", "value": "Of Mana Shield" },
+          { "text": "elemental", "value": "Of Elemental" },
+          { "text": "fireball", "value": "Of Fireball" },
+          { "text": "flameWave", "value": "Of Flame Wave" },
+          { "text": "chainLightning", "value": "Of Chain Lightning" },
+          { "text": "guardian", "value": "Of Guardian" },
+          { "text": "golem", "value": "Of Golem" },
+          { "text": "teleport", "value": "Of Teleport" },
+          { "text": "boneSpirit", "value": "Of Bone Spirit" },
+          { "text": "bloodStar", "value": "Of Blood Star" }
+        ]
+      }
+    },
+    {
       "id": "goldSuffix",
       "values": {
         "property": "quantity",

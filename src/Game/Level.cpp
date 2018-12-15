@@ -438,7 +438,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 						}
 					}
 				}
-				if (index < 0)
+				if (index < 0 || light == 0)
 				{
 					continue;
 				}
@@ -1065,6 +1065,7 @@ std::unique_ptr<Item> Level::removeItem(const MapCoord& mapCoord)
 	auto item = map.removeLevelObject<Item>(mapCoord);
 	if (item != nullptr)
 	{
+		item->clearMapPosition();
 		return removeLevelObject<Item>(item);
 	}
 	return nullptr;

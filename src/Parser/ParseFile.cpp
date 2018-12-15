@@ -38,7 +38,7 @@
 #include "Parser/Game/ParsePlayer.h"
 #include "Parser/Game/ParsePlayerClass.h"
 #include "Parser/Game/ParseQuest.h"
-#include "Parser/Game/ParseSpellClass.h"
+#include "Parser/Game/ParseSpell.h"
 #include "PhysFSStream.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -539,9 +539,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("spellClass"): {
+		case str2int16("spell"): {
 			if (elem.IsArray() == false) {
-				parseSpellClass(game, elem);
+				parseSpell(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

@@ -9,7 +9,8 @@
       "name": "Book",
       "type": "Book",
       "defaults": {
-        "price": 1000
+        "price": 1000,
+        "useOp": "learn"
       },
       "descriptions": [
         { "index": 0, "name": "rightClickToRead" },
@@ -19,7 +20,16 @@
       "actions": {
         "levelDrop": { "name": "sound.play", "id": "flipbook" },
         "inventoryDrop": { "name": "sound.play", "id": "invbook" }
-      }
+      },
+      "suffix": "spellSuffix"
+    },
+    {
+      "id": "bookOfHealing",
+      "fromId": "book",
+      "defaults": {
+        "requiredMagic": 25
+      },
+      "spell": "healing"
     }
   ]
 }

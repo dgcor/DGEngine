@@ -122,6 +122,9 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(hasDescr);
 		break;
 	}
+	case str2int16("hasSpell"):
+		var = Variable(hasSpell());
+		break;
 	case str2int16("prices"):
 	{
 		LevelObjValue value;
@@ -159,6 +162,15 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("hasProperty"):
 		var = Variable(hasInt(props.second));
 		break;
+	case str2int16("spell"):
+	{
+		auto spell = getSpell();
+		if (spell != nullptr)
+		{
+			return spell->getProperty(props.second, var);
+		}
+		break;
+	}
 	default:
 	{
 		LevelObjValue value;
@@ -326,11 +338,11 @@ bool Item::needsRepair() const
 
 bool Item::isUsable() const noexcept
 {
-	return hasIntByHash(ItemProp::UseOn);
+	return (hasIntByHash(ItemProp::UseOn) || hasIntByHash(ItemProp::UseOp));
 }
 
 bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
-	LevelObjValue value, Player& player, const Level* level) const noexcept
+	LevelObjValue value, Player& player, const Level& level) const noexcept
 {
 	Number32 origValue2;
 	if (player.getNumberByHash(propHash, origValue2) == false)
@@ -352,11 +364,11 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
 		origValue = value;
 		break;
 	}
-	return player.setNumberByHash(propHash, (LevelObjValue)origValue, level);
+	return player.setNumberByHash(propHash, (LevelObjValue)origValue, &level);
 }
 
 bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
-	uint16_t valueMaxHash, Player& player, const Level* level) const
+	uint16_t valueMaxHash, Player& player, const Level& level) const
 {
 	LevelObjValue value;
 	if (Class()->evalFormula(valueHash, *this, player, value) == false)
@@ -371,36 +383,26 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
 	return useHelper(propHash, useOpHash, value, player, level);
 }
 
-bool Item::use(Player& player, const Level* level, uint32_t& quantityLeft)
+bool Item::useItem(Player& player, const Level& level,
+	uint16_t useOpHash, uint32_t& quantityLeft)
 {
-	quantityLeft = 0;
 	LevelObjValue useOn;
 	if (getIntByHash(ItemProp::UseOn, useOn) == false ||
-		useOn == str2int16("") ||
-		player.canUseItem(*this) == false)
+		useOn == str2int16(""))
 	{
 		return false;
 	}
 
-	LevelObjValue itemQuantity;
-	bool hasQuantity = getIntByHash(ItemProp::Quantity, itemQuantity);
-	if (hasQuantity == true &&
-		itemQuantity <= 0)
-	{
-		return true;
-	}
-
 	auto propHash = (uint16_t)useOn;
-	auto useOp = getIntByHash(ItemProp::UseOp);
 	bool ret = false;
 
 	switch (propHash)
 	{
 	case ItemProp::LifeAndManaDamage:
 	{
-		ret |= useHelper(ItemProp::LifeDamage, useOp,
+		ret |= useHelper(ItemProp::LifeDamage, useOpHash,
 			ItemProp::Value, ItemProp::ValueMax, player, level);
-		ret |= useHelper(ItemProp::ManaDamage, useOp,
+		ret |= useHelper(ItemProp::ManaDamage, useOpHash,
 			ItemProp::Value2, ItemProp::Value2Max, player, level);
 		break;
 	}
@@ -416,18 +418,77 @@ bool Item::use(Player& player, const Level* level, uint32_t& quantityLeft)
 		{
 			value = Utils::Random::get<LevelObjValue>(value, valueMax);
 		}
-		ret |= useHelper(ItemProp::Strength, useOp, value, player, level);
-		ret |= useHelper(ItemProp::Magic, useOp, value, player, level);
-		ret |= useHelper(ItemProp::Dexterity, useOp, value, player, level);
-		ret |= useHelper(ItemProp::Vitality, useOp, value, player, level);
+		ret |= useHelper(ItemProp::Strength, useOpHash, value, player, level);
+		ret |= useHelper(ItemProp::Magic, useOpHash, value, player, level);
+		ret |= useHelper(ItemProp::Dexterity, useOpHash, value, player, level);
+		ret |= useHelper(ItemProp::Vitality, useOpHash, value, player, level);
 		break;
 	}
 	default:
 	{
-		ret = useHelper(propHash, useOp, ItemProp::Value, ItemProp::ValueMax, player, level);
+		ret = useHelper(propHash, useOpHash, ItemProp::Value, ItemProp::ValueMax, player, level);
 		break;
 	}
 	}
+	return ret;
+}
+
+bool Item::useSpell(Player& player, const Level& level,
+	uint16_t useOpHash, uint32_t& quantityLeft)
+{
+	bool ret = false;
+	switch (useOpHash)
+	{
+	case ItemProp::Cast:
+	{
+		ret = true;
+		break;
+	}
+	case ItemProp::Learn:
+	{
+		auto spell = getSpell();
+		if (spell != nullptr)
+		{
+			player.addSpell(spell->Id(), spell);
+		}
+		ret = true;
+		break;
+	}
+	default:
+		break;
+	}
+	return ret;
+}
+
+bool Item::use(Player& player, const Level& level, uint32_t& quantityLeft)
+{
+	quantityLeft = 0;
+
+	if (player.canUseItem(*this) == false)
+	{
+		return false;
+	}
+
+	LevelObjValue itemQuantity;
+	bool hasQuantity = getIntByHash(ItemProp::Quantity, itemQuantity);
+	if (hasQuantity == true &&
+		itemQuantity <= 0)
+	{
+		return true;
+	}
+
+	bool ret = false;
+	LevelObjValue useOp;
+	if (getIntByHash(ItemProp::UseOp, useOp) == true &&
+		(useOp == ItemProp::Cast || useOp == ItemProp::Learn))
+	{
+		ret = useSpell(player, level, (uint16_t)useOp, quantityLeft);
+	}
+	else
+	{
+		ret = useItem(player, level, (uint16_t)useOp, quantityLeft);
+	}
+
 	if (ret == true)
 	{
 		if (hasQuantity == true)

@@ -53,7 +53,7 @@ class ActGameClose : public Action
 public:
 	virtual bool execute(Game& game)
 	{
-		game.Window().close();
+		game.close();
 		return true;
 	}
 };

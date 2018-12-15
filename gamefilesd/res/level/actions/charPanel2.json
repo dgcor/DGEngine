@@ -1,0 +1,40 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "charStrAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "strength", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charMagAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "magic", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charDexAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "dexterity", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateAllPlayerStats"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "charVitAddPoint",
+      "action": [
+        { "name": "player.addToProperty", "property": "vitality", "value": 1 },
+        { "name": "player.addToProperty", "property": "points", "value": -1 },
+        "updateAllPlayerStats"
+      ]
+    }
+  ]
+}

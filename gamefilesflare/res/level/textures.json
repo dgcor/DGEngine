@@ -25,6 +25,10 @@
       "file": "images/menus/config.png"
     },
     {
+      "id": "icons",
+      "file": "images/icons/icons.png"
+    },
+    {
       "id": "inventory",
       "file": "images/menus/inventory.png"
     },

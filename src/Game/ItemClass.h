@@ -5,6 +5,7 @@
 #include "GameProperties.h"
 #include "ItemXY.h"
 #include "LevelObjectClassDefaults.h"
+#include "Spell.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "Utils/FixedMap.h"
@@ -28,6 +29,8 @@ private:
 	Classifiers<8> classifiers;
 
 	FixedMap<uint16_t, Formula, 6> formulas;
+
+	Spell* spell{ nullptr };
 
 	sf::Time animationSpeed{ sf::milliseconds(40) };
 	sf::Color outline{ sf::Color::Transparent };
@@ -101,6 +104,10 @@ public:
 	void setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
+
+	bool hasSpell() const noexcept { return spell != nullptr; }
+	Spell* getSpell() const noexcept { return spell; }
+	void setSpell(Spell* obj) { spell = obj; }
 
 	void setFormula(uint16_t nameHash, const Formula& formula);
 	void deleteFormula(uint16_t nameHash);

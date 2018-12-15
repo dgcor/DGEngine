@@ -43,6 +43,9 @@
           }
         }
       }
+    ],
+    "spell": [
+      { "class": "staffRecharge" }
     ]
   }
 }

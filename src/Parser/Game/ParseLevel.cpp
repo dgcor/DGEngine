@@ -292,7 +292,7 @@ namespace Parser
 	{
 		auto anchor = getAnchorKey(elem, "anchor");
 		level.setAnchor(anchor);
-		auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.WindowTexSizef());
+		auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.DrawRegionSizef());
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true)
 		{

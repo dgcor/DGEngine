@@ -1,14 +1,17 @@
 {
-  "action": {
-    "name": "action.set",
-    "id": "menu.saveAndCloseAction",
-    "action": [
-      "saveSettings",
-      { "name": "resource.popAll", "id": "gameMenuCommon" },
-      { "name": "resource.ignore", "id": "level", "ignore": "none" },
-      { "name": "level.pause", "pause": false }
-    ]
-  },
+  "action": [
+    {
+      "name": "action.set",
+      "id": "menu.saveAndCloseAction",
+      "action": [
+        "saveSettings",
+        { "name": "resource.popAll", "id": "gameMenuCommon" },
+        { "name": "resource.ignore", "id": "level", "ignore": "none" },
+        { "name": "level.pause", "pause": false }
+      ]
+    },
+    { "name": "resource.add", "id": "levelOverlay" }
+  ],
   "text": {
     "id": "txtLevelUp",
     "font": "smaltext",
@@ -145,6 +148,16 @@
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
       "onRightClick": "rightClickLevel"
+    }
+  ],
+  "load": "ui/level/char/panelSpellImages.json",
+  "action": { "name": "resource.add", "id": "panel" },
+  "image": [
+    {
+      "id": "mapImage",
+      "texture": "empty",
+      "anchor": "none",
+      "visible": false
     },
     {
       "id": "panel8",
@@ -153,9 +166,7 @@
       "textureRect": [0, 15, 640, 129],
       "anchor": "bottom",
       "onRightClick": "rightClickLevel"
-    }
-  ],
-  "image": [
+    },
     {
       "id": "lifeOrbFull",
       "texture": "panel8",
@@ -294,7 +305,8 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             { "name": "load", "file": "ui/level/char/panelInventory.json" },
             { "name": "drawable.visible", "id": "invPanel", "visible": true },
-            { "name": "drawable.visible", "id": "spellPanel", "visible": false }
+            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            "hideSpellImages"
           ],
           "else": [
             { "name": "resource.pop", "id": "removeGold" },
@@ -302,6 +314,7 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
             { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            "hideSpellImages",
             "setLevelHoverActions"
           ]
         },
@@ -345,6 +358,7 @@
             { "name": "resource.pop", "id": "charPanelSpells" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
             { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            "hideSpellImages",
             "setLevelHoverActions"
           ]
         },

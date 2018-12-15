@@ -18,6 +18,9 @@ namespace ItemProp
 	const uint16_t LifeAndManaDamage = str2int16("lifeAndManaDamage");
 	const uint16_t AllAttributes = str2int16("allAttributes");
 
+	const uint16_t Cast = str2int16("cast");
+	const uint16_t Learn = str2int16("learn");
+
 	const uint16_t Strength = str2int16("strength");
 	const uint16_t Magic = str2int16("magic");
 	const uint16_t Dexterity = str2int16("dexterity");

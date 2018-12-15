@@ -19,14 +19,14 @@ class Game : public sf::NonCopyable, public Queryable
 {
 private:
 	sf::RenderWindow window;
-	sf::RenderTexture windowTex;
-	sf::Sprite windowSprite;
+	sf::RenderTexture gameTexture;
+	sf::Sprite gameSprite;
 
-	sf::Vector2u refSize;
-	sf::Vector2u minSize;
+	sf::Vector2u refSize{ 640, 480 };
+	sf::Vector2u minSize{ 640, 480 };
+	sf::Vector2u size{ 640, 480 };
 	sf::Vector2u oldSize;
-	sf::Vector2u size;
-	sf::Vector2u windowTexSize;
+	sf::Vector2u drawRegionSize;
 	unsigned framerate{ 0 };
 	bool smoothScreen{ false };
 	bool stretchToFit{ false };
@@ -101,13 +101,16 @@ private:
 	void drawWindow();
 
 	void updateSize();
-	void updateWindowTex();
+	void updateGameTexture();
 
 public:
-	Game() noexcept : refSize(640, 480), minSize(640, 480), size(640, 480) {}
 	~Game();
 
 	void init();
+
+	// recreates the given renderTexture using the current draw region size
+	// and sets the smooth property.
+	void recreateRenderTexture(sf::RenderTexture& renderTexture) const;
 
 	unsigned getOpenGLDepthBits() const { return window.getSettings().depthBits; }
 	unsigned getOpenGLStencilBits() const { return window.getSettings().stencilBits; }
@@ -118,48 +121,16 @@ public:
 
 	const sf::Vector2u& OldWindowSize() const noexcept { return oldSize; }
 	const sf::Vector2u& WindowSize() const noexcept { return size; }
-	const sf::Vector2u& WindowTexSize() const noexcept { return windowTexSize; }
-	sf::Vector2f WindowTexSizef() const
+	const sf::Vector2u& DrawRegionSize() const noexcept { return drawRegionSize; }
+	sf::Vector2f DrawRegionSizef() const
 	{
-		return sf::Vector2f((float)windowTexSize.x, (float)windowTexSize.y);
+		return sf::Vector2f((float)drawRegionSize.x, (float)drawRegionSize.y);
 	}
-	void WindowSize(const sf::Vector2u& size_)
-	{
-		if (size_.x >= minSize.x && size_.y >= minSize.y)
-		{
-			if (window.isOpen() == true)
-			{
-				window.setSize(size_);
-			}
-			else
-			{
-				size = size_;
-			}
-		}
-	}
+	void WindowSize(const sf::Vector2u& size_);
 	const sf::Vector2u& RefSize() const noexcept { return refSize; }
-	void RefSize(const sf::Vector2u& size_)
-	{
-		if (window.isOpen() == false &&
-			size_.x > minSize.x &&
-			size_.y > minSize.y)
-		{
-			refSize = size_;
-		}
-	}
+	void RefSize(const sf::Vector2u& size_);
 	const sf::Vector2u& MinSize() const noexcept { return minSize; }
-	void MinSize(const sf::Vector2u& size_)
-	{
-		if (window.isOpen() == true)
-		{
-			return;
-		}
-		minSize = size_;
-		if (size.x < minSize.x && size.y < minSize.y)
-		{
-			size = minSize;
-		}
-	}
+	void MinSize(const sf::Vector2u& size_);
 	unsigned Framerate() const noexcept { return framerate; }
 	bool SmoothScreen() const noexcept { return smoothScreen; }
 	bool StretchToFit() const noexcept { return stretchToFit; }
@@ -202,21 +173,7 @@ public:
 
 	void MinWidth(unsigned width_) noexcept { size.x = width_; }
 	void MinHeight(unsigned height_) noexcept { size.y = height_; }
-	void Framerate(unsigned framerate_)
-	{
-		if (framerate_ > 0)
-		{
-			framerate = std::clamp(framerate_, 30u, 60u);
-		}
-		else
-		{
-			framerate = 0;
-		}
-		if (window.isOpen() == true)
-		{
-			window.setFramerateLimit(framerate);
-		}
-	}
+	void Framerate(unsigned framerate_);
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);
 	void KeepAR(bool keepAR_);
@@ -250,24 +207,18 @@ public:
 	bool isInputEnabled() const noexcept { return enableInput; }
 	void EnableInput(bool enable) noexcept { enableInput = enable; }
 
-	sf::RenderWindow& Window() noexcept { return window; }
-	const sf::RenderWindow& Window() const noexcept { return window; }
-
-	const sf::RenderTexture& WindowTex() const noexcept { return windowTex; }
-
 	ResourceManager& Resources() noexcept { return resourceManager; }
 	const ResourceManager& Resources() const noexcept { return resourceManager; }
 	EventManager& Events() noexcept { return eventManager; }
 
-	void setPath(const std::string& path_) { path = path_; }
-	void setTitle(const std::string& title_)
+	void close() { window.close(); }
+	void setIcon(unsigned int width, unsigned int height, const sf::Uint8* pixels)
 	{
-		title = title_;
-		if (window.isOpen() == true)
-		{
-			window.setTitle(title);
-		}
+		window.setIcon(width, height, pixels);
 	}
+	void setMouseCursorVisible(bool show) { window.setMouseCursorVisible(show); }
+	void setPath(const std::string& path_) { path = path_; }
+	void setTitle(const std::string& title_);
 	void setVersion(const std::string& version_) { version = version_; }
 
 	LoadingScreen* getLoadingScreen() noexcept { return loadingScreen.get(); }

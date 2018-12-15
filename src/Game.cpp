@@ -41,7 +41,70 @@ void Game::init()
 		stretchToFit = false;
 		StretchToFit(true);
 	}
-	updateWindowTex();
+	updateGameTexture();
+}
+
+void Game::WindowSize(const sf::Vector2u& size_)
+{
+	if (size_.x >= minSize.x && size_.y >= minSize.y)
+	{
+		if (window.isOpen() == true)
+		{
+			window.setSize(size_);
+		}
+		else
+		{
+			size = size_;
+		}
+	}
+}
+
+void Game::RefSize(const sf::Vector2u& size_)
+{
+	if (window.isOpen() == false &&
+		size_.x > minSize.x &&
+		size_.y > minSize.y)
+	{
+		refSize = size_;
+	}
+}
+
+void Game::MinSize(const sf::Vector2u& size_)
+{
+	if (window.isOpen() == true)
+	{
+		return;
+	}
+	minSize = size_;
+	if (size.x < minSize.x && size.y < minSize.y)
+	{
+		size = minSize;
+	}
+}
+
+void Game::Framerate(unsigned framerate_)
+{
+	if (framerate_ > 0)
+	{
+		framerate = std::clamp(framerate_, 30u, 60u);
+	}
+	else
+	{
+		framerate = 0;
+	}
+	if (window.isOpen() == true)
+	{
+		window.setFramerateLimit(framerate);
+	}
+}
+
+void Game::setTitle(const std::string& title_)
+{
+	title = title_;
+	if (window.isOpen() == true)
+	{
+		window.setTitle(title);
+	}
 }
 
 void Game::play()
@@ -59,7 +122,7 @@ void Game::play()
 		processEvents();
 
 		window.clear();
-		windowTex.clear();
+		gameTexture.clear();
 
 		elapsedTime = frameClock.restart();
 
@@ -163,7 +226,7 @@ void Game::onResized(const sf::Event::SizeEvent& evt)
 	oldSize = size;
 	size = newSize;
 
-	updateWindowTex();
+	updateGameTexture();
 
 	auto view = window.getView();
 	if (stretchToFit == false)
@@ -204,20 +267,24 @@ void Game::updateSize()
 	}
 }
 
-void Game::updateWindowTex()
+void Game::recreateRenderTexture(sf::RenderTexture& renderTexture) const
+{
+	renderTexture.create(drawRegionSize.x, drawRegionSize.y);
+	renderTexture.setSmooth(smoothScreen);
+}
+
+void Game::updateGameTexture()
 {
 	if (stretchToFit == false)
 	{
-		windowTex.create(size.x, size.y);
-		windowTexSize = size;
+		drawRegionSize = size;
 	}
 	else
 	{
-		windowTex.create(minSize.x, minSize.y);
-		windowTexSize = minSize;
+		drawRegionSize = minSize;
 	}
-	windowTex.setSmooth(smoothScreen);
-	windowSprite.setTexture(windowTex.getTexture(), true);
+	recreateRenderTexture(gameTexture);
+	gameSprite.setTexture(gameTexture.getTexture(), true);
 }
 
 void Game::onLostFocus() noexcept
@@ -391,7 +458,7 @@ bool Game::drawLoadingScreen()
 	{
 		return false;
 	}
-	windowTex.draw(*loadingScreen);
+	gameTexture.draw(*loadingScreen);
 	drawFadeEffect();
 	drawWindow();
 	return true;
@@ -426,7 +493,7 @@ void Game::drawUI()
 		{
 			for (auto obj : res.drawables)
 			{
-				windowTex.draw(*obj);
+				gameTexture.draw(*obj);
 			}
 		}
 		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
@@ -448,7 +515,7 @@ void Game::drawCursor()
 	if (cursor != nullptr)
 	{
 		cursor->update(*this);
-		windowTex.draw(*cursor);
+		gameTexture.draw(*cursor);
 	}
 }
 
@@ -456,14 +523,14 @@ void Game::drawFadeEffect()
 {
 	if (fadeInOut != nullptr)
 	{
-		windowTex.draw(static_cast<sf::RectangleShape>(*fadeInOut));
+		gameTexture.draw(static_cast<sf::RectangleShape>(*fadeInOut));
 		fadeInOut->update(*this);
 	}
 }
 
 void Game::drawWindow()
 {
-	windowTex.display();
+	gameTexture.display();
 	sf::RenderStates states = sf::RenderStates::Default;
 	if (Shaders::supportsGamma() &&
 		gamma > 30 && gamma <= 100)
@@ -471,7 +538,7 @@ void Game::drawWindow()
 		states.shader = &Shaders::Gamma;
 		Shaders::Gamma.setUniform("gamma", (float)(130 - gamma) * 0.01f);
 	}
-	window.draw(windowSprite, states);
+	window.draw(gameSprite, states);
 	window.display();
 }
 
@@ -580,7 +647,7 @@ void Game::clearInputEvents(InputEvent e) noexcept
 void Game::SmoothScreen(bool smooth_)
 {
 	smoothScreen = smooth_;
-	windowTex.setSmooth(smooth_);
+	gameTexture.setSmooth(smooth_);
 }
 
 void Game::StretchToFit(bool stretchToFit_)
@@ -620,7 +687,7 @@ void Game::StretchToFit(bool stretchToFit_)
 				updateSize();
 				view.reset(sf::FloatRect(0, 0, (float)size.x, (float)size.y));
 				window.setView(view);
-				updateWindowTex();
+				updateGameTexture();
 			}
 			updateMouse();
 		}

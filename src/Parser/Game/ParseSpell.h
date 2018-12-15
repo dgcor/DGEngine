@@ -6,6 +6,5 @@
 
 namespace Parser
 {
-	std::unique_ptr<Spell> parseSpellObj(Game& game,
-		Level& level, const rapidjson::Value& elem);
+	void parseSpell(Game& game, const rapidjson::Value& elem);
 }

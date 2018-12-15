@@ -167,7 +167,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 			{
 				if (props.saveDefaults == false &&
 					(playerClass.isDefault(propHash, numVal) == true ||
-					numVal.getInt32() == 0))
+						numVal.getInt32() == 0))
 				{
 					return;
 				}
@@ -280,6 +280,19 @@ void Save::serialize(void* serializeObj, Properties& props,
 			props.customProperty = oldCustomProp;
 			writer.EndArray();
 
+			writer.EndObject();
+		}
+		writer.EndArray();
+	}
+
+	if (player.spells.empty() == false)
+	{
+		writeKeyStringView(writer, "spell");
+		writer.StartArray();
+		for (const auto& spell : player.spells)
+		{
+			writer.StartObject();
+			writeString(writer, "class", spell.first);
 			writer.EndObject();
 		}
 		writer.EndArray();

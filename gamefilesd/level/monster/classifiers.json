@@ -1,0 +1,16 @@
+{
+  "classifier": [
+    {
+      "id": "totalKills",
+      "values": "Total Kills : %totalKills%"
+    },
+    {
+      "id": "resistNoImune",
+      "values": "Some Magic Resistances\nNo Immunities"
+    },
+    {
+      "id": "resistImune",
+      "values": "Some Magic Resistances\nSome Magic Immunities"
+    }
+  ]
+}

@@ -121,7 +121,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		game.Window().setMouseCursorVisible(show);
+		game.setMouseCursorVisible(show);
 		return true;
 	}
 };
