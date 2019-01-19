@@ -138,6 +138,10 @@ bool Inventory::set(const ItemXY& position, std::unique_ptr<Item>& item)
 bool Inventory::set(const ItemXY& position, std::unique_ptr<Item>& item,
 	std::unique_ptr<Item>& oldItem)
 {
+	if (position.x >= size.x || position.y >= size.y)
+	{
+		return false;
+	}
 	size_t idx = position.x + position.y * size.x;
 	if (idx < items.size())
 	{
@@ -181,7 +185,8 @@ bool Inventory::setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& ite
 bool Inventory::setAndEnforceItemSize(const ItemXY& position,
 	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
-	if (size.x == 0 || size.y == 0)
+	if (position.x >= size.x || position.y >= size.y ||
+		size.x == 0 || size.y == 0)
 	{
 		return false;
 	}
@@ -307,8 +312,7 @@ bool Inventory::isSlotInUse(size_t idx) const
 
 bool Inventory::isSlotInUse(const ItemXY& position) const
 {
-	if (position.x >= size.x
-		|| position.y >= size.y)
+	if (position.x >= size.x || position.y >= size.y)
 	{
 		return false;
 	}

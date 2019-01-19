@@ -9,7 +9,7 @@
       "shortName": "Axe",
       "type": "Axe",
       "defaults": {
-        "price": 150,
+        "basePrice": 150,
         "twoHanded": true,
         "damageMin": 2,
         "damageMax": 10,
@@ -28,7 +28,7 @@
       "inventoryTextureIndex": 155,
       "name": "Axe",
       "defaults": {
-        "price": 450,
+        "basePrice": 450,
         "damageMin": 4,
         "damageMax": 12,
         "durability": 32,
@@ -42,7 +42,7 @@
       "inventoryTextureIndex": 153,
       "name": "Large Axe",
       "defaults": {
-        "price": 750,
+        "basePrice": 750,
         "damageMin": 6,
         "damageMax": 16,
         "durability": 40,
@@ -56,7 +56,7 @@
       "inventoryTextureIndex": 152,
       "name": "Broad Axe",
       "defaults": {
-        "price": 1000,
+        "basePrice": 1000,
         "damageMin": 8,
         "damageMax": 20,
         "durability": 50,
@@ -70,7 +70,7 @@
       "inventoryTextureIndex": 112,
       "name": "Battle Axe",
       "defaults": {
-        "price": 1500,
+        "basePrice": 1500,
         "damageMin": 10,
         "damageMax": 25,
         "durability": 60,
@@ -84,7 +84,7 @@
       "inventoryTextureIndex": 154,
       "name": "Great Axe",
       "defaults": {
-        "price": 2500,
+        "basePrice": 2500,
         "damageMin": 12,
         "damageMax": 30,
         "durability": 75,

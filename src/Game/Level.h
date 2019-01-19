@@ -99,6 +99,7 @@ private:
 
 	bool pause{ false };
 	bool visible{ true };
+	bool enableHover{ true };
 	InputEvent captureInputEvents{ InputEvent::All };
 
 	std::vector<Quest> quests;
@@ -328,6 +329,7 @@ public:
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
+	virtual Anchor getAnchor() const noexcept { return view.getAnchor(); }
 	virtual void setAnchor(const Anchor anchor) noexcept
 	{
 		view.setAnchor(anchor);
@@ -399,6 +401,9 @@ public:
 
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+
+	bool EnableHover() const noexcept { return enableHover; }
+	void EnableHover(bool enable_) noexcept { enableHover = enable_; }
 
 	// setting a negative value will disable drawing player direction in the automap
 	void setAutomapPlayerDirectionBaseIndex(int32_t index) noexcept
@@ -474,6 +479,9 @@ public:
 	{
 		experiencePoints = experiencePoints_;
 	}
+
+	bool hasSpell(const std::string& id) const;
+	Spell* getSpell(const std::string& id) const;
 
 	uint32_t getExperienceFromLevel(uint32_t level) const;
 	uint32_t getLevelFromExperience(uint32_t experience) const;

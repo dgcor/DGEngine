@@ -149,6 +149,27 @@ public:
 	}
 };
 
+class ActLevelEnableHover : public Action
+{
+private:
+	std::string id;
+	bool enableHover;
+
+public:
+	ActLevelEnableHover(const std::string& id_, bool enableHover_)
+		: id(id_), enableHover(enableHover_) {}
+
+	virtual bool execute(Game& game) noexcept
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->EnableHover(enableHover);
+		}
+		return true;
+	}
+};
+
 class ActLevelMove : public Action
 {
 private:

@@ -28,10 +28,18 @@
     "items": {
       "load": "currentLevel.pepin.inventory.0",
       "text": "%price%",
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuPriceText.json", "pepin", 0, "%idx%", "%menuIdx%"]
-      }
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "pepin",
+            "itemInv": 0,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuPriceText"
+      ]
     }
   },
   "action": [

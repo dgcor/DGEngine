@@ -1,0 +1,292 @@
+{
+  "classifier": [
+    {
+      "id": "armorPrefixesB",
+      "values": [
+        {
+          "property": "toDamage",
+          "value": [
+            { "min": "min", "max": -25, "value": 0 },
+            { "min": 20, "max": 35, "value": "12 * (toDamage - 20) + 250" },
+            { "min": 36, "max": 50, "value": "14 * (toDamage - 36) + 500" },
+            { "min": 51, "max": 65, "value": "14 * (toDamage - 51) + 750" },
+            { "min": 66, "max": 80, "value": "31.5 * (toDamage - 66) + 1000" },
+            { "min": 81, "max": 95, "value": "31.5 * (toDamage - 81) + 1500" },
+            { "min": 96, "max": 110, "value": "31.5 * (toDamage - 96) + 2000" },
+            { "min": 111, "max": 125, "value": "35 * (toDamage - 111) + 2500" },
+            { "min": 126, "max": 150, "value": "196 * (toDamage - 126) + 10100" },
+            { "min": 151, "max": "max", "value": "200 * (toDamage - 151) + 15000" }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 5, "value": "100 * toHit" },
+            { "min": 6, "max": 10, "value": "100 * (toHit - 6) + 600" },
+            { "min": 11, "max": 15, "value": "100 * (toHit - 11) + 1100" },
+            { "min": 16, "max": 20, "value": "100 * (toHit - 16) + 1600" },
+            { "min": 21, "max": 30, "value": "99 * (toHit - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (toHit - 31) + 3100" },
+            { "min": 41, "max": 60, "value": "95 * (toHit - 41) + 4100" },
+            { "min": 61, "max": 80, "value": "195 * (toHit - 61) + 6100" },
+            { "min": 81, "max": 100, "value": "195 * (toHit - 81) + 10100" },
+            { "min": 101, "max": "max", "value": "118 * (toHit - 101) + 14100" }
+          ]
+        },
+        {
+          "property": "toArmor",
+          "value": [
+            { "min": "min", "max": -25, "value": 0 },
+            { "min": 20, "max": 30, "value": "8 * (toArmor - 20) + 20" },
+            { "min": 31, "max": 40, "value": "8.8 * (toArmor - 31) + 120" },
+            { "min": 41, "max": 55, "value": "5.6 * (toArmor - 41) + 220" },
+            { "min": 56, "max": 70, "value": "5.6 * (toArmor - 56) + 320" },
+            { "min": 71, "max": 90, "value": "9 * (toArmor - 71) + 420" },
+            { "min": 91, "max": 110, "value": "9 * (toArmor - 91) + 620" },
+            { "min": 111, "max": 130, "value": "19 * (toArmor - 111) + 820" },
+            { "min": 131, "max": 150, "value": "39 * (toArmor - 131) + 1220" },
+            { "min": 151, "max": 170, "value": "40 * (toArmor - 151) + 5200" },
+            { "min": 171, "max": "max", "value": "24 * (toArmor - 171) + 6200" }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 15, "value": "600 * (resistAll - 10) + 2000" },
+            { "min": 16, "max": 20, "value": "650 * (resistAll - 16) + 7400" },
+            { "min": 21, "max": 30, "value": "440 * (resistAll - 21) + 11000" },
+            { "min": 31, "max": 40, "value": "1760 * (resistAll - 31) + 24000" },
+            { "min": 41, "max": "max", "value": "1540 * (resistAll - 41) + 61000" }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistMagic - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistMagic - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistMagic - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistMagic - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistMagic - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistFire - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistFire - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistFire - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistFire - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistFire - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistLightning - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistLightning - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistLightning - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistLightning - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistLightning - 51) + 17100" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weaponPrefixesB",
+      "values": [
+        {
+          "property": "toDamage",
+          "value": [
+            { "min": "min", "max": -25, "value": 0 },
+            { "min": 20, "max": 35, "value": "12 * (toDamage - 20) + 250" },
+            { "min": 36, "max": 50, "value": "14 * (toDamage - 36) + 500" },
+            { "min": 51, "max": 65, "value": "14 * (toDamage - 51) + 750" },
+            { "min": 66, "max": 80, "value": "31.5 * (toDamage - 66) + 1000" },
+            { "min": 81, "max": 95, "value": "31.5 * (toDamage - 81) + 1500" },
+            { "min": 96, "max": 110, "value": "31.5 * (toDamage - 96) + 2000" },
+            { "min": 111, "max": 125, "value": "35 * (toDamage - 111) + 2500" },
+            { "min": 126, "max": 150, "value": "196 * (toDamage - 126) + 10100" },
+            { "min": 151, "max": "max", "value": "200 * (toDamage - 151) + 15000" }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 5, "value": "100 * toHit" },
+            { "min": 6, "max": 10, "value": "100 * (toHit - 6) + 600" },
+            { "min": 11, "max": 15, "value": "100 * (toHit - 11) + 1100" },
+            { "min": 16, "max": 20, "value": "100 * (toHit - 16) + 1600" },
+            { "min": 21, "max": 30, "value": "99 * (toHit - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (toHit - 31) + 3100" },
+            { "min": 41, "max": 60, "value": "95 * (toHit - 41) + 4100" },
+            { "min": 61, "max": 80, "value": "195 * (toHit - 61) + 6100" },
+            { "min": 81, "max": 100, "value": "195 * (toHit - 81) + 10100" },
+            { "min": 101, "max": "max", "value": "118 * (toHit - 101) + 14100" }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 5, "value": "36 * (toHit - 1) + 350" },
+            { "min": 6, "max": 10, "value": "42 * (toHit - 6) + 1100" },
+            { "min": 11, "max": 15, "value": "42 * (toHit - 11) + 1850" },
+            { "min": 16, "max": 20, "value": "94.5 * (toHit - 16) + 2600" },
+            { "min": 21, "max": 30, "value": "129.5 * (toHit - 21) + 4100" },
+            { "min": 31, "max": 40, "value": "164.5 * (toHit - 31) + 6100" },
+            { "min": 41, "max": 50, "value": "308 * (toHit - 41) + 8600" },
+            { "min": 51, "max": 75, "value": "352 * (toHit - 51) + 15200" },
+            { "min": 76, "max": "max", "value": "436 * (toHit - 76) + 24100" }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 15, "value": "600 * (resistAll - 10) + 2000" },
+            { "min": 16, "max": 20, "value": "650 * (resistAll - 16) + 7400" },
+            { "min": 21, "max": 30, "value": "440 * (resistAll - 21) + 11000" },
+            { "min": 31, "max": 40, "value": "1760 * (resistAll - 31) + 24000" },
+            { "min": 41, "max": "max", "value": "1540 * (resistAll - 41) + 61000" }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistMagic - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistMagic - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistMagic - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistMagic - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistMagic - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistFire - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistFire - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistFire - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistFire - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistFire - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistLightning - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistLightning - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistLightning - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistLightning - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistLightning - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "mana",
+          "value": [
+            { "min": "min", "max": -11, "value": "63 * (-11 - mana) + 500" },
+            { "min": -10, "max": -1, "value": 0 },
+            { "min": 10, "max": 15, "value": "180 * (mana - 10) + 100" },
+            { "min": 16, "max": 20, "value": "225 * (mana - 16) + 1100" },
+            { "min": 21, "max": 29, "value": "209 * (mana - 21) + 2100" },
+            { "min": 30, "max": 40, "value": "190 * (mana - 30) + 4100" },
+            { "min": 41, "max": 50, "value": "429 * (mana - 41) + 6100" },
+            { "min": 51, "max": 60, "value": "539 * (mana - 51) + 10100" },
+            { "min": 61, "max": 80, "value": "195 * (mana - 61) + 15100" },
+            { "min": 81, "max": "max", "value": "545 * (mana - 81) + 19100" }
+          ]
+        },
+        {
+          "property": "toCharges",
+          "value": [
+            { "min": 2, "max": 2, "value": 2000 },
+            { "min": 3, "max": "max", "value": 3000 }
+          ]
+        },
+        {
+          "property": "toSpells",
+          "value": [
+            { "min": 1, "max": 1, "value": 25000 },
+            { "min": 2, "max": "max", "value": 50000 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jewelleryPrefixesB",
+      "values": [
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 5, "value": "100 * toHit" },
+            { "min": 6, "max": 10, "value": "100 * (toHit - 6) + 600" },
+            { "min": 11, "max": 15, "value": "100 * (toHit - 11) + 1100" },
+            { "min": 16, "max": 20, "value": "100 * (toHit - 16) + 1600" },
+            { "min": 21, "max": 30, "value": "99 * (toHit - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (toHit - 31) + 3100" },
+            { "min": 41, "max": 60, "value": "95 * (toHit - 41) + 4100" },
+            { "min": 61, "max": 80, "value": "195 * (toHit - 61) + 6100" },
+            { "min": 81, "max": 100, "value": "195 * (toHit - 81) + 10100" },
+            { "min": 101, "max": "max", "value": "118 * (toHit - 101) + 14100" }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 15, "value": "600 * (resistAll - 10) + 2000" },
+            { "min": 16, "max": 20, "value": "650 * (resistAll - 16) + 7400" },
+            { "min": 21, "max": 30, "value": "440 * (resistAll - 21) + 11000" },
+            { "min": 31, "max": 40, "value": "1760 * (resistAll - 31) + 24000" },
+            { "min": 41, "max": "max", "value": "1540 * (resistAll - 41) + 61000" }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistMagic - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistMagic - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistMagic - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistMagic - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistMagic - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistFire - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistFire - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistFire - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistFire - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistFire - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 20, "value": "100 * (resistLightning - 10) + 500" },
+            { "min": 21, "max": 30, "value": "99 * (resistLightning - 21) + 2100" },
+            { "min": 31, "max": 40, "value": "99 * (resistLightning - 31) + 3100" },
+            { "min": 41, "max": 50, "value": "418 * (resistLightning - 41) + 8200" },
+            { "min": 51, "max": "max", "value": "319 * (resistLightning - 51) + 17100" }
+          ]
+        },
+        {
+          "property": "mana",
+          "value": [
+            { "min": "min", "max": -11, "value": "63 * (-11 - mana) + 500" },
+            { "min": -10, "max": -1, "value": 0 },
+            { "min": 10, "max": 15, "value": "180 * (mana - 10) + 100" },
+            { "min": 16, "max": 20, "value": "225 * (mana - 16) + 1100" },
+            { "min": 21, "max": 29, "value": "209 * (mana - 21) + 2100" },
+            { "min": 30, "max": 40, "value": "190 * (mana - 30) + 4100" },
+            { "min": 41, "max": 50, "value": "429 * (mana - 41) + 6100" },
+            { "min": 51, "max": 60, "value": "539 * (mana - 51) + 10100" },
+            { "min": 61, "max": 80, "value": "195 * (mana - 61) + 15100" },
+            { "min": 81, "max": "max", "value": "545 * (mana - 81) + 19100" }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -10,9 +10,12 @@
     { "outlineItem": "0x797FA0" },
     { "outlineItemInv": "0xAB9A63" },
     { "outlineObject": "0xDDC47E" },
+    { "sellPrice": "price * 0.25 :max 1" },
+    { "spellBookPage": 1 },
     { "textBlue": "0xA7B0DE" },
     { "textGold": "0xEDD689" },
     { "textRed": "0xFE9292" },
+    { "WirtPrice": "price * 1.5 :max 1" },
     { "WirtSeePrice": 50 }
   ]
 }

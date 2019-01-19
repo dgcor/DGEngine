@@ -55,16 +55,13 @@ namespace TextUtils
 	void appendText(const Game& game, TextOp textOp, std::string& str,
 		const std::string_view textOrformat, const std::vector<std::string>& bindings)
 	{
-		switch (TextOp(((uint32_t)textOp) & 0x7u))
+		switch (TextOp(((uint32_t)textOp) & 0x3u))
 		{
 		default:
 		case TextOp::Set:
 			str += textOrformat;
 			break;
 		case TextOp::Replace:
-			str += game.getVarOrPropStringS(textOrformat);
-			break;
-		case TextOp::ReplaceAll:
 			str += game.getVarOrPropStringS(textOrformat);
 			break;
 		case TextOp::Query:
@@ -77,11 +74,15 @@ namespace TextUtils
 			{
 				str += textOrformat;
 			}
+			break;
 		}
-		break;
 		case TextOp::FormatString:
 			str += getFormatString(game, textOrformat, bindings);
 			break;
+		}
+		if ((uint32_t)textOp & (uint32_t)TextOp::ReplaceAll)
+		{
+			str = GameUtils::replaceStringWithVarOrProp(str, game);
 		}
 		if ((uint32_t)textOp & (uint32_t)TextOp::Trim)
 		{

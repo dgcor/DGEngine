@@ -82,9 +82,7 @@
       "position": [9, 361],
       "textureRect": [71, 19],
       "clickUp": true,
-      "onClick": [
-        { "name": "button.click", "id": "char", "playSound": false }
-      ],
+      "onClick": { "name": "button.click", "id": "char", "playSound": false },
       "onClickIn": { "name": "image.setTexture", "id": "char2", "texture": "panel8bu" },
       "onClickOut": [
         { "name": "image.setTexture", "id": "char2", "texture": "empty" },
@@ -98,9 +96,7 @@
       "position": [9, 387],
       "textureRect": [0, 19, 71, 19],
       "clickUp": true,
-      "onClick": [
-        { "name": "button.click", "id": "quest", "playSound": false }
-      ],
+      "onClick": { "name": "button.click", "id": "quest", "playSound": false },
       "onClickIn": { "name": "image.setTexture", "id": "quest2", "texture": "panel8bu" },
       "onClickOut": [
         { "name": "image.setTexture", "id": "quest2", "texture": "empty" },
@@ -114,9 +110,7 @@
       "position": [560, 361],
       "textureRect": [0, 76, 71, 19],
       "clickUp": true,
-      "onClick": [
-        { "name": "button.click", "id": "inv", "playSound": false }
-      ],
+      "onClick": { "name": "button.click", "id": "inv", "playSound": false },
       "onClickIn": { "name": "image.setTexture", "id": "inv2", "texture": "panel8bu" },
       "onClickOut": [
         { "name": "image.setTexture", "id": "inv2", "texture": "empty" },
@@ -124,18 +118,27 @@
       ]
     },
     {
-      "id": "spell2",
+      "id": "spellBook2",
       "texture": "empty",
       "anchor": "bottom",
       "position": [560, 387],
       "textureRect": [0, 95, 71, 19],
       "clickUp": true,
-      "onClick": [
-        { "name": "button.click", "id": "spell", "playSound": false }
-      ],
-      "onClickIn": { "name": "image.setTexture", "id": "spell2", "texture": "panel8bu" },
+      "onClick": { "name": "button.click", "id": "spellBook", "playSound": false },
+      "onClickIn": { "name": "image.setTexture", "id": "spellBook2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "image.setTexture", "id": "spell2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spellBook2", "texture": "empty" },
+        "menu.saveAndCloseAction"
+      ]
+    },
+    {
+      "id": "spell2",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [565, 416],
+      "textureRect": [0, 0, 56, 56],
+      "onClick": [
+        { "name": "button.click", "id": "spell", "playSound": false },
         "menu.saveAndCloseAction"
       ]
     },
@@ -146,9 +149,7 @@
       "position": [9, 427],
       "textureRect": [0, 38, 71, 19],
       "clickUp": true,
-      "onClick": [
-        { "name": "button.click", "id": "map", "playSound": false }
-      ],
+      "onClick": { "name": "button.click", "id": "map", "playSound": false },
       "onClickIn": { "name": "image.setTexture", "id": "map2", "texture": "panel8bu" },
       "onClickOut": [
         { "name": "image.setTexture", "id": "map2", "texture": "empty" },

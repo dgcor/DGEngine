@@ -1,0 +1,92 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updateSpellBook4",
+    "action": [
+      { "name": "variable.set", "key": "spellBookPage", "value": 4 },
+      "clearSpellBook",
+      "updategolemSpell",
+      "updateteleportSpell",
+      "updateboneSpiritSpell",
+      "updatebloodStarSpell",
+      {
+        "name": "drawable.setAction",
+        "id": "spell1",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell2",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.golem%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "golem" },
+            "updategolemSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell3",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.teleport%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "teleport" },
+            "updateteleportSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell4",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell5",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.boneSpirit%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "boneSpirit" },
+            "updateboneSpiritSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell6",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.bloodStar%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "bloodStar" },
+            "updatebloodStarSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell7",
+        "event": "click",
+        "action": null
+      }
+    ]
+  }
+}

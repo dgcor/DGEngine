@@ -16,6 +16,8 @@
       "vitality": 20,
       "bonusLife": 1.5,
       "bonusMana": 1.5,
+      "bonusHealing": 1.5,
+      "spellM": 0.75,
       "defaultDamageMin": 1,
       "levelUp": 5
     },
@@ -26,11 +28,13 @@
     "maxResistMagic": 75,
     "maxResistFire": 75,
     "maxResistLightning": 75,
-    "lifeFormula": "vitality + (1.5 * vitalityItems) + (2 * level) + lifeItems + 23",
-    "manaFormula": "magic + (1.5 * magicItems) + (2 * level) + manaItems + 5",
-    "armorFormula": "dexterityNow * 0.2 + armorItems",
-    "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
-    "damageFormula": "strengthNow + dexterityNow * level / 200",
+    "formulas": {
+      "life": "vitality + (1.5 * vitalityItems) + (2 * level) + lifeItems + 23",
+      "mana": "magic + (1.5 * magicItems) + (2 * level) + manaItems + 5",
+      "armor": "dexterityNow * 0.2 + armorItems",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow + dexterityNow * level / 200"
+    },
     "texturePacks": [
       "rogueNormal",
       "rogueNormalAxe",

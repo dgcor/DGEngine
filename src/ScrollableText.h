@@ -32,6 +32,7 @@ public:
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
+	virtual Anchor getAnchor() const noexcept { return view.getAnchor(); }
 	virtual void setAnchor(const Anchor anchor) noexcept { view.setAnchor(anchor); }
 	virtual void updateSize(const Game& game);
 

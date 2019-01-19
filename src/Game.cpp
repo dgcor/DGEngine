@@ -114,7 +114,7 @@ void Game::play()
 		return;
 	}
 
-	updateMouse();
+	updateMousePosition();
 	sf::Clock frameClock;
 
 	while (window.isOpen() == true)
@@ -337,7 +337,7 @@ void Game::onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt)
 	}
 	mouseScrollEvt = evt;
 	mouseScrolled = true;
-	updateMouse();
+	updateMousePosition();
 	mouseScrollEvt.x = mousePositioni.x;
 	mouseScrollEvt.y = mousePositioni.y;
 }
@@ -350,7 +350,7 @@ void Game::onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt)
 	}
 	mousePressEvt = evt;
 	mousePressed = true;
-	updateMouse();
+	updateMousePosition();
 	mousePressEvt.x = mousePositioni.x;
 	mousePressEvt.y = mousePositioni.y;
 }
@@ -363,14 +363,14 @@ void Game::onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt)
 	}
 	mouseReleaseEvt = evt;
 	mouseReleased = true;
-	updateMouse();
+	updateMousePosition();
 	mouseReleaseEvt.x = mousePositioni.x;
 	mouseReleaseEvt.y = mousePositioni.y;
 }
 
 void Game::onMouseMoved(const sf::Event::MouseMoveEvent& evt)
 {
-	updateMouse(sf::Vector2i(evt.x, evt.y));
+	updateMousePosition(sf::Vector2i(evt.x, evt.y));
 	if (enableInput == false)
 	{
 		return;
@@ -389,14 +389,14 @@ void Game::onTouchBegan(const sf::Event::TouchEvent& evt)
 	}
 	touchBeganEvt = evt;
 	touchBegan = true;
-	updateMouse();
+	updateMousePosition();
 	touchBeganEvt.x = mousePositioni.x;
 	touchBeganEvt.y = mousePositioni.y;
 }
 
 void Game::onTouchMoved(const sf::Event::TouchEvent& evt)
 {
-	updateMouse(sf::Vector2i(evt.x, evt.y));
+	updateMousePosition(sf::Vector2i(evt.x, evt.y));
 	if (enableInput == false)
 	{
 		return;
@@ -415,17 +415,24 @@ void Game::onTouchEnded(const sf::Event::TouchEvent& evt)
 	}
 	touchEndedEvt = evt;
 	touchEnded = true;
-	updateMouse();
+	updateMousePosition();
 	touchEndedEvt.x = mousePositioni.x;
 	touchEndedEvt.y = mousePositioni.y;
 }
 
-void Game::updateMouse()
+void Game::setMousePosition(sf::Vector2i mousePos)
 {
-	updateMouse(sf::Mouse::getPosition(window));
+	mousePos = window.mapCoordsToPixel({ (float)mousePos.x , (float)mousePos.y });
+	sf::Mouse::setPosition(mousePos, window);
+	updateMousePosition();
 }
 
-void Game::updateMouse(const sf::Vector2i mousePos)
+void Game::updateMousePosition()
+{
+	updateMousePosition(sf::Mouse::getPosition(window));
+}
+
+void Game::updateMousePosition(const sf::Vector2i mousePos)
 {
 	mousePositionf = window.mapPixelToCoords(mousePos);
 	mousePositionf.x = std::round(mousePositionf.x);
@@ -689,7 +696,7 @@ void Game::StretchToFit(bool stretchToFit_)
 				window.setView(view);
 				updateGameTexture();
 			}
-			updateMouse();
+			updateMousePosition();
 		}
 	}
 }
@@ -711,7 +718,7 @@ void Game::KeepAR(bool keepAR_)
 			}
 			window.setView(view);
 			updateSize();
-			updateMouse();
+			updateMousePosition();
 		}
 		keepAR = keepAR_;
 	}
@@ -743,9 +750,9 @@ bool Game::getVariableNoToken(const std::string& key, Variable& var) const
 	return false;
 }
 
-bool Game::getVarOrPropNoToken(const std::string& key, Variable& var) const
+bool Game::getVarOrPropNoToken(const std::string_view key, Variable& var) const
 {
-	if (getVariableNoToken(key, var) == true)
+	if (getVariableNoToken(std::string(key), var) == true)
 	{
 		return true;
 	}
@@ -759,11 +766,7 @@ bool Game::getVarOrProp(const std::string_view key, Variable& var) const
 		(key.back() == '%'))
 	{
 		auto key2 = key.substr(1, key.size() - 2);
-		if (getVariableNoToken(std::string(key2), var) == true)
-		{
-			return true;
-		}
-		return GameUtils::getObjectProperty(*this, key2, var);
+		return getVarOrPropNoToken(key2, var);
 	}
 	return false;
 }

@@ -72,11 +72,11 @@
         {
           "name": "player.removeItemQuantity",
           "itemClass": "gold",
-          "value": "%currentLevel.currentPlayer.item.{1}.{2}.price%"
+          "value": "%currentLevel.currentPlayer.item.{1}.{2}.rechargeCost%"
         },
         {
           "name": "item.setProperty",
-          "inventory": "{1}",
+          "inventory": {1},
           "item": {2},
           "property": "charges",
           "value": "%currentLevel.currentPlayer.item.{1}.{2}.chargesMax%"
@@ -108,51 +108,18 @@
     }
   ],
   "action": [
-    "anchorLeftPentagram",
-    "anchorRightPentagram",
     {
-      "name": "text.setText",
-      "id": "itemInfo",
-      "query": "currentLevel.currentPlayer.item.{1}.{2}",
-      "text": "%name%\n  %d.0%,  %d.3%",
-      "removeEmptyLines": true
-    },
-    {
-      "name": "text.setText",
-      "id": "itemPrice",
-      "query": "currentLevel.currentPlayer.item.{1}.{2}",
-      "text": "%price%"
-    },
-    {
-      "name": "if.equal",
-      "param1": "%currentLevel.currentPlayer.canUseItem.{1}.{2}%",
-      "param2": false,
-      "then": [
-        { "name": "text.setFont", "id": "itemInfo", "font": "smaltextRed" },
-        { "name": "text.setFont", "id": "itemPrice", "font": "smaltextRed" }
-      ],
-      "else": {
-        "name": "if.equal",
-        "param1": "%currentLevel.player.adria.item.{1}.{2}.unique%",
-        "param2": 1,
-        "then": [
-          { "name": "text.setFont", "id": "itemInfo", "font": "smaltextGold" },
-          { "name": "text.setFont", "id": "itemPrice", "font": "smaltextGold" }
-        ],
-        "else": {
-          "name": "if.equal",
-          "param1": "%currentLevel.player.adria.item.{1}.{2}.magical%",
-          "param2": 1,
-          "then": [
-            { "name": "text.setFont", "id": "itemInfo", "font": "smaltextBlue" },
-            { "name": "text.setFont", "id": "itemPrice", "font": "smaltextBlue" }
-          ],
-          "else": [
-            { "name": "text.setFont", "id": "itemInfo", "font": "smaltext" },
-            { "name": "text.setFont", "id": "itemPrice", "font": "smaltext" }
-          ]
-        }
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "hero",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.currentPlayer.item.{1}.{2}.rechargeCost%"
       }
-    }
+    },
+    "setItemInfo",
+    "setPriceInfo",
+    "anchorLeftPentagram",
+    "anchorRightPentagram"
   ]
 }

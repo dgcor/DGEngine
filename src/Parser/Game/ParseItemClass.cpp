@@ -213,7 +213,7 @@ namespace Parser
 						}
 						else
 						{
-							itemClass->setFormula(nameHash, getStringViewVal(it->value));
+							itemClass->setFormula(nameHash, getStringVal(it->value));
 						}
 					}
 				}
@@ -250,6 +250,26 @@ namespace Parser
 		{
 			auto classifier = level->getClassifier(getStringVal(elem["suffix"]));
 			itemClass->setSuffix(classifier);
+		}
+		if (elem.HasMember("pricePrefix1") == true)
+		{
+			auto classifier = level->getClassifier(getStringVal(elem["pricePrefix1"]));
+			itemClass->setPricePrefix1(classifier);
+		}
+		if (elem.HasMember("pricePrefix2") == true)
+		{
+			auto classifier = level->getClassifier(getStringVal(elem["pricePrefix2"]));
+			itemClass->setPricePrefix2(classifier);
+		}
+		if (elem.HasMember("priceSuffix1") == true)
+		{
+			auto classifier = level->getClassifier(getStringVal(elem["priceSuffix1"]));
+			itemClass->setPriceSuffix1(classifier);
+		}
+		if (elem.HasMember("priceSuffix2") == true)
+		{
+			auto classifier = level->getClassifier(getStringVal(elem["priceSuffix2"]));
+			itemClass->setPriceSuffix2(classifier);
 		}
 		if (elem.HasMember("spell") == true)
 		{

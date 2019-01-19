@@ -293,6 +293,10 @@ namespace Parser
 						auto player = level->getPlayerOrCurrent(props2.first);
 						if (player == nullptr)
 						{
+							player = level->getCurrentPlayer();
+						}
+						if (player == nullptr)
+						{
 							return;
 						}
 						auto props3 = Utils::splitStringIn2(props2.second, '.');

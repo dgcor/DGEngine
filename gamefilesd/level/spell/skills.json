@@ -8,9 +8,11 @@
       "textureIndex2": 4,
       "name": "Identify",
       "type": "Skill",
-      "defaults": {
+      "descriptions": { "index": 0, "name": "spellType" },
+      "properties": {
         "damageMin": 2,
-        "damageMax": 10
+        "damageMax": 10,
+        "useInTown": true
       }
     },
     {
@@ -19,7 +21,7 @@
       "textureIndex1": 25,
       "textureIndex2": 25,
       "name": "Item Repair",
-      "defaults": {
+      "properties": {
         "damageMin": 2,
         "damageMax": 10
       }
@@ -30,7 +32,7 @@
       "textureIndex1": 22,
       "textureIndex2": 22,
       "name": "Rage",
-      "defaults": {
+      "properties": {
         "damageMin": 2,
         "damageMax": 10
       }
@@ -41,7 +43,7 @@
       "textureIndex1": 8,
       "textureIndex2": 8,
       "name": "Search",
-      "defaults": {
+      "properties": {
         "damageMin": 2,
         "damageMax": 10
       }
@@ -52,7 +54,7 @@
       "textureIndex1": 28,
       "textureIndex2": 28,
       "name": "Staff Recharge",
-      "defaults": {
+      "properties": {
         "price": 150,
         "damageMin": 2,
         "damageMax": 10
@@ -64,7 +66,7 @@
       "textureIndex1": 36,
       "textureIndex2": 36,
       "name": "Trap Disarm",
-      "defaults": {
+      "properties": {
         "price": 150,
         "damageMin": 2,
         "damageMax": 10

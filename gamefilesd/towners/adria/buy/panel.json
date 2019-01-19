@@ -80,10 +80,18 @@
         "anchorRightPentagram",
         "mainMenu.moveScrollbar"
       ],
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuItemText.json", "adria", 0, "%idx%", "%menuIdx%"]
-      }
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "adria",
+            "itemInv": 0,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuItemText"
+      ]
     }
   },
   "button": {

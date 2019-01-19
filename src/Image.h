@@ -53,6 +53,7 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
+	virtual Anchor getAnchor() const noexcept { return anchor; }
 	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 

@@ -107,10 +107,18 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "adria", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "adria", "{1}", "{2}",
-           "%currentLevel.player.adria.item.{1}.{2}.price%"],
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "adria",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.player.adria.item.{1}.{2}.price%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

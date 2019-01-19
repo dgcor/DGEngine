@@ -218,6 +218,7 @@
     <ClInclude Include="src\Game\Classifier.h" />
     <ClInclude Include="src\Game\Classifiers.h" />
     <ClInclude Include="src\Game\Formula.h" />
+    <ClInclude Include="src\Game\Formulas.h" />
     <ClInclude Include="src\Game\GameHashes.h" />
     <ClInclude Include="src\Game\GameProperties.h" />
     <ClInclude Include="src\Game\Inventories.h" />

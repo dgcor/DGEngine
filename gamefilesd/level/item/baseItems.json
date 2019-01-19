@@ -14,7 +14,8 @@
         "identified": true
       },
       "formulas": {
-        "sell": "price * 0.25"
+        "price": "1 :max ((basePrice + (charges * spell.p)) * (identified * (pricePrefix2 + priceSuffix2 :neg (1 / (pricePrefix2 + priceSuffix2))) :nvl 1) + (identified * (pricePrefix1 + priceSuffix1)))",
+        "repairCost": ":floor(0.5 - ((identified * magical) :nvl (identified * unique) * 0.35) * price * (:trunc(1 - (durability / durabilityMax) * 100) * 0.01)) :nvl 1"
       },
       "inventorySize": [1, 1],
       "actions": {
@@ -46,7 +47,11 @@
         "inventoryDrop": { "name": "sound.play", "id": "invlarm" }
       },
       "prefix": "armorPrefixes",
-      "suffix": "armorSuffixes"
+      "pricePrefix1": "armorPrefixesB",
+      "pricePrefix2": "armorPrefixesM",
+      "suffix": "armorSuffixes",
+      "priceSuffix1": "armorSuffixesB",
+      "priceSuffix2": "armorSuffixesM"
     },
     {
       "id": "baseWeapon",
@@ -71,7 +76,11 @@
         "inventoryDrop": { "name": "sound.play", "id": "invsword" }
       },
       "prefix": "weaponPrefixes",
-      "suffix": "weaponSuffixes"
+      "pricePrefix1": "weaponPrefixesB",
+      "pricePrefix2": "weaponPrefixesM",
+      "suffix": "weaponSuffixes",
+      "priceSuffix1": "weaponSuffixesB",
+      "priceSuffix2": "weaponSuffixesM"
     }
   ]
 }

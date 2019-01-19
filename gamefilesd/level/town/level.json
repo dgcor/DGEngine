@@ -10,6 +10,7 @@
     "sol": "levels/towndata/town.sol",
     "defaultLight": 255
   },
+  "load": "res/towners/actions.json",
   "load": "level/town/levelObjects.json",
   "load": "level/town/players.json",
   "load": "level/town/level2.json",

@@ -33,14 +33,30 @@
       "textureRect": [0, 87, 76, 29]
     }
   ],
-  "action": {
-    "name": "action.set",
-    "id": "hideSpellImages",
-    "action": [
-      { "name": "drawable.visible", "id": "spellBook1", "visible": false },
-      { "name": "drawable.visible", "id": "spellBook2", "visible": false },
-      { "name": "drawable.visible", "id": "spellBook3", "visible": false },
-      { "name": "drawable.visible", "id": "spellBook4", "visible": false }
-    ]
-  }
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": [
+        { "name": "drawable.setPosition", "id": "spellBook2", "position": [378, 320] },
+        { "name": "drawable.setPosition", "id": "spellBook3", "position": [429, 320] },
+        { "name": "drawable.setPosition", "id": "spellBook4", "position": [480, 320] },
+        { "name": "image.setTextureRect", "id": "spellBook1", "rect": [0, 0, 51, 29] },
+        { "name": "image.setTextureRect", "id": "spellBook2", "rect": [0, 29, 51, 29] },
+        { "name": "image.setTextureRect", "id": "spellBook3", "rect": [0, 58, 51, 29] },
+        { "name": "image.setTextureRect", "id": "spellBook4", "rect": [0, 87, 51, 29] }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "hideSpellImages",
+      "action": [
+        { "name": "drawable.visible", "id": "spellBook1", "visible": false },
+        { "name": "drawable.visible", "id": "spellBook2", "visible": false },
+        { "name": "drawable.visible", "id": "spellBook3", "visible": false },
+        { "name": "drawable.visible", "id": "spellBook4", "visible": false }
+      ]
+    }
+  ]
 }

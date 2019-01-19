@@ -262,6 +262,22 @@ namespace Parser
 			}
 		}
 
+		if (elem.HasMember("formulas") == true)
+		{
+			const auto& formulas = elem["formulas"];
+			if (formulas.IsObject() == true)
+			{
+				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
+				{
+					auto nameHash = str2int16(getStringViewVal(it->name));
+					if (nameHash != str2int16(""))
+					{
+						playerClass->setFormula(nameHash, getStringVal(it->value));
+					}
+				}
+			}
+		}
+
 		if (elem.HasMember("animationSpeeds") == true)
 		{
 			const auto& speeds = elem["animationSpeeds"];
@@ -294,7 +310,7 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("aAttackSound") == true)
+		if (elem.HasMember("attackSound") == true)
 		{
 			playerClass->setAttackSound((int16_t)getIntVal(elem["attackSound"], -1));
 		}
@@ -331,7 +347,6 @@ namespace Parser
 		{
 			playerClass->MaxVitality(getIntVal(elem["maxVitality"], 250));
 		}
-
 		if (elem.HasMember("maxResistMagic") == true)
 		{
 			playerClass->MaxResistMagic(getIntVal(elem["maxResistMagic"], 100));
@@ -345,38 +360,6 @@ namespace Parser
 			playerClass->MaxResistLightning(getIntVal(elem["maxResistLightning"], 100));
 		}
 
-		if (elem.HasMember("lifeFormula") == true)
-		{
-			playerClass->setLifeFormula(getStringViewVal(elem["lifeFormula"]));
-		}
-		if (elem.HasMember("manaFormula") == true)
-		{
-			playerClass->setManaFormula(getStringViewVal(elem["manaFormula"]));
-		}
-		if (elem.HasMember("armorFormula") == true)
-		{
-			playerClass->setArmorFormula(getStringViewVal(elem["armorFormula"]));
-		}
-		if (elem.HasMember("toHitFormula") == true)
-		{
-			playerClass->setToHitFormula(getStringViewVal(elem["toHitFormula"]));
-		}
-		if (elem.HasMember("damageFormula") == true)
-		{
-			playerClass->setDamageFormula(getStringViewVal(elem["damageFormula"]));
-		}
-		if (elem.HasMember("resistMagicFormula") == true)
-		{
-			playerClass->setResistMagicFormula(getStringViewVal(elem["resistMagicFormula"]));
-		}
-		if (elem.HasMember("resistFireFormula") == true)
-		{
-			playerClass->setResistFireFormula(getStringViewVal(elem["resistFireFormula"]));
-		}
-		if (elem.HasMember("resistLightningFormula") == true)
-		{
-			playerClass->setResistLightningFormula(getStringViewVal(elem["resistLightningFormula"]));
-		}
 		if (elem.HasMember("outline") == true)
 		{
 			playerClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));

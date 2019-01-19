@@ -11,6 +11,13 @@
       ]
     },
     {
+      "id": "charges",
+      "values": {
+        "property": "chargesMax",
+        "value": { "min": 1, "value": "Charges: %charges%/%chargesMax%" }
+      }
+    },
+    {
       "id": "indestructible",
       "values": "Indestructible"
     },
@@ -32,63 +39,63 @@
         {
           "property": "resistAll",
           "value": [
-            { "min": "min", "max": -1, "value": "Resist All : -%resistAll%%" },
+            { "min": "min", "max": -1, "value": "Resist All : %resistAll%%" },
             { "min": 1, "max": "max", "value": "Resist All : +%resistAll%%" }
           ]
         },
         {
           "property": "resistMagic",
           "value": [
-            { "min": "min", "max": -1, "value": "Resist Magic : -%resistMagic%%" },
+            { "min": "min", "max": -1, "value": "Resist Magic : %resistMagic%%" },
             { "min": 1, "max": "max", "value": "Resist Magic : +%resistMagic%%" }
           ]
         },
         {
           "property": "resistFire",
           "value": [
-            { "min": "min", "max": -1, "value": "Resist Fire : -%resistFire%%" },
+            { "min": "min", "max": -1, "value": "Resist Fire : %resistFire%%" },
             { "min": 1, "max": "max", "value": "Resist Fire : +%resistFire%%" }
           ]
         },
         {
           "property": "resistLightning",
           "value": [
-            { "min": "min", "max": -1, "value": "Resist Lightning : -%resistLightning%%" },
+            { "min": "min", "max": -1, "value": "Resist Lightning : %resistLightning%%" },
             { "min": 1, "max": "max", "value": "Resist Lightning : +%resistLightning%%" }
           ]
         },
         {
           "property": "toDamage",
           "value": [
-            { "min": "min", "max": -1, "value": "-%toDamage%% to Damage" },
+            { "min": "min", "max": -1, "value": "%toDamage%% to Damage" },
             { "min": 1, "max": "max", "value": "+%toDamage%% to Damage" }
           ]
         },
         {
           "property": "toHit",
           "value": [
-            { "min": "min", "max": -1, "value": "Chance to Hit : -%toHit%%" },
+            { "min": "min", "max": -1, "value": "Chance to Hit : %toHit%%" },
             { "min": 1, "max": "max", "value": "Chance to Hit : +%toHit%%" }
           ]
         },
         {
           "property": "toArmor",
           "value": [
-            { "min": "min", "max": -1, "value": "-%toArmor%% Armor" },
+            { "min": "min", "max": -1, "value": "%toArmor%% Armor" },
             { "min": 1, "max": "max", "value": "+%toArmor%% Armor" }
           ]
         },
         {
           "property": "life",
           "value": [
-            { "min": "min", "max": -1, "value": "Hit Points : -%life%" },
+            { "min": "min", "max": -1, "value": "Hit Points : %life%" },
             { "min": 1, "max": "max", "value": "Hit Points : +%life%" }
           ]
         },
         {
           "property": "mana",
           "value": [
-            { "min": "min", "max": -1, "value": "Mana : -%mana%" },
+            { "min": "min", "max": -1, "value": "Mana : %mana%" },
             { "min": 1, "max": "max", "value": "Mana : +%mana%" }
           ]
         },
@@ -104,35 +111,35 @@
         {
           "property": "allAttributes",
           "value": [
-            { "min": "min", "max": -1, "value": "-%allAttributes%% to All Attributes" },
-            { "min": 1, "max": "max", "value": "+%allAttributes%% to All Attributes" }
+            { "min": "min", "max": -1, "value": "%allAttributes% to All Attributes" },
+            { "min": 1, "max": "max", "value": "+%allAttributes% to All Attributes" }
           ]
         },
         {
           "property": "strength",
           "value": [
-            { "min": "min", "max": -1, "value": "-%strength% to Strength" },
+            { "min": "min", "max": -1, "value": "%strength% to Strength" },
             { "min": 1, "max": "max", "value": "+%strength% to Strength" }
           ]
         },
         {
           "property": "magic",
           "value": [
-            { "min": "min", "max": -1, "value": "-%magic% to Magic" },
+            { "min": "min", "max": -1, "value": "%magic% to Magic" },
             { "min": 1, "max": "max", "value": "+%magic% to Magic" }
           ]
         },
         {
           "property": "dexterity",
           "value": [
-            { "min": "min", "max": -1, "value": "-%dexterity% to Dexterity" },
+            { "min": "min", "max": -1, "value": "%dexterity% to Dexterity" },
             { "min": 1, "max": "max", "value": "+%dexterity% to Dexterity" }
           ]
         },
         {
           "property": "vitality",
           "value": [
-            { "min": "min", "max": -1, "value": "-%vitality% to Vitality" },
+            { "min": "min", "max": -1, "value": "%vitality% to Vitality" },
             { "min": 1, "max": "max", "value": "+%vitality% to Vitality" }
           ]
         }
@@ -186,6 +193,14 @@
           "value": { "min": 1, "value": "Required: %requiredVitality% Vit" }
         }
       ]
+    },
+    {
+      "id": "requiredBook1",
+      "values": "Required: %currentLevel.currentPlayer.spell.%spell.id%.requiredMagic% Mag"
+    },
+    {
+      "id": "requiredBook2",
+      "values": "Required: %currentLevel.spell.%spell.id%.requiredMagic% Mag"
     },
     {
       "id": "requiredStrDex",

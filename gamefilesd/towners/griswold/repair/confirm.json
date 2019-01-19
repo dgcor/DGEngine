@@ -2,7 +2,7 @@
   "action": {
     "name": ">=",
     "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
-    "param2": "%currentLevel.currentPlayer.item.{1}.{2}.price%",
+    "param2": "%currentLevel.currentPlayer.item.{1}.{2}.repairCost%",
     "then": {
       "name": "load",
       "file": [ "towners/griswold/repair/confirm2.json", "{1}", "{2}" ]

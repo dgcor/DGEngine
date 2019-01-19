@@ -3,7 +3,7 @@
 #include "Predicate.h"
 #include "Game.h"
 
-class PredPlayerCanUse : public Predicate
+class PredPlayerCanUseItem : public Predicate
 {
 private:
 	std::string idLevel;
@@ -11,7 +11,7 @@ private:
 	ItemLocation itemLocation;
 
 public:
-	PredPlayerCanUse(const std::string& idLevel_,
+	PredPlayerCanUseItem(const std::string& idLevel_,
 		const std::string& idPlayer_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemLocation(itemLocation_) {}
 
@@ -26,7 +26,38 @@ public:
 				auto player = level->getPlayerOrCurrent(idPlayer);
 				if (player != nullptr)
 				{
-					return { player->canUseItem(*item) };
+					return { player->canUseObject(*item) };
+				}
+			}
+		}
+		return { false };
+	}
+};
+
+class PredPlayerCanUseSpell : public Predicate
+{
+private:
+	std::string idLevel;
+	std::string idPlayer;
+	std::string idSpell;
+
+public:
+	PredPlayerCanUseSpell(const std::string& idLevel_,
+		const std::string& idPlayer_, const std::string& idSpell_)
+		: idLevel(idLevel_), idPlayer(idPlayer_), idSpell(idSpell_) {}
+
+	virtual Variable getResult(const Game& game) const
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				auto spell = player->getSpell(idSpell);
+				if (spell != nullptr)
+				{
+					return { player->canUseObject(*spell) };
 				}
 			}
 		}

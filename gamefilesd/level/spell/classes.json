@@ -1,4 +1,5 @@
 {
-  "load": "level/spell/textures.json",
+  "load": "level/spell/classifiers.json",
+  "load": "res/level/spell/textures.json",
   "load": "level/spell/classes2.json"
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Actions/Action.h"
+#include "GameHashes.h"
 #include "Inventories.h"
 #include "LevelObject.h"
 #include "PlayerClass.h"
@@ -36,14 +37,13 @@ private:
 	sf::Time currentWalkTime;
 
 	bool useAI{ false };
-
 	std::unique_ptr<Item> selectedItem;
-	Spell* selectedSpell{ nullptr };
+	const SpellInstance* selectedSpell{ nullptr };
 
 	Inventories<(size_t)PlayerInventory::Size> inventories;
 	size_t bodyInventoryIdx{ (size_t)PlayerInventory::Size };
 
-	std::unordered_map<std::string, Spell*> spells;
+	std::unordered_map<std::string, SpellInstance> spells;
 
 	mutable std::string name;
 	mutable std::array<std::string, 2> descriptions;
@@ -112,9 +112,6 @@ private:
 	void updateWalkPathStep(sf::Vector2f& newDrawPos);
 	void updateWalkPath(Game& game, LevelMap& map);
 
-	bool parseInventoryAndItem(const std::string_view str,
-		std::string_view& props, size_t& invIdx, size_t& itemIdx) const;
-
 	void updateBodyItemValues();
 
 	void updateAnimation(const Game& game);
@@ -148,7 +145,7 @@ public:
 
 	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const noexcept;
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
 	virtual bool Passable() const noexcept { return false; }
 
 	virtual void serialize(void* serializeObj, Save::Properties& props,
@@ -176,7 +173,8 @@ public:
 	bool setInt(const std::string_view prop, LevelObjValue value, const Level* level) noexcept;
 	bool setUIntByHash(uint16_t propHash, uint32_t value, const Level* level) noexcept;
 	bool setUInt(const std::string_view prop, uint32_t value, const Level* level) noexcept;
-	bool getNumberByHash(uint16_t propHash, Number32& value) const noexcept;
+
+	bool getNumberByHash(uint16_t propHash, const std::string_view props, Number32& value) const noexcept;
 	bool setNumberByHash(uint16_t propHash, LevelObjValue value, const Level* level) noexcept;
 	bool setNumberByHash(uint16_t propHash, const Number32& value, const Level* level) noexcept;
 	bool setNumber(const std::string_view prop, LevelObjValue value, const Level* level) noexcept;
@@ -246,7 +244,6 @@ public:
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;
 
-	Spell* SelectedSpell() const noexcept { return selectedSpell; }
 	void SelectedSpell(const std::string& id) noexcept;
 
 	Inventory& getInventory(PlayerInventory inv) noexcept { return inventories[(size_t)inv]; }
@@ -262,25 +259,10 @@ public:
 		bodyInventoryIdx = std::min(idx, (size_t)PlayerInventory::Size);
 	}
 
-	bool hasSpell(const std::string& key) const
-	{
-		return spells.find(key) != spells.end();
-	}
-
-	void addSpell(const std::string key, Spell* obj)
-	{
-		spells.insert(std::make_pair(key, obj));
-	}
-
-	Spell* getSpell(const std::string& key) const
-	{
-		auto it = spells.find(key);
-		if (it != spells.end())
-		{
-			return it->second;
-		}
-		return nullptr;
-	}
+	bool hasSpell(const std::string& key) const;
+	void addSpell(const std::string key, Spell* obj, LevelObjValue spellLevel = 1);
+	Spell* getSpell(const std::string& key) const;
+	const SpellInstance* getSpellInstance(const std::string& key) const;
 
 	bool hasEquipedItemType(const std::string_view type) const;
 	bool hasEquipedItemSubType(const std::string_view type) const;
@@ -323,7 +305,42 @@ public:
 
 	void applyDefaults(const Level& level) noexcept;
 
-	bool canUseItem(const Item& item) const;
+	template <class T>
+	bool canUseObject(const T& obj) const
+	{
+		LevelObjValue value;
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredStrength, value) == true &&
+			value > StrengthNow())
+		{
+			return false;
+		}
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredMagic, value) == true &&
+			value > MagicNow())
+		{
+			return false;
+		}
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredDexterity, value) == true &&
+			value > DexterityNow())
+		{
+			return false;
+		}
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredVitality, value) == true &&
+			value > VitalityNow())
+		{
+			return false;
+		}
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredLife, value) == true &&
+			value > LifeNow())
+		{
+			return false;
+		}
+		if (obj.getNumberPropByHash(*this, ItemProp::RequiredMana, value) == true &&
+			value > ManaNow())
+		{
+			return false;
+		}
+		return true;
+	}
 
 	// returns the remaining quantity to add/remove. 0 if all quantity was added.
 	LevelObjValue addItemQuantity(const ItemClass& itemClass,

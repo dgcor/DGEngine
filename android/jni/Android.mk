@@ -139,6 +139,7 @@ LOCAL_SRC_FILES += Game/Classifier.h
 LOCAL_SRC_FILES += Game/Classifiers.h
 LOCAL_SRC_FILES += Game/Formula.cpp
 LOCAL_SRC_FILES += Game/Formula.h
+LOCAL_SRC_FILES += Game/Formulas.h
 LOCAL_SRC_FILES += Game/fsa.h
 LOCAL_SRC_FILES += Game/GameHashes.h
 LOCAL_SRC_FILES += Game/GameProperties.cpp

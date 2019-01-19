@@ -26,7 +26,7 @@ private:
 
 	ItemXY inventorySize;
 
-	Classifiers<8> classifiers;
+	Classifiers<12> classifiers;
 
 	FixedMap<uint16_t, Formula, 6> formulas;
 
@@ -39,7 +39,13 @@ private:
 	static constexpr size_t InventoryTextureClassifier = 0;
 	static constexpr size_t PrefixClassifier = 1;
 	static constexpr size_t SuffixClassifier = 2;
-	static constexpr size_t DescriptionClassifier = 3;
+	static constexpr size_t PricePrefix1Classifier = 3;
+	static constexpr size_t PricePrefix2Classifier = 4;
+	static constexpr size_t PriceSuffix1Classifier = 5;
+	static constexpr size_t PriceSuffix2Classifier = 6;
+	static constexpr size_t DescriptionClassifier = 7;
+
+	LevelObjValue getClassifierNumOrFormula(size_t idx, const Queryable& item) const;
 
 public:
 	ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
@@ -101,6 +107,16 @@ public:
 
 	bool getFullName(const Queryable& item, std::string& fullName) const;
 
+	LevelObjValue getPricePrefix1(const Queryable& item) const;
+	LevelObjValue getPricePrefix2(const Queryable& item) const;
+	LevelObjValue getPriceSuffix1(const Queryable& item) const;
+	LevelObjValue getPriceSuffix2(const Queryable& item) const;
+
+	void setPricePrefix1(Classifier* classifier);
+	void setPricePrefix2(Classifier* classifier);
+	void setPriceSuffix2(Classifier* classifier);
+	void setPriceSuffix1(Classifier* classifier);
+
 	void setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst);
 
 	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
@@ -109,14 +125,13 @@ public:
 	Spell* getSpell() const noexcept { return spell; }
 	void setSpell(Spell* obj) { spell = obj; }
 
-	void setFormula(uint16_t nameHash, const Formula& formula);
+	void setFormula(uint16_t nameHash, const std::string_view formula);
 	void deleteFormula(uint16_t nameHash);
 
-	bool evalFormula(uint16_t nameHash, const LevelObject& obj, LevelObjValue& val) const;
-	bool evalFormula(uint16_t nameHash, const LevelObject& objA,
-		const LevelObject& objB, LevelObjValue& val) const;
+	bool evalFormula(uint16_t nameHash, const Queryable& item,
+		const Queryable& itemOwner, LevelObjValue& val,
+		const std::string_view minMaxNumber = {}) const;
 
-	LevelObjValue evalFormula(uint16_t nameHash, const LevelObject& obj) const;
-	LevelObjValue evalFormula(uint16_t nameHash, const LevelObject& objA,
-		const LevelObject& objB) const;
+	LevelObjValue evalFormula(uint16_t nameHash, const Queryable& item,
+		const Queryable& itemOwner, const std::string_view minMaxNumber = {}) const;
 };

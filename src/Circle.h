@@ -12,6 +12,7 @@ private:
 public:
 	Circle(float radius = 0, std::size_t pointCount = 30) : sf::CircleShape(radius, pointCount) {}
 
+	virtual Anchor getAnchor() const noexcept { return anchor; }
 	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 

@@ -14,9 +14,11 @@
       "defaultDamageMax": 60,
       "unique": true
     },
-    "lifeFormula": "1666",
-    "armorFormula": "90",
-    "toHitFormula": "220",
+    "formulas": {
+      "life": "1666",
+      "armor": "90",
+      "toHit": "220"
+    },
     "texturePacks": "diablo",
     "textureIndexes": [
       { "name": "Stand1", "index": 3 },

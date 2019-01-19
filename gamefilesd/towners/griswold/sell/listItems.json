@@ -16,6 +16,7 @@
   ],
   "menu": {
     "id": "menuPrices",
+    "replaceVars": true,
     "font": "smaltext",
     "sound": "titlslct",
     "position": [571, 94],
@@ -31,11 +32,19 @@
         "property": "itemType",
         "value": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Sword"]
       },
-      "text": "%prices.sell%",
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuPriceText.json", "hero", 2, "%idx%", "%menuIdx%"]
-      }
+      "text": "%eval.|sellPrice|%",
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "hero",
+            "itemInv": 2,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuPriceText"
+      ]
     }
   },
   "action": [

@@ -44,7 +44,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Paralysis" },
             { "min": -5, "max": -1, "value": "Of Atrophy" },
-            { "min": -1, "max": 5, "value": "Of Dexterity" },
+            { "min": 1, "max": 5, "value": "Of Dexterity" },
             { "min": 6, "max": 10, "value": "Of Skill" },
             { "min": 11, "max": 15, "value": "Of Accuracy" },
             { "min": 16, "max": 20, "value": "Of Precision" },
@@ -56,7 +56,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Illness" },
             { "min": -5, "max": -1, "value": "Of Disease" },
-            { "min": -1, "max": 5, "value": "Of Vitality" },
+            { "min": 1, "max": 5, "value": "Of Vitality" },
             { "min": 6, "max": 10, "value": "Of Zest" },
             { "min": 11, "max": 15, "value": "Of Vim" },
             { "min": 16, "max": 20, "value": "Of Vigor" },
@@ -89,40 +89,10 @@
       ]
     },
     {
-      "id": "spellSuffix",
+      "id": "spellSuffixes",
       "values": {
-        "property": "spell.class",
-        "value": [
-          { "text": "identify", "value": "Of Identify" },
-          { "text": "itemRepair", "value": "Of Item Repair" },
-          { "text": "rage", "value": "Of Rage" },
-          { "text": "search", "value": "Of Search" },
-          { "text": "staffRecharge", "value": "Of Staff Recharge" },
-          { "text": "trapDisarm", "value": "Of Trap Disarm" },
-          { "text": "firebolt", "value": "Of Firebolt" },
-          { "text": "chargedBolt", "value": "Of Charged Bolt" },
-          { "text": "holyBolt", "value": "Of Holy Bolt" },
-          { "text": "healing", "value": "Of Healing" },
-          { "text": "healOther", "value": "Of Heal Other" },
-          { "text": "inferno", "value": "Of Inferno" },
-          { "text": "firewall", "value": "Of Firewall" },
-          { "text": "telekinesis", "value": "Of Telekinesis" },
-          { "text": "lightning", "value": "Of lightning" },
-          { "text": "townPortal", "value": "Of Town Portal" },
-          { "text": "flash", "value": "Of Flash" },
-          { "text": "stoneCurse", "value": "Of Stone Curse" },
-          { "text": "phasing", "value": "Of Phasing" },
-          { "text": "manaShield", "value": "Of Mana Shield" },
-          { "text": "elemental", "value": "Of Elemental" },
-          { "text": "fireball", "value": "Of Fireball" },
-          { "text": "flameWave", "value": "Of Flame Wave" },
-          { "text": "chainLightning", "value": "Of Chain Lightning" },
-          { "text": "guardian", "value": "Of Guardian" },
-          { "text": "golem", "value": "Of Golem" },
-          { "text": "teleport", "value": "Of Teleport" },
-          { "text": "boneSpirit", "value": "Of Bone Spirit" },
-          { "text": "bloodStar", "value": "Of Blood Star" }
-        ]
+        "property": "hasSpell",
+        "value": { "min": true, "max": true, "value": "Of %spell.name%" }
       }
     },
     {
@@ -179,7 +149,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Paralysis" },
             { "min": -5, "max": -1, "value": "Of Atrophy" },
-            { "min": -1, "max": 5, "value": "Of Dexterity" },
+            { "min": 1, "max": 5, "value": "Of Dexterity" },
             { "min": 6, "max": 10, "value": "Of Skill" },
             { "min": 11, "max": 15, "value": "Of Accuracy" },
             { "min": 16, "max": 20, "value": "Of Precision" },
@@ -191,7 +161,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Illness" },
             { "min": -5, "max": -1, "value": "Of Disease" },
-            { "min": -1, "max": 5, "value": "Of Vitality" },
+            { "min": 1, "max": 5, "value": "Of Vitality" },
             { "min": 6, "max": 10, "value": "Of Zest" },
             { "min": 11, "max": 15, "value": "Of Vim" },
             { "min": 16, "max": 20, "value": "Of Vigor" },
@@ -295,7 +265,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Paralysis" },
             { "min": -5, "max": -1, "value": "Of Atrophy" },
-            { "min": -1, "max": 5, "value": "Of Dexterity" },
+            { "min": 1, "max": 5, "value": "Of Dexterity" },
             { "min": 6, "max": 10, "value": "Of Skill" },
             { "min": 11, "max": 15, "value": "Of Accuracy" },
             { "min": 16, "max": 20, "value": "Of Precision" },
@@ -307,7 +277,7 @@
           "value": [
             { "min": "min", "max": -6, "value": "Of Illness" },
             { "min": -5, "max": -1, "value": "Of Disease" },
-            { "min": -1, "max": 5, "value": "Of Vitality" },
+            { "min": 1, "max": 5, "value": "Of Vitality" },
             { "min": 6, "max": 10, "value": "Of Zest" },
             { "min": 11, "max": 15, "value": "Of Vim" },
             { "min": 16, "max": 20, "value": "Of Vigor" },

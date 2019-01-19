@@ -107,10 +107,18 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "pepin", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "pepin", "{1}", "{2}",
-           "%currentLevel.player.pepin.item.{1}.{2}.price%"],
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "pepin",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.player.pepin.item.{1}.{2}.price%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

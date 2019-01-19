@@ -1,0 +1,122 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updateSpellBook3",
+    "action": [
+      { "name": "variable.set", "key": "spellBookPage", "value": 3 },
+      "clearSpellBook",
+      "updatephasingSpell",
+      "updatemanaShieldSpell",
+      "updateelementalSpell",
+      "updatefireballSpell",
+      "updateflameWaveSpell",
+      "updatechainLightningSpell",
+      "updateguardianSpell",
+      {
+        "name": "drawable.setAction",
+        "id": "spell1",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.phasing%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "phasing" },
+            "updatephasingSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell2",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.manaShield%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "manaShield" },
+            "updatemanaShieldSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell3",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.elemental%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "elemental" },
+            "updateelementalSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell4",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.fireball%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "fireball" },
+            "updatefireballSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell5",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.flameWave%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "flameWave" },
+            "updateflameWaveSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell6",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.chainLightning%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "chainLightning" },
+            "updatechainLightningSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell7",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.guardian%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "guardian" },
+            "updateguardianSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      }
+    ]
+  }
+}

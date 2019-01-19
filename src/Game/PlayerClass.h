@@ -3,7 +3,7 @@
 #include "AnimationType.h"
 #include "BaseAnimation.h"
 #include "Classifiers.h"
-#include "Formula.h"
+#include "Formulas.h"
 #include "GameProperties.h"
 #include "LevelObjectClassDefaults.h"
 #include <SFML/Audio/SoundBuffer.hpp>
@@ -50,7 +50,7 @@ private:
 
 	std::vector<std::pair<PlayerAnimation, AnimationSpeed>> animationSpeeds;
 
-	std::array<Formula, 8> formulas;
+	Formulas<std::array<Formula, 8>> formulas;
 
 	std::array<const sf::SoundBuffer*, 16> sounds{ {nullptr} };
 
@@ -62,9 +62,6 @@ private:
 
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color outlineIgnore{ sf::Color::Transparent };
-
-	LevelObjValue evalFormula(size_t idx,
-		const LevelObject& query, LevelObjValue default_) const;
 
 public:
 	PlayerClass() noexcept : animationIndexes() {}
@@ -173,45 +170,39 @@ public:
 	void Outline(const sf::Color& color) noexcept { outline = color; }
 	void OutlineIgnore(const sf::Color& color) noexcept { outlineIgnore = color; }
 
-	void setLifeFormula(const Formula& formula) { formulas[0] = formula; }
-	void setManaFormula(const Formula& formula) { formulas[1] = formula; }
-	void setArmorFormula(const Formula& formula) { formulas[2] = formula; }
-	void setToHitFormula(const Formula& formula) { formulas[3] = formula; }
-	void setDamageFormula(const Formula& formula) { formulas[4] = formula; }
-	void setResistMagicFormula(const Formula& formula) { formulas[5] = formula; }
-	void setResistFireFormula(const Formula& formula) { formulas[6] = formula; }
-	void setResistLightningFormula(const Formula& formula) { formulas[7] = formula; }
+	// if formula is empty, it clears the current formula.
+	void setFormula(uint16_t nameHash, const std::string_view formula);
 
 	LevelObjValue getActualLife(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(0, query, default_);
+		return formulas.eval(0, query, default_);
 	}
 	LevelObjValue getActualMana(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(1, query, default_);
+		return formulas.eval(1, query, default_);
 	}
 	LevelObjValue getActualArmor(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(2, query, default_);
+		return formulas.eval(2, query, default_);
 	}
 	LevelObjValue getActualToHit(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(3, query, default_);
+		return formulas.eval(3, query, default_);
 	}
 	LevelObjValue getActualDamage(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(4, query, default_);
+		return formulas.eval(4, query, default_);
 	}
 	LevelObjValue getActualResistMagic(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(5, query, default_);
+		return formulas.eval(5, query, default_);
 	}
 	LevelObjValue getActualResistFire(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(6, query, default_);
+		return formulas.eval(6, query, default_);
 	}
 	LevelObjValue getActualResistLightning(const LevelObject& query, LevelObjValue default_) const
 	{
-		return evalFormula(7, query, default_);
+		return formulas.eval(7, query, default_);
 	}
 };

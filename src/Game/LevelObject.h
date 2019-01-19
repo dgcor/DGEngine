@@ -5,7 +5,6 @@
 #include <list>
 #include "MapCoord.h"
 #include <memory>
-#include "Number.h"
 #include "Palette.h"
 #include "Queryable.h"
 #include "Save/SaveProperties.h"
@@ -89,8 +88,6 @@ public:
 	{
 		class_->executeAction(game, str2int16("action"));
 	}
-
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const = 0;
 
 	virtual bool Passable() const = 0;
 

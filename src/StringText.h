@@ -24,6 +24,7 @@ public:
 		calculateLineCount();
 	}
 
+	virtual Anchor getAnchor() const noexcept { return anchor; }
 	virtual void setAnchor(const Anchor anchor_)
 	{
 		if (anchor != anchor_)

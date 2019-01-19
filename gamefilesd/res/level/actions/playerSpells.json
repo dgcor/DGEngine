@@ -1,0 +1,147 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "drawSpell",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "replaceVars": "value",
+          "button": {
+            "id": "btn|spellName|Spell",
+            "texture": "empty",
+            "anchor": "bottom",
+            "position": ["|spellPosX|", "|spellPosY|"],
+            "onClick": [
+              { "name": "player.selectSpell", "spell": "|spellName|" },
+              "updateSelectedSpell",
+              "updateSpellBook",
+              "clearPanelText",
+              { "name": "button.click", "id": "spellBackground" }
+            ],
+            "onHoverEnter": [
+              {
+                "name": "if.equal",
+                "param1": "%currentLevel.currentPlayer.spell.|spellName|.spellType%",
+                "param2": "Skill",
+                "then": [
+                  {
+                    "name": "text.setText",
+                    "id": "txtPanel",
+                    "query": "currentLevel.currentPlayer.spell.|spellName|",
+                    "text": "%name% %spellType%"
+                  },
+                  { "name": "image.setTexture", "id": "spellHover", "texturePack": "spellHover", "index": 3 }
+                ],
+                "else": [
+                  {
+                    "name": "text.setText",
+                    "id": "txtPanel",
+                    "query": "currentLevel.currentPlayer.spell.|spellName|",
+                    "text": "%name% %spellType%\n%d.0%"
+                  },
+                  { "name": "image.setTexture", "id": "spellHover", "texturePack": "spellHover", "index": 4 }
+                ]
+              },
+              { "name": "drawable.center", "id": "spellHover", "idCenterOn": "btn|spellName|Spell" },
+              { "name": "drawable.visible", "id": "spellHover", "visible": true },
+              {
+                "name": "if",
+                "params": [
+                  { "name": "player.canUseSpell", "spell": "|spellName|" }, "==", true,
+                  "and",
+                  [
+                    "%currentLevel.path%", "!=", "town",
+                    "or",
+                    [
+                      "%currentLevel.path%", "==", "town",
+                      "and",
+                      "%currentLevel.currentPlayer.spell.|spellName|.useInTown%", "==", 1
+                    ]
+                  ]
+                ],
+                "then": {
+                  "name": "if.equal",
+                  "param1": "%currentLevel.currentPlayer.spell.|spellName|.spellType%",
+                  "param2": "Skill",
+                  "then": { "name": "image.setPalette", "id": "spellHover", "palette": "spell0" },
+                  "else": { "name": "image.setPalette", "id": "spellHover", "palette": "spell1" }
+                },
+                "else": { "name": "image.setPalette", "id": "spellHover", "palette": "spell4" }
+              },
+              "updatePanelTextSpacing",
+              "setPanelTextColorWhite"
+            ],
+            "onHoverLeave": [
+              "clearPanelText",
+              { "name": "drawable.visible", "id": "spellHover", "visible": false }
+            ]
+          },
+          "action": [
+            {
+              "name": "image.setTexture",
+              "id": "btn|spellName|Spell",
+              "query": "currentLevel.currentPlayer.spell.|spellName|",
+              "index": 2
+            },
+            {
+              "name": "if",
+              "params": [
+                { "name": "player.canUseSpell", "spell": "|spellName|" }, "==", true,
+                "and",
+                [
+                  "%currentLevel.path%", "!=", "town",
+                  "or",
+                  [
+                    "%currentLevel.path%", "==", "town",
+                    "and",
+                    "%currentLevel.currentPlayer.spell.|spellName|.useInTown%", "==", 1
+                  ]
+                ]
+              ],
+              "then": {
+                "name": "if.equal",
+                "param1": "%currentLevel.currentPlayer.spell.|spellName|.spellType%",
+                "param2": "Skill",
+                "then": { "name": "image.setPalette", "id": "btn|spellName|Spell", "palette": "spell0" },
+                "else": { "name": "image.setPalette", "id": "btn|spellName|Spell", "palette": "spell1" }
+              },
+              "else": { "name": "image.setPalette", "id": "btn|spellName|Spell", "palette": "spell4" }
+            },
+            {
+              "name": "if.equal",
+              "param1": "%currentLevel.currentPlayer.selectedSpell.id%",
+              "param2": "|spellName|",
+              "then": { "name": "cursor.centerOnDrawable", "id": "btn|spellName|Spell" },
+              "else": {
+                "name": "if",
+                "params": [
+                  "%spellIndex%", "==", 0,
+                  "and",
+                  "%currentLevel.currentPlayer.hasSpell%", "==", false
+                ],
+                "then": { "name": "cursor.centerOnDrawable", "id": "btn|spellName|Spell" }
+              }
+            },
+            { "name": "variable.add", "key": "spellIndex", "value": 1 }
+          ]
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "updateSpellDrawPos",
+      "action": {
+        "name": "<=",
+        "param1": "%spellPosX%",
+        "param2": 15,
+        "then": [
+          { "name": "variable.set", "key": "spellPosX", "value": 572 },
+          { "name": "variable.add", "key": "spellPosY", "value": -56 }
+        ],
+        "else": { "name": "variable.add", "key": "spellPosX", "value": -56 }
+      }
+    }
+  ],
+  "load": "res/level/actions/showAllSpells.json"
+}

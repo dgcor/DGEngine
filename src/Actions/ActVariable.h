@@ -48,7 +48,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		if (key.size() > 0)
+		if (key.empty() == false)
 		{
 			game.clearVariable(key);
 		}
@@ -81,44 +81,24 @@ class ActVariableSet : public Action
 private:
 	std::string key;
 	Variable val;
+	bool resolveValue;
 
 public:
-	ActVariableSet(const std::string& key_, const Variable& val_)
-		: key(key_), val(val_) {}
+	ActVariableSet(const std::string& key_, const Variable& val_,
+		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
 	virtual bool execute(Game& game)
 	{
-		if (key.size() > 0)
+		if (key.empty() == false)
 		{
-			game.setVariable(key, val);
-		}
-		return true;
-	}
-};
-
-class ActVariableSetId : public Action
-{
-private:
-	std::string id;
-	std::string key;
-	std::string property;
-
-public:
-	ActVariableSetId(const std::string& id_, const std::string& key_,
-		const std::string& property_) : id(id_), key(key_), property(property_) {}
-
-	virtual bool execute(Game& game)
-	{
-		if (key.size() > 0)
-		{
-			auto item = game.Resources().getResource<UIObject>(id);
-			if (item != nullptr)
+			if (resolveValue == false)
 			{
-				Variable var;
-				if (item->getProperty(property, var) == true)
-				{
-					game.setVariable(key, var);
-				}
+				game.setVariable(key, val);
+			}
+			else
+			{
+				auto var = game.getVarOrProp(val);
+				game.setVariable(key, var);
 			}
 		}
 		return true;
@@ -130,19 +110,59 @@ class ActVariableSetIfNull : public Action
 private:
 	std::string key;
 	Variable val;
+	bool resolveValue;
 
 public:
-	ActVariableSetIfNull(const std::string& key_, const Variable& val_)
-		: key(key_), val(val_) {}
+	ActVariableSetIfNull(const std::string& key_, const Variable& val_,
+		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
 	virtual bool execute(Game& game)
 	{
-		if (key.size() > 0)
+		if (key.empty() == false)
 		{
 			Variable var;
 			if (game.getVariableNoToken(key, var) == false)
 			{
-				game.setVariable(key, val);
+				if (resolveValue == false)
+				{
+					game.setVariable(key, val);
+				}
+				else
+				{
+					auto var = game.getVarOrProp(val);
+					game.setVariable(key, var);
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActVariablesSet : public Action
+{
+private:
+	std::vector<std::pair<std::string, Variable>> variables;
+	bool resolveValue;
+
+public:
+	ActVariablesSet(const std::vector<std::pair<std::string, Variable>>& variables_,
+		bool resolveValue_) : variables(variables_), resolveValue(resolveValue_) {}
+
+	virtual bool execute(Game& game)
+	{
+		for (const auto& keyVar : variables)
+		{
+			if (keyVar.first.empty() == false)
+			{
+				if (resolveValue == false)
+				{
+					game.setVariable(keyVar.first, keyVar.second);
+				}
+				else
+				{
+					auto var = game.getVarOrProp(keyVar.second);
+					game.setVariable(keyVar.first, var);
+				}
 			}
 		}
 		return true;

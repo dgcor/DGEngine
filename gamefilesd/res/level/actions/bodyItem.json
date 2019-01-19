@@ -9,7 +9,10 @@
         "name": "if.equal",
         "param1": "%currentLevel.currentPlayer.canUseItem.body.{1}%",
         "param2": false,
-        "then": { "name": "image.setPalette", "id": "img{1}", "palette": "infra", "color": "0xFF0000" },
+        "then": [
+          { "name": "image.setPalette", "id": "img{1}", "palette": "infra", "color": "0xFF0000" },
+          { "name": "image.setOutline", "id": "img{1}", "outline": "|outlineCantUse|", "ignore": "0x000000" }
+        ],
         "else": [
           { "name": "image.setPalette", "id": "img{1}", "palette": "town" },
           {

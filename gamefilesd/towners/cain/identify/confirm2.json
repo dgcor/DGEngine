@@ -109,9 +109,18 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "hero", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "hero", "{1}", "{2}", "%identifyPrice%"],
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "hero",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%identifyPrice%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

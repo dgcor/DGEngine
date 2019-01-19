@@ -1,0 +1,277 @@
+{
+  "classifier": [
+    {
+      "id": "armorSuffixesB",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": 0, "value": 0 },
+            { "min": 1, "max": 3, "value": "1600 * (allAttributes - 1) + 800" },
+            { "min": 4, "max": 7, "value": "1056 * (allAttributes - 4) + 4800" },
+            { "min": 8, "max": 11, "value": "1056 * (allAttributes - 8) + 8800" },
+            { "min": 12, "max": 15, "value": "2400 * (allAttributes - 12) + 12800" },
+            { "min": 16, "max": "max", "value": "4800 * (allAttributes - 16) + 20800" }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "strength * 200" },
+            { "min": 16, "max": 20, "value": "450 * (strength - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (strength - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "magic * 200" },
+            { "min": 16, "max": 20, "value": "450 * (magic - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (magic - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "dexterity * 200" },
+            { "min": 16, "max": 20, "value": "450 * (dexterity - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (dexterity - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "vitality * 200" },
+            { "min": 16, "max": 20, "value": "450 * (vitality - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (vitality - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "life",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 10, "max": 15, "value": "180 * (life - 10) + 100" },
+            { "min": 16, "max": 20, "value": "225 * (life - 16) + 1100" },
+            { "min": 21, "max": 29, "value": "209 * (life - 21) + 2100" },
+            { "min": 30, "max": 40, "value": "190 * (life - 30) + 4100" },
+            { "min": 41, "max": 50, "value": "429 * (life - 41) + 6100" },
+            { "min": 51, "max": 60, "value": "539 * (life - 51) + 10100" },
+            { "min": 61, "max": 80, "value": "195 * (life - 61) + 15100" },
+            { "min": 81, "max": "max", "value": "545 * (life - 81) + 19100" }
+          ]
+        },
+        {
+          "property": "hitRecovery",
+          "value": [
+            { "min": 1, "max": 25, "value": 2000 },
+            { "min": 26, "max": 50, "value": 4000 },
+            { "min": 51, "max": "max", "value": 8000 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weaponSuffixesB",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": 0, "value": 0 },
+            { "min": 1, "max": 3, "value": "1600 * (allAttributes - 1) + 800" },
+            { "min": 4, "max": 7, "value": "1056 * (allAttributes - 4) + 4800" },
+            { "min": 8, "max": 11, "value": "1056 * (allAttributes - 8) + 8800" },
+            { "min": 12, "max": 15, "value": "2400 * (allAttributes - 12) + 12800" },
+            { "min": 16, "max": "max", "value": "4800 * (allAttributes - 16) + 20800" }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "strength * 200" },
+            { "min": 16, "max": 20, "value": "450 * (strength - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (strength - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "magic * 200" },
+            { "min": 16, "max": 20, "value": "450 * (magic - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (magic - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "dexterity * 200" },
+            { "min": 16, "max": 20, "value": "450 * (dexterity - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (dexterity - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "vitality * 200" },
+            { "min": 16, "max": 20, "value": "450 * (vitality - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (vitality - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "hitStealsLife",
+          "value": [
+            { "min": 3, "max": 4, "value": 7500 },
+            { "min": 5, "max": "max", "value": 15000 }
+          ]
+        },
+        {
+          "property": "hitStealsMana",
+          "value": [
+            { "min": 3, "max": 4, "value": 7500 },
+            { "min": 5, "max": "max", "value": 15000 }
+          ]
+        },
+        {
+          "property": "attack",
+          "value": [
+            { "min": 1, "max": 25, "value": 2000 },
+            { "min": 26, "max": 50, "value": 4000 },
+            { "min": 51, "max": 75, "value": 8000 },
+            { "min": 76, "max": "max", "value": 16000 }
+          ]
+        },
+        {
+          "property": "lightRadius",
+          "value": [
+            { "min": "min", "max": -20, "value": 0 },
+            { "min": 20, "max": 39, "value": 750 },
+            { "min": 40, "max": "max", "value": 1500 }
+          ]
+        },
+        {
+          "property": "toTargetArmor",
+          "value": [
+            { "min": 1, "max": 4, "value": 1000 },
+            { "min": 5, "max": 8, "value": 2000 },
+            { "min": 9, "max": "max", "value": 4000 }
+          ]
+        },
+        {
+          "property": "damage",
+          "value": [
+            { "min": 1, "max": 2, "value": "100 * damage" },
+            { "min": 3, "max": 5, "value": "100 * (damage - 3) + 1300" },
+            { "min": 6, "max": 8, "value": "200 * (damage - 6) + 2600" },
+            { "min": 9, "max": 12, "value": "297 * (damage - 9) + 4100" },
+            { "min": 13, "max": 16, "value": "1617 * (damage - 12) + 5100" },
+            { "min": 17, "max": "max", "value": "1617 * (damage - 17) + 10100" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jewellerySuffixesB",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": 0, "value": 0 },
+            { "min": 1, "max": 3, "value": "1600 * (allAttributes - 1) + 800" },
+            { "min": 4, "max": 7, "value": "1056 * (allAttributes - 4) + 4800" },
+            { "min": 8, "max": 11, "value": "1056 * (allAttributes - 8) + 8800" },
+            { "min": 12, "max": 15, "value": "2400 * (allAttributes - 12) + 12800" },
+            { "min": 16, "max": "max", "value": "4800 * (allAttributes - 16) + 20800" }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "strength * 200" },
+            { "min": 16, "max": 20, "value": "450 * (strength - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (strength - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "magic * 200" },
+            { "min": 16, "max": 20, "value": "450 * (magic - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (magic - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "dexterity * 200" },
+            { "min": 16, "max": 20, "value": "450 * (dexterity - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (dexterity - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 1, "max": 15, "value": "vitality * 200" },
+            { "min": 16, "max": 20, "value": "450 * (vitality - 16) + 3200" },
+            { "min": 21, "max": "max", "value": "528 * (vitality - 21) + 5200" }
+          ]
+        },
+        {
+          "property": "life",
+          "value": [
+            { "min": "min", "max": -1, "value": 0 },
+            { "min": 10, "max": 15, "value": "180 * (life - 10) + 100" },
+            { "min": 16, "max": 20, "value": "225 * (life - 16) + 1100" },
+            { "min": 21, "max": 29, "value": "209 * (life - 21) + 2100" },
+            { "min": 30, "max": 40, "value": "190 * (life - 30) + 4100" },
+            { "min": 41, "max": 50, "value": "429 * (life - 41) + 6100" },
+            { "min": 51, "max": 60, "value": "539 * (life - 51) + 10100" },
+            { "min": 61, "max": 80, "value": "195 * (life - 61) + 15100" },
+            { "min": 81, "max": "max", "value": "545 * (life - 81) + 19100" }
+          ]
+        },
+        {
+          "property": "hitRecovery",
+          "value": [
+            { "min": 1, "max": 25, "value": 2000 },
+            { "min": 26, "max": 50, "value": 4000 },
+            { "min": 51, "max": "max", "value": 8000 }
+          ]
+        },
+        {
+          "property": "lightRadius",
+          "value": [
+            { "min": "min", "max": -20, "value": 0 },
+            { "min": 20, "max": 39, "value": 750 },
+            { "min": 40, "max": "max", "value": 1500 }
+          ]
+        },
+        {
+          "property": "damageFromEnemies",
+          "value": [
+            { "min": 1, "max": "max", "value": 0 },
+            { "min": -1, "max": -1, "value": 200 },
+            { "min": -2, "max": -2, "value": 400 },
+            { "min": -3, "max": -3, "value": 1001 },
+            { "min": -4, "max": -4, "value": 2500 },
+            { "min": "min", "max": -5, "value": 7500 }
+          ]
+        },
+        {
+          "property": "ofThieves",
+          "value": { "value": 1500 }
+        }
+      ]
+    }
+  ]
+}

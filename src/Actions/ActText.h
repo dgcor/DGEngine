@@ -32,6 +32,7 @@ public:
 		textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void ReplaceAll() noexcept { textOp |= TextUtils::TextOp::ReplaceAll; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)
@@ -173,6 +174,7 @@ public:
 		textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
+	void ReplaceAll() noexcept { textOp |= TextUtils::TextOp::ReplaceAll; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
 	virtual bool execute(Game& game)

@@ -4,6 +4,31 @@
 #include "Game.h"
 #include <string>
 
+class ActCursorCenterOnDrawable : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActCursorCenterOnDrawable(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto obj = game.Resources().getDrawable(id);
+		if (obj != nullptr)
+		{
+			auto centerPos = obj->Position();
+			auto centerSize = obj->Size();
+			sf::Vector2i newPos(
+				(int)std::round(centerPos.x + (centerSize.x / 2.f)),
+				(int)std::round(centerPos.y + (centerSize.y / 2.f))
+			);
+			game.setMousePosition(newPos);
+		}
+		return true;
+	}
+};
+
 class ActCursorEnableOutline : public Action
 {
 private:
@@ -107,6 +132,21 @@ public:
 				cursor->setColor(color);
 			}
 		}
+		return true;
+	}
+};
+
+class ActCursorSetPosition : public Action
+{
+private:
+	sf::Vector2i pos;
+
+public:
+	ActCursorSetPosition(const sf::Vector2i& pos_) : pos(pos_) {}
+
+	virtual bool execute(Game& game)
+	{
+		game.setMousePosition(pos);
 		return true;
 	}
 };

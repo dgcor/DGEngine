@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "Classifier.h"
+#include "Classifiers.h"
+#include "Formulas.h"
 #include "LevelObjectClass.h"
 #include "Queryable.h"
 #include "Save/SaveItem.h"
@@ -25,13 +26,26 @@ private:
 	size_t textureIdx1;
 	size_t textureIdx2;
 
+	Formulas<std::array<Formula, 6>> formulas;
+	FixedMap<uint16_t, Formula, 4> customFormulas;
+
+	static constexpr size_t LifeFormula = 0;
+	static constexpr size_t ManaFormula = 1;
+	static constexpr size_t DamageFormula = 2;
+	static constexpr size_t DurationFormula = 3;
+	static constexpr size_t SpeedFormula = 4;
+
 	mutable std::array<std::string, 5> descriptions;
 	mutable bool updateDescr{ true };
 
-	std::array<std::pair<Classifier*, uint16_t>, 5> descriptionClassifiers;
+	Classifiers<5> descriptionClassifiers;
 
-	bool getDescription(size_t idx, const Queryable& item, std::string& description) const;
-	void updateDescriptions() const;
+	bool getDescription(size_t idx, const Queryable& obj, std::string& description) const;
+	void updateDescriptions(const Queryable& spellObj) const;
+
+	bool evalFormula(uint16_t nameHash, const Queryable& objA,
+		const Queryable& objB, LevelObjValue& val,
+		const std::string_view minMaxNumber = {}) const;
 
 public:
 	using iterator = SpellProperties::iterator;
@@ -57,7 +71,21 @@ public:
 		size_t textureIdx1_, size_t textureIdx2_) : texturePack1(texturePack1_),
 		texturePack2(texturePack2_), textureIdx1(textureIdx1_), textureIdx2(textureIdx2_) {}
 
+	bool getNumberPropByHash(const Queryable& spell, const Queryable& player,
+		uint16_t propHash, const std::string_view minMaxNumber, LevelObjValue& value) const;
+
+	bool getNumberPropByHash(const Queryable& player,
+		uint16_t propHash, LevelObjValue& value) const;
+	bool getNumberPropByHash(const Queryable& player, uint16_t propHash,
+		const std::string_view minMaxNumber, LevelObjValue& value) const;
+
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
+
+	bool getProperty(const Queryable& spell, const Queryable& player,
+		uint16_t propHash, const std::string_view prop, Variable& var) const;
+
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+
 	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 
 	void setTexturePack1(const std::shared_ptr<TexturePack>& texturePack_) noexcept
@@ -102,4 +130,37 @@ public:
 	}
 
 	void setDescription(size_t idx, Classifier* classifier, uint16_t skipFirst);
+
+	// if formula is empty, it clears the current formula.
+	void setFormula(uint16_t nameHash, const std::string_view formula);
+
+	LevelObjValue getLife(const Queryable& spell,
+		const Queryable& player, const std::string_view minMaxNumber = {}) const;
+	LevelObjValue getMana(const Queryable& spell,
+		const Queryable& player, const std::string_view minMaxNumber = {}) const;
+	LevelObjValue getDamage(const Queryable& spell,
+		const Queryable& player, const std::string_view minMaxNumber = {}) const;
+	LevelObjValue getDuration(const Queryable& spell,
+		const Queryable& player, const std::string_view minMaxNumber = {}) const;
+	LevelObjValue getSpeed(const Queryable& spell,
+		const Queryable& player, const std::string_view minMaxNumber = {}) const;
+};
+
+struct SpellInstance : public Queryable
+{
+	Spell* spell{ nullptr };
+	const Queryable* spellOwner{ nullptr };
+	LevelObjValue spellLevel{ 0 };
+
+	SpellInstance(Spell* spell_, const Queryable* spellOwner_, LevelObjValue spellLevel_) :
+		spell(spell_), spellOwner(spellOwner_), spellLevel(spellLevel_) {}
+
+	bool getNumberPropByHash(const Queryable& player,
+		uint16_t propHash, LevelObjValue& value) const;
+	bool getNumberPropByHash(const Queryable& player, uint16_t propHash,
+		const std::string_view minMaxNumber, LevelObjValue& value) const;
+
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 };

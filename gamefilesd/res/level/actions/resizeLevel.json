@@ -21,7 +21,7 @@
             "then": {
               "name": "if.inList",
               "param": true,
-              "list": ["%invPanel.visible%", "%spellPanel.visible%"],
+              "list": ["%invPanel.visible%", "%spellBookPanel.visible%"],
               "then": { "name": "drawable.setSizeX", "id": "level", "size": 0 },
               "else": [
                 { "name": "drawable.setPositionX", "id": "level", "position": 320 },
@@ -31,7 +31,7 @@
             "else": {
               "name": "if.inList",
               "param": true,
-              "list": ["%invPanel.visible%", "%spellPanel.visible%"],
+              "list": ["%invPanel.visible%", "%spellBookPanel.visible%"],
               "then": [
                 { "name": "drawable.setPositionX", "id": "level", "position": 0 },
                 { "name": "drawable.setSizeX", "id": "level", "size": 320 }

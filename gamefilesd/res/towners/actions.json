@@ -1,0 +1,40 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "setItemInfo",
+      "action": {
+        "name": "loadJson",
+        "file": "res/towners/setItemInfo.json",
+        "args": ["%itemOwnerId%", "%itemInv%", "%itemIndex%"]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "setMenuItemText",
+      "action": {
+        "name": "loadJson",
+        "file": "res/towners/setMenuItemText.json",
+        "args": ["%itemOwnerId%", "%itemInv%", "%itemIndex%", "%menuIndex%"]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "setMenuPriceText",
+      "action": {
+        "name": "loadJson",
+        "file": "res/towners/setMenuPriceText.json",
+        "args": ["%itemOwnerId%", "%itemInv%", "%itemIndex%", "%menuIndex%"]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "setPriceInfo",
+      "action": {
+        "name": "loadJson",
+        "file": "res/towners/setPriceInfo.json",
+        "args": ["%itemOwnerId%", "%itemInv%", "%itemIndex%", "%itemPrice%"]
+      }
+    }
+  ]
+}

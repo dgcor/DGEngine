@@ -8,7 +8,7 @@
       "shortName": "Ring",
       "type": "Ring",
       "defaults": {
-        "price": 1000
+        "basePrice": 1000
       }
     }
   ]

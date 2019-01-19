@@ -28,6 +28,7 @@
   },
   "menu": {
     "id": "menuPrices",
+    "replaceVars": true,
     "font": "smaltext",
     "sound": "titlslct",
     "position": [571, 154],
@@ -39,11 +40,19 @@
     "verticalPad": 38,
     "items": {
       "load": "currentLevel.wirt.inventory.0",
-      "text": "%price%",
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuPriceText.json", "wirt", 0, "%idx%", "%menuIdx%"]
-      }
+      "text": "%eval.|WirtPrice|%",
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "wirt",
+            "itemInv": 0,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuPriceText"
+      ]
     }
   },
   "action": [

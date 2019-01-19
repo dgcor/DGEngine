@@ -14,9 +14,11 @@
       "defaultDamageMax": 12,
       "unique": true
     },
-    "lifeFormula": "110",
-    "armorFormula": "50",
-    "toHitFormula": "50",
+    "formulas": {
+      "life": "110",
+      "armor": "50",
+      "toHit": "50"
+    },
     "texturePacks": "butcher",
     "textureIndexes": [
       { "name": "Stand1", "index": 3 },

@@ -67,8 +67,8 @@
       "anchorRightPentagram"
     ]
   },
-  "load": ["towners/common/setItemInfo.json", "hero", "{1}", "{2}"],
   "action": [
+    "setItemInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

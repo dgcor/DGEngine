@@ -113,6 +113,18 @@ namespace Parser
 		parseJson(game, json);
 	}
 
+	void parseJson(Game& game, const std::string_view json,
+		const std::vector<std::string>& params)
+	{
+		std::string json2(json);
+		for (size_t i = 0; i < params.size(); i++)
+		{
+			auto param = GameUtils::replaceStringWithVarOrProp(params[i], game);
+			Utils::replaceStringInPlace(json2, "{" + Utils::toString(i + 1) + "}", param);
+		}
+		parseJson(game, json2);
+	}
+
 	void parseJson(Game& game, const std::string_view json)
 	{
 		Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.

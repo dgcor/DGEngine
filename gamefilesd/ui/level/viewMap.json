@@ -5,7 +5,7 @@
     { "name": "resource.ignore", "id": "charPanelInventory", "ignore": "draw" },
     { "name": "resource.ignore", "id": "charPanelLabels", "ignore": "draw" },
     { "name": "resource.ignore", "id": "charPanelQuests", "ignore": "draw" },
-    { "name": "resource.ignore", "id": "charPanelSpells", "ignore": "draw" },
+    { "name": "resource.ignore", "id": "charPanelSpellBook", "ignore": "draw" },
     {
       "name": "if.equal",
       "param1": "%game.hasTexture.{1}%",
@@ -64,7 +64,7 @@
         { "name": "resource.ignore", "id": "charPanelInventory", "ignore": false },
         { "name": "resource.ignore", "id": "charPanelLabels", "ignore": false },
         { "name": "resource.ignore", "id": "charPanelQuests", "ignore": false },
-        { "name": "resource.ignore", "id": "charPanelSpells", "ignore": false }
+        { "name": "resource.ignore", "id": "charPanelSpellBook", "ignore": false }
       ],
       "onRightClick": { "name": "button.click", "id": "viewMapButton" }
     }

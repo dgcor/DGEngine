@@ -296,6 +296,7 @@
     ],
     "defaultLight": 100
   },
+  "load": "res/towners/actions.json",
   "load": "level/automap/load.json",
   "load": "level/town/levelObjects.json",
   "load": "level/town/level2.json"

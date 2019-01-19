@@ -92,6 +92,8 @@
           "param2": true,
           "then": ["updateStashItems", "updateBodyItems"]
         },
+        "updateSelectedSpell",
+        "updateSpellBook",
         "updateCharLabels"
       ]
     }

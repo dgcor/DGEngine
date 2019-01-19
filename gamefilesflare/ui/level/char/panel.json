@@ -66,18 +66,18 @@
     },
     {
       "name": "action.set",
-      "id": "showSpellPanel",
+      "id": "showSpellBookPanel",
       "action": [
-        { "name": "drawable.visible", "id": "spellPanel", "visible": true },
-        { "name": "drawable.visible", "id": "spellPanel2", "visible": true }
+        { "name": "drawable.visible", "id": "spellBookPanel", "visible": true },
+        { "name": "drawable.visible", "id": "spellBookPanel2", "visible": true }
       ]
     },
     {
       "name": "action.set",
-      "id": "hideSpellPanel",
+      "id": "hideSpellBookPanel",
       "action": [
-        { "name": "drawable.visible", "id": "spellPanel", "visible": false },
-        { "name": "drawable.visible", "id": "spellPanel2", "visible": false }
+        { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
+        { "name": "drawable.visible", "id": "spellBookPanel2", "visible": false }
       ]
     },
     { "name": "resource.add", "id": "levelOverlay" }
@@ -284,7 +284,7 @@
       "onRightClick": "rightClickLevel"
     },
     {
-      "id": "spellPanel",
+      "id": "spellBookPanel",
       "texture": "config",
       "textureRect": [0, 0, 320, 352],
       "anchor": "right",
@@ -296,7 +296,7 @@
       "onRightClick": "rightClickLevel"
     },
     {
-      "id": "spellPanel2",
+      "id": "spellBookPanel2",
       "texture": "config",
       "textureRect": [636, 0, 4, 352],
       "anchor": "right",
@@ -471,18 +471,18 @@
           "param1": "%invPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "load", "file": "ui/level/char/panelInventory.json" },
             "showInvPanel",
             "hideSpellImages",
-            "hideSpellPanel"
+            "hideSpellBookPanel"
           ],
           "else": [
             { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             "hideInvPanel",
-            "hideSpellPanel",
+            "hideSpellBookPanel",
             "hideSpellImages",
             "setLevelHoverActions"
           ]
@@ -502,7 +502,7 @@
       "onHoverLeave": "clearPanelText"
     },
     {
-      "id": "spell",
+      "id": "spellBook",
       "font": "smaltext",
       "anchor": "bottom",
       "position": [560, 387],
@@ -512,20 +512,20 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "%spellPanel.visible%",
+          "param1": "%spellBookPanel.visible%",
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "load", "file": "ui/level/char/panelSpells.json" },
+            { "name": "load", "file": "ui/level/char/panelSpellBook.json" },
             "hideInvPanel",
-            "showSpellPanel"
+            "showSpellBookPanel"
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             "hideInvPanel",
-            "hideSpellPanel",
+            "hideSpellBookPanel",
             "hideSpellImages",
             "setLevelHoverActions"
           ]
@@ -615,7 +615,7 @@
     { "key": "6", "action": "useBelt6Item" },
     { "key": "7", "action": "useBelt7Item" },
     { "key": "8", "action": "useBelt8Item" },
-    { "key": "b", "action": { "name": "button.click", "id": "spell" } },
+    { "key": "b", "action": { "name": "button.click", "id": "spellBook" } },
     { "key": "c", "action": { "name": "button.click", "id": "char" } },
     { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
     { "key": "i", "action": { "name": "button.click", "id": "inv" } },

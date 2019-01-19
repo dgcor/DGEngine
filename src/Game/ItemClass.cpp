@@ -76,6 +76,68 @@ bool ItemClass::getFullName(const Queryable& item, std::string& fullName) const
 	return true;
 }
 
+LevelObjValue ItemClass::getClassifierNumOrFormula(size_t idx, const Queryable& item) const
+{
+	Variable var;
+	if (classifiers.getVar(idx, item, var) == true)
+	{
+		if (std::holds_alternative<std::string>(var) == true)
+		{
+			Formula f(std::get<std::string>(var));
+			return (LevelObjValue)f.eval(item);
+		}
+		else if (std::holds_alternative<int64_t>(var) == true)
+		{
+			return (LevelObjValue)std::get<int64_t>(var);
+		}
+		else if (std::holds_alternative<double>(var) == true)
+		{
+			return (LevelObjValue)std::get<double>(var);
+		}
+	}
+	return 0;
+}
+
+LevelObjValue ItemClass::getPricePrefix1(const Queryable& item) const
+{
+	return getClassifierNumOrFormula(PricePrefix1Classifier, item);
+}
+
+LevelObjValue ItemClass::getPricePrefix2(const Queryable& item) const
+{
+	return getClassifierNumOrFormula(PricePrefix2Classifier, item);
+}
+
+LevelObjValue ItemClass::getPriceSuffix1(const Queryable& item) const
+{
+	return getClassifierNumOrFormula(PriceSuffix1Classifier, item);
+}
+
+LevelObjValue ItemClass::getPriceSuffix2(const Queryable& item) const
+{
+	return getClassifierNumOrFormula(PriceSuffix2Classifier, item);
+}
+
+void ItemClass::setPricePrefix1(Classifier* classifier)
+{
+	classifiers.set(PricePrefix1Classifier, classifier, 0);
+}
+
+void ItemClass::setPricePrefix2(Classifier* classifier)
+{
+	classifiers.set(PricePrefix2Classifier, classifier, 0);
+}
+
+void ItemClass::setPriceSuffix1(Classifier* classifier)
+{
+	classifiers.set(PriceSuffix1Classifier, classifier, 0);
+}
+
+void ItemClass::setPriceSuffix2(Classifier* classifier)
+{
+	classifiers.set(PriceSuffix2Classifier, classifier, 0);
+}
+
 void ItemClass::setInventoryTexture(Classifier* classifier)
 {
 	classifiers.set(InventoryTextureClassifier, classifier, 0);
@@ -101,7 +163,7 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	return classifiers.getText(DescriptionClassifier + idx, item, description);
 }
 
-void ItemClass::setFormula(uint16_t nameHash, const Formula& formula)
+void ItemClass::setFormula(uint16_t nameHash, const std::string_view formula)
 {
 	if (nameHash == str2int16(""))
 	{
@@ -119,32 +181,22 @@ void ItemClass::deleteFormula(uint16_t nameHash)
 	formulas.deleteValue(nameHash);
 }
 
-bool ItemClass::evalFormula(uint16_t nameHash, const LevelObject& obj, LevelObjValue& val) const
-{
-	return evalFormula(nameHash, obj, obj, val);
-}
-
-bool ItemClass::evalFormula(uint16_t nameHash, const LevelObject& objA,
-	const LevelObject& objB, LevelObjValue& val) const
+bool ItemClass::evalFormula(uint16_t nameHash, const Queryable& item,
+	const Queryable& itemOwner, LevelObjValue& val, const std::string_view minMaxNumber) const
 {
 	const auto formula = formulas.getValue(nameHash);
 	if (formula != nullptr)
 	{
-		val = (LevelObjValue)formula->eval(objA, objB);
+		val = (LevelObjValue)formula->eval(item, itemOwner, minMaxNumber);
 		return true;
 	}
 	return false;
 }
 
-LevelObjValue ItemClass::evalFormula(uint16_t nameHash, const LevelObject& obj) const
-{
-	return evalFormula(nameHash, obj, obj);
-}
-
-LevelObjValue ItemClass::evalFormula(uint16_t nameHash, const LevelObject& objA,
-	const LevelObject& objB) const
+LevelObjValue ItemClass::evalFormula(uint16_t nameHash, const Queryable& item,
+	const Queryable& itemOwner, const std::string_view minMaxNumber) const
 {
 	LevelObjValue val = 0;
-	evalFormula(nameHash, objA, objB, val);
+	evalFormula(nameHash, item, itemOwner, val, minMaxNumber);
 	return val;
 }

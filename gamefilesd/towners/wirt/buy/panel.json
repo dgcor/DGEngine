@@ -34,10 +34,18 @@
         "name": "load",
         "file": ["towners/wirt/buy/confirm.json", 0, "%idx%"]
       },
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuItemText.json", "wirt", 0, "%idx%", "%menuIdx%"]
-      }
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "wirt",
+            "itemInv": 0,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuItemText"
+      ]
     }
   },
   "button": {

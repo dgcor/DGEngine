@@ -1,0 +1,684 @@
+{
+  "itemClass": [
+    {
+      "id": "shortStaffOfApocalypse",
+      "fromId": "shortStaff",
+      "defaults": {
+        "chargesMax": 1
+      },
+      "formulas": {
+        "requiredMagic": "spell.reqMag"
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "shortStaffOfBloodStar",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "bloodStar"
+    },
+    {
+      "id": "shortStaffOfBoneSpirit",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "shortStaffOfChainLightning",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "chainLightning"
+    },
+    {
+      "id": "shortStaffOfChargedBolt",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "shortStaffOfElemental",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "elemental"
+    },
+    {
+      "id": "shortStaffOfFireball",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "fireball"
+    },
+    {
+      "id": "shortStaffOfFirebolt",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "firebolt"
+    },
+    {
+      "id": "shortStaffOfFirewall",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "firewall"
+    },
+    {
+      "id": "shortStaffOfFlameWave",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "flameWave"
+    },
+    {
+      "id": "shortStaffOfFlash",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "flash"
+    },
+    {
+      "id": "shortStaffOfGolem",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "golem"
+    },
+    {
+      "id": "shortStaffOfGuardian",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "guardian"
+    },
+    {
+      "id": "shortStaffOfHealing",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "shortStaffOfHealing",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "shortStaffOfHolyBolt",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "holyBolt"
+    },
+    {
+      "id": "shortStaffOfInferno",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "inferno"
+    },
+    {
+      "id": "shortStaffOfLightning",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "lightning"
+    },
+    {
+      "id": "shortStaffOfManaShield",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "manaShield"
+    },
+    {
+      "id": "shortStaffOfNova",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "nova"
+    },
+    {
+      "id": "shortStaffOfPhasing",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "phasing"
+    },
+    {
+      "id": "shortStaffOfResurrect",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "resurrect"
+    },
+    {
+      "id": "shortStaffOfStoneCurse",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "shortStaffOfTelekinesis",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "telekinesis"
+    },
+    {
+      "id": "shortStaffOfTeleport",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "teleport"
+    },
+    {
+      "id": "shortStaffOfTownPortal",
+      "fromId": "shortStaffOfApocalypse",
+      "spell": "townPortal"
+    },
+    {
+      "id": "longStaffOfApocalypse",
+      "fromId": "longStaff",
+      "defaults": {
+        "chargesMax": 1
+      },
+      "formulas": {
+        "requiredMagic": "spell.reqMag"
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "longStaffOfBloodStar",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "bloodStar"
+    },
+    {
+      "id": "longStaffOfBoneSpirit",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "longStaffOfChainLightning",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "chainLightning"
+    },
+    {
+      "id": "longStaffOfChargedBolt",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "longStaffOfElemental",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "elemental"
+    },
+    {
+      "id": "longStaffOfFireball",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "fireball"
+    },
+    {
+      "id": "longStaffOfFirebolt",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "firebolt"
+    },
+    {
+      "id": "longStaffOfFirewall",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "firewall"
+    },
+    {
+      "id": "longStaffOfFlameWave",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "flameWave"
+    },
+    {
+      "id": "longStaffOfFlash",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "flash"
+    },
+    {
+      "id": "longStaffOfGolem",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "golem"
+    },
+    {
+      "id": "longStaffOfGuardian",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "guardian"
+    },
+    {
+      "id": "longStaffOfHealing",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "longStaffOfHealing",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "longStaffOfHolyBolt",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "holyBolt"
+    },
+    {
+      "id": "longStaffOfInferno",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "inferno"
+    },
+    {
+      "id": "longStaffOfLightning",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "lightning"
+    },
+    {
+      "id": "longStaffOfManaShield",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "manaShield"
+    },
+    {
+      "id": "longStaffOfNova",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "nova"
+    },
+    {
+      "id": "longStaffOfPhasing",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "phasing"
+    },
+    {
+      "id": "longStaffOfResurrect",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "resurrect"
+    },
+    {
+      "id": "longStaffOfStoneCurse",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "longStaffOfTelekinesis",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "telekinesis"
+    },
+    {
+      "id": "longStaffOfTeleport",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "teleport"
+    },
+    {
+      "id": "longStaffOfTownPortal",
+      "fromId": "longStaffOfApocalypse",
+      "spell": "townPortal"
+    },
+    {
+      "id": "compositeStaffOfApocalypse",
+      "fromId": "compositeStaff",
+      "defaults": {
+        "chargesMax": 1
+      },
+      "formulas": {
+        "requiredMagic": "spell.reqMag"
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "compositeStaffOfBloodStar",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "bloodStar"
+    },
+    {
+      "id": "compositeStaffOfBoneSpirit",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "compositeStaffOfChainLightning",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "chainLightning"
+    },
+    {
+      "id": "compositeStaffOfChargedBolt",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "compositeStaffOfElemental",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "elemental"
+    },
+    {
+      "id": "compositeStaffOfFireball",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "fireball"
+    },
+    {
+      "id": "compositeStaffOfFirebolt",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "firebolt"
+    },
+    {
+      "id": "compositeStaffOfFirewall",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "firewall"
+    },
+    {
+      "id": "compositeStaffOfFlameWave",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "flameWave"
+    },
+    {
+      "id": "compositeStaffOfFlash",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "flash"
+    },
+    {
+      "id": "compositeStaffOfGolem",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "golem"
+    },
+    {
+      "id": "compositeStaffOfGuardian",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "guardian"
+    },
+    {
+      "id": "compositeStaffOfHealing",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "compositeStaffOfHealing",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "compositeStaffOfHolyBolt",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "holyBolt"
+    },
+    {
+      "id": "compositeStaffOfInferno",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "inferno"
+    },
+    {
+      "id": "compositeStaffOfLightning",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "lightning"
+    },
+    {
+      "id": "compositeStaffOfManaShield",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "manaShield"
+    },
+    {
+      "id": "compositeStaffOfNova",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "nova"
+    },
+    {
+      "id": "compositeStaffOfPhasing",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "phasing"
+    },
+    {
+      "id": "compositeStaffOfResurrect",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "resurrect"
+    },
+    {
+      "id": "compositeStaffOfStoneCurse",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "compositeStaffOfTelekinesis",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "telekinesis"
+    },
+    {
+      "id": "compositeStaffOfTeleport",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "teleport"
+    },
+    {
+      "id": "compositeStaffOfTownPortal",
+      "fromId": "compositeStaffOfApocalypse",
+      "spell": "townPortal"
+    },
+    {
+      "id": "quarterStaffOfApocalypse",
+      "fromId": "quarterStaff",
+      "defaults": {
+        "chargesMax": 1
+      },
+      "formulas": {
+        "requiredMagic": "spell.reqMag"
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "quarterStaffOfBloodStar",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "bloodStar"
+    },
+    {
+      "id": "quarterStaffOfBoneSpirit",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "quarterStaffOfChainLightning",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "chainLightning"
+    },
+    {
+      "id": "quarterStaffOfChargedBolt",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "quarterStaffOfElemental",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "elemental"
+    },
+    {
+      "id": "quarterStaffOfFireball",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "fireball"
+    },
+    {
+      "id": "quarterStaffOfFirebolt",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "firebolt"
+    },
+    {
+      "id": "quarterStaffOfFirewall",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "firewall"
+    },
+    {
+      "id": "quarterStaffOfFlameWave",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "flameWave"
+    },
+    {
+      "id": "quarterStaffOfFlash",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "flash"
+    },
+    {
+      "id": "quarterStaffOfGolem",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "golem"
+    },
+    {
+      "id": "quarterStaffOfGuardian",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "guardian"
+    },
+    {
+      "id": "quarterStaffOfHealing",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "quarterStaffOfHealing",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "quarterStaffOfHolyBolt",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "holyBolt"
+    },
+    {
+      "id": "quarterStaffOfInferno",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "inferno"
+    },
+    {
+      "id": "quarterStaffOfLightning",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "lightning"
+    },
+    {
+      "id": "quarterStaffOfManaShield",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "manaShield"
+    },
+    {
+      "id": "quarterStaffOfNova",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "nova"
+    },
+    {
+      "id": "quarterStaffOfPhasing",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "phasing"
+    },
+    {
+      "id": "quarterStaffOfResurrect",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "resurrect"
+    },
+    {
+      "id": "quarterStaffOfStoneCurse",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "quarterStaffOfTelekinesis",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "telekinesis"
+    },
+    {
+      "id": "quarterStaffOfTeleport",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "teleport"
+    },
+    {
+      "id": "quarterStaffOfTownPortal",
+      "fromId": "quarterStaffOfApocalypse",
+      "spell": "townPortal"
+    },
+    {
+      "id": "warStaffOfApocalypse",
+      "fromId": "warStaff",
+      "defaults": {
+        "chargesMax": 1
+      },
+      "formulas": {
+        "requiredMagic": "spell.reqMag"
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "warStaffOfBloodStar",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "bloodStar"
+    },
+    {
+      "id": "warStaffOfBoneSpirit",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "warStaffOfChainLightning",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "chainLightning"
+    },
+    {
+      "id": "warStaffOfChargedBolt",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "warStaffOfElemental",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "elemental"
+    },
+    {
+      "id": "warStaffOfFireball",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "fireball"
+    },
+    {
+      "id": "warStaffOfFirebolt",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "firebolt"
+    },
+    {
+      "id": "warStaffOfFirewall",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "firewall"
+    },
+    {
+      "id": "warStaffOfFlameWave",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "flameWave"
+    },
+    {
+      "id": "warStaffOfFlash",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "flash"
+    },
+    {
+      "id": "warStaffOfGolem",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "golem"
+    },
+    {
+      "id": "warStaffOfGuardian",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "guardian"
+    },
+    {
+      "id": "warStaffOfHealing",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "warStaffOfHealing",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "healing"
+    },
+    {
+      "id": "warStaffOfHolyBolt",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "holyBolt"
+    },
+    {
+      "id": "warStaffOfInferno",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "inferno"
+    },
+    {
+      "id": "warStaffOfLightning",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "lightning"
+    },
+    {
+      "id": "warStaffOfManaShield",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "manaShield"
+    },
+    {
+      "id": "warStaffOfNova",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "nova"
+    },
+    {
+      "id": "warStaffOfPhasing",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "phasing"
+    },
+    {
+      "id": "warStaffOfResurrect",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "resurrect"
+    },
+    {
+      "id": "warStaffOfStoneCurse",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "warStaffOfTelekinesis",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "telekinesis"
+    },
+    {
+      "id": "warStaffOfTeleport",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "teleport"
+    },
+    {
+      "id": "warStaffOfTownPortal",
+      "fromId": "warStaffOfApocalypse",
+      "spell": "townPortal"
+    }
+  ]
+}

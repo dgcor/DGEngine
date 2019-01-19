@@ -9,7 +9,7 @@
       "shortName": "Buckler",
       "type": "Shield",
       "defaults": {
-        "price": 30,
+        "basePrice": 30,
         "armor": 5,
         "durability": 16,
         "durabilityMax": 16,
@@ -33,7 +33,7 @@
       "name": "Small Shield",
       "shortName": "Shield",
       "defaults": {
-        "price": 90,
+        "basePrice": 90,
         "armor": 8,
         "durability": 24,
         "durabilityMax": 24,
@@ -47,7 +47,7 @@
       "inventoryTextureIndex": 158,
       "name": "Large Shield",
       "defaults": {
-        "price": 200,
+        "basePrice": 200,
         "armor": 10,
         "durability": 32,
         "durabilityMax": 32,
@@ -60,7 +60,7 @@
       "inventoryTextureIndex": 124,
       "name": "Kite Shield",
       "defaults": {
-        "price": 400,
+        "basePrice": 400,
         "armor": 15,
         "durability": 40,
         "durabilityMax": 40,
@@ -73,7 +73,7 @@
       "inventoryTextureIndex": 143,
       "name": "Tower Shield",
       "defaults": {
-        "price": 850,
+        "basePrice": 850,
         "armor": 20,
         "durability": 50,
         "durabilityMax": 50,
@@ -86,7 +86,7 @@
       "inventoryTextureIndex": 159,
       "name": "Gothic Shield",
       "defaults": {
-        "price": 2300,
+        "basePrice": 2300,
         "armor": 18,
         "durability": 60,
         "durabilityMax": 60,

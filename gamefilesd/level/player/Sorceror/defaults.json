@@ -48,7 +48,8 @@
       }
     ],
     "spell": [
-      { "class": "staffRecharge" }
+      { "class": "staffRecharge" },
+      { "class": "firebolt", "level": 2 }
     ]
   }
 }

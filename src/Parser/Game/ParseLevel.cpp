@@ -350,6 +350,10 @@ namespace Parser
 		level->resetView();
 		level->updateViewport(game);
 
+		if (elem.HasMember("enableHover"))
+		{
+			level->EnableHover(getBoolKey(elem, "enableHover", true));
+		}
 		if (elem.HasMember("captureInputEvents"))
 		{
 			level->setCaptureInputEvents(getInputEventVal(elem["captureInputEvents"]));

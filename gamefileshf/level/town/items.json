@@ -82,6 +82,14 @@
       "mapPosition": [58, 74]
     },
     {
+      "class": "bookOfHealing",
+      "mapPosition": [58, 75]
+    },
+    {
+      "class": "bookOfFirebolt",
+      "mapPosition": [58, 76]
+    },
+    {
       "class": "club",
       "mapPosition": [59, 74]
     },
@@ -102,12 +110,11 @@
       "mapPosition": [63, 74]
     },
     {
-      "class": "shortStaff",
+      "class": "quarterStaffOfHealing",
       "mapPosition": [59, 75],
       "properties": {
-        "price": 120,
-        "charges": 12,
-        "chargesMax": 35
+        "charges": 35,
+        "chargesMax": 36
       }
     },
     {
