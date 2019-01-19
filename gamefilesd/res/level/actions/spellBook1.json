@@ -1,0 +1,153 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updateSpellBook1",
+    "action": [
+      { "name": "variable.set", "key": "spellBookPage", "value": 1 },
+      "clearSpellBook",
+      {
+        "name": "switch",
+        "param": "%charClass%",
+        "case": [
+          {
+            "value": "Rogue",
+            "action": "updatetrapDisarmSpell"
+          },
+          {
+            "value": "Sorceror",
+            "action": "updatestaffRechargeSpell"
+          }
+        ],
+        "default": "updateitemRepairSpell"
+      },
+      "updatefireboltSpell",
+      "updatechargedBoltSpell",
+      "updateholyBoltSpell",
+      "updatehealingSpell",
+      "updatehealOtherSpell",
+      "updateinfernoSpell",
+      {
+        "name": "drawable.setAction",
+        "id": "spell1",
+        "event": "click",
+        "action": [
+          {
+            "name": "switch",
+            "param": "%charClass%",
+            "case": [
+              {
+                "value": "Rogue",
+                "action": [
+                  { "name": "player.selectSpell", "spell": "trapDisarm" },
+                  "updatetrapDisarmSpell"
+                ]
+              },
+              {
+                "value": "Sorceror",
+                "action": [
+                  { "name": "player.selectSpell", "spell": "staffRecharge" },
+                  "updatestaffRechargeSpell"
+                ]
+              }
+            ],
+            "default": [
+              { "name": "player.selectSpell", "spell": "itemRepair" },
+              "updateitemRepairSpell"
+            ]
+          },
+          "updateSelectedSpell"
+        ]
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell2",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.firebolt%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "firebolt" },
+            "updatefireboltSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell3",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.chargedBolt%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "chargedBolt" },
+            "updatechargedBoltSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell4",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.holyBolt%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "holyBolt" },
+            "updateholyBoltSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell5",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.healing%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "healing" },
+            "updatehealingSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell6",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.healOther%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "healOther" },
+            "updatehealOtherSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell7",
+        "event": "click",
+        "action": {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.inferno%",
+          "param2": true,
+          "then": [
+            { "name": "player.selectSpell", "spell": "inferno" },
+            "updateinfernoSpell",
+            "updateSelectedSpell"
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "itemClass": [
+    {
+      "id": "valorArmor",
+      "fromId": "ringMail",
+      "dropTexturePack": "armor2",
+      "inventoryTextureIndex": 168,
+      "name": "Arkaine's Valor",
+      "shortName": "Arkaine's Valor",
+      "descriptions": [
+        { "index": 1, "name": "unique" },
+        { "index": 2, "name": null },
+        { "index": 4, "name": "arkanesValor" }
+      ],
+      "defaults": {
+        "basePrice": 42000,
+        "armor": 25,
+        "durability": 40,
+        "durabilityMax": 40,
+        "requiredStrength": 0,
+        "vitality": 10,
+        "damageFromEnemies": -3,
+        "identified": false,
+        "unique": true
+      },
+      "formulas": {
+        "price": "identified * basePrice"
+      },
+      "actions": {
+        "levelPick": [
+          {
+            "name": "load",
+            "file": ["res/player/sound/load.json", 91, "valor", "loadAudio", "currentLevel"]
+          },
+          { "name": "audio.play", "id": "valor", "volume": "%game.soundVolume%" }
+        ]
+      },
+      "prefix": null,
+      "pricePrefix1": null,
+      "pricePrefix2": null,
+      "suffix": null,
+      "priceSuffix1": null,
+      "priceSuffix2": null
+    }
+  ]
+}

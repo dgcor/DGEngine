@@ -45,10 +45,17 @@ namespace Parser
 		}
 		case str2int16("player.canUseItem"):
 		{
-			return std::make_shared<PredPlayerCanUse>(
+			return std::make_shared<PredPlayerCanUseItem>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "player"),
 				getItemLocationKey(elem, "item"));
+		}
+		case str2int16("player.canUseSpell"):
+		{
+			return std::make_shared<PredPlayerCanUseSpell>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "player"),
+				getStringKey(elem, "spell"));
 		}
 		case str2int16("player.getMaxItemCapacity"):
 		{

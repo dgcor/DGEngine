@@ -163,7 +163,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 		{
 			Number32 numVal;
 			uint16_t propHash = str2int16(prop);
-			if (player.getNumberByHash(propHash, numVal) == true)
+			if (player.getNumberByHash(propHash, {}, numVal) == true)
 			{
 				if (props.saveDefaults == false &&
 					(playerClass.isDefault(propHash, numVal) == true ||
@@ -224,10 +224,6 @@ void Save::serialize(void* serializeObj, Properties& props,
 		for (size_t i = 0; i < player.inventories.size(); i++)
 		{
 			const auto& inv = player.inventories[i];
-			if (inv.empty() == true)
-			{
-				continue;
-			}
 
 			writer.StartObject();
 
@@ -269,16 +265,19 @@ void Save::serialize(void* serializeObj, Properties& props,
 				writeBool(writer, "enforceItemSize", true);
 			}
 
-			writeKeyStringView(writer, "item");
-			writer.StartArray();
-			auto oldCustomProp = props.customProperty;
-			for (auto it = inv.begin(); it != inv.end(); ++it)
+			if (inv.empty() == false)
 			{
-				props.customProperty = &it.state.idx;
-				serialize(serializeObj, props, game, level, *it);
+				writeKeyStringView(writer, "item");
+				writer.StartArray();
+				auto oldCustomProp = props.customProperty;
+				for (auto it = inv.begin(); it != inv.end(); ++it)
+				{
+					props.customProperty = &it.state.idx;
+					serialize(serializeObj, props, game, level, *it);
+				}
+				props.customProperty = oldCustomProp;
+				writer.EndArray();
 			}
-			props.customProperty = oldCustomProp;
-			writer.EndArray();
 
 			writer.EndObject();
 		}
@@ -293,9 +292,15 @@ void Save::serialize(void* serializeObj, Properties& props,
 		{
 			writer.StartObject();
 			writeString(writer, "class", spell.first);
+			writeInt(writer, "level", spell.second.spellLevel);
 			writer.EndObject();
 		}
 		writer.EndArray();
+	}
+
+	if (player.selectedSpell != nullptr)
+	{
+		writeString(writer, "selectedSpell", player.selectedSpell->spell->Id());
 	}
 
 	writer.EndObject();

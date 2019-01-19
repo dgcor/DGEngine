@@ -77,12 +77,6 @@
       "palette": "town"
     },
     {
-      "id": "noSpell",
-      "file": "ctrlpan/spelicon.cel",
-      "frame": 26,
-      "palette": "spell4"
-    },
-    {
       "id": "automap",
       "file": "res/level/automap.png"
     }

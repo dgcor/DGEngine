@@ -1,0 +1,52 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updateSpellBook5",
+    "action": [
+      { "name": "variable.set", "key": "spellBookPage", "value": 5 },
+      "clearSpellBook",
+      {
+        "name": "drawable.setAction",
+        "id": "spell1",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell2",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell3",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell4",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell5",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell6",
+        "event": "click",
+        "action": null
+      },
+      {
+        "name": "drawable.setAction",
+        "id": "spell7",
+        "event": "click",
+        "action": null
+      }
+    ]
+  }
+}

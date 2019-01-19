@@ -2,7 +2,7 @@
   "action": {
     "name": "game.fadeOut",
     "action": [
-      { "name": "variable.setId", "key": "charName", "id": "heroName", "property": "text" },
+      { "name": "variable.set", "key": "charName", "value": "%heroName.text%" },
       { "name": "variable.set", "key": "automapZoom", "value": 0 },
       { "name": "resource.popAll" },
       { "name": "load", "file": "loadingScreens/cutstart.json" },

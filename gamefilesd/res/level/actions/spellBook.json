@@ -1,0 +1,69 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "update{2}Spell",
+    "action": {
+      "name": "if.equal",
+      "param1": "%currentLevel.currentPlayer.hasSpell.{2}%",
+      "param2": true,
+      "then": [
+        {
+          "name": "text.setText",
+          "id": "{1}Text",
+          "query": "currentLevel.currentPlayer.spell.{2}",
+          "text": "%name%\n%d.0%\n%d.1%"
+        },
+        {
+          "name": "image.setTexture",
+          "id": "{1}",
+          "query": "currentLevel.currentPlayer.spell.{2}"
+        },
+        {
+          "name": "if",
+          "params": [
+            { "name": "player.canUseSpell", "spell": "{2}" }, "==", true,
+            "and",
+            [
+              "%currentLevel.path%", "!=", "town",
+              "or",
+              [
+                "%currentLevel.path%", "==", "town",
+                "and",
+                "%currentLevel.currentPlayer.spell.{2}.useInTown%", "==", 1
+              ]
+            ]
+          ],
+          "then": [
+            {
+              "name": "if.equal",
+              "param1": "%currentLevel.currentPlayer.spell.{2}.id%",
+              "param2": "%currentLevel.currentPlayer.selectedSpell.id%",
+              "then": [
+                { "name": "drawable.center", "id": "spellBookSelected", "idCenterOn": "{1}" },
+                { "name": "drawable.visible", "id": "spellBookSelected", "visible": true }
+              ]
+            },
+            {
+              "name": "if.equal",
+              "param1": "%currentLevel.currentPlayer.spell.{2}.spellType%",
+              "param2": "Skill",
+              "then": { "name": "image.setPalette", "id": "{1}", "palette": "spell0" },
+              "else": { "name": "image.setPalette", "id": "{1}", "palette": "spell1" }
+            }
+          ],
+          "else": [
+            {
+              "name": "if.equal",
+              "param1": "%currentLevel.currentPlayer.spell.{2}.id%",
+              "param2": "%currentLevel.currentPlayer.selectedSpell.id%",
+              "then": [
+                { "name": "drawable.visible", "id": "spellBookSelected", "visible": false }
+              ]
+            },
+            { "name": "image.setPalette", "id": "{1}", "palette": "spell4" }
+          ]
+        }
+      ]
+    }
+  }
+}

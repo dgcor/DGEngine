@@ -63,6 +63,8 @@ namespace ItemProp
 	const uint16_t RequiredMagic = str2int16("requiredMagic");
 	const uint16_t RequiredDexterity = str2int16("requiredDexterity");
 	const uint16_t RequiredVitality = str2int16("requiredVitality");
+	const uint16_t RequiredLife = str2int16("requiredLife");
+	const uint16_t RequiredMana = str2int16("requiredMana");
 
 	const uint16_t UseOn = str2int16("useOn");
 	const uint16_t UseOp = str2int16("useOp");

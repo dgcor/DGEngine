@@ -40,7 +40,7 @@ void LevelObject::updateDrawPosition(const LevelMap& map, const sf::Vector2f& dr
 
 void LevelObject::updateHover(Game& game, Level& level)
 {
-	if (enableHover == false)
+	if (enableHover == false || level.EnableHover() == false)
 	{
 		return;
 	}

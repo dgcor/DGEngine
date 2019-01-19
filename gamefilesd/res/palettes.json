@@ -25,6 +25,22 @@
     },
     {
       "palette": "town",
+      "trnFile": "res/trn/spell0.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell1.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell2.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell3.trn"
+    },
+    {
+      "palette": "town",
       "trnFile": "res/trn/spell4.trn"
     }
   ],

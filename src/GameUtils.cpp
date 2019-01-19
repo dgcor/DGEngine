@@ -780,62 +780,66 @@ namespace GameUtils
 		return false;
 	}
 
-	std::string replaceStringWithQueryable(const std::string_view str, const Queryable& obj)
+	std::string replaceStringWithQueryable(const std::string_view str,
+		const Queryable& obj, char token)
 	{
 		std::string str2(str);
 		size_t firstTokenStart = 0;
 		while (true)
 		{
-			firstTokenStart = str.find('%', firstTokenStart);
+			firstTokenStart = str.find(token, firstTokenStart);
 			if (firstTokenStart == std::string_view::npos)
 			{
 				break;
 			}
 			size_t firstTokenStop = firstTokenStart + 1;
-			size_t secondTokenStart = str.find_first_of('%', firstTokenStop);
+			size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
 			if (secondTokenStart == std::string_view::npos)
 			{
 				break;
 			}
 			size_t secondTokenStop = secondTokenStart + 1;
 
-			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+			std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
 			Variable var;
-			if (obj.getProperty(strProp.substr(1, strProp.size() - 2), var) == true)
+			if (obj.getProperty(strProp, var) == true)
 			{
-				Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+				std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+				Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
 			}
-			firstTokenStart = secondTokenStop;
+			firstTokenStart = secondTokenStart;
 		}
 		return str2;
 	}
 
-	std::string replaceStringWithVarOrProp(const std::string_view str, const Game& obj)
+	std::string replaceStringWithVarOrProp(const std::string_view str,
+		const Game& obj, char token)
 	{
 		std::string str2(str);
 		size_t firstTokenStart = 0;
 		while (true)
 		{
-			firstTokenStart = str.find('%', firstTokenStart);
+			firstTokenStart = str.find(token, firstTokenStart);
 			if (firstTokenStart == std::string_view::npos)
 			{
 				break;
 			}
 			size_t firstTokenStop = firstTokenStart + 1;
-			size_t secondTokenStart = str.find_first_of('%', firstTokenStop);
+			size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
 			if (secondTokenStart == std::string_view::npos)
 			{
 				break;
 			}
 			size_t secondTokenStop = secondTokenStart + 1;
 
-			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+			std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
 			Variable var;
-			if (obj.getVarOrProp(strProp, var) == true)
+			if (obj.getVarOrPropNoToken(strProp, var) == true)
 			{
-				Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+				std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+				Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
 			}
-			firstTokenStart = secondTokenStop;
+			firstTokenStart = secondTokenStart;
 		}
 		return str2;
 	}

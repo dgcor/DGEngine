@@ -1,0 +1,321 @@
+{
+  "classifier": [
+    {
+      "id": "armorSuffixesM",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": -6, "value": -10 },
+            { "min": -5, "max": -1, "value": -5 },
+            { "min": 1, "max": 3, "value": 5 },
+            { "min": 4, "max": 7, "value": 10 },
+            { "min": 8, "max": 11, "value": 15 },
+            { "min": 12, "max": 15, "value": 20 },
+            { "min": 16, "max": "max", "value": 30 }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "life",
+          "value": [
+            { "min": "min", "max": -11, "value": -4 },
+            { "min": -10, "max": -1, "value": -2 },
+            { "min": 10, "max": 15, "value": 2 },
+            { "min": 16, "max": 20, "value": 3 },
+            { "min": 21, "max": 29, "value": 5 },
+            { "min": 30, "max": 40, "value": 7 },
+            { "min": 41, "max": 50, "value": 9 },
+            { "min": 51, "max": 60, "value": 11 },
+            { "min": 61, "max": 80, "value": 12 },
+            { "min": 81, "max": "max", "value": 13 }
+          ]
+        },
+        {
+          "property": "hitRecovery",
+          "value": [
+            { "min": 1, "max": 25, "value": 2 },
+            { "min": 26, "max": 50, "value": 4 },
+            { "min": 51, "max": "max", "value": 8 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weaponSuffixesM",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": -6, "value": -10 },
+            { "min": -5, "max": -1, "value": -5 },
+            { "min": 1, "max": 3, "value": 5 },
+            { "min": 4, "max": 7, "value": 10 },
+            { "min": 8, "max": 11, "value": 15 },
+            { "min": 12, "max": 15, "value": 20 },
+            { "min": 16, "max": "max", "value": 30 }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "hitStealsLife",
+          "value": [
+            { "min": 3, "max": 4, "value": 3 },
+            { "min": 5, "max": "max", "value": 3 }
+          ]
+        },
+        {
+          "property": "hitStealsMana",
+          "value": [
+            { "min": 3, "max": 4, "value": 3 },
+            { "min": 5, "max": "max", "value": 3 }
+          ]
+        },
+        {
+          "property": "attack",
+          "value": [
+            { "min": 1, "max": 25, "value": 2 },
+            { "min": 26, "max": 50, "value": 4 },
+            { "min": 51, "max": 75, "value": 8 },
+            { "min": 76, "max": "max", "value": 16 }
+          ]
+        },
+        {
+          "property": "lightRadius",
+          "value": [
+            { "min": "min", "max": -40, "value": -3 },
+            { "min": -39, "max": -20, "value": -2 },
+            { "min": 20, "max": 39, "value": 2 },
+            { "min": 40, "max": "max", "value": 3 }
+          ]
+        },
+        {
+          "property": "toTargetArmor",
+          "value": [
+            { "min": 1, "max": 4, "value": 3 },
+            { "min": 5, "max": 8, "value": 6 },
+            { "min": 9, "max": "max", "value": 12 }
+          ]
+        },
+        {
+          "property": "damage",
+          "value": [
+            { "min": 1, "max": 2, "value": 2 },
+            { "min": 3, "max": 5, "value": 3 },
+            { "min": 6, "max": 8, "value": 5 },
+            { "min": 9, "max": 12, "value": 8 },
+            { "min": 13, "max": 16, "value": 10 },
+            { "min": 17, "max": "max", "value": 13 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jewellerySuffixesM",
+      "values": [
+        {
+          "property": "allAttributes",
+          "value": [
+            { "min": "min", "max": -6, "value": -10 },
+            { "min": -5, "max": -1, "value": -5 },
+            { "min": 1, "max": 3, "value": 5 },
+            { "min": 4, "max": 7, "value": 10 },
+            { "min": 8, "max": 11, "value": 15 },
+            { "min": 12, "max": 15, "value": 20 },
+            { "min": 16, "max": "max", "value": 30 }
+          ]
+        },
+        {
+          "property": "strength",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "magic",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "dexterity",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "vitality",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 4 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": "max", "value": 10 }
+          ]
+        },
+        {
+          "property": "life",
+          "value": [
+            { "min": "min", "max": -11, "value": -4 },
+            { "min": -10, "max": -1, "value": -2 },
+            { "min": 10, "max": 15, "value": 2 },
+            { "min": 16, "max": 20, "value": 3 },
+            { "min": 21, "max": 29, "value": 5 },
+            { "min": 30, "max": 40, "value": 7 },
+            { "min": 41, "max": 50, "value": 9 },
+            { "min": 51, "max": 60, "value": 11 },
+            { "min": 61, "max": 80, "value": 12 },
+            { "min": 81, "max": "max", "value": 13 }
+          ]
+        },
+        {
+          "property": "hitRecovery",
+          "value": [
+            { "min": 1, "max": 25, "value": 2 },
+            { "min": 26, "max": 50, "value": 4 },
+            { "min": 51, "max": "max", "value": 8 }
+          ]
+        },
+        {
+          "property": "lightRadius",
+          "value": [
+            { "min": "min", "max": -40, "value": -3 },
+            { "min": -39, "max": -20, "value": -2 },
+            { "min": 20, "max": 39, "value": 2 },
+            { "min": 40, "max": "max", "value": 3 }
+          ]
+        },
+        {
+          "property": "damageFromEnemies",
+          "value": [
+            { "min": 2, "max": "max", "value": -4 },
+            { "min": 1, "max": 1, "value": -2 },
+            { "min": -1, "max": -1, "value": 2 },
+            { "min": -2, "max": -2, "value": 4 },
+            { "min": -3, "max": -3, "value": 10 },
+            { "min": -4, "max": -4, "value": 15 },
+            { "min": "min", "max": -5, "value": 20 }
+          ]
+        },
+        {
+          "property": "ofThieves",
+          "value": { "value": 2 }
+        }
+      ]
+    }
+  ]
+}

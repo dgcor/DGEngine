@@ -1,0 +1,117 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "clearSpellBook",
+      "action": [
+        { "name": "drawable.visible", "id": "spellBookSelected", "visible": false },
+        { "name": "text.setText", "id": "spell1Text", "text": "" },
+        { "name": "text.setText", "id": "spell2Text", "text": "" },
+        { "name": "text.setText", "id": "spell3Text", "text": "" },
+        { "name": "text.setText", "id": "spell4Text", "text": "" },
+        { "name": "text.setText", "id": "spell5Text", "text": "" },
+        { "name": "text.setText", "id": "spell6Text", "text": "" },
+        { "name": "text.setText", "id": "spell7Text", "text": "" },
+        { "name": "image.setTexture", "id": "spell1", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell3", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell4", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell5", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell6", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spell7", "texture": "empty" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSelectedSpell",
+      "action": [
+        {
+          "name": "image.setTexture",
+          "id": "spell",
+          "texturePack": "spelicon",
+          "palette": "spell4",
+          "index": 26
+        },
+        {
+          "name": "image.setTexture",
+          "id": "spell",
+          "query": "currentLevel.currentPlayer.selectedSpell",
+          "index": 2
+        },
+        {
+          "name": "if",
+          "params": [
+            "%currentLevel.currentPlayer.canUseSelectedSpell%", "==", true,
+            "and",
+            [
+              "%currentLevel.path%", "!=", "town",
+              "or",
+              [
+                "%currentLevel.path%", "==", "town",
+                "and",
+                "%currentLevel.currentPlayer.selectedSpell.useInTown%", "==", 1
+              ]
+            ]
+          ],
+          "then": {
+            "name": "if.equal",
+            "param1": "%currentLevel.currentPlayer.selectedSpell.spellType%",
+            "param2": "Skill",
+            "then": { "name": "image.setPalette", "id": "spell", "palette": "spell0" },
+            "else": { "name": "image.setPalette", "id": "spell", "palette": "spell1" }
+          },
+          "else": { "name": "image.setPalette", "id": "spell", "palette": "spell4" }
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSelectedSpellText",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSelectedSpell%",
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": "%currentLevel.currentPlayer.selectedSpell.spellType%",
+            "param2": "Skill",
+            "then": {
+              "name": "text.appendText",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.selectedSpell",
+              "text": "\n%name% %spellType%"
+            },
+            "else": {
+              "name": "text.appendText",
+              "id": "txtPanel",
+              "query": "currentLevel.currentPlayer.selectedSpell",
+              "text": "\n%name% %spellType%\n%d.0%"
+            }
+          }
+        },
+        "updatePanelTextSpacing",
+        "setPanelTextColorWhite"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "updateSpellBook",
+      "action": {
+        "name": "if.equal",
+        "param1": "%game.hasResource.charPanelSpellBook%",
+        "param2": true,
+        "then": {
+          "name": "switch",
+          "param": "%spellBookPage%",
+          "case": [
+            { "value": 2, "action": { "name": "button.click", "id": "btnSpellBook2" } },
+            { "value": 3, "action": { "name": "button.click", "id": "btnSpellBook3" } },
+            { "value": 4, "action": { "name": "button.click", "id": "btnSpellBook4" } }
+          ],
+          "default": { "name": "button.click", "id": "btnSpellBook1" }
+        }
+      }
+    }
+  ]
+}

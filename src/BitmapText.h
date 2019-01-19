@@ -38,6 +38,7 @@ public:
 
 	virtual std::string getText() const { return text; }
 
+	virtual Anchor getAnchor() const noexcept { return anchor; }
 	virtual void setAnchor(const Anchor anchor_) noexcept
 	{
 		if (anchor != anchor_)

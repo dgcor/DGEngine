@@ -15,8 +15,8 @@
 
 namespace Utils
 {
-	std::random_device Random::rd;
-	std::mt19937 Random::mt(rd());
+	std::random_device RandomGenerator::rd;
+	std::mt19937 RandomGenerator::generator(rd());
 
 	bool endsWith(const std::string_view value, const std::string_view ending)
 	{
@@ -369,14 +369,14 @@ namespace Utils
 	std::string trimStart(const std::string_view str, const std::string_view chars)
 	{
 		std::string ret(str);
-		ret.erase(ret.find_last_not_of(chars) + 1);
+		ret.erase(0, ret.find_first_not_of(chars));
 		return ret;
 	}
 
 	std::string trimEnd(const std::string_view str, const std::string_view chars)
 	{
 		std::string ret(str);
-		ret.erase(0, ret.find_first_not_of(chars));
+		ret.erase(ret.find_last_not_of(chars) + 1);
 		return ret;
 	}
 

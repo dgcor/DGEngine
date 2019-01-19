@@ -1,0 +1,275 @@
+{
+  "classifier": [
+    {
+      "id": "armorPrefixesM",
+      "values": [
+        {
+          "property": "toDamage",
+          "value": [
+            { "min": "min", "max": -80, "value": -8 },
+            { "min": -79, "max": -45, "value": -4 },
+            { "min": -44, "max": -25, "value": -3 },
+            { "min": 20, "max": 35, "value": 3 },
+            { "min": 36, "max": 50, "value": 4 },
+            { "min": 51, "max": 65, "value": 5 },
+            { "min": 66, "max": 80, "value": 8 },
+            { "min": 81, "max": 95, "value": 10 },
+            { "min": 96, "max": 110, "value": 13 },
+            { "min": 111, "max": 125, "value": 15 },
+            { "min": 126, "max": 150, "value": 17 },
+            { "min": 151, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 5 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": 30, "value": 9 },
+            { "min": 31, "max": 40, "value": 11 },
+            { "min": 41, "max": 60, "value": 13 },
+            { "min": 61, "max": 80, "value": 15 },
+            { "min": 81, "max": 100, "value": 17 },
+            { "min": 101, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "toArmor",
+          "value": [
+            { "min": "min", "max": -51, "value": -3 },
+            { "min": -50, "max": -25, "value": -2 },
+            { "min": 20, "max": 30, "value": 2 },
+            { "min": 31, "max": 40, "value": 3 },
+            { "min": 41, "max": 55, "value": 5 },
+            { "min": 56, "max": 70, "value": 7 },
+            { "min": 71, "max": 90, "value": 9 },
+            { "min": 91, "max": 110, "value": 11 },
+            { "min": 111, "max": 130, "value": 13 },
+            { "min": 131, "max": 150, "value": 15 },
+            { "min": 151, "max": 170, "value": 17 },
+            { "min": 171, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 30, "value": 3 },
+            { "min": 31, "max": 40, "value": 4 },
+            { "min": 41, "max": "max", "value": 7 }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "weaponPrefixesM",
+      "values": [
+        {
+          "property": "toDamage",
+          "value": [
+            { "min": "min", "max": -80, "value": -8 },
+            { "min": -79, "max": -45, "value": -4 },
+            { "min": -44, "max": -25, "value": -3 },
+            { "min": 20, "max": 35, "value": 3 },
+            { "min": 36, "max": 50, "value": 4 },
+            { "min": 51, "max": 65, "value": 5 },
+            { "min": 66, "max": 80, "value": 8 },
+            { "min": 81, "max": 95, "value": 10 },
+            { "min": 96, "max": 110, "value": 13 },
+            { "min": 111, "max": 125, "value": 15 },
+            { "min": 126, "max": 150, "value": 17 },
+            { "min": 151, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 5 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": 30, "value": 9 },
+            { "min": 31, "max": 40, "value": 11 },
+            { "min": 41, "max": 60, "value": 13 },
+            { "min": 61, "max": 80, "value": 15 },
+            { "min": 81, "max": 100, "value": 17 },
+            { "min": 101, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -6, "value": -7 },
+            { "min": -5, "max": -1, "value": -5 },
+            { "min": 1, "max": 5, "value": 5 },
+            { "min": 6, "max": 10, "value": 7 },
+            { "min": 11, "max": 15, "value": 13 },
+            { "min": 16, "max": 20, "value": 17 },
+            { "min": 21, "max": 30, "value": 21 },
+            { "min": 31, "max": 40, "value": 26 },
+            { "min": 41, "max": 50, "value": 30 },
+            { "min": 51, "max": 75, "value": 33 },
+            { "min": 76, "max": "max", "value": 38 }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 30, "value": 3 },
+            { "min": 31, "max": 40, "value": 4 },
+            { "min": 41, "max": "max", "value": 7 }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "mana",
+          "value": [
+            { "min": "min", "max": -1, "value": -2 },
+            { "min": 10, "max": 15, "value": 2 },
+            { "min": 16, "max": 20, "value": 3 },
+            { "min": 21, "max": 29, "value": 5 },
+            { "min": 30, "max": 40, "value": 7 },
+            { "min": 41, "max": 50, "value": 9 },
+            { "min": 51, "max": 60, "value": 11 },
+            { "min": 61, "max": 80, "value": 12 },
+            { "min": 81, "max": "max", "value": 13 }
+          ]
+        },
+        {
+          "property": "toCharges",
+          "value": [
+            { "min": 2, "max": 2, "value": 2 },
+            { "min": 3, "max": "max", "value": 3 }
+          ]
+        },
+        {
+          "property": "toSpells",
+          "value": [
+            { "min": 1, "max": 1, "value": 2 },
+            { "min": 2, "max": "max", "value": 3 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jewelleryPrefixesM",
+      "values": [
+        {
+          "property": "toHit",
+          "value": [
+            { "min": "min", "max": -6, "value": -3 },
+            { "min": -5, "max": -1, "value": -2 },
+            { "min": 1, "max": 5, "value": 2 },
+            { "min": 6, "max": 10, "value": 3 },
+            { "min": 11, "max": 15, "value": 5 },
+            { "min": 16, "max": 20, "value": 7 },
+            { "min": 21, "max": 30, "value": 9 },
+            { "min": 31, "max": 40, "value": 11 },
+            { "min": 41, "max": 60, "value": 13 },
+            { "min": 61, "max": 80, "value": 15 },
+            { "min": 81, "max": 100, "value": 17 },
+            { "min": 101, "max": "max", "value": 20 }
+          ]
+        },
+        {
+          "property": "resistAll",
+          "value": [
+            { "min": 10, "max": 30, "value": 3 },
+            { "min": 31, "max": 40, "value": 4 },
+            { "min": 41, "max": "max", "value": 7 }
+          ]
+        },
+        {
+          "property": "resistMagic",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistFire",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "resistLightning",
+          "value": [
+            { "min": 10, "max": 40, "value": 2 },
+            { "min": 41, "max": 50, "value": 3 },
+            { "min": 51, "max": "max", "value": 5 }
+          ]
+        },
+        {
+          "property": "mana",
+          "value": [
+            { "min": "min", "max": -1, "value": -2 },
+            { "min": 10, "max": 15, "value": 2 },
+            { "min": 16, "max": 20, "value": 3 },
+            { "min": 21, "max": 29, "value": 5 },
+            { "min": 30, "max": 40, "value": 7 },
+            { "min": 41, "max": 50, "value": 9 },
+            { "min": 51, "max": 60, "value": 11 },
+            { "min": 61, "max": 80, "value": 12 },
+            { "min": 81, "max": "max", "value": 13 }
+          ]
+        }
+      ]
+    }
+  ]
+}

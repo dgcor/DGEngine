@@ -758,17 +758,30 @@ private:
 	std::string id;
 	sf::Vector2f pos;
 	sf::Vector2f offset;
+	bool relativeCoords;
 
 public:
 	ActDrawableSetPosition(const std::string& id_, const sf::Vector2f& pos_,
-		const sf::Vector2f& offset_) : id(id_), pos(pos_), offset(offset_) {}
+		const sf::Vector2f& offset_, bool relativeCoords_) : id(id_),
+		pos(pos_), offset(offset_), relativeCoords(relativeCoords_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto item = game.Resources().getResource<UIObject>(id);
 		if (item != nullptr)
 		{
-			item->Position(pos + offset);
+			auto newPos = pos;
+			if (relativeCoords == true)
+			{
+				auto anchor = item->getAnchor();
+				auto size = item->Size();
+				GameUtils::setAnchorPosSize(anchor, newPos, size, game.RefSize(), game.MinSize());
+				if (game.StretchToFit() == false)
+				{
+					GameUtils::setAnchorPosSize(anchor, newPos, size, game.MinSize(), game.WindowSize());
+				}
+			}
+			item->Position(newPos + offset);
 		}
 		return true;
 	}

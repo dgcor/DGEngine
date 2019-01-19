@@ -41,7 +41,7 @@ namespace Parser
 		if (getBoolKey(elem, "pop") == true)
 		{
 			game.Resources().popCursor();
-			game.updateMouse();
+			game.updateMousePosition();
 		}
 
 		auto cursor = parseAnimationObj(game, elem);
@@ -52,6 +52,6 @@ namespace Parser
 		auto size = cursor->Size();
 		cursor->setOrigin(getOrigin(elem, size.x, size.y));
 		game.Resources().addCursor(cursor);
-		game.updateMouse();
+		game.updateMousePosition();
 	}
 }

@@ -36,13 +36,24 @@ class ActLoadJson : public Action
 {
 private:
 	std::string json;
+	std::vector<std::string> args;
 
 public:
 	ActLoadJson(const std::string& json_) : json(json_) {}
 
+	ActLoadJson(const std::string& json_, const std::vector<std::string>& args_)
+		: json(json_), args(args_) {}
+
 	virtual bool execute(Game& game)
 	{
-		Parser::parseJson(game, json);
+		if (args.empty() == true)
+		{
+			Parser::parseJson(game, json);
+		}
+		else
+		{
+			Parser::parseJson(game, json, args);
+		}
 		return true;
 	}
 };

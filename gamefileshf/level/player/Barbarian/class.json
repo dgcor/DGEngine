@@ -16,6 +16,8 @@
       "vitality": 25,
       "bonusLife": 1,
       "bonusMana": 2,
+      "bonusHealing": 2,
+      "spellM": 1,
       "defaultDamageMin": 1,
       "levelUp": 5
     },
@@ -26,11 +28,13 @@
     "maxResistMagic": 75,
     "maxResistFire": 75,
     "maxResistLightning": 75,
-    "lifeFormula": "(2 * vitality) + (2.5 * vitalityItems) + (2 * level) + lifeItems + 18",
-    "manaFormula": "magic + magicItems + manaItems + 0",
-    "armorFormula": "dexterityNow * 0.2 + armorItems + (level * 0.25)",
-    "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
-    "damageFormula": "strengthNow * level / 100",
+    "formulas": {
+      "life": "(2 * vitality) + (2.5 * vitalityItems) + (2 * level) + lifeItems + 18",
+      "mana": "magic + magicItems + manaItems + 0",
+      "armor": "dexterityNow * 0.2 + armorItems + (level * 0.25)",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow * level / 100"
+    },
     "resistMagicFormula": "resistMagicItems + level",
     "resistFireFormula": "resistFireItems + level",
     "resistLightningFormula": "resistLightningItems + level",

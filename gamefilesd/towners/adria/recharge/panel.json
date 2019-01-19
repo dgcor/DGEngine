@@ -75,12 +75,12 @@
           "property": "needsRecharge",
           "value": false
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
           "file": [
             "towners/adria/recharge/confirm.json",
-            "body",
+            0,
             "%idx%"
           ]
         },
@@ -89,45 +89,18 @@
           "anchorRightPentagram",
           "mainMenu.moveScrollbar"
         ],
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.body.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.body.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.body.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 0,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuItemText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.belt",
@@ -135,12 +108,12 @@
           "property": "needsRecharge",
           "value": false
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
           "file": [
             "towners/adria/recharge/confirm.json",
-            "belt",
+            1,
             "%idx%"
           ]
         },
@@ -149,45 +122,18 @@
           "anchorRightPentagram",
           "mainMenu.moveScrollbar"
         ],
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.belt.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.belt.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.belt.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 1,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuItemText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.stash",
@@ -195,12 +141,12 @@
           "property": "needsRecharge",
           "value": false
         },
-        "text": "%name%\n  %d.0%,  %d.3%",
+        "text": "%name%\n",
         "onClick": {
           "name": "load",
           "file": [
             "towners/adria/recharge/confirm.json",
-            "stash",
+            2,
             "%idx%"
           ]
         },
@@ -209,45 +155,18 @@
           "anchorRightPentagram",
           "mainMenu.moveScrollbar"
         ],
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.stash.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "mainMenu",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.stash.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "mainMenu",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.stash.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "mainMenu",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 2,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuItemText"
+        ]
       }
     ]
   },

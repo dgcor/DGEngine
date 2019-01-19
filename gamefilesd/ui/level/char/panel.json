@@ -139,7 +139,7 @@
       "onRightClick": "rightClickLevel"
     },
     {
-      "id": "spellPanel",
+      "id": "spellBookPanel",
       "texture": "spellbk",
       "anchor": "right",
       "position": [320, 0],
@@ -193,12 +193,6 @@
       "texture": "p8bulbs",
       "textureRect": [0, 88, 88, 0],
       "position": [464, 336],
-      "anchor": "bottom"
-    },
-    {
-      "id": "spellImg",
-      "texture": "noSpell",
-      "position": [565, 416],
       "anchor": "bottom"
     }
   ],
@@ -302,18 +296,18 @@
           "param1": "%invPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "load", "file": "ui/level/char/panelInventory.json" },
             { "name": "drawable.visible", "id": "invPanel", "visible": true },
-            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages"
           ],
           "else": [
             { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
-            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
             "setLevelHoverActions"
           ]
@@ -335,7 +329,7 @@
       "onHoverLeave": "clearPanelText"
     },
     {
-      "id": "spell",
+      "id": "spellBook",
       "texture": "empty",
       "anchor": "bottom",
       "position": [560, 387],
@@ -344,28 +338,28 @@
       "onClick": [
         {
           "name": "if.equal",
-          "param1": "%spellPanel.visible%",
+          "param1": "%spellBookPanel.visible%",
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "removeGold" },
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "load", "file": "ui/level/char/panelSpells.json" },
+            { "name": "load", "file": "ui/level/char/panelSpellBook.json" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
-            { "name": "drawable.visible", "id": "spellPanel", "visible": true }
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": true }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpells" },
+            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
-            { "name": "drawable.visible", "id": "spellPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
             "setLevelHoverActions"
           ]
         },
         "resizeLevel"
       ],
-      "onClickIn": { "name": "image.setTexture", "id": "spell", "texture": "panel8bu" },
-      "onClickOut": { "name": "image.setTexture", "id": "spell", "texture": "empty" },
+      "onClickIn": { "name": "image.setTexture", "id": "spellBook", "texture": "panel8bu" },
+      "onClickOut": { "name": "image.setTexture", "id": "spellBook", "texture": "empty" },
       "onHoverEnter": {
         "name": "if.notEqual",
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
@@ -376,6 +370,19 @@
           "updatePanelTextSpacing"
         ]
       },
+      "onHoverLeave": "clearPanelText"
+    },
+    {
+      "id": "spell",
+      "texture": "empty",
+      "anchor": "bottom",
+      "position": [565, 416],
+      "textureRect": [0, 0, 56, 56],
+      "onClick": "showAllSpells",
+      "onHoverEnter": [
+        { "name": "text.setText", "id": "txtPanel", "text": "Select Current Spell Button\nHotkey : 'S'" },
+        "updateSelectedSpellText"
+      ],
       "onHoverLeave": "clearPanelText"
     },
     {
@@ -453,11 +460,12 @@
     { "key": "6", "action": "useBelt6Item" },
     { "key": "7", "action": "useBelt7Item" },
     { "key": "8", "action": "useBelt8Item" },
-    { "key": "b", "action": { "name": "button.click", "id": "spell" } },
+    { "key": "b", "action": { "name": "button.click", "id": "spellBook" } },
     { "key": "c", "action": { "name": "button.click", "id": "char" } },
     { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
     { "key": "i", "action": { "name": "button.click", "id": "inv" } },
     { "key": "q", "action": { "name": "button.click", "id": "quest" } },
+    { "key": "s", "action": { "name": "button.click", "id": "spell" } },
     { "key": "z", "action": "zoomLevel" },
     { "key": "tab", "action": { "name": "button.click", "id": "map" } },
     {

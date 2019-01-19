@@ -83,8 +83,10 @@ namespace GameUtils
 	bool getObjectProperty(const Game& game, const std::string_view str, Variable& var);
 
 	// replaces "%str%" with obj.getProperty("str")
-	std::string replaceStringWithQueryable(const std::string_view str, const Queryable& obj);
+	std::string replaceStringWithQueryable(const std::string_view str,
+		const Queryable& obj, char token = '%');
 
 	// replaces "%str%" with game.getVarOrProp("str")
-	std::string replaceStringWithVarOrProp(const std::string_view str, const Game& obj);
+	std::string replaceStringWithVarOrProp(const std::string_view str,
+		const Game& obj, char token = '%');
 }

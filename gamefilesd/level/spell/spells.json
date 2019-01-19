@@ -1,280 +1,390 @@
 {
   "spell": [
     {
-      "id": "firebolt",
+      "id": "apocalypse",
       "texturePack1": "spelli2",
       "texturePack2": "spelicon",
-      "textureIndex1": 0,
-      "textureIndex2": 0,
-      "name": "Firebolt",
+      "textureIndex1": 24,
+      "textureIndex2": 24,
+      "name": "Apocalypse",
       "type": "Spell",
-      "defaults": {
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "chargedBolt",
-      "fromId": "firebolt",
-      "textureIndex1": 38,
-      "textureIndex2": 38,
-      "name": "Charged Bolt",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "holyBolt",
-      "fromId": "firebolt",
-      "textureIndex1": 41,
-      "textureIndex2": 41,
-      "name": "Holy Bolt",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "healing",
-      "fromId": "firebolt",
-      "textureIndex1": 1,
-      "textureIndex2": 1,
-      "name": "Healing",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "healOther",
-      "fromId": "firebolt",
-      "textureIndex1": 9,
-      "textureIndex2": 9,
-      "name": "Heal Other",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "inferno",
-      "fromId": "firebolt",
-      "textureIndex1": 14,
-      "textureIndex2": 14,
-      "name": "Inferno",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "firewall",
-      "fromId": "firebolt",
-      "textureIndex1": 5,
-      "textureIndex2": 5,
-      "name": "Firewall",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "telekinesis",
-      "fromId": "firebolt",
-      "textureIndex1": 39,
-      "textureIndex2": 39,
-      "name": "Telekinesis",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "lightning",
-      "fromId": "firebolt",
-      "textureIndex1": 2,
-      "textureIndex2": 2,
-      "name": "Lightning",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "townPortal",
-      "fromId": "firebolt",
-      "textureIndex1": 6,
-      "textureIndex2": 6,
-      "name": "Town Portal",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "flash",
-      "fromId": "firebolt",
-      "textureIndex1": 3,
-      "textureIndex2": 3,
-      "name": "Flash",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "stoneCurse",
-      "fromId": "firebolt",
-      "textureIndex1": 7,
-      "textureIndex2": 7,
-      "name": "Stone Curse",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "phasing",
-      "fromId": "firebolt",
-      "textureIndex1": 27,
-      "textureIndex2": 27,
-      "name": "Phasing",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "manaShield",
-      "fromId": "firebolt",
-      "textureIndex1": 12,
-      "textureIndex2": 12,
-      "name": "Mana Shield",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "elemental",
-      "fromId": "firebolt",
-      "textureIndex1": 37,
-      "textureIndex2": 37,
-      "name": "Elemental",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "fireball",
-      "fromId": "firebolt",
-      "textureIndex1": 11,
-      "textureIndex2": 11,
-      "name": "Fireball",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "flameWave",
-      "fromId": "firebolt",
-      "textureIndex1": 13,
-      "textureIndex2": 13,
-      "name": "Flame Wave",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "chainLightning",
-      "fromId": "firebolt",
-      "textureIndex1": 15,
-      "textureIndex2": 15,
-      "name": "Chain Lightning",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "guardian",
-      "fromId": "firebolt",
-      "textureIndex1": 17,
-      "textureIndex2": 17,
-      "name": "Guardian",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "golem",
-      "fromId": "firebolt",
-      "textureIndex1": 20,
-      "textureIndex2": 20,
-      "name": "Golem",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "teleport",
-      "fromId": "firebolt",
-      "textureIndex1": 23,
-      "textureIndex2": 23,
-      "name": "Teleport",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
-      }
-    },
-    {
-      "id": "boneSpirit",
-      "fromId": "firebolt",
-      "textureIndex1": 29,
-      "textureIndex2": 29,
-      "name": "Bone Spirit",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
+      "descriptions": [
+        { "index": 0, "name": "spellLevel" },
+        { "index": 1, "name": "spellManaDamage" }
+      ],
+      "properties": {
+        "reqMag": 149,
+        "p": 400
+      },
+      "formulas": {
+        "mana": "$spellM * :round(150 - (6 * (level - 1 :max 0))) :max 90",
+        "damage": "$level + (:rnd(6) * $level)",
+        "requiredMagic": ":round(reqMag * (1.1975 ^ level)) :min 255"
       }
     },
     {
       "id": "bloodStar",
-      "fromId": "firebolt",
+      "fromId": "apocalypse",
       "textureIndex1": 35,
       "textureIndex2": 35,
       "name": "Blood Star",
-      "defaults": {
-        "price": 150,
-        "damageMin": 2,
-        "damageMax": 10
+      "properties": {
+        "reqMag": 70,
+        "p": 360
+      },
+      "formulas": {
+        "mana": "$spellM * :round(25 - (2 * (level - 1 :max 0))) :max 14",
+        "damage": "3 * level + ($magicNow * 0.5) - ($magicNow * 0.125)",
+        "speed": "16"
+      }
+    },
+    {
+      "id": "boneSpirit",
+      "fromId": "apocalypse",
+      "textureIndex1": 29,
+      "textureIndex2": 29,
+      "name": "Bone Spirit",
+      "properties": {
+        "reqMag": 34,
+        "p": 160
+      },
+      "formulas": {
+        "mana": "$spellM * :round(24 - (1 * (level - 1 :max 0))) :max 12"
+      }
+    },
+    {
+      "id": "chainLightning",
+      "fromId": "apocalypse",
+      "textureIndex1": 15,
+      "textureIndex2": 15,
+      "name": "Chain Lightning",
+      "properties": {
+        "reqMag": 54,
+        "p": 150
+      },
+      "formulas": {
+        "mana": "$spellM * :round(30 - (1 * (level - 1 :max 0))) :max 18"
+      }
+    },
+    {
+      "id": "chargedBolt",
+      "fromId": "apocalypse",
+      "textureIndex1": 38,
+      "textureIndex2": 38,
+      "name": "Charged Bolt",
+      "properties": {
+        "mana": 6,
+        "reqMag": 25,
+        "p": 10
+      }
+    },
+    {
+      "id": "elemental",
+      "fromId": "apocalypse",
+      "textureIndex1": 37,
+      "textureIndex2": 37,
+      "name": "Elemental",
+      "properties": {
+        "reqMag": 68,
+        "p": 140
+      },
+      "formulas": {
+        "mana": "$spellM * :round(35 - (2 * (level - 1 :max 0))) :max 20"
+      }
+    },
+    {
+      "id": "fireball",
+      "fromId": "apocalypse",
+      "textureIndex1": 11,
+      "textureIndex2": 11,
+      "name": "Fireball",
+      "properties": {
+        "reqMag": 48,
+        "p": 60
+      },
+      "formulas": {
+        "mana": "$spellM * :round(16 - (1 * (level - 1 :max 0))) :max 10"
+      }
+    },
+    {
+      "id": "firebolt",
+      "fromId": "apocalypse",
+      "textureIndex1": 0,
+      "textureIndex2": 0,
+      "name": "Firebolt",
+      "properties": {
+        "reqMag": 15,
+        "p": 10
+      },
+      "formulas": {
+        "mana": "$spellM * :round(6 - (0.5 * (level - 1 :max 0))) :max 3",
+        "damage": "1 + :rnd(10) + level + :floor($magicNow * 0.125)",
+        "speed": "level * 2 + 16"
+      }
+    },
+    {
+      "id": "firewall",
+      "fromId": "apocalypse",
+      "textureIndex1": 5,
+      "textureIndex2": 5,
+      "name": "Firewall",
+      "properties": {
+        "reqMag": 27,
+        "p": 80
+      },
+      "formulas": {
+        "mana": "$spellM * :round(28 - (2 * (level - 1 :max 0))) :max 16"
+      }
+    },
+    {
+      "id": "flameWave",
+      "fromId": "apocalypse",
+      "textureIndex1": 13,
+      "textureIndex2": 13,
+      "name": "Flame Wave",
+      "properties": {
+        "reqMag": 54,
+        "p": 130
+      },
+      "formulas": {
+        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 20"
+      }
+    },
+    {
+      "id": "flash",
+      "fromId": "apocalypse",
+      "textureIndex1": 3,
+      "textureIndex2": 3,
+      "name": "Flash",
+      "properties": {
+        "reqMag": 33,
+        "p": 100
+      },
+      "formulas": {
+        "mana": "$spellM * :round(30 - (2 * (level - 1 :max 0))) :max 16"
+      }
+    },
+    {
+      "id": "golem",
+      "fromId": "apocalypse",
+      "textureIndex1": 20,
+      "textureIndex2": 20,
+      "name": "Golem",
+      "properties": {
+        "reqMag": 81,
+        "p": 220
+      },
+      "formulas": {
+        "mana": "$spellM * :round(100 - (6 * (level - 1 :max 0))) :max 60"
+      }
+    },
+    {
+      "id": "guardian",
+      "fromId": "apocalypse",
+      "textureIndex1": 17,
+      "textureIndex2": 17,
+      "name": "Guardian",
+      "properties": {
+        "reqMag": 61,
+        "p": 190
+      },
+      "formulas": {
+        "mana": "$spellM * :round(50 - (2 * (level - 1 :max 0))) :max 30"
+      }
+    },
+    {
+      "id": "healing",
+      "fromId": "apocalypse",
+      "textureIndex1": 1,
+      "textureIndex2": 1,
+      "name": "Healing",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 17,
+        "p": 10,
+        "useInTown": true
+      },
+      "formulas": {
+        "mana": "8 + (2 * $level) - (3 * level) :max 1",
+        "life": "$bonusHealing * (1 + :rnd(10) + (:rndn(4) * $level) + (:rndn(6) * level))"
+      }
+    },
+    {
+      "id": "healOther",
+      "fromId": "apocalypse",
+      "textureIndex1": 9,
+      "textureIndex2": 9,
+      "name": "Heal Other",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 17,
+        "p": 10,
+        "useInTown": true
+      },
+      "formulas": {
+        "mana": "8 + (2 * $level) - (3 * level) :max 1"
+      }
+    },
+    {
+      "id": "holyBolt",
+      "fromId": "apocalypse",
+      "textureIndex1": 41,
+      "textureIndex2": 41,
+      "name": "Holy Bolt",
+      "properties": {
+        "reqMag": 20,
+        "p": 10
+      },
+      "formulas": {
+        "mana": "$spellM * :round(7 - (1 * (level - 1 :max 0))) :max 3"
+      }
+    },
+    {
+      "id": "inferno",
+      "fromId": "apocalypse",
+      "textureIndex1": 14,
+      "textureIndex2": 14,
+      "name": "Inferno",
+      "properties": {
+        "reqMag": 20,
+        "p": 20
+      },
+      "formulas": {
+        "mana": "$spellM * :round(11 - (1 * (level - 1 :max 0))) :max 6"
+      }
+    },
+    {
+      "id": "infravision",
+      "fromId": "apocalypse",
+      "textureIndex1": 8,
+      "textureIndex2": 8,
+      "name": "Infravision"
+    },
+    {
+      "id": "lightning",
+      "fromId": "apocalypse",
+      "textureIndex1": 2,
+      "textureIndex2": 2,
+      "name": "Lightning",
+      "properties": {
+        "reqMag": 20,
+        "p": 30
+      },
+      "formulas": {
+        "mana": "$spellM * :round(10 - (1 * (level - 1 :max 0))) :max 6"
+      }
+    },
+    {
+      "id": "manaShield",
+      "fromId": "apocalypse",
+      "textureIndex1": 12,
+      "textureIndex2": 12,
+      "name": "Mana Shield",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "mana": 33,
+        "reqMag": 25,
+        "p": 240
+      }
+    },
+    {
+      "id": "nova",
+      "fromId": "apocalypse",
+      "textureIndex1": 10,
+      "textureIndex2": 10,
+      "name": "Nova",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "p": 260
+      },
+      "formulas": {
+        "mana": "$spellM * :round(60 - (3 * (level - 1 :max 0))) :max 35"
+      }
+    },
+    {
+      "id": "phasing",
+      "fromId": "apocalypse",
+      "textureIndex1": 27,
+      "textureIndex2": 27,
+      "name": "Phasing",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 39,
+        "p": 40
+      },
+      "formulas": {
+        "mana": "$spellM * :round(12 - (2 * (level - 1 :max 0))) :max 4"
+      }
+    },
+    {
+      "id": "resurrect",
+      "fromId": "apocalypse",
+      "textureIndex1": 40,
+      "textureIndex2": 40,
+      "name": "Resurrect",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "p": 50
+      }
+    },
+    {
+      "id": "stoneCurse",
+      "fromId": "apocalypse",
+      "textureIndex1": 7,
+      "textureIndex2": 7,
+      "name": "Stone Curse",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 51,
+        "p": 160
+      },
+      "formulas": {
+        "mana": "$spellM * :round(60 - (3 * (level - 1 :max 0))) :max 40"
+      }
+    },
+    {
+      "id": "telekinesis",
+      "fromId": "apocalypse",
+      "textureIndex1": 39,
+      "textureIndex2": 39,
+      "name": "Telekinesis",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 33,
+        "p": 40
+      },
+      "formulas": {
+        "mana": "$spellM * :round(15 - (2 * (level - 1 :max 0))) :max 8"
+      }
+    },
+    {
+      "id": "teleport",
+      "fromId": "apocalypse",
+      "textureIndex1": 23,
+      "textureIndex2": 23,
+      "name": "Teleport",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 105,
+        "p": 250
+      },
+      "formulas": {
+        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 15"
+      }
+    },
+    {
+      "id": "townPortal",
+      "fromId": "apocalypse",
+      "textureIndex1": 6,
+      "textureIndex2": 6,
+      "name": "Town Portal",
+      "descriptions": { "index": 1, "name": "spellManaNoDamage" },
+      "properties": {
+        "reqMag": 20,
+        "p": 40
+      },
+      "formulas": {
+        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 18"
       }
     }
   ]

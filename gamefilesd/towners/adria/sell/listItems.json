@@ -16,6 +16,7 @@
   ],
   "menu": {
     "id": "menuPrices",
+    "replaceVars": true,
     "font": "smaltext",
     "sound": "titlslct",
     "position": [571, 94],
@@ -32,11 +33,19 @@
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]
         },
-        "text": "%prices.sell%",
-        "executeAction": {
-          "name": "load",
-          "file": ["towners/common/setMenuPriceText.json", "hero", 2, "%idx%", "%menuIdx%"]
-        }
+        "text": "%eval.|sellPrice|%",
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 2,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
+            }
+          },
+          "setMenuPriceText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.belt",
@@ -44,11 +53,19 @@
           "property": "itemType",
           "value": ["Book", "Potion", "Scroll", "Staff"]
         },
-        "text": "%prices.sell%",
-        "executeAction": {
-          "name": "load",
-          "file": ["towners/common/setMenuPriceText.json", "hero", 1, "%idx%", "%menuIdx%"]
-        }
+        "text": "%eval.|sellPrice|%",
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 1,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
+            }
+          },
+          "setMenuPriceText"
+        ]
       }
     ]
   },

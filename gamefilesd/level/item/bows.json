@@ -9,7 +9,7 @@
       "shortName": "Bow",
       "type": "Bow",
       "defaults": {
-        "price": 100,
+        "basePrice": 100,
         "damageMin": 1,
         "damageMax": 4,
         "durability": 30,
@@ -28,7 +28,7 @@
       "inventoryTextureIndex": 113,
       "name": "Long Bow",
       "defaults": {
-        "price": 250,
+        "basePrice": 250,
         "damageMin": 1,
         "damageMax": 6,
         "durability": 35,
@@ -43,7 +43,7 @@
       "inventoryTextureIndex": 113,
       "name": "Hunter's Bow",
       "defaults": {
-        "price": 350,
+        "basePrice": 350,
         "damageMin": 2,
         "damageMax": 5,
         "durability": 40,
@@ -58,7 +58,7 @@
       "inventoryTextureIndex": 144,
       "name": "Composite Bow",
       "defaults": {
-        "price": 600,
+        "basePrice": 600,
         "damageMin": 3,
         "damageMax": 6,
         "durability": 45,
@@ -73,7 +73,7 @@
       "inventoryTextureIndex": 178,
       "name": "Short Battle Bow",
       "defaults": {
-        "price": 750,
+        "basePrice": 750,
         "damageMin": 3,
         "damageMax": 7,
         "durability": 45,
@@ -88,7 +88,7 @@
       "inventoryTextureIndex": 130,
       "name": "Long Battle Bow",
       "defaults": {
-        "price": 1000,
+        "basePrice": 1000,
         "damageMin": 1,
         "damageMax": 10,
         "durability": 50,
@@ -103,7 +103,7 @@
       "inventoryTextureIndex": 176,
       "name": "Short War Bow",
       "defaults": {
-        "price": 1500,
+        "basePrice": 1500,
         "damageMin": 4,
         "damageMax": 8,
         "durability": 55,
@@ -118,7 +118,7 @@
       "inventoryTextureIndex": 130,
       "name": "Long War Bow",
       "defaults": {
-        "price": 2000,
+        "basePrice": 2000,
         "damageMin": 1,
         "damageMax": 14,
         "durability": 60,

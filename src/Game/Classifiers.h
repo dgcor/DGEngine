@@ -28,19 +28,35 @@ public:
 		return true;
 	}
 
-	bool getText(size_t idx, const Queryable& obj, std::string& text) const
+	template <class T>
+	T getNumber(size_t idx, const Queryable& obj) const
 	{
-		if (idx >= classifiers.size())
+		Variable var;
+		if (getVar(idx, obj, var) == false)
 		{
 			return false;
 		}
-		auto classifier = classifiers[idx].first;
-		if (classifier == nullptr)
+		if (std::holds_alternative<int64_t>(var) == true)
+		{
+			return std::get<int64_t>(var);
+		}
+		else if (std::holds_alternative<double>(var) == true)
+		{
+			return std::get<double>(var);
+		}
+		return {};
+	}
+
+	bool getText(size_t idx, const Queryable& obj,
+		std::string& text, bool replaceVars = true) const
+	{
+		Variable var;
+		if (getVar(idx, obj, var) == false)
 		{
 			return false;
 		}
-		text = VarUtils::toString(classifier->get(obj, classifiers[idx].second));
-		if (text.empty() == false)
+		text = VarUtils::toString(var);
+		if (replaceVars == true && text.empty() == false)
 		{
 			text = GameUtils::replaceStringWithQueryable(text, obj);
 		}

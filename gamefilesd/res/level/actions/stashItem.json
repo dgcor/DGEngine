@@ -11,17 +11,15 @@
         "then": [
           {
             "name": "if.equal",
+            "replaceVars": "value",
             "param1": "%game.hasDrawable.img{1}%",
             "param2": false,
-            "then": {
-              "name": "load",
-              "file": [
-                "ui/level/char/inventoryItem.json",
-                "{1}",
-                "%btn{1}.position.x%",
-                "%btn{1}.position.y%"
-              ]
-            }
+            "then": [
+              { "name": "variable.set", "key": "inventoryItemName", "value": "{1}" },
+              { "name": "variable.set", "key": "inventoryItemPosX", "value": "%btn{1}.position.x%" },
+              { "name": "variable.set", "key": "inventoryItemPosY", "value": "%btn{1}.position.y%" },
+              "drawInventoryItem"
+            ]
           },
           {
             "name": "image.setTexture",

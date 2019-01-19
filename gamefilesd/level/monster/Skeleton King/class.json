@@ -14,9 +14,11 @@
       "defaultDamageMax": 16,
       "unique": true
     },
-    "lifeFormula": "120",
-    "armorFormula": "70",
-    "toHitFormula": "60",
+    "formulas": {
+      "life": "120",
+      "armor": "70",
+      "toHit": "60"
+    },
     "texturePacks": "skeletonKing",
     "textureIndexes": [
       { "name": "Stand1", "index": 3 },

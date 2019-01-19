@@ -1,4 +1,5 @@
 {
+  "replaceVars": true,
   "action": {
     "name": "if.equal",
     "param1": {
@@ -9,7 +10,7 @@
     "then": {
       "name": ">=",
       "param1": "%currentLevel.currentPlayer.itemQuantity.gold%",
-      "param2": "%currentLevel.player.wirt.item.{1}.{2}.price%",
+      "param2": "%currentLevel.player.wirt.item.{1}.{2}.eval.|WirtPrice|%",
       "then": {
         "name": "load",
         "file": [ "towners/wirt/buy/confirm2.json", "{1}", "{2}" ]

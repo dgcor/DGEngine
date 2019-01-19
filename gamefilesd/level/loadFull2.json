@@ -5,7 +5,6 @@
     { "name": "loadingScreen.setProgress", "progress": 15 },
     { "name": "load", "file": "level/variables.json" },
     { "name": "load", "file": "res/level/actions.json" },
-    { "name": "load", "file": "res/level/baseLevelActions.json" },
     { "name": "loadingScreen.setProgress", "progress": 20 },
     { "name": "load", "file": "res/level/fonts.json" },
     { "name": "loadingScreen.setProgress", "progress": 25 },

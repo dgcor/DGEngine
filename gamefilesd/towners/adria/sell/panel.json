@@ -85,10 +85,18 @@
           "anchorRightPentagram",
           "mainMenu.moveScrollbar"
         ],
-        "executeAction": {
-          "name": "load",
-          "file": ["towners/common/setMenuItemText.json", "hero", 2, "%idx%", "%menuIdx%"]
-        }
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 2,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
+            }
+          },
+          "setMenuItemText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.belt",
@@ -106,10 +114,18 @@
           "anchorRightPentagram",
           "mainMenu.moveScrollbar"
         ],
-        "executeAction": {
-          "name": "load",
-          "file": ["towners/common/setMenuItemText.json", "hero", 1, "%idx%", "%menuIdx%"]
-        }
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 1,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
+            }
+          },
+          "setMenuItemText"
+        ]
       }
     ]
   },

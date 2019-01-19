@@ -79,7 +79,7 @@
           "value": [
             { "min": 10, "max": 20, "value": "Red" },
             { "min": 21, "max": 30, "value": "Crimson" },
-            { "min": 31, "max": 40, "value": "Burgundy" },
+            { "min": 31, "max": 40, "value": "Crimson" },
             { "min": 41, "max": 50, "value": "Garnet" },
             { "min": 51, "max": "max", "value": "Ruby" }
           ]
@@ -178,7 +178,7 @@
           "value": [
             { "min": 10, "max": 20, "value": "Red" },
             { "min": 21, "max": 30, "value": "Crimson" },
-            { "min": 31, "max": 40, "value": "Burgundy" },
+            { "min": 31, "max": 40, "value": "Crimson" },
             { "min": 41, "max": 50, "value": "Garnet" },
             { "min": 51, "max": "max", "value": "Ruby" }
           ]
@@ -211,9 +211,8 @@
         {
           "property": "toCharges",
           "value": [
-            { "min": 1, "max": 4, "value": "Plentiful" },
-            { "min": 5, "max": 8, "value": "Bountiful" },
-            { "min": 9, "max": "max", "value": "Of Bashing" }
+            { "min": 2, "max": 2, "value": "Plentiful" },
+            { "min": 3, "max": "max", "value": "Bountiful" }
           ]
         },
         {
@@ -270,7 +269,7 @@
           "value": [
             { "min": 10, "max": 20, "value": "Red" },
             { "min": 21, "max": 30, "value": "Crimson" },
-            { "min": 31, "max": 40, "value": "Burgundy" },
+            { "min": 31, "max": 40, "value": "Crimson" },
             { "min": 41, "max": 50, "value": "Garnet" },
             { "min": 51, "max": "max", "value": "Ruby" }
           ]

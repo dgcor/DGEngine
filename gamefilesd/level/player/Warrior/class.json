@@ -16,6 +16,8 @@
       "vitality": 25,
       "bonusLife": 2,
       "bonusMana": 1,
+      "bonusHealing": 2,
+      "spellM": 1,
       "defaultDamageMin": 1,
       "levelUp": 5
     },
@@ -26,11 +28,13 @@
     "maxResistMagic": 75,
     "maxResistFire": 75,
     "maxResistLightning": 75,
-    "lifeFormula": "(2 * vitality) + (2 * vitalityItems) + (2 * level) + lifeItems + 18",
-    "manaFormula": "magic + magicItems + level + manaItems - 1",
-    "armorFormula": "dexterityNow * 0.2 + armorItems",
-    "toHitFormula": "dexterityNow * 0.5 + toHitItems + 50",
-    "damageFormula": "strengthNow * level / 100",
+    "formulas": {
+      "life": "(2 * vitality) + (2 * vitalityItems) + (2 * level) + lifeItems + 18",
+      "mana": "magic + magicItems + level + manaItems - 1",
+      "armor": "dexterityNow * 0.2 + armorItems",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow * level / 100"
+    },
     "texturePacks": [
       "warriorNormal",
       "warriorNormalAxe",

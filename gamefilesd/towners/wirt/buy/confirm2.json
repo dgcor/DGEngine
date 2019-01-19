@@ -49,6 +49,7 @@
   "button": [
     {
       "id": "yes",
+      "replaceVars": true,
       "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
@@ -62,7 +63,7 @@
         {
           "name": "player.removeItemQuantity",
           "itemClass": "gold",
-          "value": "%currentLevel.player.wirt.item.{1}.{2}.price%"
+          "value": "%currentLevel.player.wirt.item.{1}.{2}.eval.|WirtPrice|%"
         },
         {
           "name": "item.trade",
@@ -96,10 +97,19 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "wirt", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "wirt", "{1}", "{2}",
-           "%currentLevel.player.wirt.item.{1}.{2}.price%"],
+  "replaceVars": true,
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "wirt",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.player.wirt.item.{1}.{2}.eval.|WirtPrice|%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

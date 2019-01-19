@@ -91,7 +91,7 @@ private:
 	void onTouchMoved(const sf::Event::TouchEvent& evt);
 	void onTouchEnded(const sf::Event::TouchEvent& evt);
 
-	void updateMouse(const sf::Vector2i mousePos);
+	void updateMousePosition(const sf::Vector2i mousePos);
 	void updateEvents();
 	void drawCursor();
 	void drawUI();
@@ -236,7 +236,8 @@ public:
 		fadeInOut = std::move(fadeInOut_);
 	}
 
-	void updateMouse();
+	void setMousePosition(sf::Vector2i mousePos);
+	void updateMousePosition();
 	void updateCursorPosition();
 
 	void play();
@@ -267,7 +268,7 @@ public:
 		return defVal;
 	}
 
-	bool getVarOrPropNoToken(const std::string& key, Variable& var) const;
+	bool getVarOrPropNoToken(const std::string_view key, Variable& var) const;
 	bool getVarOrProp(const std::string_view key, Variable& var) const;
 	Variable getVarOrProp(const Variable& var) const;
 	bool getVarOrPropBoolS(const std::string_view key) const;

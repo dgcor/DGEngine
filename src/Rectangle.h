@@ -12,6 +12,7 @@ private:
 public:
 	Rectangle(const sf::Vector2f& size = sf::Vector2f(0, 0)) : sf::RectangleShape(size) {}
 
+	virtual Anchor getAnchor() const noexcept { return anchor; }
 	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 

@@ -9,7 +9,7 @@
       "shortName": "Dagger",
       "type": "Sword",
       "defaults": {
-        "price": 60,
+        "basePrice": 60,
         "damageMin": 1,
         "damageMax": 4,
         "durability": 16,
@@ -25,7 +25,7 @@
       "name": "Short Sword",
       "shortName": "Sword",
       "defaults": {
-        "price": 120,
+        "basePrice": 120,
         "damageMin": 2,
         "damageMax": 6,
         "durability": 24,
@@ -41,7 +41,7 @@
       "name": "Sabre",
       "shortName": "Sabre",
       "defaults": {
-        "price": 170,
+        "basePrice": 170,
         "damageMin": 1,
         "damageMax": 8,
         "durability": 45,
@@ -56,7 +56,7 @@
       "name": "Scimitar",
       "shortName": "Scimitar",
       "defaults": {
-        "price": 200,
+        "basePrice": 200,
         "damageMin": 3,
         "damageMax": 7,
         "durability": 28,
@@ -72,7 +72,7 @@
       "name": "Blade",
       "shortName": "Blade",
       "defaults": {
-        "price": 280,
+        "basePrice": 280,
         "damageMin": 3,
         "damageMax": 8,
         "durability": 30,
@@ -88,7 +88,7 @@
       "name": "Falchion",
       "shortName": "Falchion",
       "defaults": {
-        "price": 250,
+        "basePrice": 250,
         "damageMin": 4,
         "damageMax": 8,
         "durability": 20,
@@ -103,7 +103,7 @@
       "name": "Long Sword",
       "shortName": "Sword",
       "defaults": {
-        "price": 350,
+        "basePrice": 350,
         "damageMin": 2,
         "damageMax": 10,
         "durability": 40,
@@ -118,7 +118,7 @@
       "inventoryTextureIndex": 76,
       "name": "Claymore",
       "defaults": {
-        "price": 450,
+        "basePrice": 450,
         "damageMin": 1,
         "damageMax": 12,
         "durability": 36,
@@ -133,7 +133,7 @@
       "inventoryTextureIndex": 72,
       "name": "Broad Sword",
       "defaults": {
-        "price": 750,
+        "basePrice": 750,
         "damageMin": 4,
         "damageMax": 12,
         "durability": 50,
@@ -147,7 +147,7 @@
       "inventoryTextureIndex": 68,
       "name": "Bastard Sword",
       "defaults": {
-        "price": 1000,
+        "basePrice": 1000,
         "damageMin": 6,
         "damageMax": 15,
         "durability": 60,
@@ -161,7 +161,7 @@
       "inventoryTextureIndex": 121,
       "name": "Two-Handed Sword",
       "defaults": {
-        "price": 1800,
+        "basePrice": 1800,
         "twoHanded": true,
         "damageMin": 8,
         "damageMax": 16,
@@ -177,7 +177,7 @@
       "inventoryTextureIndex": 145,
       "name": "Great Sword",
       "defaults": {
-        "price": 3000,
+        "basePrice": 3000,
         "damageMin": 10,
         "damageMax": 20,
         "durability": 100,

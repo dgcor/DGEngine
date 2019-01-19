@@ -52,6 +52,81 @@ bool Item::getTexture(size_t textureNumber, TextureInfo& ti) const
 	}
 }
 
+bool Item::getNumberProp(const std::string_view prop, Number32& value) const
+{
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int16(props.first);
+	LevelObjValue val;
+	if (getNumberPropByHash(*this, propHash, props.second, val) == true)
+	{
+		value.setInt32(val);
+		return true;
+	}
+	return false;
+}
+
+bool Item::getNumberPropByHash(const Queryable& owner, uint16_t propHash, LevelObjValue& value) const
+{
+	return getNumberPropByHash(owner, propHash, {}, value);
+}
+
+bool Item::getNumberPropByHash(const Queryable& owner, uint16_t propHash,
+	const std::string_view minMaxNumber, LevelObjValue& value) const
+{
+	updateClassifierValues();
+	switch (propHash)
+	{
+	case str2int16("identified"):
+		value = identified == true ? 1 : 0;
+		break;
+	case str2int16("pricePrefix1"):
+		value = pricePrefix1;
+		break;
+	case str2int16("pricePrefix2"):
+		value = pricePrefix2;
+		break;
+	case str2int16("priceSuffix1"):
+		value = priceSuffix1;
+		break;
+	case str2int16("priceSuffix2"):
+		value = priceSuffix2;
+		break;
+	case str2int16("spell"):
+	{
+		auto spell = getSpell();
+		if (spell != nullptr)
+		{
+			auto props2 = Utils::splitStringIn2(minMaxNumber, '.');
+			auto propHash2 = str2int16(props2.first);
+			auto player = dynamic_cast<const Player*>(&owner);
+			if (player != nullptr)
+			{
+				auto spelli = player->getSpellInstance(spell->Id());
+				return spelli->getNumberPropByHash(owner, propHash2, props2.second, value);
+			}
+			else
+			{
+				return spell->getNumberPropByHash(owner, propHash2, props2.second, value);
+			}
+		}
+		return false;
+	}
+	default:
+	{
+		if (getIntByHash(propHash, value) == true)
+		{
+			break;
+		}
+		else if (Class()->evalFormula(propHash, *this, owner, value, minMaxNumber) == true)
+		{
+			break;
+		}
+		return false;
+	}
+	}
+	return true;
+}
+
 void Item::update(Game& game, Level& level)
 {
 	processQueuedActions(game);
@@ -84,24 +159,21 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	{
 		return true;
 	}
+	updateClassifierValues();
 	switch (propHash)
 	{
 	case str2int16("shortName"):
 		var = Variable(ShortName());
 		break;
 	case str2int16("name"):
-	{
-		updateNameAndDescriptions();
 		var = Variable(Name());
 		break;
-	}
 	case str2int16("simpleName"):
 		var = Variable(SimpleName());
 		break;
 	case str2int16("d"):
 	case str2int16("description"):
 	{
-		updateNameAndDescriptions();
 		size_t idx = Utils::strtou(props.second);
 		if (idx >= descriptions.size())
 		{
@@ -110,9 +182,26 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(descriptions[idx]);
 		break;
 	}
+	case str2int16("eval"):
+		var = Variable((int64_t)Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMin"):
+		var = Variable((int64_t)Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMax"):
+		var = Variable((int64_t)Formula::evalMaxString(props.second, *this));
+		break;
+	case str2int16("evalf"):
+		var = Variable(Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMinf"):
+		var = Variable(Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMaxf"):
+		var = Variable(Formula::evalMaxString(props.second, *this));
+		break;
 	case str2int16("hasDescription"):
 	{
-		updateNameAndDescriptions();
 		bool hasDescr = false;
 		size_t idx = Utils::strtou(props.second);
 		if (idx < descriptions.size())
@@ -125,19 +214,6 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("hasSpell"):
 		var = Variable(hasSpell());
 		break;
-	case str2int16("prices"):
-	{
-		LevelObjValue value;
-		if (Class()->evalFormula(str2int16(props.second), *this, value) == false)
-		{
-			if (getIntByHash(propHash, value) == false)
-			{
-				return false;
-			}
-		}
-		var = Variable((int64_t)value);
-		break;
-	}
 	case str2int16("identified"):
 		var = Variable(identified);
 		break;
@@ -156,6 +232,18 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("needsRepair"):
 		var = Variable(needsRepair());
 		break;
+	case str2int16("pricePrefix1"):
+		var = Variable((int64_t)pricePrefix1);
+		break;
+	case str2int16("pricePrefix2"):
+		var = Variable((int64_t)pricePrefix2);
+		break;
+	case str2int16("priceSuffix1"):
+		var = Variable((int64_t)priceSuffix1);
+		break;
+	case str2int16("priceSuffix2"):
+		var = Variable((int64_t)priceSuffix2);
+		break;
 	case str2int16("propertyCount"):
 		var = Variable((int64_t)properties.size());
 		break;
@@ -169,12 +257,17 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 		{
 			return spell->getProperty(props.second, var);
 		}
-		break;
+		return false;
 	}
 	default:
 	{
 		LevelObjValue value;
 		if (getIntByHash(propHash, value) == true)
+		{
+			var = Variable((int64_t)value);
+			break;
+		}
+		else if (Class()->evalFormula(propHash, *this, *this, value, props.second) == true)
 		{
 			var = Variable((int64_t)value);
 			break;
@@ -271,7 +364,7 @@ void Item::setIntByHash(uint16_t propHash, LevelObjValue value)
 		}
 	}
 	}
-	updateNameAndDescr = true;
+	updateClassifierVals = true;
 }
 
 void Item::setInt(const std::string_view prop, LevelObjValue value)
@@ -279,11 +372,20 @@ void Item::setInt(const std::string_view prop, LevelObjValue value)
 	setIntByHash(str2int16(prop), value);
 }
 
-void Item::updateNameAndDescriptions() const
+void Item::updatePrice() const
 {
-	if (updateNameAndDescr == true)
+	pricePrefix1 = Class()->getPricePrefix1(*this);
+	pricePrefix2 = Class()->getPricePrefix2(*this);
+	priceSuffix1 = Class()->getPriceSuffix1(*this);
+	priceSuffix2 = Class()->getPriceSuffix2(*this);
+}
+
+void Item::updateClassifierValues() const
+{
+	if (updateClassifierVals == true)
 	{
-		updateNameAndDescr = false;
+		updateClassifierVals = false;
+		updatePrice();
 		if (identified == false)
 		{
 			name = SimpleName();
@@ -341,11 +443,11 @@ bool Item::isUsable() const noexcept
 	return (hasIntByHash(ItemProp::UseOn) || hasIntByHash(ItemProp::UseOp));
 }
 
-bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
+bool Item::useValue(uint16_t propHash, uint16_t useOpHash,
 	LevelObjValue value, Player& player, const Level& level) const noexcept
 {
 	Number32 origValue2;
-	if (player.getNumberByHash(propHash, origValue2) == false)
+	if (player.getNumberByHash(propHash, {}, origValue2) == false)
 	{
 		return false;
 	}
@@ -367,20 +469,15 @@ bool Item::useHelper(uint16_t propHash, uint16_t useOpHash,
 	return player.setNumberByHash(propHash, (LevelObjValue)origValue, &level);
 }
 
-bool Item::useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
-	uint16_t valueMaxHash, Player& player, const Level& level) const
+bool Item::getAndUseValue(uint16_t propHash, uint16_t useOpHash,
+	uint16_t valueHash, Player& player, const Level& level) const noexcept
 {
 	LevelObjValue value;
 	if (Class()->evalFormula(valueHash, *this, player, value) == false)
 	{
 		return false;
 	}
-	LevelObjValue valueMax;
-	if (Class()->evalFormula(valueMaxHash, *this, player, valueMax) == true)
-	{
-		value = Utils::Random::get<LevelObjValue>(value, valueMax);
-	}
-	return useHelper(propHash, useOpHash, value, player, level);
+	return useValue(propHash, useOpHash, value, player, level);
 }
 
 bool Item::useItem(Player& player, const Level& level,
@@ -400,10 +497,8 @@ bool Item::useItem(Player& player, const Level& level,
 	{
 	case ItemProp::LifeAndManaDamage:
 	{
-		ret |= useHelper(ItemProp::LifeDamage, useOpHash,
-			ItemProp::Value, ItemProp::ValueMax, player, level);
-		ret |= useHelper(ItemProp::ManaDamage, useOpHash,
-			ItemProp::Value2, ItemProp::Value2Max, player, level);
+		ret |= getAndUseValue(ItemProp::LifeDamage, useOpHash, ItemProp::Value, player, level);
+		ret |= getAndUseValue(ItemProp::ManaDamage, useOpHash, ItemProp::Value2, player, level);
 		break;
 	}
 	case ItemProp::AllAttributes:
@@ -413,20 +508,15 @@ bool Item::useItem(Player& player, const Level& level,
 		{
 			break;
 		}
-		LevelObjValue valueMax;
-		if (Class()->evalFormula(ItemProp::ValueMax, *this, player, valueMax) == true)
-		{
-			value = Utils::Random::get<LevelObjValue>(value, valueMax);
-		}
-		ret |= useHelper(ItemProp::Strength, useOpHash, value, player, level);
-		ret |= useHelper(ItemProp::Magic, useOpHash, value, player, level);
-		ret |= useHelper(ItemProp::Dexterity, useOpHash, value, player, level);
-		ret |= useHelper(ItemProp::Vitality, useOpHash, value, player, level);
+		ret |= useValue(ItemProp::Strength, useOpHash, value, player, level);
+		ret |= useValue(ItemProp::Magic, useOpHash, value, player, level);
+		ret |= useValue(ItemProp::Dexterity, useOpHash, value, player, level);
+		ret |= useValue(ItemProp::Vitality, useOpHash, value, player, level);
 		break;
 	}
 	default:
 	{
-		ret = useHelper(propHash, useOpHash, ItemProp::Value, ItemProp::ValueMax, player, level);
+		ret = getAndUseValue(propHash, useOpHash, ItemProp::Value, player, level);
 		break;
 	}
 	}
@@ -464,7 +554,7 @@ bool Item::use(Player& player, const Level& level, uint32_t& quantityLeft)
 {
 	quantityLeft = 0;
 
-	if (player.canUseItem(*this) == false)
+	if (player.canUseObject(*this) == false)
 	{
 		return false;
 	}

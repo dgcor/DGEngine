@@ -59,6 +59,7 @@
   "button": [
     {
       "id": "yes",
+      "replaceVars": true,
       "font": "smaltext",
       "sound": "titlslct",
       "focus": true,
@@ -72,7 +73,7 @@
         {
           "name": "player.addItemQuantity",
           "itemClass": "gold",
-          "value": "%currentLevel.currentPlayer.item.{1}.{2}.prices.sell%"
+          "value": "%currentLevel.currentPlayer.item.{1}.{2}.eval.|sellPrice|%"
         },
         { "name": "item.delete", "inventory": {1}, "item": {2} },
         "updateBeltItems",
@@ -102,10 +103,19 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "hero", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "hero", "{1}", "{2}",
-           "%currentLevel.currentPlayer.item.{1}.{2}.prices.sell%"],
+  "replaceVars": true,
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "hero",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.currentPlayer.item.{1}.{2}.eval.|sellPrice|%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

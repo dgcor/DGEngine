@@ -11,31 +11,39 @@ class Player;
 class Item : public LevelObject
 {
 private:
-	typedef FixedMap<uint16_t, LevelObjValue, 10> ItemProperties;
+	typedef FixedMap<uint16_t, LevelObjValue, 12> ItemProperties;
 
 	bool wasHoverEnabledOnItemDrop{ false };
 
-	mutable bool updateNameAndDescr{ true };
+	mutable bool updateClassifierVals{ true };
 
 	mutable std::string name;
 	mutable std::array<std::string, 5> descriptions;
 
 	ItemProperties properties;
 
+	mutable LevelObjValue pricePrefix1{ 0 };
+	mutable LevelObjValue pricePrefix2{ 0 };
+	mutable LevelObjValue priceSuffix1{ 0 };
+	mutable LevelObjValue priceSuffix2{ 0 };
+
 	bool identified{ false };
 
-	void updateNameAndDescriptions() const;
+	void updateClassifierValues() const;
 
-	bool useHelper(uint16_t propHash, uint16_t useOpHash,
+	bool useValue(uint16_t propHash, uint16_t useOpHash,
 		LevelObjValue value, Player& player, const Level& level) const noexcept;
 
-	bool useHelper(uint16_t propHash, uint16_t useOpHash, uint16_t valueHash,
-		uint16_t valueMaxHash, Player& player, const Level& level) const;
+	bool getAndUseValue(uint16_t propHash, uint16_t useOpHash,
+		uint16_t valueHash, Player& player, const Level& level) const noexcept;
 
 	bool useItem(Player& player, const Level& level,
 		uint16_t useOpHash, uint32_t& quantityLeft);
 	bool useSpell(Player& player, const Level& level,
 		uint16_t useOpHash, uint32_t& quantityLeft);
+
+	// updates item's price based on whether it's identified or not.
+	void updatePrice() const;
 
 	friend void Save::serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level, const Item& item);
@@ -73,16 +81,7 @@ public:
 
 	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const
-	{
-		LevelObjValue val;
-		bool ret = getInt(prop, val);
-		if (ret == true)
-		{
-			value.setInt32(val);
-		}
-		return ret;
-	}
+	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
 	virtual bool Passable() const noexcept { return true; }
 
 	virtual void serialize(void* serializeObj, Save::Properties& props,
@@ -108,6 +107,11 @@ public:
 	bool getInt(const std::string_view prop, LevelObjValue& value) const;
 	void setIntByHash(uint16_t propHash, LevelObjValue value);
 	void setInt(const std::string_view prop, LevelObjValue value);
+
+	bool getNumberPropByHash(const Queryable& owner,
+		uint16_t propHash, LevelObjValue& value) const;
+	bool getNumberPropByHash(const Queryable& owner, uint16_t propHash,
+		const std::string_view minMaxNumber, LevelObjValue& value) const;
 
 	void applyDefaults();
 

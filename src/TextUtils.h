@@ -12,9 +12,9 @@ namespace TextUtils
 	{
 		Set = 0,
 		Replace = 1,
-		ReplaceAll = 2,
-		Query = 3,
-		FormatString = 4,
+		Query = 2,
+		FormatString = 3,
+		ReplaceAll = 4,
 		Trim = 8,
 		RemoveEmptyLines = 16,
 	};

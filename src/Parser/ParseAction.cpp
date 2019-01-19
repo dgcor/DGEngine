@@ -65,14 +65,14 @@ namespace Parser
 			{
 				textOp = TextUtils::TextOp::Set;
 			}
-			else if (getBoolKey(elem, "replaceAll") == true)
-			{
-				textOp = TextUtils::TextOp::ReplaceAll;
-			}
 			action = std::make_shared<T>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "text"),
 				textOp);
+		}
+		if (getBoolKey(elem, "replaceAll") == true)
+		{
+			action->ReplaceAll();
 		}
 		if (getBoolKey(elem, "removeEmptyLines") == true)
 		{
@@ -242,6 +242,11 @@ namespace Parser
 				str2int16(getStringViewKey(elem, "condition")),
 				game, elem);
 		}
+		case str2int16("cursor.centerOnDrawable"):
+		{
+			return std::make_shared<ActCursorCenterOnDrawable>(
+				getStringKey(elem, "id"));
+		}
 		case str2int16("cursor.enableOutline"):
 		{
 			return std::make_shared<ActCursorEnableOutline>(
@@ -267,6 +272,11 @@ namespace Parser
 			return std::make_shared<ActCursorSetPalette>(
 				getStringKey(elem, "palette"),
 				getColorKey(elem, "color", sf::Color::White));
+		}
+		case str2int16("cursor.setPosition"):
+		{
+			return std::make_shared<ActCursorSetPosition>(
+				getVector2iKey<sf::Vector2i>(elem, "position"));
 		}
 		case str2int16("cursor.show"):
 		{
@@ -462,7 +472,8 @@ namespace Parser
 			return std::make_shared<ActDrawableSetPosition>(
 				getStringKey(elem, "id"),
 				getVector2fKey<sf::Vector2f>(elem, "position"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+				getVector2fKey<sf::Vector2f>(elem, "offset"),
+				getBoolKey(elem, "relativeCoords", true));
 		}
 		case str2int16("drawable.setPositionX"):
 		{
@@ -905,6 +916,12 @@ namespace Parser
 			return std::make_shared<ActLevelClearQuests>(
 				getStringKey(elem, "level"));
 		}
+		case str2int16("level.enableHover"):
+		{
+			return std::make_shared<ActLevelEnableHover>(
+				getStringKey(elem, "level"),
+				getBoolKey(elem, "enable", true));
+		}
 		case str2int16("level.move"):
 		{
 			return std::make_shared<ActLevelMove>(
@@ -1028,15 +1045,31 @@ namespace Parser
 		case str2int16("loadJson"):
 		{
 			std::string json;
-			if (elem["json"].IsString())
+			if (elem.HasMember("json") == true)
 			{
-				json = getStringKey(elem, "json");
+				if (elem["json"].IsString())
+				{
+					json = getStringVal(elem["json"]);
+				}
+				else
+				{
+					json = JsonUtils::jsonToString(elem["json"]);
+				}
+			}
+			else if (isValidString(elem, "file") == true)
+			{
+				json = FileUtils::readText(elem["file"].GetString());
+			}
+			if (isValidArray(elem, "args") == true)
+			{
+				return std::make_shared<ActLoadJson>(
+					json,
+					getStringVectorKey(elem, "args"));
 			}
 			else
 			{
-				json = JsonUtils::jsonToString(elem["json"]);
+				return std::make_shared<ActLoadJson>(json);
 			}
-			return std::make_shared<ActLoadJson>(json);
 		}
 		case str2int16("menu.appendText"):
 		{
@@ -1382,6 +1415,13 @@ namespace Parser
 		}
 		case str2int16("variable.set"):
 		{
+			if (elem.HasMember("values") == true &&
+				elem["values"].IsObject() == true)
+			{
+				return std::make_shared<ActVariablesSet>(
+					getVariables(elem["values"]),
+					getBoolKey(elem, "resolveValue", true));
+			}
 			auto key = getStringKey(elem, "key");
 			if (isValidId(key) == false)
 			{
@@ -1389,19 +1429,8 @@ namespace Parser
 			}
 			return std::make_shared<ActVariableSet>(
 				key,
-				getVariableKey(elem, "value"));
-		}
-		case str2int16("variable.setId"):
-		{
-			auto key = getStringKey(elem, "key");
-			if (isValidId(key) == false)
-			{
-				return nullptr;
-			}
-			return std::make_shared<ActVariableSetId>(
-				getStringKey(elem, "id"),
-				key,
-				getStringKey(elem, "property"));
+				getVariableKey(elem, "value"),
+				getBoolKey(elem, "resolveValue", true));
 		}
 		case str2int16("variable.setIfNull"):
 		{
@@ -1412,7 +1441,8 @@ namespace Parser
 			}
 			return std::make_shared<ActVariableSetIfNull>(
 				key,
-				getVariableKey(elem, "value"));
+				getVariableKey(elem, "value"),
+				getBoolKey(elem, "resolveValue", true));
 		}
 		default:
 			return nullptr;

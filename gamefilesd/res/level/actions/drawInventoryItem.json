@@ -1,0 +1,26 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "drawInventoryItem",
+    "action": {
+      "name": "loadJson",
+      "json": {
+        "button": {
+          "id": "img|inventoryItemName|",
+          "resource": "charPanelInventory",
+          "replaceVars": "value",
+          "texture": "empty",
+          "textureRect": [28, 28],
+          "outline": "|outlineItemInv|",
+          "outlineIgnore": "0x000000",
+          "anchor": "right",
+          "relativeCoords": false,
+          "position": ["|inventoryItemPosX|", "|inventoryItemPosY|"],
+          "onRightClick": "use|inventoryItemName|Item",
+          "onHoverEnter": "update|inventoryItemName|Text",
+          "onHoverLeave": "hover|inventoryItemName|Leave"
+        }
+      }
+    }
+  }
+}

@@ -107,10 +107,18 @@
       ]
     }
   ],
-  "load": ["towners/common/setItemInfo.json", "griswold", "{1}", "{2}"],
-  "load": ["towners/common/setPriceInfo.json", "griswold", "{1}", "{2}",
-           "%currentLevel.player.griswold.item.{1}.{2}.price%"],
   "action": [
+    {
+      "name": "variable.set",
+      "values": {
+        "itemOwnerId": "griswold",
+        "itemInv": {1},
+        "itemIndex": {2},
+        "itemPrice": "%currentLevel.player.griswold.item.{1}.{2}.price%"
+      }
+    },
+    "setItemInfo",
+    "setPriceInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

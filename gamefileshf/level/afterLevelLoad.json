@@ -8,6 +8,7 @@
       "else": { "name": "player.setRestStatus", "status": 0 }
     },
     "updateLifeManaOrbs",
+    "updateSelectedSpell",
     "updatePlayerTexture",
     "updateCharPoints",
     "updateMap",

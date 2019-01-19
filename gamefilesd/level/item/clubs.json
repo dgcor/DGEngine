@@ -9,7 +9,7 @@
       "shortName": "Club",
       "type": "Club",
       "defaults": {
-        "price": 20,
+        "basePrice": 20,
         "damageMin": 1,
         "damageMax": 6,
         "durability": 20,
@@ -23,7 +23,7 @@
       "inventoryTextureIndex": 81,
       "name": "Spiked Club",
       "defaults": {
-        "price": 225,
+        "basePrice": 225,
         "damageMin": 3,
         "damageMax": 6,
         "durability": 20,
@@ -38,7 +38,7 @@
       "name": "Mace",
       "shortName": "Mace",
       "defaults": {
-        "price": 200,
+        "basePrice": 200,
         "damageMin": 1,
         "damageMax": 8,
         "durability": 32,
@@ -52,7 +52,7 @@
       "inventoryTextureIndex": 74,
       "name": "Morning Star",
       "defaults": {
-        "price": 300,
+        "basePrice": 300,
         "damageMin": 1,
         "damageMax": 10,
         "durability": 40,
@@ -67,7 +67,7 @@
       "name": "Flail",
       "shortName": "Flail",
       "defaults": {
-        "price": 500,
+        "basePrice": 500,
         "damageMin": 2,
         "damageMax": 12,
         "durability": 36,
@@ -83,7 +83,7 @@
       "name": "War Hammer",
       "shortName": "Hammer",
       "defaults": {
-        "price": 600,
+        "basePrice": 600,
         "damageMin": 5,
         "damageMax": 9,
         "durability": 50,
@@ -98,7 +98,7 @@
       "name": "Maul",
       "shortName": "Maul",
       "defaults": {
-        "price": 900,
+        "basePrice": 900,
         "damageMin": 6,
         "damageMax": 20,
         "durability": 50,

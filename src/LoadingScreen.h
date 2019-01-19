@@ -42,6 +42,7 @@ public:
 	const std::shared_ptr<Action>& getAction() const noexcept { return action; }
 	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 
+ Anchor getAnchor() const noexcept { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 
 	void updateSize(const Game& game);

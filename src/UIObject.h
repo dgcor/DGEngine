@@ -16,6 +16,7 @@ public:
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept { return false; }
 
 	// Anchor
+	virtual Anchor getAnchor() const = 0;
 	virtual void setAnchor(const Anchor anchor) = 0;
 	virtual void updateSize(const Game& game) = 0;
 

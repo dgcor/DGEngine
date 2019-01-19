@@ -156,6 +156,7 @@ set(SOURCE_FILES
     src/Game/Classifiers.h
     src/Game/Formula.cpp
     src/Game/Formula.h
+    src/Game/Formulas.h
     src/Game/fsa.h
     src/Game/GameHashes.h
     src/Game/GameProperties.cpp

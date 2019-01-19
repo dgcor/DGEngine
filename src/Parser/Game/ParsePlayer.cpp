@@ -146,7 +146,7 @@ namespace Parser
 		{
 			return;
 		}
-		player.addSpell(id, spell);
+		player.addSpell(id, spell, getIntKey(elem, "level", 1));
 	}
 
 	void parsePlayer(Game& game, const Value& elem)
@@ -264,6 +264,11 @@ namespace Parser
 			{
 				parsePlayerSpell(game, *level, *player, spellElem);
 			}
+		}
+
+		if (elem.HasMember("selectedSpell") == true)
+		{
+			player->SelectedSpell(getStringVal(elem["selectedSpell"]));
 		}
 
 		player->MapPosition(*level, mapPos);

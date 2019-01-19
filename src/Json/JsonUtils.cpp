@@ -201,18 +201,18 @@ namespace JsonUtils
 					hadMatch = true;
 					str2 = str;
 				}
-				std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
-				std::string strProp2(strProp.substr(1, strProp.size() - 2));
+				std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
 				Variable var;
-				if (game.getVarOrPropNoToken(strProp2, var) == true)
+				if (game.getVarOrPropNoToken(strProp, var) == true)
 				{
+					std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
 					if (changeValueType == true &&
-						strProp == str2)
+						strProp2 == str2)
 					{
 						replaceValueWithVariable(elem, allocator, var);
 						return;
 					}
-					Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+					Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
 				}
 				firstTokenStart = secondTokenStop;
 			}

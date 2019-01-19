@@ -1,6 +1,5 @@
 #include "Player.h"
 #include "Game.h"
-#include "GameHashes.h"
 #include "GameUtils.h"
 #include "Level.h"
 #include "Utils/Utils.h"
@@ -349,6 +348,24 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(descriptions[idx]);
 		break;
 	}
+	case str2int16("eval"):
+		var = Variable((int64_t)Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMin"):
+		var = Variable((int64_t)Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMax"):
+		var = Variable((int64_t)Formula::evalMaxString(props.second, *this));
+		break;
+	case str2int16("evalf"):
+		var = Variable(Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMinf"):
+		var = Variable(Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMaxf"):
+		var = Variable(Formula::evalMaxString(props.second, *this));
+		break;
 	case str2int16("totalKills"):
 		var = Variable((int64_t)Class()->TotalKills());
 		break;
@@ -364,7 +381,16 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		{
 			return false;
 		}
-		var = Variable(canUseItem(*selectedItem));
+		var = Variable(canUseObject(*selectedItem));
+		break;
+	}
+	case str2int16("canUseSelectedSpell"):
+	{
+		if (selectedSpell == nullptr)
+		{
+			return false;
+		}
+		var = Variable(canUseObject(*selectedSpell->spell));
 		break;
 	}
 	case str2int16("canUseItem"):
@@ -372,12 +398,13 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		std::string_view props2;
 		size_t invIdx;
 		size_t itemIdx;
-		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		if (inventories.parseInventoryAndItem(
+			props.second, props2, invIdx, itemIdx) == true)
 		{
 			auto item = inventories[invIdx].get(itemIdx);
 			if (item != nullptr)
 			{
-				var = Variable(canUseItem(*item));
+				var = Variable(canUseObject(*item));
 				break;
 			}
 		}
@@ -397,7 +424,8 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		std::string_view props2;
 		size_t invIdx;
 		size_t itemIdx;
-		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		if (inventories.parseInventoryAndItem(
+			props.second, props2, invIdx, itemIdx) == true)
 		{
 			var = Variable(inventories[invIdx].get(itemIdx) != nullptr);
 			break;
@@ -407,12 +435,23 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("hasItemClass"):
 		var = Variable(inventories.hasItem(str2int16(props.second)));
 		break;
+	case str2int16("hasSpell"):
+	{
+		var = Variable(getSpell(std::string(props.second)) != nullptr);
+		break;
+	}
+	case str2int16("hasSelectedSpell"):
+	{
+		var = Variable(selectedSpell != nullptr);
+		break;
+	}
 	case str2int16("isItemSlotInUse"):
 	{
 		std::string_view props2;
 		size_t invIdx;
 		size_t itemIdx;
-		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		if (inventories.parseInventoryAndItem(
+			props.second, props2, invIdx, itemIdx) == true)
 		{
 			var = Variable(inventories[invIdx].isSlotInUse(itemIdx));
 			break;
@@ -444,7 +483,8 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		std::string_view props2;
 		size_t invIdx;
 		size_t itemIdx;
-		if (parseInventoryAndItem(props.second, props2, invIdx, itemIdx) == true)
+		if (inventories.parseInventoryAndItem(
+			props.second, props2, invIdx, itemIdx) == true)
 		{
 			auto item = inventories[invIdx].get(itemIdx);
 			if (item != nullptr)
@@ -489,7 +529,7 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("spell"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
-		auto spell = getSpell(std::string(props2.first));
+		auto spell = getSpellInstance(std::string(props2.first));
 		if (spell != nullptr)
 		{
 			return spell->getProperty(props2.second, var);
@@ -499,7 +539,7 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 	default:
 	{
 		Number32 value;
-		if (getNumberProp(prop, value) == true)
+		if (getNumberByHash(propHash, props.second, value) == true)
 		{
 			var = Variable(value.getInt64());
 			break;
@@ -553,16 +593,14 @@ const Queryable* Player::getQueryable(const std::string_view prop) const
 	switch (propHash)
 	{
 	case str2int16("selectedItem"):
-	{
 		queryable = selectedItem.get();
 		break;
-	}
-	break;
 	case str2int16("item"):
 	{
 		size_t invIdx;
 		size_t itemIdx;
-		if (parseInventoryAndItem(props.second, props.second, invIdx, itemIdx) == true)
+		if (inventories.parseInventoryAndItem(
+			props.second, props.second, invIdx, itemIdx) == true)
 		{
 			queryable = inventories[invIdx].get(itemIdx);
 			break;
@@ -570,13 +608,10 @@ const Queryable* Player::getQueryable(const std::string_view prop) const
 	}
 	break;
 	case str2int16("selectedSpell"):
-	{
 		queryable = selectedSpell;
 		break;
-	}
-	break;
 	case str2int16("spell"):
-		return getSpell(std::string(props.second));
+		return getSpellInstance(std::string(props.second));
 	default:
 		break;
 	}
@@ -598,26 +633,58 @@ bool Player::hasInt(const std::string_view prop) const noexcept
 	return hasIntByHash(str2int16(prop));
 }
 
-bool Player::getNumberProp(const std::string_view prop, Number32& value) const noexcept
+bool Player::getNumberProp(const std::string_view prop, Number32& value) const
 {
-	return getNumberByHash(str2int16(prop), value);
+	if (prop.empty() == true)
+	{
+		return false;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int16(props.first);
+	return getNumberByHash(propHash, props.second, value);
 }
 
-bool Player::getNumberByHash(uint16_t propHash, Number32& value) const noexcept
+bool Player::getNumberByHash(uint16_t propHash,
+	const std::string_view props, Number32& value) const noexcept
 {
-	LevelObjValue iVal;
-	if (getIntByHash(propHash, iVal) == true)
+	switch (propHash)
 	{
-		value.setInt32(iVal);
-		return true;
-	}
-	uint32_t uVal;
-	if (getUIntByHash(propHash, uVal) == true)
+	case str2int16("selectedSpell"):
 	{
-		value.setUInt32(uVal);
-		return true;
+		if (selectedSpell != nullptr)
+		{
+			return selectedSpell->getNumberProp(props, value);
+		}
+		return false;
 	}
-	return getCustomIntByHash(propHash, value);
+	case str2int16("spell"):
+	{
+		auto props2 = Utils::splitStringIn2(props, '.');
+		auto spell = getSpellInstance(std::string(props2.first));
+		if (spell != nullptr)
+		{
+			return spell->getNumberProp(props2.second, value);
+		}
+		return false;
+	}
+	default:
+	{
+		LevelObjValue iVal;
+		if (getIntByHash(propHash, iVal) == true)
+		{
+			value.setInt32(iVal);
+			return true;
+		}
+		uint32_t uVal;
+		if (getUIntByHash(propHash, uVal) == true)
+		{
+			value.setUInt32(uVal);
+			return true;
+		}
+		return getCustomIntByHash(propHash, value);
+	}
+	}
+	return true;
 }
 
 bool Player::getCustomIntByHash(uint16_t propHash, Number32& value) const noexcept
@@ -954,42 +1021,6 @@ void Player::updateNameAndDescriptions() const
 	}
 }
 
-bool Player::parseInventoryAndItem(const std::string_view str,
-	std::string_view& props, size_t& invIdx, size_t& itemIdx) const
-{
-	auto strPair = Utils::splitStringIn2(str, '.');
-	invIdx = GameUtils::getPlayerInventoryIndex(strPair.first);
-	if (invIdx < inventories.size())
-	{
-		auto strPair2 = Utils::splitStringIn2(strPair.second, '.');
-		auto strPair3 = Utils::splitStringIn2(strPair2.first, ',');
-		itemIdx = 0;
-		if (strPair3.second.empty() == false)
-		{
-			size_t x = Utils::strtou(strPair3.first);
-			size_t y = Utils::strtou(strPair3.second);
-			itemIdx = inventories[invIdx].getIndex(x, y);
-		}
-		else
-		{
-			if (invIdx == (size_t)PlayerInventory::Body)
-			{
-				itemIdx = GameUtils::getPlayerItemMountIndex(strPair2.first);
-			}
-			else
-			{
-				itemIdx = Utils::strtou(strPair2.first);
-			}
-		}
-		if (itemIdx < inventories[invIdx].Size())
-		{
-			props = strPair2.second;
-			return true;
-		}
-	}
-	return false;
-}
-
 LevelObjValue Player::addItemQuantity(const ItemClass& itemClass,
 	const LevelObjValue amount, InventoryPosition invPos)
 {
@@ -1046,9 +1077,46 @@ std::unique_ptr<Item> Player::SelectedItem(std::unique_ptr<Item> item) noexcept
 	return old;
 }
 
+bool Player::hasSpell(const std::string& key) const
+{
+	return spells.find(key) != spells.end();
+}
+
+void Player::addSpell(const std::string key, Spell* obj, LevelObjValue spellLevel)
+{
+	auto it = spells.find(key);
+	if (it != spells.end())
+	{
+		it->second.spellLevel++;
+		return;
+	}
+	SpellInstance spellInstance(obj, this, spellLevel);
+	spells.insert(std::make_pair(key, spellInstance));
+}
+
+Spell* Player::getSpell(const std::string& key) const
+{
+	auto it = spells.find(key);
+	if (it != spells.end())
+	{
+		return it->second.spell;
+	}
+	return nullptr;
+}
+
+const SpellInstance* Player::getSpellInstance(const std::string& key) const
+{
+	auto it = spells.find(key);
+	if (it != spells.end())
+	{
+		return &it->second;
+	}
+	return nullptr;
+}
+
 void Player::SelectedSpell(const std::string& id) noexcept
 {
-	selectedSpell = getSpell(id);
+	selectedSpell = getSpellInstance(id);
 }
 
 bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item)
@@ -1185,7 +1253,7 @@ void Player::updateBodyItemValues()
 	}
 	for (const auto& item : inventories[bodyInventoryIdx])
 	{
-		if (canUseItem(item) == false)
+		if (canUseObject(item) == false)
 		{
 			continue;
 		}
@@ -1296,14 +1364,6 @@ void Player::applyDefaults(const Level& level) noexcept
 	walkSound = Class()->getWalkSound();
 }
 
-bool Player::canUseItem(const Item& item) const
-{
-	return (item.getIntByHash(ItemProp::RequiredStrength) <= StrengthNow() &&
-		item.getIntByHash(ItemProp::RequiredMagic) <= MagicNow() &&
-		item.getIntByHash(ItemProp::RequiredDexterity) <= DexterityNow() &&
-		item.getIntByHash(ItemProp::RequiredVitality) <= VitalityNow());
-}
-
 bool Player::hasEquipedItemType(const std::string_view type) const
 {
 	if (bodyInventoryIdx < inventories.size())
@@ -1361,7 +1421,7 @@ void Player::updateLevelFromExperience(const Level& level, bool updatePoints)
 		lifeDamage = 0;
 		manaDamage = 0;
 		Number32 levelUp;
-		if (getNumberByHash(ItemProp::LevelUp, levelUp) == true)
+		if (getNumberByHash(ItemProp::LevelUp, {}, levelUp) == true)
 		{
 			points += levelUp.getUInt32() * (currentLevel - oldLevel);
 			queueAction(*class_, str2int16("levelChange"));

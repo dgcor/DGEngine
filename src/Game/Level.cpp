@@ -725,48 +725,42 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		{
 			return clickedObject->getProperty(props.second, var);
 		}
+		break;
 	}
-	break;
 	case str2int16("currentPlayer"):
 	{
 		if (currentPlayer != nullptr)
 		{
 			return currentPlayer->getProperty(props.second, var);
 		}
+		break;
 	}
-	break;
 	case str2int16("hasAutomap"):
 		var = Variable((levelLayers[AutomapLayer].tiles != nullptr));
 		return true;
-		break;
 	case str2int16("hasCurrentPlayer"):
 		var = Variable((currentPlayer != nullptr));
 		return true;
-		break;
 	case str2int16("hasQuest"):
 		var = Variable(hasQuest(props.second));
 		return true;
-		break;
 	case str2int16("hoverObject"):
 	{
 		if (hoverObject != nullptr)
 		{
 			return hoverObject->getProperty(props.second, var);
 		}
+		break;
 	}
-	break;
 	case str2int16("id"):
 		var = Variable(id);
 		return true;
-		break;
 	case str2int16("name"):
 		var = Variable(name);
 		return true;
-		break;
 	case str2int16("path"):
 		var = Variable(path);
 		return true;
-		break;
 	case str2int16("levelObject"):
 	{
 		std::string_view props2;
@@ -775,8 +769,8 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		{
 			return obj->getProperty(props2, var);
 		}
+		break;
 	}
-	break;
 	case str2int16("player"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
@@ -785,8 +779,8 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		{
 			return player->getProperty(props2.second, var);
 		}
+		break;
 	}
-	break;
 	case str2int16("quest"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
@@ -797,6 +791,17 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 				return quest.getProperty(props2.second, var);
 			}
 		}
+		break;
+	}
+	case str2int16("spell"):
+	{
+		auto props2 = Utils::splitStringIn2(props.second, '.');
+		auto spell = getSpell(std::string{ props2.first });
+		if (spell != nullptr)
+		{
+			return spell->getProperty(props2.second, var);
+		}
+		break;
 	}
 	case str2int16("showAutomap"):
 		var = Variable(levelLayers[AutomapLayer].visible);
@@ -805,11 +810,9 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("zoom"):
 		var = Variable((double)stopZoomFactor);
 		return true;
-		break;
 	case str2int16("zoomPercentage"):
 		var = Variable((int64_t)(std::roundf(stopZoomFactor * 100.f)));
 		return true;
-		break;
 	default:
 		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
 	}
@@ -1280,6 +1283,16 @@ uint32_t Level::getExperienceFromLevel(uint32_t level) const
 		return experiencePoints.back();
 	}
 	return 0;
+}
+
+bool Level::hasSpell(const std::string& id) const
+{
+	return getClass<Spell>(id) != nullptr;
+}
+
+Spell* Level::getSpell(const std::string& id) const
+{
+	return getClass<Spell>(id);
 }
 
 uint32_t Level::getLevelFromExperience(uint32_t experience) const

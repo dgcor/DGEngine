@@ -28,144 +28,63 @@
     "items": [
       {
         "load": "currentLevel.currentPlayer.inventory.body",
-        "exclude": {
-          "property": "needsRepair",
-          "value": false
-        },
-        "text": "%price%",
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.body.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "menuPrices",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.body.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "menuPrices",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.body.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "exclude": [
+          { "property": "needsRepair", "value": false },
+          { "property": "repairCost", "value": 0 }
+        ],
+        "text": "%repairCost%",
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 0,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuPriceText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.belt",
-        "exclude": {
-          "property": "needsRepair",
-          "value": false
-        },
-        "text": "%price%",
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.belt.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "menuPrices",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.belt.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "menuPrices",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.belt.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "exclude": [
+          { "property": "needsRepair", "value": false },
+          { "property": "repairCost", "value": 0 }
+        ],
+        "text": "%repairCost%",
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 1,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuPriceText"
+        ]
       },
       {
         "load": "currentLevel.currentPlayer.inventory.stash",
-        "exclude": {
-          "property": "needsRepair",
-          "value": false
-        },
-        "text": "%price%",
-        "executeAction": {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseItem.stash.%idx%%",
-          "param2": false,
-          "then": {
-            "name": "menu.setFont",
-            "id": "menuPrices",
-            "index": "%menuIdx%",
-            "font": "smaltextRed"
-          },
-          "else": {
-            "name": "if.equal",
-            "param1": "%currentLevel.currentPlayer.item.stash.%idx%.unique%",
-            "param2": 1,
-            "then": {
-              "name": "menu.setFont",
-              "id": "menuPrices",
-              "index": "%menuIdx%",
-              "font": "smaltextGold"
-            },
-            "else": {
-              "name": "if.equal",
-              "param1": "%currentLevel.currentPlayer.item.stash.%idx%.magical%",
-              "param2": 1,
-              "then": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltextBlue"
-              },
-              "else": {
-                "name": "menu.setFont",
-                "id": "menuPrices",
-                "index": "%menuIdx%",
-                "font": "smaltext"
-              }
+        "exclude": [
+          { "property": "needsRepair", "value": false },
+          { "property": "repairCost", "value": 0 }
+        ],
+        "text": "%repairCost%",
+        "executeAction": [
+          {
+            "name": "variable.set",
+            "values": {
+              "itemOwnerId": "hero",
+              "itemInv": 2,
+              "itemIndex": "%idx%",
+              "menuIndex": "%menuIdx%"
             }
-          }
-        }
+          },
+          "setMenuPriceText"
+        ]
       }
     ]
   },

@@ -110,12 +110,55 @@ void PlayerClass::setSound(size_t idx, const sf::SoundBuffer& snd) noexcept
 	}
 }
 
-LevelObjValue PlayerClass::evalFormula(size_t idx,
-	const LevelObject& query, LevelObjValue default_) const
+void PlayerClass::setFormula(uint16_t nameHash, const std::string_view formula)
 {
-	if (formulas[idx].empty() == true)
+	if (nameHash == str2int16(""))
 	{
-		return default_;
+		return;
 	}
-	return (LevelObjValue)formulas[idx].eval(query);
+	switch (nameHash)
+	{
+	case str2int16("life"):
+	{
+		formulas[0] = formula;
+		break;
+	}
+	case str2int16("mana"):
+	{
+		formulas[1] = formula;
+		break;
+	}
+	case str2int16("armor"):
+	{
+		formulas[2] = formula;
+		break;
+	}
+	case str2int16("toHit"):
+	{
+		formulas[3] = formula;
+		break;
+	}
+	case str2int16("damage"):
+	{
+		formulas[4] = formula;
+		break;
+	}
+	case str2int16("resistMagic"):
+	{
+		formulas[5] = formula;
+		break;
+	}
+	case str2int16("resistFire"):
+	{
+		formulas[6] = formula;
+		break;
+	}
+	case str2int16("resistLightning"):
+	{
+		formulas[7] = formula;
+		break;
+	}
+	default:
+		break;
+	}
 }

@@ -1,0 +1,20 @@
+{
+  "classifier": [
+    {
+      "id": "spellLevel",
+      "values": "Spell level %level%"
+    },
+    {
+      "id": "spellManaDamage",
+      "values": "Mana: %mana%  Dam: %damage.min% - %damage.max%"
+    },
+    {
+      "id": "spellManaNoDamage",
+      "values": "Mana: %mana%   Dam: N/A"
+    },
+    {
+      "id": "spellType",
+      "values": "%spellType%"
+    }
+  ]
+}

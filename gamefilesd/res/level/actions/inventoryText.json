@@ -13,22 +13,50 @@
         "then": [
           { "name": "image.enableOutline", "id": "img{1}" },
           {
-            "name": "if.inList",
-            "param": "%currentLevel.currentPlayer.item.{2}.{3}.itemType%",
-            "list": ["Amulet", "Ring"],
+            "name": "if.equal",
+            "param1": "%currentLevel.currentPlayer.item.{2}.{3}.itemType%",
+            "param2": "Book",
             "then": {
-              "name": "text.setText",
-              "id": "txtPanel",
-              "query": "currentLevel.currentPlayer.item.{2}.{3}",
-              "text": "%name%\n%d.1%\n%d.2%",
-              "removeEmptyLines": true
+              "name": "if.equal",
+              "param1": "#%currentLevel.currentPlayer.hasSpell.!currentLevel.currentPlayer.item.{2}.{3}.spell.id!%",
+              "param2": true,
+              "then": {
+                "name": "text.setText",
+                "id": "txtPanel",
+                "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                "text": "%name%\n%d.0%\n%d.1%",
+                "removeEmptyLines": true,
+                "replaceAll": true
+              },
+              "else": {
+                "name": "text.setText",
+                "id": "txtPanel",
+                "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                "text": "%name%\n%d.0%\n%d.2%",
+                "removeEmptyLines": true,
+                "replaceAll": true
+              }
             },
             "else": {
-              "name": "text.setText",
-              "id": "txtPanel",
-              "query": "currentLevel.currentPlayer.item.{2}.{3}",
-              "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
-              "removeEmptyLines": true
+              "name": "if.inList",
+              "param": "%currentLevel.currentPlayer.item.{2}.{3}.itemType%",
+              "list": ["Amulet", "Ring"],
+              "then": {
+                "name": "text.setText",
+                "id": "txtPanel",
+                "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                "text": "%name%\n%d.1%\n%d.2%",
+                "removeEmptyLines": true,
+                "replaceAll": true
+              },
+              "else": {
+                "name": "text.setText",
+                "id": "txtPanel",
+                "query": "currentLevel.currentPlayer.item.{2}.{3}",
+                "text": "%name%\n%d.0%\n%d.1%\n%d.2%\n%d.3%",
+                "removeEmptyLines": true,
+                "replaceAll": true
+              }
             }
           },
           "updatePanelTextSpacing",

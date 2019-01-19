@@ -13,9 +13,11 @@
       "defaultDamageMin": 1,
       "defaultDamageMax": 5
     },
-    "lifeFormula": "3",
-    "armorFormula": "10",
-    "toHitFormula": "50",
+    "formulas": {
+      "life": "3",
+      "armor": "10",
+      "toHit": "50"
+    },
     "texturePacks": "scavenger",
     "textureIndexes": [
       { "name": "Stand1", "index": 3 },

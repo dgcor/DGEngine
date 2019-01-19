@@ -9,7 +9,7 @@
       "shortName": "Cap",
       "type": "Helmet",
       "defaults": {
-        "price": 15,
+        "basePrice": 15,
         "armor": 3,
         "durability": 15,
         "durabilityMax": 15
@@ -26,7 +26,7 @@
       "inventoryTextureIndex": 101,
       "name": "Skull Cap",
       "defaults": {
-        "price": 25,
+        "basePrice": 25,
         "armor": 4,
         "durability": 20,
         "durabilityMax": 20
@@ -39,7 +39,7 @@
       "name": "Helm",
       "shortName": "Helm",
       "defaults": {
-        "price": 40,
+        "basePrice": 40,
         "armor": 6,
         "durability": 30,
         "durabilityMax": 30,
@@ -52,7 +52,7 @@
       "inventoryTextureIndex": 86,
       "name": "Full Helm",
       "defaults": {
-        "price": 90,
+        "basePrice": 90,
         "armor": 8,
         "durability": 35,
         "durabilityMax": 35,
@@ -66,7 +66,7 @@
       "name": "Crown",
       "shortName": "Crown",
       "defaults": {
-        "price": 200,
+        "basePrice": 200,
         "armor": 12,
         "durability": 40,
         "durabilityMax": 40,
@@ -79,7 +79,7 @@
       "inventoryTextureIndex": 109,
       "name": "Great Helm",
       "defaults": {
-        "price": 400,
+        "basePrice": 400,
         "armor": 15,
         "durability": 60,
         "durabilityMax": 60,

@@ -52,7 +52,7 @@ namespace Parser
 		auto texturePack1 = game.Resources().getTexturePack(
 			getStringKey(elem, "texturePack1"));
 		auto texturePack2 = game.Resources().getTexturePack(
-			getStringKey(elem, "texturePack1"));
+			getStringKey(elem, "texturePack2"));
 
 		auto textureIndex1 = (size_t)getUIntKey(elem, "textureIndex1");
 		auto textureIndex2 = (size_t)getUIntKey(elem, "textureIndex2");
@@ -144,6 +144,22 @@ namespace Parser
 				for (const auto& val : descriptions)
 				{
 					parseDescriptionValue(*spell, *level, val);
+				}
+			}
+		}
+
+		if (elem.HasMember("formulas") == true)
+		{
+			const auto& formulas = elem["formulas"];
+			if (formulas.IsObject() == true)
+			{
+				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
+				{
+					auto nameHash = str2int16(getStringViewVal(it->name));
+					if (nameHash != str2int16(""))
+					{
+						spell->setFormula(nameHash, getStringVal(it->value));
+					}
 				}
 			}
 		}

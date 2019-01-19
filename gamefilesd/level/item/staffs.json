@@ -9,19 +9,29 @@
       "shortName": "Staff",
       "type": "Staff",
       "defaults": {
-        "price": 30,
+        "basePrice": 30,
         "twoHanded": true,
         "damageMin": 2,
         "damageMax": 4,
         "durability": 25,
         "durabilityMax": 25
       },
-      "descriptions": { "index": 3, "name": "requiredStrMag" },
+      "descriptions": [
+        { "index": 1, "name": "charges" },
+        { "index": 2, "name": "magic" },
+        { "index": 3, "name": "requiredStrMag" }
+      ],
+      "formulas": {
+        "rechargeCost": "0.5 * (basePrice + (1 - unique * chargesMax * spell.p) + (5 * spell.p)) * (:trunc(1 - (charges / chargesMax) * 100) * 0.01)"
+      },
       "inventorySize": [2, 3],
       "actions": {
         "levelDrop": { "name": "sound.play", "id": "flipstaf" },
         "inventoryDrop": { "name": "sound.play", "id": "invstaf" }
-      }
+      },
+      "suffix": "spellSuffixes",
+      "priceSuffix1": null,
+      "priceSuffix2": null
     },
     {
       "id": "longStaff",
@@ -29,7 +39,7 @@
       "inventoryTextureIndex": 134,
       "name": "Long Staff",
       "defaults": {
-        "price": 100,
+        "basePrice": 100,
         "damageMin": 4,
         "damageMax": 8,
         "durability": 35,
@@ -42,7 +52,7 @@
       "inventoryTextureIndex": 177,
       "name": "Composite Staff",
       "defaults": {
-        "price": 500,
+        "basePrice": 500,
         "damageMin": 5,
         "damageMax": 10,
         "durability": 45,
@@ -55,7 +65,7 @@
       "inventoryTextureIndex": 120,
       "name": "Quarter Staff",
       "defaults": {
-        "price": 1000,
+        "basePrice": 1000,
         "damageMin": 6,
         "damageMax": 12,
         "durability": 55,
@@ -69,7 +79,7 @@
       "inventoryTextureIndex": 135,
       "name": "War Staff",
       "defaults": {
-        "price": 1500,
+        "basePrice": 1500,
         "damageMin": 8,
         "damageMax": 16,
         "durability": 75,

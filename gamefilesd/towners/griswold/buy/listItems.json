@@ -28,10 +28,18 @@
     "items": {
       "load": "currentLevel.griswold.inventory.0",
       "text": "%price%",
-      "executeAction": {
-        "name": "load",
-        "file": ["towners/common/setMenuPriceText.json", "griswold", 0, "%idx%", "%menuIdx%"]
-      }
+      "executeAction": [
+        {
+          "name": "variable.set",
+          "values": {
+            "itemOwnerId": "griswold",
+            "itemInv": 0,
+            "itemIndex": "%idx%",
+            "menuIndex": "%menuIdx%"
+          }
+        },
+        "setMenuPriceText"
+      ]
     }
   },
   "action": [

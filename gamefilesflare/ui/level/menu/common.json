@@ -125,18 +125,18 @@
       ]
     },
     {
-      "id": "spell2",
+      "id": "spellBook2",
       "texture": "empty",
       "anchor": "bottom",
       "position": [560, 387],
       "textureRect": [0, 95, 71, 19],
       "clickUp": true,
       "onClick": [
-        { "name": "button.click", "id": "spell", "playSound": false }
+        { "name": "button.click", "id": "spellBook", "playSound": false }
       ],
-      "onClickIn": { "name": "image.setTexture", "id": "spell2", "texture": "panel8bu" },
+      "onClickIn": { "name": "image.setTexture", "id": "spellBook2", "texture": "panel8bu" },
       "onClickOut": [
-        { "name": "image.setTexture", "id": "spell2", "texture": "empty" },
+        { "name": "image.setTexture", "id": "spellBook2", "texture": "empty" },
         "menu.saveAndCloseAction"
       ]
     },

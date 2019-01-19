@@ -9,27 +9,297 @@
       "name": "Book",
       "type": "Book",
       "defaults": {
-        "price": 1000,
+        "basePrice": 1000,
         "useOp": "learn"
       },
       "descriptions": [
         { "index": 0, "name": "rightClickToRead" },
-        { "index": 1, "name": "required" }
+        { "index": 1, "name": "requiredBook1" },
+        { "index": 2, "name": "requiredBook2" }
       ],
       "inventorySize": [2, 2],
       "actions": {
         "levelDrop": { "name": "sound.play", "id": "flipbook" },
-        "inventoryDrop": { "name": "sound.play", "id": "invbook" }
+        "inventoryDrop": { "name": "sound.play", "id": "invbook" },
+        "use": { "name": "sound.play", "id": "readbook" }
       },
-      "suffix": "spellSuffix"
+      "suffix": "spellSuffixes"
+    },
+    {
+      "id": "bookOfBloodStar",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 27500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.bloodStar.level))) :min 255"
+      },
+      "spell": "bloodStar"
+    },
+    {
+      "id": "bookOfBoneSpirit",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 11500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.boneSpirit.level))) :min 255"
+      },
+      "spell": "boneSpirit"
+    },
+    {
+      "id": "bookOfChainLightning",
+      "fromId": "book",
+      "inventoryTextureIndex": 99,
+      "defaults": {
+        "basePrice": 11000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.chainLightning.level))) :min 255"
+      },
+      "spell": "chainLightning"
+    },
+    {
+      "id": "bookOfChargedBolt",
+      "fromId": "book",
+      "inventoryTextureIndex": 99,
+      "defaults": {
+        "basePrice": 1000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.chargedBolt.level))) :min 255"
+      },
+      "spell": "chargedBolt"
+    },
+    {
+      "id": "bookOfElemental",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 10500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.elemental.level))) :min 255"
+      },
+      "spell": "elemental"
+    },
+    {
+      "id": "bookOfFireball",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 8000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.fireball.level))) :min 255"
+      },
+      "spell": "fireball"
+    },
+    {
+      "id": "bookOfFirebolt",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 1000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.firebolt.level))) :min 255"
+      },
+      "spell": "firebolt"
+    },
+    {
+      "id": "bookOfFirewall",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 6000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.firewall.level))) :min 255"
+      },
+      "spell": "firewall"
+    },
+    {
+      "id": "bookOfFlameWave",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 10000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.flameWave.level))) :min 255"
+      },
+      "spell": "flameWave"
+    },
+    {
+      "id": "bookOfFlash",
+      "fromId": "book",
+      "inventoryTextureIndex": 99,
+      "defaults": {
+        "basePrice": 7500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.flash.level))) :min 255"
+      },
+      "spell": "flash"
+    },
+    {
+      "id": "bookOfGolem",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 18000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.golem.level))) :min 255"
+      },
+      "spell": "golem"
+    },
+    {
+      "id": "bookOfGuardian",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 14000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.guardian.level))) :min 255"
+      },
+      "spell": "guardian"
     },
     {
       "id": "bookOfHealing",
       "fromId": "book",
+      "inventoryTextureIndex": 97,
       "defaults": {
-        "requiredMagic": 25
+        "basePrice": 1000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.healing.level))) :min 255"
       },
       "spell": "healing"
+    },
+    {
+      "id": "bookOfHealOther",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 1000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.healOther.level))) :min 255"
+      },
+      "spell": "healOther"
+    },
+    {
+      "id": "bookOfHolyBolt",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 1000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.holyBolt.level))) :min 255"
+      },
+      "spell": "holyBolt"
+    },
+    {
+      "id": "bookOfInferno",
+      "fromId": "book",
+      "inventoryTextureIndex": 98,
+      "defaults": {
+        "basePrice": 2000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.inferno.level))) :min 255"
+      },
+      "spell": "inferno"
+    },
+    {
+      "id": "bookOfLightning",
+      "fromId": "book",
+      "inventoryTextureIndex": 99,
+      "defaults": {
+        "basePrice": 3000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.lightning.level))) :min 255"
+      },
+      "spell": "lightning"
+    },
+    {
+      "id": "bookOfManaShield",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 16000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.manaShield.level))) :min 255"
+      },
+      "spell": "manaShield"
+    },
+    {
+      "id": "bookOfPhasing",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 3500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.phasing.level))) :min 255"
+      },
+      "spell": "phasing"
+    },
+    {
+      "id": "bookOfStoneCurse",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 12000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.stoneCurse.level))) :min 255"
+      },
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "bookOfTelekinesis",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 2500
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.telekinesis.level))) :min 255"
+      },
+      "spell": "telekinesis"
+    },
+    {
+      "id": "bookOfTeleport",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 20000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.teleport.level))) :min 255"
+      },
+      "spell": "teleport"
+    },
+    {
+      "id": "bookOfTownPortal",
+      "fromId": "book",
+      "inventoryTextureIndex": 97,
+      "defaults": {
+        "basePrice": 3000
+      },
+      "formulas": {
+        "requiredMagic": ":round(spell.reqMag * (1.1975 ^ ($spell.townPortal.level))) :min 255"
+      },
+      "spell": "townPortal"
     }
   ]
 }

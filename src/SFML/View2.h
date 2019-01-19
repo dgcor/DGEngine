@@ -24,6 +24,7 @@ public:
 	void updateSize(const Game& game);
 	void updateViewport(const Game& game);
 
+	Anchor getAnchor() const noexcept { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 
 	const sf::Vector2f& getCenter() const { return view.getCenter(); }

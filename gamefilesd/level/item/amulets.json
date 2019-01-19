@@ -10,7 +10,7 @@
       "shortName": "Amulet",
       "type": "Amulet",
       "defaults": {
-        "price": 1200,
+        "basePrice": 1200,
         "identified": false,
         "magical": true,
         "durability": "max",
@@ -27,7 +27,11 @@
         "inventoryDrop": { "name": "sound.play", "id": "invring" }
       },
       "prefix": "jewelleryPrefixes",
-      "suffix": "jewellerySuffixes"
+      "pricePrefix1": "jewelleryPrefixesB",
+      "pricePrefix2": "jewelleryPrefixesM",
+      "suffix": "jewellerySuffixes",
+      "priceSuffix1": "jewellerySuffixesB",
+      "priceSuffix2": "jewellerySuffixesM"
     }
   ]
 }

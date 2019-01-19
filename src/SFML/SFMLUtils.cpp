@@ -75,7 +75,7 @@ namespace SFMLUtils
 		// A new view (with a new viewport set) is returned.
 
 		float windowRatio = (float)windowSize.x / (float)windowSize.y;
-		float viewRatio = view.getSize().x / (float)view.getSize().y;
+		float viewRatio = view.getSize().x / view.getSize().y;
 
 		bool horizontalSpacing = true;
 		if (windowRatio < viewRatio)

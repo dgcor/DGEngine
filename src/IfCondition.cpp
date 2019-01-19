@@ -1,5 +1,6 @@
 #include "IfCondition.h"
 #include "Game.h"
+#include "GameUtils.h"
 #include <regex>
 #include "Utils/Utils.h"
 
@@ -7,7 +8,28 @@ Variable IfCondition::getVariable(const Game& game, const VarOrPredicate& varOrP
 {
 	if (holdsVariable(varOrPred) == true)
 	{
-		return game.getVarOrProp(std::get<Variable>(varOrPred));
+		const auto& var = std::get<Variable>(varOrPred);
+		if (std::holds_alternative<std::string>(var) == true)
+		{
+			const auto& str = std::get<std::string>(var);
+			Variable var2;
+			if (str.empty() == false && str[0] == '#')
+			{
+				std::string_view strNoShebang{ str.data() + 1, str.size() - 1 };
+				auto str2 = GameUtils::replaceStringWithVarOrProp(strNoShebang, game, '!');
+				if (game.getVarOrProp(str2, var2) == true)
+				{
+					return var2;
+				}
+				return str2;
+			}
+			if (game.getVarOrProp(str, var2) == true)
+			{
+				return var2;
+			}
+			return str;
+		}
+		return var;
 	}
 	else
 	{

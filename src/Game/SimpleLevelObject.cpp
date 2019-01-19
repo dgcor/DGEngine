@@ -95,6 +95,24 @@ bool SimpleLevelObject::getProperty(const std::string_view prop, Variable& var) 
 		var = Variable(descriptions[idx]);
 		break;
 	}
+	case str2int16("eval"):
+		var = Variable((int64_t)Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMin"):
+		var = Variable((int64_t)Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMax"):
+		var = Variable((int64_t)Formula::evalMaxString(props.second, *this));
+		break;
+	case str2int16("evalf"):
+		var = Variable(Formula::evalString(props.second, *this));
+		break;
+	case str2int16("evalMinf"):
+		var = Variable(Formula::evalMinString(props.second, *this));
+		break;
+	case str2int16("evalMaxf"):
+		var = Variable(Formula::evalMaxString(props.second, *this));
+		break;
 	default:
 	{
 		LevelObjValue value;

@@ -2,7 +2,9 @@
 
 #include <array>
 #include "GameHashes.h"
+#include "GameUtils.h"
 #include "Inventory.h"
+#include "Utils/Utils.h"
 
 template <size_t Size_>
 class Inventories : private std::array<Inventory, Size_>
@@ -180,5 +182,46 @@ public:
 			return std::numeric_limits<uint32_t>::max();
 		}
 		return (uint32_t)maxCapacity;
+	}
+
+	bool parseInventoryAndItem(const std::string_view str,
+		std::string_view& props, size_t& invIdx, size_t& itemIdx) const
+	{
+		auto strPair = Utils::splitStringIn2(str, '.');
+		invIdx = GameUtils::getPlayerInventoryIndex(strPair.first);
+		if (invIdx < (*this).size())
+		{
+			auto strPair2 = Utils::splitStringIn2(strPair.second, '.');
+			auto strPair3 = Utils::splitStringIn2(strPair2.first, ',');
+			itemIdx = 0;
+			if (strPair3.second.empty() == false)
+			{
+				size_t x = Utils::strtou(strPair3.first);
+				size_t y = Utils::strtou(strPair3.second);
+				const auto& invSize = (*this)[invIdx].getXYSize();
+				if (x >= invSize.x || y >= invSize.y)
+				{
+					return false;
+				}
+				itemIdx = (*this)[invIdx].getIndex(x, y);
+			}
+			else
+			{
+				if (invIdx == (size_t)PlayerInventory::Body)
+				{
+					itemIdx = GameUtils::getPlayerItemMountIndex(strPair2.first);
+				}
+				else
+				{
+					itemIdx = Utils::strtou(strPair2.first);
+				}
+			}
+			if (itemIdx < (*this)[invIdx].Size())
+			{
+				props = strPair2.second;
+				return true;
+			}
+		}
+		return false;
 	}
 };

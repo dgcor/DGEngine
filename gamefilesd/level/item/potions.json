@@ -10,13 +10,12 @@
       "shortName": "Potion",
       "type": "Potion",
       "defaults": {
-        "price": 50,
+        "basePrice": 50,
         "useOn": "lifeDamage",
         "useOp": "-"
       },
       "formulas": {
-        "value": "$bonusLife * $life * 0.125",
-        "valueMax": "$bonusLife * 3 * $life * 0.125"
+        "value": "$bonusLife * :rnd(4) * $life * 0.125"
       },
       "descriptions": [
         { "index": 0, "name": "potionOfHealing" },
@@ -34,13 +33,12 @@
       "inventoryTextureIndex": 50,
       "name": "Potion of Mana",
       "defaults": {
-        "price": 50,
+        "basePrice": 50,
         "useOn": "manaDamage",
         "useOp": "-"
       },
       "formulas": {
-        "value": "$bonusMana * $mana * 0.125",
-        "valueMax": "$bonusMana * 3 * $mana * 0.125"
+        "value": "$bonusMana * :rnd(4) * $mana * 0.125"
       },
       "descriptions": { "index": 0, "name": "potionOfMana" }
     },
@@ -51,13 +49,12 @@
       "inventoryTextureIndex": 46,
       "name": "Potion of Full Healing",
       "defaults": {
-        "price": 150,
+        "basePrice": 150,
         "useOn": "lifeDamage",
         "useOp": "="
       },
       "formulas": {
-        "value": 0,
-        "valueMax": null
+        "value": 0
       },
       "descriptions": { "index": 0, "name": "potionOfFullHealing" }
     },
@@ -68,7 +65,7 @@
       "inventoryTextureIndex": 11,
       "name": "Potion of Full Mana",
       "defaults": {
-        "price": 150,
+        "basePrice": 150,
         "useOn": "manaDamage",
         "useOp": "="
       },
@@ -81,14 +78,12 @@
       "inventoryTextureIndex": 48,
       "name": "Potion of Rejuvenation",
       "defaults": {
-        "price": 120,
+        "basePrice": 120,
         "useOn": "lifeAndManaDamage"
       },
       "formulas": {
-        "value": "$bonusLife * $life * 0.125",
-        "valueMax": "$bonusLife * 3 * $life * 0.125",
-        "value2": "$bonusMana * $mana * 0.125",
-        "value2Max": "$bonusMana * 3 * $mana * 0.125"
+        "value": "$bonusLife * :rnd(4) * $life * 0.125",
+        "value2": "$bonusMana * :rnd(4) * $mana * 0.125"
       },
       "descriptions": { "index": 0, "name": "potionOfRejuvenation" }
     },
@@ -98,10 +93,12 @@
       "inventoryTextureIndex": 44,
       "name": "Potion of Full Rejuvenation",
       "defaults": {
-        "price": 600,
-        "useOn": "lifeAndManaDamage"
+        "basePrice": 600,
+        "useOn": "lifeAndManaDamage",
+        "useOp": "="
       },
       "formulas": {
+        "value": 0,
         "value2": 0
       },
       "descriptions": { "index": 0, "name": "potionOfFullRejuvenation" }
@@ -113,7 +110,7 @@
       "inventoryTextureIndex": 26,
       "name": "Spectral Elixir",
       "defaults": {
-        "price": 10000,
+        "basePrice": 10000,
         "useOn": "allAttributes",
         "useOp": "+"
       },

@@ -1,4 +1,5 @@
 {
+  "load": "res/level/actions/drawInventoryItem.json",
   "load": ["res/level/actions/stashItem.json", "Stash11", "stash", "0,0"],
   "load": ["res/level/actions/stashItem.json", "Stash12", "stash", "0,1"],
   "load": ["res/level/actions/stashItem.json", "Stash13", "stash", "0,2"],
