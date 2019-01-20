@@ -159,6 +159,7 @@
     <ClCompile Include="src\TexturePacks\VectorTexturePack.cpp" />
     <ClCompile Include="src\TextUtils.cpp" />
     <ClCompile Include="src\TileSet.cpp" />
+    <ClCompile Include="src\UIObject.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
     <ClCompile Include="src\Variable.cpp" />
   </ItemGroup>

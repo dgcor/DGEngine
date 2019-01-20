@@ -71,17 +71,6 @@ namespace GameUtils
 
 	sf::Time getTime(int fps);
 
-	// gets common UIObject.getProperty properties;
-	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
-		const std::string_view prop, Variable& var);
-
-	// gets common LevelObject.getProperty properties;
-	bool getLevelObjProp(const LevelObject& levelObject, const uint16_t propHash16,
-		const std::string_view prop, Variable& var);
-
-	// gets game's UIObject property. str has no tokens. ex: "game.title"
-	bool getObjectProperty(const Game& game, const std::string_view str, Variable& var);
-
 	// replaces "%str%" with obj.getProperty("str")
 	std::string replaceStringWithQueryable(const std::string_view str,
 		const Queryable& obj, char token = '%');

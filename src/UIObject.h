@@ -10,6 +10,11 @@ class Game;
 
 class UIObject : public virtual sf::Drawable, public virtual Queryable
 {
+protected:
+	// gets common getProperty properties;
+	bool getUIObjProp(const uint16_t propHash16,
+		const std::string_view prop, Variable& var) const;
+
 public:
 	// Action
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept { return nullptr; }

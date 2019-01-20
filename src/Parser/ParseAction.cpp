@@ -1455,7 +1455,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		else if (elem.IsString() == true)
+		else if (isValidString(elem) == true)
 		{
 			return game.Resources().getAction(elem.GetString());
 		}

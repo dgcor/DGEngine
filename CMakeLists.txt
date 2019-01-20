@@ -108,6 +108,7 @@ set(SOURCE_FILES
     src/TextUtils.h
     src/TileSet.cpp
     src/TileSet.h
+    src/UIObject.cpp
     src/UIObject.h
     src/Variable.cpp
     src/Variable.h

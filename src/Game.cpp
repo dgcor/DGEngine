@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "Parser/ParseVariable.h"
 #include "SFML/SFMLUtils.h"
@@ -756,7 +755,7 @@ bool Game::getVarOrPropNoToken(const std::string_view key, Variable& var) const
 	{
 		return true;
 	}
-	return GameUtils::getObjectProperty(*this, key, var);
+	return getProperty(key, var);
 }
 
 bool Game::getVarOrProp(const std::string_view key, Variable& var) const
@@ -854,11 +853,11 @@ std::string Game::getVarOrPropStringS(const std::string_view key) const
 			if (std::holds_alternative<std::string>(var))
 			{
 				auto key3 = std::get<std::string>(var).substr(1, std::get<std::string>(var).size() - 2);
-				GameUtils::getObjectProperty(*this, key3, var);
+				getProperty(key3, var);
 			}
 			return VarUtils::toString(var);
 		}
-		else if (GameUtils::getObjectProperty(*this, key2, var) == true)
+		else if (getProperty(key2, var) == true)
 		{
 			return VarUtils::toString(var);
 		}
@@ -912,13 +911,75 @@ void Game::saveVariables(const std::string& filePath, const std::vector<std::str
 
 bool Game::getProperty(const std::string_view prop, Variable& var) const
 {
-	if (prop.size() <= 1)
+	if (prop.size() <= 2)
 	{
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	switch (str2int16(props.first))
 	{
+	case str2int16("$"):
+	case str2int16("eval"):
+		var = Variable((int64_t)Formula::evalString(props.second, *this));
+		return true;
+	case str2int16("evalMin"):
+		var = Variable((int64_t)Formula::evalMinString(props.second, *this));
+		return true;
+	case str2int16("evalMax"):
+		var = Variable((int64_t)Formula::evalMaxString(props.second, *this));
+		return true;
+	case str2int16("$f"):
+	case str2int16("evalf"):
+		var = Variable(Formula::evalString(props.second, *this));
+		return true;
+	case str2int16("evalMinf"):
+		var = Variable(Formula::evalMinString(props.second, *this));
+		return true;
+	case str2int16("evalMaxf"):
+		var = Variable(Formula::evalMaxString(props.second, *this));
+		return true;
+	case str2int16("game"):
+		break;
+	default:
+	{
+		const UIObject* uiObject = resourceManager.getDrawable(std::string(props.first));
+		if (uiObject == nullptr)
+		{
+			if (props.first == "focus")
+			{
+				uiObject = resourceManager.getFocused();
+			}
+			else if (props.first == "currentLevel")
+			{
+				uiObject = resourceManager.getCurrentLevel();
+			}
+		}
+		if (uiObject != nullptr)
+		{
+			return uiObject->getProperty(props.second, var);
+		}
+		return false;
+	}
+	}
+	if (props.second.size() <= 1)
+	{
+		return false;
+	}
+	props = Utils::splitStringIn2(props.second, '.');
+	switch (str2int16(props.first))
+	{
+	case str2int16("cursor"):
+	{
+		if (props.second == "x")
+		{
+			var = Variable((int64_t)mousePositioni.x);
+		}
+		else
+		{
+			var = Variable((int64_t)mousePositioni.y);
+		}
+		break;
+	}
 	case str2int16("framerate"):
 		var = Variable((int64_t)framerate);
 		break;
@@ -1060,6 +1121,8 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("title"):
 		var = Variable(title);
 		break;
+	case str2int16("var"):
+		return getVariableNoToken(std::string(props.second), var);
 	case str2int16("version"):
 		var = Variable(version);
 		break;

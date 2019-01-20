@@ -324,7 +324,7 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	auto propHash = str2int16(props.first);
-	if (GameUtils::getLevelObjProp(*this, propHash, props.second, var) == true)
+	if (getLevelObjProp(propHash, props.second, var) == true)
 	{
 		return true;
 	}

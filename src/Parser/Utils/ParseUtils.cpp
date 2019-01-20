@@ -54,6 +54,12 @@ namespace Parser
 		return true;
 	}
 
+	bool isValidString(const Value& elem)
+	{
+		return (elem.IsString() == true
+			&& elem.GetStringLength() > 0);
+	}
+
 	bool isValidString(const Value& elem, const char* key)
 	{
 		return (elem.HasMember(key) == true

@@ -249,7 +249,7 @@ bool Menu::getProperty(const std::string_view prop, Variable& var) const
 		return false;
 	}
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
+		return getUIObjProp(propHash, props.second, var);
 	}
 	return true;
 }

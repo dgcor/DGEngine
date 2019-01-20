@@ -91,6 +91,7 @@ LOCAL_SRC_FILES += TextUtils.cpp
 LOCAL_SRC_FILES += TextUtils.h
 LOCAL_SRC_FILES += TileSet.cpp
 LOCAL_SRC_FILES += TileSet.h
+LOCAL_SRC_FILES += UIObject.cpp
 LOCAL_SRC_FILES += UIObject.h
 LOCAL_SRC_FILES += Variable.cpp
 LOCAL_SRC_FILES += Variable.h

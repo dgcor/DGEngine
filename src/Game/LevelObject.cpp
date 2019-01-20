@@ -2,6 +2,39 @@
 #include "Game.h"
 #include "Game/Level.h"
 
+bool LevelObject::getLevelObjProp(const uint16_t propHash16,
+	const std::string_view prop, Variable& var) const
+{
+	switch (propHash16)
+	{
+	case str2int16("class"):
+	case str2int16("classId"):
+		var = Variable(getClassId());
+		break;
+	case str2int16("id"):
+		var = Variable(id);
+		break;
+	case str2int16("mapPosition"):
+	{
+		if (prop == "x")
+		{
+			var = Variable((int64_t)mapPosition.x);
+		}
+		else
+		{
+			var = Variable((int64_t)mapPosition.y);
+		}
+		break;
+	}
+	case str2int16("type"):
+		var = Variable(std::string(getType()));
+		break;
+	default:
+		return false;
+	}
+	return true;
+}
+
 bool LevelObject::hasValidState() const noexcept
 {
 	return (texturePack != nullptr);

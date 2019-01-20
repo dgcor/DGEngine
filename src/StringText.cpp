@@ -89,7 +89,7 @@ bool StringText::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(text.getString().toAnsiString());
 		break;
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
+		return getUIObjProp(propHash, props.second, var);
 	}
 	return true;
 }

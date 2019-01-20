@@ -28,12 +28,12 @@
         {
           "name": "variable.set",
           "key": "stashPosX",
-          "value": "%$.:trunc(game.cursor.x - btnStash.position.x - (currentLevel.currentPlayer.selectedItem.inventorySize.x :nvl 1 - 1 * 14.5) / 29 * 10) * 0.1 :max 0 :min 9%"
+          "value": "%$.:trunc(game.cursor.x - btnStash.position.x / 32 * 10) * 0.1%"
         },
         {
           "name": "variable.set",
           "key": "stashPosY",
-          "value": "%$.:trunc(game.cursor.y - btnStash.position.y - (currentLevel.currentPlayer.selectedItem.inventorySize.y :nvl 1 - 1 * 14.5) / 29 * 10) * 0.1 :max 0 :min 3%"
+          "value": "%$.:trunc(game.cursor.y - btnStash.position.y / 32 * 10) * 0.1%"
         },
         "updateStashClick"
       ]
