@@ -103,5 +103,5 @@ bool Movie::getProperty(const std::string_view prop, Variable& var) const
 		return false;
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
-	return GameUtils::getUIObjProp(*this, str2int16(props.first), props.second, var);
+	return getUIObjProp(str2int16(props.first), props.second, var);
 }

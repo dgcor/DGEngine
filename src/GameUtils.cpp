@@ -9,11 +9,9 @@
 
 namespace GameUtils
 {
-	using namespace Utils;
-
 	AnimationType getAnimationType(const std::string_view str, AnimationType val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("playonce"):
 			return AnimationType::PlayOnce;
@@ -174,7 +172,7 @@ namespace GameUtils
 
 	Anchor getAnchor(const std::string_view str, Anchor val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("none"):
 			return Anchor::None;
@@ -203,7 +201,7 @@ namespace GameUtils
 
 	HorizontalAlign getHorizontalAlignment(const std::string_view str, HorizontalAlign val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("left"):
 			return HorizontalAlign::Left;
@@ -218,7 +216,7 @@ namespace GameUtils
 
 	VerticalAlign getVerticalAlignment(const std::string_view str, VerticalAlign val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("top"):
 			return VerticalAlign::Top;
@@ -295,7 +293,7 @@ namespace GameUtils
 			}
 			else
 			{
-				switch (str2int16(toLower(str)))
+				switch (str2int16(Utils::toLower(str)))
 				{
 				case str2int16("all"):
 				case str2int16("any"):
@@ -404,7 +402,7 @@ namespace GameUtils
 
 	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("none"):
 			return IgnoreResource::None;
@@ -426,7 +424,7 @@ namespace GameUtils
 
 	InputEvent getInputEvent(const std::string_view str, InputEvent val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("none"):
 			return InputEvent::None;
@@ -468,7 +466,7 @@ namespace GameUtils
 
 	InventoryPosition getInventoryPosition(const std::string_view str, InventoryPosition val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("topleft"):
 			return InventoryPosition::TopLeft;
@@ -484,7 +482,7 @@ namespace GameUtils
 
 	PlayerDirection getPlayerDirection(const std::string_view str, PlayerDirection val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("all"):
 			return PlayerDirection::All;
@@ -511,7 +509,7 @@ namespace GameUtils
 
 	PlayerInventory getPlayerInventory(const std::string_view str, PlayerInventory val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("body"):
 			return PlayerInventory::Body;
@@ -559,7 +557,7 @@ namespace GameUtils
 
 	PlayerItemMount getPlayerItemMount(const std::string_view str, PlayerItemMount val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("lefthand"):
 			return PlayerItemMount::LeftHand;
@@ -615,7 +613,7 @@ namespace GameUtils
 
 	PlayerAnimation getPlayerAnimation(const std::string_view str, PlayerAnimation val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("stand1"):
 			return PlayerAnimation::Stand1;
@@ -656,7 +654,7 @@ namespace GameUtils
 
 	PlayerStatus getPlayerStatus(const std::string_view str, PlayerStatus val)
 	{
-		switch (str2int16(toLower(str)))
+		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("stand"):
 			return PlayerStatus::Stand;
@@ -675,109 +673,6 @@ namespace GameUtils
 	{
 		fps = std::clamp(fps, 1, 1000);
 		return sf::seconds(1.f / (float)fps);
-	}
-
-	bool getUIObjProp(const UIObject& uiObject, const uint16_t propHash16,
-		const std::string_view prop, Variable& var)
-	{
-		switch (propHash16)
-		{
-		case str2int16("position"):
-		{
-			if (prop == "x")
-			{
-				var = Variable((int64_t)uiObject.Position().x);
-			}
-			else
-			{
-				var = Variable((int64_t)uiObject.Position().y);
-			}
-		}
-		break;
-		case str2int16("size"):
-		{
-			if (prop == "x")
-			{
-				var = Variable((int64_t)uiObject.Size().x);
-			}
-			else
-			{
-				var = Variable((int64_t)uiObject.Size().y);
-			}
-		}
-		break;
-		case str2int16("visible"):
-			var = Variable(uiObject.Visible());
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
-
-	bool getLevelObjProp(const LevelObject& levelObject, const uint16_t propHash16,
-		const std::string_view prop, Variable& var)
-	{
-		switch (propHash16)
-		{
-		case str2int16("class"):
-		case str2int16("classId"):
-			var = Variable(levelObject.getClassId());
-			break;
-		case str2int16("id"):
-			var = Variable(levelObject.getId());
-			break;
-		case str2int16("mapPosition"):
-		{
-			if (prop == "x")
-			{
-				var = Variable((int64_t)levelObject.MapPosition().x);
-			}
-			else
-			{
-				var = Variable((int64_t)levelObject.MapPosition().y);
-			}
-			break;
-		}
-		case str2int16("type"):
-			var = Variable(std::string(levelObject.getType()));
-			break;
-		default:
-			return false;
-		}
-		return true;
-	}
-
-	bool getObjectProperty(const Game& game, const std::string_view str, Variable& var)
-	{
-		if (str.size() > 1)
-		{
-			auto props = splitStringIn2(str, '.');
-			const auto& id = props.first;
-			const auto& uiElemProps = props.second;
-
-			if (id == "game")
-			{
-				return game.getProperty(uiElemProps, var);
-			}
-			const UIObject* uiObject = game.Resources().getDrawable(std::string(id));
-			if (uiObject == nullptr)
-			{
-				if (id == "focus")
-				{
-					uiObject = game.Resources().getFocused();
-				}
-				else if (id == "currentLevel")
-				{
-					uiObject = game.Resources().getCurrentLevel();
-				}
-			}
-			if (uiObject != nullptr)
-			{
-				return uiObject->getProperty(uiElemProps, var);
-			}
-		}
-		return false;
 	}
 
 	std::string replaceStringWithQueryable(const std::string_view str,

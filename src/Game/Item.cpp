@@ -155,7 +155,7 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	auto propHash = str2int16(props.first);
-	if (GameUtils::getLevelObjProp(*this, propHash, props.second, var) == true)
+	if (getLevelObjProp(propHash, props.second, var) == true)
 	{
 		return true;
 	}
@@ -217,6 +217,18 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("identified"):
 		var = Variable(identified);
 		break;
+	case str2int16("inventorySize"):
+	{
+		if (props.second == "x")
+		{
+			var = Variable((int64_t)Class()->InventorySize().x);
+		}
+		else
+		{
+			var = Variable((int64_t)Class()->InventorySize().y);
+		}
+		break;
+	}
 	case str2int16("itemType"):
 		var = Variable(ItemType());
 		break;

@@ -52,7 +52,7 @@ bool BitmapText::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(text);
 		break;
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
+		return getUIObjProp(propHash, props.second, var);
 	}
 	return true;
 }

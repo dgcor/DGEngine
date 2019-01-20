@@ -72,324 +72,12 @@
       "onHoverLeave": "hoverRightRingLeave"
     },
     {
-      "id": "btnStash11",
+      "id": "btnStash",
       "texture": "empty",
-      "textureRect": [28, 28],
+      "textureRect": [290, 116],
       "anchor": "right",
       "position": [337, 222],
-      "onClick": "updateStash11Click"
-    },
-    {
-      "id": "btnStash12",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [337, 251],
-      "onClick": "updateStash12Click"
-    },
-    {
-      "id": "btnStash13",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [337, 280],
-      "onClick": "updateStash13Click"
-    },
-    {
-      "id": "btnStash14",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [337, 308],
-      "onClick": "updateStash14Click"
-    },
-    {
-      "id": "btnStash21",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [366, 222],
-      "onClick": "updateStash21Click"
-    },
-    {
-      "id": "btnStash22",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [366, 251],
-      "onClick": "updateStash22Click"
-    },
-    {
-      "id": "btnStash23",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [366, 280],
-      "onClick": "updateStash23Click"
-    },
-    {
-      "id": "btnStash24",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [366, 308],
-      "onClick": "updateStash24Click"
-    },
-    {
-      "id": "btnStash31",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [394, 222],
-      "onClick": "updateStash31Click"
-    },
-    {
-      "id": "btnStash32",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [394, 251],
-      "onClick": "updateStash32Click"
-    },
-    {
-      "id": "btnStash33",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [394, 280],
-      "onClick": "updateStash33Click"
-    },
-    {
-      "id": "btnStash34",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [394, 308],
-      "onClick": "updateStash34Click"
-    },
-    {
-      "id": "btnStash41",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [423, 222],
-      "onClick": "updateStash41Click"
-    },
-    {
-      "id": "btnStash42",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [423, 251],
-      "onClick": "updateStash42Click"
-    },
-    {
-      "id": "btnStash43",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [423, 280],
-      "onClick": "updateStash43Click"
-    },
-    {
-      "id": "btnStash44",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [423, 308],
-      "onClick": "updateStash44Click"
-    },
-    {
-      "id": "btnStash51",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [451, 222],
-      "onClick": "updateStash51Click"
-    },
-    {
-      "id": "btnStash52",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [451, 251],
-      "onClick": "updateStash52Click"
-    },
-    {
-      "id": "btnStash53",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [451, 280],
-      "onClick": "updateStash53Click"
-    },
-    {
-      "id": "btnStash54",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [451, 308],
-      "onClick": "updateStash54Click"
-    },
-    {
-      "id": "btnStash61",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [480, 222],
-      "onClick": "updateStash61Click"
-    },
-    {
-      "id": "btnStash62",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [480, 251],
-      "onClick": "updateStash62Click"
-    },
-    {
-      "id": "btnStash63",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [480, 280],
-      "onClick": "updateStash63Click"
-    },
-    {
-      "id": "btnStash64",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [480, 308],
-      "onClick": "updateStash64Click"
-    },
-    {
-      "id": "btnStash71",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [509, 222],
-      "onClick": "updateStash71Click"
-    },
-    {
-      "id": "btnStash72",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [509, 251],
-      "onClick": "updateStash72Click"
-    },
-    {
-      "id": "btnStash73",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [509, 280],
-      "onClick": "updateStash73Click"
-    },
-    {
-      "id": "btnStash74",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [509, 308],
-      "onClick": "updateStash74Click"
-    },
-    {
-      "id": "btnStash81",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [538, 222],
-      "onClick": "updateStash81Click"
-    },
-    {
-      "id": "btnStash82",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [538, 251],
-      "onClick": "updateStash82Click"
-    },
-    {
-      "id": "btnStash83",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [538, 280],
-      "onClick": "updateStash83Click"
-    },
-    {
-      "id": "btnStash84",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [538, 308],
-      "onClick": "updateStash84Click"
-    },
-    {
-      "id": "btnStash91",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [567, 222],
-      "onClick": "updateStash91Click"
-    },
-    {
-      "id": "btnStash92",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [567, 251],
-      "onClick": "updateStash92Click"
-    },
-    {
-      "id": "btnStash93",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [567, 280],
-      "onClick": "updateStash93Click"
-    },
-    {
-      "id": "btnStash94",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [567, 308],
-      "onClick": "updateStash94Click"
-    },
-    {
-      "id": "btnStash101",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [596, 222],
-      "onClick": "updateStash101Click"
-    },
-    {
-      "id": "btnStash102",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [596, 251],
-      "onClick": "updateStash102Click"
-    },
-    {
-      "id": "btnStash103",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [596, 280],
-      "onClick": "updateStash103Click"
-    },
-    {
-      "id": "btnStash104",
-      "texture": "empty",
-      "textureRect": [28, 28],
-      "anchor": "right",
-      "position": [596, 308],
-      "onClick": "updateStash104Click"
+      "onClick": "btnStashClick"
     }
   ],
   "image": [
@@ -462,6 +150,286 @@
       "outlineIgnore": "0x000000",
       "anchor": "right",
       "position": [555, 150]
+    },
+    {
+      "id": "imgBkStash11",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 222]
+    },
+    {
+      "id": "imgBkStash12",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 251]
+    },
+    {
+      "id": "imgBkStash13",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 280]
+    },
+    {
+      "id": "imgBkStash14",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [337, 308]
+    },
+    {
+      "id": "imgBkStash21",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 222]
+    },
+    {
+      "id": "imgBkStash22",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 251]
+    },
+    {
+      "id": "imgBkStash23",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 280]
+    },
+    {
+      "id": "imgBkStash24",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [366, 308]
+    },
+    {
+      "id": "imgBkStash31",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 222]
+    },
+    {
+      "id": "imgBkStash32",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 251]
+    },
+    {
+      "id": "imgBkStash33",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 280]
+    },
+    {
+      "id": "imgBkStash34",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [394, 308]
+    },
+    {
+      "id": "imgBkStash41",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 222]
+    },
+    {
+      "id": "imgBkStash42",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 251]
+    },
+    {
+      "id": "imgBkStash43",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 280]
+    },
+    {
+      "id": "imgBkStash44",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [423, 308]
+    },
+    {
+      "id": "imgBkStash51",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 222]
+    },
+    {
+      "id": "imgBkStash52",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 251]
+    },
+    {
+      "id": "imgBkStash53",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 280]
+    },
+    {
+      "id": "imgBkStash54",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [451, 308]
+    },
+    {
+      "id": "imgBkStash61",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 222]
+    },
+    {
+      "id": "imgBkStash62",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 251]
+    },
+    {
+      "id": "imgBkStash63",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 280]
+    },
+    {
+      "id": "imgBkStash64",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [480, 308]
+    },
+    {
+      "id": "imgBkStash71",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 222]
+    },
+    {
+      "id": "imgBkStash72",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 251]
+    },
+    {
+      "id": "imgBkStash73",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 280]
+    },
+    {
+      "id": "imgBkStash74",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [509, 308]
+    },
+    {
+      "id": "imgBkStash81",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 222]
+    },
+    {
+      "id": "imgBkStash82",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 251]
+    },
+    {
+      "id": "imgBkStash83",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 280]
+    },
+    {
+      "id": "imgBkStash84",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [538, 308]
+    },
+    {
+      "id": "imgBkStash91",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 222]
+    },
+    {
+      "id": "imgBkStash92",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 251]
+    },
+    {
+      "id": "imgBkStash93",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 280]
+    },
+    {
+      "id": "imgBkStash94",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [567, 308]
+    },
+    {
+      "id": "imgBkStash101",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 222]
+    },
+    {
+      "id": "imgBkStash102",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 251]
+    },
+    {
+      "id": "imgBkStash103",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 280]
+    },
+    {
+      "id": "imgBkStash104",
+      "texture": "empty",
+      "textureRect": [28, 28],
+      "anchor": "right",
+      "position": [596, 308]
     }
   ],
   "action": [

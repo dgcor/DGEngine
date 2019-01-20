@@ -814,7 +814,7 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable((int64_t)(std::roundf(stopZoomFactor * 100.f)));
 		return true;
 	default:
-		return GameUtils::getUIObjProp(*this, propHash, props.second, var);
+		return getUIObjProp(propHash, props.second, var);
 	}
 	return false;
 }

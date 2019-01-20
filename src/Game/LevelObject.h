@@ -41,6 +41,10 @@ protected:
 
 	std::string id;
 
+	// gets common getProperty properties;
+	bool getLevelObjProp(const uint16_t propHash16,
+		const std::string_view prop, Variable& var) const;
+
 	bool hasValidState() const noexcept;
 	bool getCurrentTexture(TextureInfo& ti) const;
 	void updateDrawPosition(const LevelMap& map);
