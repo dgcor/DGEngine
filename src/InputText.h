@@ -57,9 +57,9 @@ public:
 	virtual bool Visible() const { return text->Visible(); }
 	virtual void Visible(bool visible_) { text->Visible(visible_); }
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	virtual void draw(const Game& game, sf::RenderTarget& target) const
 	{
-		target.draw(*text, states);
+		text->draw(game, target);
 	}
 
 	virtual void update(Game& game);

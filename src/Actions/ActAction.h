@@ -17,7 +17,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		if (key.size() > 0)
+		if (key.empty() == false)
 		{
 			game.Resources().setAction(key, action);
 		}

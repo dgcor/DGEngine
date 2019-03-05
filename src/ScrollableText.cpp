@@ -43,13 +43,13 @@ bool ScrollableText::setAction(uint16_t nameHash16, const std::shared_ptr<Action
 	return true;
 }
 
-void ScrollableText::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void ScrollableText::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == true)
 	{
 		auto origView = target.getView();
 		target.setView(view.getView());
-		target.draw(*text);
+		text->draw(game, target);
 		target.setView(origView);
 	}
 }

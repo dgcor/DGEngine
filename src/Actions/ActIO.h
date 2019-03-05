@@ -97,7 +97,7 @@ public:
 			}
 			else
 			{
-				writePath += game.getVarOrPropStringS(FileUtils::getFileFromPath(fileRead));
+				writePath += game.getVarOrPropStringS(FileUtils::getFileName(fileRead));
 			}
 			FileUtils::saveText(writePath, str);
 		}

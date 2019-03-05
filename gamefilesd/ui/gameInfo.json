@@ -38,13 +38,17 @@
   ],
   "image": {
     "id": "mainmenu",
-    "texture": "background",
-    "textureRect": [640, 480],
-    "resizable": true,
+    "texture": "mainmenu",
     "anchor": "none"
   },
-  "load": "ui/settings2.json",
   "animation": [
+    {
+      "id": "smlogo",
+      "texturePack": "smlogo",
+      "position": ["center", 0],
+      "anchor": "none",
+      "refresh": 50
+    },
     {
       "id": "pent1",
       "texturePack": "focus42",
@@ -85,14 +89,14 @@
       "horizontalAlign": "center"
     },
     {
-      "id": "supportsPalettes",
+      "id": "hasGameShader",
       "font": "font42g",
       "position": [319, 320],
       "anchor": "none",
       "horizontalAlign": "center"
     },
     {
-      "id": "supportsOutlines",
+      "id": "hasSpriteShader",
       "font": "font42g",
       "position": [319, 363],
       "anchor": "none",
@@ -133,17 +137,17 @@
     },
     {
       "name": "if.equal",
-      "param1": "%game.supportsPalettes%",
+      "param1": "%game.hasGameShader%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "supportsPalettes", "text": "Supports Palettes: Yes" },
-      "else": { "name": "text.setText", "id": "supportsPalettes", "text": "Supports Palettes: No" }
+      "then": { "name": "text.setText", "id": "hasGameShader", "text": "Game Shader: Yes" },
+      "else": { "name": "text.setText", "id": "hasGameShader", "text": "Game Shader: No" }
     },
     {
       "name": "if.equal",
-      "param1": "%game.supportsOutlines%",
+      "param1": "%game.hasSpriteShader%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "supportsOutlines", "text": "Supports Outlines: Yes" },
-      "else": { "name": "text.setText", "id": "supportsOutlines", "text": "Supports Outlines: No" }
+      "then": { "name": "text.setText", "id": "hasSpriteShader", "text": "Sprite Shader: Yes" },
+      "else": { "name": "text.setText", "id": "hasSpriteShader", "text": "Sprite Shader: No" }
     },
     "anchorLeftPentagram",
     "anchorRightPentagram"

@@ -19,7 +19,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->Position(item->Position() + offset);
@@ -40,7 +40,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->Size(item->Size() + offset);
@@ -64,8 +64,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchor);
-		auto itemToChange = game.Resources().getResource<UIObject>(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchor);
+		auto itemToChange = game.Resources().getDrawable(id);
 
 		if (itemAnchor != nullptr && itemToChange != nullptr)
 		{
@@ -95,8 +95,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchorTo = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchorTo = game.Resources().getDrawable(idAnchorTo);
 
 		if (item != nullptr && itemAnchorTo != nullptr)
 		{
@@ -144,7 +144,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		auto itemAnchor = game.Resources().getFocused();
-		auto itemToChange = game.Resources().getResource<UIObject>(id);
+		auto itemToChange = game.Resources().getDrawable(id);
 
 		if (itemAnchor != nullptr && itemToChange != nullptr)
 		{
@@ -172,8 +172,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemCenter = game.Resources().getResource<UIObject>(idCenterOn);
+		auto item = game.Resources().getDrawable(id);
+		auto itemCenter = game.Resources().getDrawable(idCenterOn);
 		if (item != nullptr && itemCenter != nullptr)
 		{
 			auto centerPos = itemCenter->Position();
@@ -204,8 +204,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->Position();
@@ -258,8 +258,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->Position();
@@ -324,7 +324,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto action = item->getAction(actionHash16).get();
@@ -350,7 +350,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		auto itemAnchor = game.Resources().getFocused();
-		auto itemToChange = game.Resources().getResource<UIObject>(id);
+		auto itemToChange = game.Resources().getDrawable(id);
 
 		if (itemAnchor != nullptr && itemToChange != nullptr)
 		{
@@ -381,8 +381,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
@@ -432,8 +432,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
@@ -481,8 +481,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
@@ -530,8 +530,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemAnchor = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto item = game.Resources().getDrawable(id);
+		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
 		if (item != nullptr && itemAnchor != nullptr)
 		{
 			auto itemPos = itemAnchor->DrawPosition();
@@ -583,7 +583,7 @@ public:
 	{
 		if (sizeRange.y > sizeRange.x)
 		{
-			auto item = game.Resources().getResource<UIObject>(id);
+			auto item = game.Resources().getDrawable(id);
 			if (item != nullptr)
 			{
 				sf::Vector2i inputRange(
@@ -625,7 +625,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto newSize = game.MousePositionf().x - item->Position().x;
@@ -657,7 +657,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto newSize = game.MousePositionf().y - item->Position().y;
@@ -690,8 +690,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemToPosition = game.Resources().getResource<UIObject>(idToPosition);
+		auto item = game.Resources().getDrawable(id);
+		auto itemToPosition = game.Resources().getDrawable(idToPosition);
 		if (item != nullptr && itemToPosition != nullptr)
 		{
 			auto newSize = itemToPosition->DrawPosition().x - item->DrawPosition().x;
@@ -716,8 +716,8 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
-		auto itemToPosition = game.Resources().getResource<UIObject>(idToPosition);
+		auto item = game.Resources().getDrawable(id);
+		auto itemToPosition = game.Resources().getDrawable(idToPosition);
 		if (item != nullptr && itemToPosition != nullptr)
 		{
 			auto newSize = itemToPosition->DrawPosition().x - item->DrawPosition().y;
@@ -743,7 +743,7 @@ public:
 
 	virtual bool execute(Game& game) noexcept
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->setAction(nameHash, action);
@@ -767,7 +767,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto newPos = pos;
@@ -800,7 +800,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto pos_ = item->Position();
@@ -829,7 +829,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->Size(size);
@@ -851,7 +851,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			auto size_ = item->Size();
@@ -882,7 +882,7 @@ public:
 	virtual bool execute(Game& game)
 	{
 		auto itemAnchor = game.Resources().getFocused();
-		auto itemToChange = game.Resources().getResource<UIObject>(id);
+		auto itemToChange = game.Resources().getDrawable(id);
 
 		if (itemAnchor != nullptr && itemToChange != nullptr)
 		{

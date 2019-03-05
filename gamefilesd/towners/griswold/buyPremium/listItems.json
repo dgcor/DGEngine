@@ -34,8 +34,8 @@
           "values": {
             "itemOwnerId": "griswold",
             "itemInv": 1,
-            "itemIndex": "%idx%",
-            "menuIndex": "%menuIdx%"
+            "itemIndex": "!listIdx!",
+            "menuIndex": "!menuIdx!"
           }
         },
         "setMenuPriceText"

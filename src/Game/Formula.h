@@ -25,8 +25,8 @@
 // :negz    negative or zero value (ex: (2 - 2) :negz 10 = 10 | (2 - 1) :negz 10 = 1)
 // :pos     positive value (ex: (2 - 1) :pos 10 = 10 | (2 - 3) :pos 10 = -1)
 // :posz    positive or zero value (ex: (2 - 2) :posz 10 = 10 | (2 - 3) :posz 10 = -1)
-// :rnd     random number (ex: :rnd(10) = 0 to 9)
-// :rndn    normal distribution random number (ex: :rnd(10) = -10 to 10)
+// :rnd     random number (ex: :rnd(10) = 0 to 10)
+// :rndn    normal distribution random number (ex: :rnd(10) = 0 to 10)
 // :abs     absolute value
 // :ceil    round value up
 // :floor   round value down
@@ -159,7 +159,11 @@ public:
 	static double evalString(const std::string_view formula,
 		const Queryable& query, int32_t randomNum = 0);
 	static double evalString(const std::string_view formula,
+		const Queryable* query, int32_t randomNum = 0);
+	static double evalString(const std::string_view formula,
 		const Queryable& queryA, const Queryable& queryB, int32_t randomNum = 0);
+	static double evalString(const std::string_view formula,
+		const Queryable* queryA, const Queryable* queryB, int32_t randomNum = 0);
 
 	static double evalMinString(const std::string_view formula)
 	{
@@ -169,8 +173,17 @@ public:
 	{
 		return evalString(formula, query, -2);
 	}
+	static double evalMinString(const std::string_view formula, const Queryable* query)
+	{
+		return evalString(formula, query, -2);
+	}
 	static double evalMinString(const std::string_view formula,
 		const Queryable& queryA, const Queryable& queryB)
+	{
+		return evalString(formula, queryA, queryB, -2);
+	}
+	static double evalMinString(const std::string_view formula,
+		const Queryable* queryA, const Queryable* queryB)
 	{
 		return evalString(formula, queryA, queryB, -2);
 	}
@@ -183,8 +196,17 @@ public:
 	{
 		return evalString(formula, query, -1);
 	}
+	static double evalMaxString(const std::string_view formula, const Queryable* query)
+	{
+		return evalString(formula, query, -1);
+	}
 	static double evalMaxString(const std::string_view formula,
 		const Queryable& queryA, const Queryable& queryB)
+	{
+		return evalString(formula, queryA, queryB, -1);
+	}
+	static double evalMaxString(const std::string_view formula,
+		const Queryable* queryA, const Queryable* queryB)
 	{
 		return evalString(formula, queryA, queryB, -1);
 	}

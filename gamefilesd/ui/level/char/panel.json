@@ -471,14 +471,14 @@
     {
       "key": "f",
       "action": [
-        { "name": "game.addToProperty", "property": "gamma", "value": 5 },
+        { "name": "game.addToProperty", "property": "gamma", "value": 7.14 },
         "saveSettings"
       ]
     },
     {
       "key": "g",
       "action": [
-        { "name": "game.addToProperty", "property": "gamma", "value": -5 },
+        { "name": "game.addToProperty", "property": "gamma", "value": -7.14 },
         "saveSettings"
       ]
     },

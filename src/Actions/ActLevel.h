@@ -376,6 +376,28 @@ public:
 	}
 };
 
+class ActLevelSetShader : public Action
+{
+private:
+	std::string id;
+	std::string idShader;
+
+public:
+	ActLevelSetShader(const std::string& id_, const std::string& idShader_)
+		: id(id_), idShader(idShader_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			auto shader = game.Resources().Shaders().get(idShader);
+			level->setShader(shader);
+		}
+		return true;
+	}
+};
+
 class ActLevelShowAutomap : public Action
 {
 private:

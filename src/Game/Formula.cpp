@@ -664,10 +664,24 @@ double Formula::evalString(const std::string_view formula,
 }
 
 double Formula::evalString(const std::string_view formula,
+	const Queryable* query, int32_t randomNum)
+{
+	FormulaElementIterator it(formula);
+	return eval(it, query, query, randomNum);
+}
+
+double Formula::evalString(const std::string_view formula,
 	const Queryable& queryA, const Queryable& queryB, int32_t randomNum)
 {
 	FormulaElementIterator it(formula);
 	return eval(it, &queryA, &queryB, randomNum);
+}
+
+double Formula::evalString(const std::string_view formula,
+	const Queryable* queryA, const Queryable* queryB, int32_t randomNum)
+{
+	FormulaElementIterator it(formula);
+	return eval(it, queryA, queryB, randomNum);
 }
 
 std::string Formula::toString() const

@@ -163,6 +163,21 @@ bool ItemClass::getDescription(size_t idx, const Queryable& item, std::string& d
 	return classifiers.getText(DescriptionClassifier + idx, item, description);
 }
 
+const SpellInstance* ItemClass::getSpell() const noexcept
+{
+	if (spell.spell == nullptr)
+	{
+		return nullptr;
+	}
+	return &spell;
+}
+
+void ItemClass::setSpell(Spell* obj)
+{
+	spell.spell = obj;
+	spell.spellLevel = 1;
+}
+
 void ItemClass::setFormula(uint16_t nameHash, const std::string_view formula)
 {
 	if (nameHash == str2int16(""))

@@ -1,5 +1,6 @@
 #include "BitmapFont.h"
 #include <cmath>
+#include "Game.h"
 #include "SFML/Sprite2.h"
 
 BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_)
@@ -130,16 +131,17 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 	return sf::Vector2f(std::max(maxX, curX), (newLine + curY));
 }
 
-void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-	sf::RenderStates states, const sf::Color& color) const
+void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
+	const Game& game, sf::RenderTarget& target, const sf::Color& color) const
 {
-	draw(pos, text, target, states, color, 0, 0, 0.f, HorizontalAlign::Left);
+	draw(pos, text, game, target, color, 0, 0, 0.f, HorizontalAlign::Left);
 }
 
-void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-	sf::RenderStates states, const sf::Color& color, int horizSpaceOffset,
-	int vertSpaceOffset, float sizeX, HorizontalAlign align) const
+void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
+	const Game& game, sf::RenderTarget& target, const sf::Color& color,
+	int horizSpaceOffset, int vertSpaceOffset, float sizeX, HorizontalAlign align) const
 {
+	SpriteShaderCache spriteCache;
 	Sprite2 sprite(charTextures->getTexture(), palette);
 	if (color == sf::Color::White)
 	{
@@ -209,7 +211,7 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text, sf::Rend
 				sprite.setTexture(*ti.texture);
 				sprite.setTextureRect(ti.textureRect);
 				sprite.setPosition(curX, curY);
-				target.draw(sprite, states);
+				sprite.draw(target, game.Shaders().Sprite, spriteCache);
 
 				//Move over the width of the character + padding
 				curX += (float)ti.textureRect.width + (float)(wasSpace ? 0 : padding);

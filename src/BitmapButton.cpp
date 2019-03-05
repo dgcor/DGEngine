@@ -1,22 +1,5 @@
 #include "BitmapButton.h"
 #include "Game.h"
-#include "GameUtils.h"
-
-void BitmapButton::updateSize(const Game& game)
-{
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
-	auto pos = sprite.getPosition();
-	auto size = sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
-	sprite.setPosition(pos);
-	if (resizable == true)
-	{
-		sprite.setTextureRect(sf::IntRect(0, 0, (int)size.x, (int)size.y));
-	}
-}
 
 void BitmapButton::update(Game& game)
 {
@@ -26,4 +9,13 @@ void BitmapButton::update(Game& game)
 	}
 	auto contains = sprite.getGlobalBounds().contains(game.MousePositionf());
 	Button::updateEvents(game, contains);
+}
+
+bool BitmapButton::getProperty(const std::string_view prop, Variable& var) const
+{
+	if (Button::getProperty(prop, var) == true)
+	{
+		return true;
+	}
+	return Image::getProperty(prop, var);
 }

@@ -4,7 +4,6 @@
 #include "FadeInOut.h"
 #include "Game.h"
 #include <memory>
-#include <string>
 
 class ActGameFade : public Action
 {
@@ -26,29 +25,13 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto fade = game.getFadeInOut();
-		if (fade == nullptr)
-		{
-			auto newFade = std::make_unique<FadeInOut>(game.DrawRegionSizef(),
-				isFadeOut,
-				enableInput,
-				color,
-				fadeOffset,
-				refresh,
-				action);
-
-			game.setFadeInOut(std::move(newFade));
-		}
-		else
-		{
-			fade->Reset(
-				isFadeOut,
-				enableInput,
-				color,
-				fadeOffset,
-				refresh,
-				action);
-		}
+		game.FadeObj().Reset(
+			color,
+			isFadeOut,
+			enableInput,
+			fadeOffset,
+			refresh,
+			action);
 		return true;
 	}
 };

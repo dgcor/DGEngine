@@ -7,9 +7,13 @@
 class TexturePack
 {
 protected:
-	static void updateTextureInfo(TextureInfo& ti);
+	static void updateTextureRect(TextureInfo& ti);
+
+	TexturePack(TexturePack const &) = delete;
+	TexturePack& operator=(TexturePack const &) = delete;
 
 public:
+	TexturePack() = default;
 	virtual ~TexturePack() = default;
 
 	// if texture is an index texture, sets the palette in TextureInfo

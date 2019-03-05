@@ -1,0 +1,38 @@
+{
+  "action": {
+    "name": "if",
+    "params": [
+      { "name": "gamefile.exists", "file": "gamefilesd" }, "==", true,
+      "and",
+      { "name": "gamefile.exists", "file": "gamefileshf" }, "==", true,
+      "and",
+      { "name": "gamefile.exists", "file": "DIABDAT.MPQ" }, "==", true,
+      "and",
+      { "name": "gamefile.exists", "file": "hellfire.mpq" }, "==", true,
+      "and",
+      { "name": "gamefile.exists", "file": "hfmonk.mpq" }, "==", true
+    ],
+    "then": { "name": "game.load", "file": "gamefileshf" },
+    "else": {
+      "name": "if",
+      "params": [
+        { "name": "gamefile.exists", "file": "gamefilesd" }, "==", true,
+        "and",
+        { "name": "gamefile.exists", "file": "DIABDAT.MPQ" }, "==", true
+      ],
+      "then": { "name": "game.load", "file": "gamefilesd" },
+      "else": {
+        "name": "if",
+        "params": [
+          { "name": "gamefile.exists", "file": "gamefilesd" }, "==", true,
+          "and",
+          { "name": "gamefile.exists", "file": "gamefilesflare" }, "==", true,
+          "and",
+          { "name": "gamefile.exists", "file": "fantasycore" }, "==", true
+        ],
+        "then": { "name": "game.load", "file": "gamefilesflare" },
+        "else": { "name": "game.load", "file": "gamefilesd" }
+      }
+    }
+  }
+}

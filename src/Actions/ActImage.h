@@ -15,7 +15,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			image->centerTexture();
@@ -36,7 +36,7 @@ public:
 
 	virtual bool execute(Game& game) noexcept
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			image->setOutlineEnabled(enable);
@@ -66,7 +66,7 @@ public:
 	{
 		if (sizeRange.y > sizeRange.x)
 		{
-			auto image = game.Resources().getResource<Image>(id);
+			auto image = game.Resources().getDrawable<Image>(id);
 			if (image != nullptr)
 			{
 				sf::Vector2i inputRange(
@@ -126,7 +126,7 @@ public:
 
 	virtual bool execute(Game& game) noexcept
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			image->setOutline(outline, ignore);
@@ -149,7 +149,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			if (image->hasPalette() == true)
@@ -183,7 +183,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			auto tex = game.Resources().getTexture(idTexture);
@@ -213,7 +213,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			auto queryable = game.getQueryable(query);
@@ -246,7 +246,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			auto tex = game.Resources().getTexturePack(idTexturePack);
@@ -275,7 +275,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto image = game.Resources().getResource<Image>(id);
+		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
 		{
 			image->setTextureRect(rect);

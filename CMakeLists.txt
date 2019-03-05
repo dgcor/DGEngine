@@ -92,8 +92,8 @@ set(SOURCE_FILES
     src/ResourceManager.h
     src/ScrollableText.cpp
     src/ScrollableText.h
-    src/Shaders.cpp
-    src/Shaders.h
+    src/ShaderManager.cpp
+    src/ShaderManager.h
     src/Sol.cpp
     src/Sol.h
     src/StreamReader.h
@@ -135,12 +135,14 @@ set(SOURCE_FILES
     src/Actions/ActLoad.h
     src/Actions/ActLoadingScreen.h
     src/Actions/ActMenu.h
+    src/Actions/ActMount.h
     src/Actions/ActMovie.h
     src/Actions/ActPalette.h
     src/Actions/ActPlayer.h
     src/Actions/ActQuest.h
     src/Actions/ActRandom.h
     src/Actions/ActResource.h
+    src/Actions/ActShader.h
     src/Actions/ActSound.h
     src/Actions/ActText.h
     src/Actions/ActVariable.h
@@ -426,6 +428,8 @@ else()
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} stdc++fs)
 
 if(FFmpeg_FOUND)
     include_directories(${FFmpeg_INCLUDES})

@@ -12,6 +12,16 @@
         "param2": true,
         "then": [
           "closeRemoveGold",
+          {
+            "name": "if.equal",
+            "param1": "%currentLevel.currentPlayer.item.belt.{2}.itemType%",
+            "param2": "Book",
+            "then": {
+              "name": "player.addToProperty",
+              "property": "manaDamage",
+              "value": "%$.-currentLevel.currentPlayer.item.belt.{2}.spell.baseMana%"
+            }
+          },
           { "name": "item.use", "inventory": "belt", "item": {2} },
           "updateAllPlayerStats",
           "clearPanelText"

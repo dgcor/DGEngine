@@ -4,6 +4,7 @@
 #include "FileUtils.h"
 #include "Game.h"
 #include "Parser/ParseSound.h"
+#include "Parser/Utils/ParseUtils.h"
 #include <string>
 
 class ActSoundLoadPlay : public Action
@@ -18,7 +19,7 @@ public:
 	ActSoundLoadPlay(const std::string& file_, const Variable& volume_,
 		bool unique_) : file(file_), volume(volume_), unique(unique_)
 	{
-		id = FileUtils::getFileWithoutExt(FileUtils::getFileFromPath(file));
+		Parser::getIdFromFile(file_, id);
 	}
 
 	virtual bool execute(Game& game)

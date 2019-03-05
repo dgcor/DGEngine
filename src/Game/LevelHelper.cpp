@@ -85,7 +85,7 @@ namespace LevelHelper
 		unsigned pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
 		if (top == true)
 		{
-			sf::Vector2f offset(0.f, -32.f);
+			sf::Vector2f offset(0.f, -(float)pillarHeight);
 			texturePack->setOffset(offset);
 		}
 
@@ -195,7 +195,7 @@ namespace LevelHelper
 		getIdealTilesetSheetSize(1024, maxTextureSize, numTexturesToFit,
 			pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
 
-		sf::Vector2f offset(0.f, (top == true ? -32.f : 0.f));
+		sf::Vector2f offset(0.f, (top == true ? -(float)pillarHeight : 0.f));
 
 		bool mainLoop = true;
 		while (mainLoop == true)

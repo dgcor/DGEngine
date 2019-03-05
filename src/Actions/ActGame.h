@@ -15,23 +15,38 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto prop2 = game.getVarOrPropStringS(prop);
-		Variable value2;
-		if (game.getProperty(prop, value2) == true)
+		Variable propVal;
+		if (game.getGameProperty(prop, propVal) == true)
 		{
-			if (std::holds_alternative<int64_t>(value2) == true &&
-				std::holds_alternative<int64_t>(value) == true)
+			if (std::holds_alternative<int64_t>(propVal) == true)
 			{
-				auto val = std::get<int64_t>(value2) + std::get<int64_t>(value);
-				value2.emplace<int64_t>(val);
-				game.setProperty(prop2, value2);
+				if (std::holds_alternative<int64_t>(value) == true)
+				{
+					auto val = std::get<int64_t>(propVal) + std::get<int64_t>(value);
+					propVal.emplace<int64_t>(val);
+					game.setGameProperty(prop, propVal);
+				}
+				else if (std::holds_alternative<double>(value) == true)
+				{
+					auto val = (double)std::get<int64_t>(propVal) + std::get<double>(value);
+					propVal.emplace<int64_t>((int64_t)std::round(val));
+					game.setGameProperty(prop, propVal);
+				}
 			}
-			else if (std::holds_alternative<double>(value2) == true &&
-				std::holds_alternative<double>(value) == true)
+			else if (std::holds_alternative<double>(propVal) == true)
 			{
-				auto val = std::get<double>(value2) + std::get<double>(value);
-				value2.emplace<double>(val);
-				game.setProperty(prop2, value2);
+				if (std::holds_alternative<int64_t>(value) == true)
+				{
+					auto val = std::get<double>(propVal) + (double)std::get<int64_t>(value);
+					propVal.emplace<double>(val);
+					game.setGameProperty(prop, propVal);
+				}
+				else if (std::holds_alternative<double>(value) == true)
+				{
+					auto val = std::get<double>(propVal) + std::get<double>(value);
+					propVal.emplace<double>(val);
+					game.setGameProperty(prop, propVal);
+				}
 			}
 		}
 		return true;
@@ -83,6 +98,23 @@ public:
 	}
 };
 
+class ActGameLoad : public Action
+{
+private:
+	std::string file;
+	std::string mainFile;
+
+public:
+	ActGameLoad(const std::string& file_, const std::string& mainFile_)
+		: file(file_), mainFile(mainFile_) {}
+
+	virtual bool execute(Game& game)
+	{
+		game.load(file, mainFile);
+		return true;
+	}
+};
+
 class ActGamePauseOnFocusLoss : public Action
 {
 private:
@@ -108,7 +140,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto val = game.getVarOrProp<int64_t, unsigned>(gamma, 30u);
+		auto val = game.getVarOrProp<int64_t, unsigned>(gamma, 0u);
 		game.Gamma(val);
 		return true;
 	}
@@ -157,7 +189,6 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto prop2 = game.getVarOrPropStringS(prop);
 		auto value2 = game.getVarOrProp(value);
 		if (std::holds_alternative<int64_t>(value2) == true)
 		{
@@ -169,7 +200,7 @@ public:
 				value2.emplace<int64_t>(val);
 			}
 		}
-		game.setProperty(prop2, value2);
+		game.setGameProperty(prop, value2);
 		return true;
 	}
 };

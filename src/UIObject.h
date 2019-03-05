@@ -8,10 +8,10 @@
 
 class Game;
 
-class UIObject : public virtual sf::Drawable, public virtual Queryable
+class UIObject : public virtual Queryable
 {
 protected:
-	// gets common getProperty properties;
+	// gets common getProperty properties.
 	bool getUIObjProp(const uint16_t propHash16,
 		const std::string_view prop, Variable& var) const;
 
@@ -32,7 +32,8 @@ public:
 	virtual sf::Vector2f Size() const = 0;
 	virtual void Size(const sf::Vector2f& size) = 0;
 
-	// Update
+	// Draw and Update
+	virtual void draw(const Game& game, sf::RenderTarget& target) const = 0;
 	virtual void update(Game& game) {}
 
 	// Visible

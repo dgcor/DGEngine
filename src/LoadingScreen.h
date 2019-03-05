@@ -5,7 +5,7 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 
-class LoadingScreen : public sf::Drawable
+class LoadingScreen
 {
 private:
 	sf::Sprite sprite;
@@ -36,20 +36,21 @@ public:
 		progressBar.setPosition(sprite.getPosition() + offset);
 	}
 	void setProgressBarSize(const sf::Vector2f& size) noexcept { barSize = size; }
+	int getProgress() const noexcept { return percent; }
 	void setProgress(int percent_);
 	bool isComplete() const noexcept { return percent >= 100; }
 
 	const std::shared_ptr<Action>& getAction() const noexcept { return action; }
 	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 
- Anchor getAnchor() const noexcept { return anchor; }
+	Anchor getAnchor() const noexcept { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 
 	void updateSize(const Game& game);
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	void draw(sf::RenderTarget& target) const
 	{
-		target.draw(sprite, states);
-		target.draw(progressBar, states);
+		target.draw(sprite);
+		target.draw(progressBar);
 	}
 };

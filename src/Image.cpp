@@ -25,6 +25,31 @@ void Image::updateSize(const Game& game)
 	auto size = Size();
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
 	sprite.setPosition(pos);
+	if (resizable == true)
+	{
+		sprite.setTextureRect(sf::IntRect(0, 0, (int)size.x, (int)size.y));
+	}
+}
+
+sf::Vector2f Image::Size() const
+{
+	return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
+}
+
+void Image::Size(const sf::Vector2f& size)
+{
+	auto rect = sprite.getTextureRect();
+	rect.width = (int)size.x;
+	rect.height = (int)size.y;
+	sprite.setTextureRect(rect);
+}
+
+void Image::draw(const Game& game, sf::RenderTarget& target) const
+{
+	if (visible)
+	{
+		sprite.draw(target, game.Shaders().Sprite);
+	}
 }
 
 bool Image::getProperty(const std::string_view prop, Variable& var) const

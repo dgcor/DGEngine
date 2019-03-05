@@ -1,6 +1,5 @@
 #include "ParseFont.h"
 #include "ParseTexturePack.h"
-#include "Shaders.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -61,7 +60,7 @@ namespace Parser
 		auto font = std::make_shared<BitmapFont>(texturePack, padding);
 
 		if (elem.HasMember("fontPalette") == true &&
-			Shaders::supportsPalettes() == true)
+			game.Shaders().hasSpriteShader() == true)
 		{
 			auto palette = game.Resources().getPalette(getStringVal(elem["fontPalette"]));
 			font->setPalette(palette);

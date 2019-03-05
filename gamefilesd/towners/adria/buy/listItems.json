@@ -34,8 +34,8 @@
           "values": {
             "itemOwnerId": "adria",
             "itemInv": 0,
-            "itemIndex": "%idx%",
-            "menuIndex": "%menuIdx%"
+            "itemIndex": "!listIdx!",
+            "menuIndex": "!menuIdx!"
           }
         },
         "setMenuPriceText"

@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 #include "SFML/Music2.h"
 #include "SFML/MusicLoops.h"
+#include "ShaderManager.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "UIObject.h"
@@ -71,21 +72,15 @@ class ResourceManager
 {
 private:
 	std::vector<ResourceBundle> resources;
+	ShaderManager shaders;
 	std::vector<std::shared_ptr<Image>> cursors;
 	std::list<sf::Sound> playingSounds;
-	mutable std::pair<std::string, UIObject*> drawableCache{ "", nullptr };
 	Level* currentLevel{ nullptr };
 	size_t currentLevelResourceIdx{ 0 };
 
-	void clearCache() noexcept
-	{
-		drawableCache.first.clear();
-		drawableCache.second = nullptr;
-	}
-
 	void clearCurrentLevel() noexcept
 	{
-		if (currentLevelResourceIdx > resources.size() - 1)
+		if (currentLevelResourceIdx + 1 > resources.size())
 		{
 			currentLevel = nullptr;
 			currentLevelResourceIdx = 0;
@@ -131,6 +126,9 @@ public:
 
 	ResourceManager() noexcept : resources(1, ResourceBundle()) {}
 
+	ShaderManager& Shaders() { return shaders; };
+	const ShaderManager& Shaders() const { return shaders; };
+
 	void setCurrentLevel(Level* level) noexcept
 	{
 		currentLevel = level;
@@ -154,7 +152,7 @@ public:
 		{
 			return currentLevel;
 		}
-		return getResource<Level>(id);
+		return getDrawable<Level>(id);
 	}
 	void addCursor(const std::shared_ptr<Image>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
@@ -209,10 +207,13 @@ public:
 
 	bool hasDrawable(const std::string& key) const;
 
-	UIObject* getDrawable(const std::string& key) const;
+	UIObject* getDrawable(const std::string& key) const
+	{
+		return getDrawable<UIObject>(key);
+	}
 
 	template <class T>
-	T* getResource(const std::string& key) const noexcept
+	T* getDrawable(const std::string& key) const
 	{
 		for (const auto& res : reverse(resources))
 		{
@@ -226,7 +227,7 @@ public:
 	}
 
 	template <class T>
-	std::shared_ptr<T> getResourceSharedPtr(const std::string& key) const noexcept
+	std::shared_ptr<T> getDrawableSharedPtr(const std::string& key) const
 	{
 		for (const auto& res : reverse(resources))
 		{
@@ -254,4 +255,5 @@ public:
 
 	void moveFocusDown(Game& game);
 	void moveFocusUp(Game& game);
+	void updateFocus(Game& game);
 };

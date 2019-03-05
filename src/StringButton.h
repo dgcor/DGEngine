@@ -12,4 +12,6 @@ public:
 	virtual void setColor(const sf::Color& color_) { Text::setColor(color_); }
 
 	virtual void update(Game& game);
+
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

@@ -5,7 +5,7 @@
       "file": "levels/l2data/l2_4.pal"
     }
   ],
-  "load": ["level/l5/l2s.json", "l2_4"],
+  "load": ["level/data/l2/l2s.json", "l2_4"],
   "level": {
     "id": "level",
     "palette": "l2_4",

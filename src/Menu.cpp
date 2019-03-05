@@ -128,7 +128,7 @@ void Menu::calculatePositions()
 	}
 }
 
-void Menu::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Menu::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == false)
 	{
@@ -136,7 +136,7 @@ void Menu::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	for (size_t i = start; i < end; i++)
 	{
-		target.draw(*items[i].get(), states);
+		items[i]->draw(game, target);
 	}
 }
 

@@ -14,7 +14,7 @@
       "fromId": "l5base"
     }
   ],
-  "load": ["level/crypt1/l5s.json", "l5base"],
+  "load": ["level/data/l5/l5s.json", "l5base"],
   "level": {
     "id": "level",
     "palette": "l5base",

@@ -1,79 +1,10 @@
 {
-  "texturePack": {
-    "id": "l1Layer1",
-    "texture": [
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 0, 1024, 96],
-        "frames": [16, 3],
-        "startIndex": 16,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 128, 1024, 512],
-        "frames": [16, 4],
-        "startIndex": 64,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 640, 512, 64],
-        "frames": [8, 1],
-        "startIndex": 128,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 704, 1024, 128],
-        "frames": [16, 1],
-        "startIndex": 144,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [768, 704, 256, 64],
-        "frames": [4, 1],
-        "startIndex": 160,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [768, 768, 256, 64],
-        "frames": [4, 1],
-        "startIndex": 176,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 832, 1024, 48],
-        "frames": [16, 1],
-        "offset": [0, 16],
-        "startIndex": 192,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 896, 768, 48],
-        "frames": [12, 1],
-        "offset": [0, 16],
-        "startIndex": 208,
-        "direction": "horizontal"
-      },
-      {
-        "file": "images/tilesets/tileset_cave.png",
-        "trim": [0, 1152, 128, 128],
-        "frames": [2, 1],
-        "startIndex": 240,
-        "direction": "horizontal"
-      }
-    ]
-  },
+  "load": "level/data/cave.json",
   "level": {
     "id": "level",
     "layers": [
-      { "index": 0, "texturePack": "l1Layer1" },
-      { "index": 1, "texturePack": "l1Layer1" }
+      { "index": 0, "texturePack": "cave" },
+      { "index": 1, "texturePack": "cave" }
     ],
     "defaultLight": 0
   },

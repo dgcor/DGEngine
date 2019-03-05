@@ -8,6 +8,7 @@ class Image : public virtual UIObject
 protected:
 	Sprite2 sprite;
 	Anchor anchor{ Anchor::Top | Anchor::Left };
+	bool resizable{ false };
 	bool visible{ true };
 
 public:
@@ -23,6 +24,9 @@ public:
 	{
 		sprite.setOutlineEnabled(true);
 	}
+
+	bool getResizable() const noexcept { return resizable; }
+	void setResizable(bool resizable_) noexcept { resizable = resizable_; }
 
 	void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
 	void setColor(const sf::Color& color) { sprite.setColor(color); }
@@ -63,24 +67,9 @@ public:
 	virtual const sf::Vector2f& DrawPosition() const { return sprite.getPosition(); }
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
 	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
-	virtual sf::Vector2f Size() const
-	{
-		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	}
-	virtual void Size(const sf::Vector2f& size)
-	{
-		auto rect = sprite.getTextureRect();
-		rect.width = (int)size.x;
-		rect.height = (int)size.y;
-		sprite.setTextureRect(rect);
-	}
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
-	{
-		if (visible)
-		{
-			target.draw(sprite, states);
-		}
-	}
+	virtual sf::Vector2f Size() const;
+	virtual void Size(const sf::Vector2f& size);
+	virtual void draw(const Game& game, sf::RenderTarget& target) const;
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

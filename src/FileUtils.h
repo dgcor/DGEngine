@@ -6,6 +6,23 @@
 
 namespace FileUtils
 {
+	void initPhysFS(const char* argv0);
+	void deinitPhysFS();
+
+	bool gamefileExists(const std::string_view filePath);
+
+	// add folder or archive to the search path.
+	bool mount(const std::string_view file, const std::string_view mountPoint,
+		bool appendToSearchPath);
+
+	// remove folder or archive from the search path.
+	// only call after all file handles for the search path are closed.
+	bool unmount(const std::string_view file);
+
+	// removes all folders and archives from the search path.
+	// only call after all file handles are closed.
+	void unmountAll();
+
 	bool copyDir(const char* dirSrcName, const char* dirDstName);
 
 	bool createDir(const char* dirName) noexcept;
@@ -18,13 +35,17 @@ namespace FileUtils
 
 	bool exists(const char* filePath) noexcept;
 
-	std::vector<std::string> getFileList(const std::string& filePath, const std::string_view fileExt = "");
+	std::vector<std::string> getFileList(const std::string_view filePath,
+		const std::string_view fileExt, bool getFullPath);
 
-	std::string getFileFromPath(const std::string_view path);
+	std::string getFileName(const std::string_view filePath);
 
-	std::string getFileWithoutExt(const std::string_view fileName);
+	std::string getFileNameWithoutExt(const std::string_view filePath);
 
-	std::string getPathFromFile(const std::string_view path);
+	std::string getFilePath(const std::string_view filePath);
+
+	std::vector<std::string> geDirList(const std::string_view path,
+		const std::string_view rootPath);
 
 	std::vector<std::string> getSaveDirList();
 
@@ -33,7 +54,7 @@ namespace FileUtils
 	std::vector<uint8_t> readChar(const char* fileName);
 	std::vector<uint8_t> readChar(const char* fileName, size_t maxNumBytes);
 
-	const char* getSaveDir() noexcept;
+	std::string getSaveDir();
 	bool setSaveDir(const char* dirName) noexcept;
 
 	// creates path if it doesn't exist

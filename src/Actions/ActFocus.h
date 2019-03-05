@@ -16,7 +16,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto button = game.Resources().getResourceSharedPtr<Button>(id);
+		auto button = game.Resources().getDrawableSharedPtr<Button>(id);
 		if (button != nullptr)
 		{
 			game.Resources().addFocused(button);
@@ -75,7 +75,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto button = game.Resources().getResource<Button>(id);
+		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
 		{
 			if (button != game.Resources().getFocused())
@@ -88,6 +88,16 @@ public:
 				}
 			}
 		}
+		return true;
+	}
+};
+
+class ActFocusUpdate : public Action
+{
+public:
+	virtual bool execute(Game& game)
+	{
+		game.Resources().updateFocus(game);
 		return true;
 	}
 };

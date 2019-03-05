@@ -24,6 +24,8 @@
 class Level : public UIObject
 {
 private:
+	mutable sf::RenderTexture levelTexture;
+	sf::Shader* shader{ nullptr };
 	View2 view{ true };
 	View2 automapView{ true };
 	sf::Vector2f automapRelativePosition{ 0.f, 0.f };	// relative to this UIObject
@@ -174,10 +176,12 @@ private:
 		Save::Properties& props, const Game& game, const Level& level);
 
 public:
-	void Init(LevelMap map_,
+	void Init(const Game& game, LevelMap map_,
 		const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
 		int32_t tileWidth, int32_t tileHeight);
 	void Init();
+
+	void setShader(sf::Shader* shader_) noexcept { shader = shader_; }
 
 	void setAutomap(std::shared_ptr<TexturePack> tiles, int tileWidth, int tileHeight);
 
@@ -428,10 +432,13 @@ public:
 		Save::serialize(serializeObj, props, game, *this);
 	}
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(const Game& game, sf::RenderTarget& target) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 	virtual const Queryable* getQueryable(const std::string_view prop) const;
+
+	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
+		const std::string_view prop) const;
 
 	Item* getItem(const MapCoord& mapCoord) const noexcept;
 	Item* getItem(const ItemCoordInventory& itemCoord) const;

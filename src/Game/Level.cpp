@@ -6,7 +6,7 @@
 #include "Utils/EasingFunctions.h"
 #include "Utils/Utils.h"
 
-void Level::Init(LevelMap map_,
+void Level::Init(const Game& game, LevelMap map_,
 	const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
 	int32_t tileWidth, int32_t tileHeight)
 {
@@ -27,6 +27,8 @@ void Level::Init(LevelMap map_,
 	map.setDefaultTileSize(tileWidth, tileHeight);
 
 	setCurrentMapPosition(MapCoord(map.Width() / 2, map.Height() / 2));
+
+	game.recreateRenderTexture(levelTexture);
 
 	map.initLights();
 	updateLevelObjectPositions();
@@ -335,7 +337,7 @@ void Level::deleteLevelObjectByClass(const std::string_view classId)
 	}
 }
 
-void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Level::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == false)
 	{
@@ -344,6 +346,9 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	auto origView = target.getView();
 
+	levelTexture.clear();
+
+	SpriteShaderCache spriteCache;
 	Sprite2 sprite;
 	TextureInfo ti;
 	sf::FloatRect tileRect;
@@ -380,15 +385,15 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			if (layer.background != sf::Color::Transparent &&
 				tiles != nullptr)
 			{
-				target.setView(origView);
+				levelTexture.setView(origView);
 				sf::RectangleShape background(layer.view->getSize());
 				background.setPosition(layer.view->getPosition());
 				background.setFillColor(layer.background);
-				target.draw(background);
+				levelTexture.draw(background);
 			}
 		}
 
-		target.setView(layer.view->getView());
+		levelTexture.setView(layer.view->getView());
 
 		if (tiles == nullptr)
 		{
@@ -428,7 +433,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 							if (drawObj != nullptr)
 							{
 								auto objLight = std::max(drawObj->getLight(), light);
-								drawObj->draw(target, states, objLight);
+								drawObj->draw(levelTexture, game.Shaders().Sprite, spriteCache, objLight);
 							}
 						}
 						if (tiles == nullptr ||
@@ -445,7 +450,6 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 				if (tiles->get((size_t)index, ti) == true)
 				{
 					auto drawPos = map.getCoord(mapPos, layer.blockWidth, layer.blockHeight);
-					drawPos.y -= (float)(ti.textureRect.height - layer.tileHeight);
 					drawPos += ti.offset;
 					tileRect.left = drawPos.x;
 					tileRect.top = drawPos.y;
@@ -455,7 +459,7 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 					{
 						sprite.setTexture(ti, true);
 						sprite.setPosition(drawPos);
-						sprite.draw(target, states, light);
+						sprite.draw(levelTexture, game.Shaders().Sprite, spriteCache, light);
 					}
 				}
 			}
@@ -473,11 +477,11 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (direction < (size_t)PlayerDirection::All &&
 			levelLayers[AutomapLayer].tiles->get(index, ti) == true)
 		{
-			target.setView(levelLayers[AutomapLayer].view->getView());
+			levelTexture.setView(levelLayers[AutomapLayer].view->getView());
 
 			auto drawPos = currentAutomapViewCenter;
-			drawPos.x -= (float)(ti.textureRect.width / 2);
-			drawPos.y -= (float)(ti.textureRect.height / 2);
+			drawPos.x -= (float)levelLayers[AutomapLayer].blockWidth;
+			drawPos.y -= (float)levelLayers[AutomapLayer].blockHeight;
 			drawPos += ti.offset;
 			tileRect.left = drawPos.x;
 			tileRect.top = drawPos.y;
@@ -487,10 +491,32 @@ void Level::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			{
 				sprite.setTexture(ti, true);
 				sprite.setPosition(drawPos);
-				target.draw(sprite, states);
+				sprite.draw(levelTexture, game.Shaders().Sprite, spriteCache);
 			}
 		}
 	}
+
+	levelTexture.display();
+
+	sf::RenderStates states(sf::RenderStates::Default);
+	sf::Sprite levelSprite(levelTexture.getTexture());
+	if (shader != nullptr)
+	{
+		states.shader = shader;
+		shader->setUniform("elapsedTime", game.getTotalElapsedTime().asSeconds());
+		if (hasMouseInside == true)
+		{
+			shader->setUniform("mousePosition", sf::Glsl::Vec2(
+				(game.MousePositionf().x - view.getPosition().x) / view.getSize().x,
+				(game.MousePositionf().y - view.getPosition().y) / view.getSize().y
+			));
+		}
+		shader->setUniform("textureSize", sf::Glsl::Vec2(
+			view.getSize().x,
+			view.getSize().y
+		));
+	}
+	target.draw(levelSprite, states);
 
 	target.setView(origView);
 }
@@ -502,6 +528,7 @@ void Level::updateSize(const Game& game)
 	updateAutomapPosition(view.getPosition());
 	updateAutomapSize(view.getSize());
 	updateVisibleArea();
+	game.recreateRenderTexture(levelTexture);
 }
 
 void Level::updateVisibleArea()
@@ -875,6 +902,37 @@ const Queryable* Level::getQueryable(const std::string_view prop) const
 		return queryable->getQueryable(props.second);
 	}
 	return queryable;
+}
+
+std::vector<std::variant<const Queryable*, Variable>> Level::getQueryableList(
+	const std::string_view prop) const
+{
+	std::vector<std::variant<const Queryable*, Variable>> queriableList;
+
+	auto props = Utils::splitStringIn2(prop, '.');
+	if (props.first.empty() == false)
+	{
+		if (props.first == "quests")
+		{
+			for (const auto& quest : quests)
+			{
+				queriableList.push_back({ &quest });
+			}
+		}
+		else
+		{
+			auto player = getPlayerOrCurrent(std::string(props.first));
+			if (player == nullptr)
+			{
+				player = getCurrentPlayer();
+			}
+			if (player != nullptr)
+			{
+				return player->getQueryableList(props.second);
+			}
+		}
+	}
+	return queriableList;
 }
 
 LevelObject* Level::parseLevelObjectIdOrMapPosition(

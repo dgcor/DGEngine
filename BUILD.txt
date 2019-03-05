@@ -76,4 +76,4 @@ FFmpeg is also required for movie support.
 Clang variant bug
 
 There's a bug in clang which affects libstdc++'s <variant>.
-I you get errors with clang, use -stdlib=libc++ instead.
+If you get errors with clang, use -stdlib=libc++ instead.

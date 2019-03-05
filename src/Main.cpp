@@ -1,29 +1,28 @@
 #include <iostream>
-#include "Parser/Parser.h"
+#include "Game.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-	PHYSFS_init(argv[0]);
-	PHYSFS_permitSymbolicLinks(1);
+	FileUtils::initPhysFS(argv[0]);
 
 	try
 	{
 		Game game;
 
 #ifdef __ANDROID__
-		Parser::parseGame(game, "/sdcard/gamefiles.zip", "main.json");
+		game.load("/sdcard/gamefiles.zip", "main.json");
 #else
 		if (argc == 2)
 		{
-			Parser::parseGame(game, argv[1], "main.json");
+			game.load(argv[1], "main.json");
 		}
 		else if (argc == 3)
 		{
-			Parser::parseGame(game, argv[1], argv[2]);
+			game.load(argv[1], argv[2]);
 		}
 		else
 		{
-			Parser::parseGame(game, ".", "main.json");
+			game.load(".", "main.json");
 		}
 #endif
 		game.play();
@@ -33,6 +32,6 @@ int main(int argc, char *argv[])
 		std::cerr << ex.what();
 	}
 
-	PHYSFS_deinit();
+	FileUtils::deinitPhysFS();
 	return 0;
 }

@@ -17,6 +17,6 @@
     "horizontalAlign": "center",
     "verticalAlign": "center",
     "text": "Error loading DIABDAT\nMake sure the game data is present.",
-    "onClick": "game.close"
+    "onClick": { "name": "game.close" }
   }
 }

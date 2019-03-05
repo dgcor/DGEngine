@@ -145,7 +145,7 @@
     <ClCompile Include="src\SFML\SFMLUtils.cpp" />
     <ClCompile Include="src\SFML\Sprite2.cpp" />
     <ClCompile Include="src\SFML\View2.cpp" />
-    <ClCompile Include="src\Shaders.cpp" />
+    <ClCompile Include="src\ShaderManager.cpp" />
     <ClCompile Include="src\Sol.cpp" />
     <ClCompile Include="src\StringButton.cpp" />
     <ClCompile Include="src\StringText.cpp" />
@@ -186,12 +186,14 @@
     <ClInclude Include="src\Actions\ActLoad.h" />
     <ClInclude Include="src\Actions\ActLoadingScreen.h" />
     <ClInclude Include="src\Actions\ActMenu.h" />
+    <ClInclude Include="src\Actions\ActMount.h" />
     <ClInclude Include="src\Actions\ActMovie.h" />
     <ClInclude Include="src\Actions\ActPalette.h" />
     <ClInclude Include="src\Actions\ActPlayer.h" />
     <ClInclude Include="src\Actions\ActQuest.h" />
     <ClInclude Include="src\Actions\ActRandom.h" />
     <ClInclude Include="src\Actions\ActResource.h" />
+    <ClInclude Include="src\Actions\ActShader.h" />
     <ClInclude Include="src\Actions\ActSound.h" />
     <ClInclude Include="src\Actions\ActText.h" />
     <ClInclude Include="src\Actions\ActVariable.h" />
@@ -351,7 +353,7 @@
     <ClInclude Include="src\SFML\SFMLUtils.h" />
     <ClInclude Include="src\SFML\Sprite2.h" />
     <ClInclude Include="src\SFML\View2.h" />
-    <ClInclude Include="src\Shaders.h" />
+    <ClInclude Include="src\ShaderManager.h" />
     <ClInclude Include="src\Sol.h" />
     <ClInclude Include="src\StreamReader.h" />
     <ClInclude Include="src\StringButton.h" />
@@ -483,6 +485,7 @@
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -500,6 +503,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
       <EnablePREfast>true</EnablePREfast>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -517,6 +521,7 @@
       <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -535,6 +540,7 @@
       <AdditionalOptions>-Xclang "-std=c++17" %(AdditionalOptions)</AdditionalOptions>
       <SupportJustMyCode>false</SupportJustMyCode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -554,6 +560,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -576,6 +583,7 @@
       <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -598,6 +606,7 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>No</GenerateDebugInformation>

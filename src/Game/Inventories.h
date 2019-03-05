@@ -122,11 +122,11 @@ public:
 
 	// returns the remaining quantity to add/remove. 0 if all quantity was added.
 	LevelObjValue addQuantity(const ItemClass& itemClass,
-		LevelObjValue amount, InventoryPosition invPos)
+		LevelObjValue amount, InventoryPosition invPos, Queryable* itemOwner)
 	{
 		for (auto& inv : (*this))
 		{
-			amount = inv.addQuantity(itemClass, amount, invPos);
+			amount = inv.addQuantity(itemClass, amount, invPos, itemOwner);
 			if (amount == 0)
 			{
 				return 0;

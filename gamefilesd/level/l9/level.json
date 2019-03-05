@@ -24,7 +24,7 @@
     "minBlocks": 10,
     "sol": "levels/l3data/l3.sol",
     "defaultLight": [185, 0, 7],
-    "lightMap": "level/l9/lightMap.txt"
+    "lightMap": "level/data/l3/lightMap.txt"
   },
   "load": "level/automap/l3/load.json",
   "load": "level/l9/levelObjects.json",

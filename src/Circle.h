@@ -25,11 +25,11 @@ public:
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
+	virtual void draw(const Game& game, sf::RenderTarget& target) const
 	{
 		if (visible == true)
 		{
-			target.draw(static_cast<sf::CircleShape>(*this), states);
+			target.draw(static_cast<sf::CircleShape>(*this));
 		}
 	}
 

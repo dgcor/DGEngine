@@ -1,0 +1,161 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "shaderSettings", "ignorePrevious": true },
+    { "name": "game.fadeIn" }
+  ],
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "back" }
+    }
+  ],
+  "image": {
+    "id": "mainmenu",
+    "texture": "mainmenu",
+    "anchor": "none"
+  },
+  "animation": [
+    {
+      "id": "smlogo",
+      "texturePack": "smlogo",
+      "position": ["center", 0],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent1",
+      "texturePack": "focus42",
+      "position": [20, 192],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent2",
+      "texturePack": "focus42",
+      "position": [584, 192],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": [
+    {
+      "id": "gameShader",
+      "font": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 192],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Game Shader: Default",
+      "onClick": {
+        "name": "switch",
+        "param": "%gameShader.text%",
+        "case": [
+          {
+            "value": "Game Shader: Default",
+            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Grain" }
+          },
+          {
+            "value": "Game Shader: Grain",
+            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Warp" }
+          },
+          {
+            "value": "Game Shader: Warp",
+            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
+          }
+        ],
+        "default": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
+      },
+      "onFocus": "anchorPentagrams"
+    },
+    {
+      "id": "spriteShader",
+      "font": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 235],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Sprite Shader: Default",
+      "onFocus": "anchorPentagrams"
+    },
+    {
+      "id": "back",
+      "font": "font42g",
+      "sound": "titlslct",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 277],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "OK",
+      "onClick": {
+        "name": "game.fadeOut",
+        "action": [
+          {
+            "name": "switch",
+            "param": "%gameShader.text%",
+            "case": [
+              {
+                "value": "Game Shader: Grain",
+                "action": [
+                  {
+                    "name": "if.equal",
+                    "param1": "%game.hasShader.grain%",
+                    "param2": false,
+                    "then": {
+                      "name": "shader.load",
+                      "id": "grain",
+                      "fragmentFile": "res/shaders/grain.frag"
+                    }
+                  },
+                  { "name": "game.setShader", "shader": "grain", "gameShader": "game" }
+                ]
+              },
+              {
+                "value": "Game Shader: Warp",
+                "action": [
+                  {
+                    "name": "if.equal",
+                    "param1": "%game.hasShader.warp%",
+                    "param2": false,
+                    "then": {
+                      "name": "shader.load",
+                      "id": "warp",
+                      "fragmentFile": "res/shaders/warp.frag"
+                    }
+                  },
+                  { "name": "game.setShader", "shader": "warp", "gameShader": "game" }
+                ]
+              }
+            ],
+            "default": { "name": "game.setShader", "shader": "game", "gameShader": "game" }
+          },
+          { "name": "resource.pop" },
+          { "name": "game.fadeIn" }
+        ]
+      },
+      "onFocus": "anchorPentagrams"
+    }
+  ],
+  "action": "anchorPentagrams"
+}

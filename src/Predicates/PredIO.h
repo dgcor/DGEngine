@@ -21,3 +21,22 @@ public:
 		return { false };
 	}
 };
+
+class PredGamefileExists : public Predicate
+{
+private:
+	std::string file;
+
+public:
+	PredGamefileExists(const std::string& file_) : file(file_) {}
+
+	virtual Variable getResult(const Game& game) const
+	{
+		auto file2 = game.getPath() + game.getVarOrPropStringS(file);
+		if (file2.empty() == false)
+		{
+			return { FileUtils::gamefileExists(file2.c_str()) };
+		}
+		return { false };
+	}
+};

@@ -4,6 +4,7 @@
     "file": "levels/l1data/l1s.cel",
     "imageContainer": "l1s",
     "palette": "{1}",
+    "offset": [0, -128],
     "textureIndexes": [
       [10, 1],
       [11, 0],

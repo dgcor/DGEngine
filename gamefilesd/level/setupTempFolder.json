@@ -1,5 +1,5 @@
 {
   "variable": { "tempDir": ".temp" },
   "action": { "name": "dir.create", "file": ".temp" },
-  "mountFile": { "file": ".temp", "append": false, "prependSaveDir": true }
+  "mountFile": { "file": ".temp", "append": false, "useSaveDir": true }
 }

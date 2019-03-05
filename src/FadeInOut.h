@@ -1,63 +1,33 @@
 #pragma once
 
-#include "Anchor.h"
 #include "Actions/Action.h"
 #include <memory>
-#include "Rectangle.h"
+#include "SFML/Graphics/Color.hpp"
+#include "SFML/System/Time.hpp"
 
-class FadeInOut : public Rectangle
+// fade out - hide
+// fade in - show
+class FadeInOut
 {
 private:
-	bool isFadeOut;
-	bool enableInput;
-	uint8_t fadeOffset;
+	sf::Color color{ sf::Color::Transparent };
+	bool isFadeOut{ false };
+	bool enableInput{ false };
+	uint8_t fadeOffset{ 0 };
 	sf::Time frameTime;
 	sf::Time currentTime;
 	std::shared_ptr<Action> action;
-
+	bool running{ false };
 	bool updateEnableInput{ false };
 
-	bool HasFadeEnded(uint8_t alpha) noexcept;
-	void UpdateFade(sf::Color& color) noexcept;
+	void UpdateFade() noexcept;
+	bool HasFadeEnded() noexcept;
 
 public:
-	FadeInOut(const sf::Vector2f& size_, bool isFadeOut_, bool enableInput_, sf::Color color_,
-		uint8_t fadeOffset_, const sf::Time& frameTime_, const std::shared_ptr<Action>& action_)
-		: Rectangle(size_), isFadeOut(isFadeOut_), enableInput(enableInput_),
-		fadeOffset(fadeOffset_), frameTime(frameTime_), action(action_)
-	{
-		if (enableInput_ == false)
-		{
-			updateEnableInput = true;
-		}
-		if (isFadeOut_ == true)
-		{
-			color_.a = 0;
-		}
-		else
-		{
-			color_.a = 255;
-		}
-		setFillColor(color_);
-		setAnchor(Anchor::All);
-	}
+	const sf::Color& getColor() const noexcept { return color; }
 
-	void Reset(bool isFadeOut_, bool enableInput_, sf::Color color_, uint8_t fadeOffset_,
-		const sf::Time& frameTime_, const std::shared_ptr<Action>& action_)
-	{
-		if (enableInput != enableInput_)
-		{
-			updateEnableInput = true;
-		}
-		isFadeOut = isFadeOut_;
-		enableInput = enableInput_;
-		fadeOffset = fadeOffset_;
-		frameTime = frameTime_;
-		action = action_;
-
-		color_.a = getFillColor().a;
-		setFillColor(color_);
-	}
+	void Reset(sf::Color color_, bool isFadeOut_, bool enableInput_, uint8_t fadeOffset_,
+		const sf::Time& frameTime_, const std::shared_ptr<Action>& action_);
 
 	virtual void update(Game& game) noexcept;
 };

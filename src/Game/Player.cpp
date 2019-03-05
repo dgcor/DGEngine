@@ -623,6 +623,34 @@ const Queryable* Player::getQueryable(const std::string_view prop) const
 	return queryable;
 }
 
+std::vector<std::variant<const Queryable*, Variable>> Player::getQueryableList(
+	const std::string_view prop) const
+{
+	std::vector<std::variant<const Queryable*, Variable>> queriableList;
+
+	auto props = Utils::splitStringIn2(prop, '.');
+	if (props.first.empty() == false)
+	{
+		auto invIdx = GameUtils::getPlayerInventoryIndex(props.second);
+		if (invIdx < inventories.size())
+		{
+			const auto& inventory = inventories[invIdx];
+			for (size_t i = 0; i < inventory.Size(); i++)
+			{
+				if (inventory.isSlotInUse(i) == false)
+				{
+					queriableList.push_back({ nullptr });
+				}
+				else
+				{
+					queriableList.push_back({ inventory.get(i) });
+				}
+			}
+		}
+	}
+	return queriableList;
+}
+
 bool Player::hasIntByHash(uint16_t propHash) const noexcept
 {
 	return customProperties.hasValue(propHash);
@@ -1024,7 +1052,7 @@ void Player::updateNameAndDescriptions() const
 LevelObjValue Player::addItemQuantity(const ItemClass& itemClass,
 	const LevelObjValue amount, InventoryPosition invPos)
 {
-	auto remaining = inventories.addQuantity(itemClass, amount, invPos);
+	auto remaining = inventories.addQuantity(itemClass, amount, invPos, this);
 	if (amount != 0)
 	{
 		updateItemQuantityCache(itemClass.IdHash16(), amount - remaining);
@@ -1073,6 +1101,11 @@ std::unique_ptr<Item> Player::SelectedItem(std::unique_ptr<Item> item) noexcept
 	if (selectedItem != nullptr)
 	{
 		selectedItem->clearMapPosition();
+		selectedItem->updateOwner(this);
+	}
+	if (old != nullptr)
+	{
+		old->updateOwner(nullptr);
 	}
 	return old;
 }
@@ -1141,10 +1174,12 @@ bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
 		{
 			updateItemQuantityCache(itemPtr->Class()->IdHash16());
 			itemPtr->clearMapPosition();
+			itemPtr->updateOwner(this);
 		}
 		else if (oldItem != nullptr)
 		{
 			updateItemQuantityCache(oldItem->Class()->IdHash16());
+			oldItem->updateOwner(nullptr);
 		}
 		if (bodyInventoryIdx == invIdx)
 		{
@@ -1191,7 +1226,7 @@ bool Player::setItemInFreeSlot(size_t invIdx, std::unique_ptr<Item>& item,
 					itemSlots >= 0 &&
 					(unsigned)itemSlots <= freeSlots)
 				{
-					inventory.addQuantity(*item->Class(), itemSlots, invPos);
+					inventory.addQuantity(*item->Class(), itemSlots, invPos, this);
 					updateItemQuantityCache(item->Class()->IdHash16(), itemSlots);
 					return true;
 				}

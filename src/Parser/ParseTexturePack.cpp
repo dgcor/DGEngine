@@ -5,7 +5,6 @@
 #include "Min.h"
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
-#include "Shaders.h"
 #include "TexturePacks/BitmapFontTexturePack.h"
 #include "TexturePacks/CachedTexturePack.h"
 #include "TexturePacks/IndexedTexturePack.h"
@@ -71,21 +70,23 @@ namespace Parser
 			return nullptr;
 		}
 
+		auto offset = getVector2fKey<sf::Vector2f>(elem, "offset");
+
 		std::shared_ptr<Palette> pal;
 		if (elem.HasMember("palette") == true)
 		{
 			pal = game.Resources().getPalette(elem["palette"].GetString());
 		}
 
-		bool useIndexedImages = pal != nullptr && Shaders::supportsPalettes();
+		bool useIndexedImages = pal != nullptr && game.Shaders().hasSpriteShader();
 
 		if (imgVec.size() == 1)
 		{
-			return std::make_unique<CachedTexturePack>(imgVec.front(), pal, useIndexedImages);
+			return std::make_unique<CachedTexturePack>(imgVec.front(), offset, pal, useIndexedImages);
 		}
 		else
 		{
-			return std::make_unique<CachedMultiTexturePack>(imgVec, pal, useIndexedImages);
+			return std::make_unique<CachedMultiTexturePack>(imgVec, offset, pal, useIndexedImages);
 		}
 	}
 
@@ -260,10 +261,8 @@ namespace Parser
 		}
 		if (isValidArray(elem, "rects") == true)
 		{
-			bool hasRefSize = elem.HasMember("referenceTextureSize");
-			auto refSize = getVector2fKey<sf::Vector2f>(elem, "referenceTextureSize");
-			auto refTileHeight = (float)getUIntKey(elem, "referenceTileHeight", 32);
 			auto globalOffset = getVector2fKey<sf::Vector2f>(elem, "offset");
+			bool invertOffsets = getBoolKey(elem, "invertOffsets");
 			auto texturePack2 = std::make_unique<RectTexturePack>(std::move(texturePack));
 			for (const auto& val : elem["rects"])
 			{
@@ -282,13 +281,10 @@ namespace Parser
 					{
 						auto index = getUIntKey(val, "index");
 						auto offset = globalOffset + getVector2fKey<sf::Vector2f>(val, "offset");
-						if (hasRefSize == true)
+						if (invertOffsets == true)
 						{
-							offset.x = std::round(refSize.x / 2.f) - offset.x;
-							offset.y = (refSize.y - std::round(refTileHeight / 2.f) - offset.y);
-
-							offset.x = -(std::round(refSize.x / 2.f) - std::round((float)rect.width / 2.f) - offset.x);
-							offset.y = offset.y - (refSize.y - (float)rect.height);
+							offset.x = -offset.x;
+							offset.y = -offset.y;
 						}
 						texturePack2->addRect(index, rect, offset);
 					}
@@ -403,7 +399,7 @@ namespace Parser
 				return false;
 			}
 
-			bool useIndexedImages = Shaders::supportsPalettes();
+			bool useIndexedImages = game.Shaders().hasSpriteShader();
 			CachedImagePack imgPack(imgCont.get(), pal, useIndexedImages);
 
 			texturePackLayers[0] = LevelHelper::loadTilesetSprite(imgPack, min, false, false, true);

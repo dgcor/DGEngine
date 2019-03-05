@@ -40,8 +40,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 0,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuPriceText"
@@ -60,8 +60,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 1,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuPriceText"
@@ -80,8 +80,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 2,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuPriceText"

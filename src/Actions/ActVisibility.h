@@ -13,7 +13,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->Visible(!item->Visible());
@@ -33,7 +33,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto item = game.Resources().getResource<UIObject>(id);
+		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
 		{
 			item->Visible(visible);

@@ -17,6 +17,6 @@
     "horizontalAlign": "center",
     "verticalAlign": "center",
     "text": "Error loading {1}\nMake sure Hellfire game data is present.",
-    "onClick": "game.close"
+    "onClick": { "name": "game.close" }
   }
 }

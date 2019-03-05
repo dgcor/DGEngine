@@ -22,46 +22,47 @@ private:
 	sf::RenderTexture gameTexture;
 	sf::Sprite gameSprite;
 
-	sf::Vector2u refSize{ 640, 480 };
-	sf::Vector2u minSize{ 640, 480 };
-	sf::Vector2u size{ 640, 480 };
+	sf::Vector2u refSize;
+	sf::Vector2u minSize;
+	sf::Vector2u size;
 	sf::Vector2u oldSize;
 	sf::Vector2u drawRegionSize;
-	unsigned framerate{ 0 };
-	bool smoothScreen{ false };
-	bool stretchToFit{ false };
-	bool keepAR{ true };
-	bool enableInput{ true };
-	bool pauseOnFocusLoss{ false };
-	bool paused{ false };
+	unsigned framerate;
+	bool smoothScreen;
+	bool stretchToFit;
+	bool keepAR;
+	bool enableInput;
+	bool pauseOnFocusLoss;
+	bool paused;
 
 	sf::Vector2i mousePositioni;
 	sf::Vector2f mousePositionf;
 
-	sf::Event::MouseButtonEvent mousePressEvt{};
-	sf::Event::MouseButtonEvent mouseReleaseEvt{};
-	sf::Event::MouseMoveEvent mouseMoveEvt{};
-	sf::Event::MouseWheelScrollEvent mouseScrollEvt{};
-	sf::Event::KeyEvent keyPressEvt{};
-	sf::Event::TextEvent textEnteredEvt{};
-	sf::Event::TouchEvent touchBeganEvt{};
-	sf::Event::TouchEvent touchMovedEvt{};
-	sf::Event::TouchEvent touchEndedEvt{};
-	bool mousePressed{ false };
-	bool mouseReleased{ false };
-	bool mouseMoved{ false };
-	bool mouseScrolled{ false };
-	bool keyPressed{ false };
-	bool textEntered{ false };
-	bool touchBegan{ false };
-	bool touchMoved{ false };
-	bool touchEnded{ false };
+	sf::Event::MouseButtonEvent mousePressEvt;
+	sf::Event::MouseButtonEvent mouseReleaseEvt;
+	sf::Event::MouseMoveEvent mouseMoveEvt;
+	sf::Event::MouseWheelScrollEvent mouseScrollEvt;
+	sf::Event::KeyEvent keyPressEvt;
+	sf::Event::TextEvent textEnteredEvt;
+	sf::Event::TouchEvent touchBeganEvt;
+	sf::Event::TouchEvent touchMovedEvt;
+	sf::Event::TouchEvent touchEndedEvt;
+	bool mousePressed;
+	bool mouseReleased;
+	bool mouseMoved;
+	bool mouseScrolled;
+	bool keyPressed;
+	bool textEntered;
+	bool touchBegan;
+	bool touchMoved;
+	bool touchEnded;
 
-	unsigned musicVolume{ 100 };
-	unsigned soundVolume{ 100 };
-	unsigned gamma{ 30 };
+	unsigned musicVolume;
+	unsigned soundVolume;
+	unsigned gamma;
 
 	sf::Time elapsedTime;
+	sf::Time totalElapsedTime;
 
 	std::string path;
 	std::string title;
@@ -73,7 +74,9 @@ private:
 	std::map<std::string, Variable> variables;
 
 	std::unique_ptr<LoadingScreen> loadingScreen;
-	std::unique_ptr<FadeInOut> fadeInOut;
+	FadeInOut fadeObj;
+
+	GameShaders shaders;
 
 	void processEvents();
 	void onClosed();
@@ -97,20 +100,27 @@ private:
 	void drawUI();
 	void update();
 	void drawAndUpdate();
-	void drawFadeEffect();
 	void drawWindow();
 
 	void updateSize();
 	void updateGameTexture();
 
+	void reset();
+
 public:
+
 	~Game();
 
+	void load(const std::string_view gamefilePath, const std::string_view mainFile);
 	void init();
 
 	// recreates the given renderTexture using the current draw region size
 	// and sets the smooth property.
 	void recreateRenderTexture(sf::RenderTexture& renderTexture) const;
+
+	const GameShaders& Shaders() const noexcept { return shaders; };
+
+	void setShader(const std::string_view id, sf::Shader* shader) noexcept;
 
 	unsigned getOpenGLDepthBits() const { return window.getSettings().depthBits; }
 	unsigned getOpenGLStencilBits() const { return window.getSettings().stencilBits; }
@@ -173,32 +183,33 @@ public:
 
 	void MinWidth(unsigned width_) noexcept { size.x = width_; }
 	void MinHeight(unsigned height_) noexcept { size.y = height_; }
-	void Framerate(unsigned framerate_);
+	void Framerate(int framerate_);
 	void SmoothScreen(bool smooth_);
 	void StretchToFit(bool stretchToFit_);
 	void KeepAR(bool keepAR_);
 	void PauseOnFocusLoss(bool pause_) noexcept { pauseOnFocusLoss = pause_; }
 
 	unsigned MusicVolume() const noexcept { return musicVolume; }
-	void MusicVolume(unsigned volume) noexcept
+	void MusicVolume(int volume) noexcept
 	{
-		musicVolume = std::min(volume, 100u);
+		musicVolume = (unsigned)std::clamp(volume, 0, 100);
 	}
 	unsigned SoundVolume() const noexcept { return soundVolume; }
-	void SoundVolume(unsigned volume) noexcept
+	void SoundVolume(int volume) noexcept
 	{
-		soundVolume = std::min(volume, 100u);
+		soundVolume = (unsigned)std::clamp(volume, 0, 100);
 	}
 	unsigned Gamma() const noexcept { return gamma; }
-	void Gamma(unsigned gamma_) noexcept
+	void Gamma(int gamma_) noexcept
 	{
-		gamma = std::clamp(gamma_, 30u, 100u);
+		gamma = (unsigned)std::clamp(gamma_, 0, 100);
 	}
 
 	void addPlayingSound(const sf::SoundBuffer& obj);
 	void addPlayingSound(const sf::SoundBuffer* obj);
 
 	const sf::Time& getElapsedTime() const noexcept { return elapsedTime; }
+	const sf::Time& getTotalElapsedTime() const noexcept { return totalElapsedTime; }
 
 	const std::string& getPath() const noexcept { return path; }
 	const std::string& getTitle() const noexcept { return title; }
@@ -230,11 +241,8 @@ public:
 	void draw();
 	bool drawLoadingScreen();
 
-	FadeInOut* getFadeInOut() const noexcept { return fadeInOut.get(); }
-	void setFadeInOut(std::unique_ptr<FadeInOut> fadeInOut_) noexcept
-	{
-		fadeInOut = std::move(fadeInOut_);
-	}
+	FadeInOut& FadeObj() noexcept { return fadeObj; }
+	const FadeInOut& FadeObj() const noexcept { return fadeObj; }
 
 	void setMousePosition(sf::Vector2i mousePos);
 	void updateMousePosition();
@@ -288,8 +296,16 @@ public:
 
 	void saveVariables(const std::string& filePath, const std::vector<std::string>& varNames) const;
 
+	// get an action from a UIObject using a query.
+	// ex: getQueryAction("btn1.click")
+	std::shared_ptr<Action> getQueryAction(const std::string_view prop) const;
+
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	void setProperty(const std::string_view prop, const Variable& val);
+	bool getGameProperty(const std::string_view prop, Variable& var) const;
+	void setGameProperty(const std::string_view prop, const Variable& val);
 
 	virtual const Queryable* getQueryable(const std::string_view prop) const;
+
+	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
+		const std::string_view prop) const;
 };
