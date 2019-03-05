@@ -13,11 +13,12 @@
         { "index": 1, "name": "spellManaDamage" }
       ],
       "properties": {
+        "baseMana": 150,
         "reqMag": 149,
         "p": 400
       },
       "formulas": {
-        "mana": "$spellM * :round(150 - (6 * (level - 1 :max 0))) :max 90",
+        "mana": "$spellM * :round(baseMana - (6 * (level - 1 :max 0))) :max 90",
         "damage": "$level + (:rnd(6) * $level)",
         "requiredMagic": ":round(reqMag * (1.1975 ^ level)) :min 255"
       }
@@ -29,11 +30,12 @@
       "textureIndex2": 35,
       "name": "Blood Star",
       "properties": {
+        "baseMana": 25,
         "reqMag": 70,
         "p": 360
       },
       "formulas": {
-        "mana": "$spellM * :round(25 - (2 * (level - 1 :max 0))) :max 14",
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 14",
         "damage": "3 * level + ($magicNow * 0.5) - ($magicNow * 0.125)",
         "speed": "16"
       }
@@ -45,11 +47,12 @@
       "textureIndex2": 29,
       "name": "Bone Spirit",
       "properties": {
+        "baseMana": 24,
         "reqMag": 34,
         "p": 160
       },
       "formulas": {
-        "mana": "$spellM * :round(24 - (1 * (level - 1 :max 0))) :max 12"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 12"
       }
     },
     {
@@ -59,11 +62,12 @@
       "textureIndex2": 15,
       "name": "Chain Lightning",
       "properties": {
+        "baseMana": 30,
         "reqMag": 54,
         "p": 150
       },
       "formulas": {
-        "mana": "$spellM * :round(30 - (1 * (level - 1 :max 0))) :max 18"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 18"
       }
     },
     {
@@ -73,6 +77,7 @@
       "textureIndex2": 38,
       "name": "Charged Bolt",
       "properties": {
+        "baseMana": 6,
         "mana": 6,
         "reqMag": 25,
         "p": 10
@@ -85,11 +90,12 @@
       "textureIndex2": 37,
       "name": "Elemental",
       "properties": {
+        "baseMana": 35,
         "reqMag": 68,
         "p": 140
       },
       "formulas": {
-        "mana": "$spellM * :round(35 - (2 * (level - 1 :max 0))) :max 20"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 20"
       }
     },
     {
@@ -99,11 +105,12 @@
       "textureIndex2": 11,
       "name": "Fireball",
       "properties": {
+        "baseMana": 16,
         "reqMag": 48,
         "p": 60
       },
       "formulas": {
-        "mana": "$spellM * :round(16 - (1 * (level - 1 :max 0))) :max 10"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 10"
       }
     },
     {
@@ -113,11 +120,12 @@
       "textureIndex2": 0,
       "name": "Firebolt",
       "properties": {
+        "baseMana": 6,
         "reqMag": 15,
         "p": 10
       },
       "formulas": {
-        "mana": "$spellM * :round(6 - (0.5 * (level - 1 :max 0))) :max 3",
+        "mana": "$spellM * :round(baseMana - (0.5 * (level - 1 :max 0))) :max 3",
         "damage": "1 + :rnd(10) + level + :floor($magicNow * 0.125)",
         "speed": "level * 2 + 16"
       }
@@ -129,11 +137,12 @@
       "textureIndex2": 5,
       "name": "Firewall",
       "properties": {
+        "baseMana": 28,
         "reqMag": 27,
         "p": 80
       },
       "formulas": {
-        "mana": "$spellM * :round(28 - (2 * (level - 1 :max 0))) :max 16"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 16"
       }
     },
     {
@@ -143,11 +152,12 @@
       "textureIndex2": 13,
       "name": "Flame Wave",
       "properties": {
+        "baseMana": 35,
         "reqMag": 54,
         "p": 130
       },
       "formulas": {
-        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 20"
+        "mana": "$spellM * :round(baseMana - (3 * (level - 1 :max 0))) :max 20"
       }
     },
     {
@@ -157,11 +167,12 @@
       "textureIndex2": 3,
       "name": "Flash",
       "properties": {
+        "baseMana": 30,
         "reqMag": 33,
         "p": 100
       },
       "formulas": {
-        "mana": "$spellM * :round(30 - (2 * (level - 1 :max 0))) :max 16"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 16"
       }
     },
     {
@@ -171,11 +182,12 @@
       "textureIndex2": 20,
       "name": "Golem",
       "properties": {
+        "baseMana": 100,
         "reqMag": 81,
         "p": 220
       },
       "formulas": {
-        "mana": "$spellM * :round(100 - (6 * (level - 1 :max 0))) :max 60"
+        "mana": "$spellM * :round(baseMana - (6 * (level - 1 :max 0))) :max 60"
       }
     },
     {
@@ -185,11 +197,12 @@
       "textureIndex2": 17,
       "name": "Guardian",
       "properties": {
+        "baseMana": 50,
         "reqMag": 61,
         "p": 190
       },
       "formulas": {
-        "mana": "$spellM * :round(50 - (2 * (level - 1 :max 0))) :max 30"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 30"
       }
     },
     {
@@ -200,6 +213,7 @@
       "name": "Healing",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 10,
         "reqMag": 17,
         "p": 10,
         "useInTown": true
@@ -217,6 +231,7 @@
       "name": "Heal Other",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 10,
         "reqMag": 17,
         "p": 10,
         "useInTown": true
@@ -232,11 +247,12 @@
       "textureIndex2": 41,
       "name": "Holy Bolt",
       "properties": {
+        "baseMana": 7,
         "reqMag": 20,
         "p": 10
       },
       "formulas": {
-        "mana": "$spellM * :round(7 - (1 * (level - 1 :max 0))) :max 3"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 3"
       }
     },
     {
@@ -246,11 +262,12 @@
       "textureIndex2": 14,
       "name": "Inferno",
       "properties": {
+        "baseMana": 11,
         "reqMag": 20,
         "p": 20
       },
       "formulas": {
-        "mana": "$spellM * :round(11 - (1 * (level - 1 :max 0))) :max 6"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 6"
       }
     },
     {
@@ -267,11 +284,12 @@
       "textureIndex2": 2,
       "name": "Lightning",
       "properties": {
+        "baseMana": 10,
         "reqMag": 20,
         "p": 30
       },
       "formulas": {
-        "mana": "$spellM * :round(10 - (1 * (level - 1 :max 0))) :max 6"
+        "mana": "$spellM * :round(baseMana - (1 * (level - 1 :max 0))) :max 6"
       }
     },
     {
@@ -282,6 +300,7 @@
       "name": "Mana Shield",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 33,
         "mana": 33,
         "reqMag": 25,
         "p": 240
@@ -295,10 +314,11 @@
       "name": "Nova",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 60,
         "p": 260
       },
       "formulas": {
-        "mana": "$spellM * :round(60 - (3 * (level - 1 :max 0))) :max 35"
+        "mana": "$spellM * :round(baseMana - (3 * (level - 1 :max 0))) :max 35"
       }
     },
     {
@@ -309,11 +329,12 @@
       "name": "Phasing",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 12,
         "reqMag": 39,
         "p": 40
       },
       "formulas": {
-        "mana": "$spellM * :round(12 - (2 * (level - 1 :max 0))) :max 4"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 4"
       }
     },
     {
@@ -335,11 +356,12 @@
       "name": "Stone Curse",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 60,
         "reqMag": 51,
         "p": 160
       },
       "formulas": {
-        "mana": "$spellM * :round(60 - (3 * (level - 1 :max 0))) :max 40"
+        "mana": "$spellM * :round(baseMana - (3 * (level - 1 :max 0))) :max 40"
       }
     },
     {
@@ -350,11 +372,12 @@
       "name": "Telekinesis",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 15,
         "reqMag": 33,
         "p": 40
       },
       "formulas": {
-        "mana": "$spellM * :round(15 - (2 * (level - 1 :max 0))) :max 8"
+        "mana": "$spellM * :round(baseMana - (2 * (level - 1 :max 0))) :max 8"
       }
     },
     {
@@ -365,11 +388,12 @@
       "name": "Teleport",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 35,
         "reqMag": 105,
         "p": 250
       },
       "formulas": {
-        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 15"
+        "mana": "$spellM * :round(baseMana - (3 * (level - 1 :max 0))) :max 15"
       }
     },
     {
@@ -380,11 +404,12 @@
       "name": "Town Portal",
       "descriptions": { "index": 1, "name": "spellManaNoDamage" },
       "properties": {
+        "baseMana": 35,
         "reqMag": 20,
         "p": 40
       },
       "formulas": {
-        "mana": "$spellM * :round(35 - (3 * (level - 1 :max 0))) :max 18"
+        "mana": "$spellM * :round(baseMana - (3 * (level - 1 :max 0))) :max 18"
       }
     }
   ]

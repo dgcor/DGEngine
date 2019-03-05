@@ -64,7 +64,7 @@ public:
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(const Game& game, sf::RenderTarget& target) const;
 	virtual void update(Game& game);
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

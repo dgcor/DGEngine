@@ -1,8 +1,8 @@
 #include "CachedTexturePack.h"
 
 CachedTexturePack::CachedTexturePack(const std::shared_ptr<ImageContainer>& imgPack_,
-	const std::shared_ptr<Palette>& palette_, bool isIndexed_)
-	: imgPack(imgPack_), palette(palette_), indexed(isIndexed_)
+	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_)
+	: imgPack(imgPack_), offset(offset_), palette(palette_), indexed(isIndexed_)
 {
 	cache.resize(imgPack_->size());
 }
@@ -19,15 +19,16 @@ bool CachedTexturePack::get(size_t index, TextureInfo& ti) const
 			(indexed == true ? nullptr : &palette->palette));
 	}
 	ti.texture = &cache[index];
-	updateTextureInfo(ti);
+	updateTextureRect(ti);
+	ti.offset = offset;
 	ti.palette = palette;
 	return true;
 }
 
 CachedMultiTexturePack::CachedMultiTexturePack(
 	const std::vector<std::shared_ptr<ImageContainer>>& imgVec_,
-	const std::shared_ptr<Palette>& palette_, bool isIndexed_)
-	: imgVec(imgVec_), palette(palette_), indexed(isIndexed_)
+	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_)
+	: imgVec(imgVec_), offset(offset_), palette(palette_), indexed(isIndexed_)
 {
 	for (const auto& imgPack : imgVec_)
 	{
@@ -60,7 +61,8 @@ bool CachedMultiTexturePack::get(size_t index, TextureInfo& ti) const
 			(indexed == true ? nullptr : &palette->palette));
 	}
 	ti.texture = &cache[index];
-	updateTextureInfo(ti);
+	updateTextureRect(ti);
+	ti.offset = offset;
 	ti.palette = palette;
 	return true;
 }

@@ -356,3 +356,25 @@ void Button::updateEvents(Game& game, bool contains)
 		game.clearInputEvents(captureInputEvents);
 	}
 }
+
+bool Button::getProperty(const std::string_view prop, Variable& var) const
+{
+	if (prop.size() <= 1)
+	{
+		return false;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int16(props.first);
+	switch (propHash)
+	{
+	case str2int16("clickUp"):
+		var = Variable(clickUp);
+		break;
+	case str2int16("enabled"):
+		var = Variable(enabled);
+		break;
+	default:
+		return false;
+	}
+	return true;
+}

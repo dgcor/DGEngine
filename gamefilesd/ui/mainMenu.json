@@ -172,6 +172,7 @@
       "format": "[1] v[2]"
     }
   },
+  "load": "ui/showMods.json",
   "action": [
     { "name": "menu.setFont", "id": "menu", "index": 1, "font": "font42y" },
     {

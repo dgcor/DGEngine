@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Action.h"
-#include "FadeInOut.h"
 #include "Game.h"
-#include <memory>
 #include <string>
 
 class ActPaletteReplace : public Action

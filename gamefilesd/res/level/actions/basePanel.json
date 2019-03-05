@@ -78,14 +78,8 @@
     {
       "name": "action.set",
       "id": "updateSelectedItem",
+      "replaceVars": true,
       "action": [
-        {
-          "name": "if.equal",
-          "param1": "%currentLevel.currentPlayer.canUseSelectedItem%",
-          "param2": false,
-          "then": { "name": "cursor.setPalette", "palette": "infra", "color": "0xFF0000" },
-          "else": { "name": "cursor.setPalette", "palette": "town" }
-        },
         {
           "name": "text.setText",
           "id": "txtPanel",
@@ -96,17 +90,33 @@
           "name": "if.equal",
           "param1": "%currentLevel.currentPlayer.selectedItem.magical%",
           "param2": 1,
-          "then": "setPanelTextColorBlue",
+          "then": [
+            "setPanelTextColorBlue",
+            { "name": "cursor.setOutline", "outline": "|outlineItem|", "ignore": "0x000000" }
+          ],
           "else": {
             "name": "if.equal",
             "param1": "%currentLevel.currentPlayer.selectedItem.unique%",
             "param2": 1,
             "then": [
               "setPanelTextColorGold",
-              "hideItemInfo"
+              "hideItemInfo",
+              { "name": "cursor.setOutline", "outline": "|outlineItem|", "ignore": "0x000000" }
             ],
-            "else": "setPanelTextColorWhite"
+            "else": [
+              "setPanelTextColorWhite",
+              { "name": "cursor.setOutline", "outline": "|outlineItemInv|", "ignore": "0x000000" }
+            ]
           }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.canUseSelectedItem%",
+          "param2": false,
+          "then": [
+            { "name": "cursor.setPalette", "palette": "infra", "color": "0xFF0000" },
+            { "name": "cursor.setOutline", "outline": "|outlineCantUse|", "ignore": "0x000000" }
+          ]
         }
       ]
     }

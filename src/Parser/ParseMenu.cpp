@@ -193,12 +193,6 @@ namespace Parser
 		{
 			if (isValidString(val, "load") == true)
 			{
-				std::string prop(val["load"].GetString());
-
-				auto props = Utils::splitStringIn2(prop, '.');
-				const auto& uiObjId = props.first;
-				const auto& uiElemProps = props.second;
-
 				std::vector<FilterObject> filterList;
 				bool include = true;
 
@@ -212,135 +206,66 @@ namespace Parser
 					filterList = parseFilterList(val["include"]);
 				}
 
-				if (uiObjId == "game" && uiElemProps == "saves")
-				{
-					MemoryPoolAllocator<CrtAllocator> allocator;
+				MemoryPoolAllocator<CrtAllocator> allocator;
 
-					for (const auto& dir : FileUtils::getSaveDirList())
+				auto menuItems = game.getQueryableList(getStringViewVal(val["load"]));
+
+				for (size_t i = 0; i < menuItems.size(); i++)
+				{
+					const auto& menuItem = menuItems[i];
+					if (std::holds_alternative<const Queryable*>(menuItem) == true)
 					{
-						if (filterList.empty() == false &&
-							getFilterResult(filterList, Variable(dir), include) == true)
+						auto queryable = std::get<const Queryable*>(menuItem);
+						if (queryable == nullptr)
 						{
 							continue;
 						}
-
-						Value valCopy(val, allocator);
-						JsonUtils::replaceValueWithString(valCopy, allocator, "%save%", dir);
-
-						parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-							horizSpaceOffset, vertSpaceOffset, font,
-							fontSize, sound, focusSound, clickUp,
-							hasFocus, focusOnClick, relativePos, origPos);
-
-						parseAndExecuteMenuAction(game, valCopy);
-
-						menuIdx++;
-					}
-				}
-				else
-				{
-					auto level = game.Resources().getResource<Level>(uiObjId);
-					if (level == nullptr)
-					{
-						if (uiObjId == "currentLevel")
+						if (filterList.empty() == false &&
+							getFilterResult(filterList, *queryable, include) == true)
 						{
-							level = game.Resources().getCurrentLevel();
-						}
-					}
-					if (level == nullptr)
-					{
-						return;
-					}
-					if (uiElemProps == "quests")
-					{
-						MemoryPoolAllocator<CrtAllocator> allocator;
-
-						const auto& quests = level->Quests();
-						for (size_t i = 0; i < quests.size(); i++)
-						{
-							const auto& quest = quests[i];
-
-							if (filterList.empty() == false &&
-								getFilterResult(filterList, quest, include) == true)
-							{
-								continue;
-							}
-
-							Value valCopy(val, allocator);
-							JsonUtils::replaceValueWithQueryable(valCopy, allocator, quest,
-								[i, menuIdx, &allocator](Value& valFunc)
-							{
-								JsonUtils::replaceStringWithVariable(
-									valFunc, allocator, "%idx%", Variable((int64_t)i), true);
-
-								JsonUtils::replaceStringWithVariable(
-									valFunc, allocator, "%menuIdx%", Variable((int64_t)menuIdx), true);
-							});
-
-							parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-								horizSpaceOffset, vertSpaceOffset, font,
-								fontSize, sound, focusSound, clickUp,
-								hasFocus, focusOnClick, relativePos, origPos);
-
-							parseAndExecuteMenuAction(game, valCopy);
-
-							menuIdx++;
+							continue;
 						}
 					}
 					else
 					{
-						auto props2 = Utils::splitStringIn2(uiElemProps, '.');
-						auto player = level->getPlayerOrCurrent(props2.first);
-						if (player == nullptr)
+						const auto& var = std::get<Variable>(menuItem);
+						if (filterList.empty() == false &&
+							getFilterResult(filterList, var, include) == true)
 						{
-							player = level->getCurrentPlayer();
-						}
-						if (player == nullptr)
-						{
-							return;
-						}
-						auto props3 = Utils::splitStringIn2(props2.second, '.');
-						auto invIdx = GameUtils::getPlayerInventoryIndex(props3.second);
-						if (invIdx < player->getInventorySize())
-						{
-							MemoryPoolAllocator<CrtAllocator> allocator;
-							const auto& inventory = player->getInventory(invIdx);
-							for (size_t i = 0; i < inventory.Size(); i++)
-							{
-								if (inventory.isSlotInUse(i) == false)
-								{
-									continue;
-								}
-								const auto item = inventory.get(i);
-
-								if (filterList.empty() == false &&
-									getFilterResult(filterList, *item, include) == true)
-								{
-									continue;
-								}
-
-								Value valCopy(val, allocator);
-								JsonUtils::replaceValueWithQueryable(valCopy, allocator, *item,
-									[i, menuIdx, &allocator](Value& valFunc)
-								{
-									JsonUtils::replaceStringWithVariable(
-										valFunc, allocator, "%idx%", Variable((int64_t)i), true);
-
-									JsonUtils::replaceStringWithVariable(
-										valFunc, allocator, "%menuIdx%", Variable((int64_t)menuIdx), true);
-								});
-
-								parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
-									horizSpaceOffset, vertSpaceOffset, font,
-									fontSize, sound, focusSound, clickUp,
-									hasFocus, focusOnClick, relativePos, origPos);
-
-								parseAndExecuteMenuAction(game, valCopy);
-
-								menuIdx++;
-							}
+							continue;
 						}
 					}
+
+					Value valCopy(val, allocator);
+
+					if (std::holds_alternative<const Queryable*>(menuItem) == true)
+					{
+						auto queryable = std::get<const Queryable*>(menuItem);
+						JsonUtils::replaceValueWithQueryable(valCopy, allocator, *queryable,
+							[i, menuIdx, &allocator](Value& valFunc)
+						{
+							JsonUtils::replaceStringWithVariable(
+								valFunc, allocator, "!listIdx!", Variable((int64_t)i), true);
+
+							JsonUtils::replaceStringWithVariable(
+								valFunc, allocator, "!menuIdx!", Variable((int64_t)menuIdx), true);
+						});
+					}
+					else
+					{
+						const auto& var = std::get<Variable>(menuItem);
+						JsonUtils::replaceValueWithString(
+							valCopy, allocator, "!listItem!", VarUtils::toString(var));
+					}
+
+					parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
+						horizSpaceOffset, vertSpaceOffset, font,
+						fontSize, sound, focusSound, clickUp,
+						hasFocus, focusOnClick, relativePos, origPos);
+
+					parseAndExecuteMenuAction(game, valCopy);
+
+					menuIdx++;
 				}
 			}
 			else

@@ -73,7 +73,7 @@
       "text": "%name%\n",
       "onClick": {
         "name": "load",
-        "file": ["towners/griswold/buyPremium/confirm.json", 1, "%idx%"]
+        "file": ["towners/griswold/buyPremium/confirm.json", 1, "!listIdx!"]
       },
       "onFocus": [
         "anchorLeftPentagram",
@@ -86,8 +86,8 @@
           "values": {
             "itemOwnerId": "griswold",
             "itemInv": 1,
-            "itemIndex": "%idx%",
-            "menuIndex": "%menuIdx%"
+            "itemIndex": "!listIdx!",
+            "menuIndex": "!menuIdx!"
           }
         },
         "setMenuItemText"

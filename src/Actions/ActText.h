@@ -37,7 +37,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text>(id);
+		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
 		{
 			auto str = text->getText();
@@ -59,7 +59,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text>(id);
+		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
 		{
 			text->setColor(color);
@@ -80,7 +80,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text2 = game.Resources().getResource<Text>(id);
+		auto text2 = game.Resources().getDrawable<Text>(id);
 		if (text2 != nullptr)
 		{
 			auto newFont = game.Resources().getFont(idFont);
@@ -133,7 +133,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text>(id);
+		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
 		{
 			if (hasHorizSpaceOffset == true)
@@ -179,7 +179,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<Text>(id);
+		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
 		{
 			text->setText(TextUtils::getText(game, textOp, textFormat, bindings));

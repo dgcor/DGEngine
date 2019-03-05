@@ -52,6 +52,7 @@ namespace Parser
 		image->Visible(getBoolKey(elem, "visible", true));
 
 		image->setColor(getColorKey(elem, "color", sf::Color::White));
+		image->setResizable(getBoolKey(elem, "resizable"));
 
 		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
 		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);

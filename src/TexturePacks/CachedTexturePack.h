@@ -8,6 +8,7 @@ class CachedTexturePack : public TexturePack
 {
 private:
 	std::shared_ptr<ImageContainer> imgPack;
+	sf::Vector2f offset;
 	std::shared_ptr<Palette> palette;
 	bool indexed{ false };
 
@@ -15,7 +16,7 @@ private:
 
 public:
 	CachedTexturePack(const std::shared_ptr<ImageContainer>& imgPack_,
-		const std::shared_ptr<Palette>& palette_, bool isIndexed_);
+		const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_);
 
 	virtual bool get(size_t index, TextureInfo& ti) const;
 
@@ -28,6 +29,7 @@ class CachedMultiTexturePack : public TexturePack
 {
 private:
 	std::vector<std::shared_ptr<ImageContainer>> imgVec;
+	sf::Vector2f offset;
 	size_t textureCount{ 0 };
 	std::shared_ptr<Palette> palette;
 	bool indexed{ false };
@@ -36,7 +38,7 @@ private:
 
 public:
 	CachedMultiTexturePack(const std::vector<std::shared_ptr<ImageContainer>>& imgVec_,
-		const std::shared_ptr<Palette>& palette_, bool isIndexed_);
+		const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_);
 
 	virtual bool get(size_t index, TextureInfo& ti) const;
 

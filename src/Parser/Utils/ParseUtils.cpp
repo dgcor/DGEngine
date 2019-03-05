@@ -26,7 +26,11 @@ namespace Parser
 
 	bool getIdFromFile(const std::string_view file, std::string& id)
 	{
-		id = FileUtils::getFileWithoutExt(FileUtils::getFileFromPath(file));
+		id = FileUtils::getFileNameWithoutExt(file);
+		if (id.empty() == false && id[0] == '.')
+		{
+			id.clear();
+		}
 		return (id.empty() == false);
 	}
 

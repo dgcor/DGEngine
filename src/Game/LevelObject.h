@@ -119,9 +119,11 @@ public:
 	virtual void serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level) const = 0;
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states, uint8_t light) const
+	// always pass the game's sprite shader in RenderStates.
+	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+		SpriteShaderCache& cache, uint8_t light) const
 	{
-		sprite.draw(target, states, light);
+		sprite.draw(target, spriteShader, cache, light);
 	}
 
 	// Update

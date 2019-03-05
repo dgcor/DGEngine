@@ -14,7 +14,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getResource<InputText>(id);
+		auto text = game.Resources().getDrawable<InputText>(id);
 		if (text != nullptr)
 		{
 			text->click(game);

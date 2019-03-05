@@ -5,7 +5,7 @@
 
 void LoadingScreen::setProgress(int percent_)
 {
-	percent = percent_;
+	percent = std::clamp(percent_, 0, 100);
 	if (percent_ <= 0)
 	{
 		progressBar.setSize(sf::Vector2f());

@@ -1,18 +1,88 @@
 #include "Game.h"
+#include "FileUtils.h"
 #include "Json/JsonUtils.h"
+#include "Parser/Parser.h"
 #include "Parser/ParseVariable.h"
 #include "SFML/SFMLUtils.h"
-#include "Shaders.h"
 #include "Utils/ReverseIterable.h"
 #include "Utils/Utils.h"
 
 Game::~Game()
 {
-	resourceManager = ResourceManager();
+	resourceManager = {};
 	if (window.isOpen() == true)
 	{
 		window.close();
 	}
+}
+
+void Game::reset()
+{
+	refSize = { 640, 480 };
+	minSize = { 640, 480 };
+	size = { 640, 480 };
+	oldSize = {};
+	drawRegionSize = {};
+	framerate = { 0 };
+	smoothScreen = { false };
+	stretchToFit = { false };
+	keepAR = { true };
+	enableInput = { true };
+	pauseOnFocusLoss = { false };
+	paused = { false };
+
+	mousePositioni = {};
+	mousePositionf = {};
+
+	mousePressEvt = {};
+	mouseReleaseEvt = {};
+	mouseMoveEvt = {};
+	mouseScrollEvt = {};
+	keyPressEvt = {};
+	textEnteredEvt = {};
+	touchBeganEvt = {};
+	touchMovedEvt = {};
+	touchEndedEvt = {};
+	mousePressed = { false };
+	mouseReleased = { false };
+	mouseMoved = { false };
+	mouseScrolled = { false };
+	keyPressed = { false };
+	textEntered = { false };
+	touchBegan = { false };
+	touchMoved = { false };
+	touchEnded = { false };
+
+	musicVolume = { 100 };
+	soundVolume = { 100 };
+	gamma = { 0 };
+
+	elapsedTime = {};
+	totalElapsedTime = {};
+
+	path = {};
+	title = {};
+	version = {};
+
+	resourceManager = {};
+	resourceManager.Shaders().init();
+	resourceManager.Shaders().init(shaders);
+
+	variables = {};
+
+	loadingScreen = {};
+	fadeObj = {};
+}
+
+void Game::load(const std::string_view gamefilePath, const std::string_view mainFile)
+{
+	if (window.isOpen() == true)
+	{
+		window.close();
+	}
+	reset();
+	FileUtils::unmountAll();
+	Parser::parseGame(*this, gamefilePath, mainFile);
 }
 
 void Game::init()
@@ -21,6 +91,7 @@ void Game::init()
 	{
 		return;
 	}
+
 #ifdef __ANDROID__
 	window.create(sf::VideoMode::getDesktopMode(), title);
 	size = window.getSize();
@@ -29,7 +100,6 @@ void Game::init()
 	oldSize = size;
 	window.create(sf::VideoMode(size.x, size.y), title);
 #endif
-	Shaders::init();
 
 	if (framerate > 0)
 	{
@@ -81,11 +151,11 @@ void Game::MinSize(const sf::Vector2u& size_)
 	}
 }
 
-void Game::Framerate(unsigned framerate_)
+void Game::Framerate(int framerate_)
 {
 	if (framerate_ > 0)
 	{
-		framerate = std::clamp(framerate_, 30u, 60u);
+		framerate = (unsigned)std::clamp(framerate_, 30, 60);
 	}
 	else
 	{
@@ -124,6 +194,7 @@ void Game::play()
 		gameTexture.clear();
 
 		elapsedTime = frameClock.restart();
+		totalElapsedTime += elapsedTime;
 
 		updateEvents();
 
@@ -133,7 +204,6 @@ void Game::play()
 		{
 			drawAndUpdate();
 			drawCursor();
-			drawFadeEffect();
 			drawWindow();
 		}
 	}
@@ -252,10 +322,6 @@ void Game::updateSize()
 	if (loadingScreen != nullptr)
 	{
 		loadingScreen->updateSize(*this);
-	}
-	if (fadeInOut != nullptr)
-	{
-		fadeInOut->updateSize(*this);
 	}
 	for (auto& res : resourceManager)
 	{
@@ -464,8 +530,7 @@ bool Game::drawLoadingScreen()
 	{
 		return false;
 	}
-	gameTexture.draw(*loadingScreen);
-	drawFadeEffect();
+	loadingScreen->draw(gameTexture);
 	drawWindow();
 	return true;
 }
@@ -499,7 +564,7 @@ void Game::drawUI()
 		{
 			for (auto obj : res.drawables)
 			{
-				gameTexture.draw(*obj);
+				obj->draw(*this, gameTexture);
 			}
 		}
 		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
@@ -521,16 +586,7 @@ void Game::drawCursor()
 	if (cursor != nullptr)
 	{
 		cursor->update(*this);
-		gameTexture.draw(*cursor);
-	}
-}
-
-void Game::drawFadeEffect()
-{
-	if (fadeInOut != nullptr)
-	{
-		gameTexture.draw(static_cast<sf::RectangleShape>(*fadeInOut));
-		fadeInOut->update(*this);
+		cursor->draw(*this, gameTexture);
 	}
 }
 
@@ -538,12 +594,30 @@ void Game::drawWindow()
 {
 	gameTexture.display();
 	sf::RenderStates states = sf::RenderStates::Default;
-	if (Shaders::supportsGamma() &&
-		gamma > 30 && gamma <= 100)
+	if (shaders.hasGameShader() == true)
 	{
-		states.shader = &Shaders::Gamma;
-		Shaders::Gamma.setUniform("gamma", (float)(130 - gamma) * 0.01f);
+		states.shader = shaders.Game;
+		shaders.Game->setUniform("elapsedTime", totalElapsedTime.asSeconds());
+		shaders.Game->setUniform("gamma", (float)gamma);
+		shaders.Game->setUniform("fade", sf::Glsl::Vec4(fadeObj.getColor()));
+		if (loadingScreen != nullptr)
+		{
+			shaders.Game->setUniform("loading", (float)loadingScreen->getProgress() / 100.f);
+		}
+		else
+		{
+			shaders.Game->setUniform("loading", 1.f);
+		}
+		shaders.Game->setUniform("mousePosition", sf::Glsl::Vec2(
+			(float)std::clamp(mousePositioni.x, 0, (int)drawRegionSize.x) / (float)drawRegionSize.x,
+			(float)std::clamp(mousePositioni.y, 0, (int)drawRegionSize.y) / (float)drawRegionSize.y
+		));
+		shaders.Game->setUniform("textureSize", sf::Glsl::Vec2(
+			(float)drawRegionSize.x,
+			(float)drawRegionSize.y
+		));
 	}
+	fadeObj.update(*this);
 	window.draw(gameSprite, states);
 	window.display();
 }
@@ -552,7 +626,6 @@ void Game::draw()
 {
 	drawUI();
 	drawCursor();
-	drawFadeEffect();
 	drawWindow();
 }
 
@@ -909,6 +982,26 @@ void Game::saveVariables(const std::string& filePath, const std::vector<std::str
 	}
 }
 
+std::shared_ptr<Action> Game::getQueryAction(const std::string_view prop) const
+{
+	auto idx = prop.rfind('.');
+	if (idx > 0 && idx != std::string::npos)
+	{
+		auto query = prop.substr(0, idx);
+		auto actionName = prop.substr(idx + 1);
+		auto obj = getQueryable(query);
+		if (obj != nullptr)
+		{
+			auto uiObj = dynamic_cast<const UIObject*>(obj);
+			if (uiObj != nullptr)
+			{
+				return uiObj->getAction(str2int16(actionName));
+			}
+		}
+	}
+	return nullptr;
+}
+
 bool Game::getProperty(const std::string_view prop, Variable& var) const
 {
 	if (prop.size() <= 2)
@@ -942,17 +1035,18 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	default:
 	{
-		const UIObject* uiObject = resourceManager.getDrawable(std::string(props.first));
-		if (uiObject == nullptr)
+		const UIObject* uiObject = nullptr;
+		if (props.first == "currentLevel")
 		{
-			if (props.first == "focus")
-			{
-				uiObject = resourceManager.getFocused();
-			}
-			else if (props.first == "currentLevel")
-			{
-				uiObject = resourceManager.getCurrentLevel();
-			}
+			uiObject = resourceManager.getCurrentLevel();
+		}
+		else if (props.first == "focus")
+		{
+			uiObject = resourceManager.getFocused();
+		}
+		else
+		{
+			uiObject = resourceManager.getDrawable(std::string(props.first));
 		}
 		if (uiObject != nullptr)
 		{
@@ -965,7 +1059,12 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	{
 		return false;
 	}
-	props = Utils::splitStringIn2(props.second, '.');
+	return getGameProperty(props.second, var);
+}
+
+bool Game::getGameProperty(const std::string_view prop, Variable& var) const
+{
+	auto props = Utils::splitStringIn2(prop, '.');
 	switch (str2int16(props.first))
 	{
 	case str2int16("cursor"):
@@ -1015,6 +1114,15 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	case str2int16("hasTexturePack"):
 		var = Variable(resourceManager.hasTexturePack(std::string(props.second)));
+		break;
+	case str2int16("hasShader"):
+		var = Variable(resourceManager.Shaders().has(std::string(props.second)));
+		break;
+	case str2int16("hasGameShader"):
+		var = Variable(shaders.hasGameShader());
+		break;
+	case str2int16("hasSpriteShader"):
+		var = Variable(shaders.hasSpriteShader());
 		break;
 	case str2int16("keepAR"):
 		var = Variable(keepAR);
@@ -1083,7 +1191,7 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	}
 	case str2int16("saveDir"):
-		var = Variable(std::string(FileUtils::getSaveDir()));
+		var = Variable(FileUtils::getSaveDir());
 		break;
 	case str2int16("size"):
 	{
@@ -1106,18 +1214,6 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("stretchToFit"):
 		var = Variable(stretchToFit);
 		break;
-	case str2int16("supportsGamma"):
-		var = Variable(Shaders::supportsGamma());
-		break;
-	case str2int16("supportsLighting"):
-		var = Variable((bool)(Shaders::supportsPalettes() | Shaders::supportsLighting()));
-		break;
-	case str2int16("supportsOutlines"):
-		var = Variable(Shaders::supportsOutlines());
-		break;
-	case str2int16("supportsPalettes"):
-		var = Variable(Shaders::supportsPalettes());
-		break;
 	case str2int16("title"):
 		var = Variable(title);
 		break;
@@ -1132,7 +1228,7 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	return true;
 }
 
-void Game::setProperty(const std::string_view prop, const Variable& val)
+void Game::setGameProperty(const std::string_view prop, const Variable& val)
 {
 	if (prop.size() <= 1)
 	{
@@ -1144,7 +1240,7 @@ void Game::setProperty(const std::string_view prop, const Variable& val)
 	{
 		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			Framerate((unsigned)std::get<int64_t>(val));
+			Framerate((int)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -1152,7 +1248,7 @@ void Game::setProperty(const std::string_view prop, const Variable& val)
 	{
 		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			Gamma((unsigned)std::get<int64_t>(val));
+			Gamma((int)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -1168,7 +1264,7 @@ void Game::setProperty(const std::string_view prop, const Variable& val)
 	{
 		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			MusicVolume((unsigned)std::get<int64_t>(val));
+			MusicVolume((int)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -1184,7 +1280,7 @@ void Game::setProperty(const std::string_view prop, const Variable& val)
 	{
 		if (std::holds_alternative<int64_t>(val) == true)
 		{
-			SoundVolume((unsigned)std::get<int64_t>(val));
+			SoundVolume((int)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -1224,17 +1320,18 @@ const Queryable* Game::getQueryable(const std::string_view prop) const
 	{
 		return this;
 	}
-	const Queryable* queryable = resourceManager.getDrawable(std::string(props.first));
-	if (queryable == nullptr)
+	const Queryable* queryable = nullptr;
+	if (props.first == "currentLevel")
 	{
-		if (props.first == "focus")
-		{
-			queryable = resourceManager.getFocused();
-		}
-		else if (props.first == "currentLevel")
-		{
-			queryable = resourceManager.getCurrentLevel();
-		}
+		queryable = resourceManager.getCurrentLevel();
+	}
+	else if (props.first == "focus")
+	{
+		queryable = resourceManager.getFocused();
+	}
+	else
+	{
+		queryable = resourceManager.getDrawable(std::string(props.first));
 	}
 	if (queryable != nullptr &&
 		props.second.empty() == false)
@@ -1242,4 +1339,81 @@ const Queryable* Game::getQueryable(const std::string_view prop) const
 		return queryable->getQueryable(props.second);
 	}
 	return queryable;
+}
+
+std::vector<std::variant<const Queryable*, Variable>> Game::getQueryableList(
+	const std::string_view prop) const
+{
+	std::vector<std::variant<const Queryable*, Variable>> queriableList;
+
+	if (prop.empty() == true)
+	{
+		return queriableList;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	if (props.first.empty() == false)
+	{
+		if (props.first == "game")
+		{
+			auto props2 = Utils::splitStringIn2(props.second, '.');
+			if (props2.first == "saveDirs")
+			{
+				for (const auto& dir : FileUtils::getSaveDirList())
+				{
+					queriableList.push_back({ dir });
+				}
+			}
+			else if (props2.first == "dirs")
+			{
+				for (const auto& dir : FileUtils::geDirList(props2.second, ""))
+				{
+					queriableList.push_back({ dir });
+				}
+			}
+			else if (props2.first == "files")
+			{
+				for (const auto& dir : FileUtils::getFileList(props2.second, "", false))
+				{
+					queriableList.push_back({ dir });
+				}
+			}
+		}
+		else
+		{
+			Level* level = nullptr;
+			if (props.first == "currentLevel")
+			{
+				level = resourceManager.getCurrentLevel();
+			}
+			else
+			{
+				level = resourceManager.getDrawable<Level>(std::string(props.first));
+			}
+			if (level != nullptr &&
+				props.second.empty() == false)
+			{
+				return level->getQueryableList(props.second);
+			}
+		}
+	}
+	return queriableList;
+}
+
+void Game::setShader(const std::string_view id, sf::Shader* shader) noexcept
+{
+	if (id.size() <= 1)
+	{
+		return;
+	}
+	switch (str2int16(id))
+	{
+	case str2int16("game"):
+		shaders.Game = shader;
+		break;
+	case str2int16("sprite"):
+		shaders.Sprite = shader;
+		break;
+	default:
+		break;
+	}
 }

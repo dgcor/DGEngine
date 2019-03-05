@@ -23,11 +23,11 @@ void BitmapText::updateSize(const Game& game) noexcept
 	calculateDrawPosition();
 }
 
-void BitmapText::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void BitmapText::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == true)
 	{
-		font->draw(drawPos, text, target, states, color,
+		font->draw(drawPos, text, game, target, color,
 			horizSpaceOffset, vertSpaceOffset, size.x, horizAlign);
 	}
 }

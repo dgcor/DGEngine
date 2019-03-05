@@ -14,7 +14,7 @@
 class Spell : public LevelObjectClass, public Queryable
 {
 private:
-	typedef FixedMap<uint16_t, LevelObjValue, 4> SpellProperties;
+	typedef FixedMap<uint16_t, LevelObjValue, 6> SpellProperties;
 
 	std::string name;
 	std::string spellType;
@@ -152,11 +152,15 @@ struct SpellInstance : public Queryable
 	const Queryable* spellOwner{ nullptr };
 	LevelObjValue spellLevel{ 0 };
 
+	SpellInstance() {}
 	SpellInstance(Spell* spell_, const Queryable* spellOwner_, LevelObjValue spellLevel_) :
 		spell(spell_), spellOwner(spellOwner_), spellLevel(spellLevel_) {}
 
+	bool getNumberPropByHash(uint16_t propHash, LevelObjValue& value) const;
 	bool getNumberPropByHash(const Queryable& player,
 		uint16_t propHash, LevelObjValue& value) const;
+	bool getNumberPropByHash(uint16_t propHash,
+		const std::string_view minMaxNumber, LevelObjValue& value) const;
 	bool getNumberPropByHash(const Queryable& player, uint16_t propHash,
 		const std::string_view minMaxNumber, LevelObjValue& value) const;
 

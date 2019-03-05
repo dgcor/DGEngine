@@ -1,16 +1,14 @@
 #include "Parser.h"
 #include "FileUtils.h"
 #include "ParseFile.h"
-#include "Utils/ParseUtils.h"
-#include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseGame(Game& game, std::string filePath, const std::string_view fileName)
+	void parseGame(Game& game, const std::string_view filePath, const std::string_view fileName)
 	{
-		if (PHYSFS_mount(filePath.c_str(), nullptr, 0) == 0)
+		if (FileUtils::mount(filePath, "", false) == false)
 		{
 			throw std::runtime_error(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		}
@@ -19,28 +17,21 @@ namespace Parser
 		auto jsonText = FileUtils::readText(fileName.data());
 		if (doc.Parse(jsonText.data(), jsonText.size()).HasParseError())
 		{
-			PHYSFS_unmount(filePath.c_str());
+			FileUtils::unmount(filePath);
 			return;
 		}
 
-		filePath = Utils::trimEnd(filePath, "/\\");
-		auto lastIdx = filePath.find_last_of(PHYSFS_getDirSeparator());
-		if (lastIdx != std::string::npos)
+		auto filePath2 = FileUtils::getFilePath(filePath);
+		if (filePath2.empty() == false)
 		{
-			filePath = filePath.substr(0, lastIdx);
-
-			if (Utils::endsWith(filePath, "\\") == false &&
-				Utils::endsWith(filePath, "/") == false)
-			{
-				filePath += PHYSFS_getDirSeparator();
-			}
+			filePath2 += PHYSFS_getDirSeparator();
 		}
 		else
 		{
-			filePath = std::string(".") + PHYSFS_getDirSeparator();
+			filePath2 = std::string(".") + PHYSFS_getDirSeparator();
 		}
 
-		game.setPath(filePath);
+		game.setPath(filePath2);
 
 		parseDocument(game, doc);
 	}

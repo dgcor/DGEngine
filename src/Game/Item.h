@@ -13,6 +13,9 @@ class Item : public LevelObject
 private:
 	typedef FixedMap<uint16_t, LevelObjValue, 12> ItemProperties;
 
+	const Queryable* itemOwner{ nullptr };
+	const SpellInstance* spell{ nullptr };
+
 	bool wasHoverEnabledOnItemDrop{ false };
 
 	mutable bool updateClassifierVals{ true };
@@ -124,8 +127,13 @@ public:
 	// returns the new item quantity. removes from the amount what was added/removed.
 	LevelObjValue addQuantity(LevelObjValue& amount);
 
-	bool hasSpell() const noexcept { return Class()->hasSpell(); }
-	Spell* getSpell() const noexcept { return Class()->getSpell(); }
+	bool hasBaseSpell() const noexcept { return Class()->hasSpell(); }
+	const SpellInstance* getBaseSpell() const noexcept { return Class()->getSpell(); }
+
+	bool hasSpell() const noexcept { return spell != nullptr; }
+	const SpellInstance* getSpell() const noexcept { return spell; }
+
+	void updateOwner(Queryable* obj);
 
 	const std::string& Name() const noexcept { return name; }
 	const std::string& ShortName() const noexcept { return Class()->ShortName(); }

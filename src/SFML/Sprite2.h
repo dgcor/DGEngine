@@ -6,6 +6,18 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "TextureInfo.h"
 
+struct GameShaders;
+
+struct SpriteShaderCache
+{
+	sf::Shader* shader{ nullptr };
+	Palette* palette{ nullptr };
+	sf::Color outline{ sf::Color::Transparent };
+	sf::Color ignore{ sf::Color::Transparent };
+	sf::Vector2i textureSize;
+	uint8_t light{ 0 };
+};
+
 class Sprite2 : public sf::Sprite
 {
 private:
@@ -13,6 +25,9 @@ private:
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color ignore{ sf::Color::Transparent };
 	bool outlineEnabled{ false };
+
+	// returns false if shader can be skipped (no palette used, no outline, max light)
+	bool needsSpriteShader(uint8_t light) const noexcept;
 
 public:
 	Sprite2() noexcept : sf::Sprite() {}
@@ -36,6 +51,8 @@ public:
 	void setTexture(const TextureInfo& ti, bool resetRect);
 	using sf::Sprite::setTexture;
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states, uint8_t light) const;
+	void draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light = 255) const;
+
+	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+		SpriteShaderCache& cache, uint8_t light = 255) const;
 };

@@ -5,6 +5,7 @@
       "file": "levels/l2data/l2s.cel",
       "imageContainer": "l2s",
       "palette": "{1}",
+      "offset": [0, -128],
       "rects": [
         { "index": 0, "rect": [0, 0, 64, 160], "offset": [32, 16] },
         { "index": 1, "rect": [0, 0, 64, 160], "offset": [32, 16] },
@@ -41,6 +42,7 @@
       "id": "l2s_2",
       "imageContainer": "l2s",
       "palette": "{1}",
+      "offset": [0, -128],
       "rects": [
         { "index": 1, "rect": [0, 0, 64, 160], "offset": [-64, 32] }
       ],

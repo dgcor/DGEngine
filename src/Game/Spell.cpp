@@ -261,10 +261,21 @@ bool Spell::getNumberProp(const std::string_view prop, Number32& value) const
 	return false;
 }
 
+bool SpellInstance::getNumberPropByHash(uint16_t propHash, LevelObjValue& value) const
+{
+	return getNumberPropByHash(*spellOwner, propHash, {}, value);
+}
+
 bool SpellInstance::getNumberPropByHash(const Queryable& player,
 	uint16_t propHash, LevelObjValue& value) const
 {
 	return getNumberPropByHash(player, propHash, {}, value);
+}
+
+bool SpellInstance::getNumberPropByHash(uint16_t propHash,
+	const std::string_view minMaxNumber, LevelObjValue& value) const
+{
+	return getNumberPropByHash(*spellOwner, propHash, minMaxNumber, value);
 }
 
 bool SpellInstance::getNumberPropByHash(const Queryable& player, uint16_t propHash,

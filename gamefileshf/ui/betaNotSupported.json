@@ -7,16 +7,30 @@
     "id": "liberationSerif",
     "file": "res/LiberationSerif-Regular.ttf"
   },
-  "button": {
-    "id": "quit",
-    "font": "liberationSerif",
-    "fontSize": 28,
-    "color": "0xFFFFFF",
-    "position": [320, 240],
-    "anchor": "none",
-    "horizontalAlign": "center",
-    "verticalAlign": "center",
-    "text": "The beta version of Diablo\ncan't be used with Hellfire.",
-    "onClick": "game.close"
-  }
+  "button": [
+    {
+      "id": "quit",
+      "font": "liberationSerif",
+      "fontSize": 28,
+      "color": "0xFFFFFF",
+      "position": [320, 240],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "verticalAlign": "center",
+      "text": "The beta version of Diablo\ncan't be used with Hellfire.",
+      "onClick": { "name": "game.close" }
+    },
+    {
+      "id": "diablo",
+      "font": "liberationSerif",
+      "fontSize": 28,
+      "color": "0xAA0000",
+      "position": [320, 340],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "verticalAlign": "center",
+      "text": "Play Diablo",
+      "onClick": { "name": "game.load", "file": "gamefilesd" }
+    }
+  ]
 }

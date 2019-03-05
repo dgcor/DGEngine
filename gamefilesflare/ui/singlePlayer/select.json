@@ -84,8 +84,8 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "load": "game.saves",
-        "text": "%save%",
+        "load": "game.saveDirs",
+        "text": "!listItem!",
         "onClick": [
           { "name": "load", "file": ["ui/loadCharInfo.json", "%focus.text%"] },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },

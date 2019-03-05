@@ -31,8 +31,14 @@
     "texture": "mainmenu",
     "anchor": "none"
   },
-  "load": "ui/settings2.json",
   "animation": [
+    {
+      "id": "smlogo",
+      "texturePack": "smlogo",
+      "position": ["center", 0],
+      "anchor": "none",
+      "refresh": 50
+    },
     {
       "id": "pent1",
       "texturePack": "focus42",
@@ -221,6 +227,21 @@
         ]
       },
       "onFocus": "anchorPentagrams"
+    },
+    {
+      "id": "shaders",
+      "font": "font16s",
+      "position": [17, 444],
+      "sound": "titlslct",
+      "anchor": "none",
+      "text": "Shaders",
+      "onClick": {
+        "name": "game.fadeOut",
+        "action": {
+          "name": "load",
+          "file": "ui/settingsShaders.json"
+        }
+      }
     }
   ],
   "action": [

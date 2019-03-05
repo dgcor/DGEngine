@@ -172,7 +172,7 @@ public:
 
 	// returns the remaining quantity to add/remove. 0 if all quantity was added.
 	LevelObjValue addQuantity(const ItemClass& itemClass,
-		LevelObjValue amount, InventoryPosition invPos);
+		LevelObjValue amount, InventoryPosition invPos, Queryable* itemOwner);
 
 	// Gets the sum of all the quantities for a specified item class id or 0.
 	// returns true if the item is quantifiable or false (and sets quantity to 0) otherwise.

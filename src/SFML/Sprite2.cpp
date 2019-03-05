@@ -1,5 +1,5 @@
 #include "Sprite2.h"
-#include "Shaders.h"
+#include "ShaderManager.h"
 
 void Sprite2::setColor(const sf::Color& color)
 {
@@ -17,10 +17,6 @@ void Sprite2::setOutline(const sf::Color& outline_, const sf::Color& ignore_) no
 
 void Sprite2::setOutlineEnabled(bool enable) noexcept
 {
-	if (Shaders::supportsOutlines() == false)
-	{
-		return;
-	}
 	outlineEnabled = enable;
 }
 
@@ -41,36 +37,118 @@ void Sprite2::setTexture(const TextureInfo& ti, bool resetRect)
 	setPalette(ti.palette);
 }
 
-void Sprite2::draw(sf::RenderTarget& target, sf::RenderStates states) const
+bool Sprite2::needsSpriteShader(uint8_t light) const noexcept
 {
-	draw(target, states, 255);
+	if (hasPalette() == false &&
+		(isOutlineEnabled() == false || hasOutline() == false) &&
+		light == 255)
+	{
+		return false;
+	}
+	return true;
 }
 
-void Sprite2::draw(sf::RenderTarget& target, sf::RenderStates states, uint8_t light) const
+void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light) const
 {
-	if (outlineEnabled == true &&
-		hasOutline() == true)
+	sf::RenderStates states(sf::RenderStates::Default);
+	if (spriteShader != nullptr &&
+		needsSpriteShader(light) == true)
 	{
-		states.shader = &Shaders::Outline;
-		Shaders::Outline.setUniform("texWidth", 1.0f / (float)getTextureRect().width);
-		Shaders::Outline.setUniform("texHeight", 1.0f / (float)getTextureRect().height);
-		Shaders::Outline.setUniform("outline", sf::Glsl::Vec4(outline));
-		Shaders::Outline.setUniform("ignore", sf::Glsl::Vec4(ignore));
+		states.shader = spriteShader;
 
-		target.draw(static_cast<sf::Sprite>(*this), states);
-	}
-	if (hasPalette() == true)
-	{
-		states.shader = &Shaders::Palette;
-		Shaders::Palette.setUniform("palette", palette->texture);
+		spriteShader->setUniform("pixelSize", sf::Glsl::Vec2(
+			1.0f / (float)getTextureRect().width,
+			1.0f / (float)getTextureRect().height
+		));
+		if (outlineEnabled == true)
+		{
+			spriteShader->setUniform("outline", sf::Glsl::Vec4(outline));
+			spriteShader->setUniform("ignore", sf::Glsl::Vec4(ignore));
+		}
+		else
+		{
+			spriteShader->setUniform("outline", sf::Glsl::Vec4(sf::Color::Transparent));
+			spriteShader->setUniform("ignore", sf::Glsl::Vec4(sf::Color::Transparent));
+		}
 		sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
-		Shaders::Palette.setUniform("light", sf::Glsl::Vec4(lightColor));
+		spriteShader->setUniform("light", sf::Glsl::Vec4(lightColor));
+		spriteShader->setUniform("hasPalette", hasPalette());
+		if (hasPalette() == true)
+		{
+			spriteShader->setUniform("palette", palette->texture);
+		}
 	}
-	else if (light != 255)
+	target.draw(static_cast<sf::Sprite>(*this), states);
+}
+
+void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+	SpriteShaderCache& cache, uint8_t light) const
+{
+	sf::RenderStates states(sf::RenderStates::Default);
+	if (spriteShader != nullptr &&
+		needsSpriteShader(light) == true)
 	{
-		states.shader = &Shaders::Lighting;
-		sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
-		Shaders::Lighting.setUniform("light", sf::Glsl::Vec4(lightColor));
+		states.shader = spriteShader;
+
+		bool updateAll = false;
+		if (spriteShader != cache.shader)
+		{
+			cache.shader = spriteShader;
+			updateAll = true;
+		}
+
+		if (updateAll == true ||
+			getTextureRect().width != cache.textureSize.x ||
+			getTextureRect().height != cache.textureSize.y)
+		{
+			cache.textureSize.x = getTextureRect().width;
+			cache.textureSize.y = getTextureRect().height;
+			spriteShader->setUniform("pixelSize", sf::Glsl::Vec2(
+				1.0f / (float)getTextureRect().width,
+				1.0f / (float)getTextureRect().height
+			));
+		}
+
+		sf::Color outline2 = outline;
+		sf::Color ignore2 = ignore;
+		if (outlineEnabled == false)
+		{
+			outline2 = sf::Color::Transparent;
+			ignore2 = sf::Color::Transparent;
+		}
+
+		if (updateAll == true ||
+			outline2 != cache.outline)
+		{
+			cache.outline = outline2;
+			spriteShader->setUniform("outline", sf::Glsl::Vec4(outline2));
+		}
+
+		if (updateAll == true ||
+			ignore2 != cache.outline)
+		{
+			cache.ignore = ignore2;
+			spriteShader->setUniform("ignore", sf::Glsl::Vec4(ignore2));
+		}
+
+		if (updateAll == true ||
+			light != cache.light)
+		{
+			cache.light = light;
+			sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
+			spriteShader->setUniform("light", sf::Glsl::Vec4(lightColor));
+		}
+
+		if (updateAll == true ||
+			palette.get() != cache.palette)
+		{
+			cache.palette = palette.get();
+			spriteShader->setUniform("hasPalette", hasPalette());
+			if (hasPalette() == true)
+			{
+				spriteShader->setUniform("palette", palette->texture);
+			}
+		}
 	}
 	target.draw(static_cast<sf::Sprite>(*this), states);
 }

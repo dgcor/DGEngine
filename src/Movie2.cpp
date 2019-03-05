@@ -45,11 +45,11 @@ bool Movie::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action
 	return true;
 }
 
-void Movie::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Movie::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == true)
 	{
-		target.draw(movie, states);
+		target.draw(movie);
 	}
 }
 

@@ -23,6 +23,10 @@ namespace Parser
 		{
 			return std::make_shared<PredFileExists>(getStringKey(elem, "file"));
 		}
+		case str2int16("gamefile.exists"):
+		{
+			return std::make_shared<PredGamefileExists>(getStringKey(elem, "file"));
+		}
 		case str2int16("item.hasRequiredStats"):
 		{
 			return std::make_shared<PredItemHasRequiredStats>(

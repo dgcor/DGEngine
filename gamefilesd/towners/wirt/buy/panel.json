@@ -32,7 +32,7 @@
       "text": "%name%\n",
       "onClick": {
         "name": "load",
-        "file": ["towners/wirt/buy/confirm.json", 0, "%idx%"]
+        "file": ["towners/wirt/buy/confirm.json", 0, "!listIdx!"]
       },
       "executeAction": [
         {
@@ -40,8 +40,8 @@
           "values": {
             "itemOwnerId": "wirt",
             "itemInv": 0,
-            "itemIndex": "%idx%",
-            "menuIndex": "%menuIdx%"
+            "itemIndex": "!listIdx!",
+            "menuIndex": "!menuIdx!"
           }
         },
         "setMenuItemText"

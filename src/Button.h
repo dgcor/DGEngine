@@ -56,4 +56,6 @@ public:
 	void setFocusSound(const sf::SoundBuffer* buffer) noexcept { focusSound = buffer; }
 
 	virtual void setColor(const sf::Color& color_) = 0;
+
+	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

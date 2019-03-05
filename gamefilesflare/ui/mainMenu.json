@@ -1,8 +1,27 @@
 {
-  "action": {
-    "name": "resource.add",
-    "id": "mainMenu"
-  },
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "mainMenu"
+    },
+    {
+      "name": "randomList",
+      "actions": [
+        {
+          "name": "loadJson",
+          "json": { "texture": { "id": "mainmenu", "file": "images/menus/backgrounds/badlands.png" } }
+        },
+        {
+          "name": "loadJson",
+          "json": { "texture": { "id": "mainmenu", "file": "images/menus/backgrounds/fire_temple.png" } }
+        },
+        {
+          "name": "loadJson",
+          "json": { "texture": { "id": "mainmenu", "file": "images/menus/backgrounds/ice_palace.png" } }
+        }
+      ]
+    }
+  ],
   "audio": {
     "id": "main",
     "file": "music/title_theme.ogg",
@@ -64,12 +83,20 @@
       "frames": 4
     }
   ],
-  "image": {
-    "id": "mainmenu",
-    "texture": "logo",
-    "position": ["center", 0],
-    "anchor": "none"
-  },
+  "image": [
+    {
+      "id": "mainmenu",
+      "texture": "mainmenu",
+      "position": ["center", 0],
+      "anchor": "none"
+    },
+    {
+      "id": "smlogo",
+      "texture": "logo",
+      "position": ["center", 0],
+      "anchor": "none"
+    }
+  ],
   "animation": [
     {
       "id": "pent1",
@@ -168,6 +195,7 @@
       "format": "[1] v[2]"
     }
   },
+  "load": "ui/showMods.json",
   "action": [
     { "name": "menu.setFont", "id": "menu", "index": 1, "font": "font42y" },
     {

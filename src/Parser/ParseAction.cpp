@@ -20,12 +20,14 @@
 #include "Actions/ActLoad.h"
 #include "Actions/ActLoadingScreen.h"
 #include "Actions/ActMenu.h"
+#include "Actions/ActMount.h"
 #include "Actions/ActMovie.h"
 #include "Actions/ActPalette.h"
 #include "Actions/ActPlayer.h"
 #include "Actions/ActQuest.h"
 #include "Actions/ActRandom.h"
 #include "Actions/ActResource.h"
+#include "Actions/ActShader.h"
 #include "Actions/ActSound.h"
 #include "Actions/ActText.h"
 #include "Actions/ActVariable.h"
@@ -577,6 +579,10 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getBoolKey(elem, "focus", true));
 		}
+		case str2int16("focus.update"):
+		{
+			return std::make_shared<ActFocusUpdate>();
+		}
 		case str2int16("font.setPalette"):
 		{
 			return std::make_shared<ActFontSetPalette>(
@@ -636,6 +642,12 @@ namespace Parser
 			}
 			return action;
 		}
+		case str2int16("game.load"):
+		{
+			return std::make_shared<ActGameLoad>(
+				getStringKey(elem, "file"),
+				getStringKey(elem, "mainFile", "main.json"));
+		}
 		case str2int16("game.pauseOnFocusLoss"):
 		{
 			return std::make_shared<ActGamePauseOnFocusLoss>(getBoolKey(elem, "pause", true));
@@ -663,6 +675,12 @@ namespace Parser
 				action->setValueRange(getVector2iKey<sf::Vector2i>(elem, "valueRange"));
 			}
 			return action;
+		}
+		case str2int16("game.setShader"):
+		{
+			return std::make_shared<ActShaderSetGameShader>(
+				getStringKey(elem, "shader"),
+				getStringKey(elem, "gameShader"));
 		}
 		case str2int16("game.setSoundVolume"):
 		{
@@ -978,6 +996,12 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getVector2iKey<sf::Vector2i>(elem, "size", { 100, 100 }));
 		}
+		case str2int16("level.setShader"):
+		{
+			return std::make_shared<ActLevelSetShader>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "shader"));
+		}
 		case str2int16("level.showAutomap"):
 		{
 			return std::make_shared<ActLevelShowAutomap>(
@@ -1122,6 +1146,14 @@ namespace Parser
 		{
 			return parseSetMenuTextHelper<ActMenuSetText>(game, elem);
 		}
+		case str2int16("mount"):
+		{
+			return std::make_shared<ActMount>(
+				getStringKey(elem, "file"),
+				getStringKey(elem, "mount"),
+				getBoolKey(elem, "append", true),
+				getBoolKey(elem, "useSaveDir"));
+		}
 		case str2int16("movie.pause"):
 		{
 			return std::make_shared<ActMoviePause>(getStringKey(elem, "id"));
@@ -1138,7 +1170,7 @@ namespace Parser
 				getUIntKey(elem, "srcStart", 0),
 				getUIntKey(elem, "size", 256),
 				getUIntKey(elem, "dstStart", 0),
-				getBoolKey(elem, "stepReplace", false));
+				getBoolKey(elem, "stepReplace"));
 		}
 		case str2int16("palette.shiftLeft"):
 		{
@@ -1345,6 +1377,56 @@ namespace Parser
 				getBoolKey(elem, "popBase"),
 				getIgnoreResourceKey(elem, "ignorePrevious"));
 		}
+		case str2int16("shader.load"):
+		{
+			return std::make_shared<ActShaderLoad>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "fragmentFile"),
+				getStringKey(elem, "vertexFile"),
+				getStringKey(elem, "geometryFile"));
+		}
+		case str2int16("shader.setBool"):
+		{
+			return std::make_shared<ActShaderSetUniform<bool>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				getBoolKey(elem, "value"));
+		}
+		case str2int16("shader.setColor"):
+		{
+			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec4>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				sf::Glsl::Vec4(getColorKey(elem, "value")));
+		}
+		case str2int16("shader.setFloat"):
+		{
+			return std::make_shared<ActShaderSetUniform<float>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				getFloatKey(elem, "value"));
+		}
+		case str2int16("shader.setVec2"):
+		{
+			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec2>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				getVector2fKey<sf::Glsl::Vec2>(elem, "value"));
+		}
+		case str2int16("shader.setVec3"):
+		{
+			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec3>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				getVector3fKey<sf::Glsl::Vec3>(elem, "value"));
+		}
+		case str2int16("shader.setVec4"):
+		{
+			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec4>>(
+				getStringKey(elem, "id"),
+				getStringKey(elem, "key"),
+				getVector4fKey<sf::Glsl::Vec4>(elem, "value"));
+		}
 		case str2int16("sound.loadPlay"):
 		{
 			return std::make_shared<ActSoundLoadPlay>(
@@ -1396,6 +1478,16 @@ namespace Parser
 		case str2int16("text.setText"):
 		{
 			return parseSetTextHelper<ActTextSetText>(game, elem);
+		}
+		case str2int16("unmount"):
+		{
+			return std::make_shared<ActUnmount>(
+				getStringKey(elem, "file"),
+				getBoolKey(elem, "useSaveDir"));
+		}
+		case str2int16("unmountAll"):
+		{
+			return std::make_shared<ActUnmountAll>();
 		}
 		case str2int16("variable.add"):
 		{
@@ -1457,7 +1549,16 @@ namespace Parser
 		}
 		else if (isValidString(elem) == true)
 		{
-			return game.Resources().getAction(elem.GetString());
+			if (elem.GetString()[0] != '#')
+			{
+				std::string str(elem.GetString(), elem.GetStringLength());
+				return game.Resources().getAction(str);
+			}
+			else
+			{
+				std::string_view strNoShebang{ elem.GetString() + 1, elem.GetStringLength() - 1 };
+				return game.getQueryAction(strNoShebang);
+			}
 		}
 		else if (elem.IsObject() == true)
 		{

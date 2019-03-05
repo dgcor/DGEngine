@@ -17,7 +17,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto button = game.Resources().getResource<Button>(id);
+		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
 		{
 			button->click(game, playSound);
@@ -38,7 +38,7 @@ public:
 
 	virtual bool execute(Game& game) noexcept
 	{
-		auto button = game.Resources().getResource<Button>(id);
+		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
 		{
 			button->enable(enable);
@@ -59,7 +59,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto button = game.Resources().getResource<Button>(id);
+		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
 		{
 			button->setColor(color);

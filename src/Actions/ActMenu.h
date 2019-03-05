@@ -42,7 +42,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getItem(idx);
@@ -70,7 +70,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getItem(idx);
@@ -96,7 +96,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getVisibleItem(idx);
@@ -126,9 +126,9 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(idMenu);
-		auto scrollBar = game.Resources().getResource<UIObject>(idScrollbar);
-		auto anchorTo = game.Resources().getResource<UIObject>(idAnchorTo);
+		auto menu = game.Resources().getDrawable<Menu>(idMenu);
+		auto scrollBar = game.Resources().getDrawable(idScrollbar);
+		auto anchorTo = game.Resources().getDrawable(idAnchorTo);
 		if (menu != nullptr && scrollBar != nullptr && anchorTo != nullptr)
 		{
 			auto pos = anchorTo->DrawPosition();
@@ -173,7 +173,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getItem(idx);
@@ -199,7 +199,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getItem(idx);
@@ -242,7 +242,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto idx = (size_t)game.getVarOrPropLongV(idxVar);
@@ -285,7 +285,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto menu = game.Resources().getResource<Menu>(id);
+		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
 			auto button = menu->getItem(idx);

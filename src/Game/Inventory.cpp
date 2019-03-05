@@ -577,7 +577,7 @@ unsigned Inventory::countFreeSlots(uint16_t classIdHash16) const
 }
 
 LevelObjValue Inventory::addQuantity(const ItemClass& itemClass,
-	LevelObjValue amount, InventoryPosition invPos)
+	LevelObjValue amount, InventoryPosition invPos, Queryable* itemOwner)
 {
 	if (amount == 0 ||
 		itemClass.getDefaultByHash(ItemProp::Capacity) <= 0 ||
@@ -647,6 +647,7 @@ LevelObjValue Inventory::addQuantity(const ItemClass& itemClass,
 				return 0;
 			}
 			auto newItem = std::make_unique<Item>(&itemClass);
+			newItem->updateOwner(itemOwner);
 			auto capacity = newItem->getIntByHash(ItemProp::Capacity);
 			if (capacity <= 0)
 			{

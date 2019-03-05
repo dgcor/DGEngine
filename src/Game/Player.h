@@ -160,6 +160,9 @@ public:
 	virtual void setProperty(const std::string_view prop, const Variable& val);
 	virtual const Queryable* getQueryable(const std::string_view prop) const;
 
+	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
+		const std::string_view prop) const;
+
 	virtual const std::string_view getType() const { return "player"; }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;

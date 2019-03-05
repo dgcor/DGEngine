@@ -22,6 +22,11 @@
     },
     {
       "name": "action.set",
+      "id": "focus.update",
+      "action": { "name": "focus.update" }
+    },
+    {
+      "name": "action.set",
       "id": "anchorPentagrams",
       "action": [
         { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },

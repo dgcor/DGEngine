@@ -30,3 +30,12 @@ void StringButton::update(Game& game)
 	auto contains = Text::getGlobalBounds().contains(game.MousePositionf());
 	Button::updateEvents(game, contains);
 }
+
+bool StringButton::getProperty(const std::string_view prop, Variable& var) const
+{
+	if (Button::getProperty(prop, var) == true)
+	{
+		return true;
+	}
+	return Text::getProperty(prop, var);
+}

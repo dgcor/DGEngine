@@ -1,7 +1,6 @@
 #include "ParseTexture.h"
 #include "ParseImageContainer.h"
 #include "ImageUtils.h"
-#include "Shaders.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
 
@@ -58,7 +57,7 @@ namespace Parser
 			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
 			PaletteArray* palArray = nullptr;
 			if (getBoolKey(elem, "indexed") == true &&
-				Shaders::supportsPalettes() == true)
+				game.Shaders().hasSpriteShader() == true)
 			{
 				pal = nullptr;
 			}

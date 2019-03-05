@@ -5,7 +5,6 @@
 void ResourceManager::addResource(const std::string& id)
 {
 	resources.push_back(ResourceBundle(id));
-	clearCache();
 }
 
 void ResourceManager::popResource()
@@ -13,7 +12,6 @@ void ResourceManager::popResource()
 	if (resources.size() > 0)
 	{
 		resources.pop_back();
-		clearCache();
 		clearCurrentLevel();
 	}
 }
@@ -35,7 +33,6 @@ void ResourceManager::popResource(const std::string& id)
 				currentLevelResourceIdx--;
 			}
 			resources.erase(--it.base());
-			clearCache();
 			return;
 		}
 	}
@@ -48,7 +45,6 @@ void ResourceManager::popAllResources(const std::string& id)
 		if (it->id == id && it.base() != resources.begin())
 		{
 			resources.erase(--it.base(), resources.end());
-			clearCache();
 			clearCurrentLevel();
 			return;
 		}
@@ -60,7 +56,7 @@ void ResourceManager::popAllResources(bool popBaseResources)
 	resources.resize(1);
 	if (popBaseResources)
 	{
-		resources.front() = ResourceBundle();
+		resources.front() = {};
 		currentLevel = nullptr;
 		currentLevelResourceIdx = 0;
 	}
@@ -68,7 +64,6 @@ void ResourceManager::popAllResources(bool popBaseResources)
 	{
 		clearCurrentLevel();
 	}
-	clearCache();
 }
 
 void ResourceManager::ignoreResources(const std::string& id, IgnoreResource ignore) noexcept
@@ -371,7 +366,6 @@ void ResourceManager::addDrawable(ResourceBundle& res,
 		res.drawableIds[key] = obj;
 		res.drawables.push_back(obj.get());
 	}
-	clearCache();
 }
 
 void ResourceManager::addDrawable(const std::string& key,
@@ -658,25 +652,6 @@ bool ResourceManager::hasDrawable(const std::string& key) const
 	return false;
 }
 
-UIObject* ResourceManager::getDrawable(const std::string& key) const
-{
-	if (drawableCache.first == key)
-	{
-		return drawableCache.second;
-	}
-	for (const auto& res : reverse(resources))
-	{
-		auto it = res.drawableIds.find(key);
-		if (it != res.drawableIds.end())
-		{
-			drawableCache.first = key;
-			drawableCache.second = it->second.get();
-			return drawableCache.second;
-		}
-	}
-	return nullptr;
-}
-
 void ResourceManager::deleteDrawable(const std::string& id)
 {
 	for (auto& res : reverse(resources))
@@ -689,10 +664,6 @@ void ResourceManager::deleteDrawable(const std::string& id)
 			{
 				if (*it2 == it1->second.get())
 				{
-					if (drawableCache.first == id)
-					{
-						clearCache();
-					}
 					drawables.erase(it2);
 					res.drawableIds.erase(it1);
 					return;
@@ -905,6 +876,49 @@ void ResourceManager::moveFocusUp(Game& game)
 		{
 			focusIdx = idx;
 			vec[idx]->focus(game);
+		}
+		break;
+	}
+}
+
+void ResourceManager::updateFocus(Game& game)
+{
+	for (auto& res : reverse(resources))
+	{
+		if (res.ignore != IgnoreResource::None)
+		{
+			continue;
+		}
+		const auto& vec = res.focusButtons;
+		auto size = vec.size();
+		if (size == 0)
+		{
+			continue;
+		}
+		if (vec[res.focusIdx]->isEnabled() == true)
+		{
+			break;
+		}
+		auto& focusIdx = res.focusIdx;
+		auto idx = focusIdx;
+		while (true)
+		{
+			if (idx + 1 < size)
+			{
+				idx++;
+			}
+			else
+			{
+				idx = 0;
+			}
+			if (vec[idx]->isEnabled() == true || idx == focusIdx)
+			{
+				break;
+			}
+		}
+		if (vec[idx]->isEnabled() == true && idx != focusIdx)
+		{
+			focusIdx = idx;
 		}
 		break;
 	}

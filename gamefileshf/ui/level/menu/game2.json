@@ -30,7 +30,7 @@
       "id": "updateGammaProgressBar",
       "action": [
         { "name": "drawable.resizeToPositionX", "id": "progressBar3", "idToPosition": "option3", "offset": 14 },
-        { "name": "game.setProperty", "property": "gamma", "value": "%progressBar3.size.x%", "propRange": [30, 100], "valueRange": [14, 270] }
+        { "name": "game.setProperty", "property": "gamma", "value": "%progressBar3.size.x%", "propRange": [0, 100], "valueRange": [14, 270] }
       ]
     },
     {
@@ -432,7 +432,7 @@
     { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },
     { "name": "drawable.moveX", "id": "option1", "idAnchorTo": "progressBar1", "range": 283, "position": "%game.musicVolume%", "max": 100, "steps": 17 },
     { "name": "drawable.moveX", "id": "option2", "idAnchorTo": "progressBar2", "range": 283, "position": "%game.soundVolume%", "max": 100, "steps": 17 },
-    { "name": "drawable.moveX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "position": "%game.gamma%", "min": 30, "max": 100, "steps": 15 },
+    { "name": "drawable.moveX", "id": "option3", "idAnchorTo": "progressBar3", "range": 283, "position": "%game.gamma%", "max": 100, "steps": 15 },
     { "name": "drawable.anchorSizeX", "id": "progressBar1", "idAnchorTo": "option1", "offset": 14 },
     { "name": "drawable.anchorSizeX", "id": "progressBar2", "idAnchorTo": "option2", "offset": 14 },
     { "name": "drawable.anchorSizeX", "id": "progressBar3", "idAnchorTo": "option3", "offset": 14 }

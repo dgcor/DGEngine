@@ -4,7 +4,7 @@
   "saveDir": ".diablo",
   "refWindowSize": [640, 480],
   "minWindowSize": [640, 480],
-  "windowSize": [800, 600],
+  "windowSize": [640, 480],
   "framerate": 60,
   "keepAR": true,
   "stretchToFit": true,

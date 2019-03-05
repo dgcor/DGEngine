@@ -4,7 +4,7 @@
   "saveDir": ".diabloflare",
   "refWindowSize": [640, 480],
   "minWindowSize": [640, 480],
-  "windowSize": [800, 600],
+  "windowSize": [640, 480],
   "framerate": 60,
   "keepAR": true,
   "stretchToFit": true,
@@ -13,7 +13,8 @@
   "init": true,
   "mountFile": [
     { "file": "gamefilesd" },
-    { "file": "fantasycore.zip" }
+    { "file": "empyrean_campaign" },
+    { "file": "fantasycore" }
   ],
   "action": {
     "name": "if.equal",

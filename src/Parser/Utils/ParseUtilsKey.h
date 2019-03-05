@@ -86,6 +86,38 @@ namespace Parser
 		return val;
 	}
 
+	template <class T>
+	T getVector3fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 2
+			&& elem[key][0].IsNumber() == true
+			&& elem[key][1].IsNumber() == true
+			&& elem[key][2].IsNumber() == true)
+		{
+			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat(), elem[key][2].GetFloat());
+		}
+		return val;
+	}
+
+	template <class T>
+	T getVector4fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true
+			&& elem[key].IsArray() == true
+			&& elem[key].Size() > 3
+			&& elem[key][0].IsNumber() == true
+			&& elem[key][1].IsNumber() == true
+			&& elem[key][2].IsNumber() == true
+			&& elem[key][3].IsNumber() == true)
+		{
+			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat(),
+				elem[key][2].GetFloat(), elem[key][3].GetFloat());
+		}
+		return val;
+	}
+
 	std::pair<size_t, size_t> getFramesKey(const rapidjson::Value& elem,
 		const char* key, const std::pair<size_t, size_t>& val = {});
 

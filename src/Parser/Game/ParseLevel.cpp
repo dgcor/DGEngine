@@ -39,7 +39,8 @@ namespace Parser
 	}
 
 	void parseMapLayers(const Value& elem, const Value& elemLayers,
-		LevelMap& map, int16_t defaultTile, bool resizeToFit, bool mapToNames)
+		LevelMap& map, const MapCoord& mapPos, int16_t defaultTile,
+		bool resizeToFit, bool mapToNames)
 	{
 		std::vector<std::pair<std::string, size_t>> layerNameIndexes;
 
@@ -67,6 +68,8 @@ namespace Parser
 		auto automapName = getStringViewKey(elem, "automap");
 		auto solName = getStringViewKey(elem, "sol");
 		auto pos = getVector2iKey<MapCoord>(elem, "position");
+		pos.x += mapPos.x;
+		pos.y += mapPos.y;
 		bool wasResized = false;
 
 		for (const auto& elemLayer : elemLayers)
@@ -126,7 +129,8 @@ namespace Parser
 	}
 
 	void parseTiledMap(const Value& elem, LevelMap& map,
-		const std::string_view file, int16_t defaultTile, bool resizeToFit)
+		const MapCoord& mapPos, const std::string_view file,
+		int16_t defaultTile, bool resizeToFit)
 	{
 		Document doc;
 		if (JsonUtils::loadFile(file, doc) == false ||
@@ -135,11 +139,11 @@ namespace Parser
 		{
 			return;
 		}
-
-		parseMapLayers(elem, doc["layers"], map, defaultTile, resizeToFit, true);
+		parseMapLayers(elem, doc["layers"], map, mapPos, defaultTile, resizeToFit, true);
 	}
 
-	void parseMap(const Value& elem, LevelMap& map, int16_t defaultTile, bool resizeToFit)
+	void parseMapObj(const Value& elem, LevelMap& map,
+		const MapCoord& mapPos, int16_t defaultTile, bool resizeToFit)
 	{
 		defaultTile = (int16_t)getIntKey(elem, "defaultTile", defaultTile);
 
@@ -147,15 +151,26 @@ namespace Parser
 		{
 			if (elem.HasMember("layers") == true)
 			{
-				parseMapLayers(elem, elem["layers"], map, defaultTile, resizeToFit, false);
+				parseMapLayers(elem, elem["layers"], map, mapPos, defaultTile, resizeToFit, false);
 			}
 			return;
 		}
 
-		auto file = getStringViewVal(elem["file"]);
+		auto file = getStringVal(elem["file"]);
+
+		if (elem.HasMember("random") == true)
+		{
+			auto rndMax = getUIntVal(elem["random"]);
+			if (rndMax > 0)
+			{
+				auto rnd = Utils::Random::get(rndMax);
+				Utils::replaceStringInPlace(file, "!random!", std::to_string(rnd));
+			}
+		}
+
 		if (Utils::endsWith(Utils::toLower(file), ".json") == true)
 		{
-			parseTiledMap(elem, map, file, defaultTile, resizeToFit);
+			parseTiledMap(elem, map, mapPos, file, defaultTile, resizeToFit);
 			return;
 		}
 
@@ -163,12 +178,63 @@ namespace Parser
 		if (dun.Width() > 0 && dun.Height() > 0)
 		{
 			auto pos = getVector2uKey<MapCoord>(elem, "position");
+			pos.x += mapPos.x;
+			pos.y += mapPos.y;
 			if (resizeToFit == true)
 			{
 				map.resize((Coord)(pos.x + (dun.Width() * 2)), (Coord)(pos.y + (dun.Height() * 2)));
 			}
 			map.setTileSetArea(pos.x, pos.y, dun);
 		}
+	}
+
+	void parseMap(const Value& elem, LevelMap& map,
+		const MapCoord& mapPos, int16_t defaultTile, int recursionLevel)
+	{
+		if (elem.HasMember("map") == false ||
+			recursionLevel < 0 || recursionLevel > 255)
+		{
+			return;
+		}
+		MapCoord currentMapPos = mapPos;
+		if (recursionLevel > 0 &&
+			elem.HasMember("position") == true)
+		{
+			auto pos = getVector2uVal<MapCoord>(elem["position"]);
+			currentMapPos.x += pos.x;
+			currentMapPos.y += pos.y;
+		}
+		const auto& mapElem = elem["map"];
+		if (mapElem.IsArray() == true)
+		{
+			bool resizeToFit = getBoolKey(elem, "resizeToFit", false);
+			for (const auto& val : mapElem)
+			{
+				parseMapObj(val, map, currentMapPos, defaultTile, resizeToFit);
+			}
+		}
+		else if (mapElem.IsObject() == true)
+		{
+			bool resizeToFit = getBoolKey(elem, "resizeToFit", true);
+			parseMapObj(mapElem, map, currentMapPos, defaultTile, resizeToFit);
+			if (mapElem.HasMember("map") == true)
+			{
+				parseMap(mapElem, map, currentMapPos, defaultTile, recursionLevel + 1);
+			}
+		}
+		else if (mapElem.IsString() == true)
+		{
+			Document doc;
+			if (JsonUtils::loadFile(getStringViewVal(mapElem), doc) == true)
+			{
+				parseMap(doc, map, currentMapPos, defaultTile, recursionLevel + 1);
+			}
+		}
+	}
+
+	void parseMap(const Value& elem, LevelMap& map, int16_t defaultTile)
+	{
+		parseMap(elem, map, {}, defaultTile, 0);
 	}
 
 	void parseLevelMap(Game& game, const Value& elem, Level& level)
@@ -210,20 +276,7 @@ namespace Parser
 		}
 		if (elem.HasMember("map") == true)
 		{
-			const auto& mapElem = elem["map"];
-			if (mapElem.IsArray() == true)
-			{
-				bool resizeToFit = getBoolKey(elem, "resizeToFit", false);
-				for (const auto& val : mapElem)
-				{
-					parseMap(val, *mapPtr, defaultTile, resizeToFit);
-				}
-			}
-			else if (mapElem.IsObject() == true)
-			{
-				bool resizeToFit = getBoolKey(elem, "resizeToFit", true);
-				parseMap(mapElem, *mapPtr, defaultTile, resizeToFit);
-			}
+			parseMap(elem, *mapPtr, defaultTile);
 		}
 		if (elem.HasMember("lightMap") == true)
 		{
@@ -232,7 +285,7 @@ namespace Parser
 		if (elem.HasMember("defaultLight") == true)
 		{
 			mapPtr->setDefaultLightSource(
-				getLightSourceVal(elem["defaultLight"], {0, 255, 10, LightEasing::Linear})
+				getLightSourceVal(elem["defaultLight"], { 0, 255, 10, LightEasing::Linear })
 			);
 		}
 
@@ -241,7 +294,7 @@ namespace Parser
 
 		if (getOrParseLevelTexturePack(game, elem, "layers", texturePackLayers, tileSize) == true)
 		{
-			level.Init(std::move(*mapPtr), texturePackLayers, tileSize.first, tileSize.second);
+			level.Init(game, std::move(*mapPtr), texturePackLayers, tileSize.first, tileSize.second);
 		}
 		else
 		{
@@ -311,7 +364,7 @@ namespace Parser
 	void parseLevel(Game& game, const Value& elem)
 	{
 		auto id = getStringKey(elem, "id");
-		Level* level = game.Resources().getResource<Level>(id);
+		Level* level = game.Resources().getDrawable<Level>(id);
 		bool existingLevel = (level != nullptr);
 		if (level == nullptr)
 		{

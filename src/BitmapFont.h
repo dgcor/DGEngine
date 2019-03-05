@@ -8,6 +8,8 @@
 #include "TexturePacks/BitmapFontTexturePack.h"
 #include <vector>
 
+class Game;
+
 class BitmapFont
 {
 private:
@@ -35,9 +37,9 @@ public:
 	sf::Vector2f calculateSize(const std::string& text,
 		int horizSpaceOffset, int vertSpaceOffset, unsigned* lineCount = nullptr) const;
 
-	void draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-		sf::RenderStates states, const sf::Color& color) const;
-	void draw(const sf::Vector2f& pos, const std::string& text, sf::RenderTarget& target,
-		sf::RenderStates states, const sf::Color& color, int horizSpaceOffset,
-		int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
+	void draw(const sf::Vector2f& pos, const std::string& text,
+		const Game& game, sf::RenderTarget& target, const sf::Color& color) const;
+	void draw(const sf::Vector2f& pos, const std::string& text,
+		const Game& game, sf::RenderTarget& target, const sf::Color& color,
+		int horizSpaceOffset, int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
 };

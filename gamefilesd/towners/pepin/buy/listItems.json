@@ -34,8 +34,8 @@
           "values": {
             "itemOwnerId": "pepin",
             "itemInv": 0,
-            "itemIndex": "%idx%",
-            "menuIndex": "%menuIdx%"
+            "itemIndex": "!listIdx!",
+            "menuIndex": "!menuIdx!"
           }
         },
         "setMenuPriceText"

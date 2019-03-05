@@ -78,7 +78,7 @@
         "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": ["towners/cain/identify/confirm.json", 0, "%idx%"]
+          "file": ["towners/cain/identify/confirm.json", 0, "!listIdx!"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -91,8 +91,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 0,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuItemText"
@@ -107,7 +107,7 @@
         "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": ["towners/cain/identify/confirm.json", 1, "%idx%"]
+          "file": ["towners/cain/identify/confirm.json", 1, "!listIdx!"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -120,8 +120,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 1,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuItemText"
@@ -136,7 +136,7 @@
         "text": "%name%\n",
         "onClick": {
           "name": "load",
-          "file": ["towners/cain/identify/confirm.json", 2, "%idx%"]
+          "file": ["towners/cain/identify/confirm.json", 2, "!listIdx!"]
         },
         "onFocus": [
           "anchorLeftPentagram",
@@ -149,8 +149,8 @@
             "values": {
               "itemOwnerId": "hero",
               "itemInv": 2,
-              "itemIndex": "%idx%",
-              "menuIndex": "%menuIdx%"
+              "itemIndex": "!listIdx!",
+              "menuIndex": "!menuIdx!"
             }
           },
           "setMenuItemText"

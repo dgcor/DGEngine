@@ -16,6 +16,7 @@ Item::Item(const ItemClass* class__) : LevelObject(class__)
 	animation.animType = AnimationType::PlayOnce;
 	hoverCellSize = 1;
 	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
+	updateOwner(nullptr);
 	updateTexture();
 	applyDefaults();
 }
@@ -91,23 +92,24 @@ bool Item::getNumberPropByHash(const Queryable& owner, uint16_t propHash,
 	case str2int16("priceSuffix2"):
 		value = priceSuffix2;
 		break;
+	case str2int16("baseSpell"):
+	{
+		auto spelli = getBaseSpell();
+		if (spelli != nullptr)
+		{
+			auto props2 = Utils::splitStringIn2(minMaxNumber, '.');
+			auto propHash2 = str2int16(props2.first);
+			return spelli->getNumberPropByHash(propHash2, props2.second, value);
+		}
+		return false;
+	}
 	case str2int16("spell"):
 	{
-		auto spell = getSpell();
 		if (spell != nullptr)
 		{
 			auto props2 = Utils::splitStringIn2(minMaxNumber, '.');
 			auto propHash2 = str2int16(props2.first);
-			auto player = dynamic_cast<const Player*>(&owner);
-			if (player != nullptr)
-			{
-				auto spelli = player->getSpellInstance(spell->Id());
-				return spelli->getNumberPropByHash(owner, propHash2, props2.second, value);
-			}
-			else
-			{
-				return spell->getNumberPropByHash(owner, propHash2, props2.second, value);
-			}
+			return spell->getNumberPropByHash(owner, propHash2, props2.second, value);
 		}
 		return false;
 	}
@@ -183,22 +185,22 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	}
 	case str2int16("eval"):
-		var = Variable((int64_t)Formula::evalString(props.second, *this));
+		var = Variable((int64_t)Formula::evalString(props.second, this, itemOwner));
 		break;
 	case str2int16("evalMin"):
-		var = Variable((int64_t)Formula::evalMinString(props.second, *this));
+		var = Variable((int64_t)Formula::evalMinString(props.second, this, itemOwner));
 		break;
 	case str2int16("evalMax"):
-		var = Variable((int64_t)Formula::evalMaxString(props.second, *this));
+		var = Variable((int64_t)Formula::evalMaxString(props.second, this, itemOwner));
 		break;
 	case str2int16("evalf"):
-		var = Variable(Formula::evalString(props.second, *this));
+		var = Variable(Formula::evalString(props.second, this, itemOwner));
 		break;
 	case str2int16("evalMinf"):
-		var = Variable(Formula::evalMinString(props.second, *this));
+		var = Variable(Formula::evalMinString(props.second, this, itemOwner));
 		break;
 	case str2int16("evalMaxf"):
-		var = Variable(Formula::evalMaxString(props.second, *this));
+		var = Variable(Formula::evalMaxString(props.second, this, itemOwner));
 		break;
 	case str2int16("hasDescription"):
 	{
@@ -262,9 +264,17 @@ bool Item::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("hasProperty"):
 		var = Variable(hasInt(props.second));
 		break;
+	case str2int16("baseSpell"):
+	{
+		auto spelli = getBaseSpell();
+		if (spelli != nullptr)
+		{
+			return spelli->getProperty(props.second, var);
+		}
+		return false;
+	}
 	case str2int16("spell"):
 	{
-		auto spell = getSpell();
 		if (spell != nullptr)
 		{
 			return spell->getProperty(props.second, var);
@@ -548,10 +558,9 @@ bool Item::useSpell(Player& player, const Level& level,
 	}
 	case ItemProp::Learn:
 	{
-		auto spell = getSpell();
 		if (spell != nullptr)
 		{
-			player.addSpell(spell->Id(), spell);
+			player.addSpell(spell->spell->Id(), spell->spell);
 		}
 		ret = true;
 		break;
@@ -647,4 +656,24 @@ LevelObjValue Item::addQuantity(LevelObjValue& amount)
 			return capacity;
 		}
 	}
+}
+
+void Item::updateOwner(Queryable* obj)
+{
+	itemOwner = obj;
+	auto classSpell = getBaseSpell();
+	if (obj != nullptr && classSpell != nullptr)
+	{
+		auto player = dynamic_cast<Player*>(obj);
+		if (player != nullptr)
+		{
+			auto playerSpell = player->getSpellInstance(classSpell->spell->Id());
+			if (playerSpell != nullptr)
+			{
+				spell = playerSpell;
+				return;
+			}
+		}
+	}
+	spell = classSpell;
 }
