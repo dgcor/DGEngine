@@ -23,9 +23,10 @@ protected:
 	const LevelObjectClass* class_{ nullptr };
 
 	Sprite2 sprite;
-	sf::Vector2f originalPosition;
 	sf::Vector2f basePosition;
-	sf::Vector2f positionOffset;
+	sf::Vector2f drawPositionOffset;
+	bool absoluteOffset{ false };
+	float tileBlockHeight{ 0.f };
 	MapCoord mapPosition{ -1, -1 };
 
 	const TexturePack* texturePack{ nullptr };
@@ -49,6 +50,7 @@ protected:
 	bool getCurrentTexture(TextureInfo& ti) const;
 	void updateDrawPosition(const LevelMap& map);
 	void updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos);
+	void updateSpriteDrawPosition();
 	void updateHover(Game& game, Level& level);
 	bool updateMapPositionBack(LevelMap& map, const MapCoord pos);
 	bool updateMapPositionFront(LevelMap& map, const MapCoord pos);

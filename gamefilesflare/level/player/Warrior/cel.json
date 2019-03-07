@@ -3,11 +3,10 @@
     "id": "warriorNormal",
     "texture": {
       "id": "skeleton",
-      "file": "images/enemies/skeleton.png",
-      "frames": [1, 1]
+      "file": "images/enemies/skeleton.png"
     },
-    "offset": [-32, -32],
     "invertOffsets": true,
+    "absoluteOffsets": true,
     "rects": [
       { "rect": [87, 467, 83, 55], "offset": [51, 46] },
       { "rect": [294, 44, 81, 55], "offset": [50, 46] },

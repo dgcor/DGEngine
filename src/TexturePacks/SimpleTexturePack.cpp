@@ -59,6 +59,7 @@ static void getTexture(const MultiTexture& t, size_t index, TextureInfo& ti) noe
 	ti.textureRect.height = t.subImageSizeY;
 	ti.texture = t.texture.get();
 	ti.offset = t.offset;
+	ti.absoluteOffset = false;
 }
 
 SimpleTexturePack::SimpleTexturePack(const std::shared_ptr<sf::Texture>& texture,

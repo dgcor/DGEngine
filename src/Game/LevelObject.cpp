@@ -47,6 +47,7 @@ bool LevelObject::getCurrentTexture(TextureInfo& ti) const
 		ti.texture = sprite.getTexture();
 		ti.textureRect = sprite.getTextureRect();
 		ti.offset = {};
+		ti.absoluteOffset = false;
 		ti.palette = sprite.getPalette();
 		return true;
 	}
@@ -60,15 +61,23 @@ void LevelObject::updateDrawPosition(const LevelMap& map)
 
 void LevelObject::updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos)
 {
-	basePosition.x = drawPos.x + map.DefaultBlockWidth();
-	basePosition.y = drawPos.y + map.DefaultBlockHeight();
+	tileBlockHeight = (float)map.DefaultBlockHeight();
+	basePosition.x = drawPos.x + (float)map.DefaultBlockWidth();
+	basePosition.y = drawPos.y + (float)map.DefaultBlockHeight();
 
-	const auto& texSize = sprite.getTextureRect();
+	updateSpriteDrawPosition();
+}
 
-	originalPosition.x = basePosition.x - (texSize.width / 2);
-	originalPosition.y = drawPos.y - texSize.height + map.DefaultTileHeight();
-
-	sprite.setPosition(originalPosition + positionOffset);
+void LevelObject::updateSpriteDrawPosition()
+{
+	auto drawPosition = basePosition + drawPositionOffset;
+	if (absoluteOffset == false)
+	{
+		const auto& textureRect = sprite.getTextureRect();
+		drawPosition.x += -(float)(textureRect.width / 2);
+		drawPosition.y += -((float)textureRect.height) + tileBlockHeight;
+	}
+	sprite.setPosition(drawPosition);
 }
 
 void LevelObject::updateHover(Game& game, Level& level)
@@ -220,7 +229,9 @@ bool LevelObject::updateTexture()
 	if (texturePack->get(animation.currentTextureIdx, ti) == true)
 	{
 		sprite.setTexture(ti, true);
-		positionOffset = ti.offset;
+		drawPositionOffset = ti.offset;
+		absoluteOffset = ti.absoluteOffset;
+		updateSpriteDrawPosition();
 		return true;
 	}
 	return false;

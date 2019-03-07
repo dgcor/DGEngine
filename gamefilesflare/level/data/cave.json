@@ -8,6 +8,7 @@
     "texture": "cave",
     "offset": [-32, -16],
     "invertOffsets": true,
+    "absoluteOffsets": true,
     "rects": [
       { "rect": [61, 652, 64, 32], "offset": [32, 16] },
       { "rect": [125, 652, 64, 32], "offset": [32, 16] },

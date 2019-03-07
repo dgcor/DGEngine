@@ -17,10 +17,11 @@ private:
 
 	std::unique_ptr<TexturePack> texturePack;
 	std::vector<RectTexture> rects;
+	bool absoluteOffsets{ false };
 
 public:
-	RectTexturePack(std::unique_ptr<TexturePack> texturePack_)
-		: texturePack(std::move(texturePack_)) {}
+	RectTexturePack(std::unique_ptr<TexturePack> texturePack_, bool absoluteOffsets_)
+		: texturePack(std::move(texturePack_)), absoluteOffsets(absoluteOffsets_) {}
 
 	void addRect(size_t index, const sf::IntRect& rect, const sf::Vector2f& offset);
 

@@ -9,5 +9,6 @@ struct TextureInfo
 	const sf::Texture* texture{ nullptr };
 	sf::IntRect textureRect;
 	sf::Vector2f offset;
+	bool absoluteOffset{ false };
 	std::shared_ptr<Palette> palette;
 };

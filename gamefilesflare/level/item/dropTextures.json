@@ -5,14 +5,15 @@
       "texture": {
         "file": "images/loot/leather_armor.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [119, 0, 36, 46], "offset": [9, 61] },
-        { "index": 0, "rect": [77, 0, 42, 53], "offset": [10, 76] },
-        { "index": 0, "rect": [0, 0, 40, 62], "offset": [8, 94] },
-        { "index": 0, "rect": [40, 0, 37, 56], "offset": [8, 79] },
-        { "index": 0, "rect": [155, 0, 27, 34], "offset": [9, 38] },
-        { "index": 0, "rect": [119, 46, 23, 14], "offset": [10, 8] }
+        { "rect": [0, 62, 36, 46], "offset": [9, 61] },
+        { "rect": [40, 0, 42, 53], "offset": [10, 76] },
+        { "rect": [0, 0, 40, 62], "offset": [8, 94] },
+        { "rect": [63, 53, 37, 56], "offset": [8, 79] },
+        { "rect": [36, 62, 27, 34], "offset": [9, 38] },
+        { "rect": [36, 96, 23, 14], "offset": [10, 8] }
       ]
     },
     {
@@ -20,14 +21,15 @@
       "texture": {
         "file": "images/loot/longsword.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [42, 52, 41, 53], "offset": [10, 74] },
-        { "index": 0, "rect": [42, 0, 44, 52], "offset": [12, 83] },
-        { "index": 0, "rect": [0, 0, 42, 66], "offset": [10, 100] },
-        { "index": 0, "rect": [86, 0, 25, 60], "offset": [3, 80] },
-        { "index": 0, "rect": [0, 66, 34, 26], "offset": [14, 34] },
-        { "index": 0, "rect": [0, 92, 33, 8], "offset": [19, 5] }
+        { "rect": [42, 52, 41, 53], "offset": [10, 74] },
+        { "rect": [42, 0, 44, 52], "offset": [12, 83] },
+        { "rect": [0, 0, 42, 66], "offset": [10, 100] },
+        { "rect": [86, 0, 25, 60], "offset": [3, 80] },
+        { "rect": [0, 66, 34, 26], "offset": [14, 34] },
+        { "rect": [0, 92, 33, 8], "offset": [19, 5] }
       ]
     },
     { "id": "axeflip", "fromId": "axe" },
@@ -36,14 +38,15 @@
       "texture": {
         "file": "images/loot/hp_potion.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [0, 140, 21, 34], "offset": [4, 51] },
-        { "index": 0, "rect": [0, 96, 25, 44], "offset": [4, 67] },
-        { "index": 0, "rect": [0, 0, 30, 52], "offset": [5, 82] },
-        { "index": 0, "rect": [0, 52, 26, 44], "offset": [6, 67] },
-        { "index": 0, "rect": [0, 174, 15, 23], "offset": [5, 32] },
-        { "index": 0, "rect": [21, 140, 9, 9], "offset": [4, 8] }
+        { "rect": [30, 0, 21, 34], "offset": [4, 51] },
+        { "rect": [26, 57, 25, 44], "offset": [4, 67] },
+        { "rect": [0, 0, 30, 52], "offset": [5, 82] },
+        { "rect": [0, 52, 26, 44], "offset": [6, 67] },
+        { "rect": [30, 34, 15, 23], "offset": [5, 32] },
+        { "rect": [0, 96, 9, 9], "offset": [4, 8] }
       ]
     },
     { "id": "bottle", "fromId": "bldstn" },
@@ -52,14 +55,15 @@
       "texture": {
         "file": "images/loot/longbow.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [39, 0, 27, 64], "offset": [11, 73] },
-        { "index": 0, "rect": [54, 64, 47, 63], "offset": [21, 84] },
-        { "index": 0, "rect": [0, 0, 39, 67], "offset": [7, 92] },
-        { "index": 0, "rect": [0, 67, 54, 61], "offset": [22, 79] },
-        { "index": 0, "rect": [66, 0, 40, 37], "offset": [22, 42] },
-        { "index": 0, "rect": [66, 37, 30, 19], "offset": [13, 12] }
+        { "rect": [39, 0, 27, 64], "offset": [11, 73] },
+        { "rect": [54, 64, 47, 63], "offset": [21, 84] },
+        { "rect": [0, 0, 39, 67], "offset": [7, 92] },
+        { "rect": [0, 67, 54, 61], "offset": [22, 79] },
+        { "rect": [66, 0, 40, 37], "offset": [22, 42] },
+        { "rect": [66, 37, 30, 19], "offset": [13, 12] }
       ]
     },
     { "id": "cleaver", "fromId": "axe" },
@@ -71,14 +75,15 @@
       "texture": {
         "file": "images/loot/book.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [33, 45, 28, 44], "offset": [8, 60] },
-        { "index": 0, "rect": [0, 58, 33, 50], "offset": [6, 71] },
-        { "index": 0, "rect": [0, 0, 30, 58], "offset": [4, 86] },
-        { "index": 0, "rect": [30, 0, 33, 45], "offset": [8, 66] },
-        { "index": 0, "rect": [33, 89, 17, 28], "offset": [7, 33] },
-        { "index": 0, "rect": [0, 108, 18, 13], "offset": [9, 8] }
+        { "rect": [33, 58, 28, 44], "offset": [8, 60] },
+        { "rect": [0, 0, 33, 50], "offset": [6, 71] },
+        { "rect": [33, 0, 30, 58], "offset": [4, 86] },
+        { "rect": [0, 50, 33, 45], "offset": [8, 66] },
+        { "rect": [0, 95, 17, 28], "offset": [7, 33] },
+        { "rect": [17, 102, 18, 13], "offset": [9, 8] }
       ]
     },
     { "id": "fbow", "fromId": "bow" },
@@ -103,14 +108,15 @@
       "texture": {
         "file": "images/loot/steel_armor.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [132, 29, 34, 52], "offset": [13, 64] },
-        { "index": 0, "rect": [47, 0, 39, 61], "offset": [11, 80] },
-        { "index": 0, "rect": [0, 0, 47, 68], "offset": [15, 93] },
-        { "index": 0, "rect": [86, 0, 46, 53], "offset": [16, 73] },
-        { "index": 0, "rect": [132, 0, 35, 29], "offset": [16, 34] },
-        { "index": 0, "rect": [47, 61, 30, 17], "offset": [17, 11] }
+        { "rect": [86, 53, 34, 52], "offset": [13, 64] },
+        { "rect": [47, 53, 39, 61], "offset": [11, 80] },
+        { "rect": [0, 0, 47, 68], "offset": [15, 93] },
+        { "rect": [47, 0, 46, 53], "offset": [16, 73] },
+        { "rect": [0, 68, 35, 29], "offset": [16, 34] },
+        { "rect": [0, 97, 30, 17], "offset": [17, 11] }
       ]
     },
     {
@@ -118,14 +124,15 @@
       "texture": {
         "file": "images/loot/coins100.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [129, 0, 38, 52], "offset": [10, 70] },
-        { "index": 0, "rect": [41, 0, 44, 64], "offset": [12, 85] },
-        { "index": 0, "rect": [85, 0, 44, 64], "offset": [13, 86] },
-        { "index": 0, "rect": [0, 0, 41, 71], "offset": [14, 75] },
-        { "index": 0, "rect": [167, 0, 31, 43], "offset": [15, 36] },
-        { "index": 0, "rect": [167, 43, 29, 15], "offset": [15, 8] }
+        { "rect": [0, 71, 38, 52], "offset": [10, 70] },
+        { "rect": [41, 0, 44, 64], "offset": [12, 85] },
+        { "rect": [69, 64, 44, 64], "offset": [13, 86] },
+        { "rect": [0, 0, 41, 71], "offset": [14, 75] },
+        { "rect": [38, 71, 31, 43], "offset": [15, 36] },
+        { "rect": [85, 0, 29, 15], "offset": [15, 8] }
       ]
     },
     { "id": "helmut", "fromId": "armor2" },
@@ -136,14 +143,15 @@
       "texture": {
         "file": "images/loot/shortsword.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [0, 103, 27, 53], "offset": [4, 71] },
-        { "index": 0, "rect": [0, 156, 22, 61], "offset": [2, 84] },
-        { "index": 0, "rect": [0, 0, 36, 62], "offset": [12, 91] },
-        { "index": 0, "rect": [0, 62, 36, 41], "offset": [15, 64] },
-        { "index": 0, "rect": [22, 167, 13, 25], "offset": [4, 26] },
-        { "index": 0, "rect": [22, 156, 14, 11], "offset": [2, 3] }
+        { "rect": [58, 0, 27, 53], "offset": [4, 71] },
+        { "rect": [36, 0, 22, 61], "offset": [2, 84] },
+        { "rect": [0, 0, 36, 62], "offset": [12, 91] },
+        { "rect": [85, 0, 36, 41], "offset": [15, 64] },
+        { "rect": [85, 41, 13, 25], "offset": [4, 26] },
+        { "rect": [58, 53, 14, 11], "offset": [2, 3] }
       ]
     },
     { "id": "manaflip", "fromId": "bottle" },
@@ -152,14 +160,15 @@
       "texture": {
         "file": "images/loot/ring.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [26, 41, 19, 35], "offset": [3, 55] },
-        { "index": 0, "rect": [0, 51, 23, 44], "offset": [3, 69] },
-        { "index": 0, "rect": [0, 0, 26, 51], "offset": [2, 82] },
-        { "index": 0, "rect": [26, 0, 22, 41], "offset": [3, 65] },
-        { "index": 0, "rect": [23, 76, 13, 18], "offset": [3, 27] },
-        { "index": 0, "rect": [36, 76, 6, 4], "offset": [3, 3] }
+        { "rect": [26, 0, 19, 35], "offset": [3, 55] },
+        { "rect": [0, 51, 23, 44], "offset": [3, 69] },
+        { "rect": [0, 0, 26, 51], "offset": [2, 82] },
+        { "rect": [23, 53, 22, 41], "offset": [3, 65] },
+        { "rect": [26, 35, 13, 18], "offset": [3, 27] },
+        { "rect": [39, 35, 6, 4], "offset": [3, 3] }
       ]
     },
     { "id": "rock", "fromId": "armor2" },
@@ -168,14 +177,15 @@
       "texture": {
         "file": "images/loot/scroll.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [18, 17, 18, 14], "offset": [6, 49] },
-        { "index": 0, "rect": [18, 0, 25, 6], "offset": [12, 65] },
-        { "index": 0, "rect": [25, 6, 16, 11], "offset": [8, 69] },
-        { "index": 0, "rect": [0, 0, 6, 18], "offset": [5, 57] },
-        { "index": 0, "rect": [0, 18, 18, 12], "offset": [4, 27] },
-        { "index": 0, "rect": [6, 6, 19, 11], "offset": [7, 7] }
+        { "rect": [0, 0, 18, 14], "offset": [6, 49] },
+        { "rect": [18, 0, 25, 6], "offset": [12, 65] },
+        { "rect": [18, 17, 16, 11], "offset": [8, 69] },
+        { "rect": [37, 6, 6, 18], "offset": [5, 57] },
+        { "rect": [0, 14, 18, 12], "offset": [4, 27] },
+        { "rect": [18, 6, 19, 11], "offset": [7, 7] }
       ]
     },
     {
@@ -183,29 +193,31 @@
       "texture": {
         "file": "images/loot/shield.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [29, 67, 33, 53], "offset": [12, 64] },
-        { "index": 0, "rect": [0, 67, 29, 57], "offset": [6, 80] },
-        { "index": 0, "rect": [0, 0, 42, 67], "offset": [10, 91] },
-        { "index": 0, "rect": [42, 0, 42, 49], "offset": [12, 72] },
-        { "index": 0, "rect": [62, 49, 22, 33], "offset": [9, 39] },
-        { "index": 0, "rect": [42, 49, 17, 16], "offset": [10, 9] }
-      ]
+        { "rect": [29, 67, 33, 53], "offset": [12, 64] },
+        { "rect": [0, 67, 29, 57], "offset": [6, 80] },
+        { "rect": [0, 0, 42, 67], "offset": [10, 91] },
+        { "rect": [42, 0, 42, 49], "offset": [12, 72] },
+        { "rect": [62, 49, 22, 33], "offset": [9, 39] },
+        { "rect": [42, 49, 17, 16], "offset": [10, 9] }
+     ]
     },
     {
       "id": "staff",
       "texture": {
         "file": "images/loot/staff.png"
       },
-      "referenceTextureSize": [64, 128],
+      "invertOffsets": true,
+      "absoluteOffsets": true,
       "rects": [
-        { "index": 0, "rect": [0, 132, 31, 66], "offset": [11, 75] },
-        { "index": 0, "rect": [0, 0, 59, 47], "offset": [28, 74] },
-        { "index": 0, "rect": [0, 47, 45, 85], "offset": [13, 105] },
-        { "index": 0, "rect": [31, 132, 30, 77], "offset": [5, 87] },
-        { "index": 0, "rect": [45, 47, 19, 48], "offset": [7, 43] },
-        { "index": 0, "rect": [0, 198, 27, 25], "offset": [13, 13] }
+        { "rect": [75, 48, 31, 66], "offset": [11, 75] },
+        { "rect": [45, 0, 59, 47], "offset": [28, 74] },
+        { "rect": [0, 0, 45, 85], "offset": [13, 105] },
+        { "rect": [45, 47, 30, 77], "offset": [5, 87] },
+        { "rect": [104, 0, 19, 48], "offset": [7, 43] },
+        { "rect": [0, 85, 27, 25], "offset": [13, 13] }
       ]
     },
     { "id": "swrdflip", "fromId": "mace" },

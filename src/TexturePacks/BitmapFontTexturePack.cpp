@@ -249,6 +249,7 @@ bool BitmapFontTexturePack::get(size_t index, TextureInfo& ti) const
 		ti.texture = texture.get();
 		ti.textureRect = chars[index];
 		ti.offset = {};
+		ti.absoluteOffset = false;
 		ti.palette = palette;
 		return true;
 	}

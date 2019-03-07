@@ -13,6 +13,7 @@ bool RectTexturePack::get(size_t index, TextureInfo& ti) const
 	{
 		ti.textureRect = rects[index].rect;
 		ti.offset = rects[index].offset;
+		ti.absoluteOffset = absoluteOffsets;
 		return true;
 	}
 	return false;

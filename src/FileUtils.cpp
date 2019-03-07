@@ -2,6 +2,7 @@
 #include <cstring>
 #include <filesystem>
 #include <memory>
+#include <fstream>
 #include "PhysFSStream.h"
 #include "Utils/Utils.h"
 
@@ -461,6 +462,28 @@ namespace FileUtils
 				PHYSFS_writeBytes(file, str.data(), str.size());
 				return PHYSFS_close(file) != 0;
 			}
+		}
+		catch (std::exception ex) {}
+		return false;
+	}
+
+	bool exportFile(const char* inFile, const char* outFile)
+	{
+		try
+		{
+			std::filesystem::path inPath(inFile);
+			std::filesystem::path outPath(outFile);
+
+			if (std::filesystem::is_directory(outPath) == true &&
+				inPath.has_filename() == true)
+			{
+				outPath /= inPath.filename();
+			}
+
+			auto data = readChar(inFile);
+			auto newFile = std::fstream(outPath, std::ios::out | std::ios::binary);
+			newFile.write((char*)&data[0], data.size());
+			newFile.close();
 		}
 		catch (std::exception ex) {}
 		return false;
