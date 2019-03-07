@@ -46,6 +46,27 @@ namespace Utils
 		return source;
 	}
 
+	std::vector<std::string> splitString(const std::string& str, const std::string& delim)
+	{
+		std::vector<std::string> tokens;
+		size_t prev = 0, pos = 0;
+		do
+		{
+			pos = str.find(delim, prev);
+			if (pos == std::string::npos)
+			{
+				pos = str.length();
+			}
+			std::string token = str.substr(prev, pos - prev);
+			if (token.empty() == false)
+			{
+				tokens.push_back(token);
+			}
+			prev = pos + delim.length();
+		} while (pos < str.length() && prev < str.length());
+		return tokens;
+	}
+
 	void replaceStringInPlace(std::string& subject, const std::string_view search, const std::string_view replace)
 	{
 		size_t pos = 0;

@@ -45,6 +45,8 @@ set(SOURCE_FILES
     src/CachedImagePack.h
     src/Circle.cpp
     src/Circle.h
+    src/CmdLineUtils.cpp
+    src/CmdLineUtils.h
     src/DrawableText.h
     src/Dun.cpp
     src/Dun.h

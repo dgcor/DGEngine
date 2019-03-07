@@ -1,7 +1,5 @@
 #include "ParseTexturePack.h"
-#include "FileUtils.h"
 #include "Game/LevelHelper.h"
-#include "ImageContainers/CelImageContainer.h"
 #include "Min.h"
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
@@ -263,7 +261,9 @@ namespace Parser
 		{
 			auto globalOffset = getVector2fKey<sf::Vector2f>(elem, "offset");
 			bool invertOffsets = getBoolKey(elem, "invertOffsets");
-			auto texturePack2 = std::make_unique<RectTexturePack>(std::move(texturePack));
+			bool absoluteOffsets = getBoolKey(elem, "absoluteOffsets");
+			auto texturePack2 = std::make_unique<RectTexturePack>(
+				std::move(texturePack), absoluteOffsets);
 			for (const auto& val : elem["rects"])
 			{
 				if (val.IsArray() == true)

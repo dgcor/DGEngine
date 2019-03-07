@@ -59,4 +59,7 @@ namespace FileUtils
 
 	// creates path if it doesn't exist
 	bool saveText(const std::string_view filePath, const std::string_view str) noexcept;
+
+	// writes file to a filesystem path (not to physfs's write dir path).
+	bool exportFile(const char* inFile, const char* outFile);
 }

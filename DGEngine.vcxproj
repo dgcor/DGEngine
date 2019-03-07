@@ -39,6 +39,7 @@
     <ClCompile Include="src\Button.cpp" />
     <ClCompile Include="src\CachedImagePack.cpp" />
     <ClCompile Include="src\Circle.cpp" />
+    <ClCompile Include="src\CmdLineUtils.cpp" />
     <ClCompile Include="src\Dun.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\FadeInOut.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="src\BaseAnimation.h" />
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
+    <ClInclude Include="src\CmdLineUtils.h" />
     <ClInclude Include="src\endian\big_endian.hpp" />
     <ClInclude Include="src\endian\detail\helpers.hpp" />
     <ClInclude Include="src\endian\detail\stream.hpp" />

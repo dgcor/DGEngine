@@ -1,4 +1,6 @@
 #include "LevelHelper.h"
+#include <filesystem>
+#include "ImageContainers/CelImageContainer.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
 #include "TexturePacks/VectorTexturePack.h"
@@ -268,87 +270,170 @@ namespace LevelHelper
 		}
 	}
 
-	void saveTilesetSprite(const std::string& path, CachedImagePack& imgPack,
-		const Min& min, int bottomTopOrBoth, bool skipBlankTiles, unsigned maxTextureSize)
+	void saveTilesetSprite(const std::string& outFilePath, const std::string& outFileName,
+		CachedImagePack& imgPack, const Min& min, int bottomTopOrBoth,
+		bool skipBlankTiles, unsigned maxTextureSize)
 	{
-		size_t numTexturesToFit = min.size();
-		if (bottomTopOrBoth == 1 &&
-			skipBlankTiles == true)
+		try
 		{
-			numTexturesToFit -= min.blankTopPillars();
-		}
-		unsigned pillarWidth = 64;
-		unsigned pillarHeight = (bottomTopOrBoth != 0 ? (min[0].size() * 32) : 32);
-		if (pillarHeight > maxTextureSize)
-		{
-			return;
-		}
-		size_t i = 0;
-		size_t xMax, yMax, sheetWidth, sheetHeight;
+			std::filesystem::path outPath(outFilePath);
 
-		getIdealTilesetSheetSize(1024, maxTextureSize, numTexturesToFit,
-			pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
-
-		size_t file = 1;
-
-		bool mainLoop = true;
-		while (mainLoop == true)
-		{
-			sf::Image2 newPillar;
-			newPillar.create(sheetWidth, sheetHeight, sf::Color::Transparent);
-
-			bool loop = true;
-			size_t x = 0;
-			size_t y = 0;
-			while (loop == true)
+			if (std::filesystem::exists(outPath) == false ||
+				std::filesystem::is_directory(outPath) == false)
 			{
-				size_t newX = x * pillarWidth;
-				size_t newY = y * pillarHeight;
-				bool hasTile = false;
+				return;
+			}
 
-				if (bottomTopOrBoth < 0)
-				{
-					hasTile = drawMinPillar(newPillar, newX, newY + pillarHeight - 32, min[i], imgPack, false);
-					hasTile |= drawMinPillar(newPillar, newX, newY, min[i], imgPack, true);
-				}
-				else
-				{
-					hasTile = drawMinPillar(newPillar, newX, newY, min[i], imgPack, bottomTopOrBoth != 0);
-				}
+			size_t numTexturesToFit = min.size();
+			if (bottomTopOrBoth == 1 &&
+				skipBlankTiles == true)
+			{
+				numTexturesToFit -= min.blankTopPillars();
+			}
+			unsigned pillarWidth = 64;
+			unsigned pillarHeight = (bottomTopOrBoth != 0 ? (min[0].size() * 32) : 32);
+			if (pillarHeight > maxTextureSize)
+			{
+				return;
+			}
+			size_t i = 0;
+			size_t xMax, yMax, sheetWidth, sheetHeight;
 
-				if (skipBlankTiles == false ||
-					hasTile == true)
+			getIdealTilesetSheetSize(1024, maxTextureSize, numTexturesToFit,
+				pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
+
+			size_t file = 1;
+
+			bool mainLoop = true;
+			while (mainLoop == true)
+			{
+				sf::Image2 newPillar;
+				newPillar.create(sheetWidth, sheetHeight, sf::Color::Transparent);
+
+				bool loop = true;
+				size_t x = 0;
+				size_t y = 0;
+				while (loop == true)
 				{
-					x++;
-					if (x >= xMax)
+					size_t newX = x * pillarWidth;
+					size_t newY = y * pillarHeight;
+					bool hasTile = false;
+
+					if (bottomTopOrBoth < 0)
 					{
-						x = 0;
-						y++;
-						if (y >= yMax)
+						hasTile = drawMinPillar(
+							newPillar, newX, newY + pillarHeight - 32, min[i], imgPack, false
+						);
+						hasTile |= drawMinPillar(
+							newPillar, newX, newY, min[i], imgPack, true
+						);
+					}
+					else
+					{
+						hasTile = drawMinPillar(
+							newPillar, newX, newY, min[i], imgPack, bottomTopOrBoth != 0
+						);
+					}
+
+					if (skipBlankTiles == false ||
+						hasTile == true)
+					{
+						x++;
+						if (x >= xMax)
 						{
-							loop = false;
+							x = 0;
+							y++;
+							if (y >= yMax)
+							{
+								loop = false;
+							}
 						}
+					}
+
+					i++;
+					if (i >= min.size())
+					{
+						loop = false;
+						mainLoop = false;
 					}
 				}
 
-				i++;
-				if (i >= min.size())
+				auto newFilePath = outPath;
+				if (file > 1 || mainLoop == true)
 				{
-					loop = false;
-					mainLoop = false;
+					newFilePath /= (outFileName + Utils::toString(file) + ".png");
+				}
+				else
+				{
+					newFilePath /= (outFileName + ".png");
+				}
+				newPillar.saveToFile(newFilePath.string());
+				file++;
+
+				// calculate new sheet size for the remaining tiles.
+				if (mainLoop == true)
+				{
+					numTexturesToFit -= xMax * yMax;
+					getIdealTilesetSheetSize(std::min(512u, maxTextureSize),
+						maxTextureSize, numTexturesToFit,
+						pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
 				}
 			}
-			newPillar.saveToFile(path + Utils::toString(file) + ".png");
-			file++;
-
-			// calculate new sheet size for the remaining tiles.
-			if (mainLoop == true)
-			{
-				numTexturesToFit -= xMax * yMax;
-				getIdealTilesetSheetSize(std::min(512u, maxTextureSize),
-					maxTextureSize, numTexturesToFit,
-					pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
-			}
 		}
+		catch (std::exception ex) {}
+	}
+
+	void loadAndSaveTilesetSprite(const std::string& celFile,
+		const std::string& palFile, const std::string& outFilePath,
+		int bottomTopOrBoth, bool skipBlankTiles, unsigned maxTextureSize, unsigned minBlock)
+	{
+		try
+		{
+			std::filesystem::path celPath(celFile);
+			std::filesystem::path outPath(outFilePath);
+
+			if (std::filesystem::is_directory(outPath) == false ||
+				celPath.has_filename() == false)
+			{
+				return;
+			}
+
+			bool toUpper = false;
+			if (celPath.has_extension() && celPath.extension() != ".cel")
+			{
+				toUpper = true;
+			}
+
+			auto palPath = palFile.empty() == true ? celPath : std::filesystem::path(palFile);
+			auto minPath = celPath;
+
+			if (toUpper == false)
+			{
+				if (palFile.empty() == true)
+				{
+					palPath.replace_extension(".pal");
+				}
+				minPath.replace_extension(".min");
+			}
+			else
+			{
+				if (palFile.empty() == true)
+				{
+					palPath.replace_extension(".PAL");
+				}
+				minPath.replace_extension(".MIN");
+			}
+
+			auto pal = std::make_shared<Palette>(palPath.string());
+			CelImageContainer celImgContainer(celPath.string());
+			CachedImagePack imgPack(&celImgContainer, pal, false);
+			Min min(minPath.string(), minBlock);
+
+			saveTilesetSprite(
+				outPath.string(), celPath.stem().string(), imgPack,
+				min, bottomTopOrBoth, skipBlankTiles, maxTextureSize
+			);
+		}
+		catch (std::exception ex) {}
 	}
 }

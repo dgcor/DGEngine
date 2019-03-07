@@ -8,6 +8,7 @@
     "texture": "grassland",
     "offset": [-32, -16],
     "invertOffsets": true,
+    "absoluteOffsets": true,
     "rects": [
       { "rect": [288, 649, 64, 32], "offset": [32, 16] },
       { "rect": [788, 336, 64, 32], "offset": [32, 16] },

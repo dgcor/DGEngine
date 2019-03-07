@@ -10,6 +10,8 @@ namespace Utils
 {
 	bool endsWith(const std::string_view value, const std::string_view ending);
 
+	std::vector<std::string> splitString(const std::string& str, const std::string& delim);
+
 	void replaceStringInPlace(std::string& subject, const std::string_view search, const std::string_view replace);
 
 	std::string splitInLines(std::string source, std::size_t width, std::string whitespace = " \t\r");

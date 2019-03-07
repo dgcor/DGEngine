@@ -21,6 +21,7 @@ bool CachedTexturePack::get(size_t index, TextureInfo& ti) const
 	ti.texture = &cache[index];
 	updateTextureRect(ti);
 	ti.offset = offset;
+	ti.absoluteOffset = false;
 	ti.palette = palette;
 	return true;
 }
@@ -63,6 +64,7 @@ bool CachedMultiTexturePack::get(size_t index, TextureInfo& ti) const
 	ti.texture = &cache[index];
 	updateTextureRect(ti);
 	ti.offset = offset;
+	ti.absoluteOffset = false;
 	ti.palette = palette;
 	return true;
 }
