@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [0, 10],
+      "size": [1, 4],
+      "text1": "temple_of_mez_1",
+      "properties": {
+        "x": 76,
+        "y": 34
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [79, 65],
+      "size": [1, 4],
+      "text1": "the_breach",
+      "properties": {
+        "x": 2,
+        "y": 48
+      }
+    }
+  ]
+}

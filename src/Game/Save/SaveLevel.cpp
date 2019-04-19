@@ -1,6 +1,7 @@
 #include "SaveLevel.h"
 #include "FileUtils.h"
 #include "Game/Level.h"
+#include "Game/Player.h"
 #include "Game/SimpleLevelObject.h"
 #include "Json/JsonParser.h"
 #include "SaveItem.h"
@@ -37,7 +38,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	writeStringView(writer, "name", level.name);
 	writeStringView(writer, "path", level.path);
 
-	writeVector2d<MapCoord>(writer, "mapSize", level.map.MapSize());
+	writeVector2i(writer, "mapSize", level.map.MapSizei());
 
 	writeKeyStringView(writer, "map");
 	// map
@@ -46,12 +47,24 @@ void Save::serialize(void* serializeObj, Properties& props,
 	writer.StartArray();
 	for (size_t i = 0; i < LevelCell::NumberOfLayers; i++)
 	{
+		if (level.map.isLayerUsed(i) == false)
+		{
+			continue;
+		}
+
 		// layer
 		writer.StartObject();
 
-		writeInt(writer, "index", i);
-		writeInt(writer, "width", level.map.Width());
-		writeInt(writer, "height", level.map.Height());
+		if (i == LevelCell::SolLayer)
+		{
+			writeString(writer, "index", "sol");
+		}
+		else
+		{
+			writeInt(writer, "index", i);
+		}
+		writeInt(writer, "width", level.map.MapSizei().x);
+		writeInt(writer, "height", level.map.MapSizei().y);
 
 		writeKeyStringView(writer, "data");
 		writer.SetFormatOptions(PrettyFormatOptions::kFormatSingleLineArray);

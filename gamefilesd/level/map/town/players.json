@@ -1,0 +1,12 @@
+{
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": { "name": "load", "file": "level/map/town/playerCelFilesBeta.json" },
+      "else": { "name": "load", "file": "level/map/town/playerCelFiles.json" }
+    },
+    { "name": "load", "file": "level/map/town/playerClasses.json" }
+  ]
+}

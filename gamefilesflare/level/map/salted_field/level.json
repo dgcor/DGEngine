@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/salted_field/levelObjects.json",
+  "load": "level/map/salted_field/monsters.json",
+  "load": "level/map/salted_field/level2.json"
+}

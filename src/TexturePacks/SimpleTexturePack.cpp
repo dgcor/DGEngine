@@ -1,4 +1,5 @@
 #include "SimpleTexturePack.h"
+#include "TextureInfo.h"
 
 static bool ConstructTexturePack(MultiTexture& t, const std::shared_ptr<sf::Texture>& texture,
 	const std::pair<size_t, size_t>& frames, const sf::Vector2f& offset,

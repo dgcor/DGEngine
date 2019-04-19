@@ -1,10 +1,11 @@
 #pragma once
+
 #include "Json/JsonParser.h"
 #include "SFML/MusicLoops.h"
 #include <string>
 #include <string_view>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 namespace Parser
 {

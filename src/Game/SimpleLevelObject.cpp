@@ -13,11 +13,11 @@ SimpleLevelObject::SimpleLevelObject(const SimpleLevelObjectClass* class__) : Le
 	{
 		texturePack = class__->getTexturePack();
 		animation.textureIndexRange = class__->getTextureIndexRange();
-		animation.frameTime = class__->getFrameTime();
+		animation.elapsedTime = class__->getFrameTime();
 		animation.animType = class__->getAnimationType();
-		hoverCellSize = 1;
 		updateTexture();
 	}
+	cellSize = class__->getCellSize();
 
 	for (const auto& prop : class__->Defaults())
 	{

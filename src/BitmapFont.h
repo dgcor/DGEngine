@@ -3,11 +3,10 @@
 #include "Alignment.h"
 #include <memory>
 #include "Palette.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include <string>
-#include "TexturePacks/BitmapFontTexturePack.h"
-#include <vector>
 
+class BitmapFontTexturePack;
 class Game;
 
 class BitmapFont

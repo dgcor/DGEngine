@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [68, 76],
+      "text1": "perdition_harbor",
+      "properties": {
+        "x": 15,
+        "y": 23
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [3, 5],
+      "size": [2, 1],
+      "text1": "wizards_tower_2",
+      "properties": {
+        "x": 7,
+        "y": 36
+      }
+    }
+  ]
+}

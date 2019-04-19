@@ -9,6 +9,7 @@
 /*.opendb
 /*.vcxproj.filters
 /*.vcxproj.user
+/*.zip
 /.svn
 /.vs
 /bin
@@ -22,6 +23,7 @@
 /DGEngine
 /DIABDAT
 /DIABDAT.*
+/empyrean_campaign.zip
 /FFMPEG*
 /FFmpeg*
 /gamefiles.zip

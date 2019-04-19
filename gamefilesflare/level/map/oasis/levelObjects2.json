@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [3, 7],
+      "size": [2, 2],
+      "text1": "underworld_mines",
+      "properties": {
+        "x": 16,
+        "y": 81
+      }
+    }
+  ]
+}

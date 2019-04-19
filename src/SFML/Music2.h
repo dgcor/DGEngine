@@ -21,6 +21,8 @@ namespace sf
 		{
 			InputSoundFile file;
 			std::vector<Int16> samples;
+
+			~MusicFile() {};
 		};
 
 		struct MusicBuffer

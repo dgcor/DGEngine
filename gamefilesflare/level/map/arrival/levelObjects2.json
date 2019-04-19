@@ -1,0 +1,13 @@
+{
+  "levelObject": {
+    "id": "down",
+    "class": "levelDownFlare",
+    "mapPosition": [38, 34],
+    "size": [1, 2],
+    "text1": "river_trail",
+    "properties": {
+      "x": 7,
+      "y": 5
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [59, 64],
+      "size": [1, 4],
+      "text1": "southern_ridge",
+      "properties": {
+        "x": 25,
+        "y": 49
+      }
+    }
+  ]
+}

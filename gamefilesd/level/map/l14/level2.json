@@ -1,0 +1,5 @@
+{
+  "load": ["level/default/loadHellTiled.json", "l14", "14", "level/map/l14/l14.json"],
+  "load": "level/map/l14/levelObjects2.json",
+  "load": "level/map/l14/monsters2.json"
+}

@@ -1,8 +1,12 @@
 #pragma once
 
-#include "Game.h"
 #include "Json/JsonParser.h"
 #include "ParserProperties.h"
+#include <string>
+#include <string_view>
+#include <vector>
+
+class Game;
 
 namespace Parser
 {

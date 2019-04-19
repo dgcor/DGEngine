@@ -1,8 +1,0 @@
-{
-  "audio": {
-    "id": "main",
-    "file": "music/cave_theme.ogg",
-    "loop": true,
-    "play": true
-  }
-}

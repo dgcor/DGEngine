@@ -1,0 +1,46 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [53, 50],
+      "size": [2, 1],
+      "text1": "halls_of_infinity",
+      "properties": {
+        "x": 12,
+        "y": 55
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [43, 6],
+      "text1": "hyperspace",
+      "size": [2, 2],
+      "properties": {
+        "x": 9,
+        "y": 17
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [12, 20],
+      "size": [4, 3],
+      "text1": "the_pit",
+      "properties": {
+        "x": 71,
+        "y": 71
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [34, 10],
+      "size": [4, 4],
+      "text1": "underworld_stronghold_1",
+      "properties": {
+        "x": 22,
+        "y": 7
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "southern_ridge",
+    "level/data/empyrean_campaign/southern_ridge.json"
+  ],
+  "load": "level/map/southern_ridge/levelObjects2.json",
+  "load": "level/map/southern_ridge/monsters2.json",
+  "load": "level/map/southern_ridge/quests.json",
+  "load": "level/map/southern_ridge/items.json"
+}

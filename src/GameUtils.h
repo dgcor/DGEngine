@@ -9,6 +9,7 @@
 #include "IgnoreResource.h"
 #include "InputEvent.h"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <string>
 #include <string_view>
 #include <vector>

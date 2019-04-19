@@ -24,13 +24,9 @@ void LoadingScreen::setProgress(int percent_)
 
 void LoadingScreen::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
 	auto pos = sprite.getPosition();
 	sf::Vector2f size((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	sprite.setPosition(pos);
 	progressBar.setPosition(pos + barPosOffset);
 }

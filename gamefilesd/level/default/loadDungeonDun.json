@@ -1,0 +1,11 @@
+{
+  "level": {
+    "id": "level",
+    "path": "{1}",
+    "name": "{2}",
+    "map": {
+      "file": "{3}",
+      "defaultTile": 12
+    }
+  }
+}

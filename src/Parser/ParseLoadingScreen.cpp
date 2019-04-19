@@ -1,6 +1,7 @@
-#include "ParseAction.h"
-#include "GameUtils.h"
 #include "ParseLoadingScreen.h"
+#include "Game.h"
+#include "GameUtils.h"
+#include "ParseAction.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -21,17 +22,20 @@ namespace Parser
 			loadingScreen = std::make_unique<LoadingScreen>();
 		}
 
+		if (elem.HasMember("textureRect"))
+		{
+			sf::IntRect rect = loadingScreen->getTextureRect();
+			loadingScreen->setTextureRect(getIntRectKey(elem, "textureRect", rect));
+		}
+
 		auto anchor = getAnchorKey(elem, "anchor");
 		loadingScreen->setAnchor(anchor);
 		auto size = loadingScreen->getSize();
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 		loadingScreen->setPosition(pos);
 		loadingScreen->setProgressBarColor(getColorKey(elem, "color"));

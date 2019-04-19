@@ -1,0 +1,12 @@
+{
+  "palette": {
+    "id": "level",
+    "file": "levels/l3data/l3_1.pal"
+  },
+  "load": "level/default/caves.json",
+  "level": { "id": "level", "defaultLight": [185, 0, 7] },
+  "load": "level/automap/caves/load.json",
+  "load": "level/map/l9/levelObjects.json",
+  "load": "level/map/l9/monsters.json",
+  "load": "level/map/l9/level2.json"
+}

@@ -1,0 +1,8 @@
+{
+  "load": "level/default/nest.json",
+  "level": { "id": "level", "defaultLight": 0 },
+  "load": "level/automap/nest/load.json",
+  "load": "level/map/nest3/levelObjects.json",
+  "load": "level/map/nest3/monsters.json",
+  "load": "level/map/nest3/level2.json"
+}

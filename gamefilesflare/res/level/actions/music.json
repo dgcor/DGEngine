@@ -1,0 +1,167 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "loadLevelMusic",
+    "action": [
+      {
+        "name": "switch",
+        "param": "%level.path%",
+        "case": [
+          {
+            "value": "battle_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/battle_theme.ogg"
+            }
+          },
+          {
+            "value": "boss_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/boss_theme.ogg"
+            }
+          },
+          {
+            "value": "cave_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/cave_theme.ogg"
+            }
+          },
+          {
+            "value": "dungeon_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dungeon_theme.ogg"
+            }
+          },
+          {
+            "value": "forest_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/forest_theme.ogg"
+            }
+          },
+          {
+            "value": "magical_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/magical_theme.ogg"
+            }
+          },
+          {
+            "value": "overworld_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/overworld_theme.ogg"
+            }
+          },
+          {
+            "value": "safe_room_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/safe_room_theme.ogg"
+            }
+          },
+          {
+            "value": "unrest_theme",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/unrest_theme.ogg"
+            }
+          },
+          {
+            "value": "wind_ambient",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/wind_ambient.ogg"
+            }
+          },
+          { "value": "abandoned_mines", "action": "cave_theme" },
+          { "value": "antlion_nest", "action": "cave_theme" },
+          { "value": "arrival", "action": "wind_ambient" },
+          { "value": "blackmire_mines", "action": "cave_theme" },
+          { "value": "black_oak_city", "action": "forest_theme" },
+          { "value": "black_oak_farm", "action": "forest_theme" },
+          { "value": "book_of_the_dead", "action": "unrest_theme" },
+          { "value": "dilapidated_sewers", "action": "dungeon_theme" },
+          { "value": "family_crypt", "action": "dungeon_theme" },
+          { "value": "fort_amir", "action": "dungeon_theme" },
+          { "value": "fort_nasu", "action": "dungeon_theme" },
+          { "value": "goblin_camp", "action": "overworld_theme" },
+          { "value": "goblin_cave", "action": "cave_theme" },
+          { "value": "grot_lagoon", "action": "magical_theme" },
+          { "value": "halls_of_infinity", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_1", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_2", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_3", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_4", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_5", "action": "dungeon_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_6", "action": "cave_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_7", "action": "cave_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_8", "action": "overworld_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_9", "action": "forest_theme" },
+          { "value": "halls_of_infinity/halls_of_infinity_10", "action": "cave_theme" },
+          { "value": "hyperspace", "action": "safe_room_theme" },
+          { "value": "lake_kuuma", "action": "magical_theme" },
+          { "value": "lochport", "action": "forest_theme" },
+          { "value": "lochport_cemetery", "action": "forest_theme" },
+          { "value": "merrimead_swamp", "action": "overworld_theme" },
+          { "value": "mog_caverns", "action": "cave_theme" },
+          { "value": "nazia_highlands", "action": "overworld_theme" },
+          { "value": "nazia_mines", "action": "cave_theme" },
+          { "value": "nazia_underground", "action": "overworld_theme" },
+          { "value": "oasis", "action": "forest_theme" },
+          { "value": "perdition_harbor", "action": "unrest_theme" },
+          { "value": "perdition_mines", "action": "cave_theme" },
+          { "value": "river_trail", "action": "wind_ambient" },
+          { "value": "salted_field", "action": "unrest_theme" },
+          { "value": "southern_ridge", "action": "overworld_theme" },
+          { "value": "stonewood", "action": "forest_theme" },
+          { "value": "stormrock_pass", "action": "magical_theme" },
+          { "value": "stormrock_ruins", "action": "dungeon_theme" },
+          { "value": "st_maria_1", "action": "dungeon_theme" },
+          { "value": "st_maria_2", "action": "dungeon_theme" },
+          { "value": "st_maria_3", "action": "boss_theme" },
+          { "value": "temple_of_mez_1", "action": "dungeon_theme" },
+          { "value": "temple_of_mez_2", "action": "dungeon_theme" },
+          { "value": "temple_of_mez_3", "action": "boss_theme" },
+          { "value": "the_breach", "action": "cave_theme" },
+          { "value": "the_pit", "action": "boss_theme" },
+          { "value": "torture_chambers", "action": "dungeon_theme" },
+          { "value": "underworld", "action": "cave_theme" },
+          { "value": "underworld_catacombs", "action": "cave_theme" },
+          { "value": "underworld_mines", "action": "cave_theme" },
+          { "value": "underworld_stronghold_1", "action": "battle_theme" },
+          { "value": "underworld_stronghold_2", "action": "battle_theme" },
+          { "value": "wizards_tower_1", "action": "dungeon_theme" },
+          { "value": "wizards_tower_2", "action": "dungeon_theme" },
+          { "value": "wizards_tower_3", "action": "boss_theme" }
+        ],
+        "default": "wind_ambient"
+      },
+      {
+        "name": "loadJson",
+        "json": {
+          "replaceVars": "value",
+          "audio": {
+            "id": "main",
+            "file": "|levelMusic|",
+            "loop": true,
+            "play": true
+          }
+        }
+      }
+    ]
+  }
+}

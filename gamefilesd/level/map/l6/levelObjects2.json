@@ -1,0 +1,33 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDown",
+      "mapPosition": [75, 46],
+      "properties": {
+        "x": 27,
+        "y": 26,
+        "level": 7
+      }
+    },
+    {
+      "class": "levelDownCatacombs2",
+      "mapPosition": [84, 85],
+      "text1": "chamberBone",
+      "properties": {
+        "x": 57,
+        "y": 22
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUp",
+      "mapPosition": [28, 65],
+      "properties": {
+        "x": 40,
+        "y": 80,
+        "level": 5
+      }
+    }
+  ]
+}

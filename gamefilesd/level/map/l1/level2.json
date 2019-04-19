@@ -1,0 +1,11 @@
+{
+  "load": ["level/default/loadDungeonTiled.json", "l1", "1", "level/map/l1/l1.json"],
+  "load": "level/map/l1/levelObjects2.json",
+  "load": "level/map/l1/monsters2.json",
+  "load": "level/map/l1/quests.json",
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 97, "", "playAudio", "currentLevel"] }
+  }
+}

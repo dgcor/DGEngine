@@ -5,6 +5,7 @@
 #include <cctype>
 #include "FileUtils.h"
 #include "GameUtils.h"
+#include "Json/JsonUtils.h"
 #include "SFML/SFMLUtils.h"
 #include "Utils/Utils.h"
 
@@ -12,6 +13,24 @@ namespace Parser
 {
 	using namespace rapidjson;
 	using namespace Utils;
+
+	Anchor getAnchorVal(const rapidjson::Value& elem, Anchor val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getAnchor(elem.GetString(), val);
+		}
+		else if (elem.IsArray() == true)
+		{
+			Anchor ret = Anchor::None;
+			for (const auto& arrElem : elem)
+			{
+				ret |= GameUtils::getAnchor(getStringVal(arrElem).c_str(), val);
+			}
+			return ret;
+		}
+		return val;
+	}
 
 	bool getBoolVal(const Value& elem, bool val)
 	{
@@ -194,32 +213,46 @@ namespace Parser
 
 	sf::IntRect getIntRectVal(const Value& elem, const sf::IntRect& val)
 	{
-		if (elem.IsArray() == true
-			&& elem.Size() >= 4)
+		if (elem.IsArray() == true && elem.Size() >= 4)
 		{
-			return sf::IntRect(getIntVal(elem[0]), getIntVal(elem[1]),
-				getIntVal(elem[2]), getIntVal(elem[3]));
+			return sf::IntRect(
+				getNumberVal<int>(elem[0]),
+				getNumberVal<int>(elem[1]),
+				getNumberVal<int>(elem[2]),
+				getNumberVal<int>(elem[3])
+			);
 		}
-		else if (elem.IsArray() == true
-			&& elem.Size() >= 2)
+		else if (elem.IsArray() == true && elem.Size() >= 2)
 		{
-			return sf::IntRect(0, 0, getIntVal(elem[0]), getIntVal(elem[1]));
+			return sf::IntRect(
+				0,
+				0,
+				getNumberVal<int>(elem[0]),
+				getNumberVal<int>(elem[1])
+			);
 		}
 		return val;
 	}
 
 	sf::FloatRect getFloatRectVal(const Value& elem, const sf::FloatRect& val)
 	{
-		if (elem.IsArray() == true
-			&& elem.Size() >= 4)
+		if (elem.IsArray() == true && elem.Size() >= 4)
 		{
-			return sf::FloatRect(getFloatVal(elem[0]), getFloatVal(elem[1]),
-				getFloatVal(elem[2]), getFloatVal(elem[3]));
+			return sf::FloatRect(
+				getNumberVal<float>(elem[0]),
+				getNumberVal<float>(elem[1]),
+				getNumberVal<float>(elem[2]),
+				getNumberVal<float>(elem[3])
+			);
 		}
-		else if (elem.IsArray() == true
-			&& elem.Size() >= 2)
+		else if (elem.IsArray() == true && elem.Size() >= 2)
 		{
-			return sf::FloatRect(0, 0, getFloatVal(elem[0]), getFloatVal(elem[1]));
+			return sf::FloatRect(
+				0.f,
+				0.f,
+				getNumberVal<float>(elem[0]),
+				getNumberVal<float>(elem[1])
+			);
 		}
 		return val;
 	}
@@ -432,7 +465,7 @@ namespace Parser
 		return num;
 	}
 
-	ItemXY getItemXYVal(const Value& elem, const ItemXY& val)
+	PairUInt8 getItemXYVal(const Value& elem, const PairUInt8& val)
 	{
 		if (elem.IsArray() == true
 			&& elem.Size() > 1
@@ -444,7 +477,7 @@ namespace Parser
 
 			if (x <= 0xFF && y <= 0xFF)
 			{
-				return ItemXY((uint8_t)x, (uint8_t)y);
+				return PairUInt8((uint8_t)x, (uint8_t)y);
 			}
 		}
 		return val;
@@ -495,10 +528,13 @@ namespace Parser
 			const auto& mapElem = elem["mapPosition"];
 			if (mapElem.IsArray() == true
 				&& mapElem.Size() > 1
-				&& mapElem[0].IsUint() == true
-				&& mapElem[1].IsUint() == true)
+				&& mapElem[0].IsNumber() == true
+				&& mapElem[1].IsNumber() == true)
 			{
-				return{ MapCoord((uint16_t)mapElem[0].GetUint(), (uint16_t)mapElem[1].GetUint()) };
+				return {
+					PairFloat(getNumberVal<float>(mapElem[0]),
+					getNumberVal<float>(mapElem[1]))
+				};
 			}
 		}
 		return{ getItemCoordInventoryVal(elem) };
@@ -519,6 +555,20 @@ namespace Parser
 			return GameUtils::getPlayerInventory({ elem.GetString(), elem.GetStringLength() }, val);
 		}
 		return val;
+	}
+
+	const Value& getQueryVal(const Value* elem, const Value& query)
+	{
+		if (elem != nullptr)
+		{
+			return JsonUtils::query(*elem, query);
+		}
+		return query;
+	}
+
+	const Value& getQueryVal(const Value& elem, const Value& query)
+	{
+		return JsonUtils::query(elem, query);
 	}
 
 	ReplaceVars getReplaceVarsVal(const Value& elem, ReplaceVars val)

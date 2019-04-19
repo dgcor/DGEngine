@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "salted_field",
+    "level/data/empyrean_campaign/salted_field.json"
+  ],
+  "load": "level/map/salted_field/levelObjects2.json",
+  "load": "level/map/salted_field/monsters2.json",
+  "load": "level/map/salted_field/quests.json",
+  "load": "level/map/salted_field/items.json"
+}

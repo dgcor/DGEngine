@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load5Layers.json",
+    "grot_lagoon",
+    "level/data/empyrean_campaign/grot_lagoon.json"
+  ],
+  "load": "level/map/grot_lagoon/levelObjects2.json",
+  "load": "level/map/grot_lagoon/monsters2.json",
+  "load": "level/map/grot_lagoon/quests.json",
+  "load": "level/map/grot_lagoon/items.json"
+}

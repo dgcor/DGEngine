@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/snowplains_snow.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/temple_of_mez_3/levelObjects.json",
+  "load": "level/map/temple_of_mez_3/monsters.json",
+  "load": "level/map/temple_of_mez_3/level2.json"
+}

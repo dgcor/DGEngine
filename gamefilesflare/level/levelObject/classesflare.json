@@ -1,0 +1,61 @@
+{
+  "levelObjectClass": [
+    {
+      "id": "levelDownFlare",
+      "name": "Down to level",
+      "nameClassifier": "levelNameFlare",
+      "size": [1, 1],
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "descriptions": [
+        { "index": 0, "name": "levelPath" }
+      ],
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.down.d.0%",
+            "%currentLevel.levelObject.down.x%, %currentLevel.levelObject.down.y%",
+            "flare"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelDownFlare2",
+      "fromId": "levelDownFlare",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.clickedObject.d.0%",
+            "%currentLevel.clickedObject.x%, %currentLevel.clickedObject.y%",
+            "flare"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelUpFlare",
+      "fromId": "levelDownFlare",
+      "name": "Up to level",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.up.d.0%",
+            "%currentLevel.levelObject.up.x%, %currentLevel.levelObject.up.y%",
+            "flare"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelUpFlare2",
+      "fromId": "levelDownFlare2"
+    }
+  ]
+}

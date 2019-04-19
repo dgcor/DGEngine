@@ -1,7 +1,6 @@
 #pragma once
 
-#include "ItemXY.h"
-#include "MapCoord.h"
+#include "PairXY.h"
 #include <string>
 #include <variant>
 
@@ -12,7 +11,7 @@ private:
 	int16_t inventoryIdx{ 0 };
 	union
 	{
-		ItemXY itemXY;
+		PairUInt8 itemXY;
 		uint16_t itemIdx;
 	};
 
@@ -28,7 +27,7 @@ public:
 		inventoryIdx(((int16_t)inventoryIdx_) & 0x7FFF),
 		itemIdx((int16_t)itemIdx_) {}
 
-	ItemCoordInventory(const std::string_view playerId_, size_t inventoryIdx_, const ItemXY& itemXY_)
+	ItemCoordInventory(const std::string_view playerId_, size_t inventoryIdx_, const PairUInt8& itemXY_)
 		: playerId(playerId_),
 		inventoryIdx(((int16_t)inventoryIdx_) | 0x8000),
 		itemXY(itemXY_) {}
@@ -65,7 +64,7 @@ public:
 		return itemIdx;
 	}
 
-	ItemXY getItemXY() const noexcept
+	PairUInt8 getItemXY() const noexcept
 	{
 		if (isCoordXY() == false)
 		{
@@ -77,7 +76,7 @@ public:
 	const std::string& getPlayerId() const noexcept { return playerId; }
 };
 
-typedef std::variant<MapCoord, ItemCoordInventory> ItemLocation;
+typedef std::variant<PairFloat, ItemCoordInventory> ItemLocation;
 
-#define holdsMapCoord std::holds_alternative<MapCoord>
+#define holdsMapCoord std::holds_alternative<PairFloat>
 #define holdsItemCoordInventory std::holds_alternative<ItemCoordInventory>

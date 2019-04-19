@@ -40,7 +40,7 @@ void BaseAnimation::updateFrameIndex() noexcept
 	}
 }
 
-bool BaseAnimation::update(sf::Time elapsedTime) noexcept
+bool BaseAnimation::update(sf::Time elapsedTime_) noexcept
 {
 	if (pause == true ||
 		textureIndexRange.second <= textureIndexRange.first)
@@ -53,22 +53,16 @@ bool BaseAnimation::update(sf::Time elapsedTime) noexcept
 		return false;
 	}
 
-	currentTime += elapsedTime;
-
-	if (currentTime < frameTime)
+	elapsedTime.update(elapsedTime_, [&]() -> bool
 	{
-		return false;
-	}
-	do
-	{
-		currentTime -= frameTime;
 		updateFrameIndex();
 		if (animType == AnimationType::PlayOnce &&
 			currentTextureIdx >= textureIndexRange.second)
 		{
-			break;
+			return false;
 		}
-	} while (currentTime >= frameTime);
+		return true;
+	});
 
 	return true;
 }

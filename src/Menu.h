@@ -1,9 +1,7 @@
 #pragma once
 
-#include <vector>
-#include <SFML/Graphics.hpp>
 #include "StringButton.h"
-#include "UIObject.h"
+#include <vector>
 
 class Menu : public UIObject
 {

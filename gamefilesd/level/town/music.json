@@ -1,8 +1,0 @@
-{
-  "audio": {
-    "id": "main",
-    "file": "music/dtowne.wav",
-    "loop": true,
-    "play": true
-  }
-}

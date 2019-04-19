@@ -1,8 +1,0 @@
-{
-  "level": {
-    "id": "level",
-    "resizeToFit": false,
-    "map": { "file": "level/town/town_catacombs.json", "indexOffset": -1, "position": [48, 20] }
-  },
-  "load": "level/l5/townToLevel.json"
-}

@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/wizards_tower_1/levelObjects.json",
+  "load": "level/map/wizards_tower_1/monsters.json",
+  "load": "level/map/wizards_tower_1/level2.json"
+}

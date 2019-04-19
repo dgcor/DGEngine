@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave_fog.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/underworld_catacombs/levelObjects.json",
+  "load": "level/map/underworld_catacombs/monsters.json",
+  "load": "level/map/underworld_catacombs/level2.json"
+}

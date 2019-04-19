@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/nazia_mines/levelObjects.json",
+  "load": "level/map/nazia_mines/monsters.json",
+  "load": "level/map/nazia_mines/level2.json"
+}

@@ -3,8 +3,8 @@
 #include "Classifiers.h"
 #include "Formula.h"
 #include "GameProperties.h"
-#include "ItemXY.h"
 #include "LevelObjectClassDefaults.h"
+#include "PairXY.h"
 #include "Spell.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
@@ -24,7 +24,7 @@ private:
 	std::string subType;
 	uint16_t typeHash16{ 0 };
 
-	ItemXY inventorySize;
+	PairUInt8 inventorySize;
 
 	Classifiers<12> classifiers;
 
@@ -81,7 +81,7 @@ public:
 	const std::string& Type() const noexcept { return type; }
 	const std::string& SubType() const noexcept { return subType; }
 	uint16_t TypeHash16() const noexcept { return typeHash16; }
-	const ItemXY& InventorySize() const noexcept { return inventorySize; }
+	const PairUInt8& InventorySize() const noexcept { return inventorySize; }
 
 	const sf::Time& AnimationSpeed() const noexcept { return animationSpeed; }
 	const sf::Color& Outline() const noexcept { return outline; }
@@ -99,7 +99,7 @@ public:
 		typeHash16 = str2int16(Utils::toLower(type_));
 	}
 	void SubType(const std::string_view subType_) { subType = subType_; }
-	void InventorySize(const ItemXY inventorySize_) noexcept { inventorySize = inventorySize_; }
+	void InventorySize(const PairUInt8 inventorySize_) noexcept { inventorySize = inventorySize_; }
 
 	void AnimationSpeed(const sf::Time time) noexcept { animationSpeed = time; }
 	void Outline(const sf::Color color) noexcept { outline = color; }

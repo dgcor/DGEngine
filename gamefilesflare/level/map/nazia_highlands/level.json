@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/nazia_highlands/levelObjects.json",
+  "load": "level/map/nazia_highlands/monsters.json",
+  "load": "level/map/nazia_highlands/level2.json"
+}

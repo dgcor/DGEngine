@@ -1,0 +1,42 @@
+{
+  "title" : "Diablo Extended",
+  "version": "1.0",
+  "saveDir": ".diabloex",
+  "refWindowSize": [640, 480],
+  "minWindowSize": [640, 480],
+  "windowSize": [640, 480],
+  "maxWindowHeight": 600,
+  "framerate": 60,
+  "keepAR": true,
+  "stretchToFit": false,
+  "smoothScreen": true,
+  "load": "settings.json",
+  "init": true,
+  "mountFile": [
+    { "file": "gamefilesd" },
+    { "file": "gamefilesflare" },
+    { "file": "gamefileshf" },
+    { "file": "DIABDAT.MPQ" },
+    { "file": "empyrean_campaign" },
+    { "file": "fantasycore" }
+  ],
+  "action": {
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "ui_art/title.pcx" },
+    "param2": true,
+    "then": {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "images/logo/icon.png" },
+      "param2": true,
+      "then": {
+        "name": "if.equal",
+        "param1": { "name": "file.exists", "file": "images/parallax/fog.png" },
+        "param2": true,
+        "then": { "name": "load", "file": "ui/loadMain2.json" },
+        "else": { "name": "load", "file": ["ui/dataMissing.json", "empyrean_campaign"] }
+      },
+      "else": { "name": "load", "file": ["ui/dataMissing.json", "fantasycore"] }
+    },
+    "else": { "name": "load", "file": ["ui/dataMissing.json", "DIABDAT"] }
+  }
+}

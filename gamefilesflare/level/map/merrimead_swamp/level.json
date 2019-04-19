@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland_rain.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/merrimead_swamp/levelObjects.json",
+  "load": "level/map/merrimead_swamp/monsters.json",
+  "load": "level/map/merrimead_swamp/level2.json"
+}

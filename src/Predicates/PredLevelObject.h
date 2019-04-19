@@ -3,17 +3,18 @@
 #include "Predicate.h"
 #include "Game.h"
 #include "Game/GameHashes.h"
+#include "Game/Level.h"
 
 class PredLevelObjIsInRange : public Predicate
 {
 private:
 	std::string idLevel;
 	std::string idObject;
-	sf::IntRect mapLocationRange;
+	sf::FloatRect mapLocationRange;
 
 public:
 	PredLevelObjIsInRange(const std::string& idLevel_,
-		const std::string& idObject_, const sf::IntRect& mapLocationRange_)
+		const std::string& idObject_, const sf::FloatRect& mapLocationRange_)
 		: idLevel(idLevel_), idObject(idObject_), mapLocationRange(mapLocationRange_) {}
 
 	virtual Variable getResult(const Game& game) const
@@ -40,11 +41,11 @@ class PredLevelObjIsInRangeByClass : public Predicate
 private:
 	std::string idLevel;
 	std::string idClass;
-	sf::IntRect mapLocationRange;
+	sf::FloatRect mapLocationRange;
 
 public:
 	PredLevelObjIsInRangeByClass(const std::string& idLevel_,
-		const std::string& idClass_, const sf::IntRect& mapLocationRange_)
+		const std::string& idClass_, const sf::FloatRect& mapLocationRange_)
 		: idLevel(idLevel_), idClass(idClass_), mapLocationRange(mapLocationRange_) {}
 
 	virtual Variable getResult(const Game& game) const

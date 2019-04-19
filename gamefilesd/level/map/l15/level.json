@@ -1,0 +1,12 @@
+{
+  "palette": {
+    "id": "level",
+    "file": "levels/l4data/l4_3.pal"
+  },
+  "load": "level/default/hell.json",
+  "level": { "id": "level", "defaultLight": 0 },
+  "load": "level/automap/hell/load.json",
+  "load": "level/map/l15/levelObjects.json",
+  "load": "level/map/l15/monsters.json",
+  "load": "level/map/l15/level2.json"
+}

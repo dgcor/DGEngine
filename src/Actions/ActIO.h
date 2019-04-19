@@ -4,6 +4,8 @@
 #include "FileUtils.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Json/JsonUtils.h"
+#include "Parser/ParserProperties.h"
 
 class ActDirCopy : public Action
 {
@@ -45,11 +47,13 @@ private:
 	std::vector<std::string> filesRead;
 	std::string fileWrite;
 	std::string nullText;
+	ReplaceVars replaceVars;
 
 public:
 	ActFileCopy(const std::string& dir_, const std::vector<std::string>& filesRead_,
-		const std::string& fileWrite_, const std::string& nullText_)
-		: dir(dir_), filesRead(filesRead_), fileWrite(fileWrite_), nullText(nullText_) {}
+		const std::string& fileWrite_, const std::string& nullText_,
+		ReplaceVars replaceVars_) : dir(dir_), filesRead(filesRead_),
+		fileWrite(fileWrite_), nullText(nullText_), replaceVars(replaceVars_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -84,6 +88,17 @@ public:
 					param = varStr;
 				}
 				Utils::replaceStringInPlace(str, "{" + Utils::toString(i) + "}", param);
+			}
+
+			if (replaceVars != ReplaceVars::None)
+			{
+				bool changeValueType = replaceVars == ReplaceVars::Value;
+				rapidjson::Document doc;
+				if (JsonUtils::loadJsonAndReplaceValues(
+					str, doc, game, changeValueType, '|') == true)
+				{
+					str = JsonUtils::jsonToPrettyString(doc);
+				}
 			}
 
 			auto writePath = GameUtils::replaceStringWithVarOrProp(dir, game);

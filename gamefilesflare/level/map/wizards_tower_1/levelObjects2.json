@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [62, 26],
+      "size": [4, 4],
+      "text1": "wizards_tower_2",
+      "properties": {
+        "x": 9,
+        "y": 68
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [33, 47],
+      "size": [1, 2],
+      "text1": "black_oak_city",
+      "properties": {
+        "x": 46,
+        "y": 50
+      }
+    }
+  ]
+}

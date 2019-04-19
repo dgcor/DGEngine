@@ -1,0 +1,14 @@
+{
+  "load": "level/data/tileset/snowplains.json",
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "snowplains" },
+      { "index": 2, "texturePack": "snowplains" },
+      { "index": 3, "texturePack": "snowplains" },
+      { "index": 4, "texturePack": "snowplains" },
+      { "index": 5, "texturePack": "snowplains", "drawObjects": true }
+    ],
+    "defaultLight": 255
+  }
+}

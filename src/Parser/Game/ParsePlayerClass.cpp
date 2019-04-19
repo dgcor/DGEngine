@@ -1,4 +1,6 @@
 #include "ParsePlayerClass.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Game/PlayerClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"

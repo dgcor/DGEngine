@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics/Texture.hpp>
 #include "TexturePack.h"
 #include <vector>
 

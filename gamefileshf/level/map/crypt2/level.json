@@ -1,0 +1,8 @@
+{
+  "load": "level/default/crypt.json",
+  "level": { "id": "level", "defaultLight": 0 },
+  "load": "level/automap/crypt/load.json",
+  "load": "level/map/crypt2/levelObjects.json",
+  "load": "level/map/crypt2/monsters.json",
+  "load": "level/map/crypt2/level2.json"
+}

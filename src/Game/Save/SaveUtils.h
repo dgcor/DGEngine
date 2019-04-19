@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Game/MapCoord.h"
+#include <cmath>
 #include "Game/Number.h"
+#include "Game/PairXY.h"
 #include "Json/JsonParser.h"
 #include <string>
 #include <string_view>
@@ -21,15 +22,116 @@ namespace SaveUtils
 		const std::string_view key, const Number32& val);
 
 	// same line formatted.
-	template <class T>
-	void writeVector2d(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+	template <class T, class NumType>
+	void writeVector2Number(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, const T& val)
 	{
 		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
 		writer.Key(key.data(), key.size());
 		writer.StartArray();
-		writer.Int(val.x);
-		writer.Int(val.y);
+		if constexpr (std::is_integral<NumType>::value == true)
+		{
+			if constexpr (sizeof(T) <= 4)
+			{
+				writer.Int(val.x);
+				writer.Int(val.y);
+			}
+			else
+			{
+				writer.Int64(val.x);
+				writer.Int64(val.y);
+			}
+		}
+		else if constexpr (std::is_floating_point<NumType>::value == true)
+		{
+			writer.Double(val.x);
+			writer.Double(val.y);
+		}
+		writer.EndArray();
+		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
+	}
+
+	// same line formatted.
+	template <class T>
+	void writeVector2i(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const T& val)
+	{
+		writeVector2Number<T, decltype(val.x)>(writer, key, val);
+	}
+
+	// same line formatted.
+	template <class T>
+	void writeVector2f(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const T& val)
+	{
+		writeVector2Number<T, decltype(val.x)>(writer, key, val);
+	}
+
+	// writes floats. if the float has no decimal part, writes ints
+	// same line formatted.
+	template <class T>
+	void writeVector2fi(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const T& val)
+	{
+		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
+		writer.Key(key.data(), key.size());
+		writer.StartArray();
+		if constexpr (std::is_integral<decltype(val.x)>::value == true)
+		{
+			if constexpr (sizeof(T) <= 4)
+			{
+				writer.Int(val.x);
+				writer.Int(val.y);
+			}
+			else
+			{
+				writer.Int64(val.x);
+				writer.Int64(val.y);
+			}
+		}
+		else if constexpr (std::is_floating_point<decltype(val.x)>::value == true)
+		{
+			if constexpr (sizeof(T) <= 4)
+			{
+				float intpart;
+				if (std::modf(val.x, &intpart) == 0.0)
+				{
+					writer.Int((int32_t)val.x);
+				}
+				else
+				{
+					writer.Double(val.x);
+				}
+				if (std::modf(val.y, &intpart) == 0.0)
+				{
+					writer.Int((int32_t)val.y);
+				}
+				else
+				{
+					writer.Double(val.y);
+				}
+			}
+			else
+			{
+				double intpart;
+				if (std::modf(val.x, &intpart) == 0.0)
+				{
+					writer.Int64((int64_t)val.x);
+				}
+				else
+				{
+					writer.Double(val.x);
+				}
+				if (std::modf(val.y, &intpart) == 0.0)
+				{
+					writer.Int64((int64_t)val.y);
+				}
+				else
+				{
+					writer.Double(val.y);
+				}
+			}
+		}
 		writer.EndArray();
 		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
 	}

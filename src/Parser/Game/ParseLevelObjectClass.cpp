@@ -1,4 +1,6 @@
 #include "ParseLevelObjectClass.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Game/SimpleLevelObjectClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
@@ -109,7 +111,10 @@ namespace Parser
 		{
 			levelObjClass->Text2(getStringViewVal(elem["text2"]));
 		}
-
+		if (elem.HasMember("size") == true)
+		{
+			levelObjClass->setCellSize(getVector2iVal<PairInt8>(elem["size"]));
+		}
 		if (elem.HasMember("nameClassifier") == true)
 		{
 			levelObjClass->setNameClassifier(

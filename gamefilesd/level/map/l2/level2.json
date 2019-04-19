@@ -1,0 +1,11 @@
+{
+  "load": ["level/default/loadDungeonTiled.json", "l2", "2", "level/map/l2/l2.json"],
+  "action": {
+    "name": "if.equal",
+    "param1": "%beta%",
+    "param2": true,
+    "then": { "name": "load", "file": "level/map/l2/levelObjects2Beta.json" },
+    "else": { "name": "load", "file": "level/map/l2/levelObjects2.json" }
+  },
+  "load": "level/map/l2/monsters2.json"
+}

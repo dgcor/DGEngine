@@ -2,6 +2,8 @@
   "action": [
     { "name": "resource.add", "id": "gameInfo", "ignorePrevious": true },
     { "name": "game.fadeIn" },
+    "loadMainMenuImg",
+    "loadLogoImg",
     {
       "name": "action.set",
       "id": "anchorLeftPentagram",
@@ -36,19 +38,7 @@
       "action": { "name": "button.click", "id": "back" }
     }
   ],
-  "image": {
-    "id": "mainmenu",
-    "texture": "mainmenu",
-    "anchor": "none"
-  },
   "animation": [
-    {
-      "id": "smlogo",
-      "texturePack": "smlogo",
-      "position": ["center", 0],
-      "anchor": "none",
-      "refresh": 50
-    },
     {
       "id": "pent1",
       "texturePack": "focus42",

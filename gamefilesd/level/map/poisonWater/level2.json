@@ -1,0 +1,10 @@
+{
+  "load": [
+    "level/default/loadCavesDun.json",
+    "poisonWater",
+    "Poisoned Water Supply",
+    "levels/l3data/foulwatr.dun"
+  ],
+  "load": "level/map/poisonWater/levelObjects2.json",
+  "load": "level/map/poisonWater/monsters2.json"
+}

@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [33, 16],
+      "size": [4, 4],
+      "text1": "book_of_the_dead",
+      "properties": {
+        "x": 17,
+        "y": 46
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [16, 25],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 12,
+        "y": 12
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [1, 22],
+      "size": [1, 4],
+      "text1": "river_trail",
+      "properties": {
+        "x": 77,
+        "y": 26
+      }
+    }
+  ]
+}

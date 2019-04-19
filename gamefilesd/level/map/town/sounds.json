@@ -1,0 +1,18 @@
+{
+  "sound": [
+    { "id": "bmaidWelcome", "file": "sfx/Towners/Bmaid31.wav" },
+    { "id": "bsmithWelcome", "file": "sfx/Towners/Bsmith44.wav" },
+    { "id": "drunkWelcome", "file": "sfx/Towners/Drunk27.wav" },
+    { "id": "healerWelcome", "file": "sfx/Towners/Healer37.wav" },
+    { "id": "pegboyWelcome", "file": "sfx/Towners/Pegboy32.wav" },
+    { "id": "storytWelcome", "file": "sfx/Towners/storyt25.wav" },
+    { "id": "tavownWelcome", "file": "sfx/Towners/tavown36.wav" },
+    { "id": "witchWelcome", "file": "sfx/Towners/Witch38.wav" },
+    { "id": "cow1", "file": "sfx/Towners/Cow1.wav" },
+    { "id": "cow2", "file": "sfx/Towners/Cow2.wav" }
+  ],
+  "load": ["res/player/sound/load.json", 49, "notThirsty", "loadSound", ""],
+  "load": ["res/player/sound/load.json", 50, "noMilkmaid", "loadSound", ""],
+  "load": ["res/player/sound/load.json", 52, "ThatsACowAlright", "loadSound", ""],
+  "load": "level/map/town/sounds2.json"
+}

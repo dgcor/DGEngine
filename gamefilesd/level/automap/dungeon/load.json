@@ -1,0 +1,57 @@
+{
+  "texturePack": [
+    {
+      "id": "automap0",
+      "fromId": "dungeonAutomap0"
+    },
+    {
+      "id": "automap1",
+      "fromId": "dungeonAutomap3"
+    },
+    {
+      "id": "automap2",
+      "fromId": "dungeonAutomap5"
+    },
+    {
+      "id": "automap3",
+      "fromId": "dungeonAutomap8"
+    },
+    {
+      "id": "automap4",
+      "fromId": "dungeonAutomap10"
+    },
+    {
+      "id": "automap5",
+      "fromId": "dungeonAutomap13"
+    },
+    {
+      "id": "automap6",
+      "fromId": "dungeonAutomap15"
+    },
+    {
+      "id": "automap7",
+      "fromId": "dungeonAutomap18"
+    },
+    {
+      "id": "automap8",
+      "fromId": "dungeonAutomap20"
+    },
+    {
+      "id": "automap9",
+      "fromId": "dungeonAutomap23"
+    },
+    {
+      "id": "automap10",
+      "fromId": "dungeonAutomap25"
+    },
+    {
+      "id": "automap11",
+      "fromId": "dungeonAutomap28"
+    },
+    {
+      "id": "automap12",
+      "fromId": "dungeonAutomap30"
+    }
+  ],
+  "action": "updateAutomapZoom"
+}

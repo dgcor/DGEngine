@@ -1,0 +1,220 @@
+{
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "mainMenu"
+    },
+    {
+      "name": "action.set",
+      "id": "loadMainMenuImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "image": {
+            "id": "mainmenu",
+            "texture": "mainmenu",
+            "textureRect": [0, 0, 640, 330],
+            "background": true,
+            "color": "0x333333"
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "loadLogoImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "animation": {
+            "id": "smlogo",
+            "texturePack": "smlogo",
+            "position": [125, 0],
+            "anchor": "none",
+            "refresh": 50
+          },
+          "text": {
+            "id": "smlogoText",
+            "font": "font24s",
+            "position": [372, 130],
+            "anchor": "none",
+            "color": "0x888888",
+            "horizontalAlign": "center",
+            "text": "Extended"
+          }
+        }
+      }
+    }
+  ],
+  "audio": {
+    "id": "main",
+    "file": "music/dintro.wav",
+    "loop": true,
+    "play": true
+  },
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "menu.click", "id": "menu", "index": 4 }
+    },
+    {
+      "key": "f1",
+      "action": {
+        "name": "game.fadeOut",
+        "action": {
+          "name": "load",
+          "file": "ui/gameInfo.json"
+        }
+      }
+    }
+  ],
+  "texture": {
+    "id": "mainmenu",
+    "file": "ui_art/title.pcx"
+  },
+  "texturePack": [
+    {
+      "id": "smlogo",
+      "texture": "smlogo",
+      "file": "ui_art/smlogo.pcx",
+      "mask": "0x00FF00",
+      "frames": 15
+    },
+    {
+      "id": "focus42",
+      "texture": "focus42",
+      "file": "ui_art/focus42.pcx",
+      "mask": "0x00FF00",
+      "frames": 8
+    }
+  ],
+  "cursor": {
+    "texture": "cursor"
+  },
+  "action": [
+    "loadMainMenuImg",
+    "loadLogoImg"
+  ],
+  "animation": [
+    {
+      "id": "pent1",
+      "texturePack": "focus42",
+      "position": [67, 192],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent2",
+      "texturePack": "focus42",
+      "position": [537, 192],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "menu": {
+    "id": "menu",
+    "font": "font42g",
+    "position": [319, 192],
+    "sound": "titlslct",
+    "focus": true,
+    "focusSound": "titlemov",
+    "anchor": "none",
+    "items": [
+      {
+        "text": "Single Player",
+        "position": [170, 192],
+        "onClick": {
+          "name": "load",
+          "file": "ui/singlePlayer/main.json"
+        },
+        "onFocus": "anchorPentagrams"
+      },
+      {
+        "text": "Multi Player",
+        "position": [172, 235],
+        "enable": false,
+        "onFocus": "anchorPentagrams"
+      },
+      {
+        "text": "Replay Intro",
+        "position": [174, 277],
+        "onClick": {
+          "name": "load",
+          "file": ["ui/playIntro.json", "ui/fadeIn.json"]
+        },
+        "onFocus": "anchorPentagrams"
+      },
+      {
+        "text": "Show Credits",
+        "position": [173, 320],
+        "onClick": {
+          "name": "game.fadeOut",
+          "action": {
+            "name": "load",
+            "file": "ui/credits.json"
+          }
+        },
+        "onFocus": "anchorPentagrams"
+      },
+      {
+        "text": "Exit Diablo",
+        "position": [192, 363],
+        "onClick": {
+          "name": "game.fadeOut",
+          "action": {
+            "name": "game.close"
+          }
+        },
+        "onFocus": "anchorPentagrams"
+      }
+    ]
+  },
+  "button": {
+    "id": "versionInfo",
+    "font": "font16s",
+    "position": [17, 444],
+    "sound": "titlslct",
+    "anchor": "none",
+    "onClick": {
+      "name": "game.fadeOut",
+      "action": {
+        "name": "load",
+        "file": "ui/settings.json"
+      }
+    },
+    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "Change Settings     " },
+    "onHoverLeave": {
+      "name": "text.setText",
+      "id": "versionInfo",
+      "binding": ["%game.title%", "%game.version%"],
+      "format": "[1] v[2]"
+    }
+  },
+  "load": "ui/showMods.json",
+  "action": [
+    { "name": "menu.setFont", "id": "menu", "index": 1, "font": "font42y" },
+    {
+      "name": "text.setText",
+      "id": "versionInfo",
+      "binding": ["%game.title%", "%game.version%"],
+      "format": "[1] v[2]"
+    }
+  ]
+}

@@ -1,4 +1,5 @@
 #include "TexturePack.h"
+#include "TextureInfo.h"
 
 void TexturePack::updateTextureRect(TextureInfo& ti)
 {

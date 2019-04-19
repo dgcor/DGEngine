@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Game.h"
 #include "Json/JsonParser.h"
+#include <memory>
+
+class Animation;
+class Game;
 
 namespace Parser
 {

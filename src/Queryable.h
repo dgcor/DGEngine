@@ -2,8 +2,9 @@
 
 #include "Game/Number.h"
 #include <string_view>
-#include "TextureInfo.h"
 #include "Variable.h"
+
+struct TextureInfo;
 
 class Queryable
 {

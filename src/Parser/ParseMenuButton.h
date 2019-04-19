@@ -1,7 +1,12 @@
 #pragma once
 
-#include "Game.h"
+#include "Anchor.h"
+#include "Font.h"
 #include "Json/JsonParser.h"
+#include <SFML/Audio/SoundBuffer.hpp>
+
+class Game;
+class Menu;
 
 namespace Parser
 {

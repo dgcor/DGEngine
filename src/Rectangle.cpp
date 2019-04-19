@@ -5,13 +5,9 @@
 
 void Rectangle::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
 	auto pos = getPosition();
 	auto size = getSize();
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	setPosition(pos);
 	setSize(size);
 }

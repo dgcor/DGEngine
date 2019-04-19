@@ -1,0 +1,24 @@
+{
+  "load": "level/data/tileset/snowplains.json",
+  "texture": {
+    "id": "snow",
+    "file": "images/parallax/snow.png"
+  },
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "snowplains" },
+      { "index": 2, "texturePack": "snowplains" },
+      { "index": 3, "texturePack": "snowplains" },
+      { "index": 4, "texturePack": "snowplains" },
+      { "index": 5, "texturePack": "snowplains", "drawObjects": true },
+      {
+        "texture": "snow",
+        "parallaxSpeed": 0.25,
+        "parallaxFixedSpeed": [-1, 3],
+        "parallaxUpdate": 30
+      }
+    ],
+    "defaultLight": 255
+  }
+}

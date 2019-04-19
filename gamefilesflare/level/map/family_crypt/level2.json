@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "family_crypt",
+    "level/data/empyrean_campaign/family_crypt.json"
+  ],
+  "load": "level/map/family_crypt/levelObjects2.json",
+  "load": "level/map/family_crypt/monsters2.json",
+  "load": "level/map/family_crypt/quests.json",
+  "load": "level/map/family_crypt/items.json"
+}

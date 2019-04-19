@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "arrival",
+    "level/data/empyrean_campaign/arrival.json"
+  ],
+  "load": "level/map/arrival/levelObjects2.json",
+  "load": "level/map/arrival/monsters2.json",
+  "load": "level/map/arrival/quests.json",
+  "load": "level/map/arrival/items.json"
+}

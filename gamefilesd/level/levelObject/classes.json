@@ -1,4 +1,4 @@
 {
-  "load": "level/levelObject/classifiers.json",
-  "load": "level/levelObject/classes2.json"
+  "load": "level/levelObject/classifiersd.json",
+  "load": "level/levelObject/classesd.json"
 }

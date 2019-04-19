@@ -3,6 +3,7 @@
 #include "Predicate.h"
 #include "Game.h"
 #include "Game/GameHashes.h"
+#include "Game/Level.h"
 
 class PredItemHasRequiredStats : public Predicate
 {

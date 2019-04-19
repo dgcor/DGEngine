@@ -23,4 +23,9 @@ struct PairXY
 };
 
 typedef PairXY<float> PairFloat;
-typedef PairXY<int32_t> PairInt;
+typedef PairXY<int8_t> PairInt8;
+typedef PairXY<int16_t> PairInt16;
+typedef PairXY<int32_t> PairInt32;
+typedef PairXY<uint8_t> PairUInt8;
+typedef PairXY<uint16_t> PairUInt16;
+typedef PairXY<uint32_t> PairUInt32;

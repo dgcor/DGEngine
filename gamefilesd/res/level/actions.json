@@ -1,4 +1,5 @@
 {
+  "load": "res/level/actions/music.json",
   "load": "res/level/actions/sounds.json",
   "load": "res/level/actions/resizeLevel.json",
   "load": "res/level/actions/itemPanel.json",

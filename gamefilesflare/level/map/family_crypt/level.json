@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/family_crypt/levelObjects.json",
+  "load": "level/map/family_crypt/monsters.json",
+  "load": "level/map/family_crypt/level2.json"
+}

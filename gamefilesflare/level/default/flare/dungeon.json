@@ -1,0 +1,11 @@
+{
+  "load": "level/data/tileset/dungeon.json",
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "dungeon" },
+      { "index": 2, "texturePack": "dungeon" }
+    ],
+    "defaultLight": 255
+  }
+}

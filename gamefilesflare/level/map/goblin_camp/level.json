@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/goblin_camp/levelObjects.json",
+  "load": "level/map/goblin_camp/monsters.json",
+  "load": "level/map/goblin_camp/level2.json"
+}

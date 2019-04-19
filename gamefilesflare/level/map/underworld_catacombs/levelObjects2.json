@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [58, 3],
+      "size": [2, 1],
+      "text1": "underworld_mines",
+      "properties": {
+        "x": 31,
+        "y": 63
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [58, 42],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 9,
+        "y": 23
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [70, 102],
+      "size": [2, 1],
+      "text1": "underworld",
+      "properties": {
+        "x": 84,
+        "y": 31
+      }
+    }
+  ]
+}

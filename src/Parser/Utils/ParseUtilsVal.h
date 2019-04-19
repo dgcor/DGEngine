@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Anchor.h"
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
 #include "Game/LightSource.h"
@@ -15,6 +16,9 @@
 
 namespace Parser
 {
+	Anchor getAnchorVal(const rapidjson::Value& elem,
+		Anchor val = Anchor::Top | Anchor::Left);
+
 	bool getBoolVal(const rapidjson::Value& elem, bool val = {});
 
 	double getDoubleVal(const rapidjson::Value& elem, double val = {});
@@ -35,41 +39,302 @@ namespace Parser
 
 	uint64_t getUInt64Val(const rapidjson::Value& elem, uint64_t val = {});
 
-	template <class T>
-	T getVector2fVal(const rapidjson::Value& elem, const T& val = {})
+	// gets a number based on its type
+	template<class T>
+	T getNumberVal(const rapidjson::Value& elem, T val = {})
+	{
+		if constexpr (std::is_integral<T>::value == true)
+		{
+			if constexpr (std::is_signed<T>::value == true)
+			{
+				// T = signed integer
+				if constexpr (sizeof(T) <= 4)
+				{
+					if (elem.IsInt() == true)
+					{
+						return (T)elem.GetInt();
+					}
+					else if (elem.IsFloat() == true)
+					{
+						return (T)elem.GetFloat();
+					}
+					return val;
+				}
+				else
+				{
+					if (elem.IsInt64() == true)
+					{
+						return (T)elem.GetInt64();
+					}
+					else if (elem.IsDouble() == true)
+					{
+						return (T)elem.GetDouble();
+					}
+					return val;
+				}
+			}
+			else
+			{
+				// T = unsigned integer
+				if constexpr (sizeof(T) <= 4)
+				{
+					if (elem.IsUint() == true)
+					{
+						return (T)elem.GetUint();
+					}
+					else if (elem.IsFloat() == true)
+					{
+						auto num = elem.GetFloat();
+						if (num >= 0.0)
+						{
+							return (T)num;
+						}
+					}
+					return val;
+				}
+				else
+				{
+					if (elem.IsInt64() == true)
+					{
+						return (T)elem.GetInt64();
+					}
+					else if (elem.IsDouble() == true)
+					{
+						auto num = elem.GetDouble();
+						if (num >= 0.0)
+						{
+							return (T)num;
+						}
+					}
+					return val;
+				}
+			}
+		}
+		else if constexpr (std::is_floating_point<T>::value == true)
+		{
+			// T = floating point
+			if constexpr (sizeof(T) <= 4)
+			{
+				if (elem.IsFloat() == true)
+				{
+					return (T)elem.GetFloat();
+				}
+				else if (elem.IsInt() == true)
+				{
+					return (T)elem.GetInt();
+				}
+				return val;
+			}
+			else
+			{
+				if (elem.IsDouble() == true)
+				{
+					return (T)elem.GetDouble();
+				}
+				else if (elem.IsInt64() == true)
+				{
+					return (T)elem.GetInt64();
+				}
+				return val;
+			}
+		}
+	}
+
+	// gets a number based on its type
+	// if the number type is an integer, returns it unchanged
+	// if the number is a float and below 0, val is returned
+	template<class T>
+	T getUnsignedNumberVal(const rapidjson::Value& elem, T val = {})
+	{
+		if constexpr (std::is_integral<T>::value == true)
+		{
+			if constexpr (std::is_signed<T>::value == true)
+			{
+				// T = signed integer
+				if constexpr (sizeof(T) <= 4)
+				{
+					if (elem.IsInt() == true)
+					{
+						return (T)elem.GetInt();
+					}
+					else if (elem.IsFloat() == true)
+					{
+						return (T)elem.GetFloat();
+					}
+					return val;
+				}
+				else
+				{
+					if (elem.IsInt64() == true)
+					{
+						return (T)elem.GetInt64();
+					}
+					else if (elem.IsDouble() == true)
+					{
+						return (T)elem.GetDouble();
+					}
+					return val;
+				}
+			}
+			else
+			{
+				// T = unsigned integer
+				if constexpr (sizeof(T) <= 4)
+				{
+					if (elem.IsUint() == true)
+					{
+						return (T)elem.GetUint();
+					}
+					else if (elem.IsFloat() == true)
+					{
+						auto num = elem.GetFloat();
+						if (num >= 0.0)
+						{
+							return (T)num;
+						}
+					}
+					return val;
+				}
+				else
+				{
+					if (elem.IsInt64() == true)
+					{
+						return (T)elem.GetInt64();
+					}
+					else if (elem.IsDouble() == true)
+					{
+						auto num = elem.GetDouble();
+						if (num >= 0.0)
+						{
+							return (T)num;
+						}
+					}
+					return val;
+				}
+			}
+		}
+		else if constexpr (std::is_floating_point<T>::value == true)
+		{
+			// T = floating point
+			if constexpr (sizeof(T) <= 4)
+			{
+				if (elem.IsFloat() == true)
+				{
+					auto num = elem.GetFloat();
+					if (num >= 0.0)
+					{
+						return (T)num;
+					}
+				}
+				else if (elem.IsUint() == true)
+				{
+					return (T)elem.GetUint();
+				}
+				return val;
+			}
+			else
+			{
+				if (elem.IsDouble() == true)
+				{
+					auto num = elem.GetDouble();
+					if (num >= 0.0)
+					{
+						return (T)num;
+					}
+				}
+				else if (elem.IsUint64() == true)
+				{
+					return (T)elem.GetUint64();
+				}
+				return val;
+			}
+		}
+	}
+
+	template <class T, class NumType>
+	T getVector2NumberVal(const rapidjson::Value & elem, const T & val = {})
 	{
 		if (elem.IsArray() == true
 			&& elem.Size() > 1
 			&& elem[0].IsNumber() == true
 			&& elem[1].IsNumber() == true)
 		{
-			return T(elem[0].GetFloat(), elem[1].GetFloat());
+			return T(
+				getNumberVal<NumType>(elem[0]),
+				getNumberVal<NumType>(elem[1])
+			);
 		}
 		return val;
+	}
+
+	template <class T, class NumType>
+	T getVector2UnsignedNumberVal(const rapidjson::Value& elem, const T& val = {})
+	{
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
+		{
+			return T(
+				getUnsignedNumberVal<NumType>(elem[0]),
+				getUnsignedNumberVal<NumType>(elem[1])
+			);
+		}
+		return val;
+	}
+
+	template <class T>
+	T getVector2fVal(const rapidjson::Value& elem, const T& val = {})
+	{
+		return getVector2NumberVal<T, float>(elem, val);
 	}
 
 	template <class T>
 	T getVector2iVal(const rapidjson::Value& elem, const T& val = {})
 	{
-		if (elem.IsArray() == true
-			&& elem.Size() > 1
-			&& elem[0].IsNumber() == true
-			&& elem[1].IsNumber() == true)
-		{
-			return T(elem[0].GetInt(), elem[1].GetInt());
-		}
-		return val;
+		return getVector2NumberVal<T, int32_t>(elem, val);
 	}
 
 	template <class T>
 	T getVector2uVal(const rapidjson::Value& elem, const T& val = {})
 	{
+		return getVector2NumberVal<T, uint32_t>(elem, val);
+	}
+
+	template <class T, class NumType>
+	T getVector3NumberVal(const rapidjson::Value& elem, const T& val = {})
+	{
 		if (elem.IsArray() == true
-			&& elem.Size() > 1
+			&& elem.Size() > 2
 			&& elem[0].IsNumber() == true
-			&& elem[1].IsNumber() == true)
+			&& elem[1].IsNumber() == true
+			&& elem[2].IsNumber() == true)
 		{
-			return T(elem[0].GetUint(), elem[1].GetUint());
+			return T(
+				getNumberVal<NumType>(elem[0]),
+				getNumberVal<NumType>(elem[1]),
+				getNumberVal<NumType>(elem[2])
+			);
+		}
+		return val;
+	}
+
+	template <class T, class NumType>
+	T getVector4NumberVal(const rapidjson::Value& elem, const T& val = {})
+	{
+		if (elem.IsArray() == true
+			&& elem.Size() > 3
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true
+			&& elem[2].IsNumber() == true
+			&& elem[3].IsNumber() == true)
+		{
+			return T(
+				getNumberVal<NumType>(elem[0]),
+				getNumberVal<NumType>(elem[1]),
+				getNumberVal<NumType>(elem[2]),
+				getNumberVal<NumType>(elem[3])
+			);
 		}
 		return val;
 	}
@@ -143,7 +408,7 @@ namespace Parser
 
 	Number32 getMinMaxNumber32Val(const rapidjson::Value& elem);
 
-	ItemXY getItemXYVal(const rapidjson::Value& elem, const ItemXY& val = {});
+	PairUInt8 getItemXYVal(const rapidjson::Value& elem, const PairUInt8& val = {});
 
 	ItemCoordInventory getItemCoordInventoryVal(const rapidjson::Value& elem);
 
@@ -153,6 +418,12 @@ namespace Parser
 
 	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
 		PlayerInventory val = PlayerInventory::Body);
+
+	const rapidjson::Value& getQueryVal(const rapidjson::Value* elem,
+		const rapidjson::Value& query);
+
+	const rapidjson::Value& getQueryVal(const rapidjson::Value& elem,
+		const rapidjson::Value& query);
 
 	ReplaceVars getReplaceVarsVal(const rapidjson::Value& elem,
 		ReplaceVars val = ReplaceVars::None);

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "halls_of_infinity/halls_of_infinity_4",
+    "level/data/empyrean_campaign/halls_of_infinity/halls_of_infinity_4.json"
+  ],
+  "load": "level/map/halls_of_infinity/halls_of_infinity_4/levelObjects2.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_4/monsters2.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_4/quests.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_4/items.json"
+}

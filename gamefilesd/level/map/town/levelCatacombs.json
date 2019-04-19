@@ -1,0 +1,4 @@
+{
+  "load": ["level/default/loadSectionTiled.json", "level/map/town/town_catacombs.json", "48, 20"],
+  "load": "level/map/l5/townToLevel.json"
+}

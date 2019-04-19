@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Music2.h"
 
 namespace sf

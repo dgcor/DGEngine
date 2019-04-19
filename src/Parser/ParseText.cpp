@@ -1,6 +1,7 @@
 #include "ParseText.h"
 #include "BitmapText.h"
 #include "FileUtils.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "ParseAction.h"
 #include "StringText.h"
@@ -57,13 +58,10 @@ namespace Parser
 		text->setAnchor(anchor);
 		auto size = text->Size();
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 		text->Position(pos);
 		text->Visible(getBoolKey(elem, "visible", true));

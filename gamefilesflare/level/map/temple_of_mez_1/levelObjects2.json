@@ -1,0 +1,44 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [15, 13],
+      "size": [1, 2],
+      "text1": "temple_of_mez_2",
+      "properties": {
+        "x": 70,
+        "y": 10
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [59, 21],
+      "size": [2, 1],
+      "properties": {
+        "x": 60,
+        "y": 48
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [59, 46],
+      "size": [2, 1],
+      "properties": {
+        "x": 60,
+        "y": 19
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [78, 33],
+      "size": [2, 2],
+      "text1": "antlion_nest",
+      "properties": {
+        "x": 2,
+        "y": 11
+      }
+    }
+  ]
+}

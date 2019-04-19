@@ -15,12 +15,12 @@
 class Player : public LevelObject
 {
 private:
-	MapCoord mapPositionMoveTo;
+	PairFloat mapPositionMoveTo;
 	sf::Vector2f drawPosA;
 	sf::Vector2f drawPosB;
 	float currPositionStep = 0.f;
 
-	std::vector<MapCoord> walkPath;
+	std::vector<PairFloat> walkPath;
 
 	PlayerStatus playerStatus{ PlayerStatus::Stand };
 
@@ -137,11 +137,11 @@ public:
 	}
 
 	using LevelObject::MapPosition;
-	virtual bool MapPosition(LevelMap& map, const MapCoord& pos);
+	virtual bool MapPosition(LevelMap& map, const PairFloat& pos);
 	using LevelObject::move;
-	virtual bool move(LevelMap& map, const MapCoord& pos);
+	virtual bool move(LevelMap& map, const PairFloat& pos);
 
-	const MapCoord& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
+	const PairFloat& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
 
 	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
 
@@ -184,45 +184,17 @@ public:
 	bool setNumber(const std::string_view prop, const Number32& value, const Level* level) noexcept;
 
 	void clearWalkPath() noexcept { walkPath.clear(); }
-	void setWalkPath(const std::vector<MapCoord>& walkPath_);
+	void setWalkPath(const std::vector<PairFloat>& walkPath_);
 
-	void setDefaultSpeed(const AnimationSpeed& speed_)
-	{
-		defaultSpeed = speed_;
-		speed = Class()->getSpeed(playerAnimation);
-		animation.frameTime = speed.animation;
-		updateSpeed();
-	}
+	void setDefaultSpeed(const AnimationSpeed& speed_);
 
 	PlayerDirection getDirection() const noexcept { return playerDirection; }
 
-	void setDirection(PlayerDirection direction_)
-	{
-		if (playerDirection != direction_)
-		{
-			playerDirection = direction_;
-			calculateRange();
-		}
-	}
-	void setAnimation(PlayerAnimation animation_)
-	{
-		if (playerAnimation != animation_)
-		{
-			playerAnimation = animation_;
-			speed = Class()->getSpeed(playerAnimation);
-			animation.frameTime = speed.animation;
-			updateSpeed();
-			calculateRange();
-		}
-	}
-	void setTextureIdx(size_t idx_)
-	{
-		if (textureIdx != idx_)
-		{
-			textureIdx = idx_;
-			calculateRange();
-		}
-	}
+	void setDirection(PlayerDirection direction_);
+
+	void setAnimation(PlayerAnimation animation_);
+
+	void setTextureIdx(size_t idx_);
 
 	void setRestStatus(uint16_t restStatus_) noexcept;
 
@@ -242,7 +214,7 @@ public:
 			playerAnimation <= PlayerAnimation::Walk2;
 	}
 
-	void resetAnimationTime() noexcept { animation.currentTime = speed.animation; }
+	void resetAnimationTime() noexcept { animation.elapsedTime.currentTime = speed.animation; }
 
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;

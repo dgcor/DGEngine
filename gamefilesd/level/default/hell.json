@@ -1,0 +1,36 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "file": "levels/l4data/l4_1.pal"
+        }
+      }
+    }
+  },
+  "variable": [
+    { "colorCycleSpeed": 50 },
+    { "colorCycleStart": 1 },
+    { "colorCycleStop": 32 }
+  ],
+  "palette": {
+    "id": "colorCycle",
+    "fromId": "level"
+  },
+  "level": {
+    "id": "level",
+    "palette": "level",
+    "file": "levels/l4data/l4.cel",
+    "outOfBoundsTile": 19,
+    "til": "levels/l4data/l4.til",
+    "min": "levels/l4data/l4.min",
+    "minBlocks": 16,
+    "sol": "levels/l4data/l4.sol",
+    "defaultLight": 255
+  }
+}

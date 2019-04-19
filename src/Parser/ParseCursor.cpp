@@ -1,5 +1,7 @@
 #include "ParseCursor.h"
+#include "Animation.h"
 #include <cmath>
+#include "Game.h"
 #include "ParseAnimation.h"
 #include "Utils/ParseUtils.h"
 

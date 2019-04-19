@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Queryable.h"
 #include <string>
 #include <string_view>
-#include "Queryable.h"
 
 class Quest : public Queryable
 {

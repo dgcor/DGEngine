@@ -4,7 +4,7 @@
 #include "Anchor.h"
 #include <memory>
 #include "Queryable.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 class Game;
 

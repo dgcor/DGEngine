@@ -2,7 +2,7 @@
   "action": [
     {
       "name": "level.save",
-      "file": "%tempDir%/level/%currentLevel.path%/level2.json",
+      "file": "%tempDir%/level/map/%currentLevel.path%/level2.json",
       "saveCurrentPlayer": true,
       "saveQuests": true
     },

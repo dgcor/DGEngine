@@ -1,8 +1,0 @@
-{
-  "level": {
-    "id": "level",
-    "resizeToFit": false,
-    "map": { "file": "level/town/town_crypt.json", "indexOffset": -1, "position": [36, 21] }
-  },
-  "load": "level/crypt1/townToLevel.json"
-}

@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [48, 49],
+      "text1": "wizards_tower_1",
+      "properties": {
+        "x": 35,
+        "y": 48
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [99, 48],
+      "size": [1, 4],
+      "text1": "black_oak_farm",
+      "properties": {
+        "x": 2,
+        "y": 12
+      }
+    }
+  ]
+}

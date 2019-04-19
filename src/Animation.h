@@ -22,8 +22,8 @@ public:
 		const sf::Time& frameTime = sf::milliseconds(50),
 		AnimationType type = AnimationType::Looped, bool pause = false);
 
-	sf::Time getFrameTime() const noexcept { return base.frameTime; }
-	void setFrameTime(sf::Time time) noexcept { base.frameTime = time; }
+	sf::Time getFrameTime() const noexcept { return base.elapsedTime.timeout; }
+	void setFrameTime(sf::Time time) noexcept { base.elapsedTime.timeout = time; }
 
 	virtual void update(Game& game) noexcept;
 };

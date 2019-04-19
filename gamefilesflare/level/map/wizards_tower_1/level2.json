@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "wizards_tower_1",
+    "level/data/empyrean_campaign/wizards_tower_1.json"
+  ],
+  "load": "level/map/wizards_tower_1/levelObjects2.json",
+  "load": "level/map/wizards_tower_1/monsters2.json",
+  "load": "level/map/wizards_tower_1/quests.json",
+  "load": "level/map/wizards_tower_1/items.json"
+}

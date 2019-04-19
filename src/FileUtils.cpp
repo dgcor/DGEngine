@@ -58,7 +58,7 @@ namespace FileUtils
 				return true;
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return false;
 	}
 
@@ -98,7 +98,7 @@ namespace FileUtils
 				return true;
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return false;
 	}
 
@@ -136,7 +136,7 @@ namespace FileUtils
 				return true;
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return false;
 	}
 
@@ -318,7 +318,7 @@ namespace FileUtils
 		{
 			return std::filesystem::path(filePath).filename().u8string();
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return {};
 	}
 
@@ -328,7 +328,7 @@ namespace FileUtils
 		{
 			return std::filesystem::path(filePath).stem().u8string();
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return {};
 	}
 
@@ -338,7 +338,7 @@ namespace FileUtils
 		{
 			return std::filesystem::path(filePath).parent_path().u8string();
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return {};
 	}
 
@@ -463,7 +463,7 @@ namespace FileUtils
 				return PHYSFS_close(file) != 0;
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return false;
 	}
 
@@ -485,7 +485,7 @@ namespace FileUtils
 			newFile.write((char*)&data[0], data.size());
 			newFile.close();
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return false;
 	}
 }

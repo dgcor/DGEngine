@@ -2,29 +2,28 @@
 
 #include "Actions/Action.h"
 #include <memory>
-#include <SFML/System/Time.hpp>
 #include <string>
 #include <string_view>
+#include "Utils/ElapsedTime.h"
 
 class Event : public Action
 {
 private:
 	std::string id;
 	std::shared_ptr<Action> action;
-	sf::Time timeout;
-	sf::Time currentTime;
+	ElapsedTime elapsedTime;
 
 public:
 	explicit Event(const std::shared_ptr<Action>& action_,
 		const sf::Time& timeout_ = sf::Time::Zero)
-		: action(action_), timeout(timeout_) {}
+		: action(action_), elapsedTime(timeout_) {}
 
 	const std::string& getId() const noexcept { return id; }
 	void setId(const std::string_view id_) { id = id_; }
 
 	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 
-	void resetTime() noexcept { currentTime = sf::Time::Zero; }
+	void resetTime() noexcept { elapsedTime.reset(); }
 
 	virtual bool execute(Game& game);
 };

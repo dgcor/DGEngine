@@ -12,6 +12,9 @@ namespace SFMLUtils
 
 	void spriteCenterTexture(sf::Sprite& sprite);
 
+	float getScaleToStretchAndKeepAR(const sf::Vector2u& size,
+		const sf::Vector2u& windowSize);
+
 	void viewStretchKeepAR(sf::View& view, const sf::Vector2u& windowSize,
 		sf::FloatRect viewPort = sf::FloatRect(0, 0, 1, 1));
 }

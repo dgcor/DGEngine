@@ -3,6 +3,7 @@
 #include "InputEvent.h"
 #include <memory>
 #include "SFML/Audio/SoundBuffer.hpp"
+#include "SFML/System/Clock.hpp"
 #include "UIObject.h"
 
 class Button : public virtual UIObject

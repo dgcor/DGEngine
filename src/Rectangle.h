@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "UIObject.h"
 
 class Rectangle : public sf::RectangleShape, public UIObject

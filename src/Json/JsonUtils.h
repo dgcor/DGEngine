@@ -11,6 +11,14 @@ class Game;
 
 namespace JsonUtils
 {
+	// query json document using JSON pointer syntax
+	// returns query object if no match
+	// extends JSON pointer to support querying arrays by key = value
+	// ex: "/layers/0/name"                  -> background
+	//     "/layers/{name=collision}/name"   -> collision
+	const rapidjson::Value& query(const rapidjson::Value& elem,
+		const rapidjson::Value& query);
+
 	// replaces "%str%" with obj.getProperty("str")
 	void replaceStringWithQueryable(rapidjson::Value& elem,
 		rapidjson::Value::AllocatorType& allocator,
@@ -38,9 +46,18 @@ namespace JsonUtils
 
 	std::string toString(const rapidjson::Value& elem);
 	std::string jsonToString(const rapidjson::Value& elem);
+	std::string jsonToPrettyString(const rapidjson::Value& elem);
 
+	// loads json from a file
 	bool loadFile(const std::string_view file, rapidjson::Document& doc);
+
+	// loads json from a json string
 	bool loadJson(const std::string_view json, rapidjson::Document& doc);
+
+	// loads json from a json string and
+	// replaces "%str%" with game.getVarOrProp("str")
+	bool loadJsonAndReplaceValues(const std::string_view json, rapidjson::Document& doc,
+		const Game& obj, bool changeValueType, char token = '%');
 
 	void saveToFile(const std::string_view file, const rapidjson::Value& elem);
 

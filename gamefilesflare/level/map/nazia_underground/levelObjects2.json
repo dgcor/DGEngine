@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [5, 29],
+      "size": [1, 2],
+      "text1": "southern_ridge",
+      "properties": {
+        "x": 65,
+        "y": 66
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [57, 15],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 23,
+        "y": 30
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [91, 27],
+      "size": [2, 1],
+      "text1": "nazia_highlands",
+      "properties": {
+        "x": 9,
+        "y": 65
+      }
+    }
+  ]
+}

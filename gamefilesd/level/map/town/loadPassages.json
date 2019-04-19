@@ -1,0 +1,13 @@
+{
+  "action": {
+    "name": "file.copy",
+    "dir": "%tempDir%/level/map/town",
+    "writeFile": "levelPassages.json",
+    "file": [
+      "level/map/town/levelPassagesTemplate.json",
+      "{1}",
+      "{2}",
+      "{3}"
+    ]
+  }
+}

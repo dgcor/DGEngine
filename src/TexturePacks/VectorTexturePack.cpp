@@ -1,4 +1,5 @@
 #include "VectorTexturePack.h"
+#include "TextureInfo.h"
 
 bool VectorTexturePack::get(size_t index, TextureInfo& ti) const
 {

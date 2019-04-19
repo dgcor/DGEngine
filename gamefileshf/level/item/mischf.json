@@ -32,7 +32,7 @@
                   }
                 }
               },
-              { "name": "load", "file": "level/town/levelNest.json" },
+              { "name": "load", "file": "level/map/town/levelNest.json" },
               { "name": "quest.setState", "quest": "farmersOrchard", "state": -1 },
               { "name": "levelObject.deleteByClass", "class": "runeBomb" }
             ],
@@ -89,7 +89,7 @@
             ],
             "then": [
               { "name": "sound.play", "id": "sarc" },
-              { "name": "load", "file": "level/town/levelCrypt.json" },
+              { "name": "load", "file": "level/map/town/levelCrypt.json" },
               { "name": "levelObject.deleteByClass", "class": "cathedralMap" },
               { "name": "quest.delete", "quest": "graveMatters" }
             ],

@@ -404,6 +404,10 @@ namespace Parser
 			parseLoadingScreen(game, elem);
 			break;
 		}
+		case str2int16("maxWindowHeight"): {
+			game.MaxHeight(getUIntVal(elem));
+			break;
+		}
 		case str2int16("menu"): {
 			if (elem.IsArray() == false) {
 				parseMenu(game, elem);

@@ -1,5 +1,7 @@
 #include "ParseFont.h"
+#include "Game.h"
 #include "ParseTexturePack.h"
+#include "TexturePacks/BitmapFontTexturePack.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser

@@ -1,8 +1,10 @@
 #pragma once
 
 #include <memory>
-#include "Palette.h"
-#include "TextureInfo.h"
+#include <SFML/System/Time.hpp>
+
+class Palette;
+struct TextureInfo;
 
 class TexturePack
 {
@@ -18,6 +20,8 @@ public:
 
 	// if texture is an index texture, sets the palette in TextureInfo
 	virtual bool get(size_t index, TextureInfo& ti) const = 0;
+
+	virtual void update(sf::Time elapsedTime) {};
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept = 0;
 	virtual bool isIndexed() const noexcept = 0;

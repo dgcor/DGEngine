@@ -1,4 +1,5 @@
 #include "ParseAudio.h"
+#include "Game.h"
 #include "ParseAudioCommon.h"
 #include "SFML/MusicLoops.h"
 #include "Utils/ParseUtils.h"

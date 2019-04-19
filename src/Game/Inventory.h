@@ -2,9 +2,9 @@
 
 #include "GameProperties.h"
 #include "Item.h"
-#include "ItemXY.h"
 #include <iterator>
 #include <memory>
+#include "PairXY.h"
 #include "Utils/iterator_tpl.h"
 #include <vector>
 
@@ -15,7 +15,7 @@ private:
 	typedef std::pair<std::unique_ptr<Item>, int32_t> ItemCell;
 
 	std::vector<ItemCell> items;
-	ItemXY size;
+	PairUInt8 size;
 	std::vector<uint16_t> allowedTypes;
 	bool enforceItemSize{ false };
 
@@ -25,11 +25,11 @@ private:
 	bool setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& item,
 		std::unique_ptr<Item>& oldItem);
 
-	bool setAndEnforceItemSize(const ItemXY& position, std::unique_ptr<Item>& item,
+	bool setAndEnforceItemSize(const PairUInt8& position, std::unique_ptr<Item>& item,
 		std::unique_ptr<Item>& oldItem);
 
 	bool isSlotEmpty(int x, int y,
-		const ItemXY& itemSize, size_t& itemIdx) const;
+		const PairUInt8& itemSize, size_t& itemIdx) const;
 
 	void resetIndexes() noexcept;
 
@@ -98,15 +98,15 @@ public:
 
 	Inventory() noexcept {}
 	Inventory(size_t size_);
-	Inventory(const ItemXY& size_);
+	Inventory(const PairUInt8& size_);
 
 	void init(size_t size_);
-	void init(const ItemXY& size_);
+	void init(const PairUInt8& size_);
 
 	bool empty() const noexcept;
 
 	size_t Size() const noexcept { return items.size(); }
-	const ItemXY& getXYSize() const noexcept { return size; }
+	const PairUInt8& getXYSize() const noexcept { return size; }
 
 	bool getEnforceItemSize() const noexcept { return enforceItemSize; }
 	void setEnforceItemSize(bool enforceItemSize_) noexcept { enforceItemSize = enforceItemSize_; }
@@ -120,17 +120,17 @@ public:
 	bool isTypeAllowed(uint16_t typeHash16) const;
 
 	size_t getIndex(size_t x, size_t y) const noexcept { return x + y * size.x; }
-	size_t getIndex(const ItemXY& pos) const noexcept { return getIndex(pos.x, pos.y); }
+	size_t getIndex(const PairUInt8& pos) const noexcept { return getIndex(pos.x, pos.y); }
 
 	Item* get(size_t idx) const;
 	Item* get(size_t x, size_t y) const { return get(x + y * size.x); }
-	Item* get(const ItemXY& pos) const { return get(pos.x, pos.y); }
+	Item* get(const PairUInt8& pos) const { return get(pos.x, pos.y); }
 
 	bool set(size_t idx, std::unique_ptr<Item>& item);
 	bool set(size_t idx, std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem);
 
-	bool set(const ItemXY& position, std::unique_ptr<Item>& item);
-	bool set(const ItemXY& position, std::unique_ptr<Item>& item,
+	bool set(const PairUInt8& position, std::unique_ptr<Item>& item);
+	bool set(const PairUInt8& position, std::unique_ptr<Item>& item,
 		std::unique_ptr<Item>& oldItem);
 
 	bool isFull() const noexcept;
@@ -138,7 +138,7 @@ public:
 	// only checks the specified slot. if a slot is indexing another slot, it returns false.
 	bool isSlotInUse(size_t idx) const;
 	// only checks the specified slot. if a slot is indexing another slot, it returns false.
-	bool isSlotInUse(const ItemXY& position) const;
+	bool isSlotInUse(const PairUInt8& position) const;
 
 	bool getFreeSlot(const Item& item,
 		size_t& itemIdx, InventoryPosition invPos) const;

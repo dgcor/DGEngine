@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/perdition_harbor/levelObjects.json",
+  "load": "level/map/perdition_harbor/monsters.json",
+  "load": "level/map/perdition_harbor/level2.json"
+}

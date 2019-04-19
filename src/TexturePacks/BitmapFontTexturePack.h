@@ -1,5 +1,8 @@
 #pragma once
 
+#include <array>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "TexturePack.h"
 
 class BitmapFontTexturePack : public TexturePack

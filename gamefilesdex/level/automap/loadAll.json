@@ -1,0 +1,7 @@
+{
+  "load": "level/automap/dungeon/automap.json",
+  "load": "level/automap/catacombs/automap.json",
+  "load": "level/automap/caves/automap.json",
+  "load": "level/automap/hell/automap.json",
+  "load": "level/automap/flare/automap.json"
+}

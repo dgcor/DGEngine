@@ -3,23 +3,19 @@
 #include "Actions/Action.h"
 #include "Classifier.h"
 #include "InputEvent.h"
-#include "ItemClass.h"
 #include "ItemLocation.h"
+#include "LevelLayer.h"
 #include "LevelMap.h"
 #include "LevelObjectClass.h"
-#include <memory>
-#include "Palette.h"
-#include "Player.h"
-#include "PlayerClass.h"
 #include "Quest.h"
 #include "Save/SaveLevel.h"
 #include "SFML/View2.h"
-#include "Sol.h"
-#include <string>
-#include "TexturePacks/TexturePack.h"
 #include "UIObject.h"
 #include <unordered_map>
-#include <utility>
+#include "Utils/EasedValue.h"
+#include "Utils/FixedArray.h"
+
+class Player;
 
 class Level : public UIObject
 {
@@ -28,55 +24,37 @@ private:
 	sf::Shader* shader{ nullptr };
 	View2 view{ true };
 	View2 automapView{ true };
-	sf::Vector2f automapRelativePosition{ 0.f, 0.f };	// relative to this UIObject
-	sf::Vector2f automapRelativeSize{ 1.f, 1.f };
+	sf::Vector2f automapPosition{ 0.f, 0.f };
+	sf::Vector2f automapSize{ 1.f, 1.f };
+	bool automapRelativeCoords{ true };
 	bool viewPortNeedsUpdate{ false };
-	float currentZoomFactor{ 1.f };
-	float startZoomFactor{ 1.f };
-	float stopZoomFactor{ 1.f };
-	float diffZoomFactor{ 0.f };
-	bool hasNewZoom{ false };
-	bool smoothZoom{ false };
-	float zoomStepStart{ 0.f };		// in seconds
-	float zoomStepStop{ 1.f };		// in seconds
+	EasedValuef zoomValue{ 1.f };
 
 	LevelMap map;
 
 	sf::Vector2f mousePositionf;
 	bool hasMouseInside{ false };
 
-	MapCoord mapCoordOverMouse;
-	MapCoord currentMapPosition;
+	PairFloat mapCoordOverMouse;
+	PairFloat currentMapPosition;
+
+	EasedValuef currentMapViewCenterX;
+	EasedValuef currentMapViewCenterY;
 	sf::Vector2f currentMapViewCenter;
 	sf::Vector2f currentAutomapViewCenter;
+	bool smoothMovement{ false };
 
 	std::string id;
 	std::string name;
 	std::string path;
 
-	struct LevelLayer
-	{
-		std::shared_ptr<TexturePack> tiles;
-		View2* view{ nullptr };
-		sf::Color background{ sf::Color::Transparent };
-		sf::FloatRect visibleRect;
-		MapCoord visibleStart;
-		MapCoord visibleEnd;
-		int32_t tileWidth{ 0 };		// same size for all layers except for automap
-		int32_t tileHeight{ 0 };
-		int32_t blockWidth{ 0 };	// a tile is 4 blocks
-		int32_t blockHeight{ 0 };
-		bool visible{ false };		// currently, only used for automap
-	};
+	LevelLayerInfo defaultLayerInfo;
+	LevelLayerInfo automapLayerInfo;
 
-public:
-	static constexpr size_t NumberOfLayers = LevelCell::NumberOfLayers - 1;
-	static constexpr size_t AutomapLayer = NumberOfLayers - 1;
+	FixedArray<LevelLayer, 8> levelLayers;
 
-private:
-	std::array<LevelLayer, NumberOfLayers> levelLayers;
-
-	int32_t automapPlayerDirectionBaseIndex{ -1 };
+	uint16_t indexToDrawLevelObjects{ 0 };
+	int16_t automapPlayerDirectionBaseIndex{ -1 };
 
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
@@ -85,7 +63,7 @@ private:
 	std::shared_ptr<Action> scrollDownAction;
 	std::shared_ptr<Action> scrollUpAction;
 
-	MapCoord clickedMapPosition;
+	PairFloat clickedMapPosition;
 
 	std::vector<std::unique_ptr<LevelObject>> levelObjects;
 	std::unordered_map<std::string, LevelObject*> levelObjectIds;
@@ -108,23 +86,19 @@ private:
 	std::vector<uint32_t> experiencePoints;
 	std::unordered_map<uint16_t, std::string> propertyNames;
 
-	static const LevelCell& get(Coord x, Coord y, const Level& level) noexcept
+	static const LevelCell& get(int32_t x, int32_t y, const Level& level) noexcept
 	{
 		return level.map[x][y];
 	}
 
-	void updateAutomapPosition(sf::Vector2f position);
-	void updateAutomapSize(sf::Vector2f position);
+	void updateAutomapRelativePosition();
+	void updateAutomapRelativeSize();
+	void updateCurrentAutomapViewCenter() noexcept;
 
-	void setCurrentMapViewCenter(const sf::Vector2f& coord_);
+	void setCurrentMapPosition(const PairFloat& mapPos, bool smooth) noexcept;
+	void setCurrentMapViewCenter(const sf::Vector2f& coord_, bool smooth) noexcept;
 
-	void setCurrentMapPosition(const MapCoord& mapPos)
-	{
-		currentMapPosition = mapPos;
-		setCurrentMapViewCenter(map.getCoord(currentMapPosition));
-	}
-
-	void addLevelObject(std::unique_ptr<LevelObject> obj, const MapCoord& mapCoord);
+	void addLevelObject(std::unique_ptr<LevelObject> obj, const PairFloat& mapCoord);
 
 	// clears the clickedObject, hoverObject, currentPlayer if they're pointing to the given object.
 	void clearCache(const LevelObject* obj) noexcept;
@@ -157,13 +131,11 @@ private:
 	LevelObject* parseLevelObjectIdOrMapPosition(
 		const std::string_view str, std::string_view& props) const;
 
-	void setTileLayer(size_t layer, View2* view_,
-		std::shared_ptr<TexturePack> tiles,
-		int tileWidth, int tileHeight, bool visible_);
-
 	void updateLevelObjectPositions();
 	void updateMouse(const Game& game);
 	void updateVisibleArea();
+	void updateLayerInfoVisibleArea(LevelLayerInfo& layerInfo, View2& layerView);
+	void updateTilesetLayersVisibleArea();
 	void updateZoom(const Game& game);
 
 	void onMouseButtonPressed(Game& game);
@@ -177,17 +149,24 @@ private:
 
 public:
 	void Init(const Game& game, LevelMap map_,
-		const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-		int32_t tileWidth, int32_t tileHeight);
+		const std::vector<LevelLayer>& levelLayers_,
+		int32_t tileWidth, int32_t tileHeight, int32_t indexToDrawObjects);
 	void Init();
 
 	void setShader(sf::Shader* shader_) noexcept { shader = shader_; }
 
-	void setAutomap(std::shared_ptr<TexturePack> tiles, int tileWidth, int tileHeight);
+	void addLayer(const ColorLevelLayer& layer,
+		const sf::FloatRect& viewportOffset, bool automap);
 
-	Misc::Helper2D<const Level, const LevelCell&, Coord> operator[] (Coord x) const noexcept
+	void addLayer(const TextureLevelLayer& layer,
+		const sf::FloatRect& viewportOffset, bool automap);
+
+	void setAutomap(const TilesetLevelLayer& automapLayer, int tileWidth,
+		int tileHeight, const sf::FloatRect& viewportOffset);
+
+	Misc::Helper2D<const Level, const LevelCell&, int32_t> operator[] (int32_t x) const noexcept
 	{
-		return Misc::Helper2D<const Level, const LevelCell&, Coord>(*this, x, get);
+		return Misc::Helper2D<const Level, const LevelCell&, int32_t>(*this, x, get);
 	}
 
 	const sf::Vector2f& MousePositionf() const noexcept { return mousePositionf; }
@@ -196,8 +175,17 @@ public:
 	LevelMap& Map() noexcept { return map; }
 	const LevelMap& Map() const noexcept { return map; }
 
-	Coord Width() const noexcept { return map.Width(); }
-	Coord Height() const noexcept { return map.Height(); }
+	int32_t Width() const noexcept { return map.MapSizei().x; }
+	int32_t Height() const noexcept { return map.MapSizei().y; }
+
+	const sf::Vector2f& getCurrentMapViewCenter() const noexcept
+	{
+		return currentMapViewCenter;
+	}
+	const sf::Vector2f& getCurrentAutomapViewCenter() const noexcept
+	{
+		return currentAutomapViewCenter;
+	}
 
 	void Id(const std::string_view id_) { id = id_; }
 	void Name(const std::string_view name_) { name = name_; }
@@ -322,7 +310,7 @@ public:
 	void executeHoverEnterAction(Game& game);
 	void executeHoverLeaveAction(Game& game);
 
-	const MapCoord& getClickedMapPosition() const noexcept { return clickedMapPosition; }
+	const PairFloat& getClickedMapPosition() const noexcept { return clickedMapPosition; }
 
 	LevelObject* getClickedObject() const noexcept { return clickedObject; }
 	void setClickedObject(LevelObject* object) noexcept { clickedObject = object; }
@@ -334,11 +322,11 @@ public:
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
 	virtual Anchor getAnchor() const noexcept { return view.getAnchor(); }
-	virtual void setAnchor(const Anchor anchor) noexcept
-	{
-		view.setAnchor(anchor);
-		automapView.setAnchor(anchor);
-	}
+	virtual void setAnchor(const Anchor anchor) noexcept { view.setAnchor(anchor); }
+
+	Anchor getAutomapAnchor() const noexcept { return automapView.getAnchor(); }
+	void setAutomapAnchor(const Anchor anchor) noexcept { automapView.setAnchor(anchor); }
+
 	virtual void updateSize(const Game& game);
 
 	virtual const sf::Vector2f& DrawPosition() const noexcept { return view.getPosition(); }
@@ -347,14 +335,18 @@ public:
 	virtual sf::Vector2f Size() const noexcept { return view.getSize(); }
 	virtual void Size(const sf::Vector2f& size);
 
-	// between [0, 100]
-	void setAutomapRelativePosition(const sf::Vector2i& position) noexcept;
-	// between [0, 100]
-	void setAutomapRelativeSize(const sf::Vector2i& size);
+	bool getAutomapRelativeCoords() const noexcept { return automapRelativeCoords; }
+	void setAutomapRelativeCoords(bool relative) noexcept { automapRelativeCoords = relative; }
 
-	void setAutomapBackgroundColor(sf::Color color) { levelLayers[AutomapLayer].background = color; }
+	const sf::Vector2f& getAutomapPosition() const noexcept { return automapPosition; }
+	const sf::Vector2f& getAutomapSize() const noexcept { return automapSize; }
 
-	float Zoom() const noexcept { return stopZoomFactor; }
+	// if position is relative to level, between [0, 100]
+	void setAutomapPosition(const sf::Vector2f& position) noexcept;
+	// if position is relative to level, between [0, 100]
+	void setAutomapSize(const sf::Vector2f& size);
+
+	float Zoom() const noexcept { return zoomValue.getFinal(); }
 	void Zoom(float factor, bool smooth = false) noexcept;
 
 	void updateViewport(const Game& game)
@@ -371,34 +363,33 @@ public:
 	// Deletes level object by class id. If id is empty, no action is performed.
 	void deleteLevelObjectByClass(const std::string_view classId);
 
-	MapCoord getMapCoordOverMouse() const noexcept { return mapCoordOverMouse; }
+	const PairFloat& getMapCoordOverMouse() const noexcept { return mapCoordOverMouse; }
 
-	void move(const MapCoord& mapPos)
+	void move(const PairFloat& mapPos, bool smooth)
 	{
-		setCurrentMapPosition(mapPos);
+		setCurrentMapPosition(mapPos, smooth);
 	}
-	void move() noexcept
+	void move(bool smooth)
 	{
-		setCurrentMapViewCenter(mousePositionf);
+		setCurrentMapViewCenter(mousePositionf, smooth);
 	}
+
+	void setSmoothMovement(bool smooth) noexcept { smoothMovement = smooth; }
 
 	Player* getCurrentPlayer() const noexcept { return currentPlayer; }
-	void setCurrentPlayer(Player* player_) noexcept
-	{
-		currentPlayer = player_;
-		if (currentPlayer != nullptr)
-		{
-			setCurrentMapPosition(currentPlayer->MapPosition());
-		}
-	}
+	void setCurrentPlayer(Player* player_) noexcept;
 
+	bool FollowCurrentPlayer() const noexcept { return followCurrentPlayer; }
 	void FollowCurrentPlayer(bool follow) noexcept { followCurrentPlayer = follow; }
 
-	int32_t TileWidth() const noexcept { return levelLayers[0].tileWidth; }
-	int32_t TileHeight() const noexcept { return levelLayers[0].tileHeight; }
+	// only updates if level view is following current player
+	bool updateCurrentMapViewCenter(bool smooth) noexcept;
 
-	int32_t AutomapTileWidth() const noexcept { return levelLayers[AutomapLayer].tileWidth; }
-	int32_t AutomapTileHeight() const noexcept { return levelLayers[AutomapLayer].tileHeight; }
+	int32_t TileWidth() const noexcept { return defaultLayerInfo.tileWidth; }
+	int32_t TileHeight() const noexcept { return defaultLayerInfo.tileHeight; }
+
+	int32_t AutomapTileWidth() const noexcept { return automapLayerInfo.tileWidth; }
+	int32_t AutomapTileHeight() const noexcept { return automapLayerInfo.tileHeight; }
 
 	virtual bool Pause() const noexcept { return pause; }
 	virtual void Pause(bool pause_) noexcept { pause = pause_; }
@@ -409,14 +400,21 @@ public:
 	bool EnableHover() const noexcept { return enableHover; }
 	void EnableHover(bool enable_) noexcept { enableHover = enable_; }
 
+	int16_t getAutomapPlayerDirectionBaseIndex() const noexcept
+	{
+		return automapPlayerDirectionBaseIndex;
+	}
+
 	// setting a negative value will disable drawing player direction in the automap
-	void setAutomapPlayerDirectionBaseIndex(int32_t index) noexcept
+	void setAutomapPlayerDirectionBaseIndex(int16_t index) noexcept
 	{
 		automapPlayerDirectionBaseIndex = index;
 	}
 
-	bool ShowAutomap() const noexcept { return levelLayers[AutomapLayer].visible; }
-	void ShowAutomap(bool show_) noexcept { levelLayers[AutomapLayer].visible = show_; }
+	bool hasAutomap() const noexcept;
+
+	bool ShowAutomap() const noexcept { return automapLayerInfo.visible; }
+	void ShowAutomap(bool show_) noexcept { automapLayerInfo.visible = show_; }
 
 	InputEvent getCaptureInputEvents() const noexcept { return captureInputEvents; }
 	void setCaptureInputEvents(InputEvent e) noexcept { captureInputEvents = e; }
@@ -440,37 +438,25 @@ public:
 	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
 		const std::string_view prop) const;
 
-	Item* getItem(const MapCoord& mapCoord) const noexcept;
+	Item* getItem(const PairFloat& mapCoord) const noexcept;
 	Item* getItem(const ItemCoordInventory& itemCoord) const;
 	Item* getItem(const ItemCoordInventory& itemCoord, Player*& player) const;
 	Item* getItem(const ItemLocation& location) const;
 	Item* getItem(const ItemLocation& location, Player*& player) const;
 
-	std::unique_ptr<Item> removeItem(const MapCoord& mapCoord);
+	std::unique_ptr<Item> removeItem(const PairFloat& mapCoord);
 	std::unique_ptr<Item> removeItem(const ItemCoordInventory& itemCoord);
 	std::unique_ptr<Item> removeItem(const ItemCoordInventory& itemCoord, Player*& player);
 	std::unique_ptr<Item> removeItem(const ItemLocation& location);
 	std::unique_ptr<Item> removeItem(const ItemLocation& location, Player*& player);
 
-	bool setItem(const MapCoord& mapCoord, std::unique_ptr<Item>& item);
+	bool setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item);
 	bool setItem(const ItemCoordInventory& itemCoord, std::unique_ptr<Item>& item);
 	bool setItem(const ItemLocation& location, std::unique_ptr<Item>& item);
 
-	bool deleteItem(const MapCoord& mapCoord)
-	{
-		std::unique_ptr<Item> nullItem;
-		return setItem(mapCoord, nullItem);
-	}
-	bool deleteItem(const ItemCoordInventory& itemCoord)
-	{
-		std::unique_ptr<Item> nullItem;
-		return setItem(itemCoord, nullItem);
-	}
-	bool deleteItem(const ItemLocation& location)
-	{
-		std::unique_ptr<Item> nullItem;
-		return setItem(location, nullItem);
-	}
+	bool deleteItem(const PairFloat& mapCoord);
+	bool deleteItem(const ItemCoordInventory& itemCoord);
+	bool deleteItem(const ItemLocation& location);
 
 	// returns the remaining quantity to add/remove. 0 if all quantity was added.
 	LevelObjValue addItemQuantity(const ItemLocation& location, LevelObjValue amount);

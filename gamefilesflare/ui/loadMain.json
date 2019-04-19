@@ -2,6 +2,9 @@
   "icon": {
     "file": "images/logo/icon.png"
   },
+  "cursor": {
+    "show": false
+  },
   "load": "level/setupTempFolder.json",
   "load": "res/actions.json",
   "load": "res/fonts.json",

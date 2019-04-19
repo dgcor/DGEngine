@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/book_of_the_dead/levelObjects.json",
+  "load": "level/map/book_of_the_dead/monsters.json",
+  "load": "level/map/book_of_the_dead/level2.json"
+}

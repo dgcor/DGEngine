@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include "Game.h"
 #include "FileUtils.h"
 #include "ParseFile.h"
 

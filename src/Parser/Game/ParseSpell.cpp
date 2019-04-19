@@ -1,4 +1,6 @@
 #include "ParseSpell.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Game/Spell.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"

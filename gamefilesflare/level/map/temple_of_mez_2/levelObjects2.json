@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [61, 91],
+      "size": [2, 1],
+      "text1": "temple_of_mez_3",
+      "properties": {
+        "x": 26,
+        "y": 31
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [38, 29],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 28,
+        "y": 28
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [72, 8],
+      "size": [4, 4],
+      "text1": "temple_of_mez_1",
+      "properties": {
+        "x": 17,
+        "y": 14
+      }
+    }
+  ]
+}

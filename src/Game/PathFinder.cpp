@@ -7,7 +7,7 @@ MapSearchNode::MapSearchNode(const LevelMap& map, int16_t x_, int16_t y_,
 {
 	if (map.isMapCoordValid(x_, y_) == true)
 	{
-		cost = map[(Coord)x_][(Coord)y_].Passable() ? NodePassable : NodeNotPassable;
+		cost = map[x_][y_].Passable() ? NodePassable : NodeNotPassable;
 	}
 	else
 	{
@@ -51,12 +51,12 @@ bool MapSearchNode::addSuccessor(AStarSearch<MapSearchNode>* astarsearch,
 	const auto& map = *((PathFinder*)astarsearch)->map;
 
 	if ((map.isMapCoordValid(x_, y_) == true) &&
-		(map[(Coord)x_][(Coord)y_].Passable() == true) &&
+		(map[(int32_t)x_][(int32_t)y_].Passable() == true) &&
 		!((parent_x == x_) && (parent_y == y_)))
 	{
 		auto direction_ = getPlayerDirection(
-			MapCoord((Coord)parent_x, (Coord)parent_y),
-			MapCoord((Coord)x_, (Coord)y_));
+			PairFloat((float)parent_x, (float)parent_y),
+			PairFloat((float)x_, (float)y_));
 		auto searchNode = MapSearchNode(map, x_, y_, direction_);
 		astarsearch->AddSuccessor(searchNode);
 		return true;

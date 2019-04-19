@@ -5,8 +5,8 @@
 
 #include "AnimationType.h"
 #include <cstddef>
-#include <SFML/System/Time.hpp>
 #include <utility>
+#include "Utils/ElapsedTime.h"
 
 class BaseAnimation
 {
@@ -14,8 +14,7 @@ public:
 	std::pair<size_t, size_t> textureIndexRange;
 	size_t currentTextureIdx{ 0 };
 
-	sf::Time frameTime{ sf::milliseconds(50) };
-	sf::Time currentTime;
+	ElapsedTime elapsedTime{ sf::milliseconds(50) };
 	AnimationType animType{ AnimationType::PlayOnce };
 	bool pause{ false };
 	bool backDirection{ false };
@@ -28,7 +27,7 @@ public:
 	BaseAnimation(const std::pair<size_t, size_t>& textureIndexRange_,
 		const sf::Time& frameTime_, AnimationType animType_, bool pause_)
 		: textureIndexRange(textureIndexRange_), currentTextureIdx(textureIndexRange_.first),
-		frameTime(frameTime_), animType(animType_), pause(pause_) {}
+		elapsedTime(frameTime_), animType(animType_), pause(pause_) {}
 
 	void clear() noexcept
 	{
@@ -42,5 +41,5 @@ public:
 		backDirection = false;
 	}
 
-	bool update(sf::Time elapsedTime) noexcept;
+	bool update(sf::Time elapsedTime_) noexcept;
 };

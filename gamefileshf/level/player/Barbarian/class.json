@@ -86,8 +86,8 @@
       { "name": "Die2", "index": 9 }
     ],
     "animationSpeeds": [
-      { "name": "Walk1", "animation": 20, "walk": 25 },
-      { "name": "Walk2", "animation": 20, "walk": 25 },
+      { "name": "Walk1", "animation": 20, "walk": 100 },
+      { "name": "Walk2", "animation": 20, "walk": 100 },
       { "name": "Die1", "animation": 20 },
       { "name": "Die2", "animation": 20 }
     ],

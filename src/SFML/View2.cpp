@@ -70,14 +70,9 @@ void View2::setViewport(const Game& game)
 
 void View2::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		setViewport(game);
-		return;
-	}
 	auto pos2 = getPosition();
 	auto size2 = getSize();
-	GameUtils::setAnchorPosSize(anchor, pos2, size2, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos2, size2, game.OldDrawRegionSize(), game.DrawRegionSize());
 	setPosition(pos2);
 	setSize(size2);
 	setViewport(game);

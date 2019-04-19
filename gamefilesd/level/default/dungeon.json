@@ -1,0 +1,29 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "file": "levels/l1data/l1.pal"
+        }
+      }
+    }
+  },
+  "load": ["level/data/l1/l1s.json", "level"],
+  "level": {
+    "id": "level",
+    "palette": "level",
+    "file": "levels/l1data/l1.cel",
+    "layers": { "index": 0, "texturePack": "l1s" },
+    "outOfBoundsTile": 21,
+    "til": "levels/l1data/l1.til",
+    "min": "levels/l1data/l1.min",
+    "minBlocks": 10,
+    "sol": "levels/l1data/l1.sol",
+    "defaultLight": 255
+  }
+}

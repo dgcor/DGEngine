@@ -159,6 +159,8 @@ set(SOURCE_FILES
     src/Game/Classifier.cpp
     src/Game/Classifier.h
     src/Game/Classifiers.h
+    src/Game/ColorLevelLayer.cpp
+    src/Game/ColorLevelLayer.h
     src/Game/Formula.cpp
     src/Game/Formula.h
     src/Game/Formulas.h
@@ -174,13 +176,14 @@ set(SOURCE_FILES
     src/Game/ItemClass.cpp
     src/Game/ItemClass.h
     src/Game/ItemLocation.h
-    src/Game/ItemXY.h
     src/Game/Level.cpp
     src/Game/Level.h
     src/Game/LevelCell.cpp
     src/Game/LevelCell.h
     src/Game/LevelHelper.cpp
     src/Game/LevelHelper.h
+    src/Game/LevelLayer.h
+    src/Game/LevelLayerInfo.h
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
     src/Game/LevelObject.cpp
@@ -190,7 +193,6 @@ set(SOURCE_FILES
     src/Game/LevelObjectClassDefaults.h
     src/Game/LightMap.h
     src/Game/LightSource.h
-    src/Game/MapCoord.h
     src/Game/Number.h
     src/Game/PairXY.h
     src/Game/PathFinder.cpp
@@ -206,6 +208,10 @@ set(SOURCE_FILES
     src/Game/SimpleLevelObjectClass.h
     src/Game/Spell.cpp
     src/Game/Spell.h
+    src/Game/TextureLevelLayer.cpp
+    src/Game/TextureLevelLayer.h
+    src/Game/TilesetLevelLayer.cpp
+    src/Game/TilesetLevelLayer.h
     src/Game/stlastar.h
     src/Game/Save/SaveItem.cpp
     src/Game/Save/SaveItem.h
@@ -395,7 +401,10 @@ set(SOURCE_FILES
     src/TexturePacks/TexturePack.h
     src/TexturePacks/VectorTexturePack.cpp
     src/TexturePacks/VectorTexturePack.h
+    src/Utils/EasedValue.h
     src/Utils/EasingFunctions.h
+    src/Utils/ElapsedTime.h
+    src/Utils/FixedArray.h
     src/Utils/FixedMap.h
     src/Utils/Helper2D.h
     src/Utils/iterator_tpl.h

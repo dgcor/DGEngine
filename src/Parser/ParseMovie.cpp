@@ -1,4 +1,5 @@
 #include "ParseMovie.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include <iostream>
 #include "Movie2.h"
@@ -58,13 +59,10 @@ namespace Parser
 		movie->setAnchor(anchor);
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size", movie->Size());
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 		movie->Position(pos);
 		movie->Size(size);

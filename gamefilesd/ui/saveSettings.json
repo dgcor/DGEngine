@@ -1,17 +1,8 @@
 {
   "action": {
     "name": "file.copy",
-    "file": [
-      "ui/settingsFile.json",
-      "%game.size.x%",
-      "%game.size.y%",
-      "%game.keepAR%",
-      "%game.stretchToFit%",
-      "%game.smoothScreen%",
-      "%game.framerate%",
-      "%skipIntro%"
-    ],
-    "nullText": "null",
-    "writeFile": "settings.json"
+    "file": "ui/settingsFile.json",
+    "writeFile": "settings.json",
+    "replaceVars": "value"
   }
 }

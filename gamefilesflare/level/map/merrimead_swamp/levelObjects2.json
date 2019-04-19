@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [79, 11],
+      "size": [1, 4],
+      "text1": "lochport_cemetery",
+      "properties": {
+        "x": 2,
+        "y": 7
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [2, 15],
+      "size": [1, 4],
+      "text1": "goblin_camp",
+      "properties": {
+        "x": 52,
+        "y": 15
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [51, 77],
+      "size": [4, 1],
+      "text1": "goblin_camp",
+      "properties": {
+        "x": 5,
+        "y": 2
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [59, 44],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 17,
+        "y": 10
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [1, 6],
+      "size": [1, 4],
+      "text1": "salted_field",
+      "properties": {
+        "x": 56,
+        "y": 12
+      }
+    }
+  ]
+}

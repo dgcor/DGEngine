@@ -38,14 +38,14 @@ namespace Parser
 			return std::make_shared<PredLevelObjIsInRange>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "object"),
-				getIntRectKey(elem, "range"));
+				getFloatRectKey(elem, "range"));
 		}
 		case str2int16("levelObject.isInRangeByClass"):
 		{
 			return std::make_shared<PredLevelObjIsInRangeByClass>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "class"),
-				getIntRectKey(elem, "range"));
+				getFloatRectKey(elem, "range"));
 		}
 		case str2int16("player.canUseItem"):
 		{

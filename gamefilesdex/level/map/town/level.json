@@ -1,0 +1,9 @@
+{
+  "load": "level/default/town_fog.json",
+  "load": "res/towners/actions.json",
+  "load": "level/map/town/levelObjects.json",
+  "load": "level/map/town/players.json",
+  "load": "level/map/town/level2.json",
+  "load": "level/map/town/levelPassages.json",
+  "load": "level/map/town/updateLevel.json"
+}

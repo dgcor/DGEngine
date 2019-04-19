@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "shader.load", "id": "warp", "fragmentFile": "res/shaders/warp.frag" },
+    { "name": "game.setShader", "shader": "warp", "gameShader": "game" }
+  ],
+  "load": "ui/loadMain.json"
+}

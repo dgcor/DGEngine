@@ -1,0 +1,23 @@
+{
+  "action": { "name": "resource.add", "id": "loadingScreen" },
+  "texture": {
+    "id": "arrival",
+    "file": "images/cutscenes/arrival.png"
+  },
+  "loadingScreen": {
+    "texture": "arrival",
+    "textureRect": [180, 0, 640, 480],
+    "size": [533, 22],
+    "anchor": "none",
+    "progressBarOffset": [53, 421],
+    "color": "0x779977",
+    "onComplete": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "loadingScreen.clear" },
+        { "name": "resource.pop", "id": "loadingScreen" },
+        { "name": "game.fadeIn" }
+      ]
+    }
+  }
+}

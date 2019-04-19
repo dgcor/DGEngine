@@ -9,6 +9,8 @@ protected:
 	Sprite2 sprite;
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	bool resizable{ false };
+	bool stretch{ false };
+	bool background{ false };
 	bool visible{ true };
 
 public:
@@ -25,8 +27,14 @@ public:
 		sprite.setOutlineEnabled(true);
 	}
 
-	bool getResizable() const noexcept { return resizable; }
-	void setResizable(bool resizable_) noexcept { resizable = resizable_; }
+	bool Resizable() const noexcept { return resizable; }
+	void Resizable(bool resizable_) noexcept { resizable = resizable_; }
+
+	bool Stretch() const noexcept { return stretch; }
+	void Stretch(bool stretch_) noexcept { stretch = stretch_; }
+
+	bool Background() const noexcept { return background; }
+	void Background(bool background_) noexcept { background = background_; }
 
 	void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
 	void setColor(const sf::Color& color) { sprite.setColor(color); }

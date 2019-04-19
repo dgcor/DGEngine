@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "blackmire_mines",
+    "level/data/empyrean_campaign/blackmire_mines.json"
+  ],
+  "load": "level/map/blackmire_mines/levelObjects2.json",
+  "load": "level/map/blackmire_mines/monsters2.json",
+  "load": "level/map/blackmire_mines/quests.json",
+  "load": "level/map/blackmire_mines/items.json"
+}

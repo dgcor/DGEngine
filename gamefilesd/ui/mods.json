@@ -2,25 +2,15 @@
   "action": [
     { "name": "resource.add", "id": "mods", "ignorePrevious": true },
     { "name": "text.setFont", "id": "mods", "font": "font30s" },
-    { "name": "game.fadeIn" }
+    { "name": "game.fadeIn" },
+    "loadMainMenuImg",
+    "loadLogoImg"
   ],
   "keyboard": {
     "key": "esc",
     "action": { "name": "button.click", "id": "back" }
   },
-  "image": {
-    "id": "mainmenu",
-    "texture": "mainmenu",
-    "anchor": "none"
-  },
   "animation": [
-    {
-      "id": "smlogo",
-      "texturePack": "smlogo",
-      "position": ["center", 0],
-      "anchor": "none",
-      "refresh": 50
-    },
     {
       "id": "pent1",
       "texturePack": "focus42",
@@ -77,12 +67,25 @@
       "onFocus": "anchorPentagrams"
     },
     {
-      "id": "back",
+      "id": "diabloEx",
       "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
       "position": [319, 320],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Diablo Extended",
+      "onClick": { "name": "game.load", "file": "gamefilesdex" },
+      "onFocus": "anchorPentagrams"
+    },
+    {
+      "id": "back",
+      "font": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 363],
       "anchor": "none",
       "horizontalAlign": "center",
       "text": "Back",
@@ -141,11 +144,33 @@
         "or",
         { "name": "gamefile.exists", "file": "gamefilesflare" }, "==", false,
         "or",
-        { "name": "gamefile.exists", "file": "fantasycore" }, "==", false
+        { "name": "gamefile.exists", "file": "fantasycore" }, "==", false,
+        "or",
+        { "name": "gamefile.exists", "file": "empyrean_campaign" }, "==", false
       ],
       "then": [
         { "name": "text.setFont", "id": "flare", "font": "font42y" },
         { "name": "button.enable", "id": "flare", "enable": false }
+      ]
+    },
+    {
+      "name": "if",
+      "params": [
+        "%game.title%", "==", "Diablo Extended",
+        "or",
+        { "name": "gamefile.exists", "file": "gamefilesd" }, "==", false,
+        "or",
+        { "name": "gamefile.exists", "file": "gamefilesdex" }, "==", false,
+        "or",
+        { "name": "gamefile.exists", "file": "gamefilesflare" }, "==", false,
+        "or",
+        { "name": "gamefile.exists", "file": "fantasycore" }, "==", false,
+        "or",
+        { "name": "gamefile.exists", "file": "empyrean_campaign" }, "==", false
+      ],
+      "then": [
+        { "name": "text.setFont", "id": "diabloEx", "font": "font42y" },
+        { "name": "button.enable", "id": "diabloEx", "enable": false }
       ]
     },
     "focus.update",

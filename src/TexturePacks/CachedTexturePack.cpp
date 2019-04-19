@@ -1,4 +1,5 @@
 #include "CachedTexturePack.h"
+#include "TextureInfo.h"
 
 CachedTexturePack::CachedTexturePack(const std::shared_ptr<ImageContainer>& imgPack_,
 	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_)

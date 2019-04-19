@@ -1,0 +1,21 @@
+{
+  "load": "level/data/tileset/grassland.json",
+  "texture": {
+    "id": "rain",
+    "file": "images/parallax/rain.png"
+  },
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "grassland" },
+      { "index": 2, "texturePack": "grassland" },
+      {
+        "texture": "rain",
+        "parallaxSpeed": 0.25,
+        "parallaxFixedSpeed": [5, 20],
+        "parallaxUpdate": 20
+      }
+    ],
+    "defaultLight": 255
+  }
+}

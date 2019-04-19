@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [21, 5],
+      "size": [2, 1],
+      "text1": "underworld_stronghold_2",
+      "properties": {
+        "x": 36,
+        "y": 8
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [3, 31],
+      "size": [1, 2],
+      "text1": "underworld_mines",
+      "properties": {
+        "x": 132,
+        "y": 69
+      }
+    }
+  ]
+}

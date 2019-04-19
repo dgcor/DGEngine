@@ -1,0 +1,24 @@
+{
+  "levelObject": [
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [15, 14],
+      "size": [1, 2],
+      "properties": {
+        "x": 7,
+        "y": 14
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [31, 38],
+      "size": [2, 1],
+      "text1": "lochport_cemetery",
+      "properties": {
+        "x": 48,
+        "y": 46
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "palette": [
+    {
+      "id": "l3pfoul",
+      "file": "levels/l3data/l3pfoul.pal"
+    },
+    {
+      "id": "l3pwater",
+      "file": "levels/l3data/l3pwater.pal"
+    },
+    {
+      "id": "level",
+      "fromId": "l3pfoul"
+    },
+    {
+      "id": "colorCycle",
+      "fromId": "l3pfoul"
+    }
+  ],
+  "load": "level/default/caves.json",
+  "level": { "id": "level", "defaultLight": [185, 0, 7] },
+  "load": "level/automap/caves/load.json",
+  "load": "level/map/poisonWater/levelObjects.json",
+  "load": "level/map/poisonWater/monsters.json",
+  "load": "level/map/poisonWater/level2.json",
+  "load": "level/map/poisonWater/quest.json"
+}

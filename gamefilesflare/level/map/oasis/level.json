@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland_fog.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/oasis/levelObjects.json",
+  "load": "level/map/oasis/monsters.json",
+  "load": "level/map/oasis/level2.json"
+}

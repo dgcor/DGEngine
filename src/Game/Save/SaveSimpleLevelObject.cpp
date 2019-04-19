@@ -32,8 +32,13 @@ void Save::serialize(void* serializeObj, Properties& props,
 		writeString(writer, "name", obj.Name());
 	}
 
-	writeVector2d<MapCoord>(writer, "mapPosition", obj.MapPosition());
+	writeVector2fi(writer, "mapPosition", obj.MapPosition());
 
+	if (props.saveDefaults == true ||
+		(props.saveDefaults == false && obj.getCellSize() != objClass.getCellSize()))
+	{
+		writeVector2i(writer, "size", obj.getCellSize());
+	}
 	if (props.saveDefaults == true ||
 		(props.saveDefaults == false && obj.Text1() != objClass.Text1()))
 	{

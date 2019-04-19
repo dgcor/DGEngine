@@ -8,22 +8,21 @@
 class LevelCell
 {
 public:
-	// number of layers + sol
-	static constexpr size_t NumberOfLayers = 6;
+	// number of layers including sol layer
+	static constexpr size_t NumberOfLayers = 8;
 	static constexpr size_t SolLayer = NumberOfLayers - 1;
 
 private:
-	std::array<int16_t, NumberOfLayers> tileIndexes;
+	std::array<int16_t, NumberOfLayers> tileIndexes{ -1, -1, -1, -1,- 1, -1, -1, 0 };
 	std::vector<LevelObject*> objects;
 	uint8_t defaultLight{ 0 };
 	uint8_t currentLight{ 0 };
 	std::vector<uint8_t> lights;
 
 public:
-	LevelCell() : tileIndexes{ -1, -1, -1, -1, -1, 0 } {}
-	LevelCell(int16_t layer1, int16_t layer2, int16_t layer3,
-		int16_t layer4, int16_t layer5, int16_t layer6)
-		: tileIndexes{ layer1, layer2, layer3, layer4, layer5, layer6 } {}
+	LevelCell() {}
+	LevelCell(int16_t defaultTileLayer1)
+		: tileIndexes{ defaultTileLayer1, -1, -1, -1, -1, -1, -1, 0 } {}
 
 	using iterator = std::vector<LevelObject*>::iterator;
 	using const_iterator = std::vector<LevelObject*>::const_iterator;
@@ -45,7 +44,6 @@ public:
 
 	int16_t getTileIndex(size_t layer) const noexcept { return tileIndexes[layer]; }
 
-	void setTileIndex(int16_t tileIndex_) noexcept;
 	void setTileIndex(size_t layer, int16_t tileIndex_) noexcept { tileIndexes[layer] = tileIndex_; }
 
 	uint8_t getDefaultLight() const noexcept { return defaultLight; }

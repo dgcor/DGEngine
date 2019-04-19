@@ -1,0 +1,17 @@
+{
+  "action": [
+    {
+      "name": "level.addLayer",
+      "texture": "minimap",
+      "textureRect": [0, 0, 136, 156],
+      "automap": true
+    },
+    {
+      "name": "level.setAutomap",
+      "automap": "dungeonAutomap",
+      "tileSize": [4, 4],
+      "offset": [3, 23, -6, -26],
+      "index": 0
+    }
+  ]
+}

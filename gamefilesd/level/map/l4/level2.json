@@ -1,0 +1,5 @@
+{
+  "load": ["level/default/loadDungeonTiled.json", "l4", "4", "level/map/l4/l4.json"],
+  "load": "level/map/l4/levelObjects2.json",
+  "load": "level/map/l4/monsters2.json"
+}

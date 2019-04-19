@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "nazia_underground",
+    "level/data/empyrean_campaign/nazia_underground.json"
+  ],
+  "load": "level/map/nazia_underground/levelObjects2.json",
+  "load": "level/map/nazia_underground/monsters2.json",
+  "load": "level/map/nazia_underground/quests.json",
+  "load": "level/map/nazia_underground/items.json"
+}

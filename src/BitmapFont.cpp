@@ -2,6 +2,7 @@
 #include <cmath>
 #include "Game.h"
 #include "SFML/Sprite2.h"
+#include "TexturePacks/BitmapFontTexturePack.h"
 
 BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_)
 	: charTextures(charTextures_), padding(padding_)

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "underworld_stronghold_2",
+    "level/data/empyrean_campaign/underworld_stronghold_2.json"
+  ],
+  "load": "level/map/underworld_stronghold_2/levelObjects2.json",
+  "load": "level/map/underworld_stronghold_2/monsters2.json",
+  "load": "level/map/underworld_stronghold_2/quests.json",
+  "load": "level/map/underworld_stronghold_2/items.json"
+}

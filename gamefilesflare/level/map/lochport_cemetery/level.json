@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland_rain.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/lochport_cemetery/levelObjects.json",
+  "load": "level/map/lochport_cemetery/monsters.json",
+  "load": "level/map/lochport_cemetery/level2.json"
+}

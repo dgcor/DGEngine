@@ -26,12 +26,8 @@ void StringText::calculateDrawPosition()
 
 void StringText::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
 	auto size = Size();
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	calculateDrawPosition();
 }
 

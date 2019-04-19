@@ -1,0 +1,10 @@
+{
+  "load": [
+    "level/default/loadCatacombsDun.json",
+    "chamberBone",
+    "Bone Chamber",
+    "levels/l2data/bonecha1.dun"
+  ],
+  "load": "level/map/chamberBone/levelObjects2.json",
+  "load": "level/map/chamberBone/monsters2.json"
+}

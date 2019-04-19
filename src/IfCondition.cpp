@@ -73,7 +73,7 @@ bool IfCondition::evalCondition(uint16_t conditionHash16,
 				regexMatch = std::regex_match(var2str, match, regex);
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 		return regexMatch;
 	}
 	}

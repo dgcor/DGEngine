@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "the_breach",
+    "level/data/empyrean_campaign/the_breach.json"
+  ],
+  "load": "level/map/the_breach/levelObjects2.json",
+  "load": "level/map/the_breach/monsters2.json",
+  "load": "level/map/the_breach/quests.json",
+  "load": "level/map/the_breach/items.json"
+}

@@ -2,7 +2,6 @@
 #include <cctype>
 #include "FileUtils.h"
 #include "Json/JsonUtils.h"
-#include <regex>
 #include "Utils/Utils.h"
 
 namespace Parser

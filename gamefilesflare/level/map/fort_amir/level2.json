@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "fort_amir",
+    "level/data/empyrean_campaign/fort_amir.json"
+  ],
+  "load": "level/map/fort_amir/levelObjects2.json",
+  "load": "level/map/fort_amir/monsters2.json",
+  "load": "level/map/fort_amir/quests.json",
+  "load": "level/map/fort_amir/items.json"
+}

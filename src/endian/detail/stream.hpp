@@ -49,10 +49,7 @@ public:
     /// @param size the size of the buffer in bytes
     stream(DataPointerType data, size_type size) noexcept :
         m_data(data), m_size(size)
-    {
-        assert(data != nullptr && "Null pointer provided");
-        assert(size > 0 && "Empty buffer provided");
-    }
+    { }
 
     /// Gets the size of the underlying buffer in bytes.
     ///

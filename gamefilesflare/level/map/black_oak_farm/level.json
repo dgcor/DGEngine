@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/black_oak_farm/levelObjects.json",
+  "load": "level/map/black_oak_farm/monsters.json",
+  "load": "level/map/black_oak_farm/level2.json"
+}

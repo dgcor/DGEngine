@@ -27,10 +27,7 @@ public:
     /// @param size the size of the buffer in bytes
     stream_writer(uint8_t* data, size_type size) noexcept :
         stream(data, size)
-    {
-        assert(data != nullptr && "Null pointer provided");
-        assert(size > 0 && "Empty buffer provided");
-    }
+    { }
 
     /// Writes a Bytes-sized integer to the stream.
     ///

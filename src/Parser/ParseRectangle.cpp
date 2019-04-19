@@ -1,4 +1,5 @@
 #include "ParseRectangle.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "Rectangle.h"
 #include "Utils/ParseUtils.h"
@@ -32,7 +33,7 @@ namespace Parser
 
 		if (elem.HasMember("textureRect"))
 		{
-			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
+			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			rectangle->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
@@ -40,13 +41,10 @@ namespace Parser
 		rectangle->setAnchor(anchor);
 		auto size = rectangle->getSize();
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 			rectangle->Size(size);
 		}
 		rectangle->Position(pos);

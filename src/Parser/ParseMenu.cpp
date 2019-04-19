@@ -1,8 +1,10 @@
 #include "ParseMenu.h"
 #include "BitmapText.h"
 #include "FileUtils.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
+#include "Menu.h"
 #include "ParseAction.h"
 #include "ParseMenuButton.h"
 #include "StringButton.h"
@@ -178,13 +180,10 @@ namespace Parser
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
 		auto origPos = getPositionKey(elem, "position", size, game.RefSize());
 		auto pos = origPos;
-		if (relativePos == true)
+		if (relativePos == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 
 		size_t menuIdx = 0;

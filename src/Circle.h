@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include "UIObject.h"
 
 class Circle : public sf::CircleShape, public UIObject

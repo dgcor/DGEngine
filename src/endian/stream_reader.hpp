@@ -27,10 +27,7 @@ public:
     /// @param size the size of the buffer in bytes
     stream_reader(const uint8_t* data, size_type size) noexcept :
         stream(data, size)
-    {
-        assert(data != nullptr && "Null pointer provided");
-        assert(size > 0 && "Empty buffer provided");
-    }
+    { }
 
     /// Reads a Bytes-sized integer from the stream and moves the read position.
     ///

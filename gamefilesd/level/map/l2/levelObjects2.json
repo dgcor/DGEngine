@@ -1,0 +1,33 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDown",
+      "mapPosition": [71, 72],
+      "properties": {
+        "x": 49,
+        "y": 72,
+        "level": 3
+      }
+    },
+    {
+      "class": "levelDownDungeon2",
+      "mapPosition": [73, 66],
+      "text1": "poisonWater",
+      "properties": {
+        "x": 15,
+        "y": 67
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUp",
+      "mapPosition": [70, 49],
+      "properties": {
+        "x": 49,
+        "y": 85,
+        "level": 1
+      }
+    }
+  ]
+}

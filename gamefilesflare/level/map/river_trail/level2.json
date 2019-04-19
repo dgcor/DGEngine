@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "river_trail",
+    "level/data/empyrean_campaign/river_trail.json"
+  ],
+  "load": "level/map/river_trail/levelObjects2.json",
+  "load": "level/map/river_trail/monsters2.json",
+  "load": "level/map/river_trail/quests.json",
+  "load": "level/map/river_trail/items.json"
+}

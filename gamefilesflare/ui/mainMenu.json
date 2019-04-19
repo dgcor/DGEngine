@@ -20,6 +20,35 @@
           "json": { "texture": { "id": "mainmenu", "file": "images/menus/backgrounds/ice_palace.png" } }
         }
       ]
+    },
+    {
+      "name": "action.set",
+      "id": "loadMainMenuImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "image": {
+            "id": "mainmenu",
+            "texture": "mainmenu",
+            "background": true
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "loadLogoImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "image": {
+            "id": "smlogo",
+            "texture": "logo",
+            "position": ["center", 0],
+            "anchor": "none"
+          }
+        }
+      }
     }
   ],
   "audio": {
@@ -83,19 +112,12 @@
       "frames": 4
     }
   ],
-  "image": [
-    {
-      "id": "mainmenu",
-      "texture": "mainmenu",
-      "position": ["center", 0],
-      "anchor": "none"
-    },
-    {
-      "id": "smlogo",
-      "texture": "logo",
-      "position": ["center", 0],
-      "anchor": "none"
-    }
+  "cursor": {
+    "texture": "cursor"
+  },
+  "action": [
+    "loadMainMenuImg",
+    "loadLogoImg"
   ],
   "animation": [
     {

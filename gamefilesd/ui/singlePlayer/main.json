@@ -79,13 +79,7 @@
       "textureRect": [0, 228, 180, 76]
     }
   ],
-  "animation": {
-    "id": "smlogo",
-    "texturePack": "smlogo",
-    "position": ["center", 0],
-    "anchor": "none",
-    "refresh": 50
-  },
+  "action": "loadLogoImg",
   "text": [
     {
       "id": "label1",

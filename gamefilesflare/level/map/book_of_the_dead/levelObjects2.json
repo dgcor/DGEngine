@@ -1,0 +1,90 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [15, 5],
+      "size": [2, 1],
+      "text1": "salted_field",
+      "properties": {
+        "x": 11,
+        "y": 44
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [16, 45],
+      "size": [1, 2],
+      "text1": "perdition_harbor",
+      "properties": {
+        "x": 32,
+        "y": 20
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [15, 16],
+      "properties": {
+        "x": 20,
+        "y": 25
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [27, 23],
+      "properties": {
+        "x": 15,
+        "y": 15
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [27, 27],
+      "properties": {
+        "x": 15,
+        "y": 35
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [15, 34],
+      "properties": {
+        "x": 20,
+        "y": 25
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [15, 34],
+      "properties": {
+        "x": 9,
+        "y": 25
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [15, 16],
+      "properties": {
+        "x": 9,
+        "y": 25
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [10, 25],
+      "properties": {
+        "x": 20,
+        "y": 25
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [18, 25],
+      "properties": {
+        "x": 9,
+        "y": 25
+      }
+    }
+  ]
+}
