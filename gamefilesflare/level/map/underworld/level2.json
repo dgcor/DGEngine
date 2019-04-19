@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load3Layers.json",
+    "underworld",
+    "level/data/empyrean_campaign/underworld.json"
+  ],
+  "load": "level/map/underworld/levelObjects2.json",
+  "load": "level/map/underworld/monsters2.json",
+  "load": "level/map/underworld/quests.json",
+  "load": "level/map/underworld/items.json"
+}

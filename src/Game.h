@@ -4,14 +4,11 @@
 #include "FadeInOut.h"
 #include "InputEvent.h"
 #include "LoadingScreen.h"
-#include <memory>
-#include "Menu.h"
-#include "Parser/ParseVariable.h"
 #include "Queryable.h"
 #include "ResourceManager.h"
-#include <string>
-#include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include "Variable.h"
 #include <vector>
 
@@ -22,11 +19,27 @@ private:
 	sf::RenderTexture gameTexture;
 	sf::Sprite gameSprite;
 
+	// reference size
+	// used to position drawables in bigger draw regions
 	sf::Vector2u refSize;
+
+	// minimum window size
+	// all other sizes are equal or bigger
 	sf::Vector2u minSize;
+
+	// actual size of the window the player sees
 	sf::Vector2u size;
-	sf::Vector2u oldSize;
+
+	// draw region size
+	// if stretchd, this will be equal to minSize
+	// otherwise, this will be equal to size
 	sf::Vector2u drawRegionSize;
+
+	// previous draw region size
+	sf::Vector2u oldDrawRegionSize;
+
+	uint32_t maxHeight{ 0 };
+
 	unsigned framerate;
 	bool smoothScreen;
 	bool stretchToFit;
@@ -71,7 +84,7 @@ private:
 	ResourceManager resourceManager;
 	EventManager eventManager;
 
-	std::map<std::string, Variable> variables;
+	std::unordered_map<std::string, Variable> variables;
 
 	std::unique_ptr<LoadingScreen> loadingScreen;
 	FadeInOut fadeObj;
@@ -102,8 +115,7 @@ private:
 	void drawAndUpdate();
 	void drawWindow();
 
-	void updateSize();
-	void updateGameTexture();
+	void updateGameWindowSize();
 
 	void reset();
 
@@ -129,9 +141,9 @@ public:
 	unsigned getOpenGLMinorVersion() const { return window.getSettings().minorVersion; }
 	bool getOpenGLSRgbCapable() const { return window.getSettings().sRgbCapable; }
 
-	const sf::Vector2u& OldWindowSize() const noexcept { return oldSize; }
 	const sf::Vector2u& WindowSize() const noexcept { return size; }
 	const sf::Vector2u& DrawRegionSize() const noexcept { return drawRegionSize; }
+	const sf::Vector2u& OldDrawRegionSize() const noexcept { return oldDrawRegionSize; }
 	sf::Vector2f DrawRegionSizef() const
 	{
 		return sf::Vector2f((float)drawRegionSize.x, (float)drawRegionSize.y);
@@ -141,6 +153,8 @@ public:
 	void RefSize(const sf::Vector2u& size_);
 	const sf::Vector2u& MinSize() const noexcept { return minSize; }
 	void MinSize(const sf::Vector2u& size_);
+	uint32_t MaxHeight() const noexcept { return maxHeight; }
+	void MaxHeight(uint32_t maxHeight_);
 	unsigned Framerate() const noexcept { return framerate; }
 	bool SmoothScreen() const noexcept { return smoothScreen; }
 	bool StretchToFit() const noexcept { return stretchToFit; }
@@ -250,7 +264,7 @@ public:
 
 	void play();
 
-	const std::map<std::string, Variable>& getVariables() const noexcept { return variables; }
+	const std::unordered_map<std::string, Variable>& getVariables() const noexcept { return variables; }
 
 	// gets variable without tokens. ex: "var"
 	bool getVariableNoToken(const std::string& key, Variable& var) const;

@@ -1,0 +1,5 @@
+{
+  "load": ["level/default/loadTiled.json", "crypt3", "Crypt 3", "level/map/crypt3/crypt3.json"],
+  "load": "level/map/crypt3/levelObjects2.json",
+  "load": "level/map/crypt3/monsters2.json"
+}

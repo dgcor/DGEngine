@@ -1,0 +1,10 @@
+{
+  "level": {
+    "id": "level",
+    "resizeToFit": false,
+    "map": {
+      "file": "{1}",
+      "position": [{2}]
+    }
+  }
+}

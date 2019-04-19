@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/halls_of_infinity/levelObjects.json",
+  "load": "level/map/halls_of_infinity/monsters.json",
+  "load": "level/map/halls_of_infinity/level2.json"
+}

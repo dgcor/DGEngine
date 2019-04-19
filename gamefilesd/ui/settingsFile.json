@@ -1,8 +1,9 @@
 {
-  "windowSize": [{1}, {2}],
-  "keepAR": {3},
-  "stretchToFit": {4},
-  "smoothScreen": {5},
-  "framerate": {6},
-  "variable": { "skipIntro": {7} }
+  "windowSize": ["|game.size.x|", "|game.size.y|"],
+  "maxWindowHeight": "|game.maxWindowHeight|",
+  "keepAR": "|game.keepAR|",
+  "stretchToFit": "|game.stretchToFit|",
+  "smoothScreen": "|game.smoothScreen|",
+  "framerate": "|game.framerate|",
+  "variable": { "skipIntro": "|skipIntro|" }
 }

@@ -68,6 +68,26 @@ namespace SFMLUtils
 		}
 	}
 
+	float getScaleToStretchAndKeepAR(const sf::Vector2u& size,
+		const sf::Vector2u& windowSize)
+	{
+		float windowRatio = (float)windowSize.x / (float)windowSize.y;
+		float drawableRatio = (float)size.x / (float)size.y;
+		bool horizontalSpacing = true;
+		if (windowRatio < drawableRatio)
+		{
+			horizontalSpacing = false;
+		}
+		if (horizontalSpacing == true)
+		{
+			return (float)windowSize.x / (float)size.x;
+		}
+		else
+		{
+			return (float)windowSize.y / (float)size.y;
+		}
+	}
+
 	void viewStretchKeepAR(sf::View& view, const sf::Vector2u& windowSize, sf::FloatRect viewPort)
 	{
 		// Compares the aspect ratio of the window to the aspect ratio of the view,

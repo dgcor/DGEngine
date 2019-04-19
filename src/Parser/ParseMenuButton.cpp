@@ -1,6 +1,8 @@
 #include "ParseMenuButton.h"
 #include "BitmapText.h"
+#include "Game.h"
 #include "GameUtils.h"
+#include "Menu.h"
 #include "ParseAction.h"
 #include "StringButton.h"
 #include "StringText.h"
@@ -61,14 +63,11 @@ namespace Parser
 		button->setText(getStringKey(val, "text"));
 
 		auto pos2 = getVector2fKey<sf::Vector2f>(val, "position", origPos);
-		if (relativePos == true)
+		if (relativePos == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
 			auto size = button->Size();
-			GameUtils::setAnchorPosSize(anchor, pos2, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos2, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos2, size, game.RefSize(), game.DrawRegionSize());
 		}
 		button->Position(pos2);
 

@@ -1,0 +1,32 @@
+{
+  "load": ["level/default/loadTiled.json", "town", "Town", "level/map/town/town.json"],
+  "load": ["level/player/%charClass%/defaults.json", "%charName%"],
+  "load": "level/map/town/levelObjects2.json",
+  "load": "level/map/town/items.json",
+  "load": "level/map/town/players2.json",
+  "load": "level/map/town/quests.json",
+  "action": [
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": [
+        { "name": "player.setDirection", "player": "griswold", "direction": "FrontLeft" },
+        { "name": "player.setDirection", "player": "ogden", "direction": "FrontLeft" }
+      ]
+    },
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "else": [
+        { "name": "load", "file": "level/map/town/soundWelcome.json" },
+        { "name": "event.add",
+          "time": 1.5,
+          "addToFront": true,
+          "action": { "name": "sound.play", "id": "gameWelcome" }
+        }
+      ]
+    }
+  ]
+}

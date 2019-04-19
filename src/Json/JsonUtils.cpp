@@ -1,11 +1,91 @@
 #include "JsonUtils.h"
 #include "Game.h"
-#include <regex>
+#include "rapidjson/pointer.h"
 #include "Utils/Utils.h"
 
 namespace JsonUtils
 {
 	using namespace rapidjson;
+
+	const Value& query(const Value& elem, const Value& query)
+	{
+		if (query.IsString() == true)
+		{
+			auto elemPtr = &elem;
+			std::string_view queryStr(query.GetString(), query.GetStringLength());
+			while (true)
+			{
+				auto str1 = Utils::splitStringIn2(queryStr, '{');
+				if (str1.second.empty() == false)
+				{
+					// get first part to see if it's array or object
+					auto querySize = str1.first.size();
+					if (querySize > 1 && str1.first[querySize - 1] == '/')
+					{
+						querySize--;
+					}
+					const Value* obj = nullptr;
+					Pointer pointer(str1.first.data(), querySize);
+					if (pointer.IsValid() == true)
+					{
+						obj = pointer.Get(*elemPtr);
+					}
+					if (obj == nullptr || obj->IsArray() == false)
+					{
+						break;
+					}
+
+					// get the key/val to try and match
+					auto str2 = Utils::splitStringIn2(str1.second, '}');
+					auto strKeyVal = Utils::splitStringIn2(str2.first, '=');
+
+					if (strKeyVal.first.empty() == true || strKeyVal.second.empty() == true)
+					{
+						break;
+					}
+
+					bool foundMatch = false;
+					std::string key(strKeyVal.first);
+					for (const auto& elem : *obj)
+					{
+						if (elem.HasMember(key) == false ||
+							elem[key].IsArray() == true ||
+							elem[key].IsObject() == true)
+						{
+							continue;
+						}
+						if ((elem[key].IsString() == true &&
+							elem[key].GetString() == strKeyVal.second) ||
+							toString(elem[key]) == strKeyVal.second)
+						{
+							queryStr = str2.second;
+							elemPtr = &elem;
+							foundMatch = true;
+							break;
+						}
+					}
+					if (foundMatch == true)
+					{
+						continue;
+					}
+					break;
+				}
+
+				Pointer pointer(str1.first.data(), str1.first.size());
+				if (pointer.IsValid() == false)
+				{
+					break;
+				}
+				auto obj2 = pointer.Get(*elemPtr);
+				if (obj2 != nullptr)
+				{
+					return *obj2;
+				}
+				break;
+			}
+		}
+		return query;
+	}
 
 	void replaceValueWithVariable(Value& elem,
 		Value::AllocatorType& allocator, const Variable& var)
@@ -282,6 +362,16 @@ namespace JsonUtils
 		return std::string(buffer.GetString(), buffer.GetSize());
 	}
 
+	std::string jsonToPrettyString(const Value& elem)
+	{
+		StringBuffer buffer;
+		PrettyWriter<StringBuffer> writer(buffer);
+		writer.SetIndent(' ', 2);
+		writer.SetFormatOptions(PrettyFormatOptions::kFormatSingleLineArray);
+		elem.Accept(writer);
+		return std::string(buffer.GetString(), buffer.GetSize());
+	}
+
 	bool loadFile(const std::string_view file, Document& doc)
 	{
 		if (file.empty() == true)
@@ -299,6 +389,18 @@ namespace JsonUtils
 		}
 		// Default template parameter uses UTF8 and MemoryPoolAllocator.
 		return (doc.Parse(json.data(), json.size()).HasParseError() == false);
+	}
+
+	bool loadJsonAndReplaceValues(const std::string_view json, Document& doc,
+		const Game& obj, bool changeValueType, char token)
+	{
+		if (loadJson(json, doc) == true)
+		{
+			MemoryPoolAllocator<CrtAllocator> allocator;
+			replaceValueWithGameVar(doc, allocator, obj, changeValueType, token);
+			return true;
+		}
+		return false;
 	}
 
 	void saveToFile(const std::string_view file, const Value& elem)

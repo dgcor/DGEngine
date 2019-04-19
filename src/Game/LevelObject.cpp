@@ -56,7 +56,7 @@ bool LevelObject::getCurrentTexture(TextureInfo& ti) const
 
 void LevelObject::updateDrawPosition(const LevelMap& map)
 {
-	updateDrawPosition(map, map.getCoord(mapPosition));
+	updateDrawPosition(map, map.toDrawCoord(mapPosition));
 }
 
 void LevelObject::updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos)
@@ -87,28 +87,38 @@ void LevelObject::updateHover(Game& game, Level& level)
 		return;
 	}
 	bool objHovered = level.HasMouseInside() == true;
-	if (hoverCellSize == 0)
+	if (cellSize.x == 0 || cellSize.y == 0)
 	{
 		objHovered = objHovered &&
 			(sprite.getGlobalBounds().contains(level.MousePositionf()) == true);
 	}
-	else if (hoverCellSize == 1)
-	{
-		objHovered = objHovered &&
-			(mapPosition == level.getMapCoordOverMouse());
-	}
 	else
 	{
 		auto minMapPosition = mapPosition;
-		minMapPosition.x = (uint16_t)std::max(0, (int32_t)mapPosition.x - ((int32_t)hoverCellSize - 1));
-		minMapPosition.y = (uint16_t)std::max(0, (int32_t)mapPosition.y - ((int32_t)hoverCellSize - 1));
+		auto maxMapPosition = mapPosition;
+		if (cellSize.x < 0)
+		{
+			minMapPosition.x = std::max(0.f, mapPosition.x + (float)(cellSize.x + 1));
+		}
+		else
+		{
+			maxMapPosition.x = std::max(0.f, mapPosition.x + (float)(cellSize.x - 1));
+		}
+		if (cellSize.x < 0)
+		{
+			minMapPosition.y = std::max(0.f, mapPosition.y + (float)(cellSize.y + 1));
+		}
+		else
+		{
+			maxMapPosition.y = std::max(0.f, mapPosition.y + (float)(cellSize.y - 1));
+		}
 
 		auto mouseMapCoord = level.getMapCoordOverMouse();
 
 		objHovered = objHovered &&
-			(mouseMapCoord.x <= mapPosition.x &&
+			(mouseMapCoord.x <= maxMapPosition.x &&
 				mouseMapCoord.x >= minMapPosition.x &&
-				mouseMapCoord.y <= mapPosition.y &&
+				mouseMapCoord.y <= maxMapPosition.y &&
 				mouseMapCoord.y >= minMapPosition.y);
 	}
 	if (objHovered == true)
@@ -146,7 +156,7 @@ void LevelObject::updateHover(Game& game, Level& level)
 	}
 }
 
-bool LevelObject::MapPosition(LevelMap& map, const MapCoord& pos)
+bool LevelObject::MapPosition(LevelMap& map, const PairFloat& pos)
 {
 	bool success = false;
 	if (mapPosition != pos)
@@ -160,17 +170,17 @@ bool LevelObject::MapPosition(LevelMap& map, const MapCoord& pos)
 	return success;
 }
 
-bool LevelObject::MapPosition(Level& level, const MapCoord& pos)
+bool LevelObject::MapPosition(Level& level, const PairFloat& pos)
 {
 	return MapPosition(level.Map(), pos);
 }
 
-bool LevelObject::move(LevelMap& map, const MapCoord& pos)
+bool LevelObject::move(LevelMap& map, const PairFloat& pos)
 {
 	return MapPosition(map, pos);
 }
 
-bool LevelObject::move(Level& level, const MapCoord& pos)
+bool LevelObject::move(Level& level, const PairFloat& pos)
 {
 	return move(level.Map(), pos);
 }
@@ -189,7 +199,7 @@ bool LevelObject::remove(LevelMap& map) const
 	return success;
 }
 
-bool LevelObject::updateMapPositionBack(LevelMap& map, const MapCoord pos)
+bool LevelObject::updateMapPositionBack(LevelMap& map, const PairFloat pos)
 {
 	if (map.isMapCoordValid(mapPosition) == true &&
 		map[mapPosition].removeObject(this) == true)
@@ -206,7 +216,7 @@ bool LevelObject::updateMapPositionBack(LevelMap& map, const MapCoord pos)
 	return success;
 }
 
-bool LevelObject::updateMapPositionFront(LevelMap& map, const MapCoord pos)
+bool LevelObject::updateMapPositionFront(LevelMap& map, const PairFloat pos)
 {
 	if (map.isMapCoordValid(mapPosition) == true &&
 		map[mapPosition].removeObject(this) == true)

@@ -24,7 +24,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 	if (item.MapPosition().x >= 0)
 	{
-		writeVector2d<MapCoord>(writer, "mapPosition", item.MapPosition());
+		writeVector2fi(writer, "mapPosition", item.MapPosition());
 	}
 
 	if (item.properties.empty() == false)

@@ -30,20 +30,7 @@ namespace Parser
 	{
 		if (elem.HasMember(key) == true)
 		{
-			const auto& keyElem = elem[key];
-			if (keyElem.IsString() == true)
-			{
-				return GameUtils::getAnchor(keyElem.GetString(), val);
-			}
-			else if (keyElem.IsArray() == true)
-			{
-				Anchor ret = Anchor::None;
-				for (const auto& arrElem : keyElem)
-				{
-					ret |= GameUtils::getAnchor(getStringVal(arrElem).c_str(), val);
-				}
-				return ret;
-			}
+			return getAnchorVal(elem[key], val);
 		}
 		return val;
 	}
@@ -306,7 +293,7 @@ namespace Parser
 		return{};
 	}
 
-	ItemXY getItemXYKey(const Value& elem, const char* key, const ItemXY& val)
+	PairUInt8 getItemXYKey(const Value& elem, const char* key, const PairUInt8& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -381,6 +368,30 @@ namespace Parser
 			}
 		}
 		return val;
+	}
+
+	static Value nullValue(Type::kNullType);
+
+	const Value& getQueryKey(const Value* elem, const Value& query, const char* key)
+	{
+		if (query.HasMember(key) == true)
+		{
+			if (elem != nullptr)
+			{
+				return getQueryVal(*elem, query[key]);
+			}
+			return query[key];
+		}
+		return nullValue;
+	}
+
+	const Value& getQueryKey(const Value& elem, const Value& query, const char* key)
+	{
+		if (query.HasMember(key) == true)
+		{
+			return getQueryVal(elem, query[key]);
+		}
+		return nullValue;
 	}
 
 	ReplaceVars getReplaceVarsKey(const Value& elem, const char* key, ReplaceVars val)

@@ -17,31 +17,56 @@ void Image::centerTexture()
 
 void Image::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
+	if (background == false)
 	{
-		return;
+		auto pos = sprite.getPosition();
+		auto size = Size();
+		GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
+		sprite.setPosition(pos);
+		Size(size);
 	}
-	auto pos = sprite.getPosition();
-	auto size = Size();
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
-	sprite.setPosition(pos);
-	if (resizable == true)
+	else
 	{
-		sprite.setTextureRect(sf::IntRect(0, 0, (int)size.x, (int)size.y));
+		// stretch to fill and keep aspect ratio
+		auto scale = SFMLUtils::getScaleToStretchAndKeepAR(
+			{ (unsigned)sprite.getTextureRect().width, (unsigned)sprite.getTextureRect().height },
+			game.DrawRegionSize()
+		);
+		sprite.setScale(scale, scale);
+
+		// center image
+		auto newSize = Size();
+		sprite.setPosition(
+			-std::round(std::abs(newSize.x - (float)game.DrawRegionSize().x) / 2.f),
+			-std::round(std::abs(newSize.y - (float)game.DrawRegionSize().y) / 2.f)
+		);
 	}
 }
 
 sf::Vector2f Image::Size() const
 {
-	return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
+	auto rect = sprite.getGlobalBounds();
+	return sf::Vector2f(rect.width, rect.height);
 }
 
 void Image::Size(const sf::Vector2f& size)
 {
-	auto rect = sprite.getTextureRect();
-	rect.width = (int)size.x;
-	rect.height = (int)size.y;
-	sprite.setTextureRect(rect);
+	if (background == true)
+	{
+		return;
+	}
+	if (resizable == true && stretch == true)
+	{
+		const auto& rect = sprite.getTextureRect();
+		sprite.setScale(size.x / (float)rect.width, size.y / (float)rect.height);
+	}
+	else
+	{
+		auto rect = sprite.getTextureRect();
+		rect.width = (int)size.x;
+		rect.height = (int)size.y;
+		sprite.setTextureRect(rect);
+	}
 }
 
 void Image::draw(const Game& game, sf::RenderTarget& target) const

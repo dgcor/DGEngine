@@ -1,0 +1,19 @@
+{
+  "level": {
+    "id": "level",
+    "path": "{1}",
+    "name": "{2}",
+    "map": {
+      "file": "{3}",
+      "indexOffset": -1,
+      "defaultTile": 6,
+      "layers": [
+        {
+          "width": "/layers/0/width",
+          "height": "/layers/0/height",
+          "data": "/layers/0/data"
+        }
+      ]
+    }
+  }
+}

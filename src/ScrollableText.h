@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Actions/Action.h"
 #include "DrawableText.h"
 #include <memory>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "SFML/View2.h"
 #include "UIObject.h"
+#include "Utils/ElapsedTime.h"
 
 class ScrollableText : public UIObject
 {
@@ -14,15 +14,14 @@ private:
 	View2 view;
 	std::shared_ptr<Action> completeAction;
 
-	sf::Time frameTime;
-	sf::Time currentTime;
+	ElapsedTime elapsedTime;
 	float height{ 0.f };
 	bool loop{ false };
 	bool pause{ false };
 	bool visible{ true };
 
 public:
-	ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_);
+	ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& timeout_);
 
 	void reset();
 

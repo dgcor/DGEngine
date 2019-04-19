@@ -1,0 +1,32 @@
+{
+  "levelObject": [
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [24, 5],
+      "size": [2, 2],
+      "properties": {
+        "x": 80,
+        "y": 66
+      }
+    },
+    {
+      "class": "mapTeleportSmooth",
+      "mapPosition": [46, 22],
+      "properties": {
+        "x": 44,
+        "y": 11
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [98, 65],
+      "size": [2, 2],
+      "text1": "dilapidated_sewers",
+      "properties": {
+        "x": 3,
+        "y": 7
+      }
+    }
+  ]
+}

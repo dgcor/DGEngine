@@ -40,7 +40,7 @@ void FadeInOut::UpdateFade() noexcept
 }
 
 void FadeInOut::Reset(sf::Color color_, bool isFadeOut_, bool enableInput_, uint8_t fadeOffset_,
-	const sf::Time& frameTime_, const std::shared_ptr<Action>& action_)
+	const sf::Time& timeout_, const std::shared_ptr<Action>& action_)
 {
 	color = color_;
 	if (enableInput != enableInput_)
@@ -50,8 +50,7 @@ void FadeInOut::Reset(sf::Color color_, bool isFadeOut_, bool enableInput_, uint
 	isFadeOut = isFadeOut_;
 	enableInput = enableInput_;
 	fadeOffset = fadeOffset_;
-	frameTime = frameTime_;
-	currentTime = {};
+	elapsedTime = timeout_;
 	action = action_;
 	running = true;
 }
@@ -68,12 +67,8 @@ void FadeInOut::update(Game& game) noexcept
 		game.EnableInput(enableInput);
 	}
 
-	currentTime += game.getElapsedTime();
-
-	while (currentTime >= frameTime)
+	elapsedTime.update(game.getElapsedTime(), [&]()
 	{
-		currentTime -= frameTime;
-
 		if (HasFadeEnded() == true)
 		{
 			if (action != nullptr)
@@ -92,5 +87,5 @@ void FadeInOut::update(Game& game) noexcept
 		{
 			UpdateFade();
 		}
-	}
+	});
 }

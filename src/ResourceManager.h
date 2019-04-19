@@ -1,16 +1,14 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include "Animation.h"
 #include "AudioSource.h"
 #include "Font.h"
-#include "Game/Level.h"
 #include "IgnoreResource.h"
 #include "ImageContainers/ImageContainer.h"
 #include <list>
 #include <memory>
 #include "Palette.h"
-#include <SFML/Audio.hpp>
+#include <SFML/Audio/Sound.hpp>
 #include <SFML/Graphics.hpp>
 #include "SFML/Music2.h"
 #include "SFML/MusicLoops.h"
@@ -23,6 +21,8 @@
 #include <vector>
 
 class Button;
+class Image;
+class Level;
 
 struct ResourceBundle
 {
@@ -146,14 +146,7 @@ public:
 
 	Image* getCursor() const;
 	Level* getCurrentLevel() const noexcept { return currentLevel; }
-	Level* getLevel(const std::string& id) const noexcept
-	{
-		if (id.empty() == true)
-		{
-			return currentLevel;
-		}
-		return getDrawable<Level>(id);
-	}
+	Level* getLevel(const std::string& id) const noexcept;
 	void addCursor(const std::shared_ptr<Image>& cursor_) { cursors.push_back(cursor_); }
 	void popCursor(bool popAll = false);
 	void popAllCursors() noexcept { cursors.clear(); }

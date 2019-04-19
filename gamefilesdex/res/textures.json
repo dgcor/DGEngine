@@ -1,0 +1,24 @@
+{
+  "texture": [
+    {
+      "id": "background",
+      "color": "0x000000",
+      "size": [1, 1]
+    },
+    {
+      "id": "empty",
+      "color": "0x00000000",
+      "size": [1, 1]
+    },
+    {
+      "id": "textWallBackground",
+      "color": "0x00000077",
+      "size": [2, 2]
+    },
+    {
+      "id": "cursor",
+      "file": "ui_art/cursor.pcx",
+      "mask": "0x000000"
+    }
+  ]
+}

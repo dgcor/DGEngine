@@ -1,8 +1,10 @@
 #include "ParseInputText.h"
+#include "Game.h"
 #include "InputText.h"
 #include "ParseAction.h"
 #include "ParseText.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {

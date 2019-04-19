@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "st_maria_2",
+    "level/data/empyrean_campaign/st_maria_2.json"
+  ],
+  "load": "level/map/st_maria_2/levelObjects2.json",
+  "load": "level/map/st_maria_2/monsters2.json",
+  "load": "level/map/st_maria_2/quests.json",
+  "load": "level/map/st_maria_2/items.json"
+}

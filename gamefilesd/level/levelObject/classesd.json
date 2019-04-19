@@ -1,0 +1,265 @@
+{
+  "levelObjectClass": [
+    {
+      "id": "levelDown",
+      "name": "Down to level",
+      "size": [1, 1],
+      "nameClassifier": "levelNameDown",
+      "text2": "cuttt",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "descriptions": [
+        { "index": 0, "name": "levelPath" },
+        { "index": 1, "name": "loadingScreenDown" }
+      ],
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.down.d.0%",
+            "%currentLevel.levelObject.down.x%, %currentLevel.levelObject.down.y%",
+            "%currentLevel.levelObject.down.d.1%"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelBackDown",
+      "fromId": "levelDown",
+      "nameClassifier": "levelNameBack"
+    },
+    {
+      "id": "levelDownDungeon",
+      "fromId": "levelDown",
+      "text1": "l1",
+      "text2": "cutl1d"
+    },
+    {
+      "id": "levelDownCatacombs",
+      "fromId": "levelDown",
+      "text1": "l5",
+      "text2": "cut2"
+    },
+    {
+      "id": "levelDownCaves",
+      "fromId": "levelDown",
+      "text1": "l9",
+      "text2": "cut3"
+    },
+    {
+      "id": "levelDownHell",
+      "fromId": "levelDown",
+      "text1": "l13",
+      "text2": "cut4"
+    },
+    {
+      "id": "levelDownDiablo",
+      "fromId": "levelDown",
+      "text1": "l16",
+      "text2": "cutgate"
+    },
+    {
+      "id": "levelDownBluePortal",
+      "fromId": "levelDown",
+      "text2": "cutportl"
+    },
+    {
+      "id": "levelDownRedPortal",
+      "fromId": "levelDown",
+      "text2": "cutportr"
+    },
+    {
+      "id": "levelDown2",
+      "fromId": "levelDown",
+      "text2": "cuttt",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.clickedObject.d.0%",
+            "%currentLevel.clickedObject.x%, %currentLevel.clickedObject.y%",
+            "%currentLevel.clickedObject.d.1%"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelDownDungeon2",
+      "fromId": "levelDown2",
+      "text1": "l1",
+      "text2": "cutl1d"
+    },
+    {
+      "id": "levelDownCatacombs2",
+      "fromId": "levelDown2",
+      "text1": "l5",
+      "text2": "cut2"
+    },
+    {
+      "id": "levelDownCaves2",
+      "fromId": "levelDown2",
+      "text1": "l9",
+      "text2": "cut3"
+    },
+    {
+      "id": "levelDownHell2",
+      "fromId": "levelDown2",
+      "text1": "l13",
+      "text2": "cut4"
+    },
+    {
+      "id": "levelDownDiablo2",
+      "fromId": "levelDown2",
+      "text1": "l16",
+      "text2": "cutgate"
+    },
+    {
+      "id": "levelDownBluePortal2",
+      "fromId": "levelDown2",
+      "text2": "cutportl"
+    },
+    {
+      "id": "levelDownRedPortal2",
+      "fromId": "levelDown2",
+      "text2": "cutportr"
+    },
+    {
+      "id": "levelUp",
+      "fromId": "levelDown",
+      "name": "Up to level",
+      "nameClassifier": "levelNameUp",
+      "descriptions": [
+        { "index": 0, "name": "levelPath" },
+        { "index": 1, "name": "loadingScreenUp" }
+      ],
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.up.d.0%",
+            "%currentLevel.levelObject.up.x%, %currentLevel.levelObject.up.y%",
+            "%currentLevel.levelObject.up.d.1%"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelBackUp",
+      "fromId": "levelUp",
+      "nameClassifier": "levelNameBack"
+    },
+    {
+      "id": "levelTown",
+      "fromId": "levelUp",
+      "name": "Up to town",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "town",
+            "%currentLevel.levelObject.town.x%, %currentLevel.levelObject.town.y%",
+            "cuttt"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelCatacombs",
+      "fromId": "levelTown",
+      "name": "Down to catacombs",
+      "text1": "l5",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.catacombs.d.0%",
+            "%currentLevel.levelObject.catacombs.x%, %currentLevel.levelObject.catacombs.y%",
+            "cut2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelCaves",
+      "fromId": "levelTown",
+      "name": "Down to caves",
+      "text1": "l9",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.caves.d.0%",
+            "%currentLevel.levelObject.caves.x%, %currentLevel.levelObject.caves.y%",
+            "cut3"
+          ]
+        }
+      }
+    },
+    {
+      "id": "levelHell",
+      "fromId": "levelTown",
+      "name": "Down to hell",
+      "text1": "l13",
+      "actions": {
+        "action": {
+          "name": "load",
+          "file": [
+            "level/load.json",
+            "%currentLevel.levelObject.hell.d.0%",
+            "%currentLevel.levelObject.hell.x%, %currentLevel.levelObject.hell.y%",
+            "cut4"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mapTeleport",
+      "texture": "empty",
+      "textureRect": [32, 32],
+      "size": [1, 1],
+      "actions": {
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "replaceVars": "value",
+            "action": {
+              "name": "player.move",
+              "id": "hero",
+              "position": [
+                "|currentLevel.clickedObject.x|",
+                "|currentLevel.clickedObject.y|"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "mapTeleportSmooth",
+      "fromId": "mapTeleport",
+      "actions": {
+        "action": {
+          "name": "loadJson",
+          "json": {
+            "replaceVars": "value",
+            "action": {
+              "name": "player.move",
+              "id": "hero",
+              "position": [
+                "|currentLevel.clickedObject.x|",
+                "|currentLevel.clickedObject.y|"
+              ],
+              "smooth": true
+            }
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,7 +1,11 @@
 #pragma once
 
-#include "Game.h"
 #include "Json/JsonParser.h"
+#include <memory>
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Texture.hpp>
+
+class Game;
 
 namespace Parser
 {

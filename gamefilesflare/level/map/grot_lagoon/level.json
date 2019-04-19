@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/snowplains_snow.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/grot_lagoon/levelObjects.json",
+  "load": "level/map/grot_lagoon/monsters.json",
+  "load": "level/map/grot_lagoon/level2.json"
+}

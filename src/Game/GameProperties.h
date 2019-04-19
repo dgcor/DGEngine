@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "MapCoord.h"
+#include "PairXY.h"
 #include <SFML/System/Time.hpp>
 #include <utility>
 
@@ -91,4 +91,4 @@ enum class PlayerAnimation : size_t
 	Size
 };
 
-PlayerDirection getPlayerDirection(const MapCoord& currPos, const MapCoord& newPos) noexcept;
+PlayerDirection getPlayerDirection(const PairFloat& currPos, const PairFloat& newPos) noexcept;

@@ -48,7 +48,7 @@ void InputText::setRegex(const std::string& regex_)
 		{
 			regex = std::make_optional<std::regex>(regex_, std::regex::ECMAScript);
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 	}
 }
 

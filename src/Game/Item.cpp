@@ -12,9 +12,10 @@ Item::Item(const ItemClass* class__) : LevelObject(class__)
 	animation.textureIndexRange = class__->getDropTextureIndexRange();
 	animation.textureIndexRange.second--;
 	animation.currentTextureIdx = animation.textureIndexRange.second;
-	animation.frameTime = class__->AnimationSpeed();
+	animation.elapsedTime = class__->AnimationSpeed();
 	animation.animType = AnimationType::PlayOnce;
-	hoverCellSize = 1;
+	cellSize.x = 1;
+	cellSize.y = 1;
 	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
 	updateOwner(nullptr);
 	updateTexture();

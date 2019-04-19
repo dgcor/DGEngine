@@ -1,6 +1,5 @@
 #include "ParseTexturePack.h"
-#include "Game/LevelHelper.h"
-#include "Min.h"
+#include "Game.h"
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
 #include "TexturePacks/BitmapFontTexturePack.h"
@@ -312,6 +311,32 @@ namespace Parser
 			}
 			texturePack = std::move(texturePack2);
 		}
+		if (isValidArray(elem, "animations") == true)
+		{
+			auto animTexturePack = dynamic_cast<IndexedTexturePack*>(texturePack.get());
+			if (animTexturePack == nullptr)
+			{
+				auto texturePack2 = std::make_unique<IndexedTexturePack>(
+					std::move(texturePack), getBoolKey(elem, "onlyUseIndexed"));
+				animTexturePack = texturePack2.get();
+				texturePack = std::move(texturePack2);
+			}
+			for (const auto& animVal : elem["animations"])
+			{
+				if (isValidArray(animVal, "indexes") == false)
+				{
+					continue;
+				}
+				std::vector<size_t> indexes;
+				for (const auto& indexVal : animVal["indexes"])
+				{
+					indexes.push_back(getUIntVal(indexVal));
+				}
+				auto animIndex = getUIntKey(animVal, "index", indexes.front());
+				auto refresh = getTimeKey(animVal, "refresh", sf::milliseconds(50));
+				animTexturePack->addAnimation(animIndex, refresh, indexes);
+			}
+		}
 		return texturePack;
 	}
 
@@ -352,85 +377,5 @@ namespace Parser
 			return;
 		}
 		game.Resources().addTexturePack(id, std::move(texturePack), getStringViewKey(elem, "resource"));
-	}
-
-	void parseLevelLayer(Game& game, const Value& elem,
-		std::vector<std::shared_ptr<TexturePack>>& texturePackLayers)
-	{
-		size_t index = getUIntKey(elem, "index");
-		if (index < texturePackLayers.size())
-		{
-			texturePackLayers[index] = game.Resources().getTexturePack(
-				getStringKey(elem, "texturePack"));
-		}
-	}
-
-	bool getOrParseLevelTexturePack(Game& game, const Value& elem,
-		const char* idKeyLayers, std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-		std::pair<int32_t, int32_t>& tileSize)
-	{
-		texturePackLayers.resize(Level::NumberOfLayers - 1);
-		bool success = false;
-
-		if (isValidString(elem, "min") == true)
-		{
-			// l4.min and town.min contain 16 blocks, all others 10.
-			auto minBlocks = getUIntKey(elem, "minBlocks", 10);
-			if (minBlocks != 10 && minBlocks != 16)
-			{
-				minBlocks = 10;
-			}
-			Min min(getStringViewVal(elem["min"]), minBlocks);
-			if (min.size() == 0)
-			{
-				return false;
-			}
-
-			auto pal = game.Resources().getPalette(elem["palette"].GetString());
-			if (pal == nullptr)
-			{
-				return false;
-			}
-
-			std::shared_ptr<ImageContainer> imgCont;
-			getOrParseImageContainer(game, elem, "imageContainer", imgCont);
-			if (imgCont == nullptr)
-			{
-				return false;
-			}
-
-			bool useIndexedImages = game.Shaders().hasSpriteShader();
-			CachedImagePack imgPack(imgCont.get(), pal, useIndexedImages);
-
-			texturePackLayers[0] = LevelHelper::loadTilesetSprite(imgPack, min, false, false, true);
-			texturePackLayers[1] = LevelHelper::loadTilesetSprite(imgPack, min, true, true, true);
-
-			tileSize.first = 64;
-			tileSize.second = 32;
-			success = true;
-		}
-		else
-		{
-			tileSize = getVector2uKey<std::pair<int32_t, int32_t>>(
-				elem, "tileSize", std::make_pair(64, 32));
-		}
-
-		if (elem.HasMember(idKeyLayers) == true)
-		{
-			const auto& layersElem = elem[idKeyLayers];
-			if (layersElem.IsArray() == true)
-			{
-				for (const auto& val : layersElem)
-				{
-					parseLevelLayer(game, val, texturePackLayers);
-				}
-			}
-			else if (layersElem.IsObject() == true)
-			{
-				parseLevelLayer(game, layersElem, texturePackLayers);
-			}
-			success = true;
-		}
-		return success;
 	}
 }

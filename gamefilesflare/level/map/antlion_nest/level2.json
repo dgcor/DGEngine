@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "antlion_nest",
+    "level/data/empyrean_campaign/antlion_nest.json"
+  ],
+  "load": "level/map/antlion_nest/levelObjects2.json",
+  "load": "level/map/antlion_nest/monsters2.json",
+  "load": "level/map/antlion_nest/quests.json",
+  "load": "level/map/antlion_nest/items.json"
+}

@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [4, 62],
+      "size": [4, 4],
+      "text1": "nazia_underground",
+      "properties": {
+        "x": 92,
+        "y": 29
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [12, 5],
+      "size": [2, 2],
+      "text1": "nazia_mines",
+      "properties": {
+        "x": 33,
+        "y": 57
+      }
+    }
+  ]
+}

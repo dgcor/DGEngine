@@ -13,10 +13,10 @@
     "updateCharPoints",
     "updateMap",
     {
-      "name": "if.equal",
+      "name": "if.notEqual",
       "param1": "{1}",
-      "param2": "positionPlayer",
-      "then": { "name": "load", "file": ["level/positionPlayer.json", "{2}"] }
+      "param2": "",
+      "then": { "name": "load", "file": ["level/positionPlayer.json", "{1}"] }
     }
   ],
   "load": "ui/level/char/updateVisiblePanels.json",

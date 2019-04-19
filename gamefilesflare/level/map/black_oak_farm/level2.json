@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "black_oak_farm",
+    "level/data/empyrean_campaign/black_oak_farm.json"
+  ],
+  "load": "level/map/black_oak_farm/levelObjects2.json",
+  "load": "level/map/black_oak_farm/monsters2.json",
+  "load": "level/map/black_oak_farm/quests.json",
+  "load": "level/map/black_oak_farm/items.json"
+}

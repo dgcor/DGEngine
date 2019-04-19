@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "abandoned_mines",
+    "level/data/empyrean_campaign/abandoned_mines.json"
+  ],
+  "load": "level/map/abandoned_mines/levelObjects2.json",
+  "load": "level/map/abandoned_mines/monsters2.json",
+  "load": "level/map/abandoned_mines/quests.json",
+  "load": "level/map/abandoned_mines/items.json"
+}

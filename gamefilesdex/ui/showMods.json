@@ -1,0 +1,17 @@
+{
+  "button": {
+    "id": "mods",
+    "font": "font30s",
+    "position": [560, 444],
+    "sound": "titlslct",
+    "anchor": "none",
+    "text": "Mods",
+    "visible": true,
+    "onClick": {
+      "name": "game.fadeOut",
+      "action": { "name": "load", "file": "ui/mods.json" }
+    },
+    "onHoverEnter": { "name": "text.setFont", "id": "mods", "font": "font30g" },
+    "onHoverLeave": { "name": "text.setFont", "id": "mods", "font": "font30s" }
+  }
+}

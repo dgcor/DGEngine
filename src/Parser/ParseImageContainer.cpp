@@ -1,4 +1,5 @@
 #include "ParseImageContainer.h"
+#include "Game.h"
 #include "ImageContainers/CelImageContainer.h"
 #include "ImageContainers/Cl2ImageContainer.h"
 #include "ImageContainers/SimpleImageContainer.h"

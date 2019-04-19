@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/blackmire_mines/levelObjects.json",
+  "load": "level/map/blackmire_mines/monsters.json",
+  "load": "level/map/blackmire_mines/level2.json"
+}

@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [53, 14],
+      "size": [1, 4],
+      "text1": "merrimead_swamp",
+      "properties": {
+        "x": 3,
+        "y": 17
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [35, 25],
+      "size": [2, 2],
+      "text1": "goblin_cave",
+      "properties": {
+        "x": 18,
+        "y": 46
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [4, 1],
+      "size": [4, 1],
+      "text1": "stonewood",
+      "properties": {
+        "x": 52,
+        "y": 76
+      }
+    }
+  ]
+}

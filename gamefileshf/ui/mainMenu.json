@@ -1,8 +1,40 @@
 {
-  "action": {
-    "name": "resource.add",
-    "id": "mainMenu"
-  },
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "mainMenu"
+    },
+    {
+      "name": "action.set",
+      "id": "loadMainMenuImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "image": {
+            "id": "mainmenu",
+            "texture": "mainmenu",
+            "anchor": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "loadLogoImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "animation": {
+            "id": "smlogo",
+            "texturePack": "smlogo",
+            "position": [0, 0],
+            "anchor": "none",
+            "refresh": 50
+          }
+        }
+      }
+    }
+  ],
   "audio": {
     "id": "main",
     "file": "music/dintro.wav",
@@ -65,19 +97,11 @@
   "cursor": {
     "texture": "cursor"
   },
-  "image": {
-    "id": "mainmenu",
-    "texture": "mainmenu",
-    "anchor": "none"
-  },
+  "action": [
+    "loadMainMenuImg",
+    "loadLogoImg"
+  ],
   "animation": [
-    {
-      "id": "smlogo",
-      "texturePack": "smlogo",
-      "position": [0, 0],
-      "anchor": "none",
-      "refresh": 50
-    },
     {
       "id": "pent1",
       "texturePack": "focus42",

@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon_space.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/hyperspace/levelObjects.json",
+  "load": "level/map/hyperspace/monsters.json",
+  "load": "level/map/hyperspace/level2.json"
+}

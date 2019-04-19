@@ -1,4 +1,5 @@
 #include "ParseImage.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "Image.h"
 #include "ParseTexture.h"
@@ -32,27 +33,36 @@ namespace Parser
 
 		if (elem.HasMember("textureRect"))
 		{
-			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
+			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			image->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
 
-		auto anchor = getAnchorKey(elem, "anchor");
-		image->setAnchor(anchor);
-		auto size = image->Size();
-		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "background") == false)
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
+			auto anchor = getAnchorKey(elem, "anchor");
+			image->setAnchor(anchor);
+			image->Resizable(getBoolKey(elem, "resizable"));
+			image->Stretch(getBoolKey(elem, "stretch"));
+
+			auto size = image->Size();
+			auto pos = getPositionKey(elem, "position", size, game.RefSize());
+			if (getBoolKey(elem, "relativeCoords", true) == true &&
+				game.RefSize() != game.DrawRegionSize())
 			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
+				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 			}
+			image->Position(pos);
+			image->Size(size);
 		}
-		image->Position(pos);
+		else
+		{
+			image->Background(true);
+			image->updateSize(game);
+		}
+
 		image->Visible(getBoolKey(elem, "visible", true));
 
 		image->setColor(getColorKey(elem, "color", sf::Color::White));
-		image->setResizable(getBoolKey(elem, "resizable"));
 
 		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
 		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);

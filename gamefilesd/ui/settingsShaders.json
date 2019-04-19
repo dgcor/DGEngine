@@ -1,7 +1,9 @@
 {
   "action": [
     { "name": "resource.add", "id": "shaderSettings", "ignorePrevious": true },
-    { "name": "game.fadeIn" }
+    { "name": "game.fadeIn" },
+    "loadMainMenuImg",
+    "loadLogoImg"
   ],
   "keyboard": [
     {
@@ -26,19 +28,7 @@
       "action": { "name": "button.click", "id": "back" }
     }
   ],
-  "image": {
-    "id": "mainmenu",
-    "texture": "mainmenu",
-    "anchor": "none"
-  },
   "animation": [
-    {
-      "id": "smlogo",
-      "texturePack": "smlogo",
-      "position": ["center", 0],
-      "anchor": "none",
-      "refresh": 50
-    },
     {
       "id": "pent1",
       "texturePack": "focus42",
@@ -79,6 +69,10 @@
           },
           {
             "value": "Game Shader: Warp",
+            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Swirl" }
+          },
+          {
+            "value": "Game Shader: Swirl",
             "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
           }
         ],
@@ -129,6 +123,22 @@
                     }
                   },
                   { "name": "game.setShader", "shader": "grain", "gameShader": "game" }
+                ]
+              },
+              {
+                "value": "Game Shader: Swirl",
+                "action": [
+                  {
+                    "name": "if.equal",
+                    "param1": "%game.hasShader.swirl%",
+                    "param2": false,
+                    "then": {
+                      "name": "shader.load",
+                      "id": "swirl",
+                      "fragmentFile": "res/shaders/swirl.frag"
+                    }
+                  },
+                  { "name": "game.setShader", "shader": "swirl", "gameShader": "game" }
                 ]
               },
               {

@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Game/GameProperties.h"
 #include "Game/Level.h"
+#include "Game/Player.h"
 #include <string>
 
 class ActPlayerAddItemQuantity : public Action
@@ -124,14 +125,15 @@ class ActPlayerMove : public Action
 private:
 	std::string idPlayer;
 	std::string idLevel;
-	MapCoord position;
+	PairFloat position;
 	bool resetDirection;
+	bool smooth;
 
 public:
 	ActPlayerMove(const std::string& idPlayer_, const std::string& idLevel_,
-		const MapCoord& pos_, bool resetDirection_)
-		: idPlayer(idPlayer_), idLevel(idLevel_),
-		position(pos_), resetDirection(resetDirection_) {}
+		const PairFloat& pos_, bool resetDirection_, bool smooth_)
+		: idPlayer(idPlayer_), idLevel(idLevel_), position(pos_),
+		resetDirection(resetDirection_), smooth(smooth_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -142,6 +144,7 @@ public:
 			if (player != nullptr)
 			{
 				player->move(*level, position);
+				level->updateCurrentMapViewCenter(smooth);
 				if (resetDirection == true)
 				{
 					player->setDirection(PlayerDirection::Front);
@@ -170,8 +173,8 @@ public:
 			auto player = level->getPlayerOrCurrent(idPlayer);
 			if (player != nullptr)
 			{
-				MapCoord a = player->MapPosition();
-				MapCoord b;
+				PairFloat a = player->MapPosition();
+				PairFloat b;
 				auto hoverObj = level->getHoverObject();
 				if (hoverObj != nullptr && hoverObj != player)
 				{

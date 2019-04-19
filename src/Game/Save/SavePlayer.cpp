@@ -1,6 +1,7 @@
 #include "SavePlayer.h"
 #include "Game.h"
 #include "Game/Level.h"
+#include "Game/Player.h"
 #include "Json/JsonParser.h"
 #include "SaveItem.h"
 #include "SaveUtils.h"
@@ -142,7 +143,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 		break;
 	}
 
-	writeVector2d<MapCoord>(writer, "mapPosition", player.MapPosition());
+	writeVector2fi(writer, "mapPosition", player.MapPosition());
 
 	if (props.saveDefaults == true ||
 		player.enableHover == false)
@@ -231,7 +232,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 			if (inv.getXYSize().y != 1)
 			{
-				writeVector2d<ItemXY>(writer, "size", inv.getXYSize());
+				writeVector2i(writer, "size", inv.getXYSize());
 			}
 			else
 			{

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "oasis",
+    "level/data/empyrean_campaign/oasis.json"
+  ],
+  "load": "level/map/oasis/levelObjects2.json",
+  "load": "level/map/oasis/monsters2.json",
+  "load": "level/map/oasis/quests.json",
+  "load": "level/map/oasis/items.json"
+}

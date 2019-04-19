@@ -44,78 +44,87 @@ namespace Parser
 	uint64_t getUInt64Key(const rapidjson::Value& elem,
 		const char* key, uint64_t val = {});
 
+	template <class T, class NumType>
+	T getVector2NumberKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getVector2NumberVal<T, NumType>(elem[key], val);
+		}
+		return val;
+	}
+
+	template <class T, class NumType>
+	T getVector2UnsignedNumberKey(const rapidjson::Value& elem,
+		const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getVector2UnsignedNumberVal<T, NumType>(elem[key], val);
+		}
+		return val;
+	}
+
 	template <class T>
 	T getVector2fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsArray() == true
-			&& elem[key].Size() > 1
-			&& elem[key][0].IsNumber() == true
-			&& elem[key][1].IsNumber() == true)
-		{
-			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat());
-		}
-		return val;
+		return getVector2NumberKey<T, float>(elem, key, val);
 	}
 
 	template <class T>
 	T getVector2iKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsArray() == true
-			&& elem[key].Size() > 1
-			&& elem[key][0].IsNumber() == true
-			&& elem[key][1].IsNumber() == true)
-		{
-			return T(elem[key][0].GetInt(), elem[key][1].GetInt());
-		}
-		return val;
+		return getVector2NumberKey<T, int32_t>(elem, key, val);
 	}
 
 	template <class T>
 	T getVector2uKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsArray() == true
-			&& elem[key].Size() > 1
-			&& elem[key][0].IsNumber() == true
-			&& elem[key][1].IsNumber() == true)
+		return getVector2NumberKey<T, uint32_t>(elem, key, val);
+	}
+
+	template <class T, class NumType>
+	T getVector3NumberKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
 		{
-			return T(elem[key][0].GetUint(), elem[key][1].GetUint());
+			return getVector3NumberVal<T, NumType>(elem[key], val);
 		}
 		return val;
+	}
+
+	template <class T>
+	T getVector3iKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		return getVector3NumberKey<T, float>(elem, key, val);
 	}
 
 	template <class T>
 	T getVector3fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsArray() == true
-			&& elem[key].Size() > 2
-			&& elem[key][0].IsNumber() == true
-			&& elem[key][1].IsNumber() == true
-			&& elem[key][2].IsNumber() == true)
+		return getVector3NumberKey<T, float>(elem, key, val);
+	}
+
+	template <class T, class NumType>
+	T getVector4NumberKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
 		{
-			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat(), elem[key][2].GetFloat());
+			return getVector4NumberVal<T, NumType>(elem[key], val);
 		}
 		return val;
 	}
 
 	template <class T>
+	T getVector4iKey(const rapidjson::Value& elem, const char* key, const T& val = {})
+	{
+		return getVector4NumberKey<T, float>(elem, key, val);
+	}
+
+	template <class T>
 	T getVector4fKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true
-			&& elem[key].IsArray() == true
-			&& elem[key].Size() > 3
-			&& elem[key][0].IsNumber() == true
-			&& elem[key][1].IsNumber() == true
-			&& elem[key][2].IsNumber() == true
-			&& elem[key][3].IsNumber() == true)
-		{
-			return T(elem[key][0].GetFloat(), elem[key][1].GetFloat(),
-				elem[key][2].GetFloat(), elem[key][3].GetFloat());
-		}
-		return val;
+		return getVector4NumberKey<T, float>(elem, key, val);
 	}
 
 	std::pair<size_t, size_t> getFramesKey(const rapidjson::Value& elem,
@@ -170,7 +179,7 @@ namespace Parser
 
 	ItemLocation getItemLocationKey(const rapidjson::Value& elem, const char* key);
 
-	ItemXY getItemXYKey(const rapidjson::Value& elem, const char* key, const ItemXY& val = {});
+	PairUInt8 getItemXYKey(const rapidjson::Value& elem, const char* key, const PairUInt8& val = {});
 
 	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
 		const char* key, PlayerDirection val = PlayerDirection::All);
@@ -186,6 +195,12 @@ namespace Parser
 
 	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
 		const char* key, PlayerStatus val = PlayerStatus::Stand);
+
+	const rapidjson::Value& getQueryKey(const rapidjson::Value* elem,
+		const rapidjson::Value& query, const char* key);
+
+	const rapidjson::Value& getQueryKey(const rapidjson::Value& elem,
+		const rapidjson::Value& query, const char* key);
 
 	ReplaceVars getReplaceVarsKey(const rapidjson::Value& elem,
 		const char* key, ReplaceVars val = ReplaceVars::None);

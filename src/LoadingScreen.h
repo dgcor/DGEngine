@@ -40,6 +40,9 @@ public:
 	void setProgress(int percent_);
 	bool isComplete() const noexcept { return percent >= 100; }
 
+	const sf::IntRect& getTextureRect() const { return sprite.getTextureRect(); }
+	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
+
 	const std::shared_ptr<Action>& getAction() const noexcept { return action; }
 	void setAction(const std::shared_ptr<Action>& action_) noexcept { action = action_; }
 

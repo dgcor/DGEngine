@@ -1,0 +1,12 @@
+{
+  "palette": {
+    "id": "level",
+    "file": "levels/l1data/l1_2.pal"
+  },
+  "load": "level/default/dungeon.json",
+  "level": { "id": "level", "defaultLight": 0 },
+  "load": "level/automap/dungeon/load.json",
+  "load": "level/map/l2/levelObjects.json",
+  "load": "level/map/l2/monsters.json",
+  "load": "level/map/l2/level2.json"
+}

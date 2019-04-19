@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [57, 11],
+      "size": [1, 4],
+      "text1": "stonewood",
+      "properties": {
+        "x": 2,
+        "y": 8
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [5, 12],
+      "size": [2, 2],
+      "text1": "perdition_mines",
+      "properties": {
+        "x": 52,
+        "y": 18
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [7, 39],
+      "size": [4, 4],
+      "text1": "book_of_the_dead",
+      "properties": {
+        "x": 16,
+        "y": 7
+      }
+    }
+  ]
+}

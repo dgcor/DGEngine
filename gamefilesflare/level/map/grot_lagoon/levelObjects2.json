@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [89, 60],
+      "size": [2, 2],
+      "text1": "abandoned_mines",
+      "properties": {
+        "x": 1,
+        "y": 68
+      }
+    }
+  ]
+}

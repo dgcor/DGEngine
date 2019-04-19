@@ -1,0 +1,36 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.town%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "town",
+          "file": "levels/towndata/town.pal"
+        }
+      }
+    }
+  },
+  "texture": {
+    "id": "fog",
+    "file": "images/parallax/fog.png"
+  },
+  "level": {
+    "id": "level",
+    "palette": "town",
+    "file": "levels/towndata/town.cel",
+    "layers": {
+      "texture": "fog",
+      "parallaxSpeed": 0.01,
+      "parallaxFixedSpeed": [0.2, -0.25],
+      "parallaxUpdate": 30
+    },
+    "til": "levels/towndata/town.til",
+    "min": "levels/towndata/town.min",
+    "minBlocks": 16,
+    "sol": "levels/towndata/town.sol",
+    "defaultLight": 255
+  }
+}

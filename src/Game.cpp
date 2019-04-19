@@ -1,8 +1,11 @@
 #include "Game.h"
+#include "Button.h"
 #include "FileUtils.h"
+#include "Game/Formula.h"
+#include "Game/Level.h"
+#include "Image.h"
 #include "Json/JsonUtils.h"
 #include "Parser/Parser.h"
-#include "Parser/ParseVariable.h"
 #include "SFML/SFMLUtils.h"
 #include "Utils/ReverseIterable.h"
 #include "Utils/Utils.h"
@@ -18,11 +21,14 @@ Game::~Game()
 
 void Game::reset()
 {
+	gameSprite = {};
+
 	refSize = { 640, 480 };
 	minSize = { 640, 480 };
 	size = { 640, 480 };
-	oldSize = {};
-	drawRegionSize = {};
+	drawRegionSize = { 640, 480 };
+	oldDrawRegionSize = {};
+	maxHeight = { 0 };
 	framerate = { 0 };
 	smoothScreen = { false };
 	stretchToFit = { false };
@@ -95,9 +101,7 @@ void Game::init()
 #ifdef __ANDROID__
 	window.create(sf::VideoMode::getDesktopMode(), title);
 	size = window.getSize();
-	oldSize = size;
 #else
-	oldSize = size;
 	window.create(sf::VideoMode(size.x, size.y), title);
 #endif
 
@@ -105,12 +109,15 @@ void Game::init()
 	{
 		window.setFramerateLimit(framerate);
 	}
-	if (stretchToFit == true)
+
+	// forces update of drawing window
+	updateGameWindowSize();
+
+	if (gameSprite.getTexture() == nullptr)
 	{
-		stretchToFit = false;
-		StretchToFit(true);
+		recreateRenderTexture(gameTexture);
+		gameSprite.setTexture(gameTexture.getTexture(), true);
 	}
-	updateGameTexture();
 }
 
 void Game::WindowSize(const sf::Vector2u& size_)
@@ -131,8 +138,8 @@ void Game::WindowSize(const sf::Vector2u& size_)
 void Game::RefSize(const sf::Vector2u& size_)
 {
 	if (window.isOpen() == false &&
-		size_.x > minSize.x &&
-		size_.y > minSize.y)
+		size_.x >= minSize.x &&
+		size_.y >= minSize.y)
 	{
 		refSize = size_;
 	}
@@ -292,33 +299,73 @@ void Game::onResized(const sf::Event::SizeEvent& evt)
 		window.setSize(newSize);
 		return;
 	}
-	oldSize = size;
 	size = newSize;
+	updateGameWindowSize();
+}
 
-	updateGameTexture();
+void Game::updateGameWindowSize()
+{
+	// update draw region sizes
+	oldDrawRegionSize = drawRegionSize;
+	drawRegionSize = (stretchToFit == false ? size : minSize);
 
-	auto view = window.getView();
-	if (stretchToFit == false)
+	bool usingMaxHeight = false;
+	if (stretchToFit == false &&
+		maxHeight >= minSize.y &&
+		drawRegionSize.y > maxHeight)
 	{
-		view.reset(sf::FloatRect(0.f, 0.f, (float)evt.width, (float)evt.height));
+		usingMaxHeight = true;
+
+		auto factor = (float)(maxHeight) / (float)(drawRegionSize.y);
+		drawRegionSize.x = (uint32_t)((float)(drawRegionSize.x) * factor);
+		drawRegionSize.y = maxHeight;
+
+		if (drawRegionSize.x < minSize.x)
+		{
+			drawRegionSize.x = minSize.x;
+		}
+	}
+
+	// force even size
+	auto evenRegionSize = drawRegionSize;
+	evenRegionSize.x = ((uint32_t)((int)((float)evenRegionSize.x * 0.5f)) * 2);
+	evenRegionSize.y = ((uint32_t)((int)((float)evenRegionSize.y * 0.5f)) * 2);
+
+	// update main view
+	auto view = window.getView();
+	view.reset({ 0.f, 0.f, (float)evenRegionSize.x, (float)evenRegionSize.y });
+	if (stretchToFit == true && keepAR == true)
+	{
+		SFMLUtils::viewStretchKeepAR(view, size);
+	}
+	else if (stretchToFit == false && usingMaxHeight == true)
+	{
+		SFMLUtils::viewStretchKeepAR(view, size);
 	}
 	else
 	{
-		if (keepAR == true)
-		{
-			SFMLUtils::viewStretchKeepAR(view, newSize);
-		}
-		else
-		{
-			view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
-		}
+		float normalizedWidth = (float)evenRegionSize.x / (float)drawRegionSize.x;
+		float normalizedHeight = (float)evenRegionSize.y / (float)drawRegionSize.y;
+		view.setViewport({ 0.f, 0.f, normalizedWidth, normalizedHeight });
 	}
 	window.setView(view);
-	updateSize();
-}
 
-void Game::updateSize()
-{
+	drawRegionSize = evenRegionSize;
+
+	if (oldDrawRegionSize == drawRegionSize)
+	{
+		return;
+	}
+
+	// clears artefacts
+	window.clear();
+	window.display();
+
+	// update game texture
+	recreateRenderTexture(gameTexture);
+	gameSprite.setTexture(gameTexture.getTexture(), true);
+
+	// update drawables
 	if (loadingScreen != nullptr)
 	{
 		loadingScreen->updateSize(*this);
@@ -336,20 +383,6 @@ void Game::recreateRenderTexture(sf::RenderTexture& renderTexture) const
 {
 	renderTexture.create(drawRegionSize.x, drawRegionSize.y);
 	renderTexture.setSmooth(smoothScreen);
-}
-
-void Game::updateGameTexture()
-{
-	if (stretchToFit == false)
-	{
-		drawRegionSize = size;
-	}
-	else
-	{
-		drawRegionSize = minSize;
-	}
-	recreateRenderTexture(gameTexture);
-	gameSprite.setTexture(gameTexture.getTexture(), true);
 }
 
 void Game::onLostFocus() noexcept
@@ -729,71 +762,49 @@ void Game::SmoothScreen(bool smooth_)
 	gameTexture.setSmooth(smooth_);
 }
 
+void Game::MaxHeight(uint32_t maxHeight_)
+{
+	if (maxHeight == maxHeight_)
+	{
+		return;
+	}
+	maxHeight = maxHeight_;
+	if (window.isOpen() == false)
+	{
+		return;
+	}
+	updateGameWindowSize();
+	updateMousePosition();
+}
+
 void Game::StretchToFit(bool stretchToFit_)
 {
-	if (stretchToFit != stretchToFit_)
+	if (stretchToFit == stretchToFit_)
 	{
-		stretchToFit = stretchToFit_;
-		if (window.isOpen() == true)
-		{
-			if (stretchToFit_ == true)
-			{
-				auto view = window.getView();
-				view.reset(sf::FloatRect(0, 0, (float)minSize.x, (float)minSize.y));
-				window.setView(view);
-				oldSize = size;
-				size = minSize;
-				stretchToFit = false;
-				updateSize();
-				size = oldSize;
-				stretchToFit = true;
-				if (keepAR == true)
-				{
-					SFMLUtils::viewStretchKeepAR(view, size);
-				}
-				else
-				{
-					view.setViewport(sf::FloatRect(0, 0, 1, 1));
-				}
-				window.setView(view);
-			}
-			else
-			{
-				auto view = window.getView();
-				view.setViewport(sf::FloatRect(0, 0, 1, 1));
-				window.setView(view);
-				oldSize = minSize;
-				updateSize();
-				view.reset(sf::FloatRect(0, 0, (float)size.x, (float)size.y));
-				window.setView(view);
-				updateGameTexture();
-			}
-			updateMousePosition();
-		}
+		return;
 	}
+	stretchToFit = stretchToFit_;
+	if (window.isOpen() == false)
+	{
+		return;
+	}
+	updateGameWindowSize();
+	updateMousePosition();
 }
 
 void Game::KeepAR(bool keepAR_)
 {
-	if (keepAR != keepAR_)
+	if (keepAR == keepAR_)
 	{
-		if (window.isOpen() == true && stretchToFit == true)
-		{
-			auto view = window.getView();
-			if (keepAR_ == true)
-			{
-				SFMLUtils::viewStretchKeepAR(view, size);
-			}
-			else
-			{
-				view.setViewport(sf::FloatRect(0, 0, 1, 1));
-			}
-			window.setView(view);
-			updateSize();
-			updateMousePosition();
-		}
-		keepAR = keepAR_;
+		return;
 	}
+	keepAR = keepAR_;
+	if (window.isOpen() == false || stretchToFit == false)
+	{
+		return;
+	}
+	updateGameWindowSize();
+	updateMousePosition();
 }
 
 void Game::addPlayingSound(const sf::SoundBuffer& obj)
@@ -1127,6 +1138,9 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 	case str2int16("keepAR"):
 		var = Variable(keepAR);
 		break;
+	case str2int16("maxWindowHeight"):
+		var = Variable((int64_t)maxHeight);
+		break;
 	case str2int16("minSize"):
 	{
 		if (props.second == "x")
@@ -1257,6 +1271,14 @@ void Game::setGameProperty(const std::string_view prop, const Variable& val)
 		if (std::holds_alternative<bool>(val) == true)
 		{
 			KeepAR(std::get<bool>(val));
+		}
+	}
+	break;
+	case str2int16("maxWindowHeight"):
+	{
+		if (std::holds_alternative<int64_t>(val) == true)
+		{
+			MaxHeight((uint32_t)std::get<int64_t>(val));
 		}
 	}
 	break;

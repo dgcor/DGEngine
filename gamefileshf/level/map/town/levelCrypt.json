@@ -1,0 +1,4 @@
+{
+  "load": ["level/default/loadSectionTiled.json", "level/map/town/town_crypt.json", "36, 21"],
+  "load": "level/map/crypt1/townToLevel.json"
+}

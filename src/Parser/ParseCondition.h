@@ -2,8 +2,8 @@
 
 #include "Actions/Action.h"
 #include <cstdint>
-#include "Game.h"
 #include "Json/JsonParser.h"
+#include <memory>
 
 namespace Parser
 {

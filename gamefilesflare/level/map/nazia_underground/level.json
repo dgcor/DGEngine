@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/nazia_underground/levelObjects.json",
+  "load": "level/map/nazia_underground/monsters.json",
+  "load": "level/map/nazia_underground/level2.json"
+}

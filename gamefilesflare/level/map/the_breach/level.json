@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/the_breach/levelObjects.json",
+  "load": "level/map/the_breach/monsters.json",
+  "load": "level/map/the_breach/level2.json"
+}

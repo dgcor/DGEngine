@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "perdition_harbor",
+    "level/data/empyrean_campaign/perdition_harbor.json"
+  ],
+  "load": "level/map/perdition_harbor/levelObjects2.json",
+  "load": "level/map/perdition_harbor/monsters2.json",
+  "load": "level/map/perdition_harbor/quests.json",
+  "load": "level/map/perdition_harbor/items.json"
+}

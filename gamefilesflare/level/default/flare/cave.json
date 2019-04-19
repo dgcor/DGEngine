@@ -1,0 +1,11 @@
+{
+  "load": "level/data/tileset/cave.json",
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "cave" },
+      { "index": 2, "texturePack": "cave" }
+    ],
+    "defaultLight": 255
+  }
+}

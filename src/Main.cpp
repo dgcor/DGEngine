@@ -1,5 +1,6 @@
 #include <iostream>
 #include "CmdLineUtils.h"
+#include "FileUtils.h"
 #include "Game.h"
 
 int main(int argc, char* argv[])
@@ -14,7 +15,7 @@ int main(int argc, char* argv[])
 		game.load("/sdcard/gamefiles.zip", "main.json");
 		game.play();
 #else
-		if (CmdLineUtils::processCmdLine(game, argc, (const char **)argv) == false)
+		if (CmdLineUtils::processCmdLine(argc, (const char **)argv) == false)
 		{
 			if (argc == 2)
 			{
@@ -32,7 +33,7 @@ int main(int argc, char* argv[])
 		}
 #endif
 	}
-	catch (std::exception ex)
+	catch (std::exception& ex)
 	{
 		std::cerr << ex.what();
 	}

@@ -3,9 +3,8 @@
 #include "BaseAnimation.h"
 #include "LevelObjectClass.h"
 #include <list>
-#include "MapCoord.h"
 #include <memory>
-#include "Palette.h"
+#include "PairXY.h"
 #include "Queryable.h"
 #include "Save/SaveProperties.h"
 #include "SFML/Sprite2.h"
@@ -27,12 +26,12 @@ protected:
 	sf::Vector2f drawPositionOffset;
 	bool absoluteOffset{ false };
 	float tileBlockHeight{ 0.f };
-	MapCoord mapPosition{ -1, -1 };
+	PairFloat mapPosition{ -1.f, -1.f };
 
 	const TexturePack* texturePack{ nullptr };
 	BaseAnimation animation;
 
-	uint8_t hoverCellSize{ 0 };
+	PairInt8 cellSize;
 
 	bool enableHover{ true };
 	bool hovered{ false };
@@ -52,15 +51,15 @@ protected:
 	void updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos);
 	void updateSpriteDrawPosition();
 	void updateHover(Game& game, Level& level);
-	bool updateMapPositionBack(LevelMap& map, const MapCoord pos);
-	bool updateMapPositionFront(LevelMap& map, const MapCoord pos);
+	bool updateMapPositionBack(LevelMap& map, const PairFloat pos);
+	bool updateMapPositionFront(LevelMap& map, const PairFloat pos);
 
 	void queueAction(const std::shared_ptr<Action>& action);
 	void queueAction(const LevelObjectClass& class_, uint16_t nameHash16);
 	void processQueuedActions(Game& game);
 
 	// sets map position without updating the object or level
-	void MapPosition(const MapCoord& pos) noexcept { mapPosition = pos; }
+	void MapPosition(const PairFloat& pos) noexcept { mapPosition = pos; }
 
 public:
 	LevelObject(const LevelObjectClass* class__) : class_(class__) {}
@@ -74,14 +73,14 @@ public:
 	{
 		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
 	}
-	const MapCoord& MapPosition() const noexcept { return mapPosition; }
+	const PairFloat& MapPosition() const noexcept { return mapPosition; }
 
 	// sets map position and updates the object and map
-	virtual bool MapPosition(LevelMap& map, const MapCoord& pos);
-	bool MapPosition(Level& level, const MapCoord& pos);
+	virtual bool MapPosition(LevelMap& map, const PairFloat& pos);
+	bool MapPosition(Level& level, const PairFloat& pos);
 	// sets map position and updates the object and map
-	virtual bool move(LevelMap& map, const MapCoord& pos);
-	bool move(Level& level, const MapCoord& pos);
+	virtual bool move(LevelMap& map, const PairFloat& pos);
+	bool move(Level& level, const PairFloat& pos);
 	// removes this object from the map
 	bool remove(LevelMap& map) const;
 
@@ -111,6 +110,9 @@ public:
 	void setOutlineOnHover(bool outlineOnHover_) noexcept { outlineOnHover = outlineOnHover_; }
 
 	const LevelObjectClass* getBaseClass() const { return class_; }
+
+	PairInt8 getCellSize() const noexcept { return cellSize; }
+	void setCellSize(PairInt8 cellSize_) noexcept { cellSize = cellSize_; }
 
 	const std::string& getId() const { return id; }
 	const std::string& getClassId() const { return class_->Id(); }

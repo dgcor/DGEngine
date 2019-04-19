@@ -4,6 +4,62 @@
 #include "Game.h"
 #include "Game/Level.h"
 
+class ActLevelAddColorLayer : public Action
+{
+private:
+	std::string id;
+	sf::Color color;
+	sf::FloatRect viewportOffset;
+	bool automap;
+
+public:
+	ActLevelAddColorLayer(const std::string& id_, sf::Color color_,
+		const sf::FloatRect& viewportOffset_, bool automap_) : id(id_),
+		color(color_), viewportOffset(viewportOffset_), automap(automap_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->addLayer(color, viewportOffset, automap);
+		}
+		return true;
+	}
+};
+
+class ActLevelAddTextureLayer : public Action
+{
+private:
+	std::string id;
+	std::string idTexture;
+	sf::IntRect textureRect;
+	sf::FloatRect viewportOffset;
+	bool automap;
+
+public:
+	ActLevelAddTextureLayer(const std::string& id_, const std::string& idTexture_,
+		const sf::IntRect& textureRect_, const sf::FloatRect& viewportOffset_,
+		bool automap_) : id(id_), idTexture(idTexture_), textureRect(textureRect_),
+		viewportOffset(viewportOffset_), automap(automap_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			auto texture = game.Resources().getTexture(idTexture);
+			if (texture != nullptr)
+			{
+				TextureLevelLayer layer(texture);
+				layer.textureRect = textureRect;
+				level->addLayer(layer, viewportOffset, automap);
+			}
+		}
+		return true;
+	}
+};
+
 class ActLevelClearAllObjects : public Action
 {
 private:
@@ -174,17 +230,19 @@ class ActLevelMove : public Action
 {
 private:
 	std::string id;
-	MapCoord pos;
+	PairFloat pos;
+	bool smooth;
 
 public:
-	ActLevelMove(const std::string& id_, const MapCoord& pos_) : id(id_), pos(pos_) {}
+	ActLevelMove(const std::string& id_, const PairFloat& pos_, bool smooth_)
+		: id(id_), pos(pos_), smooth(smooth_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->move(pos);
+			level->move(pos, smooth);
 		}
 		return true;
 	}
@@ -194,16 +252,18 @@ class ActLevelMoveToClick : public Action
 {
 private:
 	std::string id;
+	bool smooth;
 
 public:
-	ActLevelMoveToClick(const std::string& id_) : id(id_) {}
+	ActLevelMoveToClick(const std::string& id_, bool smooth_)
+		: id(id_), smooth(smooth_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->move();
+			level->move(smooth);
 		}
 		return true;
 	}
@@ -214,10 +274,11 @@ class ActLevelMoveToPlayer : public Action
 private:
 	std::string id;
 	std::string idPlayer;
+	bool smooth;
 
 public:
-	ActLevelMoveToPlayer(const std::string& id_, const std::string& idPlayer_)
-		: id(id_), idPlayer(idPlayer_) {}
+	ActLevelMoveToPlayer(const std::string& id_, const std::string& idPlayer_,
+		bool smooth_) : id(id_), idPlayer(idPlayer_), smooth(smooth_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -227,7 +288,7 @@ public:
 			auto player = level->getLevelObject<Player>(idPlayer);
 			if (player != nullptr)
 			{
-				level->move(player->MapPosition());
+				level->move(player->MapPosition(), smooth);
 			}
 		}
 		return true;
@@ -292,11 +353,14 @@ private:
 	std::string id;
 	std::string idTexturePack;
 	std::pair<uint32_t, uint32_t> tileSize;
+	uint16_t layerIdx;
+	sf::FloatRect viewportOffset;
 
 public:
 	ActLevelSetAutomap(const std::string& id_, const std::string& idTexturePack_,
-		const std::pair<uint32_t, uint32_t>& tileSize_) : id(id_),
-		idTexturePack(idTexturePack_), tileSize(tileSize_) {}
+		const std::pair<uint32_t, uint32_t>& tileSize_, uint16_t layerIdx_,
+		const sf::FloatRect& viewportOffset_) : id(id_), idTexturePack(idTexturePack_),
+		tileSize(tileSize_), layerIdx(layerIdx_), viewportOffset(viewportOffset_) {}
 
 	virtual bool execute(Game& game)
 	{
@@ -306,29 +370,14 @@ public:
 			auto automap = game.Resources().getTexturePack(idTexturePack);
 			if (automap != nullptr)
 			{
-				level->setAutomap(automap, tileSize.first, tileSize.second);
+				auto idx = std::min(layerIdx, (uint16_t)LevelCell::SolLayer);
+				level->setAutomap(
+					TilesetLevelLayer(automap, idx, {}),
+					tileSize.first,
+					tileSize.second,
+					viewportOffset
+				);
 			}
-		}
-		return true;
-	}
-};
-
-class ActLevelSetAutomapBackground : public Action
-{
-private:
-	std::string id;
-	sf::Color background;
-
-public:
-	ActLevelSetAutomapBackground(const std::string& id_, const sf::Color color_)
-		: id(id_), background(color_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto level = game.Resources().getLevel(id);
-		if (level != nullptr)
-		{
-			level->setAutomapBackgroundColor(background);
 		}
 		return true;
 	}
@@ -338,10 +387,10 @@ class ActLevelSetAutomapPosition : public Action
 {
 private:
 	std::string id;
-	sf::Vector2i position;
+	sf::Vector2f position;
 
 public:
-	ActLevelSetAutomapPosition(const std::string& id_, const sf::Vector2i& position_)
+	ActLevelSetAutomapPosition(const std::string& id_, const sf::Vector2f& position_)
 		: id(id_), position(position_) {}
 
 	virtual bool execute(Game& game)
@@ -349,7 +398,15 @@ public:
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->setAutomapRelativePosition(position);
+			auto newPos = position;
+			if (level->getAutomapRelativeCoords() == false &&
+				game.RefSize() != game.DrawRegionSize())
+			{
+				auto anchor = level->getAutomapAnchor();
+				auto size = level->getAutomapSize();
+				GameUtils::setAnchorPosSize(anchor, newPos, size, game.RefSize(), game.DrawRegionSize());
+			}
+			level->setAutomapPosition(position);
 		}
 		return true;
 	}
@@ -359,10 +416,10 @@ class ActLevelSetAutomapSize : public Action
 {
 private:
 	std::string id;
-	sf::Vector2i size;
+	sf::Vector2f size;
 
 public:
-	ActLevelSetAutomapSize(const std::string& id_, const sf::Vector2i& size_)
+	ActLevelSetAutomapSize(const std::string& id_, const sf::Vector2f& size_)
 		: id(id_), size(size_) {}
 
 	virtual bool execute(Game& game)
@@ -370,7 +427,7 @@ public:
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			level->setAutomapRelativeSize(size);
+			level->setAutomapSize(size);
 		}
 		return true;
 	}
@@ -393,6 +450,27 @@ public:
 		{
 			auto shader = game.Resources().Shaders().get(idShader);
 			level->setShader(shader);
+		}
+		return true;
+	}
+};
+
+class ActLevelSetSmoothMovement : public Action
+{
+private:
+	std::string id;
+	bool smooth;
+
+public:
+	ActLevelSetSmoothMovement(const std::string& id_, bool smooth_)
+		: id(id_), smooth(smooth_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->setSmoothMovement(smooth);
 		}
 		return true;
 	}

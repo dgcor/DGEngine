@@ -73,8 +73,8 @@ public:
 	void setIntByHash(uint16_t propHash, LevelObjValue value);
 	void setInt(const std::string_view prop, LevelObjValue value);
 
-	sf::Time getFrameTime() const noexcept { return animation.frameTime; }
-	void setFrameTime(sf::Time time) noexcept { animation.frameTime = time; }
+	sf::Time getFrameTime() const noexcept { return animation.elapsedTime.timeout; }
+	void setFrameTime(sf::Time time) noexcept { animation.elapsedTime.timeout = time; }
 
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 

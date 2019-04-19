@@ -159,17 +159,17 @@
     },
     {
       "id": "txtMapLabel",
+      "anchor": "topRight",
       "font": "smaltextGold",
-      "position": [8, 10],
+      "position": [632, 3],
+      "horizontalAlign": "right",
       "horizontalSpaceOffset": 1,
       "visible": false
     },
     {
       "id": "txtZoom",
-      "anchor": "topRight",
       "font": "smaltextGold",
-      "position": [632, 10],
-      "horizontalAlign": "right",
+      "position": [8, 3],
       "horizontalSpaceOffset": 1,
       "binding": "%currentLevel.zoomPercentage%",
       "format": "Zoom: [1]%",
@@ -693,6 +693,14 @@
         { "name": "player.addToProperty", "property": "experience", "value": 2000 },
         "updateAllPlayerStats"
       ]
+    },
+    {
+      "key": "l",
+      "action": { "name": "levelObject.executeAction", "object": "down" }
+    },
+    {
+      "key": "k",
+      "action": { "name": "levelObject.executeAction", "object": "up" }
     }
   ],
   "load": "ui/level/char/beltInventory.json"

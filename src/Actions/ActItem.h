@@ -4,7 +4,9 @@
 #include "Game.h"
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
+#include "Game/Item.h"
 #include "Game/Level.h"
+#include "Game/Player.h"
 #include "Image.h"
 
 static void updateCursorWithItemImage(Game& game, const Item& item)

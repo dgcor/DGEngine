@@ -7,7 +7,7 @@ Inventory::Inventory(size_t size_)
 	init(size_);
 }
 
-Inventory::Inventory(const ItemXY& size_)
+Inventory::Inventory(const PairUInt8& size_)
 {
 	init(size_);
 }
@@ -15,12 +15,12 @@ Inventory::Inventory(const ItemXY& size_)
 void Inventory::init(size_t size_)
 {
 	uint8_t newSize = (size_ > 0xFF ? 0xFF : (uint8_t)size_);
-	size = ItemXY(newSize, 1);
+	size = PairUInt8(newSize, 1);
 	items.resize(newSize);
 	resetIndexes();
 }
 
-void Inventory::init(const ItemXY& size_)
+void Inventory::init(const PairUInt8& size_)
 {
 	if (size_.x * size_.y > 1024)
 	{
@@ -121,7 +121,7 @@ bool Inventory::set(size_t idx, std::unique_ptr<Item>& item,
 		else
 		{
 			return setAndEnforceItemSize(
-				ItemXY((uint8_t)(idx % size.x), (uint8_t)(idx / size.x)),
+				PairUInt8((uint8_t)(idx % size.x), (uint8_t)(idx / size.x)),
 				item,
 				oldItem);
 		}
@@ -129,13 +129,13 @@ bool Inventory::set(size_t idx, std::unique_ptr<Item>& item,
 	return false;
 }
 
-bool Inventory::set(const ItemXY& position, std::unique_ptr<Item>& item)
+bool Inventory::set(const PairUInt8& position, std::unique_ptr<Item>& item)
 {
 	std::unique_ptr<Item> oldItem;
 	return set(position, item, oldItem);
 }
 
-bool Inventory::set(const ItemXY& position, std::unique_ptr<Item>& item,
+bool Inventory::set(const PairUInt8& position, std::unique_ptr<Item>& item,
 	std::unique_ptr<Item>& oldItem)
 {
 	if (position.x >= size.x || position.y >= size.y)
@@ -182,7 +182,7 @@ bool Inventory::setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& ite
 	return true;
 }
 
-bool Inventory::setAndEnforceItemSize(const ItemXY& position,
+bool Inventory::setAndEnforceItemSize(const PairUInt8& position,
 	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
 {
 	if (position.x >= size.x || position.y >= size.y ||
@@ -190,7 +190,7 @@ bool Inventory::setAndEnforceItemSize(const ItemXY& position,
 	{
 		return false;
 	}
-	ItemXY itemSize(1, 1);
+	PairUInt8 itemSize(1, 1);
 	if (item != nullptr)
 	{
 		itemSize = item->Class()->InventorySize();
@@ -310,7 +310,7 @@ bool Inventory::isSlotInUse(size_t idx) const
 	return items[idx].first != nullptr;
 }
 
-bool Inventory::isSlotInUse(const ItemXY& position) const
+bool Inventory::isSlotInUse(const PairUInt8& position) const
 {
 	if (position.x >= size.x || position.y >= size.y)
 	{
@@ -320,7 +320,7 @@ bool Inventory::isSlotInUse(const ItemXY& position) const
 }
 
 bool Inventory::isSlotEmpty(int x, int y,
-	const ItemXY& itemSize, size_t& itemIdx) const
+	const PairUInt8& itemSize, size_t& itemIdx) const
 {
 	size_t sizeX = (size_t)x;
 	size_t sizeY = (size_t)y;

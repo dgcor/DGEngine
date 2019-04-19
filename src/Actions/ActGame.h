@@ -110,7 +110,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		game.load(file, mainFile);
+		game.load(game.getPath() + file, mainFile);
 		return true;
 	}
 };

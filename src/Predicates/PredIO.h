@@ -2,6 +2,7 @@
 
 #include "Predicate.h"
 #include "FileUtils.h"
+#include "Game.h"
 
 class PredFileExists : public Predicate
 {

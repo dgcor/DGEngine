@@ -142,13 +142,9 @@ void Menu::draw(const Game& game, sf::RenderTarget& target) const
 
 void Menu::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
 	auto size = Size();
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
-	GameUtils::setAnchorPosSize(anchor, scrollPosition, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
+	GameUtils::setAnchorPosSize(anchor, scrollPosition, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 
 	scrollRect.left = (int)scrollPosition.x;
 	scrollRect.top = (int)scrollPosition.y;

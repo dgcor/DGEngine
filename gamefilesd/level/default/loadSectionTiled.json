@@ -1,0 +1,18 @@
+{
+  "level": {
+    "id": "level",
+    "resizeToFit": false,
+    "map": {
+      "file": "{1}",
+      "indexOffset": -1,
+      "position": [{2}],
+      "layers": [
+        {
+          "width": "/layers/0/width",
+          "height": "/layers/0/height",
+          "data": "/layers/0/data"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [38, 34],
+      "size": [1, 2],
+      "text1": "river_trail",
+      "properties": {
+        "x": 7,
+        "y": 5
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUp",
+      "mapPosition": [19, 19],
+      "size": [2, 2],
+      "properties": {
+        "x": 55,
+        "y": 71,
+        "level": 0
+      }
+    }
+  ]
+}

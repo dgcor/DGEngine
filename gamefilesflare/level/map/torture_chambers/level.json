@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon_fog.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/torture_chambers/levelObjects.json",
+  "load": "level/map/torture_chambers/monsters.json",
+  "load": "level/map/torture_chambers/level2.json"
+}

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "underworld_catacombs",
+    "level/data/empyrean_campaign/underworld_catacombs.json"
+  ],
+  "load": "level/map/underworld_catacombs/levelObjects2.json",
+  "load": "level/map/underworld_catacombs/monsters2.json",
+  "load": "level/map/underworld_catacombs/quests.json",
+  "load": "level/map/underworld_catacombs/items.json"
+}

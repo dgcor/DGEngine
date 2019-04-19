@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "perdition_mines",
+    "level/data/empyrean_campaign/perdition_mines.json"
+  ],
+  "load": "level/map/perdition_mines/levelObjects2.json",
+  "load": "level/map/perdition_mines/monsters2.json",
+  "load": "level/map/perdition_mines/quests.json",
+  "load": "level/map/perdition_mines/items.json"
+}

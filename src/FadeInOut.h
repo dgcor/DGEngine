@@ -3,7 +3,7 @@
 #include "Actions/Action.h"
 #include <memory>
 #include "SFML/Graphics/Color.hpp"
-#include "SFML/System/Time.hpp"
+#include "Utils/ElapsedTime.h"
 
 // fade out - hide
 // fade in - show
@@ -14,8 +14,7 @@ private:
 	bool isFadeOut{ false };
 	bool enableInput{ false };
 	uint8_t fadeOffset{ 0 };
-	sf::Time frameTime;
-	sf::Time currentTime;
+	ElapsedTime elapsedTime;
 	std::shared_ptr<Action> action;
 	bool running{ false };
 	bool updateEnableInput{ false };
@@ -27,7 +26,7 @@ public:
 	const sf::Color& getColor() const noexcept { return color; }
 
 	void Reset(sf::Color color_, bool isFadeOut_, bool enableInput_, uint8_t fadeOffset_,
-		const sf::Time& frameTime_, const std::shared_ptr<Action>& action_);
+		const sf::Time& timeout_, const std::shared_ptr<Action>& action_);
 
 	virtual void update(Game& game) noexcept;
 };

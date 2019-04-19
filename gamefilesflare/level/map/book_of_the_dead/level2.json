@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "book_of_the_dead",
+    "level/data/empyrean_campaign/book_of_the_dead.json"
+  ],
+  "load": "level/map/book_of_the_dead/levelObjects2.json",
+  "load": "level/map/book_of_the_dead/monsters2.json",
+  "load": "level/map/book_of_the_dead/quests.json",
+  "load": "level/map/book_of_the_dead/items.json"
+}

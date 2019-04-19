@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [83, 29],
+      "size": [2, 1],
+      "text1": "underworld_catacombs",
+      "properties": {
+        "x": 70,
+        "y": 99
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [16, 76],
+      "size": [1, 2],
+      "text1": "torture_chambers",
+      "properties": {
+        "x": 97,
+        "y": 8
+      }
+    }
+  ]
+}

@@ -771,15 +771,12 @@ public:
 		if (item != nullptr)
 		{
 			auto newPos = pos;
-			if (relativeCoords == true)
+			if (relativeCoords == true &&
+				game.RefSize() != game.DrawRegionSize())
 			{
 				auto anchor = item->getAnchor();
 				auto size = item->Size();
-				GameUtils::setAnchorPosSize(anchor, newPos, size, game.RefSize(), game.MinSize());
-				if (game.StretchToFit() == false)
-				{
-					GameUtils::setAnchorPosSize(anchor, newPos, size, game.MinSize(), game.WindowSize());
-				}
+				GameUtils::setAnchorPosSize(anchor, newPos, size, game.RefSize(), game.DrawRegionSize());
 			}
 			item->Position(newPos + offset);
 		}

@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/stormrock_ruins/levelObjects.json",
+  "load": "level/map/stormrock_ruins/monsters.json",
+  "load": "level/map/stormrock_ruins/level2.json"
+}

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "mog_caverns",
+    "level/data/empyrean_campaign/mog_caverns.json"
+  ],
+  "load": "level/map/mog_caverns/levelObjects2.json",
+  "load": "level/map/mog_caverns/monsters2.json",
+  "load": "level/map/mog_caverns/quests.json",
+  "load": "level/map/mog_caverns/items.json"
+}

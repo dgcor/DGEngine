@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [32, 59],
+      "size": [4, 1],
+      "text1": "nazia_highlands",
+      "properties": {
+        "x": 13,
+        "y": 7
+      }
+    }
+  ]
+}

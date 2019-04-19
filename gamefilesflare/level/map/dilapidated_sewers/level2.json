@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "dilapidated_sewers",
+    "level/data/empyrean_campaign/dilapidated_sewers.json"
+  ],
+  "load": "level/map/dilapidated_sewers/levelObjects2.json",
+  "load": "level/map/dilapidated_sewers/monsters2.json",
+  "load": "level/map/dilapidated_sewers/quests.json",
+  "load": "level/map/dilapidated_sewers/items.json"
+}

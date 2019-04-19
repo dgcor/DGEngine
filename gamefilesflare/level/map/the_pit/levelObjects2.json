@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [24, 4],
+      "text1": "perdition_harbor",
+      "properties": {
+        "x": 15,
+        "y": 23
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [68, 64],
+      "size": [2, 2],
+      "text1": "underworld_stronghold_2",
+      "properties": {
+        "x": 12,
+        "y": 34
+      }
+    }
+  ]
+}

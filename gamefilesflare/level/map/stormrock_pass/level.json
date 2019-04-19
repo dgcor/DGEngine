@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/snowplains_snow.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/stormrock_pass/levelObjects.json",
+  "load": "level/map/stormrock_pass/monsters.json",
+  "load": "level/map/stormrock_pass/level2.json"
+}

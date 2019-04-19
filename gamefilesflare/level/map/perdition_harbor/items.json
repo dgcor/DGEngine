@@ -1,0 +1,121 @@
+{
+  "item": [
+    {
+      "class": "shortSword",
+      "properties": {
+        "requiredStrength": 5,
+        "strength": 5,
+        "toDamage": 120,
+        "identified": false,
+        "magical": true
+      },
+      "mapPosition": [19, 13]
+    },
+    {
+      "class": "smallShield",
+      "mapPosition": [20, 13]
+    },
+    {
+      "class": "ring",
+      "mapPosition": [21, 13],
+      "properties": {
+        "strength": 5
+      }
+    },
+    {
+      "class": "potionOfMana",
+      "mapPosition": [22, 13]
+    },
+    {
+      "class": "potionOfRejuvenation",
+      "mapPosition": [19, 10]
+    },
+    {
+      "class": "potionOfFullRejuvenation",
+      "mapPosition": [20, 10]
+    },
+    {
+      "class": "potionOfMana",
+      "mapPosition": [21, 10]
+    },
+    {
+      "class": "spectralElixir",
+      "mapPosition": [19, 11]
+    },
+    {
+      "class": "amulet",
+      "mapPosition": [23, 13],
+      "properties": {
+        "resistAll": 10
+      }
+    },
+    {
+      "class": "gothicPlate",
+      "mapPosition": [24, 13]
+    },
+    {
+      "class": "cap",
+      "mapPosition": [25, 13],
+      "properties": {
+        "durability": 12
+      }
+    },
+    {
+      "class": "leatherArmor",
+      "mapPosition": [26, 13]
+    },
+    {
+      "class": "valorArmor",
+      "mapPosition": [20, 14]
+    },
+    {
+      "class": "largeAxe",
+      "properties": {
+        "toDamage": 120,
+        "identified": false,
+        "magical": true
+      },
+      "mapPosition": [21, 14]
+    },
+    {
+      "class": "bookOfHealing",
+      "mapPosition": [22, 14]
+    },
+    {
+      "class": "club",
+      "mapPosition": [23, 14]
+    },
+    {
+      "class": "compositeBow",
+      "mapPosition": [24, 14]
+    },
+    {
+      "class": "potionOfFullHealing",
+      "mapPosition": [25, 14]
+    },
+    {
+      "class": "potionOfFullMana",
+      "mapPosition": [26, 14]
+    },
+    {
+      "class": "scroll",
+      "mapPosition": [27, 14]
+    },
+    {
+      "class": "shortStaff",
+      "mapPosition": [22, 15],
+      "properties": {
+        "price": 120,
+        "charges": 12,
+        "chargesMax": 35
+      }
+    },
+    {
+      "class": "gold",
+      "mapPosition": [23, 15],
+      "properties": {
+        "quantity": 4800
+      }
+    }
+  ]
+}

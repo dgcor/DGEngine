@@ -11,8 +11,8 @@ void ScrollableText::reset()
 	height = vSize.y;
 }
 
-ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& frameTime_) :
-	text(std::move(text_)), frameTime(frameTime_)
+ScrollableText::ScrollableText(std::unique_ptr<DrawableText> text_, const sf::Time& timeout_) :
+	text(std::move(text_)), elapsedTime(timeout_)
 {
 	text->Position(sf::Vector2f(0.f, 0.f));
 	text->setAnchor(Anchor::None);
@@ -66,12 +66,8 @@ void ScrollableText::update(Game& game)
 		return;
 	}
 
-	currentTime += game.getElapsedTime();
-
-	while (currentTime >= frameTime)
+	elapsedTime.update(game.getElapsedTime(), [&]()
 	{
-		currentTime -= frameTime;
-
 		auto rect = view.getCenter();
 		auto yy = (int)text->Size().y;
 		if (rect.y - (height / 2) < yy)
@@ -89,9 +85,8 @@ void ScrollableText::update(Game& game)
 
 			game.Events().addBack(completeAction);
 		}
-
 		view.setCenter(rect);
-	}
+	});
 }
 
 bool ScrollableText::getProperty(const std::string_view prop, Variable& var) const

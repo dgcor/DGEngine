@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "torture_chambers",
+    "level/data/empyrean_campaign/torture_chambers.json"
+  ],
+  "load": "level/map/torture_chambers/levelObjects2.json",
+  "load": "level/map/torture_chambers/monsters2.json",
+  "load": "level/map/torture_chambers/quests.json",
+  "load": "level/map/torture_chambers/items.json"
+}

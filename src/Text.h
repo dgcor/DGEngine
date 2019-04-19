@@ -3,6 +3,7 @@
 #include "DrawableText.h"
 #include <memory>
 #include "UIObject.h"
+#include <vector>
 
 class Text : public virtual UIObject
 {

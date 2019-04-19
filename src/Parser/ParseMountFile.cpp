@@ -1,5 +1,6 @@
 #include "ParseMountFile.h"
 #include "FileUtils.h"
+#include "Game.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser

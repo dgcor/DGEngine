@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/snowplains_snow.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/lake_kuuma/levelObjects.json",
+  "load": "level/map/lake_kuuma/monsters.json",
+  "load": "level/map/lake_kuuma/level2.json"
+}

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "stonewood",
+    "level/data/empyrean_campaign/stonewood.json"
+  ],
+  "load": "level/map/stonewood/levelObjects2.json",
+  "load": "level/map/stonewood/monsters2.json",
+  "load": "level/map/stonewood/quests.json",
+  "load": "level/map/stonewood/items.json"
+}

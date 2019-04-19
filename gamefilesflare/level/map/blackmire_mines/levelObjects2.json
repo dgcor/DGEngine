@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [1, 43],
+      "size": [1, 2],
+      "text1": "abandoned_mines",
+      "properties": {
+        "x": 76,
+        "y": 71
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [65, 21],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 30,
+        "y": 17
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [78, 6],
+      "size": [1, 2],
+      "text1": "lake_kuuma",
+      "properties": {
+        "x": 49,
+        "y": 105
+      }
+    }
+  ]
+}

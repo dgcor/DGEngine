@@ -1,32 +1,72 @@
 #include "Level.h"
 #include "Game.h"
+#include "GameHashes.h"
 #include "GameUtils.h"
-#include "Game/GameHashes.h"
+#include "Player.h"
 #include "SimpleLevelObject.h"
 #include "Utils/EasingFunctions.h"
 #include "Utils/Utils.h"
 
 void Level::Init(const Game& game, LevelMap map_,
-	const std::vector<std::shared_ptr<TexturePack>>& texturePackLayers,
-	int32_t tileWidth, int32_t tileHeight)
+	const std::vector<LevelLayer>& levelLayers_,
+	int32_t tileWidth, int32_t tileHeight,
+	int32_t indexToDrawObjects)
 {
 	map = std::move(map_);
 	clickedObject = nullptr;
 	hoverObject = nullptr;
 
-	tileWidth = std::max(tileWidth, 2);
-	tileHeight = std::max(tileHeight, 2);
+	defaultLayerInfo.tileWidth = std::max(tileWidth, 2);
+	defaultLayerInfo.tileHeight = std::max(tileHeight, 2);
+	defaultLayerInfo.blockWidth = defaultLayerInfo.tileWidth / 2;
+	defaultLayerInfo.blockHeight = defaultLayerInfo.tileHeight / 2;
+	defaultLayerInfo.visible = true;
 
-	size_t numLayers = levelLayers.size() - 1;
-	for (size_t i = 0; i < numLayers; i++)
+	auto mapVisible = automapLayerInfo.visible;
+	automapLayerInfo = defaultLayerInfo;
+	automapLayerInfo.visible = mapVisible;
+
+	levelLayers.clear();
+	for (const auto& layer : levelLayers_)
 	{
-		setTileLayer(i, &view, texturePackLayers[i], tileWidth, tileHeight, true);
+		if (holdsTilesetLevelLayer(layer.layer) == true &&
+			std::get<TilesetLevelLayer>(layer.layer).tiles == nullptr)
+		{
+			continue;
+		}
+		levelLayers.push_back(layer);
 	}
-	setAutomap(nullptr, tileWidth, tileHeight);
+	indexToDrawLevelObjects = 0;
+	int32_t numTilesetLayers = 0;
+	for (size_t i = 0; i < levelLayers.size(); i++)
+	{
+		if (holdsTilesetLevelLayer(levelLayers[i].layer) == true)
+		{
+			numTilesetLayers++;
+			if (indexToDrawObjects < 0 &&
+				numTilesetLayers <= 2)
+			{
+				indexToDrawLevelObjects = (uint16_t)i;
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
+	if (indexToDrawObjects >= 0)
+	{
+		indexToDrawLevelObjects = indexToDrawObjects;
+	}
+	if (numTilesetLayers == 0 &&
+		levelLayers.full() == false)
+	{
+		levelLayers.push_back({ TilesetLevelLayer(), {}, false });
+	}
 
-	map.setDefaultTileSize(tileWidth, tileHeight);
+	map.setDefaultTileSize(defaultLayerInfo.tileWidth, defaultLayerInfo.tileHeight);
 
-	setCurrentMapPosition(MapCoord(map.Width() / 2, map.Height() / 2));
+	setCurrentMapPosition(PairFloat(-1.f, -1.f), false);
 
 	game.recreateRenderTexture(levelTexture);
 
@@ -45,34 +85,77 @@ void Level::Init()
 	viewPortNeedsUpdate = true;
 }
 
-void Level::setTileLayer(size_t layer, View2* view_,
-	std::shared_ptr<TexturePack> tiles,
-	int tileWidth, int tileHeight, bool visible_)
+void Level::addLayer(const ColorLevelLayer& layer,
+	const sf::FloatRect& viewportOffset, bool automap)
 {
-	levelLayers[layer].tiles = tiles;
-	levelLayers[layer].view = view_;
-	levelLayers[layer].tileWidth = tileWidth;
-	levelLayers[layer].tileHeight = tileHeight;
-	levelLayers[layer].blockWidth = tileWidth / 2;
-	levelLayers[layer].blockHeight = tileHeight / 2;
-	levelLayers[layer].visible = visible_;
+	levelLayers.push_back({ layer, viewportOffset, automap });
 }
 
-void Level::setAutomap(std::shared_ptr<TexturePack> tiles, int tileWidth, int tileHeight)
+void Level::addLayer(const TextureLevelLayer& layer,
+	const sf::FloatRect& viewportOffset, bool automap)
 {
-	tileWidth = std::max(tileWidth, 2);
-	tileHeight = std::max(tileHeight, 2);
+	levelLayers.push_back({ layer, viewportOffset, automap });
+}
 
-	setTileLayer(AutomapLayer, &automapView, tiles,
-		tileWidth, tileHeight, levelLayers[AutomapLayer].visible);
+void Level::setAutomap(const TilesetLevelLayer& automapLayer, int tileWidth,
+	int tileHeight, const sf::FloatRect& viewportOffset)
+{
+	automapLayerInfo.tileWidth = std::max(tileWidth, 2);
+	automapLayerInfo.tileHeight = std::max(tileHeight, 2);
+	automapLayerInfo.blockWidth = automapLayerInfo.tileWidth / 2;
+	automapLayerInfo.blockHeight = automapLayerInfo.tileHeight / 2;
+
+	bool updated = false;
+	for (auto& layer : levelLayers)
+	{
+		if (layer.automap == true &&
+			holdsTilesetLevelLayer(layer.layer) == true)
+		{
+			layer.layer = automapLayer;
+			layer.viewportOffset = viewportOffset;
+			updated = true;
+			break;
+		}
+	}
+	if (updated == false)
+	{
+		levelLayers.push_back({ automapLayer, viewportOffset, true });
+	}
 	viewPortNeedsUpdate = true;
 }
 
-void Level::setCurrentMapViewCenter(const sf::Vector2f& coord_)
+void Level::setCurrentMapPosition(const PairFloat& mapPos, bool smooth) noexcept
 {
-	currentMapViewCenter = coord_;
-	currentAutomapViewCenter.x = std::round((coord_.x * (float)AutomapTileWidth()) / (float)TileWidth());
-	currentAutomapViewCenter.y = std::round((coord_.y * (float)AutomapTileHeight()) / (float)TileHeight());
+	currentMapPosition = mapPos;
+	setCurrentMapViewCenter(map.toDrawCoord(currentMapPosition), smooth);
+}
+
+void Level::setCurrentMapViewCenter(const sf::Vector2f& coord_, bool smooth) noexcept
+{
+	if (currentMapViewCenter != coord_)
+	{
+		currentMapViewCenter = coord_;
+		currentMapViewCenterX.set(coord_.x, smooth == true ? 1.f : 0.f);
+		currentMapViewCenterY.set(coord_.y, smooth == true ? 1.f : 0.f);
+		updateCurrentAutomapViewCenter();
+	}
+}
+
+void Level::updateCurrentAutomapViewCenter() noexcept
+{
+	currentAutomapViewCenter.x = std::round((currentMapViewCenter.x * (float)AutomapTileWidth()) / (float)TileWidth());
+	currentAutomapViewCenter.y = std::round((currentMapViewCenter.y * (float)AutomapTileHeight()) / (float)TileHeight());
+}
+
+bool Level::updateCurrentMapViewCenter(bool smooth) noexcept
+{
+	if (followCurrentPlayer == true && currentPlayer != nullptr)
+	{
+		currentMapPosition = currentPlayer->MapPosition();
+		setCurrentMapViewCenter(currentPlayer->getBasePosition(), smooth);
+		return true;
+	}
+	return false;
 }
 
 void Level::updateLevelObjectPositions()
@@ -154,46 +237,72 @@ void Level::executeHoverLeaveAction(Game& game)
 	}
 }
 
-void Level::setAutomapRelativePosition(const sf::Vector2i& position) noexcept
+void Level::setAutomapPosition(const sf::Vector2f& position) noexcept
 {
-	automapRelativePosition.x = std::clamp(position.x / 100.f, 0.f, 1.f);
-	automapRelativePosition.y = std::clamp(position.y / 100.f, 0.f, 1.f);
-	updateAutomapPosition(view.getPosition());
+	if (automapRelativeCoords == true)
+	{
+		automapPosition.x = std::clamp(position.x / 100.f, 0.f, 1.f);
+		automapPosition.y = std::clamp(position.y / 100.f, 0.f, 1.f);
+	}
+	else
+	{
+		automapPosition.x = (float)position.x;
+		automapPosition.y = (float)position.y;
+		automapView.setPosition(automapPosition);
+	}
+	updateAutomapRelativePosition();
 }
 
 void Level::Position(const sf::Vector2f& position) noexcept
 {
 	view.setPosition(position);
-	updateAutomapPosition(position);
+	updateAutomapRelativePosition();
 }
 
-void Level::updateAutomapPosition(sf::Vector2f position)
+void Level::updateAutomapRelativePosition()
 {
-	position.x = std::round(position.x + view.getSize().x * automapRelativePosition.x);
-	position.y = std::round(position.y + view.getSize().y * automapRelativePosition.y);
-	automapView.setPosition(position);
+	if (automapRelativeCoords == true)
+	{
+		auto position = view.getPosition();
+		position.x = std::round(position.x + view.getSize().x * automapPosition.x);
+		position.y = std::round(position.y + view.getSize().y * automapPosition.y);
+		automapView.setPosition(position);
+	}
 	viewPortNeedsUpdate = true;
 }
 
-void Level::setAutomapRelativeSize(const sf::Vector2i& size)
+void Level::setAutomapSize(const sf::Vector2f& size)
 {
-	automapRelativeSize.x = std::clamp(size.x / 100.f, 0.f, 1.f);
-	automapRelativeSize.y = std::clamp(size.y / 100.f, 0.f, 1.f);
-	updateAutomapSize(Size());
+	if (automapRelativeCoords == true)
+	{
+		automapSize.x = std::clamp(size.x / 100.f, 0.f, 1.f);
+		automapSize.y = std::clamp(size.y / 100.f, 0.f, 1.f);
+	}
+	else
+	{
+		automapSize.x = std::max((float)size.x, 0.f);
+		automapSize.y = std::max((float)size.y, 0.f);
+		automapView.setSize(automapSize);
+	}
+	updateAutomapRelativeSize();
 }
 
 void Level::Size(const sf::Vector2f& size)
 {
 	view.setSize(size);
-	updateAutomapPosition(view.getPosition());
-	updateAutomapSize(size);
+	updateAutomapRelativePosition();
+	updateAutomapRelativeSize();
 }
 
-void Level::updateAutomapSize(sf::Vector2f size)
+void Level::updateAutomapRelativeSize()
 {
-	size.x = std::round(size.x * automapRelativeSize.x);
-	size.y = std::round(size.y * automapRelativeSize.y);
-	automapView.setSize(size);
+	if (automapRelativeCoords == true)
+	{
+		auto size = view.getSize();
+		size.x = std::round(size.x * automapSize.x);
+		size.y = std::round(size.y * automapSize.y);
+		automapView.setSize(size);
+	}
 	viewPortNeedsUpdate = true;
 }
 
@@ -207,50 +316,13 @@ void Level::Zoom(float factor, bool smooth) noexcept
 	{
 		factor = 0.5f;
 	}
-	smoothZoom = smooth;
-	if (smooth == false)
-	{
-		currentZoomFactor = factor;
-	}
-	else
-	{
-		zoomStepStart = 0.f;
-		startZoomFactor = currentZoomFactor;
-		diffZoomFactor = factor - startZoomFactor;
-	}
-	stopZoomFactor = factor;
-	hasNewZoom = true;
+	zoomValue.set(factor, smooth == true ? 1.f : 0.f);
 }
 
 void::Level::updateZoom(const Game& game)
 {
-	if (hasNewZoom == false)
-	{
-		return;
-	}
-	if (smoothZoom == false)
-	{
-		hasNewZoom = false;
-	}
-	else
-	{
-		zoomStepStart += game.getElapsedTime().asSeconds();
-
-		if (zoomStepStart >= zoomStepStop)
-		{
-			zoomStepStart = zoomStepStop;
-			hasNewZoom = false;
-		}
-
-		currentZoomFactor = EasingFunctions::easeOutQuart(
-			zoomStepStart,
-			startZoomFactor,
-			diffZoomFactor,
-			zoomStepStop);
-	}
-
-	view.setZoom(1.f / currentZoomFactor);
-
+	zoomValue.update(game.getElapsedTime().asSeconds());
+	view.setZoom(1.f / zoomValue.get());
 	view.updateViewport(game);
 	updateVisibleArea();
 }
@@ -261,7 +333,7 @@ void Level::addLevelObject(std::unique_ptr<LevelObject> obj)
 	addLevelObject(std::move(obj), mapPos);
 }
 
-void Level::addLevelObject(std::unique_ptr<LevelObject> obj, const MapCoord& mapCoord)
+void Level::addLevelObject(std::unique_ptr<LevelObject> obj, const PairFloat& mapCoord)
 {
 	if (obj->getId().empty() == false)
 	{
@@ -349,150 +421,70 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 	levelTexture.clear();
 
 	SpriteShaderCache spriteCache;
-	Sprite2 sprite;
-	TextureInfo ti;
-	sf::FloatRect tileRect;
-	size_t layerToDrawLevelObjects = 0;
-
-	if (levelLayers[1].tiles != nullptr)
-	{
-		layerToDrawLevelObjects = 1;
-	}
-	else if (levelLayers[2].tiles != nullptr)
-	{
-		layerToDrawLevelObjects = 2;
-	}
 
 	for (size_t i = 0; i < levelLayers.size(); i++)
 	{
-		const auto& layer = levelLayers[i];
-		auto tiles = layer.tiles.get();
+		const auto& levelLayer = levelLayers[i];
 
-		if (layer.view == nullptr)
+		if (holdsNullLevelLayer(levelLayer.layer) == true)
 		{
 			continue;
 		}
-		if (layer.visible == false)
+		if (levelLayer.automap == false)
 		{
-			// don't skip layer (level objects are drawn in this layer)
-			if (i != layerToDrawLevelObjects)
+			if (defaultLayerInfo.visible == false)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if (layer.background != sf::Color::Transparent &&
-				tiles != nullptr)
-			{
-				levelTexture.setView(origView);
-				sf::RectangleShape background(layer.view->getSize());
-				background.setPosition(layer.view->getPosition());
-				background.setFillColor(layer.background);
-				levelTexture.draw(background);
-			}
-		}
-
-		levelTexture.setView(layer.view->getView());
-
-		if (tiles == nullptr)
-		{
-			// don't skip layer (level objects are drawn in this layer)
-			if (i != layerToDrawLevelObjects)
+			if (automapLayerInfo.visible == false)
 			{
 				continue;
 			}
 		}
-		MapCoord mapPos;
-		for (mapPos.x = layer.visibleStart.x; mapPos.x < layer.visibleEnd.x; mapPos.x++)
-		{
-			for (mapPos.y = layer.visibleStart.y; mapPos.y < layer.visibleEnd.y; mapPos.y++)
-			{
-				uint8_t light = 255;
-				int16_t index;
-				if (map.isMapCoordValid(mapPos) == false)
-				{
-					if (i != AutomapLayer)
-					{
-						light = map.getDefaultLight();
-					}
-					index = map.getOutOfBoundsTileIndex(i, mapPos.x, mapPos.y);
-				}
-				else
-				{
-					if (i != AutomapLayer)
-					{
-						light = std::max(map[mapPos].getDefaultLight(), map[mapPos].getCurrentLight());
-					}
-					index = map[mapPos].getTileIndex(i);
 
-					if (i == layerToDrawLevelObjects)	// draw level objets in this layer
-					{
-						for (const auto& drawObj : map[mapPos])
-						{
-							if (drawObj != nullptr)
-							{
-								auto objLight = std::max(drawObj->getLight(), light);
-								drawObj->draw(levelTexture, game.Shaders().Sprite, spriteCache, objLight);
-							}
-						}
-						if (tiles == nullptr ||
-							layer.visible == false)
-						{
-							continue;
-						}
-					}
-				}
-				if (index < 0 || light == 0)
-				{
-					continue;
-				}
-				if (tiles->get((size_t)index, ti) == true)
-				{
-					auto drawPos = map.getCoord(mapPos, layer.blockWidth, layer.blockHeight);
-					drawPos += ti.offset;
-					tileRect.left = drawPos.x;
-					tileRect.top = drawPos.y;
-					tileRect.width = (float)ti.textureRect.width;
-					tileRect.height = (float)ti.textureRect.height;
-					if (layer.visibleRect.intersects(tileRect) == true)
-					{
-						sprite.setTexture(ti, true);
-						sprite.setPosition(drawPos);
-						sprite.draw(levelTexture, game.Shaders().Sprite, spriteCache, light);
-					}
-				}
-			}
+		const auto& layerInfo = (levelLayer.automap == false ? defaultLayerInfo : automapLayerInfo);
+		const auto& layerView = (levelLayer.automap == false ? view : automapView);
+
+		if (levelLayer.viewportOffset == sf::FloatRect(0.f, 0.f, 0.f, 0.f))
+		{
+			levelTexture.setView(layerView.getView());
 		}
-	}
-
-	// draw player direction in automap, if enabled (baseIndex >= 0)
-	if (levelLayers[AutomapLayer].tiles != nullptr &&
-		levelLayers[AutomapLayer].visible == true &&
-		automapPlayerDirectionBaseIndex >= 0 &&
-		currentPlayer != nullptr)
-	{
-		auto direction = (size_t)currentPlayer->getDirection();
-		auto index = (size_t)automapPlayerDirectionBaseIndex + direction;
-		if (direction < (size_t)PlayerDirection::All &&
-			levelLayers[AutomapLayer].tiles->get(index, ti) == true)
+		else
 		{
-			levelTexture.setView(levelLayers[AutomapLayer].view->getView());
+			auto newView = layerView;
+			newView.setPosition(
+				{ newView.getPosition().x + levelLayer.viewportOffset.left,
+				newView.getPosition().y + levelLayer.viewportOffset.top }
+			);
+			newView.setSize(
+				{ newView.getSize().x + levelLayer.viewportOffset.width,
+				newView.getSize().y + levelLayer.viewportOffset.height }
+			);
+			newView.updateViewport(game);
+			levelTexture.setView(newView.getView());
+		}
 
-			auto drawPos = currentAutomapViewCenter;
-			drawPos.x -= (float)levelLayers[AutomapLayer].blockWidth;
-			drawPos.y -= (float)levelLayers[AutomapLayer].blockHeight;
-			drawPos += ti.offset;
-			tileRect.left = drawPos.x;
-			tileRect.top = drawPos.y;
-			tileRect.width = (float)ti.textureRect.width;
-			tileRect.height = (float)ti.textureRect.height;
-			if (levelLayers[AutomapLayer].visibleRect.intersects(tileRect) == true)
-			{
-				sprite.setTexture(ti, true);
-				sprite.setPosition(drawPos);
-				sprite.draw(levelTexture, game.Shaders().Sprite, spriteCache);
-			}
+		if (holdsTilesetLevelLayer(levelLayer.layer) == true)
+		{
+			const auto& layer = std::get<TilesetLevelLayer>(levelLayer.layer);
+			layer.draw(levelTexture, layerInfo, spriteCache,
+				game.Shaders().Sprite, *this,
+				i == indexToDrawLevelObjects,
+				levelLayer.automap
+			);
+		}
+		else if (holdsTextureLevelLayer(levelLayer.layer) == true)
+		{
+			const auto& layer = std::get<TextureLevelLayer>(levelLayer.layer);
+			layer.draw(levelTexture, layerInfo, layerView.getCenter());
+		}
+		else if (holdsColorLevelLayer(levelLayer.layer) == true)
+		{
+			const auto& layer = std::get<ColorLevelLayer>(levelLayer.layer);
+			layer.draw(levelTexture, layerInfo);
 		}
 	}
 
@@ -525,62 +517,43 @@ void Level::updateSize(const Game& game)
 {
 	view.updateSize(game);
 	automapView.updateSize(game);
-	updateAutomapPosition(view.getPosition());
-	updateAutomapSize(view.getSize());
+	updateAutomapRelativePosition();
+	updateAutomapRelativeSize();
 	updateVisibleArea();
 	game.recreateRenderTexture(levelTexture);
 }
 
 void Level::updateVisibleArea()
 {
-	sf::FloatRect visibleRect;
-	MapCoord visibleStart;
-	MapCoord visibleEnd;
-	int tileWidth{ 0 };
-	int tileHeight{ 0 };
-	View2* layerView{ nullptr };
+	updateLayerInfoVisibleArea(defaultLayerInfo, view);
+	updateLayerInfoVisibleArea(automapLayerInfo, automapView);
+	updateTilesetLayersVisibleArea();
+}
 
-	for (auto& layer : levelLayers)
+void Level::updateLayerInfoVisibleArea(LevelLayerInfo& layerInfo, View2& layerView)
+{
+	const auto& viewCenter = layerView.getCenter();
+	const auto& viewSize = layerView.getVisibleSize();
+
+	layerInfo.visibleRect = sf::FloatRect(
+		viewCenter.x - std::round(viewSize.x / 2),
+		viewCenter.y - std::round(viewSize.y / 2),
+		std::round(viewSize.x),
+		std::round(viewSize.y)
+	);
+}
+
+void Level::updateTilesetLayersVisibleArea()
+{
+	for (auto& levelLayer : levelLayers)
 	{
-		if (layer.tileWidth == 0 &&
-			layer.tileHeight == 0)
+		if (holdsTilesetLevelLayer(levelLayer.layer) == false)
 		{
 			continue;
 		}
-		if (layer.tileWidth != tileWidth ||
-			layer.tileHeight != tileHeight ||
-			layer.view != layerView)
-		{
-			tileWidth = layer.tileWidth;
-			tileHeight = layer.tileHeight;
-			layerView = layer.view;
-
-			const auto& viewCenter = layer.view->getCenter();
-			const auto& viewSize = layer.view->getVisibleSize();
-
-			visibleRect = sf::FloatRect(viewCenter.x - std::round(viewSize.x / 2),
-				viewCenter.y - std::round(viewSize.y / 2),
-				std::round(viewSize.x),
-				std::round(viewSize.y));
-
-			sf::Vector2f TL{ visibleRect.left, visibleRect.top };
-			sf::Vector2f TR{ TL.x + visibleRect.width + tileWidth, TL.y };
-			sf::Vector2f BL{ TL.x, TL.y + visibleRect.height + tileHeight };
-			sf::Vector2f BR{ TR.x, BL.y };
-
-			auto mapTL = map.getTile(TL, layer.blockWidth, layer.blockHeight);
-			auto mapTR = map.getTile(TR, layer.blockWidth, layer.blockHeight);
-			auto mapBL = map.getTile(BL, layer.blockWidth, layer.blockHeight);
-			auto mapBR = map.getTile(BR, layer.blockWidth, layer.blockHeight);
-
-			visibleStart.x = mapTL.x - 2;
-			visibleEnd.x = mapBR.x + 12;
-			visibleStart.y = mapTR.y - 2;
-			visibleEnd.y = mapBL.y + 12;
-		}
-		layer.visibleRect = visibleRect;
-		layer.visibleStart = visibleStart;
-		layer.visibleEnd = visibleEnd;
+		auto& layer = std::get<TilesetLevelLayer>(levelLayer.layer);
+		const auto& layerInfo = (levelLayer.automap == false ? defaultLayerInfo : automapLayerInfo);
+		layer.updateVisibleArea(layerInfo, map);
 	}
 }
 
@@ -588,8 +561,9 @@ void Level::updateMouse(const Game& game)
 {
 	mousePositionf = view.getPosition(game.MousePositionf());
 	auto mousePositionf2 = mousePositionf;
-	mousePositionf2.y += 224;
-	mapCoordOverMouse = map.getTile(mousePositionf2);
+	mousePositionf2.x -= (float)map.DefaultBlockWidth();
+	mousePositionf2.y -= (float)map.DefaultBlockHeight();
+	mapCoordOverMouse = map.toMapCoord(mousePositionf2);
 }
 
 void Level::onMouseButtonPressed(Game& game)
@@ -688,6 +662,22 @@ void Level::update(Game& game)
 	updateMouse(game);
 	map.updateLights();
 
+	for (auto& layer : levelLayers)
+	{
+		if (holdsTilesetLevelLayer(layer.layer) == true)
+		{
+			auto tiles = std::get<TilesetLevelLayer>(layer.layer).tiles.get();
+			if (tiles != nullptr)
+			{
+				tiles->update(game.getElapsedTime());
+			}
+		}
+		if (holdsTextureLevelLayer(layer.layer) == true)
+		{
+			std::get<TextureLevelLayer>(layer.layer).update(game.getElapsedTime());
+		}
+	}
+
 	sf::FloatRect rect(view.getPosition(), view.getSize());
 	if (rect.contains(game.MousePositionf()) == true)
 	{
@@ -718,15 +708,32 @@ void Level::update(Game& game)
 	{
 		obj->update(game, *this);
 	}
-	if (followCurrentPlayer == true && currentPlayer != nullptr)
+	if (currentMapPosition.x == -1.f &&
+		currentMapPosition.y == -1.f)
 	{
-		currentMapPosition = currentPlayer->MapPosition();
-		setCurrentMapViewCenter(currentPlayer->getBasePosition());
+		if (updateCurrentMapViewCenter(false) == false)
+		{
+			setCurrentMapPosition(
+				{ map.MapSizef().x / 2.f, map.MapSizef().y / 2.f },
+				false
+			);
+		}
 	}
-	if (view.getCenter() != currentMapViewCenter ||
+	if (smoothMovement == true)
+	{
+		auto elapsedSeconds = game.getElapsedTime().asSeconds();
+		currentMapViewCenterX.update(elapsedSeconds);
+		currentMapViewCenterY.update(elapsedSeconds);
+	}
+	updateCurrentMapViewCenter(smoothMovement);
+	auto newViewCenterX = std::round(currentMapViewCenterX.get());
+	auto newViewCenterY = std::round(currentMapViewCenterY.get());
+	if (view.getCenter().x != newViewCenterX ||
+		view.getCenter().y != newViewCenterY ||
 		viewPortNeedsUpdate == true)
 	{
-		view.setCenter(currentMapViewCenter);
+		view.setCenter(newViewCenterX, newViewCenterY);
+		updateCurrentAutomapViewCenter();
 		automapView.setCenter(currentAutomapViewCenter);
 		updateVisibleArea();
 	}
@@ -763,7 +770,7 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	}
 	case str2int16("hasAutomap"):
-		var = Variable((levelLayers[AutomapLayer].tiles != nullptr));
+		var = Variable(hasAutomap());
 		return true;
 	case str2int16("hasCurrentPlayer"):
 		var = Variable((currentPlayer != nullptr));
@@ -831,17 +838,28 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	}
 	case str2int16("showAutomap"):
-		var = Variable(levelLayers[AutomapLayer].visible);
+		var = Variable(automapLayerInfo.visible);
 		return true;
-		break;
 	case str2int16("zoom"):
-		var = Variable((double)stopZoomFactor);
+		var = Variable((double)zoomValue.getFinal());
 		return true;
 	case str2int16("zoomPercentage"):
-		var = Variable((int64_t)(std::roundf(stopZoomFactor * 100.f)));
+		var = Variable((int64_t)(std::round(zoomValue.getFinal() * 100.f)));
 		return true;
 	default:
 		return getUIObjProp(propHash, props.second, var);
+	}
+	return false;
+}
+
+bool Level::hasAutomap() const noexcept
+{
+	for (const auto& layer : reverse(levelLayers))
+	{
+		if (layer.automap == true)
+		{
+			return true;
+		}
 	}
 	return false;
 }
@@ -942,7 +960,7 @@ LevelObject* Level::parseLevelObjectIdOrMapPosition(
 	auto strPair2 = Utils::splitStringIn2(strPair.first, ',');
 	if (strPair2.second.empty() == false)
 	{
-		MapCoord mapPos(Utils::strtou(strPair2.first), Utils::strtou(strPair2.second));
+		PairInt32 mapPos(Utils::strtou(strPair2.first), Utils::strtou(strPair2.second));
 		if (map.isMapCoordValid(mapPos) == true)
 		{
 			props = strPair.second;
@@ -1014,6 +1032,12 @@ Player* Level::getPlayerOrCurrent(const std::string id) const noexcept
 	return getLevelObject<Player>(id);
 }
 
+void Level::setCurrentPlayer(Player* player_) noexcept
+{
+	currentPlayer = player_;
+	updateCurrentMapViewCenter(false);
+}
+
 void Level::clearPlayerClasses()
 {
 	for (auto it = levelObjectClasses.begin(); it != levelObjectClasses.end();)
@@ -1065,7 +1089,7 @@ void Level::clearPlayerTextures() noexcept
 	}
 }
 
-Item* Level::getItem(const MapCoord& mapCoord) const noexcept
+Item* Level::getItem(const PairFloat& mapCoord) const noexcept
 {
 	if (map.isMapCoordValid(mapCoord) == true)
 	{
@@ -1113,7 +1137,7 @@ Item* Level::getItem(const ItemLocation& location, Player*& player) const
 	if (holdsMapCoord(location) == true)
 	{
 		player = nullptr;
-		return getItem(std::get<MapCoord>(location));
+		return getItem(std::get<PairFloat>(location));
 	}
 	else
 	{
@@ -1121,7 +1145,7 @@ Item* Level::getItem(const ItemLocation& location, Player*& player) const
 	}
 }
 
-std::unique_ptr<Item> Level::removeItem(const MapCoord& mapCoord)
+std::unique_ptr<Item> Level::removeItem(const PairFloat& mapCoord)
 {
 	auto item = map.removeLevelObject<Item>(mapCoord);
 	if (item != nullptr)
@@ -1176,7 +1200,7 @@ std::unique_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& p
 	if (holdsMapCoord(location) == true)
 	{
 		player = nullptr;
-		return removeItem(std::get<MapCoord>(location));
+		return removeItem(std::get<PairFloat>(location));
 	}
 	else
 	{
@@ -1184,7 +1208,7 @@ std::unique_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& p
 	}
 }
 
-bool Level::setItem(const MapCoord& mapCoord, std::unique_ptr<Item>& item)
+bool Level::setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item)
 {
 	if (map.isMapCoordValid(mapCoord) == false)
 	{
@@ -1243,12 +1267,30 @@ bool Level::setItem(const ItemLocation& location, std::unique_ptr<Item>& item)
 {
 	if (holdsMapCoord(location) == true)
 	{
-		return setItem(std::get<MapCoord>(location), item);
+		return setItem(std::get<PairFloat>(location), item);
 	}
 	else
 	{
 		return setItem(std::get<ItemCoordInventory>(location), item);
 	}
+}
+
+bool Level::deleteItem(const PairFloat& mapCoord)
+{
+	std::unique_ptr<Item> nullItem;
+	return setItem(mapCoord, nullItem);
+}
+
+bool Level::deleteItem(const ItemCoordInventory& itemCoord)
+{
+	std::unique_ptr<Item> nullItem;
+	return setItem(itemCoord, nullItem);
+}
+
+bool Level::deleteItem(const ItemLocation& location)
+{
+	std::unique_ptr<Item> nullItem;
+	return setItem(location, nullItem);
 }
 
 LevelObjValue Level::addItemQuantity(const ItemLocation& location, LevelObjValue amount)

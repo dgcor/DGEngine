@@ -15,11 +15,7 @@ void BitmapText::calculateSize()
 
 void BitmapText::updateSize(const Game& game) noexcept
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	calculateDrawPosition();
 }
 

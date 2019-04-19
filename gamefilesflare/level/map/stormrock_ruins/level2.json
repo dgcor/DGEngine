@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "stormrock_ruins",
+    "level/data/empyrean_campaign/stormrock_ruins.json"
+  ],
+  "load": "level/map/stormrock_ruins/levelObjects2.json",
+  "load": "level/map/stormrock_ruins/monsters2.json",
+  "load": "level/map/stormrock_ruins/quests.json",
+  "load": "level/map/stormrock_ruins/items.json"
+}

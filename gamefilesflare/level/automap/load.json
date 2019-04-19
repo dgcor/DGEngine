@@ -1,3 +1,0 @@
-{
-  "action": { "name": "level.setAutomap", "automap": "automap", "tileSize": [2, 2] }
-}

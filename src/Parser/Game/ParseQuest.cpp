@@ -1,4 +1,6 @@
 #include "ParseQuest.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Parser/Utils/ParseUtils.h"
 
 namespace Parser

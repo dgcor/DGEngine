@@ -1,5 +1,6 @@
 #include "ParseFont.h"
 #include "FileUtils.h"
+#include "Game.h"
 #include "Palette.h"
 #include "ParseAction.h"
 #include "Utils/ParseUtils.h"
@@ -125,6 +126,6 @@ namespace Parser
 
 			game.Resources().addPalette(id, palette, getStringViewKey(elem, "resource"));
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 	}
 }

@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "temple_of_mez_2",
+    "level/data/empyrean_campaign/temple_of_mez_2.json"
+  ],
+  "load": "level/map/temple_of_mez_2/levelObjects2.json",
+  "load": "level/map/temple_of_mez_2/monsters2.json",
+  "load": "level/map/temple_of_mez_2/quests.json",
+  "load": "level/map/temple_of_mez_2/items.json"
+}

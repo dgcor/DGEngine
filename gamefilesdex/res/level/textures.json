@@ -1,0 +1,94 @@
+{
+  "texture": [
+    {
+      "id": "golddrop",
+      "file": "ctrlpan/golddrop.cel",
+      "palette": "town"
+    },
+    {
+      "id": "p8bulbs",
+      "file": "ctrlpan/p8bulbs.cel",
+      "palette": "town"
+    },
+    {
+      "id": "panel8",
+      "file": "ctrlpan/panel8.cel",
+      "palette": "town"
+    },
+    {
+      "id": "panel8bu",
+      "file": "ctrlpan/panel8bu.cel",
+      "palette": "town"
+    },
+    {
+      "id": "char",
+      "file": "data/char.cel",
+      "palette": "town"
+    },
+    {
+      "id": "charbut",
+      "file": "data/charbut.cel",
+      "palette": "town"
+    },
+    {
+      "id": "minimap",
+      "file": "images/menus/minimap.png"
+    },
+    {
+      "id": "quest",
+      "file": "data/quest.cel",
+      "palette": "town"
+    },
+    {
+      "id": "spellbk",
+      "file": "data/spellbk.cel",
+      "palette": "town"
+    },
+    {
+      "id": "spellbkb",
+      "file": "data/spellbkb.cel",
+      "palette": "town"
+    },
+    {
+      "id": "pentspn2",
+      "file": "data/pentspn2.cel",
+      "palette": "town"
+    },
+    {
+      "id": "red",
+      "color": "0xFF000022",
+      "size": [1, 1]
+    },
+    {
+      "id": "textbox",
+      "file": "data/textbox.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textbox2",
+      "file": "data/textbox2.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textslid",
+      "file": "data/textslid.cel",
+      "palette": "town"
+    },
+    {
+      "id": "textslidBackground",
+      "file": "data/textslid.cel",
+      "frame": 13,
+      "palette": "town"
+    },
+    {
+      "id": "automap",
+      "file": "res/level/automap.png"
+    }
+  ],
+  "texturePack": {
+    "id": "pentspn2",
+    "texture": "pentspn2",
+    "frames": 8
+  },
+  "load": "res/level/textures2.json"
+}

@@ -7,7 +7,8 @@
 Player::Player(const PlayerClass* class__, const Level& level) : LevelObject(class__)
 {
 	animation.animType = AnimationType::Looped;
-	hoverCellSize = 2;
+	cellSize.x = -2;
+	cellSize.y = -2;
 	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
 	calculateRange();
 	applyDefaults(level);
@@ -41,7 +42,7 @@ void Player::updateSpeed()
 		if (defaultSpeed.animation != sf::Time::Zero)
 		{
 			speed.animation = defaultSpeed.animation;
-			animation.frameTime = speed.animation;
+			animation.elapsedTime.timeout = speed.animation;
 		}
 		if (defaultSpeed.walk != sf::Time::Zero)
 		{
@@ -66,7 +67,7 @@ void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
 	}
 	else
 	{
-		currPositionStep += 0.1f;
+		currPositionStep += 0.025f;
 	}
 }
 
@@ -114,7 +115,7 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 				setWalkAnimation();
 				setDirection(getPlayerDirection(mapPosition, nextMapPos));
 				MapPosition(map, nextMapPos);
-				currPositionStep = 0.1f;
+				currPositionStep = 0.025f;
 				updateWalkPathStep(newDrawPos);
 				break;
 			}
@@ -127,7 +128,7 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 	}
 }
 
-void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
+void Player::setWalkPath(const std::vector<PairFloat>& walkPath_)
 {
 	if (walkPath_.empty() == true ||
 		playerStatus == PlayerStatus::Dead)
@@ -139,6 +140,44 @@ void Player::setWalkPath(const std::vector<MapCoord>& walkPath_)
 	if (walkPath.empty() == false)
 	{
 		mapPositionMoveTo = walkPath.front();
+	}
+}
+
+void Player::setDefaultSpeed(const AnimationSpeed& speed_)
+{
+	defaultSpeed = speed_;
+	speed = Class()->getSpeed(playerAnimation);
+	animation.elapsedTime.timeout = speed.animation;
+	updateSpeed();
+}
+
+void Player::setDirection(PlayerDirection direction_)
+{
+	if (playerDirection != direction_)
+	{
+		playerDirection = direction_;
+		calculateRange();
+	}
+}
+
+void Player::setAnimation(PlayerAnimation animation_)
+{
+	if (playerAnimation != animation_)
+	{
+		playerAnimation = animation_;
+		speed = Class()->getSpeed(playerAnimation);
+		animation.elapsedTime.timeout = speed.animation;
+		updateSpeed();
+		calculateRange();
+	}
+}
+
+void Player::setTextureIdx(size_t idx_)
+{
+	if (textureIdx != idx_)
+	{
+		textureIdx = idx_;
+		calculateRange();
 	}
 }
 
@@ -184,10 +223,10 @@ bool Player::getTexture(size_t textureNumber, TextureInfo& ti) const
 	}
 }
 
-bool Player::MapPosition(LevelMap& map, const MapCoord& pos)
+bool Player::MapPosition(LevelMap& map, const PairFloat& pos)
 {
-	drawPosA = map.getCoord(mapPosition);
-	drawPosB = map.getCoord(pos);
+	drawPosA = map.toDrawCoord(mapPosition);
+	drawPosB = map.toDrawCoord(pos);
 	bool success = false;
 	if (mapPosition != pos)
 	{
@@ -200,7 +239,7 @@ bool Player::MapPosition(LevelMap& map, const MapCoord& pos)
 	return success;
 }
 
-bool Player::move(LevelMap& map, const MapCoord& pos)
+bool Player::move(LevelMap& map, const PairFloat& pos)
 {
 	if (mapPosition == pos ||
 		playerStatus == PlayerStatus::Dead ||
@@ -212,7 +251,7 @@ bool Player::move(LevelMap& map, const MapCoord& pos)
 	setStandAnimation();
 	playerStatus = PlayerStatus::Stand;
 	resetAnimationTime();
-	drawPosA = drawPosB = map.getCoord(pos);
+	drawPosA = drawPosB = map.toDrawCoord(pos);
 	bool success = updateMapPositionBack(map, pos);
 	if (success == true)
 	{

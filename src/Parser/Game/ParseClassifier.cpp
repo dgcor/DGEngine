@@ -1,5 +1,7 @@
 #include "ParseClassifier.h"
+#include "Game.h"
 #include "Game/Classifier.h"
+#include "Game/Level.h"
 #include "Parser/Utils/ParseUtils.h"
 
 namespace Parser

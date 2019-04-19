@@ -1,0 +1,26 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [37, 15],
+      "size": [4, 4],
+      "text1": "st_maria_2",
+      "properties": {
+        "x": 33,
+        "y": 7
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [38, 68],
+      "size": [2, 2],
+      "text1": "lochport",
+      "properties": {
+        "x": 7,
+        "y": 43
+      }
+    }
+  ]
+}

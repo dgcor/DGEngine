@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "fort_nasu",
+    "level/data/empyrean_campaign/fort_nasu.json"
+  ],
+  "load": "level/map/fort_nasu/levelObjects2.json",
+  "load": "level/map/fort_nasu/monsters2.json",
+  "load": "level/map/fort_nasu/quests.json",
+  "load": "level/map/fort_nasu/items.json"
+}

@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [47, 0],
+      "size": [3, 1],
+      "text1": "the_breach",
+      "properties": {
+        "x": 46,
+        "y": 98
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [0, 68],
+      "size": [1, 2],
+      "text1": "grot_lagoon",
+      "properties": {
+        "x": 90,
+        "y": 62
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [79, 72],
+      "size": [1, 2],
+      "text1": "blackmire_mines",
+      "properties": {
+        "x": 3,
+        "y": 44
+      }
+    }
+  ]
+}

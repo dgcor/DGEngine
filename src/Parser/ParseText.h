@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Game.h"
 #include "DrawableText.h"
 #include "Json/JsonParser.h"
 #include "Text.h"
+
+class Game;
 
 namespace Parser
 {

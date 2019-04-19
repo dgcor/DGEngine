@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "nazia_mines",
+    "level/data/empyrean_campaign/nazia_mines.json"
+  ],
+  "load": "level/map/nazia_mines/levelObjects2.json",
+  "load": "level/map/nazia_mines/monsters2.json",
+  "load": "level/map/nazia_mines/quests.json",
+  "load": "level/map/nazia_mines/items.json"
+}

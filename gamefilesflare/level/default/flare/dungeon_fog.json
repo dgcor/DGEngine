@@ -1,0 +1,21 @@
+{
+  "load": "level/data/tileset/dungeon.json",
+  "texture": {
+    "id": "fog",
+    "file": "images/parallax/fog.png"
+  },
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "dungeon" },
+      { "index": 2, "texturePack": "dungeon" },
+      {
+        "texture": "fog",
+        "parallaxSpeed": 0.01,
+        "parallaxFixedSpeed": [0.2, -0.25],
+        "parallaxUpdate": 30
+      }
+    ],
+    "defaultLight": 255
+  }
+}

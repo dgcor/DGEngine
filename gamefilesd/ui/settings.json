@@ -1,7 +1,9 @@
 {
   "action": [
     { "name": "resource.add", "id": "settings", "ignorePrevious": true },
-    { "name": "game.fadeIn" }
+    { "name": "game.fadeIn" },
+    "loadMainMenuImg",
+    "loadLogoImg"
   ],
   "keyboard": [
     {
@@ -26,19 +28,7 @@
       "action": { "name": "button.click", "id": "back" }
     }
   ],
-  "image": {
-    "id": "mainmenu",
-    "texture": "mainmenu",
-    "anchor": "none"
-  },
   "animation": [
-    {
-      "id": "smlogo",
-      "texturePack": "smlogo",
-      "position": ["center", 0],
-      "anchor": "none",
-      "refresh": 50
-    },
     {
       "id": "pent1",
       "texturePack": "focus42",
@@ -63,7 +53,7 @@
       "focusSound": "titlemov",
       "binding": ["%game.size.x%", "%game.size.y%"],
       "format": "[1]x[2]",
-      "position": [319, 192],
+      "position": [320, 150],
       "anchor": "none",
       "horizontalAlign": "center",
       "onClick": {
@@ -84,12 +74,40 @@
       "onFocus": "anchorPentagrams"
     },
     {
+      "id": "maxWindowHeight",
+      "font": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "binding": "%game.maxWindowHeight%",
+      "format": "Max Height: [1]",
+      "position": [320, 193],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "onClick": {
+        "name": "switch",
+        "param": "%game.maxWindowHeight%",
+        "case": [
+          {
+            "value": 0,
+            "action": { "name": "loadJson", "json": { "maxWindowHeight": 480 } }
+          },
+          {
+            "value": 480,
+            "action": { "name": "loadJson", "json": { "maxWindowHeight": 600 } }
+          }
+        ],
+        "default": { "name": "loadJson", "json": { "maxWindowHeight": 0 } }
+      },
+      "onFocus": "anchorPentagrams"
+    },
+    {
       "id": "stretchToFit",
       "font": "font42g",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 235],
+      "position": [320, 236],
       "anchor": "none",
       "horizontalAlign": "center",
       "onClick": {
@@ -113,7 +131,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 277],
+      "position": [320, 278],
       "anchor": "none",
       "horizontalAlign": "center",
       "onClick": {
@@ -137,7 +155,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 320],
+      "position": [320, 321],
       "anchor": "none",
       "horizontalAlign": "center",
       "onClick": {
@@ -161,7 +179,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 363],
+      "position": [320, 364],
       "anchor": "none",
       "horizontalAlign": "center",
       "onClick": {
@@ -214,7 +232,7 @@
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 406],
+      "position": [320, 407],
       "anchor": "none",
       "horizontalAlign": "center",
       "text": "OK",

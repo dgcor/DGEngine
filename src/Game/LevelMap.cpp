@@ -3,65 +3,58 @@
 #include "Utils/EasingFunctions.h"
 
 LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
-	Coord width_, Coord height_, int16_t defaultTile)
-	: mapSize(width_, height_), tileSet(tilFileName), sol(solFileName)
+	int32_t width_, int32_t height_, int16_t defaultTile)
+	: tileSet(tilFileName), sol(solFileName)
 {
-	resize(defaultTile);
+	resize(width_, height_);
+	clear(defaultTile);
 }
 
-LevelMap::LevelMap(Coord width_, Coord height_, int16_t defaultTile)
-	: mapSize(width_, height_)
+LevelMap::LevelMap(int32_t width_, int32_t height_, int16_t defaultTile)
 {
-	resize(defaultTile);
+	resize(width_, height_);
+	clear(defaultTile);
 }
 
-void LevelMap::resize(Coord width_, Coord height_, int16_t defaultTile)
+void LevelMap::resize(int32_t width_, int32_t height_)
 {
-	mapSize.x = width_;
-	mapSize.y = height_;
-	resize(defaultTile);
+	mapSizei.x = std::clamp(width_, 0, (int32_t)std::numeric_limits<uint16_t>::max());
+	mapSizei.y = std::clamp(height_, 0, (int32_t)std::numeric_limits<uint16_t>::max());
+	mapSizef.x = (float)mapSizei.x;
+	mapSizef.y = (float)mapSizei.y;
+
+	cells.resize(mapSizei.x * mapSizei.y, {});
 }
 
-void LevelMap::resize(int16_t defaultTile)
+void LevelMap::clear(int16_t defaultTile)
 {
-	if (mapSize.x == std::numeric_limits<Coord>::max())
+	if (defaultTile < 0)
 	{
-		mapSize.x--;
-	}
-	if (mapSize.y == std::numeric_limits<Coord>::max())
-	{
-		mapSize.y--;
-	}
-	if (defaultTile >= 0)
-	{
-		if ((size_t)defaultTile < tileSet.size())
-		{
-			resize(tileSet[defaultTile]);
-		}
-		else
-		{
-			cells.resize(mapSize.x * mapSize.y, { defaultTile, -1, -1, -1, -1, 0 });
-		}
+		cells.assign(cells.size(), {});
 	}
 	else
 	{
-		cells.resize(mapSize.x * mapSize.y);
-	}
-}
-
-void LevelMap::resize(const TileBlock& defaultTile)
-{
-	cells.resize(mapSize.x * mapSize.y);
-	for (Coord j = 0; j < mapSize.y; j++)
-	{
-		for (Coord i = 0; i < mapSize.x; i++)
+		if ((size_t)defaultTile < tileSet.size())
 		{
-			auto tileIdx = defaultTile.getTileIndex(i, j);
-			(*this)[i][j].setTileIndex(tileIdx);
-			(*this)[i][j].setTileIndex(LevelCell::SolLayer, sol.get(tileIdx));
+			cells.assign(cells.size(), {});
+
+			const auto& defaultTileBlock = tileSet[defaultTile];
+			for (int32_t j = 0; j < mapSizei.y; j++)
+			{
+				for (int32_t i = 0; i < mapSizei.x; i++)
+				{
+					auto tileIdx = defaultTileBlock.getTileIndex(i, j);
+					(*this)[i][j].setTileIndex(0, tileIdx);
+					(*this)[i][j].setTileIndex(LevelCell::SolLayer, sol.get(tileIdx));
+				}
+			}
+		}
+		else
+		{
+			cells.assign(cells.size(), { defaultTile });
 		}
 	}
-}
+};
 
 void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
 {
@@ -81,7 +74,7 @@ uint8_t LevelMap::getTileLight(size_t layer, const LevelCell& cell) const
 	return lightMap.get((size_t)tileIndex);
 }
 
-void LevelMap::addLight(MapCoord lightPos, LightSource lightSource)
+void LevelMap::addLight(PairInt32 lightPos, LightSource lightSource)
 {
 	if (lightSource.maxLight == 0 ||
 		lightSource.minLight > lightSource.maxLight)
@@ -91,7 +84,12 @@ void LevelMap::addLight(MapCoord lightPos, LightSource lightSource)
 	pendingLights.push_back({ lightPos, lightSource, false });
 }
 
-void LevelMap::removeLight(MapCoord lightPos, LightSource lightSource)
+void LevelMap::addLight(PairFloat lightPos, LightSource lightSource)
+{
+	addLight(PairInt32((int32_t)lightPos.x, (int32_t)lightPos.y), lightSource);
+}
+
+void LevelMap::removeLight(PairInt32 lightPos, LightSource lightSource)
 {
 	if (lightSource.maxLight == 0 ||
 		lightSource.minLight > lightSource.maxLight)
@@ -101,7 +99,12 @@ void LevelMap::removeLight(MapCoord lightPos, LightSource lightSource)
 	pendingLights.push_back({ lightPos, lightSource, true });
 }
 
-void LevelMap::doLight(MapCoord lightPos, LightSource ls,
+void LevelMap::removeLight(PairFloat lightPos, LightSource lightSource)
+{
+	removeLight(PairInt32((int32_t)lightPos.x, (int32_t)lightPos.y), lightSource);
+}
+
+void LevelMap::doLight(PairInt32 lightPos, LightSource ls,
 	const std::function<void(LevelCell*, uint8_t)>& doLightFunc)
 {
 	if (defaultSource.maxLight == 255 ||
@@ -116,13 +119,13 @@ void LevelMap::doLight(MapCoord lightPos, LightSource ls,
 	int32_t radiusSquared = radius * radius;
 	double range = ((double)ls.maxLight - (double)ls.minLight);
 
-	MapCoord mapPosStart(lightPos.x - radius, lightPos.y - radius);
-	MapCoord mapPosEnd(lightPos.x + radius + 1, lightPos.y + radius + 1);
+	PairInt32 mapPosStart(lightPos.x - radius, lightPos.y - radius);
+	PairInt32 mapPosEnd(lightPos.x + radius + 1, lightPos.y + radius + 1);
 
 	mapPosStart.x = std::max(mapPosStart.x, 0);
 	mapPosStart.y = std::max(mapPosStart.y, 0);
-	mapPosEnd.x = std::min(mapPosEnd.x, mapSize.x);
-	mapPosEnd.y = std::min(mapPosEnd.y, mapSize.y);
+	mapPosEnd.x = std::min(mapPosEnd.x, mapSizei.x);
+	mapPosEnd.y = std::min(mapPosEnd.y, mapSizei.y);
 
 	auto easingFunc = EasingFunctions::easeLinear<double>;
 
@@ -155,7 +158,7 @@ void LevelMap::doLight(MapCoord lightPos, LightSource ls,
 		break;
 	}
 
-	MapCoord mapPos;
+	PairInt32 mapPos;
 
 	for (mapPos.y = mapPosStart.y; mapPos.y < mapPosEnd.y; mapPos.y++)
 	{
@@ -179,19 +182,19 @@ void LevelMap::doLight(MapCoord lightPos, LightSource ls,
 	}
 }
 
-void LevelMap::doDefaultLight(MapCoord lightPos, LightSource lightSource)
+void LevelMap::doDefaultLight(PairInt32 lightPos, LightSource lightSource)
 {
 	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::setDefaultLight;
 	doLight(lightPos, lightSource, func);
 }
 
-void LevelMap::doLight(MapCoord lightPos, LightSource lightSource)
+void LevelMap::doLight(PairInt32 lightPos, LightSource lightSource)
 {
 	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::addLight;
 	doLight(lightPos, lightSource, func);
 }
 
-void LevelMap::undoLight(MapCoord lightPos, LightSource lightSource)
+void LevelMap::undoLight(PairInt32 lightPos, LightSource lightSource)
 {
 	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::subtractLight;
 	doLight(lightPos, lightSource, func);
@@ -208,13 +211,13 @@ void LevelMap::initLights()
 		return;
 	}
 	LightSource ls = defaultSource;
-	for (int j = 0; j < mapSize.y; j++)
+	for (int j = 0; j < mapSizei.y; j++)
 	{
-		for (int i = 0; i < mapSize.x; i++)
+		for (int i = 0; i < mapSizei.x; i++)
 		{
 			auto& cell = (*this)[i][j];
 			ls.maxLight = lightMap.get(cell.getTileIndex(0));
-			doDefaultLight(MapCoord(i, j), ls);
+			doDefaultLight({i, j}, ls);
 			for (auto& obj : cell)
 			{
 				auto lightSource = obj->getLightSource();
@@ -244,7 +247,7 @@ void LevelMap::updateLights()
 	pendingLights.clear();
 }
 
-void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
+void LevelMap::setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun)
 {
 	auto dWidth = dun.Width() * 2;
 	auto dHeight = dun.Height() * 2;
@@ -280,68 +283,60 @@ void LevelMap::setTileSetArea(Coord x, Coord y, const Dun& dun)
 			if (xTilIndex)
 			{
 				if (yTilIndex)
-					tileIndex = std::get<3>(tileSet[dunIndex]); // bottom
+					tileIndex = tileSet[dunIndex].get<3>(); // bottom
 				else
-					tileIndex = std::get<1>(tileSet[dunIndex]); // left
+					tileIndex = tileSet[dunIndex].get<1>(); // left
 			}
 			else
 			{
 				if (yTilIndex)
-					tileIndex = std::get<2>(tileSet[dunIndex]); // right
+					tileIndex = tileSet[dunIndex].get<2>(); // right
 				else
-					tileIndex = std::get<0>(tileSet[dunIndex]); // top
+					tileIndex = tileSet[dunIndex].get<0>(); // top
 			}
 
-			auto cellX = x + (Coord)i;
-			auto cellY = y + (Coord)j;
+			auto cellX = x + (int32_t)i;
+			auto cellY = y + (int32_t)j;
 
-			if (cellX < 0 || cellX >= mapSize.x ||
-				cellY < 0 || cellY >= mapSize.y)
+			if (cellX < 0 || cellX >= mapSizei.x ||
+				cellY < 0 || cellY >= mapSizei.y)
 			{
 				continue;
 			}
 
-			auto& cell = cells[cellX + (cellY * mapSize.x)];
+			auto& cell = cells[cellX + (cellY * mapSizei.x)];
 
-			if (dunIndex == -1)
-			{
-				cell.setTileIndex(-1);
-				cell.setTileIndex(LevelCell::SolLayer, 0);
-			}
-			else
-			{
-				cell.setTileIndex(tileIndex);
-				cell.setTileIndex(LevelCell::SolLayer, sol.get(tileIndex));
-			}
+			cell.setTileIndex(0, tileIndex);
+			cell.setTileIndex(LevelCell::SolLayer, sol.get(tileIndex));
 		}
 	}
 }
 
-void LevelMap::setSimpleArea(Coord x, Coord y, const Dun& dun)
+void LevelMap::setSimpleAreaUseSol(size_t layer, int32_t x, int32_t y, const Dun& dun)
 {
 	for (size_t j = 0; j < dun.Height(); j++)
 	{
 		for (size_t i = 0; i < dun.Width(); i++)
 		{
-			auto cellX = x + (Coord)i;
-			auto cellY = y + (Coord)j;
+			auto cellX = x + (int32_t)i;
+			auto cellY = y + (int32_t)j;
 
-			if (cellX < 0 || cellX >= mapSize.x ||
-				cellY < 0 || cellY >= mapSize.y)
+			if (cellX < 0 || cellX >= mapSizei.x ||
+				cellY < 0 || cellY >= mapSizei.y)
 			{
 				continue;
 			}
 
-			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
+			auto& cell = cells[(size_t)(cellX + (cellY * mapSizei.x))];
 
 			auto tileIndex = dun[i][j];
-			cell.setTileIndex(tileIndex);
+			cell.setTileIndex(layer, tileIndex);
 			cell.setTileIndex(LevelCell::SolLayer, (tileIndex >= 0 ? sol.get(tileIndex) : 0));
 		}
 	}
 }
 
-void LevelMap::setSimpleArea(Coord x, Coord y, size_t layer,
+void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 	const Dun& dun, bool normalizeSolLayer)
 {
 	if (layer > LevelCell::NumberOfLayers)
@@ -352,16 +347,16 @@ void LevelMap::setSimpleArea(Coord x, Coord y, size_t layer,
 	{
 		for (size_t i = 0; i < dun.Width(); i++)
 		{
-			auto cellX = x + (Coord)i;
-			auto cellY = y + (Coord)j;
+			auto cellX = x + (int32_t)i;
+			auto cellY = y + (int32_t)j;
 
-			if (cellX < 0 || cellX >= mapSize.x ||
-				cellY < 0 || cellY >= mapSize.y)
+			if (cellX < 0 || cellX >= mapSizei.x ||
+				cellY < 0 || cellY >= mapSizei.y)
 			{
 				continue;
 			}
 
-			auto& cell = cells[(size_t)(cellX + (cellY * mapSize.x))];
+			auto& cell = cells[(size_t)(cellX + (cellY * mapSizei.x))];
 
 			auto tileIndex = dun[i][j];
 			if (layer == LevelCell::SolLayer &&
@@ -374,110 +369,65 @@ void LevelMap::setSimpleArea(Coord x, Coord y, size_t layer,
 	}
 }
 
-bool LevelMap::isMapCoordValid(Coord x, Coord y) const noexcept
+bool LevelMap::isLayerUsed(size_t layer) const noexcept
 {
-	return x >= 0 && x < mapSize.x &&
-		y >= 0 && y < mapSize.y;
+	for (const auto& elem : cells)
+	{
+		if (elem.getTileIndex(layer) >= 0)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
-bool LevelMap::isMapCoordValid(const MapCoord& mapCoord) const noexcept
+bool LevelMap::isMapCoordValid(int32_t x, int32_t y) const noexcept
+{
+	return x >= 0 && x < mapSizei.x &&
+		y >= 0 && y < mapSizei.y;
+}
+
+bool LevelMap::isMapCoordValid(const PairInt32& mapCoord) const noexcept
 {
 	return isMapCoordValid(mapCoord.x, mapCoord.y);
 }
 
-sf::Vector2f LevelMap::getCoord(const MapCoord& tile) const
+bool LevelMap::isMapCoordValid(float x, float y) const noexcept
 {
-	return getCoord(tile, defaultBlockWidth, defaultBlockHeight);
+	return x >= 0.f && x < mapSizef.x &&
+		y >= 0.f && y < mapSizef.y;
 }
 
-sf::Vector2f LevelMap::getCoord(const MapCoord& tile,
-	int32_t blockWidth, int32_t blockHeight) const
+bool LevelMap::isMapCoordValid(const PairFloat& mapCoord) const noexcept
 {
-	return sf::Vector2f(
-		(float)((tile.y*(-blockWidth)) + blockWidth * tile.x + mapSize.y * blockWidth - blockWidth),
-		(float)((tile.y * blockHeight) + blockHeight * tile.x)
+	return isMapCoordValid(mapCoord.x, mapCoord.y);
+}
+
+PairFloat LevelMap::toMapCoord(const sf::Vector2f& drawCoord) const noexcept
+{
+	return toMapCoord(drawCoord, defaultBlockWidth, defaultBlockHeight);
+}
+
+PairFloat LevelMap::toMapCoord(const sf::Vector2f& drawCoord,
+	int32_t blockWidth, int32_t blockHeight) const noexcept
+{
+	return PairFloat(
+		std::round((drawCoord.x / blockWidth + drawCoord.y / blockHeight) / 2),
+		std::round((drawCoord.y / blockHeight - (drawCoord.x / blockWidth)) / 2)
 	);
 }
 
-MapCoord LevelMap::getTile(const sf::Vector2f& coords) const noexcept
+TileBlock LevelMap::getTileBlock(int16_t index) const
 {
-	return getTile(coords, defaultBlockWidth, defaultBlockHeight);
-}
-
-MapCoord LevelMap::getTile(const sf::Vector2f& coords,
-	int32_t blockWidth, int32_t blockHeight) const noexcept
-{
-	// Position on the map in pixels
-	int32_t flatX = (int32_t)coords.x;
-	int32_t flatY = (int32_t)coords.y;
-
-	// position on the map divided into (blockWidth)x(blockHeight) flat blocks
-	// every second one of these blocks is centred on an isometric
-	// block centre, the others are centred on isometric block corners
-	int32_t flatGridX = (flatX + (blockWidth / 2)) / blockWidth;
-	int32_t flatGridY = (flatY + (blockHeight / 2)) / blockHeight;
-
-	// origin position (in flat grid coords) for the first line (isometric y = 0)
-	int32_t flatOriginPosX = mapSize.y;
-	int32_t flatOriginPosY = 15;
-
-	// when a flat grid box is clicked that does not centre on an isometric block, work out which
-	// isometric quadrant of that box was clicked, then adjust flatGridPos accordingly
-	if ((flatGridX % 2 == 1 && flatGridY % 2 == 1) ||
-		(flatGridX % 2 == 0 && flatGridY % 2 == 0))
+	if (tileSet.empty() == true)
 	{
-		// origin of current flat grid box
-		int32_t baseX = blockWidth * flatGridX - (blockWidth / 2);
-		int32_t baseY = blockHeight * flatGridY - (blockHeight / 2);
-
-		// position within grid box
-		int32_t blockPosX = flatX - baseX;
-		int32_t blockPosY = flatY - baseY;
-
-		if (blockPosY * 2 > blockPosX)
-		{
-			if (blockPosX < (flatOriginPosY - blockPosY) * 2)
-			{
-				flatGridX--;
-			}
-			else
-			{
-				flatGridY++;
-			}
-		}
-		else
-		{
-			if (blockPosX < (flatOriginPosY - blockPosY) * 2)
-			{
-				flatGridY--;
-			}
-			else
-			{
-				flatGridX++;
-			}
-		}
+		return { index };
 	}
-
-	// flatOrigin adjusted for the current y value
-	int32_t lineOriginPosX = flatOriginPosX + ((flatGridX - flatOriginPosX) - (flatGridY - flatOriginPosY)) / 2;
-	int32_t lineOriginPosY = flatOriginPosY - (-(flatGridX - flatOriginPosX) - (flatGridY - flatOriginPosY)) / 2;
-
-	int32_t isoPosX = flatGridX - lineOriginPosX;
-	int32_t isoPosY = flatGridY - lineOriginPosY;
-
-	return MapCoord((Coord)isoPosX, (Coord)isoPosY);
-}
-
-void LevelMap::setOutOfBoundsTileIndex(size_t layer, int16_t tile) noexcept
-{
-	if (tile >= 0 && (size_t)tile < tileSet.size())
+	else if (index >= 0 && (size_t)index < tileSet.size())
 	{
-		outOfBoundsTiles[layer] = tileSet[tile];
+		return tileSet[index];
 	}
-	else
-	{
-		outOfBoundsTiles[layer] = {};
-	}
+	return {};
 }
 
 bool LevelMap::addLevelObject(std::unique_ptr<LevelObject> obj)
@@ -490,9 +440,9 @@ bool LevelMap::removeLevelObject(const LevelObject* obj)
 	return obj->remove(*this);
 }
 
-std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) const
+std::vector<PairFloat> LevelMap::getPath(const PairFloat& a, const PairFloat& b) const
 {
-	std::vector<MapCoord> path;
+	std::vector<PairFloat> path;
 
 	if (a == b)
 	{
@@ -500,8 +450,8 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 		return path;
 	}
 
-	MapSearchNode start(*this, a.x, a.y, PlayerDirection::All);
-	MapSearchNode end(*this, b.x, b.y, PlayerDirection::All);
+	MapSearchNode start(*this, (int16_t)a.x, (int16_t)a.y, PlayerDirection::All);
+	MapSearchNode end(*this, (int16_t)b.x, (int16_t)b.y, PlayerDirection::All);
 	MapSearchNode endOrig(end);
 
 	if (end.IsValid() == false)
@@ -546,7 +496,7 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 	{
 		if (endOrig.IsPassable() == false)
 		{
-			path.push_back(MapCoord(endOrig.x, endOrig.y));
+			path.push_back(PairFloat((float)endOrig.x, (float)endOrig.y));
 		}
 		auto node = pathFinder.GetSolutionEnd();
 		while (true)
@@ -555,7 +505,7 @@ std::vector<MapCoord> LevelMap::getPath(const MapCoord& a, const MapCoord& b) co
 			{
 				break;
 			}
-			path.push_back(MapCoord(node->x, node->y));
+			path.push_back(PairFloat((float)node->x, (float)node->y));
 			node = pathFinder.GetSolutionPrev();
 		};
 		pathFinder.FreeSolutionNodes();
@@ -570,9 +520,9 @@ std::string LevelMap::toCSV(bool zeroBasedIndex) const
 	std::string str;
 	int16_t inc = (zeroBasedIndex == true ? 0 : 1);
 
-	for (int j = 0; j < mapSize.y; j++)
+	for (int j = 0; j < mapSizei.y; j++)
 	{
-		for (int i = 0; i < mapSize.x; i++)
+		for (int i = 0; i < mapSizei.x; i++)
 		{
 			str += Utils::toString((*this)[i][j].getTileIndex(0) + inc) + ",";
 		}

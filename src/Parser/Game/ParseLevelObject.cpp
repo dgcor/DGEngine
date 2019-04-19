@@ -1,4 +1,6 @@
 #include "ParseLevelObject.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Game/SimpleLevelObject.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
@@ -24,9 +26,8 @@ namespace Parser
 			return;
 		}
 
-		auto mapPos = getVector2uKey<MapCoord>(elem, "mapPosition");
-		auto mapSize = level->Map().MapSize();
-		if (mapPos.x >= mapSize.x || mapPos.y >= mapSize.y)
+		auto mapPos = getVector2UnsignedNumberKey<PairFloat, float>(elem, "mapPosition");
+		if (level->Map().isMapCoordValid(mapPos) == false)
 		{
 			return;
 		}
@@ -54,6 +55,7 @@ namespace Parser
 		levelObj->Name(getStringViewKey(elem, "name"));
 		levelObj->Text1(getStringViewKey(elem, "text1", class_->Text1()));
 		levelObj->Text2(getStringViewKey(elem, "text2", class_->Text2()));
+		levelObj->setCellSize(getVector2iKey<PairInt8>(elem, "size", class_->getCellSize()));
 
 		if (elem.HasMember("properties") == true)
 		{

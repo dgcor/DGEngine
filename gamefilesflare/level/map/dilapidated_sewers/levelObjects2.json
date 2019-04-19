@@ -1,0 +1,46 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [0, 6],
+      "size": [2, 2],
+      "text1": "fort_nasu",
+      "properties": {
+        "x": 96,
+        "y": 66
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [35, 27],
+      "size": [2, 2],
+      "text1": "hyperspace",
+      "properties": {
+        "x": 17,
+        "y": 30
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [63, 7],
+      "size": [1, 2],
+      "text1": "black_oak_farm",
+      "properties": {
+        "x": 31,
+        "y": 14
+      }
+    },
+    {
+      "class": "levelUpFlare2",
+      "mapPosition": [21, 70],
+      "size": [2, 1],
+      "text1": "black_oak_farm",
+      "properties": {
+        "x": 38,
+        "y": 73
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "load": "level/data/tileset/grassland.json",
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 1, "texturePack": "grassland" },
+      { "index": 2, "texturePack": "grassland" }
+    ],
+    "defaultLight": 255
+  }
+}

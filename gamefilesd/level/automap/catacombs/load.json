@@ -1,0 +1,57 @@
+{
+  "texturePack": [
+    {
+      "id": "automap0",
+      "fromId": "catacombsAutomap0"
+    },
+    {
+      "id": "automap1",
+      "fromId": "catacombsAutomap3"
+    },
+    {
+      "id": "automap2",
+      "fromId": "catacombsAutomap5"
+    },
+    {
+      "id": "automap3",
+      "fromId": "catacombsAutomap8"
+    },
+    {
+      "id": "automap4",
+      "fromId": "catacombsAutomap10"
+    },
+    {
+      "id": "automap5",
+      "fromId": "catacombsAutomap13"
+    },
+    {
+      "id": "automap6",
+      "fromId": "catacombsAutomap15"
+    },
+    {
+      "id": "automap7",
+      "fromId": "catacombsAutomap18"
+    },
+    {
+      "id": "automap8",
+      "fromId": "catacombsAutomap20"
+    },
+    {
+      "id": "automap9",
+      "fromId": "catacombsAutomap23"
+    },
+    {
+      "id": "automap10",
+      "fromId": "catacombsAutomap25"
+    },
+    {
+      "id": "automap11",
+      "fromId": "catacombsAutomap28"
+    },
+    {
+      "id": "automap12",
+      "fromId": "catacombsAutomap30"
+    }
+  ],
+  "action": "updateAutomapZoom"
+}

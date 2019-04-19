@@ -1,10 +1,11 @@
 #include "CmdLineUtils.h"
-#include "Game.h"
 #include "Game/LevelHelper.h"
+#include "FileUtils.h"
+#include "Utils/Utils.h"
 
 namespace CmdLineUtils
 {
-	bool processCmdLine(Game& game, int argc, const char* argv[])
+	bool processCmdLine(int argc, const char* argv[])
 	{
 		if (argc < 4)
 		{

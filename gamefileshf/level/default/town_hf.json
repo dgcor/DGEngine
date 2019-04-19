@@ -1,0 +1,26 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "file": "levels/towndata/town.pal"
+        }
+      }
+    }
+  },
+  "level": {
+    "id": "level",
+    "palette": "level",
+    "file": "Nlevels/TownData/Town.CEL",
+    "til": "Nlevels/TownData/Town.TIL",
+    "min": "Nlevels/TownData/Town.MIN",
+    "minBlocks": 16,
+    "sol": "Nlevels/TownData/Town.SOL",
+    "defaultLight": 255
+  }
+}

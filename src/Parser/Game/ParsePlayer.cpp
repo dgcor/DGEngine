@@ -1,4 +1,6 @@
 #include "ParsePlayer.h"
+#include "Game.h"
+#include "Game/Level.h"
 #include "Game/Player.h"
 #include "GameUtils.h"
 #include "ParseItem.h"
@@ -162,9 +164,8 @@ namespace Parser
 			return;
 		}
 
-		auto mapPos = getVector2uKey<MapCoord>(elem, "mapPosition");
-		auto mapSize = level->Map().MapSize();
-		if (mapPos.x >= mapSize.x || mapPos.y >= mapSize.y)
+		auto mapPos = getVector2UnsignedNumberKey<PairFloat, float>(elem, "mapPosition");
+		if (level->Map().isMapCoordValid(mapPos) == false)
 		{
 			return;
 		}

@@ -553,7 +553,8 @@ namespace Parser
 				getStringKey(elem, "dir"),
 				getStringVectorKey(elem, "file"),
 				getStringKey(elem, "writeFile"),
-				getStringKey(elem, "nullText"));
+				getStringKey(elem, "nullText"),
+				getReplaceVarsKey(elem, "replaceVars"));
 		}
 		case str2int16("focus.add"):
 		{
@@ -895,6 +896,26 @@ namespace Parser
 				getStringKey(elem, "level"),
 				getItemCoordInventoryVal(elem));
 		}
+		case str2int16("level.addLayer"):
+		{
+			if (elem.HasMember("color") == true)
+			{
+				return std::make_shared<ActLevelAddColorLayer>(
+					getStringKey(elem, "level"),
+					getColorKey(elem, "color"),
+					getFloatRectKey(elem, "offset"),
+					getBoolKey(elem, "automap"));
+			}
+			else
+			{
+				return std::make_shared<ActLevelAddTextureLayer>(
+					getStringKey(elem, "level"),
+					getStringKey(elem, "texture"),
+					getIntRectKey(elem, "textureRect"),
+					getFloatRectKey(elem, "offset"),
+					getBoolKey(elem, "automap"));
+			}
+		}
 		case str2int16("level.clearAllObjects"):
 		{
 			return std::make_shared<ActLevelClearAllObjects>(
@@ -944,17 +965,21 @@ namespace Parser
 		{
 			return std::make_shared<ActLevelMove>(
 				getStringKey(elem, "level"),
-				getVector2uKey<MapCoord>(elem, "position"));
+				getVector2UnsignedNumberKey<PairFloat, float>(elem, "position"),
+				getBoolKey(elem, "smooth"));
 		}
 		case str2int16("level.moveToClick"):
 		{
-			return std::make_shared<ActLevelMoveToClick>(getStringKey(elem, "level"));
+			return std::make_shared<ActLevelMoveToClick>(
+				getStringKey(elem, "level"),
+				getBoolKey(elem, "smooth"));
 		}
 		case str2int16("level.moveToPlayer"):
 		{
 			return std::make_shared<ActLevelMoveToPlayer>(
 				getStringKey(elem, "level"),
-				getStringKey(elem, "player"));
+				getStringKey(elem, "player"),
+				getBoolKey(elem, "smooth"));
 		}
 		case str2int16("level.pause"):
 		{
@@ -976,31 +1001,33 @@ namespace Parser
 			return std::make_shared<ActLevelSetAutomap>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "automap"),
-				getVector2uKey<std::pair<uint32_t, uint32_t>>(elem, "tileSize", { 64u, 32u }));
-		}
-		case str2int16("level.setAutomapBackground"):
-		{
-			return std::make_shared<ActLevelSetAutomapBackground>(
-				getStringKey(elem, "level"),
-				getColorKey(elem, "color", sf::Color::Transparent));
+				getVector2uKey<std::pair<uint32_t, uint32_t>>(elem, "tileSize", { 64u, 32u }),
+				(uint16_t)getUIntKey(elem, "index"),
+				getFloatRectKey(elem, "offset"));
 		}
 		case str2int16("level.setAutomapPosition"):
 		{
 			return std::make_shared<ActLevelSetAutomapPosition>(
 				getStringKey(elem, "level"),
-				getVector2iKey<sf::Vector2i>(elem, "position"));
+				getVector2fKey<sf::Vector2f>(elem, "position"));
 		}
 		case str2int16("level.setAutomapSize"):
 		{
 			return std::make_shared<ActLevelSetAutomapSize>(
 				getStringKey(elem, "level"),
-				getVector2iKey<sf::Vector2i>(elem, "size", { 100, 100 }));
+				getVector2fKey<sf::Vector2f>(elem, "size", { 100, 100 }));
 		}
 		case str2int16("level.setShader"):
 		{
 			return std::make_shared<ActLevelSetShader>(
 				getStringKey(elem, "level"),
 				getStringKey(elem, "shader"));
+		}
+		case str2int16("level.setSmoothMovement"):
+		{
+			return std::make_shared<ActLevelSetSmoothMovement>(
+				getStringKey(elem, "level"),
+				getBoolKey(elem, "smooth"));
 		}
 		case str2int16("level.showAutomap"):
 		{
@@ -1210,8 +1237,9 @@ namespace Parser
 			return std::make_shared<ActPlayerMove>(
 				getStringKey(elem, "player"),
 				getStringKey(elem, "level"),
-				getVector2uKey<MapCoord>(elem, "position"),
-				getBoolKey(elem, "resetDirection"));
+				getVector2UnsignedNumberKey<PairFloat, float>(elem, "position"),
+				getBoolKey(elem, "resetDirection"),
+				getBoolKey(elem, "smooth"));
 		}
 		case str2int16("player.moveToClick"):
 		{

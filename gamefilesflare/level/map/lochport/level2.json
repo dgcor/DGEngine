@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "lochport",
+    "level/data/empyrean_campaign/lochport.json"
+  ],
+  "load": "level/map/lochport/levelObjects2.json",
+  "load": "level/map/lochport/monsters2.json",
+  "load": "level/map/lochport/quests.json",
+  "load": "level/map/lochport/items.json"
+}

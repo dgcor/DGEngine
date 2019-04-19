@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/antlion_nest/levelObjects.json",
+  "load": "level/map/antlion_nest/monsters.json",
+  "load": "level/map/antlion_nest/level2.json"
+}

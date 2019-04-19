@@ -1,0 +1,14 @@
+{
+  "load": "level/data/l1/l1_big.json",
+  "level": {
+    "id": "level",
+    "layers": [
+      { "index": 0, "texturePack": "l1_back_big" },
+      { "index": 0, "texturePack": "l1_front_big" }
+    ],
+    "tileSize": [128, 64],
+    "til": "levels/l1data/l1.til",
+    "sol": "levels/l1data/l1.sol",
+    "defaultLight": 255
+  }
+}

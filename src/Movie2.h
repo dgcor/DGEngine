@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Actions/Action.h"
-#include <SFML/Graphics.hpp>
 #include "UIObject.h"
 #ifndef USE_SFML_MOVIE_STUB
 #include "PhysFSStream.h"
 #include "sfeMovie/Movie.hpp"
+#else
+#include <SFML/Graphics/RectangleShape.hpp>
 #endif
 
 class Movie : public UIObject

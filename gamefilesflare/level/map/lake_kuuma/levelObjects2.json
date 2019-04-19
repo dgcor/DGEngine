@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [47, 104],
+      "size": [2, 2],
+      "text1": "blackmire_mines",
+      "properties": {
+        "x": 76,
+        "y": 6
+      }
+    },
+    {
+      "class": "levelUpFlare2",
+      "mapPosition": [102, 26],
+      "size": [2, 1],
+      "text1": "fort_amir",
+      "properties": {
+        "x": 11,
+        "y": 77
+      }
+    }
+  ]
+}

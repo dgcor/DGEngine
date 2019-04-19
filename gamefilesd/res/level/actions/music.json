@@ -1,0 +1,78 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "loadLevelMusic",
+    "action": [
+      {
+        "name": "switch",
+        "param": "%level.path%",
+        "case": [
+          {
+            "value": "town",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dtowne.wav"
+            }
+          },
+          {
+            "value": "l1",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dlvla.wav"
+            }
+          },
+          {
+            "value": "l5",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dlvlb.wav"
+            }
+          },
+          { "value": "l6", "action": "l5" },
+          { "value": "l7", "action": "l5" },
+          { "value": "l8", "action": "l5" },
+          { "value": "chamberBone", "action": "l5" },
+          {
+            "value": "l9",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dlvlc.wav"
+            }
+          },
+          { "value": "l10", "action": "l9" },
+          { "value": "l11", "action": "l9" },
+          { "value": "l12", "action": "l9" },
+          { "value": "poisonWater", "action": "l9" },
+          {
+            "value": "l13",
+            "action": {
+              "name": "variable.set",
+              "key": "levelMusic",
+              "value": "music/dlvld.wav"
+            }
+          },
+          { "value": "l14", "action": "l13" },
+          { "value": "l15", "action": "l13" },
+          { "value": "l16", "action": "l13" }
+        ],
+        "default": "l1"
+      },
+      {
+        "name": "loadJson",
+        "json": {
+          "replaceVars": "value",
+          "audio": {
+            "id": "main",
+            "file": "|levelMusic|",
+            "loop": true,
+            "play": true
+          }
+        }
+      }
+    ]
+  }
+}

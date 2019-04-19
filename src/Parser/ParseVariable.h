@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Json/JsonParser.h"
+#include <string>
 #include "Variable.h"
 #include <vector>
-#include <string>
 
 class Game;
 

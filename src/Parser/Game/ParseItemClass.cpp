@@ -1,6 +1,8 @@
 #include "ParseItemClass.h"
+#include "Game.h"
 #include "Game/GameHashes.h"
 #include "Game/ItemClass.h"
+#include "Game/Level.h"
 #include "Game/Spell.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
@@ -125,7 +127,7 @@ namespace Parser
 		}
 		if (elem.HasMember("inventorySize") == true)
 		{
-			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], ItemXY(1, 1)));
+			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], PairUInt8(1, 1)));
 		}
 		if (elem.HasMember("animationSpeed") == true)
 		{

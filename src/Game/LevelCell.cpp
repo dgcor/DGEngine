@@ -61,14 +61,6 @@ void LevelCell::subtractLight(uint8_t light_) noexcept
 	}
 }
 
-void LevelCell::setTileIndex(int16_t tileIndex_) noexcept
-{
-	for (size_t i = 0; i < tileIndexes.size() - 1; i++)
-	{
-		tileIndexes[i] = tileIndex_;
-	}
-}
-
 bool LevelCell::PassableIgnoreObject(const LevelObject* ignoreObj) const
 {
 	if (PassableIgnoreObject() == false)

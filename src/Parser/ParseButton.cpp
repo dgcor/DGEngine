@@ -1,6 +1,7 @@
 #include "ParseButton.h"
 #include "BitmapButton.h"
 #include "BitmapText.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "ParseAction.h"
 #include "ParseText.h"
@@ -31,10 +32,11 @@ namespace Parser
 
 		if (elem.HasMember("textureRect"))
 		{
-			sf::IntRect rect(0, 0, game.WindowSize().x, game.WindowSize().y);
+			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
 		}
-		button->setResizable(getBoolKey(elem, "resizable"));
+		button->Resizable(getBoolKey(elem, "resizable"));
+		button->Stretch(getBoolKey(elem, "stretch"));
 
 		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
 		auto outlineIgnore = getColorKey(elem, "outlineIgnore", sf::Color::Transparent);
@@ -77,20 +79,14 @@ namespace Parser
 				button->setAnchor(anchor);
 				auto size = button->Size();
 				auto pos = getPositionKey(elem, "position", size, game.RefSize());
-				if (getBoolKey(elem, "relativeCoords", true) == true)
+				if (getBoolKey(elem, "relativeCoords", true) == true &&
+					game.RefSize() != game.DrawRegionSize())
 				{
-					GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-					if (game.StretchToFit() == false)
-					{
-						GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-					}
+					GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 				}
 				button->Position(pos);
 				auto bitmapBtn = static_cast<BitmapButton*>(button.get());
-				if (bitmapBtn->getResizable() == true)
-				{
-					bitmapBtn->Size(size);
-				}
+				bitmapBtn->Size(size);
 				button->Visible(getBoolKey(elem, "visible", true));
 
 				button->setColor(getColorKey(elem, "color", sf::Color::White));

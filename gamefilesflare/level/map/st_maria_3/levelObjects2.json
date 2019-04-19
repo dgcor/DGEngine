@@ -1,0 +1,25 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [17, 2],
+      "text1": "lake_kuuma",
+      "properties": {
+        "x": 26,
+        "y": 28
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [6, 46],
+      "size": [1, 2],
+      "text1": "st_maria_2",
+      "properties": {
+        "x": 15,
+        "y": 5
+      }
+    }
+  ]
+}

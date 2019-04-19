@@ -1,0 +1,45 @@
+{
+  "level": {
+    "id": "level",
+    "load": "{2}",
+    "executeBefore": {
+      "name": "load",
+      "file": ["level/positionPlayer.json", "/properties/{name=hero_pos}/value"]
+    },
+    "path": "{1}",
+    "name": "/properties/{name=title}/value",
+    "map": {
+      "layers": [
+        {
+          "index": 0,
+          "width": "/layers/{name=collision}/width",
+          "height": "/layers/{name=collision}/height",
+          "data": "/layers/{name=collision}/data"
+        },
+        {
+          "index": 1,
+          "width": "/layers/{name=background}/width",
+          "height": "/layers/{name=background}/height",
+          "data": "/layers/{name=background}/data"
+        },
+        {
+          "index": 2,
+          "width": "/layers/{name=object}/width",
+          "height": "/layers/{name=object}/height",
+          "data": "/layers/{name=object}/data"
+        },
+        {
+          "index": "sol",
+          "normalize": true,
+          "width": "/layers/{name=collision}/width",
+          "height": "/layers/{name=collision}/height",
+          "data": "/layers/{name=collision}/data"
+        }
+      ]
+    },
+    "executeAfter": {
+      "name": "load",
+      "file": ["level/positionPlayer.json", "/properties/{name=hero_pos}/value"]
+    }
+  }
+}

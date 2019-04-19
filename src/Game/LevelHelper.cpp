@@ -380,7 +380,7 @@ namespace LevelHelper
 				}
 			}
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 	}
 
 	void loadAndSaveTilesetSprite(const std::string& celFile,
@@ -434,6 +434,6 @@ namespace LevelHelper
 				min, bottomTopOrBoth, skipBlankTiles, maxTextureSize
 			);
 		}
-		catch (std::exception ex) {}
+		catch (std::exception&) {}
 	}
 }

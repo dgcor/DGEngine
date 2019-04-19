@@ -1,0 +1,66 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [0, 47],
+      "size": [1, 4],
+      "text1": "antlion_nest",
+      "properties": {
+        "x": 76,
+        "y": 66
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [6, 62],
+      "size": [2, 1],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 24,
+        "y": 81
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [21, 14],
+      "size": [1, 2],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 31,
+        "y": 25
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [77, 39],
+      "size": [2, 1],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 102,
+        "y": 27
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [92, 88],
+      "size": [1, 2],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 97,
+        "y": 105
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [45, 99],
+      "size": [4, 1],
+      "text1": "abandoned_mines",
+      "properties": {
+        "x": 47,
+        "y": 2
+      }
+    }
+  ]
+}

@@ -2,8 +2,6 @@
 
 #include "BitmapFont.h"
 #include "DrawableText.h"
-#include <memory>
-#include <SFML/Graphics.hpp>
 
 class BitmapText : public DrawableText
 {

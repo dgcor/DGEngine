@@ -1,0 +1,25 @@
+{
+  "load": [
+    "level/default/loadDungeonTiled.json",
+    "skeletonKing",
+    "Skeleton King's Lair",
+    "level/map/skeletonKing/skeletonKing.json"
+  ],
+  "load": "level/map/skeletonKing/levelObjects2.json",
+  "load": "level/map/skeletonKing/monsters2.json",
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": {
+      "name": "loadJson",
+      "json": {
+        "audio": {
+          "file": "sfx/monsters/sking01.wav",
+          "resource": "currentLevel",
+          "volume": "%game.soundVolume%",
+          "play": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "load": "level/map/town/playersd.json",
+  "load": "level/map/town/playershf.json"
+}

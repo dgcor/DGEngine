@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/cave_fog.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/the_pit/levelObjects.json",
+  "load": "level/map/the_pit/monsters.json",
+  "load": "level/map/the_pit/level2.json"
+}

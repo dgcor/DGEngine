@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [18, 0],
+      "size": [4, 1],
+      "text1": "black_oak_farm",
+      "properties": {
+        "x": 87,
+        "y": 97
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [23, 48],
+      "size": [2, 2],
+      "text1": "mog_caverns",
+      "properties": {
+        "x": 56,
+        "y": 66
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [65, 61],
+      "size": [4, 4],
+      "text1": "nazia_underground",
+      "properties": {
+        "x": 7,
+        "y": 30
+      }
+    }
+  ]
+}

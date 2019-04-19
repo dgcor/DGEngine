@@ -7,26 +7,19 @@ bool Event::execute(Game& game)
 	{
 		return true;
 	}
-	if (currentTime == sf::Time::Zero)
+	if (elapsedTime.currentTime == sf::Time::Zero)
 	{
 		// prevents executing events created while loading big files immediately
-		currentTime = sf::microseconds(1);
+		elapsedTime.currentTime = sf::microseconds(1);
 		return false;
 	}
-	currentTime += game.getElapsedTime();
-
-	if (currentTime >= timeout)
+	if (elapsedTime.timeout == sf::Time::Zero ||
+		elapsedTime.update(game.getElapsedTime()) == true)
 	{
 		auto ret = action->execute(game);
-
-		if (ret == false && timeout != sf::Time::Zero)
+		if (ret == true || elapsedTime.timeout == sf::Time::Zero)
 		{
-			// reset time, but keep the remainder
-			currentTime = sf::microseconds(currentTime.asMicroseconds() % timeout.asMicroseconds());
-		}
-		else
-		{
-			currentTime = sf::Time::Zero;
+			resetTime();
 		}
 		return ret;
 	}

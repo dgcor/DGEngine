@@ -1,0 +1,11 @@
+{
+  "load": ["level/default/loadCavesTiled.json", "l9", "9", "level/map/l9/l9.json"],
+  "load": "level/map/l9/levelObjects2.json",
+  "load": "level/map/l9/monsters2.json",
+  "load": ["level/map/town/loadPassages.json", "true", "true", "false"],
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 98, "", "playAudio", "currentLevel"] }
+  }
+}

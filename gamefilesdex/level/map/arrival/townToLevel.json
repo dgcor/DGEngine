@@ -1,0 +1,12 @@
+{
+  "levelObject": {
+    "id": "down2",
+    "class": "levelDownFlare2",
+    "mapPosition": [54, 71],
+    "text1": "arrival",
+    "properties": {
+      "x": 21,
+      "y": 21
+    }
+  }
+}

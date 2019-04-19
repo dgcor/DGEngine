@@ -55,10 +55,6 @@ void Movie::draw(const Game& game, sf::RenderTarget& target) const
 
 void Movie::updateSize(const Game& game)
 {
-	if (game.StretchToFit() == true)
-	{
-		return;
-	}
 	auto pos = movie.getPosition();
 #ifndef USE_SFML_MOVIE_STUB
 	if (size.x <= 0 || size.y <= 0)
@@ -68,7 +64,7 @@ void Movie::updateSize(const Game& game)
 #else
 	auto size = movie.getSize();
 #endif
-	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldWindowSize(), game.WindowSize());
+	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 #ifndef USE_SFML_MOVIE_STUB
 	movie.fit(sf::FloatRect(pos, size));
 #else

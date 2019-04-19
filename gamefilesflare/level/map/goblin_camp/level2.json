@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "goblin_camp",
+    "level/data/empyrean_campaign/goblin_camp.json"
+  ],
+  "load": "level/map/goblin_camp/levelObjects2.json",
+  "load": "level/map/goblin_camp/monsters2.json",
+  "load": "level/map/goblin_camp/quests.json",
+  "load": "level/map/goblin_camp/items.json"
+}

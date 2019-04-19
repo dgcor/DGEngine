@@ -1,4 +1,5 @@
 #include "ParseIcon.h"
+#include "Game.h"
 #include "ImageUtils.h"
 #include "Utils/ParseUtils.h"
 

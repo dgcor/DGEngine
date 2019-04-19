@@ -2,6 +2,8 @@
 
 #include "Predicate.h"
 #include "Game.h"
+#include "Game/Level.h"
+#include "Game/Player.h"
 
 class PredPlayerCanUseItem : public Predicate
 {

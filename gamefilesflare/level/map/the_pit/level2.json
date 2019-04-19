@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "the_pit",
+    "level/data/empyrean_campaign/the_pit.json"
+  ],
+  "load": "level/map/the_pit/levelObjects2.json",
+  "load": "level/map/the_pit/monsters2.json",
+  "load": "level/map/the_pit/quests.json",
+  "load": "level/map/the_pit/items.json"
+}

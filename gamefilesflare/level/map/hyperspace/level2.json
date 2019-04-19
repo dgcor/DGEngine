@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "hyperspace",
+    "level/data/empyrean_campaign/hyperspace.json"
+  ],
+  "load": "level/map/hyperspace/levelObjects2.json",
+  "load": "level/map/hyperspace/monsters2.json",
+  "load": "level/map/hyperspace/quests.json",
+  "load": "level/map/hyperspace/items.json"
+}

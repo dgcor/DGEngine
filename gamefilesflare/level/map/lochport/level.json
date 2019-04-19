@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland_rain.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/lochport/levelObjects.json",
+  "load": "level/map/lochport/monsters.json",
+  "load": "level/map/lochport/level2.json"
+}

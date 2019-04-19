@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/grassland.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_8/levelObjects.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_8/monsters.json",
+  "load": "level/map/halls_of_infinity/halls_of_infinity_8/level2.json"
+}

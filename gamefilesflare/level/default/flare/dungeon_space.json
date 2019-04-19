@@ -1,0 +1,31 @@
+{
+  "load": "level/data/tileset/dungeon.json",
+  "texture": [
+    {
+      "id": "nebula",
+      "file": "images/parallax/nebula.png"
+    },
+    {
+      "id": "space",
+      "file": "images/parallax/space.png"
+    }
+  ],
+  "level": {
+    "id": "level",
+    "layers": [
+      {
+        "texture": "space",
+        "parallaxSpeed": 0.05
+      },
+      {
+        "texture": "nebula",
+        "parallaxSpeed": 0.25,
+        "parallaxFixedSpeed": [2, 0.5],
+        "parallaxUpdate": 30
+      },
+      { "index": 1, "texturePack": "dungeon" },
+      { "index": 2, "texturePack": "dungeon" }
+    ],
+    "defaultLight": 255
+  }
+}

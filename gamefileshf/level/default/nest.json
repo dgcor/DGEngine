@@ -1,0 +1,36 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "file": "Nlevels/L6Data/L6Base.PAL"
+        }
+      }
+    }
+  },
+  "variable": [
+    { "colorCycleSpeed": 240 },
+    { "colorCycleStart": 1 },
+    { "colorCycleStop": 16 }
+  ],
+  "palette": {
+    "id": "colorCycle",
+    "fromId": "level"
+  },
+  "level": {
+    "id": "level",
+    "palette": "level",
+    "file": "Nlevels/L6Data/L6.CEL",
+    "outOfBoundsTile": 7,
+    "til": "Nlevels/L6Data/L6.TIL",
+    "min": "Nlevels/L6Data/L6.MIN",
+    "minBlocks": 10,
+    "sol": "Nlevels/L6Data/L6.SOL",
+    "defaultLight": 255
+  }
+}

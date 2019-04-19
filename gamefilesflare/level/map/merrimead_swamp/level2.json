@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load.json",
+    "merrimead_swamp",
+    "level/data/empyrean_campaign/merrimead_swamp.json"
+  ],
+  "load": "level/map/merrimead_swamp/levelObjects2.json",
+  "load": "level/map/merrimead_swamp/monsters2.json",
+  "load": "level/map/merrimead_swamp/quests.json",
+  "load": "level/map/merrimead_swamp/items.json"
+}

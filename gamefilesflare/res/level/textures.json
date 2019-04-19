@@ -37,6 +37,10 @@
       "file": "images/menus/log.png"
     },
     {
+      "id": "minimap",
+      "file": "images/menus/minimap.png"
+    },
+    {
       "id": "powers",
       "file": "images/menus/powers.png"
     },

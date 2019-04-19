@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [47, 98],
+      "size": [2, 2],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 84,
+        "y": 64
+      }
+    }
+  ]
+}

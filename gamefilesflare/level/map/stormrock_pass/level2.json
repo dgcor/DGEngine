@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load5Layers.json",
+    "stormrock_pass",
+    "level/data/empyrean_campaign/stormrock_pass.json"
+  ],
+  "load": "level/map/stormrock_pass/levelObjects2.json",
+  "load": "level/map/stormrock_pass/monsters2.json",
+  "load": "level/map/stormrock_pass/quests.json",
+  "load": "level/map/stormrock_pass/items.json"
+}

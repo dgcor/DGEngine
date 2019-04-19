@@ -1,0 +1,15 @@
+{
+  "levelObject": [
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [11, 57],
+      "size": [2, 2],
+      "text1": "underworld_stronghold_2",
+      "properties": {
+        "x": 54,
+        "y": 52
+      }
+    }
+  ]
+}

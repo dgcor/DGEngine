@@ -1,0 +1,12 @@
+{
+  "palette": {
+    "id": "level",
+    "file": "levels/l2data/l2_2.pal"
+  },
+  "load": "level/default/catacombs.json",
+  "level": { "id": "level", "defaultLight": 0 },
+  "load": "level/automap/catacombs/load.json",
+  "load": "level/map/l6/levelObjects.json",
+  "load": "level/map/l6/monsters.json",
+  "load": "level/map/l6/level2.json"
+}

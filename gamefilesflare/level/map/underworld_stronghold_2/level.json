@@ -1,0 +1,7 @@
+{
+  "load": "level/default/flare/dungeon_fog.json",
+  "load": "level/automap/flare/load.json",
+  "load": "level/map/underworld_stronghold_2/levelObjects.json",
+  "load": "level/map/underworld_stronghold_2/monsters.json",
+  "load": "level/map/underworld_stronghold_2/level2.json"
+}

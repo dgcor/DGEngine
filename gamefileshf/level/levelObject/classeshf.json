@@ -53,8 +53,7 @@
           "file": [
             "level/load.json",
             "%currentLevel.levelObject.crypt.d.0%",
-            "positionPlayer",
-            "[%currentLevel.levelObject.crypt.x%, %currentLevel.levelObject.crypt.y%]",
+            "%currentLevel.levelObject.crypt.x%, %currentLevel.levelObject.crypt.y%",
             "cutl5"
           ]
         }
@@ -71,8 +70,7 @@
           "file": [
             "level/load.json",
             "%currentLevel.levelObject.nest.d.0%",
-            "positionPlayer",
-            "[%currentLevel.levelObject.nest.x%, %currentLevel.levelObject.nest.y%]",
+            "%currentLevel.levelObject.nest.x%, %currentLevel.levelObject.nest.y%",
             "cutl6"
           ]
         }

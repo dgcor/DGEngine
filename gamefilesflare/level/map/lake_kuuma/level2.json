@@ -1,0 +1,11 @@
+{
+  "load": [
+    "level/default/flare/load5Layers.json",
+    "lake_kuuma",
+    "level/data/empyrean_campaign/lake_kuuma.json"
+  ],
+  "load": "level/map/lake_kuuma/levelObjects2.json",
+  "load": "level/map/lake_kuuma/monsters2.json",
+  "load": "level/map/lake_kuuma/quests.json",
+  "load": "level/map/lake_kuuma/items.json"
+}

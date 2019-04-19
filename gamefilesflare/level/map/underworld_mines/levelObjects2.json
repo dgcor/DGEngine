@@ -1,0 +1,36 @@
+{
+  "levelObject": [
+    {
+      "id": "down",
+      "class": "levelDownFlare",
+      "mapPosition": [135, 69],
+      "size": [1, 2],
+      "text1": "underworld_stronghold_1",
+      "properties": {
+        "x": 5,
+        "y": 32
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [18, 82],
+      "size": [1, 2],
+      "text1": "oasis",
+      "properties": {
+        "x": 6,
+        "y": 8
+      }
+    },
+    {
+      "id": "up",
+      "class": "levelUpFlare",
+      "mapPosition": [31, 66],
+      "size": [2, 1],
+      "text1": "underworld_catacombs",
+      "properties": {
+        "x": 59,
+        "y": 5
+      }
+    }
+  ]
+}

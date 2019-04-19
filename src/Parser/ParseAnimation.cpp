@@ -1,4 +1,6 @@
 #include "ParseAnimation.h"
+#include "Animation.h"
+#include "Game.h"
 #include "GameUtils.h"
 #include "ParseTexture.h"
 #include "TexturePacks/SimpleTexturePack.h"
@@ -65,13 +67,10 @@ namespace Parser
 		animation->setAnchor(anchor);
 		auto size = animation->Size();
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 		animation->Position(pos);
 		animation->Visible(getBoolKey(elem, "visible", true));

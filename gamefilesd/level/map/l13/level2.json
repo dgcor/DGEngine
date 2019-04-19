@@ -1,0 +1,11 @@
+{
+  "load": ["level/default/loadHellTiled.json", "l13", "13", "level/map/l13/l13.json"],
+  "load": "level/map/l13/levelObjects2.json",
+  "load": "level/map/l13/monsters2.json",
+  "load": ["level/map/town/loadPassages.json", "true", "true", "true"],
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 99, "", "playAudio", "currentLevel"] }
+  }
+}

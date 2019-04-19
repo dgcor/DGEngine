@@ -1,0 +1,11 @@
+{
+  "load": ["level/default/loadCatacombsTiled.json", "l5", "5", "level/map/l5/l5.json"],
+  "load": "level/map/l5/levelObjects2.json",
+  "load": "level/map/l5/monsters2.json",
+  "load": ["level/map/town/loadPassages.json", "true", "false", "false"],
+  "event": {
+    "time": 1.5,
+    "addToFront": true,
+    "action": { "name": "load", "file": ["res/player/sound/load.json", 96, "", "playAudio", "currentLevel"] }
+  }
+}

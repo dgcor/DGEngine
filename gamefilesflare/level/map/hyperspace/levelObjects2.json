@@ -1,0 +1,124 @@
+{
+  "levelObject": [
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [9, 9],
+      "size": [2, 2],
+      "text1": "perdition_harbor",
+      "properties": {
+        "x": 15,
+        "y": 23
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [16, 7],
+      "size": [2, 2],
+      "text1": "stonewood",
+      "properties": {
+        "x": 59,
+        "y": 43
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [22, 7],
+      "size": [2, 2],
+      "text1": "lochport_cemetery",
+      "properties": {
+        "x": 44,
+        "y": 13
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [29, 9],
+      "size": [2, 2],
+      "text1": "st_maria_2",
+      "properties": {
+        "x": 44,
+        "y": 24
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [31, 16],
+      "size": [2, 2],
+      "text1": "blackmire_mines",
+      "properties": {
+        "x": 63,
+        "y": 19
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [31, 22],
+      "size": [2, 2],
+      "text1": "stormrock_pass",
+      "properties": {
+        "x": 70,
+        "y": 65
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [29, 29],
+      "size": [2, 2],
+      "text1": "temple_of_mez_2",
+      "properties": {
+        "x": 41,
+        "y": 30
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [22, 31],
+      "size": [2, 2],
+      "text1": "nazia_underground",
+      "properties": {
+        "x": 58,
+        "y": 18
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [16, 31],
+      "size": [2, 2],
+      "text1": "dilapidated_sewers",
+      "properties": {
+        "x": 36,
+        "y": 30
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [9, 29],
+      "size": [2, 2],
+      "text1": "wizards_tower_2",
+      "properties": {
+        "x": 15,
+        "y": 83
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [7, 22],
+      "size": [2, 2],
+      "text1": "underworld_catacombs",
+      "properties": {
+        "x": 60,
+        "y": 40
+      }
+    },
+    {
+      "class": "levelDownFlare2",
+      "mapPosition": [7, 16],
+      "size": [2, 2],
+      "text1": "underworld_stronghold_2",
+      "properties": {
+        "x": 44,
+        "y": 9
+      }
+    }
+  ]
+}

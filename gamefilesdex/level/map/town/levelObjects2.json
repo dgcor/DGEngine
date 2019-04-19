@@ -1,0 +1,4 @@
+{
+  "load": "level/map/l1/townToLevel.json",
+  "load": "level/map/arrival/townToLevel.json"
+}

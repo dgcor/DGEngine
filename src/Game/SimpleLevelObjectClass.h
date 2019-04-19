@@ -23,6 +23,8 @@ private:
 
 	Classifiers<3> classifiers;
 
+	PairInt8 cellSize;
+
 public:
 	SimpleLevelObjectClass(const sf::Texture& texture_) : texture(&texture_) {}
 	SimpleLevelObjectClass(const std::shared_ptr<TexturePack>& texturePack_,
@@ -69,4 +71,7 @@ public:
 	{
 		classifiers.set(idx + 1, classifier, skipFirst);
 	}
+
+	PairInt8 getCellSize() const noexcept { return cellSize; }
+	void setCellSize(PairInt8 cellSize_) noexcept { cellSize = cellSize_; }
 };

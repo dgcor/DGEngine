@@ -1,8 +1,0 @@
-{
-  "audio": {
-    "id": "main",
-    "file": "music/unrest_theme.ogg",
-    "loop": true,
-    "play": true
-  }
-}

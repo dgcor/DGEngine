@@ -1,6 +1,7 @@
-#include "ParseAction.h"
-#include "GameUtils.h"
 #include "ParseScrollableText.h"
+#include "ParseAction.h"
+#include "Game.h"
+#include "GameUtils.h"
 #include "ParseText.h"
 #include "ScrollableText.h"
 #include "Utils/ParseUtils.h"
@@ -42,13 +43,10 @@ namespace Parser
 		scrollable->setAnchor(anchor);
 		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true)
+		if (getBoolKey(elem, "relativeCoords", true) == true &&
+			game.RefSize() != game.DrawRegionSize())
 		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.MinSize());
-			if (game.StretchToFit() == false)
-			{
-				GameUtils::setAnchorPosSize(anchor, pos, size, game.MinSize(), game.WindowSize());
-			}
+			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
 		scrollable->Position(pos);
 		scrollable->Size(size);
