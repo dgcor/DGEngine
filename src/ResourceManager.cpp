@@ -355,42 +355,34 @@ bool ResourceManager::addTexturePack(const std::string& key,
 	return false;
 }
 
-void ResourceManager::addDrawable(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<UIObject>& obj)
+void ResourceManager::addDrawable(ResourceBundle& res, const std::string& key,
+	const std::shared_ptr<UIObject>& obj, bool manageObjDrawing)
 {
 	auto it = res.drawableIds.find(key);
-	if (it != res.drawableIds.end())
-	{
-		for (auto& drawable : res.drawables)
-		{
-			if (drawable == it->second.get())
-			{
-				it->second = obj;
-				drawable = obj.get();
-				break;
-			}
-		}
-	}
-	else
+	if (it == res.drawableIds.end())
 	{
 		res.drawableIds[key] = obj;
-		res.drawables.push_back(obj.get());
+		if (manageObjDrawing == true)
+		{
+			res.drawables.push_back(obj.get());
+		}
 	}
 }
 
 void ResourceManager::addDrawable(const std::string& key,
-	const std::shared_ptr<UIObject>& obj, const std::string_view resourceId)
+	const std::shared_ptr<UIObject>& obj, bool manageObjDrawing,
+	const std::string_view resourceId)
 {
 	if (resourceId.empty() == true)
 	{
-		addDrawable(resources.back(), key, obj);
+		addDrawable(resources.back(), key, obj, manageObjDrawing);
 		return;
 	}
 	for (auto& res : reverse(resources))
 	{
 		if (res.id == resourceId)
 		{
-			addDrawable(res, key, obj);
+			addDrawable(res, key, obj, manageObjDrawing);
 			return;
 		}
 	}
@@ -669,13 +661,14 @@ void ResourceManager::deleteDrawable(const std::string& id)
 		auto it1 = res.drawableIds.find(id);
 		if (it1 != res.drawableIds.end())
 		{
+			auto objPtr = it1->second.get();
+			res.drawableIds.erase(it1);
 			auto& drawables = res.drawables;
 			for (auto it2 = drawables.begin(); it2 != drawables.end(); ++it2)
 			{
-				if (*it2 == it1->second.get())
+				if (*it2 == objPtr)
 				{
 					drawables.erase(it2);
-					res.drawableIds.erase(it1);
 					return;
 				}
 			}
@@ -726,34 +719,70 @@ void ResourceManager::stopSongs()
 	}
 }
 
-void ResourceManager::addFocused(const std::shared_ptr<Button>& obj)
+void ResourceManager::addFocused(ResourceBundle& res, const std::shared_ptr<Button>& obj)
 {
-	if (std::find(resources.back().focusButtons.begin(),
-		resources.back().focusButtons.end(), obj)
-		== resources.back().focusButtons.end())
+	for (const auto& focusBtn : res.focusButtons)
 	{
-		resources.back().focusButtons.push_back(obj);
+		auto btnPtr = focusBtn.lock();
+		if (btnPtr != nullptr && btnPtr == obj)
+		{
+			return;
+		}
+	}
+	res.focusButtons.push_back(obj);
+}
+
+void ResourceManager::addFocused(const std::shared_ptr<Button>& obj,
+	const std::string_view resourceId)
+{
+	if (resourceId.empty() == true)
+	{
+		addFocused(resources.back(), obj);
+		return;
+	}
+	for (auto& res : reverse(resources))
+	{
+		if (res.id == resourceId)
+		{
+			addFocused(res, obj);
+			return;
+		}
+	}
+}
+
+void ResourceManager::removeUnusedFocused(const ResourceBundle& res) const
+{
+	for (auto it = res.focusButtons.begin(); it != res.focusButtons.end();)
+	{
+		if (it->expired() == true)
+		{
+			it = res.focusButtons.erase(it);
+			if (res.focusIdx != 0 &&
+				res.focusIdx >= res.focusButtons.size())
+			{
+				res.focusIdx--;
+			}
+		}
+		else
+		{
+			++it;
+		}
 	}
 }
 
 void ResourceManager::clickFocused(Game& game, bool playSound)
 {
-	for (const auto& res : reverse(resources))
+	for (auto& res : reverse(resources))
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		removeUnusedFocused(res);
+		if (res.focusButtons.empty() == false &&
+			res.focusIdx < res.focusButtons.size())
 		{
-			continue;
-		}
-		auto focusIdx = res.focusIdx;
-		if (focusIdx < size)
-		{
-			vec[focusIdx]->click(game, playSound);
+			res.focusButtons[res.focusIdx].lock()->click(game, playSound);
 		}
 		break;
 	}
@@ -767,16 +796,11 @@ const Button* ResourceManager::getFocused() const
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		removeUnusedFocused(res);
+		if (res.focusButtons.empty() == false &&
+			res.focusIdx < res.focusButtons.size())
 		{
-			continue;
-		}
-		auto focusIdx = res.focusIdx;
-		if (focusIdx < size)
-		{
-			return vec[focusIdx].get();
+			return res.focusButtons[res.focusIdx].lock().get();
 		}
 		break;
 	}
@@ -791,18 +815,15 @@ void ResourceManager::setFocused(const Button* obj)
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		if (res.focusButtons.empty() == false)
 		{
-			continue;
-		}
-		for (size_t i = 0; i < size; i++)
-		{
-			if (vec[i].get() == obj)
+			for (size_t i = 0; i < res.focusButtons.size(); i++)
 			{
-				res.focusIdx = i;
-				return;
+				if (res.focusButtons[i].lock().get() == obj)
+				{
+					res.focusIdx = i;
+					return;
+				}
 			}
 		}
 		break;
@@ -817,34 +838,32 @@ void ResourceManager::moveFocusDown(Game& game)
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		removeUnusedFocused(res);
+		if (res.focusButtons.empty() == false)
 		{
-			continue;
-		}
-		auto& focusIdx = res.focusIdx;
-		auto idx = focusIdx;
-
-		while (true)
-		{
-			if (idx + 1 < size)
+			auto idx = res.focusIdx;
+			while (true)
 			{
-				idx++;
+				if (idx + 1 < res.focusButtons.size())
+				{
+					idx++;
+				}
+				else
+				{
+					idx = 0;
+				}
+				if (res.focusButtons[idx].lock()->isEnabled() == true ||
+					idx == res.focusIdx)
+				{
+					break;
+				}
 			}
-			else
+			auto focus = res.focusButtons[idx].lock();
+			if (focus->isEnabled() == true && idx != res.focusIdx)
 			{
-				idx = 0;
+				res.focusIdx = idx;
+				focus->focus(game);
 			}
-			if (vec[idx]->isEnabled() == true || idx == focusIdx)
-			{
-				break;
-			}
-		}
-		if (vec[idx]->isEnabled() == true && idx != focusIdx)
-		{
-			focusIdx = idx;
-			vec[idx]->focus(game);
 		}
 		break;
 	}
@@ -858,34 +877,32 @@ void ResourceManager::moveFocusUp(Game& game)
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		removeUnusedFocused(res);
+		if (res.focusButtons.empty() == false)
 		{
-			continue;
-		}
-		auto& focusIdx = res.focusIdx;
-		auto idx = focusIdx;
-
-		while (true)
-		{
-			if (idx > 0)
+			auto idx = res.focusIdx;
+			while (true)
 			{
-				idx--;
+				if (idx > 0)
+				{
+					idx--;
+				}
+				else
+				{
+					idx = res.focusButtons.size() - 1;
+				}
+				if (res.focusButtons[idx].lock()->isEnabled() == true ||
+					idx == res.focusIdx)
+				{
+					break;
+				}
 			}
-			else
+			auto focus = res.focusButtons[idx].lock();
+			if (focus->isEnabled() == true && idx != res.focusIdx)
 			{
-				idx = size - 1;
+				res.focusIdx = idx;
+				focus->focus(game);
 			}
-			if (vec[idx]->isEnabled() == true || idx == focusIdx)
-			{
-				break;
-			}
-		}
-		if (vec[idx]->isEnabled() == true && idx != focusIdx)
-		{
-			focusIdx = idx;
-			vec[idx]->focus(game);
 		}
 		break;
 	}
@@ -899,36 +916,35 @@ void ResourceManager::updateFocus(Game& game)
 		{
 			continue;
 		}
-		const auto& vec = res.focusButtons;
-		auto size = vec.size();
-		if (size == 0)
+		removeUnusedFocused(res);
+		if (res.focusButtons.empty() == false)
 		{
-			continue;
-		}
-		if (vec[res.focusIdx]->isEnabled() == true)
-		{
-			break;
-		}
-		auto& focusIdx = res.focusIdx;
-		auto idx = focusIdx;
-		while (true)
-		{
-			if (idx + 1 < size)
-			{
-				idx++;
-			}
-			else
-			{
-				idx = 0;
-			}
-			if (vec[idx]->isEnabled() == true || idx == focusIdx)
+			if (res.focusButtons[res.focusIdx].lock()->isEnabled() == true)
 			{
 				break;
 			}
-		}
-		if (vec[idx]->isEnabled() == true && idx != focusIdx)
-		{
-			focusIdx = idx;
+			auto idx = res.focusIdx;
+			while (true)
+			{
+				if (idx + 1 < res.focusButtons.size())
+				{
+					idx++;
+				}
+				else
+				{
+					idx = 0;
+				}
+				if (res.focusButtons[idx].lock()->isEnabled() == true ||
+					idx == res.focusIdx)
+				{
+					break;
+				}
+			}
+			auto focus = res.focusButtons[idx].lock();
+			if (focus->isEnabled() == true && idx != res.focusIdx)
+			{
+				res.focusIdx = idx;
+			}
 		}
 		break;
 	}

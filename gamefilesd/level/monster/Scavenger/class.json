@@ -1,12 +1,10 @@
 {
   "playerClass": {
     "id": "scavenger",
-    "replaceVars": true,
+    "fromId": "defaultMonster",
     "name": "Scavenger",
     "type": "Animal",
     "descriptions": { "index": 0, "name": "totalKills" },
-    "outline": "|outlineEnemy|",
-    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 2,
       "experience": 80,

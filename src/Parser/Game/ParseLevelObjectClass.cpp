@@ -99,6 +99,12 @@ namespace Parser
 
 		levelObjClass->Id(id);
 
+		if (elem.HasMember("anchorOffset") == true)
+		{
+			levelObjClass->setAnchorOffset(
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+			);
+		}
 		if (elem.HasMember("name") == true)
 		{
 			levelObjClass->Name(getStringViewVal(elem["name"]));

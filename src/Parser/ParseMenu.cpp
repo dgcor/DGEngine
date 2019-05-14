@@ -5,6 +5,7 @@
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "Menu.h"
+#include "Panel.h"
 #include "ParseAction.h"
 #include "ParseMenuButton.h"
 #include "StringButton.h"
@@ -157,6 +158,7 @@ namespace Parser
 		auto hasFocus = getBoolKey(elem, "focus");
 		auto focusOnClick = getBoolKey(elem, "focusOnClick", true);
 		auto clickUp = getBoolKey(elem, "clickUp");
+		auto resource = getStringViewKey(elem, "resource");
 
 		sf::SoundBuffer* sound{ nullptr };
 		if (elem.HasMember("sound"))
@@ -259,8 +261,8 @@ namespace Parser
 
 					parseMenuButton(game, valCopy, *menu, anchor, color, horizAlign,
 						horizSpaceOffset, vertSpaceOffset, font,
-						fontSize, sound, focusSound, clickUp,
-						hasFocus, focusOnClick, relativePos, origPos);
+						fontSize, sound, focusSound, clickUp, hasFocus,
+						focusOnClick, relativePos, origPos, resource);
 
 					parseAndExecuteMenuAction(game, valCopy);
 
@@ -271,8 +273,8 @@ namespace Parser
 			{
 				parseMenuButton(game, val, *menu, anchor, color, horizAlign,
 					horizSpaceOffset, vertSpaceOffset, font,
-					fontSize, sound, focusSound, clickUp,
-					hasFocus, focusOnClick, relativePos, origPos);
+					fontSize, sound, focusSound, clickUp, hasFocus,
+					focusOnClick, relativePos, origPos, resource);
 
 				parseAndExecuteMenuAction(game, val);
 
@@ -317,6 +319,19 @@ namespace Parser
 		menu->updateVisibleItems();
 		menu->calculatePositions();
 
-		game.Resources().addDrawable(id, menu, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(menu);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, menu, manageObjDrawing, resource
+		);
 	}
 }

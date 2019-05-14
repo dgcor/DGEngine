@@ -56,14 +56,20 @@ bool LevelObject::getCurrentTexture(TextureInfo& ti) const
 
 void LevelObject::updateDrawPosition(const LevelMap& map)
 {
-	updateDrawPosition(map, map.toDrawCoord(mapPosition));
+	updateDrawPosition(map, mapPosition);
 }
 
-void LevelObject::updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos)
+void LevelObject::updateDrawPosition(const LevelMap& map, const PairFloat& mapPos)
 {
 	tileBlockHeight = (float)map.DefaultBlockHeight();
+	auto drawPos = map.toDrawCoord(mapPos);
 	basePosition.x = drawPos.x + (float)map.DefaultBlockWidth();
 	basePosition.y = drawPos.y + (float)map.DefaultBlockHeight();
+
+	PairFloat centerPosition = getCenterMapPosition(mapPos);
+	anchorPosition = map.toDrawCoord(centerPosition) + class_->getAnchorOffset();
+	anchorPosition.x += (float)map.DefaultBlockWidth();
+	anchorPosition.y += (float)map.DefaultBlockHeight();
 
 	updateSpriteDrawPosition();
 }
@@ -80,7 +86,42 @@ void LevelObject::updateSpriteDrawPosition()
 	sprite.setPosition(drawPosition);
 }
 
-void LevelObject::updateHover(Game& game, Level& level)
+PairFloat LevelObject::getCenterMapPosition(const PairFloat& mapPos)
+{
+	PairFloat minMapPosition;
+	PairFloat maxMapPosition;
+	getMinMaxMapPosition(mapPos, minMapPosition, maxMapPosition);
+
+	minMapPosition.x = (minMapPosition.x + maxMapPosition.x) / 2.f;
+	minMapPosition.y = (minMapPosition.y + maxMapPosition.y) / 2.f;
+
+	return minMapPosition;
+}
+
+void LevelObject::getMinMaxMapPosition(const PairFloat& mapPos,
+	PairFloat& minMapPos, PairFloat& maxMapPos)
+{
+	minMapPos = mapPos;
+	maxMapPos = mapPos;
+	if (cellSize.x < 0)
+	{
+		minMapPos.x = std::max(0.f, mapPos.x + (float)(cellSize.x + 1));
+	}
+	else
+	{
+		maxMapPos.x = std::max(0.f, mapPos.x + (float)(cellSize.x - 1));
+	}
+	if (cellSize.x < 0)
+	{
+		minMapPos.y = std::max(0.f, mapPos.y + (float)(cellSize.y + 1));
+	}
+	else
+	{
+		maxMapPos.y = std::max(0.f, mapPos.y + (float)(cellSize.y - 1));
+	}
+}
+
+void LevelObject::updateHover(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr)
 {
 	if (enableHover == false || level.EnableHover() == false)
 	{
@@ -94,24 +135,9 @@ void LevelObject::updateHover(Game& game, Level& level)
 	}
 	else
 	{
-		auto minMapPosition = mapPosition;
-		auto maxMapPosition = mapPosition;
-		if (cellSize.x < 0)
-		{
-			minMapPosition.x = std::max(0.f, mapPosition.x + (float)(cellSize.x + 1));
-		}
-		else
-		{
-			maxMapPosition.x = std::max(0.f, mapPosition.x + (float)(cellSize.x - 1));
-		}
-		if (cellSize.x < 0)
-		{
-			minMapPosition.y = std::max(0.f, mapPosition.y + (float)(cellSize.y + 1));
-		}
-		else
-		{
-			maxMapPosition.y = std::max(0.f, mapPosition.y + (float)(cellSize.y - 1));
-		}
+		PairFloat minMapPosition;
+		PairFloat maxMapPosition;
+		getMinMaxMapPosition(mapPosition, minMapPosition, maxMapPosition);
 
 		auto mouseMapCoord = level.getMapCoordOverMouse();
 
@@ -125,7 +151,7 @@ void LevelObject::updateHover(Game& game, Level& level)
 	{
 		if (level.getClickedObject() == nullptr)
 		{
-			level.setClickedObject(this);
+			level.setClickedObject(thisPtr);
 		}
 		if (hovered == false)
 		{
@@ -134,7 +160,7 @@ void LevelObject::updateHover(Game& game, Level& level)
 			{
 				sprite.setOutlineEnabled(true);
 			}
-			level.setHoverObject(this);
+			level.setHoverObject(thisPtr);
 			level.executeHoverEnterAction(game);
 		}
 	}
@@ -149,7 +175,7 @@ void LevelObject::updateHover(Game& game, Level& level)
 			}
 			if (level.getHoverObject() == this)
 			{
-				level.setHoverObject(nullptr);
+				level.setHoverObject({});
 				level.executeHoverLeaveAction(game);
 			}
 		}

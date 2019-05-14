@@ -1,10 +1,10 @@
 #pragma once
 
-#include "LevelLayerInfo.h"
 #include <memory>
-#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include "Utils/ElapsedTime.h"
+
+class LevelSurface;
 
 struct TextureLevelLayer
 {
@@ -21,6 +21,5 @@ struct TextureLevelLayer
 
 	void update(sf::Time elapsedTime_);
 
-	void draw(sf::RenderTexture& levelTexture,
-		const LevelLayerInfo& layerInfo, const sf::Vector2f& viewCenter) const;
+	void draw(const LevelSurface& surface) const;
 };

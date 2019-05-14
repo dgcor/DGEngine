@@ -1,13 +1,14 @@
 #include "ColorLevelLayer.h"
+#include "LevelSurface.h"
 #include <SFML/Graphics/RectangleShape.hpp>
 
-void ColorLevelLayer::draw(sf::RenderTexture& levelTexture, const LevelLayerInfo& layerInfo) const
+void ColorLevelLayer::draw(const LevelSurface& surface) const
 {
 	if (background != sf::Color::Transparent)
 	{
-		sf::RectangleShape rectangle({ layerInfo.visibleRect.width, layerInfo.visibleRect.height });
-		rectangle.setPosition({ layerInfo.visibleRect.left, layerInfo.visibleRect.top });
+		sf::RectangleShape rectangle({ surface.visibleRect.width, surface.visibleRect.height });
+		rectangle.setPosition({ surface.visibleRect.left, surface.visibleRect.top });
 		rectangle.setFillColor(background);
-		levelTexture.draw(rectangle);
+		surface.draw(rectangle);
 	}
 }

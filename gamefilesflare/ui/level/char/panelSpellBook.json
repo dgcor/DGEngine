@@ -1,0 +1,226 @@
+{
+  "panel": {
+    "id": "spellBookPanel",
+    "position": [320, 0],
+    "visible": false
+  },
+  "button": [
+    {
+      "id": "spellBookPanelBk",
+      "panel": "spellBookPanel",
+      "texture": "config",
+      "textureRect": [0, 0, 320, 352],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "spellBookPanelBk2",
+      "panel": "spellBookPanel",
+      "texture": "config",
+      "textureRect": [636, 0, 4, 352],
+      "anchor": "right",
+      "position": [636, 0],
+      "captureInputEvents": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    }
+  ],
+  "load": "ui/level/char/panelSpellImages.json",
+  "text": [
+    {
+      "id": "spell1Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 22],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell2Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 65],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell3Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 108],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell4Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 151],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell5Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 194],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell6Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 237],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    },
+    {
+      "id": "spell7Text",
+      "panel": "spellBookPanel",
+      "font": "smaltext",
+      "position": [386, 280],
+      "anchor": "right",
+      "horizontalSpaceOffset": 1,
+      "verticalSpaceOffset": 1
+    }
+  ],
+  "button": [
+    {
+      "id": "spell1",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 18]
+    },
+    {
+      "id": "spell2",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 61]
+    },
+    {
+      "id": "spell3",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 104]
+    },
+    {
+      "id": "spell4",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 147]
+    },
+    {
+      "id": "spell5",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 190]
+    },
+    {
+      "id": "spell6",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 233]
+    },
+    {
+      "id": "spell7",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [331, 276]
+    },
+    {
+      "id": "btnSpellBook1",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [327, 320],
+      "textureRect": [0, 0, 76, 29],
+      "onClick": [
+        "updateSpellBook1",
+        "hideSpellImages",
+        { "name": "drawable.visible", "id": "spellBook1", "visible": true }
+      ]
+    },
+    {
+      "id": "btnSpellBook2",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [403, 320],
+      "textureRect": [0, 29, 76, 29],
+      "onClick": [
+        "updateSpellBook2",
+        "hideSpellImages",
+        { "name": "drawable.visible", "id": "spellBook2", "visible": true }
+      ]
+    },
+    {
+      "id": "btnSpellBook3",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [479, 320],
+      "textureRect": [0, 58, 76, 29],
+      "onClick": [
+        "updateSpellBook3",
+        "hideSpellImages",
+        { "name": "drawable.visible", "id": "spellBook3", "visible": true }
+      ]
+    },
+    {
+      "id": "btnSpellBook4",
+      "panel": "spellBookPanel",
+      "anchor": "right",
+      "texture": "empty",
+      "position": [555, 320],
+      "textureRect": [0, 87, 76, 29],
+      "onClick": [
+        "updateSpellBook4",
+        "hideSpellImages",
+        { "name": "drawable.visible", "id": "spellBook4", "visible": true }
+      ]
+    }
+  ],
+  "image": {
+    "id": "spellBookSelected",
+    "panel": "spellBookPanel",
+    "anchor": "right",
+    "texture": "empty",
+    "visible": false
+  },
+  "action": [
+    { "name": "image.setTexture", "id": "spellBookSelected", "texturePack": "spelli2", "index": 42 },
+    {
+      "name": "if.equal",
+      "param1": "%beta%",
+      "param2": true,
+      "then": [
+        { "name": "drawable.setPosition", "id": "btnSpellBook2", "position": [378, 320] },
+        { "name": "drawable.setPosition", "id": "btnSpellBook3", "position": [429, 320] },
+        { "name": "drawable.setPosition", "id": "btnSpellBook4", "position": [480, 320] },
+        { "name": "image.setTextureRect", "id": "btnSpellBook1", "rect": [0, 0, 51, 29] },
+        { "name": "image.setTextureRect", "id": "btnSpellBook2", "rect": [0, 29, 51, 29] },
+        { "name": "image.setTextureRect", "id": "btnSpellBook3", "rect": [0, 58, 51, 29] },
+        { "name": "image.setTextureRect", "id": "btnSpellBook4", "rect": [0, 87, 51, 29] }
+      ]
+    }
+  ]
+}

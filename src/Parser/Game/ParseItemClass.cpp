@@ -102,13 +102,18 @@ namespace Parser
 
 		itemClass->Id(id);
 
+		if (elem.HasMember("anchorOffset") == true)
+		{
+			itemClass->setAnchorOffset(
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+			);
+		}
 		if (elem.HasMember("dropTextureIndexRange") == true)
 		{
 			itemClass->setDropTextureIndexRange(
 				getVector2uVal<std::pair<size_t, size_t>>(elem["dropTextureIndexRange"])
 			);
 		}
-
 		if (elem.HasMember("name") == true)
 		{
 			itemClass->Name(getStringViewVal(elem["name"]));

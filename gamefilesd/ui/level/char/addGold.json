@@ -15,7 +15,7 @@
     },
     { "name": "item.addCursor" },
     "updateStashItems",
-    "updateCharLabels",
+    "updateCharPanel",
     "updateSelectedItem"
   ]
 }

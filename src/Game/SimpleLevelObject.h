@@ -55,7 +55,7 @@ public:
 		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
-	virtual void update(Game& game, Level& level);
+	virtual void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr);
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 	virtual void setProperty(const std::string_view prop, const Variable& val) noexcept {}

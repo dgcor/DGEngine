@@ -1,17 +1,15 @@
 #pragma once
 
-#include "LevelLayerInfo.h"
 #include <memory>
 #include "PairXY.h"
-#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/Shader.hpp>
 #include "SFML/Sprite2.h"
-#include "SFML/View2.h"
 #include "TexturePacks/TexturePack.h"
 #include "TileSet.h"
 
 class Level;
 class LevelMap;
+class LevelSurface;
 
 struct TilesetLevelLayer
 {
@@ -26,10 +24,9 @@ struct TilesetLevelLayer
 		uint16_t layerIdx_, const TileBlock& outOfBoundsTile_)
 		: tiles(tiles_), layerIdx(layerIdx_), outOfBoundsTile(outOfBoundsTile_) {}
 
-	void updateVisibleArea(const LevelLayerInfo& layerInfo, const LevelMap& map);
+	void updateVisibleArea(const LevelSurface& surface, const LevelMap& map);
 
-	void draw(sf::RenderTexture& levelTexture,
-		const LevelLayerInfo& layerInfo, SpriteShaderCache& spriteCache,
-		sf::Shader* spriteShader, const Level& level,
-		bool drawLevelObjects, bool isAutomap) const;
+	void draw(const LevelSurface& surface,
+		SpriteShaderCache& spriteCache, sf::Shader* spriteShader,
+		const Level& level, bool drawLevelObjects, bool isAutomap) const;
 };

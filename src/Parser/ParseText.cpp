@@ -3,6 +3,7 @@
 #include "FileUtils.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "ParseAction.h"
 #include "StringText.h"
 #include "Utils/ParseUtils.h"
@@ -122,6 +123,20 @@ namespace Parser
 		{
 			return;
 		}
-		game.Resources().addDrawable(id, text, getStringViewKey(elem, "resource"));
+
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(text);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, text, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

@@ -1,4 +1,5 @@
 {
+  "load": "ui/level/tooltip.json",
   "action": [
     {
       "name": "action.set",
@@ -108,27 +109,6 @@
   ],
   "button": [
     {
-      "id": "charPanel",
-      "texture": "char",
-      "anchor": "left",
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "invPanel",
-      "texture": "inv",
-      "anchor": "right",
-      "position": [320, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
       "id": "questPanel",
       "texture": "quest",
       "anchor": "left",
@@ -137,21 +117,12 @@
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
       "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "spellBookPanel",
-      "texture": "spellbk",
-      "anchor": "right",
-      "position": [320, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
     }
   ],
-  "load": "ui/level/char/panelSpellImages.json",
-  "action": { "name": "resource.add", "id": "panel" },
+  "load": "ui/level/char/panelCharacter.json",
+  "load": "ui/level/char/panelInventory.json",
+  "load": "ui/level/char/panelSpellBook.json",
+  "load": "ui/level/msgBox/msgBox.json",
   "image": [
     {
       "id": "mapImage",
@@ -196,6 +167,7 @@
       "anchor": "bottom"
     }
   ],
+  "load": "ui/level/char/beltInventory.json",
   "button": [
     {
       "id": "char",
@@ -211,13 +183,12 @@
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "charPanelQuests" },
-            { "name": "load", "file": "ui/level/char/panelLabels.json" },
             { "name": "drawable.visible", "id": "charPanel", "visible": true },
             { "name": "drawable.visible", "id": "questPanel", "visible": false },
-            { "name": "resource.moveToTop", "id": "removeGold" }
+            { "name": "resource.moveToTop", "id": "removeGold" },
+            "updateCharPanel"
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "drawable.visible", "id": "charPanel", "visible": false },
             { "name": "drawable.visible", "id": "questPanel", "visible": false },
@@ -253,14 +224,12 @@
           "param1": "%questPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "load", "file": "ui/level/char/panelQuests.json" },
             { "name": "drawable.visible", "id": "charPanel", "visible": false },
             { "name": "drawable.visible", "id": "questPanel", "visible": true },
             { "name": "resource.moveToTop", "id": "removeGold" }
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "drawable.visible", "id": "charPanel", "visible": false },
             { "name": "drawable.visible", "id": "questPanel", "visible": false },
@@ -296,16 +265,14 @@
           "param1": "%invPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
-            { "name": "load", "file": "ui/level/char/panelInventory.json" },
             { "name": "drawable.visible", "id": "invPanel", "visible": true },
             { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
-            "hideSpellImages"
+            "hideSpellImages",
+            "updateBodyItems",
+            "updateStashItems"
           ],
           "else": [
             { "name": "resource.pop", "id": "removeGold" },
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
             { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
@@ -342,14 +309,11 @@
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "removeGold" },
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "load", "file": "ui/level/char/panelSpellBook.json" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
-            { "name": "drawable.visible", "id": "spellBookPanel", "visible": true }
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": true },
+            "updateSpellBook"
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
             { "name": "drawable.visible", "id": "invPanel", "visible": false },
             { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
@@ -487,7 +451,7 @@
       "action": [
         { "name": "player.addItemQuantity", "itemClass": "gold", "value": -4000 },
         "updateStashItems",
-        "updateCharLabels"
+        "updateCharPanel"
       ]
     },
     {
@@ -495,7 +459,7 @@
       "action": [
         { "name": "player.addItemQuantity", "itemClass": "gold", "value": 4000 },
         "updateStashItems",
-        "updateCharLabels"
+        "updateCharPanel"
       ]
     },
     {
@@ -548,6 +512,5 @@
       "key": "k",
       "action": { "name": "levelObject.executeAction", "object": "up" }
     }
-  ],
-  "load": "ui/level/char/beltInventory.json"
+  ]
 }

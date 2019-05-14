@@ -130,10 +130,10 @@ bool Item::getNumberPropByHash(const Queryable& owner, uint16_t propHash,
 	return true;
 }
 
-void Item::update(Game& game, Level& level)
+void Item::update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr)
 {
 	processQueuedActions(game);
-	updateHover(game, level);
+	updateHover(game, level, thisPtr);
 
 	if (hasValidState() == true &&
 		animation.update(game.getElapsedTime()) == true)

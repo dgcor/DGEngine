@@ -1,0 +1,175 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "levelLeftClickAction",
+      "action": {
+        "name": "if.equal",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
+        "param2": true,
+        "then": [
+          { "name": "item.drop" },
+          "clearPanelText"
+        ],
+        "else": {
+          "name": "if.equal",
+          "param1": "%currentLevel.hasCurrentPlayer%",
+          "param2": true,
+          "then": { "name": "player.moveToClick", "player": "hero" },
+          "else": { "name": "level.moveToClick" }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "levelRightClickAction",
+      "action": { "name": "sound.play", "id": "dontHaveASpellReady", "unique": true }
+    },
+    {
+      "name": "action.set",
+      "id": "levelShowTooltip",
+      "action": {
+        "name": "if.notEqual",
+        "param1": "%levelTooltipText.length%",
+        "param2": 0,
+        "then": [
+          {
+            "name": "level.anchorDrawable",
+            "drawable": "levelTooltip",
+            "anchorTo": "hoverObject"
+          },
+          {
+            "name": "loadJson",
+            "json": {
+              "replaceVars": "value",
+              "action": [
+                {
+                  "name": "drawable.setSize",
+                  "id": "levelTooltipBk",
+                  "size": ["|$.levelTooltipText.size.x + 10|", "|$.levelTooltipText.size.y + 10|"]
+                },
+                {
+                  "name": "drawable.center",
+                  "id": "levelTooltipBk",
+                  "idCenterOn": "levelTooltipText",
+                  "offset": ["|$.-levelTooltipText.size.x * 0.5|", 0]
+                }
+              ]
+            }
+          },
+          { "name": "drawable.visible", "id": "levelTooltip", "visible": true }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "levelHoverAction",
+      "action": {
+        "name": "if.notEqual",
+        "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
+        "param2": true,
+        "then": [
+          {
+            "name": "text.setText",
+            "id": "levelTooltipText",
+            "text": "%currentLevel.hoverObject.name%"
+          },
+          "levelShowTooltip",
+          {
+            "name": "if.equal",
+            "param1": "%currentLevel.hoverObject.type%",
+            "param2": "player",
+            "then": {
+              "name": "text.appendText",
+              "id": "txtPanel",
+              "query": "currentLevel.hoverObject",
+              "text": "\n%description%",
+              "removeEmptyLines": true
+            }
+          },
+          "updatePanelTextSpacing",
+          {
+            "name": "if.equal",
+            "param1": "%currentLevel.hoverObject.magical%",
+            "param2": 1,
+            "then": "setTooltipTextColorBlue",
+            "else": {
+              "name": "if.equal",
+              "param1": "%currentLevel.hoverObject.unique%",
+              "param2": 1,
+              "then": "setTooltipTextColorGold",
+              "else": "setTooltipTextColorWhite"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "levelShowZoomAction",
+      "action": {
+        "name": "if.equal",
+        "param1": "%txtZoom.visible%",
+        "param2": false,
+        "then": [
+          { "name": "drawable.visible", "id": "txtZoom", "visible": true },
+          {
+            "name": "if.equal",
+            "param1": "%game.hasEvent.closeZoom%",
+            "param2": false,
+            "then": {
+              "name": "event.add",
+              "id": "closeZoom",
+              "action": { "name": "drawable.visible", "id": "txtZoom", "visible": false },
+              "time": 4.0
+            }
+          }
+        ],
+        "else": { "name": "event.resetTime", "id": "closeZoom" }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "levelScrollDownAction",
+      "action": [
+        { "name": "level.zoom", "zoom": -10, "relative": true, "smooth": true },
+        "levelShowZoomAction"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "levelScrollUpAction",
+      "action": [
+        { "name": "level.zoom", "zoom": 10, "relative": true, "smooth": true },
+        "levelShowZoomAction"
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "clearLevelHoverActions",
+      "action": [
+        { "name": "drawable.setAction", "id": "level", "event": "hoverEnter", "action": null },
+        { "name": "drawable.setAction", "id": "level", "event": "hoverLeave", "action": null }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setLevelHoverActions",
+      "action": [
+        { "name": "drawable.setAction", "id": "level", "event": "hoverEnter", "action": "levelHoverAction" },
+        { "name": "drawable.setAction", "id": "level", "event": "hoverLeave", "action": "clearPanelText" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "zoomLevel",
+      "action": {
+        "name": "if.equal",
+        "param1": "%currentLevel.zoomPercentage%",
+        "param2": 100,
+        "then": { "name": "level.zoom", "zoom": 200 },
+        "else": { "name": "level.zoom", "zoom": 100 }
+      }
+    }
+  ]
+}

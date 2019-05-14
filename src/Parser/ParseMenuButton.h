@@ -4,6 +4,7 @@
 #include "Font.h"
 #include "Json/JsonParser.h"
 #include <SFML/Audio/SoundBuffer.hpp>
+#include <string_view>
 
 class Game;
 class Menu;
@@ -27,5 +28,6 @@ namespace Parser
 		bool hasFocus,
 		bool focusOnClick,
 		bool relativePos,
-		const sf::Vector2f& origPos);
+		const sf::Vector2f& origPos,
+		const std::string_view resource);
 }

@@ -48,7 +48,7 @@ public:
 
 	virtual void update(Game& game);
 
-	virtual void updateViewPort(const Game& game) { view.updateViewport(game); }
+	void updateView(const Game& game) { view.update(game); }
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 };

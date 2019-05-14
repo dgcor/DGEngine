@@ -2,6 +2,7 @@
 #include "ParseAction.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "ParseText.h"
 #include "ScrollableText.h"
 #include "Utils/ParseUtils.h"
@@ -56,13 +57,26 @@ namespace Parser
 		scrollable->setPause(getBoolKey(elem, "pause"));
 
 		scrollable->reset();
-		scrollable->updateViewPort(game);
+		scrollable->updateView(game);
 
 		if (elem.HasMember("onComplete"))
 		{
 			scrollable->setAction(str2int16("complete"), parseAction(game, elem["onComplete"]));
 		}
 
-		game.Resources().addDrawable(id, scrollable, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(scrollable);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, scrollable, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

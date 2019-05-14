@@ -4,10 +4,19 @@
 #include <random>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <vector>
 
 namespace Utils
 {
+	template <class T>
+	T round(T num, unsigned int digits)
+	{
+		static_assert(std::is_floating_point<T>::value, "floating-point values only");
+		T fac = std::pow((T)10, (T)digits);
+		return std::round(num * fac) / fac;
+	}
+
 	bool endsWith(const std::string_view value, const std::string_view ending);
 
 	std::vector<std::string> splitString(const std::string& str, const std::string& delim);

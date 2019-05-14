@@ -3,6 +3,7 @@
 #include "Actions/Action.h"
 #include "LightSource.h"
 #include <memory>
+#include <SFML/System/Vector2.hpp>
 #include "Utils/Utils.h"
 #include <vector>
 
@@ -15,6 +16,7 @@ protected:
 	uint16_t idHash16{ 0 };
 
 	LightSource lightSource;
+	sf::Vector2f anchorOffset;
 
 public:
 	virtual ~LevelObjectClass() = default;
@@ -33,4 +35,7 @@ public:
 
 	LightSource getLightSource() const noexcept { return lightSource; }
 	void setLightSource(LightSource lightSource_) noexcept { lightSource = lightSource_; }
+
+	const sf::Vector2f& getAnchorOffset() const noexcept { return anchorOffset; }
+	void setAnchorOffset(const sf::Vector2f& offset_) noexcept { anchorOffset = offset_; }
 };

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include "Image.h"
+#include "Panel.h"
 #include "ParseTexture.h"
 #include "Utils/ParseUtils.h"
 
@@ -69,6 +70,19 @@ namespace Parser
 		image->setOutline(outline, outlineIgnore);
 		image->setOutlineEnabled(getBoolKey(elem, "enableOutline"));
 
-		game.Resources().addDrawable(id, image, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(image);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, image, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

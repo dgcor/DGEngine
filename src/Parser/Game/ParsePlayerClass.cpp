@@ -112,37 +112,70 @@ namespace Parser
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
-	void parsePlayerClass(Game& game, const Value& elem)
+	PlayerClass* parsePlayerClassHelper(const Game& game,
+		Level& level, const Value& elem, std::string& id)
 	{
 		if (isValidString(elem, "id") == false)
 		{
-			return;
+			return nullptr;
 		}
-		std::string id(elem["id"].GetString());
+		id = std::string(elem["id"].GetString());
 		if (isValidId(id) == false)
 		{
-			return;
+			return nullptr;
 		}
 
+		auto playerClass = level.getClass<PlayerClass>(id);
+		if (playerClass == nullptr)
+		{
+			if (level.hasClass(id) == true)
+			{
+				return nullptr;
+			}
+
+			std::unique_ptr<PlayerClass> playerClassPtr;
+
+			if (isValidString(elem, "fromId") == true)
+			{
+				std::string fromId(elem["fromId"].GetString());
+				if (fromId != id)
+				{
+					auto obj = level.getClass<PlayerClass>(fromId);
+					if (obj != nullptr)
+					{
+						playerClassPtr = std::make_unique<PlayerClass>(*obj);
+					}
+				}
+			}
+			else
+			{
+				playerClassPtr = std::make_unique<PlayerClass>();
+			}
+			if (playerClassPtr != nullptr)
+			{
+				playerClass = playerClassPtr.get();
+				playerClass->Id(id);
+				level.addClass(id, std::move(playerClassPtr));
+			}
+		}
+		return playerClass;
+	}
+
+	void parsePlayerClass(Game& game, const Value& elem)
+	{
 		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
 		}
-
-		PlayerClass* playerClass = level->getClass<PlayerClass>(id);
-
+		std::string id;
+		auto playerClass = parsePlayerClassHelper(game, *level, elem, id);
 		if (playerClass == nullptr)
 		{
-			if (level->hasClass(id) == true)
-			{
-				return;
-			}
-			auto playerClassPtr = std::make_unique<PlayerClass>();
-			playerClass = playerClassPtr.get();
-			playerClass->Id(id);
-			level->addClass(id, std::move(playerClassPtr));
+			return;
 		}
+
+		playerClass->Id(id);
 
 		if (elem.HasMember("texturePacks") == true &&
 			playerClass->hasTextures() == false)
@@ -190,6 +223,12 @@ namespace Parser
 			}
 		}
 
+		if (elem.HasMember("anchorOffset") == true)
+		{
+			playerClass->setAnchorOffset(
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+			);
+		}
 		if (elem.HasMember("name") == true)
 		{
 			playerClass->Name(getStringVal(elem["name"]));

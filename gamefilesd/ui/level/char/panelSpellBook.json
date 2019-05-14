@@ -1,8 +1,25 @@
 {
-  "action": { "name": "resource.add", "id": "charPanelSpellBook" },
+  "panel": {
+    "id": "spellBookPanel",
+    "position": [320, 0],
+    "visible": false
+  },
+  "button": {
+    "id": "spellBookPanelBk",
+    "panel": "spellBookPanel",
+    "texture": "spellbk",
+    "anchor": "right",
+    "position": [320, 0],
+    "captureInputEvents": true,
+    "onHoverEnter": "clearLevelHoverActions",
+    "onHoverLeave": "setLevelHoverActions",
+    "onRightClick": "rightClickLevel"
+  },
+  "load": "ui/level/char/panelSpellImages.json",
   "text": [
     {
       "id": "spell1Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 22],
       "anchor": "right",
@@ -11,6 +28,7 @@
     },
     {
       "id": "spell2Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 65],
       "anchor": "right",
@@ -19,6 +37,7 @@
     },
     {
       "id": "spell3Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 108],
       "anchor": "right",
@@ -27,6 +46,7 @@
     },
     {
       "id": "spell4Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 151],
       "anchor": "right",
@@ -35,6 +55,7 @@
     },
     {
       "id": "spell5Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 194],
       "anchor": "right",
@@ -43,6 +64,7 @@
     },
     {
       "id": "spell6Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 237],
       "anchor": "right",
@@ -51,6 +73,7 @@
     },
     {
       "id": "spell7Text",
+      "panel": "spellBookPanel",
       "font": "smaltext",
       "position": [386, 280],
       "anchor": "right",
@@ -61,48 +84,56 @@
   "button": [
     {
       "id": "spell1",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 18]
     },
     {
       "id": "spell2",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 61]
     },
     {
       "id": "spell3",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 104]
     },
     {
       "id": "spell4",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 147]
     },
     {
       "id": "spell5",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 190]
     },
     {
       "id": "spell6",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 233]
     },
     {
       "id": "spell7",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [331, 276]
     },
     {
       "id": "btnSpellBook1",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [327, 320],
@@ -115,6 +146,7 @@
     },
     {
       "id": "btnSpellBook2",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [403, 320],
@@ -127,6 +159,7 @@
     },
     {
       "id": "btnSpellBook3",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [479, 320],
@@ -139,6 +172,7 @@
     },
     {
       "id": "btnSpellBook4",
+      "panel": "spellBookPanel",
       "anchor": "right",
       "texture": "empty",
       "position": [555, 320],
@@ -152,13 +186,13 @@
   ],
   "image": {
     "id": "spellBookSelected",
+    "panel": "spellBookPanel",
     "anchor": "right",
     "texture": "empty",
     "visible": false
   },
   "action": [
     { "name": "image.setTexture", "id": "spellBookSelected", "texturePack": "spelli2", "index": 42 },
-    "updateSpellBook",
     {
       "name": "if.equal",
       "param1": "%beta%",

@@ -64,8 +64,8 @@ struct ResourceBundle
 
 	std::unordered_map<std::string, std::shared_ptr<UIObject>> drawableIds;
 	std::vector<UIObject*> drawables;
-	std::vector<std::shared_ptr<Button>> focusButtons;
-	size_t focusIdx{ 0 };
+	mutable std::vector<std::weak_ptr<Button>> focusButtons;
+	mutable size_t focusIdx{ 0 };
 };
 
 class ResourceManager
@@ -102,8 +102,12 @@ private:
 	bool addTexturePack(ResourceBundle& res,
 		const std::string& key, const std::shared_ptr<TexturePack>& obj);
 
-	void addDrawable(ResourceBundle& res,
-		const std::string& key, const std::shared_ptr<UIObject>& obj);
+	void addDrawable(ResourceBundle& res, const std::string& key,
+		const std::shared_ptr<UIObject>& obj, bool manageObjDrawing);
+
+	void addFocused(ResourceBundle& res, const std::shared_ptr<Button>& obj);
+
+	void removeUnusedFocused(const ResourceBundle& res) const;
 
 public:
 	using iterator = std::vector<ResourceBundle>::iterator;
@@ -171,7 +175,7 @@ public:
 		const std::string_view resourceId = {});
 
 	void addDrawable(const std::string& key, const std::shared_ptr<UIObject>& obj,
-		const std::string_view resourceId = {});
+		bool manageObjDrawing, const std::string_view resourceId = {});
 
 	void addPlayingSound(const sf::Sound& obj, bool unique = false);
 
@@ -241,7 +245,8 @@ public:
 
 	void play(const std::string& key);
 
-	void addFocused(const std::shared_ptr<Button>& obj);
+	void addFocused(const std::shared_ptr<Button>& obj,
+		const std::string_view resourceId = {});
 	void clickFocused(Game& game, bool playSound);
 	const Button* getFocused() const;
 	void setFocused(const Button* obj);

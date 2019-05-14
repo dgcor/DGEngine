@@ -12,22 +12,6 @@
     },
     {
       "name": "action.set",
-      "id": "showCharPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "charPanel", "visible": true },
-        { "name": "drawable.visible", "id": "charPanel2", "visible": true }
-      ]
-    },
-    {
-      "name": "action.set",
-      "id": "hideCharPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "charPanel", "visible": false },
-        { "name": "drawable.visible", "id": "charPanel2", "visible": false }
-      ]
-    },
-    {
-      "name": "action.set",
       "id": "showQuestPanel",
       "action": [
         { "name": "drawable.visible", "id": "questPanel", "visible": true },
@@ -44,40 +28,6 @@
         { "name": "drawable.visible", "id": "questPanel2", "visible": false },
         { "name": "drawable.visible", "id": "questPanel3", "visible": false },
         { "name": "drawable.visible", "id": "questPanel4", "visible": false }
-      ]
-    },
-    {
-      "name": "action.set",
-      "id": "showInvPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "invPanel", "visible": true },
-        { "name": "drawable.visible", "id": "invPanel2", "visible": true },
-        { "name": "drawable.visible", "id": "invPanel3", "visible": true }
-      ]
-    },
-    {
-      "name": "action.set",
-      "id": "hideInvPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "invPanel", "visible": false },
-        { "name": "drawable.visible", "id": "invPanel2", "visible": false },
-        { "name": "drawable.visible", "id": "invPanel3", "visible": false }
-      ]
-    },
-    {
-      "name": "action.set",
-      "id": "showSpellBookPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "spellBookPanel", "visible": true },
-        { "name": "drawable.visible", "id": "spellBookPanel2", "visible": true }
-      ]
-    },
-    {
-      "name": "action.set",
-      "id": "hideSpellBookPanel",
-      "action": [
-        { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
-        { "name": "drawable.visible", "id": "spellBookPanel2", "visible": false }
       ]
     },
     { "name": "resource.add", "id": "levelOverlay" }
@@ -178,65 +128,6 @@
   ],
   "button": [
     {
-      "id": "charPanel",
-      "texture": "config",
-      "textureRect": [0, 0, 316, 352],
-      "anchor": "left",
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "charPanel2",
-      "texture": "config",
-      "textureRect": [636, 0, 4, 352],
-      "anchor": "left",
-      "position": [316, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "invPanel",
-      "texture": "inventory",
-      "textureRect": [0, 0, 320, 352],
-      "anchor": "right",
-      "position": [320, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "invPanel2",
-      "texture": "character",
-      "textureRect": [0, 0, 26, 26],
-      "anchor": "right",
-      "position": [320, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "invPanel3",
-      "texture": "inventory",
-      "textureRect": [0, 414, 320, 2],
-      "anchor": "right",
-      "position": [320, 351],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
       "id": "questPanel",
       "texture": "powers",
       "textureRect": [0, 0, 320, 318],
@@ -282,34 +173,12 @@
       "onHoverEnter": "clearLevelHoverActions",
       "onHoverLeave": "setLevelHoverActions",
       "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "spellBookPanel",
-      "texture": "config",
-      "textureRect": [0, 0, 320, 352],
-      "anchor": "right",
-      "position": [320, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    },
-    {
-      "id": "spellBookPanel2",
-      "texture": "config",
-      "textureRect": [636, 0, 4, 352],
-      "anchor": "right",
-      "position": [636, 0],
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
     }
   ],
-  "load": "ui/level/char/panelSpellImages.json",
-  "action": { "name": "resource.add", "id": "panel" },
+  "load": "ui/level/char/panelCharacter.json",
+  "load": "ui/level/char/panelInventory.json",
+  "load": "ui/level/char/panelSpellBook.json",
+  "load": "ui/level/msgBox/msgBox.json",
   "image": [
     {
       "id": "mapImage",
@@ -372,6 +241,7 @@
       "anchor": "bottom"
     }
   ],
+  "load": "ui/level/char/beltInventory.json",
   "button": [
     {
       "id": "char",
@@ -388,15 +258,14 @@
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "charPanelQuests" },
-            { "name": "load", "file": "ui/level/char/panelLabels.json" },
-            "showCharPanel",
+            { "name": "drawable.visible", "id": "charPanel", "visible": true },
             "hideQuestPanel",
-            { "name": "resource.moveToTop", "id": "removeGold" }
+            { "name": "resource.moveToTop", "id": "removeGold" },
+            "updateCharPanel"
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "resource.pop", "id": "charPanelQuests" },
-            "hideCharPanel",
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
             "hideQuestPanel",
             "setLevelHoverActions"
           ]
@@ -429,16 +298,14 @@
           "param1": "%questPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "load", "file": "ui/level/char/panelQuests.json" },
-            "hideCharPanel",
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
             "showQuestPanel",
             { "name": "resource.moveToTop", "id": "removeGold" }
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelLabels" },
             { "name": "resource.pop", "id": "charPanelQuests" },
-            "hideCharPanel",
+            { "name": "drawable.visible", "id": "charPanel", "visible": false },
             "hideQuestPanel",
             "setLevelHoverActions"
           ]
@@ -471,18 +338,16 @@
           "param1": "%invPanel.visible%",
           "param2": false,
           "then": [
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
-            { "name": "load", "file": "ui/level/char/panelInventory.json" },
-            "showInvPanel",
+            { "name": "drawable.visible", "id": "invPanel", "visible": true },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
-            "hideSpellBookPanel"
+            "updateBodyItems",
+            "updateStashItems"
           ],
           "else": [
             { "name": "resource.pop", "id": "removeGold" },
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
-            "hideInvPanel",
-            "hideSpellBookPanel",
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
             "setLevelHoverActions"
           ]
@@ -516,16 +381,13 @@
           "param2": false,
           "then": [
             { "name": "resource.pop", "id": "removeGold" },
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "load", "file": "ui/level/char/panelSpellBook.json" },
-            "hideInvPanel",
-            "showSpellBookPanel"
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": true },
+            "updateSpellBook"
           ],
           "else": [
-            { "name": "resource.pop", "id": "charPanelInventory" },
-            { "name": "resource.pop", "id": "charPanelSpellBook" },
-            "hideInvPanel",
-            "hideSpellBookPanel",
+            { "name": "drawable.visible", "id": "invPanel", "visible": false },
+            { "name": "drawable.visible", "id": "spellBookPanel", "visible": false },
             "hideSpellImages",
             "setLevelHoverActions"
           ]
@@ -607,6 +469,8 @@
     "verticalAlign": "center"
   },
   "keyboard": [
+    { "key": "+", "action": "automapZoomIn" },
+    { "key": "-", "action": "automapZoomOut" },
     { "key": "1", "action": "useBelt1Item" },
     { "key": "2", "action": "useBelt2Item" },
     { "key": "3", "action": "useBelt3Item" },
@@ -641,7 +505,7 @@
       "action": [
         { "name": "player.addItemQuantity", "itemClass": "gold", "value": -4000 },
         "updateStashItems",
-        "updateCharLabels"
+        "updateCharPanel"
       ]
     },
     {
@@ -649,7 +513,7 @@
       "action": [
         { "name": "player.addItemQuantity", "itemClass": "gold", "value": 4000 },
         "updateStashItems",
-        "updateCharLabels"
+        "updateCharPanel"
       ]
     },
     {
@@ -702,6 +566,5 @@
       "key": "k",
       "action": { "name": "levelObject.executeAction", "object": "up" }
     }
-  ],
-  "load": "ui/level/char/beltInventory.json"
+  ]
 }

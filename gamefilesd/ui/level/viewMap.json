@@ -1,11 +1,7 @@
 {
   "action": [
     { "name": "resource.add", "id": "viewMap" },
-    { "name": "resource.ignore", "id": "levelOverlay", "ignore": "draw" },
-    { "name": "resource.ignore", "id": "charPanelInventory", "ignore": "draw" },
-    { "name": "resource.ignore", "id": "charPanelLabels", "ignore": "draw" },
     { "name": "resource.ignore", "id": "charPanelQuests", "ignore": "draw" },
-    { "name": "resource.ignore", "id": "charPanelSpellBook", "ignore": "draw" },
     {
       "name": "if.equal",
       "param1": "%game.hasTexture.{1}%",
@@ -60,11 +56,7 @@
         { "name": "image.setTexture", "id": "mapImage", "texture": "empty" },
         { "name": "resource.visible", "id": "mapImage", "visible": false },
         { "name": "resource.pop", "id": "viewMap" },
-        { "name": "resource.ignore", "id": "levelOverlay", "ignore": false },
-        { "name": "resource.ignore", "id": "charPanelInventory", "ignore": false },
-        { "name": "resource.ignore", "id": "charPanelLabels", "ignore": false },
-        { "name": "resource.ignore", "id": "charPanelQuests", "ignore": false },
-        { "name": "resource.ignore", "id": "charPanelSpellBook", "ignore": false }
+        { "name": "resource.ignore", "id": "charPanelQuests", "ignore": false }
       ],
       "onRightClick": { "name": "button.click", "id": "viewMapButton" }
     }

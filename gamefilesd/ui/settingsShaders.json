@@ -90,6 +90,17 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "text": "Sprite Shader: Default",
+      "onClick": {
+        "name": "switch",
+        "param": "%spriteShader.text%",
+        "case": [
+          {
+            "value": "Sprite Shader: Default",
+            "action": { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Highlight" }
+          }
+        ],
+        "default": { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Default" }
+      },
       "onFocus": "anchorPentagrams"
     },
     {
@@ -119,7 +130,7 @@
                     "then": {
                       "name": "shader.load",
                       "id": "grain",
-                      "fragmentFile": "res/shaders/grain.frag"
+                      "fragmentFile": "res/shaders/game/grain.frag"
                     }
                   },
                   { "name": "game.setShader", "shader": "grain", "gameShader": "game" }
@@ -135,7 +146,7 @@
                     "then": {
                       "name": "shader.load",
                       "id": "swirl",
-                      "fragmentFile": "res/shaders/swirl.frag"
+                      "fragmentFile": "res/shaders/game/swirl.frag"
                     }
                   },
                   { "name": "game.setShader", "shader": "swirl", "gameShader": "game" }
@@ -151,7 +162,7 @@
                     "then": {
                       "name": "shader.load",
                       "id": "warp",
-                      "fragmentFile": "res/shaders/warp.frag"
+                      "fragmentFile": "res/shaders/game/warp.frag"
                     }
                   },
                   { "name": "game.setShader", "shader": "warp", "gameShader": "game" }
@@ -159,6 +170,29 @@
               }
             ],
             "default": { "name": "game.setShader", "shader": "game", "gameShader": "game" }
+          },
+          {
+            "name": "switch",
+            "param": "%spriteShader.text%",
+            "case": [
+              {
+                "value": "Sprite Shader: Highlight",
+                "action": [
+                  {
+                    "name": "if.equal",
+                    "param1": "%game.hasShader.highlight%",
+                    "param2": false,
+                    "then": {
+                      "name": "shader.load",
+                      "id": "highlight",
+                      "fragmentFile": "res/shaders/sprite/highlight.frag"
+                    }
+                  },
+                  { "name": "game.setShader", "shader": "highlight", "gameShader": "sprite" }
+                ]
+              }
+            ],
+            "default": { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" }
           },
           { "name": "resource.pop" },
           { "name": "game.fadeIn" }

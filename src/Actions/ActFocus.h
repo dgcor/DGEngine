@@ -8,18 +8,19 @@ class ActFocusAdd : public Action
 {
 private:
 	std::string id;
+	std::string resource;
 	bool setFocus;
 
 public:
-	ActFocusAdd(const std::string& id_, bool setFocus_)
-		: id(id_), setFocus(setFocus_) {}
+	ActFocusAdd(const std::string& id_, const std::string& resource_, bool setFocus_)
+		: id(id_), resource(resource_), setFocus(setFocus_) {}
 
 	virtual bool execute(Game& game)
 	{
 		auto button = game.Resources().getDrawableSharedPtr<Button>(id);
 		if (button != nullptr)
 		{
-			game.Resources().addFocused(button);
+			game.Resources().addFocused(button, resource);
 			if (setFocus == true)
 			{
 				game.Resources().setFocused(button.get());

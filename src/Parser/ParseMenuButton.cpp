@@ -29,7 +29,8 @@ namespace Parser
 		bool hasFocus,
 		bool focusOnClick,
 		bool relativePos,
-		const sf::Vector2f& origPos)
+		const sf::Vector2f& origPos,
+		const std::string_view resource)
 	{
 		auto button = std::make_shared<StringButton>();
 		std::unique_ptr<DrawableText> drawableText;
@@ -105,7 +106,7 @@ namespace Parser
 		if (hasFocus == true)
 		{
 			button->focusEnabled(focusOnClick);
-			game.Resources().addFocused(button);
+			game.Resources().addFocused(button, resource);
 		}
 	}
 }

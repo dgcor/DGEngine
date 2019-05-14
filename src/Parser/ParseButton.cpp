@@ -3,6 +3,7 @@
 #include "BitmapText.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "ParseAction.h"
 #include "ParseText.h"
 #include "StringButton.h"
@@ -154,12 +155,28 @@ namespace Parser
 			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetString()));
 		}
 
-		game.Resources().addDrawable(id, button, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(button);
+				manageObjDrawing = false;
+			}
+		}
+
+		auto resource = getStringViewKey(elem, "resource");
+
+		game.Resources().addDrawable(
+			id, button, manageObjDrawing, resource
+		);
 
 		if (getBoolKey(elem, "focus") == true)
 		{
 			button->focusEnabled(getBoolKey(elem, "focusOnClick", true));
-			game.Resources().addFocused(button);
+			game.Resources().addFocused(button, resource);
 		}
 	}
 }

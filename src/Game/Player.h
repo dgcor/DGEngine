@@ -16,8 +16,8 @@ class Player : public LevelObject
 {
 private:
 	PairFloat mapPositionMoveTo;
-	sf::Vector2f drawPosA;
-	sf::Vector2f drawPosB;
+	PairFloat mapPosA;
+	PairFloat mapPosB;
 	float currPositionStep = 0.f;
 
 	std::vector<PairFloat> walkPath;
@@ -37,7 +37,7 @@ private:
 	sf::Time currentWalkTime;
 
 	bool useAI{ false };
-	std::unique_ptr<Item> selectedItem;
+	std::shared_ptr<Item> selectedItem;
 	const SpellInstance* selectedSpell{ nullptr };
 
 	Inventories<(size_t)PlayerInventory::Size> inventories;
@@ -109,7 +109,7 @@ private:
 
 	void updateSpeed();
 
-	void updateWalkPathStep(sf::Vector2f& newDrawPos);
+	void updateWalkPathStep(PairFloat& newMapPos);
 	void updateWalkPath(Game& game, LevelMap& map);
 
 	void updateBodyItemValues();
@@ -154,7 +154,7 @@ public:
 		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
-	virtual void update(Game& game, Level& level);
+	virtual void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr);
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 	virtual void setProperty(const std::string_view prop, const Variable& val);
@@ -217,7 +217,7 @@ public:
 	void resetAnimationTime() noexcept { animation.elapsedTime.currentTime = speed.animation; }
 
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
-	std::unique_ptr<Item> SelectedItem(std::unique_ptr<Item> item) noexcept;
+	std::shared_ptr<Item> SelectedItem(std::shared_ptr<Item> item) noexcept;
 
 	void SelectedSpell(const std::string& id) noexcept;
 
@@ -247,20 +247,20 @@ public:
 
 	bool hasFreeItemSlot(const Item& item) const;
 
-	bool setItem(PlayerInventory inv, size_t itemIdx, std::unique_ptr<Item>& item)
+	bool setItem(PlayerInventory inv, size_t itemIdx, std::shared_ptr<Item>& item)
 	{
 		return setItem((size_t)inv, itemIdx, item);
 	}
-	bool setItem(PlayerInventory inv, size_t itemIdx, std::unique_ptr<Item>& item,
-		std::unique_ptr<Item>& oldItem)
+	bool setItem(PlayerInventory inv, size_t itemIdx, std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem)
 	{
 		return setItem((size_t)inv, itemIdx, item, oldItem);
 	}
-	bool setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item);
-	bool setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
-		std::unique_ptr<Item>& oldItem);
+	bool setItem(size_t invIdx, size_t itemIdx, std::shared_ptr<Item>& item);
+	bool setItem(size_t invIdx, size_t itemIdx, std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem);
 
-	bool setItemInFreeSlot(PlayerInventory inv, std::unique_ptr<Item>& item,
+	bool setItemInFreeSlot(PlayerInventory inv, std::shared_ptr<Item>& item,
 		InventoryPosition invPos, bool splitIntoMultipleQuantities)
 	{
 		return setItemInFreeSlot((size_t)inv, item, invPos, splitIntoMultipleQuantities);
@@ -269,7 +269,7 @@ public:
 	// sets an item in a free slot. If the item has quantity/capacity
 	// it tries to fit into the smallest quantity item of the same class first
 	// if splitIntoMultiple is true, it tries to fit into all items of the same class.
-	bool setItemInFreeSlot(size_t invIdx, std::unique_ptr<Item>& item,
+	bool setItemInFreeSlot(size_t invIdx, std::shared_ptr<Item>& item,
 		InventoryPosition invPos, bool splitIntoMultiple);
 
 	// updates the player's current level, experience required for the

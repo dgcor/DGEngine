@@ -46,7 +46,7 @@
           { "value": "l10", "action": "l9" },
           { "value": "l11", "action": "l9" },
           { "value": "l12", "action": "l9" },
-          { "value": "poisonWater", "action": "l9" },
+          { "value": "poisonWater", "action": "l1" },
           {
             "value": "l13",
             "action": {

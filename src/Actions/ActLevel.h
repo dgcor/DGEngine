@@ -60,6 +60,35 @@ public:
 	}
 };
 
+class ActLevelAnchorDrawable : public Action
+{
+private:
+	std::string id;
+	std::string idDrawable;
+	std::string idAnchor;
+	sf::Vector2f offset;
+
+public:
+	ActLevelAnchorDrawable(const std::string& id_, const std::string& idDrawable_,
+		const std::string& idAnchor_, const sf::Vector2f& offset_) : id(id_),
+		idDrawable(idDrawable_), idAnchor(idAnchor_), offset(offset_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			auto drawable = level->getLevelDrawable(idDrawable);
+			if (drawable != nullptr)
+			{
+				drawable->anchorTo = level->getLevelObjectPtr(idAnchor);
+				drawable->offset = offset;
+			}
+		}
+		return true;
+	}
+};
+
 class ActLevelClearAllObjects : public Action
 {
 private:

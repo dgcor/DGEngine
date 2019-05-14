@@ -1,8 +1,9 @@
 #include "TilesetLevelLayer.h"
 #include "Level.h"
+#include "LevelSurface.h"
 #include "Player.h"
 
-void TilesetLevelLayer::updateVisibleArea(const LevelLayerInfo& layerInfo, const LevelMap& map)
+void TilesetLevelLayer::updateVisibleArea(const LevelSurface& surface, const LevelMap& map)
 {
 	// subtract 1 tile to adjust for coordinate conversion
 	// add max pillar height to bottom corners to avoid clipping pillars
@@ -10,20 +11,20 @@ void TilesetLevelLayer::updateVisibleArea(const LevelLayerInfo& layerInfo, const
 	constexpr static auto maxPillarHeight = 256.f;
 
 	sf::Vector2f TL{
-		layerInfo.visibleRect.left - (float)layerInfo.tileWidth,
-		layerInfo.visibleRect.top - (float)layerInfo.tileHeight
+		surface.visibleRect.left - (float)surface.tileWidth,
+		surface.visibleRect.top - (float)surface.tileHeight
 	};
-	sf::Vector2f TR{ TL.x + layerInfo.visibleRect.width + layerInfo.tileWidth, TL.y };
+	sf::Vector2f TR{ TL.x + surface.visibleRect.width + surface.tileWidth, TL.y };
 	sf::Vector2f BL{
 		TL.x,
-		TL.y + layerInfo.visibleRect.height + maxPillarHeight + layerInfo.tileHeight
+		TL.y + surface.visibleRect.height + maxPillarHeight + surface.tileHeight
 	};
 	sf::Vector2f BR{ TR.x, BL.y };
 
-	auto mapTL = map.toMapCoord(TL, layerInfo.blockWidth, layerInfo.blockHeight);
-	auto mapTR = map.toMapCoord(TR, layerInfo.blockWidth, layerInfo.blockHeight);
-	auto mapBL = map.toMapCoord(BL, layerInfo.blockWidth, layerInfo.blockHeight);
-	auto mapBR = map.toMapCoord(BR, layerInfo.blockWidth, layerInfo.blockHeight);
+	auto mapTL = map.toMapCoord(TL, surface.blockWidth, surface.blockHeight);
+	auto mapTR = map.toMapCoord(TR, surface.blockWidth, surface.blockHeight);
+	auto mapBL = map.toMapCoord(BL, surface.blockWidth, surface.blockHeight);
+	auto mapBR = map.toMapCoord(BR, surface.blockWidth, surface.blockHeight);
 
 	visibleStart.x = (int32_t)mapTL.x;
 	visibleEnd.x = (int32_t)mapBR.x;
@@ -31,16 +32,15 @@ void TilesetLevelLayer::updateVisibleArea(const LevelLayerInfo& layerInfo, const
 	visibleEnd.y = (int32_t)mapBL.y;
 }
 
-void TilesetLevelLayer::draw(sf::RenderTexture& levelTexture,
-	const LevelLayerInfo& layerInfo, SpriteShaderCache& spriteCache,
-	sf::Shader* spriteShader, const Level& level,
-	bool drawLevelObjects, bool isAutomap) const
+void TilesetLevelLayer::draw(const LevelSurface& surface,
+	SpriteShaderCache& spriteCache, sf::Shader* spriteShader,
+	const Level& level, bool drawLevelObjects, bool isAutomap) const
 {
 	Sprite2 sprite;
 	TextureInfo ti;
 	sf::FloatRect tileRect;
 
-	if (layerInfo.visible == false ||
+	if (surface.visible == false ||
 		tiles == nullptr)
 	{
 		if (drawLevelObjects == false)
@@ -79,11 +79,11 @@ void TilesetLevelLayer::draw(sf::RenderTexture& levelTexture,
 						if (drawObj != nullptr)
 						{
 							auto objLight = std::max(drawObj->getLight(), light);
-							drawObj->draw(levelTexture, spriteShader, spriteCache, objLight);
+							surface.draw(*drawObj, spriteShader, spriteCache, objLight);
 						}
 					}
 					if (tiles == nullptr ||
-						layerInfo.visible == false)
+						surface.visible == false)
 					{
 						continue;
 					}
@@ -95,17 +95,17 @@ void TilesetLevelLayer::draw(sf::RenderTexture& levelTexture,
 			}
 			if (tiles->get((size_t)index, ti) == true)
 			{
-				auto drawPos = map.toDrawCoord(mapPos, layerInfo.blockWidth, layerInfo.blockHeight);
+				auto drawPos = map.toDrawCoord(mapPos, surface.blockWidth, surface.blockHeight);
 				drawPos += ti.offset;
 				tileRect.left = drawPos.x;
 				tileRect.top = drawPos.y;
 				tileRect.width = (float)ti.textureRect.width;
 				tileRect.height = (float)ti.textureRect.height;
-				if (layerInfo.visibleRect.intersects(tileRect) == true)
+				if (surface.visibleRect.intersects(tileRect) == true)
 				{
 					sprite.setTexture(ti, true);
 					sprite.setPosition(drawPos);
-					sprite.draw(levelTexture, spriteShader, spriteCache, light);
+					surface.draw(sprite, spriteShader, spriteCache, light);
 				}
 			}
 		}
@@ -113,7 +113,7 @@ void TilesetLevelLayer::draw(sf::RenderTexture& levelTexture,
 
 	// draw player direction in automap, if enabled (baseIndex >= 0)
 	if (isAutomap == true &&
-		layerInfo.visible == true &&
+		surface.visible == true &&
 		level.getAutomapPlayerDirectionBaseIndex() >= 0 &&
 		level.getCurrentPlayer() != nullptr &&
 		tiles != nullptr)
@@ -124,18 +124,18 @@ void TilesetLevelLayer::draw(sf::RenderTexture& levelTexture,
 			tiles->get(index, ti) == true)
 		{
 			auto drawPos = level.getCurrentAutomapViewCenter();
-			drawPos.x -= (float)layerInfo.blockWidth;
-			drawPos.y -= (float)layerInfo.blockHeight;
+			drawPos.x -= (float)surface.blockWidth;
+			drawPos.y -= (float)surface.blockHeight;
 			drawPos += ti.offset;
 			tileRect.left = drawPos.x;
 			tileRect.top = drawPos.y;
 			tileRect.width = (float)ti.textureRect.width;
 			tileRect.height = (float)ti.textureRect.height;
-			if (layerInfo.visibleRect.intersects(tileRect) == true)
+			if (surface.visibleRect.intersects(tileRect) == true)
 			{
 				sprite.setTexture(ti, true);
 				sprite.setPosition(drawPos);
-				sprite.draw(levelTexture, spriteShader, spriteCache);
+				surface.draw(sprite, spriteShader, spriteCache);
 			}
 		}
 	}

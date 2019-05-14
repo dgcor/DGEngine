@@ -1,12 +1,10 @@
 {
   "playerClass": {
     "id": "diablo",
-    "replaceVars": true,
+    "fromId": "defaultMonster",
     "name": "The Dark Lord",
     "type": "Demon",
     "descriptions": { "index": 0, "name": "resistImune" },
-    "outline": "|outlineEnemy|",
-    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 45,
       "experience": 31666,

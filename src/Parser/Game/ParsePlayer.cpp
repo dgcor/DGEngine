@@ -194,7 +194,7 @@ namespace Parser
 			return;
 		}
 
-		auto player = std::make_unique<Player>(class_, *level);
+		auto player = std::make_shared<Player>(class_, *level);
 
 		player->Id(id);
 
@@ -278,7 +278,7 @@ namespace Parser
 
 		if (getBoolKey(elem, "currentPlayer") == true)
 		{
-			level->setCurrentPlayer(player.get());
+			level->setCurrentPlayer(player);
 		}
 
 		level->addLevelObject(std::move(player));

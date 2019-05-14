@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "GameHashes.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "Player.h"
 #include "SimpleLevelObject.h"
-#include "Utils/EasingFunctions.h"
 #include "Utils/Utils.h"
 
 void Level::Init(const Game& game, LevelMap map_,
@@ -13,18 +13,19 @@ void Level::Init(const Game& game, LevelMap map_,
 	int32_t indexToDrawObjects)
 {
 	map = std::move(map_);
-	clickedObject = nullptr;
-	hoverObject = nullptr;
+	clickedObject.reset();
+	hoverObject.reset();
 
-	defaultLayerInfo.tileWidth = std::max(tileWidth, 2);
-	defaultLayerInfo.tileHeight = std::max(tileHeight, 2);
-	defaultLayerInfo.blockWidth = defaultLayerInfo.tileWidth / 2;
-	defaultLayerInfo.blockHeight = defaultLayerInfo.tileHeight / 2;
-	defaultLayerInfo.visible = true;
+	surface.tileWidth = std::max(tileWidth, 2);
+	surface.tileHeight = std::max(tileHeight, 2);
+	surface.blockWidth = surface.tileWidth / 2;
+	surface.blockHeight = surface.tileHeight / 2;
+	surface.visible = true;
 
-	auto mapVisible = automapLayerInfo.visible;
-	automapLayerInfo = defaultLayerInfo;
-	automapLayerInfo.visible = mapVisible;
+	automapSurface.tileWidth = surface.tileWidth;
+	automapSurface.tileHeight = surface.tileHeight;
+	automapSurface.blockWidth = surface.blockWidth;
+	automapSurface.blockHeight = surface.blockHeight;
 
 	levelLayers.clear();
 	for (const auto& layer : levelLayers_)
@@ -64,25 +65,27 @@ void Level::Init(const Game& game, LevelMap map_,
 		levelLayers.push_back({ TilesetLevelLayer(), {}, false });
 	}
 
-	map.setDefaultTileSize(defaultLayerInfo.tileWidth, defaultLayerInfo.tileHeight);
+	map.setDefaultTileSize(surface.tileWidth, surface.tileHeight);
 
 	setCurrentMapPosition(PairFloat(-1.f, -1.f), false);
 
-	game.recreateRenderTexture(levelTexture);
+	surface.init(game);
+	automapSurface.init(game);
+	updateTilesetLayersVisibleArea();
 
 	map.initLights();
 	updateLevelObjectPositions();
-	viewPortNeedsUpdate = true;
+	viewNeedsUpdate = true;
 }
 
 void Level::Init()
 {
-	clickedObject = nullptr;
-	hoverObject = nullptr;
+	clickedObject.reset();
+	hoverObject.reset();
 
 	map.initLights();
 	updateLevelObjectPositions();
-	viewPortNeedsUpdate = true;
+	viewNeedsUpdate = true;
 }
 
 void Level::addLayer(const ColorLevelLayer& layer,
@@ -100,10 +103,10 @@ void Level::addLayer(const TextureLevelLayer& layer,
 void Level::setAutomap(const TilesetLevelLayer& automapLayer, int tileWidth,
 	int tileHeight, const sf::FloatRect& viewportOffset)
 {
-	automapLayerInfo.tileWidth = std::max(tileWidth, 2);
-	automapLayerInfo.tileHeight = std::max(tileHeight, 2);
-	automapLayerInfo.blockWidth = automapLayerInfo.tileWidth / 2;
-	automapLayerInfo.blockHeight = automapLayerInfo.tileHeight / 2;
+	automapSurface.tileWidth = std::max(tileWidth, 2);
+	automapSurface.tileHeight = std::max(tileHeight, 2);
+	automapSurface.blockWidth = automapSurface.tileWidth / 2;
+	automapSurface.blockHeight = automapSurface.tileHeight / 2;
 
 	bool updated = false;
 	for (auto& layer : levelLayers)
@@ -121,7 +124,47 @@ void Level::setAutomap(const TilesetLevelLayer& automapLayer, int tileWidth,
 	{
 		levelLayers.push_back({ automapLayer, viewportOffset, true });
 	}
-	viewPortNeedsUpdate = true;
+	viewNeedsUpdate = true;
+}
+
+void Level::addDrawable(LevelDrawable obj)
+{
+	for (const auto& drawable : drawables)
+	{
+		if (drawable.id == obj.id)
+		{
+			return;
+		}
+	}
+	if (auto drawableObj = obj.drawable.lock())
+	{
+		setLevelDrawablePosition(obj, *drawableObj);
+	}
+	drawables.push_back(obj);
+}
+
+Panel* Level::getDrawable(size_t idx) const
+{
+	if (idx < drawables.size())
+	{
+		if (auto obj = drawables[idx].drawable.lock())
+		{
+			return obj.get();
+		}
+	}
+	return nullptr;
+}
+
+LevelDrawable* Level::getLevelDrawable(const std::string& id)
+{
+	for (auto& obj : drawables)
+	{
+		if (obj.id == id)
+		{
+			return &obj;
+		}
+	}
+	return nullptr;
 }
 
 void Level::setCurrentMapPosition(const PairFloat& mapPos, bool smooth) noexcept
@@ -149,11 +192,14 @@ void Level::updateCurrentAutomapViewCenter() noexcept
 
 bool Level::updateCurrentMapViewCenter(bool smooth) noexcept
 {
-	if (followCurrentPlayer == true && currentPlayer != nullptr)
+	if (followCurrentPlayer == true)
 	{
-		currentMapPosition = currentPlayer->MapPosition();
-		setCurrentMapViewCenter(currentPlayer->getBasePosition(), smooth);
-		return true;
+		if (auto obj = currentPlayer.lock())
+		{
+			currentMapPosition = obj->MapPosition();
+			setCurrentMapViewCenter(obj->getBasePosition(), smooth);
+			return true;
+		}
 	}
 	return false;
 }
@@ -248,14 +294,14 @@ void Level::setAutomapPosition(const sf::Vector2f& position) noexcept
 	{
 		automapPosition.x = (float)position.x;
 		automapPosition.y = (float)position.y;
-		automapView.setPosition(automapPosition);
+		automapSurface.Position(automapPosition);
 	}
 	updateAutomapRelativePosition();
 }
 
 void Level::Position(const sf::Vector2f& position) noexcept
 {
-	view.setPosition(position);
+	surface.Position(position);
 	updateAutomapRelativePosition();
 }
 
@@ -263,12 +309,12 @@ void Level::updateAutomapRelativePosition()
 {
 	if (automapRelativeCoords == true)
 	{
-		auto position = view.getPosition();
-		position.x = std::round(position.x + view.getSize().x * automapPosition.x);
-		position.y = std::round(position.y + view.getSize().y * automapPosition.y);
-		automapView.setPosition(position);
+		auto position = surface.Position();
+		position.x = std::round(position.x + surface.Size().x * automapPosition.x);
+		position.y = std::round(position.y + surface.Size().y * automapPosition.y);
+		automapSurface.Position(position);
 	}
-	viewPortNeedsUpdate = true;
+	viewNeedsUpdate = true;
 }
 
 void Level::setAutomapSize(const sf::Vector2f& size)
@@ -282,14 +328,14 @@ void Level::setAutomapSize(const sf::Vector2f& size)
 	{
 		automapSize.x = std::max((float)size.x, 0.f);
 		automapSize.y = std::max((float)size.y, 0.f);
-		automapView.setSize(automapSize);
+		automapSurface.Size(automapSize);
 	}
 	updateAutomapRelativeSize();
 }
 
 void Level::Size(const sf::Vector2f& size)
 {
-	view.setSize(size);
+	surface.Size(size);
 	updateAutomapRelativePosition();
 	updateAutomapRelativeSize();
 }
@@ -298,42 +344,44 @@ void Level::updateAutomapRelativeSize()
 {
 	if (automapRelativeCoords == true)
 	{
-		auto size = view.getSize();
+		auto size = surface.Size();
 		size.x = std::round(size.x * automapSize.x);
 		size.y = std::round(size.y * automapSize.y);
-		automapView.setSize(size);
+		automapSurface.Size(size);
 	}
-	viewPortNeedsUpdate = true;
+	viewNeedsUpdate = true;
 }
 
 void Level::Zoom(float factor, bool smooth) noexcept
 {
-	if (factor > 2.f)
+	if (factor > LevelSurface::ZoomMax)
 	{
-		factor = 2.f;
+		factor = LevelSurface::ZoomMax;
 	}
-	else if (factor < 0.5f)
+	else if (factor < LevelSurface::ZoomMin)
 	{
-		factor = 0.5f;
+		factor = LevelSurface::ZoomMin;
 	}
 	zoomValue.set(factor, smooth == true ? 1.f : 0.f);
 }
 
-void::Level::updateZoom(const Game& game)
+void Level::updateZoom(const Game& game)
 {
 	zoomValue.update(game.getElapsedTime().asSeconds());
-	view.setZoom(1.f / zoomValue.get());
-	view.updateViewport(game);
-	updateVisibleArea();
+	auto newZoom = 1.f / zoomValue.get();
+	if (surface.updateZoom(game, newZoom) == true)
+	{
+		updateTilesetLayersVisibleArea();
+	}
 }
 
-void Level::addLevelObject(std::unique_ptr<LevelObject> obj)
+void Level::addLevelObject(std::shared_ptr<LevelObject> obj)
 {
 	auto mapPos = obj->MapPosition();
 	addLevelObject(std::move(obj), mapPos);
 }
 
-void Level::addLevelObject(std::unique_ptr<LevelObject> obj, const PairFloat& mapCoord)
+void Level::addLevelObject(std::shared_ptr<LevelObject> obj, const PairFloat& mapCoord)
 {
 	if (obj->getId().empty() == false)
 	{
@@ -341,25 +389,25 @@ void Level::addLevelObject(std::unique_ptr<LevelObject> obj, const PairFloat& ma
 		{
 			return;
 		}
-		levelObjectIds[obj->getId()] = obj.get();
+		levelObjectIds[obj->getId()] = obj;
 	}
 	obj->MapPosition(map, mapCoord);
-	levelObjects.push_back(std::move(obj));
+	levelObjects.push_back(obj);
 }
 
 void Level::clearCache(const LevelObject* obj) noexcept
 {
-	if (clickedObject == obj)
+	if (clickedObject.lock().get() == obj)
 	{
-		clickedObject = nullptr;
+		clickedObject.reset();
 	}
-	if (hoverObject == obj)
+	if (hoverObject.lock().get() == obj)
 	{
-		hoverObject = nullptr;
+		hoverObject.reset();
 	}
-	if (currentPlayer == obj)
+	if (currentPlayer.lock().get() == obj)
 	{
-		currentPlayer = nullptr;
+		currentPlayer.reset();
 	}
 }
 
@@ -418,7 +466,8 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 
 	auto origView = target.getView();
 
-	levelTexture.clear();
+	surface.clear(sf::Color::Black);
+	automapSurface.clear(sf::Color::Transparent);
 
 	SpriteShaderCache spriteCache;
 
@@ -432,45 +481,27 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		}
 		if (levelLayer.automap == false)
 		{
-			if (defaultLayerInfo.visible == false)
+			if (surface.visible == false)
 			{
 				continue;
 			}
 		}
 		else
 		{
-			if (automapLayerInfo.visible == false)
+			if (automapSurface.visible == false)
 			{
 				continue;
 			}
 		}
 
-		const auto& layerInfo = (levelLayer.automap == false ? defaultLayerInfo : automapLayerInfo);
-		const auto& layerView = (levelLayer.automap == false ? view : automapView);
+		auto& layerInfo = (levelLayer.automap == false ? surface : automapSurface);
 
-		if (levelLayer.viewportOffset == sf::FloatRect(0.f, 0.f, 0.f, 0.f))
-		{
-			levelTexture.setView(layerView.getView());
-		}
-		else
-		{
-			auto newView = layerView;
-			newView.setPosition(
-				{ newView.getPosition().x + levelLayer.viewportOffset.left,
-				newView.getPosition().y + levelLayer.viewportOffset.top }
-			);
-			newView.setSize(
-				{ newView.getSize().x + levelLayer.viewportOffset.width,
-				newView.getSize().y + levelLayer.viewportOffset.height }
-			);
-			newView.updateViewport(game);
-			levelTexture.setView(newView.getView());
-		}
+		layerInfo.updateDrawView(levelLayer.viewportOffset);
 
 		if (holdsTilesetLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<TilesetLevelLayer>(levelLayer.layer);
-			layer.draw(levelTexture, layerInfo, spriteCache,
+			layer.draw(layerInfo, spriteCache,
 				game.Shaders().Sprite, *this,
 				i == indexToDrawLevelObjects,
 				levelLayer.automap
@@ -479,19 +510,24 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		else if (holdsTextureLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<TextureLevelLayer>(levelLayer.layer);
-			layer.draw(levelTexture, layerInfo, layerView.getCenter());
+			layer.draw(layerInfo);
 		}
 		else if (holdsColorLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<ColorLevelLayer>(levelLayer.layer);
-			layer.draw(levelTexture, layerInfo);
+			layer.draw(layerInfo);
 		}
 	}
 
-	levelTexture.display();
+	for (const auto& item : drawables)
+	{
+		if (auto obj = item.drawable.lock())
+		{
+			surface.draw(game, *obj);
+		}
+	}
 
 	sf::RenderStates states(sf::RenderStates::Default);
-	sf::Sprite levelSprite(levelTexture.getTexture());
 	if (shader != nullptr)
 	{
 		states.shader = shader;
@@ -499,48 +535,31 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		if (hasMouseInside == true)
 		{
 			shader->setUniform("mousePosition", sf::Glsl::Vec2(
-				(game.MousePositionf().x - view.getPosition().x) / view.getSize().x,
-				(game.MousePositionf().y - view.getPosition().y) / view.getSize().y
+				(game.MousePositionf().x - surface.Position().x) /
+				surface.Size().x,
+				(game.MousePositionf().y - surface.Position().y) /
+				surface.Size().y
 			));
 		}
 		shader->setUniform("textureSize", sf::Glsl::Vec2(
-			view.getSize().x,
-			view.getSize().y
+			surface.Size().x,
+			surface.Size().y
 		));
 	}
-	target.draw(levelSprite, states);
+
+	surface.draw(target, states);
+	automapSurface.draw(target, sf::RenderStates::Default);
 
 	target.setView(origView);
 }
 
 void Level::updateSize(const Game& game)
 {
-	view.updateSize(game);
-	automapView.updateSize(game);
+	surface.updateSize(game);
 	updateAutomapRelativePosition();
 	updateAutomapRelativeSize();
-	updateVisibleArea();
-	game.recreateRenderTexture(levelTexture);
-}
-
-void Level::updateVisibleArea()
-{
-	updateLayerInfoVisibleArea(defaultLayerInfo, view);
-	updateLayerInfoVisibleArea(automapLayerInfo, automapView);
+	automapSurface.updateSize(game);
 	updateTilesetLayersVisibleArea();
-}
-
-void Level::updateLayerInfoVisibleArea(LevelLayerInfo& layerInfo, View2& layerView)
-{
-	const auto& viewCenter = layerView.getCenter();
-	const auto& viewSize = layerView.getVisibleSize();
-
-	layerInfo.visibleRect = sf::FloatRect(
-		viewCenter.x - std::round(viewSize.x / 2),
-		viewCenter.y - std::round(viewSize.y / 2),
-		std::round(viewSize.x),
-		std::round(viewSize.y)
-	);
 }
 
 void Level::updateTilesetLayersVisibleArea()
@@ -552,14 +571,14 @@ void Level::updateTilesetLayersVisibleArea()
 			continue;
 		}
 		auto& layer = std::get<TilesetLevelLayer>(levelLayer.layer);
-		const auto& layerInfo = (levelLayer.automap == false ? defaultLayerInfo : automapLayerInfo);
-		layer.updateVisibleArea(layerInfo, map);
+		const auto& layerSurface = (levelLayer.automap == false ? surface : automapSurface);
+		layer.updateVisibleArea(layerSurface, map);
 	}
 }
 
 void Level::updateMouse(const Game& game)
 {
-	mousePositionf = view.getPosition(game.MousePositionf());
+	mousePositionf = surface.getPosition(game.MousePositionf());
 	auto mousePositionf2 = mousePositionf;
 	mousePositionf2.x -= (float)map.DefaultBlockWidth();
 	mousePositionf2.y -= (float)map.DefaultBlockHeight();
@@ -574,7 +593,7 @@ void Level::onMouseButtonPressed(Game& game)
 	case sf::Mouse::Left:
 	{
 		clickedMapPosition = getMapCoordOverMouse();
-		clickedObject = nullptr;
+		clickedObject.reset();
 		if (leftAction != nullptr)
 		{
 			game.Events().addBack(leftAction);
@@ -621,7 +640,7 @@ void Level::onTouchBegan(Game& game)
 	case 0:
 	{
 		clickedMapPosition = getMapCoordOverMouse();
-		clickedObject = nullptr;
+		clickedObject.reset();
 		if (leftAction != nullptr)
 		{
 			game.Events().addBack(leftAction);
@@ -647,11 +666,11 @@ void Level::update(Game& game)
 	{
 		return;
 	}
-	if (viewPortNeedsUpdate == true)
+	if (viewNeedsUpdate == true)
 	{
-		view.updateViewport(game);
-		automapView.updateViewport(game);
-		updateVisibleArea();
+		surface.updateView(game);
+		automapSurface.updateView(game);
+		updateTilesetLayersVisibleArea();
 	}
 	if (pause == true)
 	{
@@ -678,7 +697,7 @@ void Level::update(Game& game)
 		}
 	}
 
-	sf::FloatRect rect(view.getPosition(), view.getSize());
+	sf::FloatRect rect(surface.Position(), surface.Size());
 	if (rect.contains(game.MousePositionf()) == true)
 	{
 		hasMouseInside = true;
@@ -706,7 +725,7 @@ void Level::update(Game& game)
 	}
 	for (auto& obj : levelObjects)
 	{
-		obj->update(game, *this);
+		obj->update(game, *this, obj);
 	}
 	if (currentMapPosition.x == -1.f &&
 		currentMapPosition.y == -1.f)
@@ -728,18 +747,77 @@ void Level::update(Game& game)
 	updateCurrentMapViewCenter(smoothMovement);
 	auto newViewCenterX = std::round(currentMapViewCenterX.get());
 	auto newViewCenterY = std::round(currentMapViewCenterY.get());
-	if (view.getCenter().x != newViewCenterX ||
-		view.getCenter().y != newViewCenterY ||
-		viewPortNeedsUpdate == true)
+	if (surface.getCenter().x != newViewCenterX ||
+		surface.getCenter().y != newViewCenterY ||
+		viewNeedsUpdate == true)
 	{
-		view.setCenter(newViewCenterX, newViewCenterY);
+		surface.setCenter(newViewCenterX, newViewCenterY);
 		updateCurrentAutomapViewCenter();
-		automapView.setCenter(currentAutomapViewCenter);
-		updateVisibleArea();
+		automapSurface.setCenter(currentAutomapViewCenter);
+		updateTilesetLayersVisibleArea();
 	}
-	if (viewPortNeedsUpdate == true)
+	if (viewNeedsUpdate == true)
 	{
-		viewPortNeedsUpdate = false;
+		viewNeedsUpdate = false;
+	}
+
+	updateDrawables(game);
+}
+
+void Level::updateDrawables(Game& game)
+{
+	for (auto it = drawables.rbegin(); it != drawables.rend();)
+	{
+		auto obj = it->drawable.lock();
+		if (obj == nullptr)
+		{
+			++it;
+			it = std::reverse_iterator(drawables.erase(it.base()));
+		}
+		else
+		{
+			setLevelDrawablePosition(*it, *obj);
+			obj->update(game);
+			++it;
+		}
+	}
+}
+
+void Level::setLevelDrawablePosition(LevelDrawable& obj, Panel& panelObj)
+{
+	if (auto anchorTo = obj.anchorTo.lock())
+	{
+		sf::Vector2f drawPos;
+		sf::Vector2f drawSize;
+		panelObj.getDrawPositionAndSize(drawPos, drawSize);
+		auto newPos = anchorTo->getAnchorPosition() + obj.offset;
+		auto drawPosOffset = drawPos - panelObj.Position();
+		auto newDrawPos = newPos + drawPosOffset;
+		if (obj.visibleRectOffset >= 0.f)
+		{
+			if (newDrawPos.x < surface.visibleRect.left + obj.visibleRectOffset)
+			{
+				newPos.x = surface.visibleRect.left + obj.visibleRectOffset - drawPosOffset.x;
+			}
+			if (newDrawPos.y < surface.visibleRect.top + obj.visibleRectOffset)
+			{
+				newPos.y = surface.visibleRect.top + obj.visibleRectOffset - drawPosOffset.y;
+			}
+			newDrawPos += drawSize;
+			if (newDrawPos.x > surface.visibleRect.left +
+				surface.visibleRect.width - obj.visibleRectOffset)
+			{
+				newPos.x = surface.visibleRect.left + surface.visibleRect.width
+					- obj.visibleRectOffset - drawSize.x - drawPosOffset.x;
+			}
+			if (newDrawPos.y > surface.visibleRect.top +
+				surface.visibleRect.height - obj.visibleRectOffset)
+			{
+				newPos.y = surface.visibleRect.top + surface.visibleRect.height
+					- obj.visibleRectOffset - drawSize.y - drawPosOffset.y;
+			}
+		}
+		panelObj.Position(newPos);
 	}
 }
 
@@ -755,17 +833,17 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 	{
 	case str2int16("clickedObject"):
 	{
-		if (clickedObject != nullptr)
+		if (auto obj = clickedObject.lock())
 		{
-			return clickedObject->getProperty(props.second, var);
+			return obj->getProperty(props.second, var);
 		}
 		break;
 	}
 	case str2int16("currentPlayer"):
 	{
-		if (currentPlayer != nullptr)
+		if (auto obj = currentPlayer.lock())
 		{
-			return currentPlayer->getProperty(props.second, var);
+			return obj->getProperty(props.second, var);
 		}
 		break;
 	}
@@ -773,16 +851,16 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable(hasAutomap());
 		return true;
 	case str2int16("hasCurrentPlayer"):
-		var = Variable((currentPlayer != nullptr));
+		var = Variable((currentPlayer.expired() == false));
 		return true;
 	case str2int16("hasQuest"):
 		var = Variable(hasQuest(props.second));
 		return true;
 	case str2int16("hoverObject"):
 	{
-		if (hoverObject != nullptr)
+		if (auto obj = hoverObject.lock())
 		{
-			return hoverObject->getProperty(props.second, var);
+			return obj->getProperty(props.second, var);
 		}
 		break;
 	}
@@ -838,7 +916,7 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	}
 	case str2int16("showAutomap"):
-		var = Variable(automapLayerInfo.visible);
+		var = Variable(automapSurface.visible);
 		return true;
 	case str2int16("zoom"):
 		var = Variable((double)zoomValue.getFinal());
@@ -877,18 +955,18 @@ const Queryable* Level::getQueryable(const std::string_view prop) const
 	{
 	case str2int16("clickedObject"):
 	{
-		queryable = clickedObject;
+		queryable = clickedObject.lock().get();
 		break;
 	}
 	case str2int16("currentPlayer"):
 	{
-		queryable = currentPlayer;
+		queryable = currentPlayer.lock().get();
 		break;
 	}
 	break;
 	case str2int16("hoverObject"):
 	{
-		queryable = hoverObject;
+		queryable = hoverObject.lock().get();
 		break;
 	}
 	break;
@@ -1002,7 +1080,7 @@ LevelObject* Level::getLevelObject(const std::string id) const
 	auto it = levelObjectIds.find(id);
 	if (it != levelObjectIds.cend())
 	{
-		return it->second;
+		return it->second.get();
 	}
 	return nullptr;
 }
@@ -1023,16 +1101,41 @@ LevelObject* Level::getLevelObjectByClass(const std::string_view classId) const 
 	return nullptr;
 }
 
+std::weak_ptr<LevelObject> Level::getLevelObjectPtr(const std::string id) const
+{
+	if (id.empty() == true)
+	{
+		return {};
+	}
+	switch (str2int16(id))
+	{
+	case str2int16("clickedObject"):
+		return clickedObject;
+	case str2int16("currentPlayer"):
+		return currentPlayer;
+	case str2int16("hoverObject"):
+		return hoverObject;
+	default:
+		break;
+	}
+	auto it = levelObjectIds.find(id);
+	if (it != levelObjectIds.cend())
+	{
+		return it->second;
+	}
+	return {};
+}
+
 Player* Level::getPlayerOrCurrent(const std::string id) const noexcept
 {
 	if (id.empty() == true)
 	{
-		return currentPlayer;
+		return currentPlayer.lock().get();
 	}
 	return getLevelObject<Player>(id);
 }
 
-void Level::setCurrentPlayer(Player* player_) noexcept
+void Level::setCurrentPlayer(std::weak_ptr<Player> player_) noexcept
 {
 	currentPlayer = player_;
 	updateCurrentMapViewCenter(false);
@@ -1145,7 +1248,7 @@ Item* Level::getItem(const ItemLocation& location, Player*& player) const
 	}
 }
 
-std::unique_ptr<Item> Level::removeItem(const PairFloat& mapCoord)
+std::shared_ptr<Item> Level::removeItem(const PairFloat& mapCoord)
 {
 	auto item = map.removeLevelObject<Item>(mapCoord);
 	if (item != nullptr)
@@ -1156,13 +1259,13 @@ std::unique_ptr<Item> Level::removeItem(const PairFloat& mapCoord)
 	return nullptr;
 }
 
-std::unique_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord)
+std::shared_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord)
 {
 	Player* player;
 	return removeItem(itemCoord, player);
 }
 
-std::unique_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord, Player*& player)
+std::shared_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord, Player*& player)
 {
 	player = getPlayerOrCurrent(itemCoord.getPlayerId());
 	if (player != nullptr)
@@ -1171,17 +1274,17 @@ std::unique_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord, Pla
 		{
 			return player->SelectedItem(nullptr);
 		}
-		std::unique_ptr<Item> nullItem;
+		std::shared_ptr<Item> nullItem;
 		auto& inventory = player->getInventory(itemCoord.getInventoryIdx());
 		if (itemCoord.isCoordXY() == true)
 		{
-			std::unique_ptr<Item> oldItem;
+			std::shared_ptr<Item> oldItem;
 			inventory.set(itemCoord.getItemXY(), nullItem, oldItem);
 			return oldItem;
 		}
 		else
 		{
-			std::unique_ptr<Item> oldItem;
+			std::shared_ptr<Item> oldItem;
 			inventory.set(itemCoord.getItemIdx(), nullItem, oldItem);
 			return oldItem;
 		}
@@ -1189,13 +1292,13 @@ std::unique_ptr<Item> Level::removeItem(const ItemCoordInventory& itemCoord, Pla
 	return nullptr;
 }
 
-std::unique_ptr<Item> Level::removeItem(const ItemLocation& location)
+std::shared_ptr<Item> Level::removeItem(const ItemLocation& location)
 {
 	Player* player;
 	return removeItem(location, player);
 }
 
-std::unique_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& player)
+std::shared_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& player)
 {
 	if (holdsMapCoord(location) == true)
 	{
@@ -1208,7 +1311,7 @@ std::unique_ptr<Item> Level::removeItem(const ItemLocation& location, Player*& p
 	}
 }
 
-bool Level::setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item)
+bool Level::setItem(const PairFloat& mapCoord, std::shared_ptr<Item>& item)
 {
 	if (map.isMapCoordValid(mapCoord) == false)
 	{
@@ -1225,7 +1328,7 @@ bool Level::setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item)
 		}
 		return true;
 	}
-	if (mapCell.PassableIgnoreObject(currentPlayer) == true
+	if (mapCell.PassableIgnoreObject(currentPlayer.lock().get()) == true
 		&& oldItem == nullptr)
 	{
 		addLevelObject(std::move(item), mapCoord);
@@ -1234,7 +1337,7 @@ bool Level::setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item)
 	return false;
 }
 
-bool Level::setItem(const ItemCoordInventory& itemCoord, std::unique_ptr<Item>& item)
+bool Level::setItem(const ItemCoordInventory& itemCoord, std::shared_ptr<Item>& item)
 {
 	auto player = getPlayerOrCurrent(itemCoord.getPlayerId());
 	if (player != nullptr)
@@ -1263,7 +1366,7 @@ bool Level::setItem(const ItemCoordInventory& itemCoord, std::unique_ptr<Item>& 
 	return false;
 }
 
-bool Level::setItem(const ItemLocation& location, std::unique_ptr<Item>& item)
+bool Level::setItem(const ItemLocation& location, std::shared_ptr<Item>& item)
 {
 	if (holdsMapCoord(location) == true)
 	{
@@ -1277,19 +1380,19 @@ bool Level::setItem(const ItemLocation& location, std::unique_ptr<Item>& item)
 
 bool Level::deleteItem(const PairFloat& mapCoord)
 {
-	std::unique_ptr<Item> nullItem;
+	std::shared_ptr<Item> nullItem;
 	return setItem(mapCoord, nullItem);
 }
 
 bool Level::deleteItem(const ItemCoordInventory& itemCoord)
 {
-	std::unique_ptr<Item> nullItem;
+	std::shared_ptr<Item> nullItem;
 	return setItem(itemCoord, nullItem);
 }
 
 bool Level::deleteItem(const ItemLocation& location)
 {
-	std::unique_ptr<Item> nullItem;
+	std::shared_ptr<Item> nullItem;
 	return setItem(location, nullItem);
 }
 

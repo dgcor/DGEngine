@@ -7,11 +7,15 @@
       "then": { "name": "player.setRestStatus", "status": 1 },
       "else": { "name": "player.setRestStatus", "status": 0 }
     },
-    "updateLifeManaOrbs",
-    "updateSelectedSpell",
+    "updateAllPlayerStats",
     "updatePlayerTexture",
-    "updateCharPoints",
     "updateMap",
+    {
+      "name": "if.equal",
+      "param1": "%questPanel.visible%",
+      "param2": true,
+      "then": { "name": "load", "file": "ui/level/char/panelQuests.json" }
+    },
     {
       "name": "if.notEqual",
       "param1": "{1}",
@@ -19,6 +23,5 @@
       "then": { "name": "load", "file": ["level/positionPlayer.json", "{1}"] }
     }
   ],
-  "load": "ui/level/char/updateVisiblePanels.json",
   "load": "level/playOrStopMusic.json"
 }
