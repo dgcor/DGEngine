@@ -1,10 +1,7 @@
 {
   "action": [
     { "name": "resource.popAll", "id": "userPanel" },
-    { "name": "resource.pop", "id": "charPanelLabels" },
     { "name": "resource.pop", "id": "charPanelQuests" },
-    { "name": "resource.pop", "id": "charPanelInventory" },
-    { "name": "resource.pop", "id": "charPanelSpellBook" },
     { "name": "resource.pop", "id": "removeGold" },
     { "name": "drawable.visible", "id": "charPanel", "visible": false },
     { "name": "drawable.visible", "id": "questPanel", "visible": false },

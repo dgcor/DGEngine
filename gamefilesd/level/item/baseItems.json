@@ -18,6 +18,7 @@
         "repairCost": ":floor(0.5 - ((identified * magical) :nvl (identified * unique) * 0.35) * price * (:trunc(1 - (durability / durabilityMax) * 100) * 0.01)) :nvl 1"
       },
       "inventorySize": [1, 1],
+      "anchorOffset": [0, -36],
       "actions": {
         "action": "pickItemInLevel",
         "inventoryPick": "pickItemInInventory",

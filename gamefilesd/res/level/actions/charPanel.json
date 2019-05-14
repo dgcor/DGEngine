@@ -72,10 +72,10 @@
     },
     {
       "name": "action.set",
-      "id": "updateCharLabels",
+      "id": "updateCharPanel",
       "action": {
         "name": "if.equal",
-        "param1": "%game.hasResource.charPanelLabels%",
+        "param1": "%charPanel.visible%",
         "param2": true,
         "then": [
           { "name": "text.setText", "id": "charName", "text": "%currentLevel.currentPlayer.name%" },

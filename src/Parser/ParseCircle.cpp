@@ -2,6 +2,7 @@
 #include "Circle.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -53,6 +54,19 @@ namespace Parser
 		circle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		circle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		game.Resources().addDrawable(id, circle, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(circle);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, circle, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

@@ -560,6 +560,7 @@ namespace Parser
 		{
 			return std::make_shared<ActFocusAdd>(
 				getStringKey(elem, "id"),
+				getStringKey(elem, "resource"),
 				getBoolKey(elem, "focus", true));
 		}
 		case str2int16("focus.click"):
@@ -915,6 +916,14 @@ namespace Parser
 					getFloatRectKey(elem, "offset"),
 					getBoolKey(elem, "automap"));
 			}
+		}
+		case str2int16("level.anchorDrawable"):
+		{
+			return std::make_shared<ActLevelAnchorDrawable>(
+				getStringKey(elem, "level"),
+				getStringKey(elem, "drawable"),
+				getStringKey(elem, "anchorTo"),
+				getVector2fKey<sf::Vector2f>(elem, "offset"));
 		}
 		case str2int16("level.clearAllObjects"):
 		{

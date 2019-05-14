@@ -98,14 +98,14 @@ Item* Inventory::get(size_t idx) const
 	return nullptr;
 }
 
-bool Inventory::set(size_t idx, std::unique_ptr<Item>& item)
+bool Inventory::set(size_t idx, std::shared_ptr<Item>& item)
 {
-	std::unique_ptr<Item> oldItem;
+	std::shared_ptr<Item> oldItem;
 	return set(idx, item, oldItem);
 }
 
-bool Inventory::set(size_t idx, std::unique_ptr<Item>& item,
-	std::unique_ptr<Item>& oldItem)
+bool Inventory::set(size_t idx, std::shared_ptr<Item>& item,
+	std::shared_ptr<Item>& oldItem)
 {
 	if (idx < items.size())
 	{
@@ -129,14 +129,14 @@ bool Inventory::set(size_t idx, std::unique_ptr<Item>& item,
 	return false;
 }
 
-bool Inventory::set(const PairUInt8& position, std::unique_ptr<Item>& item)
+bool Inventory::set(const PairUInt8& position, std::shared_ptr<Item>& item)
 {
-	std::unique_ptr<Item> oldItem;
+	std::shared_ptr<Item> oldItem;
 	return set(position, item, oldItem);
 }
 
-bool Inventory::set(const PairUInt8& position, std::unique_ptr<Item>& item,
-	std::unique_ptr<Item>& oldItem)
+bool Inventory::set(const PairUInt8& position, std::shared_ptr<Item>& item,
+	std::shared_ptr<Item>& oldItem)
 {
 	if (position.x >= size.x || position.y >= size.y)
 	{
@@ -162,8 +162,8 @@ bool Inventory::set(const PairUInt8& position, std::unique_ptr<Item>& item,
 	return false;
 }
 
-bool Inventory::setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& item,
-	std::unique_ptr<Item>& oldItem)
+bool Inventory::setAndDontEnforceItemSize(size_t idx, std::shared_ptr<Item>& item,
+	std::shared_ptr<Item>& oldItem)
 {
 	Item* itemPtr = item.get();
 	if (item != nullptr)
@@ -183,7 +183,7 @@ bool Inventory::setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& ite
 }
 
 bool Inventory::setAndEnforceItemSize(const PairUInt8& position,
-	std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem)
+	std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem)
 {
 	if (position.x >= size.x || position.y >= size.y ||
 		size.x == 0 || size.y == 0)
@@ -598,7 +598,7 @@ LevelObjValue Inventory::addQuantity(const ItemClass& itemClass,
 			auto newQuant = item->addQuantity(amount);
 			if (newQuant == 0)
 			{
-				std::unique_ptr<Item> nullItem;
+				std::shared_ptr<Item> nullItem;
 				set(itemIdx, nullItem);
 			}
 			if (amount == 0)
@@ -615,7 +615,7 @@ LevelObjValue Inventory::addQuantity(const ItemClass& itemClass,
 			auto newQuant = item->addQuantity(amount);
 			if (newQuant == 0)
 			{
-				std::unique_ptr<Item> nullItem;
+				std::shared_ptr<Item> nullItem;
 				set(itemIdx, nullItem);
 			}
 			if (amount == 0)
@@ -646,7 +646,7 @@ LevelObjValue Inventory::addQuantity(const ItemClass& itemClass,
 			{
 				return 0;
 			}
-			auto newItem = std::make_unique<Item>(&itemClass);
+			auto newItem = std::make_shared<Item>(&itemClass);
 			newItem->updateOwner(itemOwner);
 			auto capacity = newItem->getIntByHash(ItemProp::Capacity);
 			if (capacity <= 0)

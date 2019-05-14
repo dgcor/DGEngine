@@ -117,18 +117,17 @@ private:
 
 	void updateGameWindowSize();
 
+	// recreates the given renderTexture using the current draw region size
+	// and sets the smooth property.
+	void recreateRenderTexture(sf::RenderTexture& renderTexture) const;
+
 	void reset();
 
 public:
-
 	~Game();
 
 	void load(const std::string_view gamefilePath, const std::string_view mainFile);
 	void init();
-
-	// recreates the given renderTexture using the current draw region size
-	// and sets the smooth property.
-	void recreateRenderTexture(sf::RenderTexture& renderTexture) const;
 
 	const GameShaders& Shaders() const noexcept { return shaders; };
 

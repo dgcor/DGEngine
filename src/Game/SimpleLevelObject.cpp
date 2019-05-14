@@ -36,9 +36,9 @@ bool SimpleLevelObject::getTexture(size_t textureNumber, TextureInfo& ti) const
 	}
 }
 
-void SimpleLevelObject::update(Game& game, Level& level)
+void SimpleLevelObject::update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr)
 {
-	updateHover(game, level);
+	updateHover(game, level, thisPtr);
 
 	const auto& rect = sprite.getTextureRect();
 	if (rect.width > 0 && rect.height > 0)

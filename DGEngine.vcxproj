@@ -59,6 +59,7 @@
     <ClCompile Include="src\Game\LevelMap.cpp" />
     <ClCompile Include="src\Game\LevelObject.cpp" />
     <ClCompile Include="src\Game\LevelObjectClass.cpp" />
+    <ClCompile Include="src\Game\LevelSurface.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
@@ -87,6 +88,7 @@
     <ClCompile Include="src\Min.cpp" />
     <ClCompile Include="src\Movie2.cpp" />
     <ClCompile Include="src\Palette.cpp" />
+    <ClCompile Include="src\Panel.cpp" />
     <ClCompile Include="src\Parser\Game\ParseClassifier.cpp" />
     <ClCompile Include="src\Parser\Game\ParseItem.cpp" />
     <ClCompile Include="src\Parser\Game\ParseItemClass.cpp" />
@@ -119,6 +121,7 @@
     <ClCompile Include="src\Parser\ParseMountFile.cpp" />
     <ClCompile Include="src\Parser\ParseMovie.cpp" />
     <ClCompile Include="src\Parser\ParsePalette.cpp" />
+    <ClCompile Include="src\Parser\ParsePanel.cpp" />
     <ClCompile Include="src\Parser\ParsePredicate.cpp" />
     <ClCompile Include="src\Parser\Parser.cpp" />
     <ClCompile Include="src\Parser\ParseRectangle.cpp" />
@@ -239,11 +242,11 @@
     <ClInclude Include="src\Game\LevelCell.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelLayer.h" />
-    <ClInclude Include="src\Game\LevelLayerInfo.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
     <ClInclude Include="src\Game\LevelObject.h" />
     <ClInclude Include="src\Game\LevelObjectClass.h" />
     <ClInclude Include="src\Game\LevelObjectClassDefaults.h" />
+    <ClInclude Include="src\Game\LevelSurface.h" />
     <ClInclude Include="src\Game\LightMap.h" />
     <ClInclude Include="src\Game\LightSource.h" />
     <ClInclude Include="src\Game\Number.h" />
@@ -277,6 +280,7 @@
     <ClInclude Include="src\Json\JsonParser.h" />
     <ClInclude Include="src\Json\JsonUtils.h" />
     <ClInclude Include="src\Movie2.h" />
+    <ClInclude Include="src\Panel.h" />
     <ClInclude Include="src\Parser\Game\ParseClassifier.h" />
     <ClInclude Include="src\Parser\Game\ParseItem.h" />
     <ClInclude Include="src\Parser\Game\ParseItemClass.h" />
@@ -309,6 +313,7 @@
     <ClInclude Include="src\Parser\ParseMountFile.h" />
     <ClInclude Include="src\Parser\ParseMovie.h" />
     <ClInclude Include="src\Parser\ParsePalette.h" />
+    <ClInclude Include="src\Parser\ParsePanel.h" />
     <ClInclude Include="src\Parser\ParsePredicate.h" />
     <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Parser\ParseRectangle.h" />
@@ -431,7 +436,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>llvm</PlatformToolset>
+    <PlatformToolset>LLVM_v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -452,7 +457,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>PGOptimize</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />

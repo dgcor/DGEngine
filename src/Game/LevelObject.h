@@ -23,6 +23,7 @@ protected:
 
 	Sprite2 sprite;
 	sf::Vector2f basePosition;
+	sf::Vector2f anchorPosition;
 	sf::Vector2f drawPositionOffset;
 	bool absoluteOffset{ false };
 	float tileBlockHeight{ 0.f };
@@ -45,12 +46,17 @@ protected:
 	bool getLevelObjProp(const uint16_t propHash16,
 		const std::string_view prop, Variable& var) const;
 
+	PairFloat getCenterMapPosition(const PairFloat& mapPos);
+
+	void getMinMaxMapPosition(const PairFloat& mapPos,
+		PairFloat& minMapPos, PairFloat& maxMapPos);
+
 	bool hasValidState() const noexcept;
 	bool getCurrentTexture(TextureInfo& ti) const;
 	void updateDrawPosition(const LevelMap& map);
-	void updateDrawPosition(const LevelMap& map, const sf::Vector2f& drawPos);
+	void updateDrawPosition(const LevelMap& map, const PairFloat& mapPos);
 	void updateSpriteDrawPosition();
-	void updateHover(Game& game, Level& level);
+	void updateHover(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr);
 	bool updateMapPositionBack(LevelMap& map, const PairFloat pos);
 	bool updateMapPositionFront(LevelMap& map, const PairFloat pos);
 
@@ -66,6 +72,7 @@ public:
 	virtual ~LevelObject() = default;
 
 	const sf::Vector2f& getBasePosition() const noexcept { return basePosition; }
+	const sf::Vector2f& getAnchorPosition() const noexcept { return anchorPosition; }
 	bool updateTexture();
 
 	const sf::Vector2f& Position() const { return sprite.getPosition(); }
@@ -131,7 +138,7 @@ public:
 	}
 
 	// Update
-	virtual void update(Game& game, Level& level) = 0;
+	virtual void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr) = 0;
 
 	virtual void setProperty(const std::string_view prop, const Variable& val) = 0;
 };

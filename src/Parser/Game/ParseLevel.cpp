@@ -497,7 +497,7 @@ namespace Parser
 				return;
 			}
 			auto levelPtr = std::make_shared<Level>();
-			game.Resources().addDrawable(id, levelPtr, getStringViewKey(elem, "resource"));
+			game.Resources().addDrawable(id, levelPtr, true, getStringViewKey(elem, "resource"));
 			level = levelPtr.get();
 			game.Resources().setCurrentLevel(level);
 			level->Id(id);
@@ -530,8 +530,7 @@ namespace Parser
 			level->setSmoothMovement(smoothMovement);
 		}
 
-		level->resetView();
-		level->updateViewport(game);
+		level->updateView();
 
 		if (elem.HasMember("enableHover"))
 		{

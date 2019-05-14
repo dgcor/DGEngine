@@ -1,6 +1,7 @@
 #include "ParseInputText.h"
 #include "Game.h"
 #include "InputText.h"
+#include "Panel.h"
 #include "ParseAction.h"
 #include "ParseText.h"
 #include "Utils/ParseUtils.h"
@@ -59,6 +60,19 @@ namespace Parser
 			inputText->setAction(str2int16("minLength"), parseAction(game, elem["onMinLength"]));
 		}
 
-		game.Resources().addDrawable(id, inputText, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(inputText);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, inputText, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

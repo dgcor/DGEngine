@@ -3,6 +3,7 @@
 #include "GameUtils.h"
 #include <iostream>
 #include "Movie2.h"
+#include "Panel.h"
 #include "ParseAction.h"
 #include "Utils/ParseUtils.h"
 
@@ -77,7 +78,20 @@ namespace Parser
 
 		movie->Visible(getBoolKey(elem, "visible", true));
 
-		game.Resources().addDrawable(id, movie, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(movie);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, movie, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 
 		movie->play();
 	}

@@ -5,6 +5,7 @@
       "name": "Down to level",
       "nameClassifier": "levelNameFlare",
       "size": [1, 1],
+      "anchorOffset": [0, -36],
       "texture": "empty",
       "textureRect": [32, 32],
       "descriptions": [

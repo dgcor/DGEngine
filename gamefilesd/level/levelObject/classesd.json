@@ -4,6 +4,7 @@
       "id": "levelDown",
       "name": "Down to level",
       "size": [1, 1],
+      "anchorOffset": [0, -36],
       "nameClassifier": "levelNameDown",
       "text2": "cuttt",
       "texture": "empty",
@@ -223,6 +224,7 @@
       "texture": "empty",
       "textureRect": [32, 32],
       "size": [1, 1],
+      "anchorOffset": [0, -36],
       "actions": {
         "action": {
           "name": "loadJson",

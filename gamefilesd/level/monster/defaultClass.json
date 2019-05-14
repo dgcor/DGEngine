@@ -1,0 +1,9 @@
+{
+  "playerClass": {
+    "id": "defaultMonster",
+    "replaceVars": true,
+    "outline": "|outlineEnemy|",
+    "outlineIgnore": "0x000000",
+    "anchorOffset": [0, -80]
+  }
+}

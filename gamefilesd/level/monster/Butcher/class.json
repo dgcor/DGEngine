@@ -1,12 +1,10 @@
 {
   "playerClass": {
     "id": "butcher",
-    "replaceVars": true,
+    "fromId": "defaultMonster",
     "name": "The Butcher",
     "type": "Demon",
     "descriptions": { "index": 0, "name": "resistNoImune" },
-    "outline": "|outlineEnemy|",
-    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 10,
       "experience": 710,

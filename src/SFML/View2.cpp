@@ -30,19 +30,9 @@ void View2::setSize(float width, float height)
 	view.setSize(roundedSizeNoZoom.x, roundedSizeNoZoom.y);
 }
 
-void View2::setSize(sf::Vector2f size_)
+void View2::setSize(const sf::Vector2f& size_)
 {
-	sizeNoZoom = size_;
-	if (forceEvenSize == true)
-	{
-		roundedSizeNoZoom.x = ((float)((int)(size_.x * 0.5f)) * 2);
-		roundedSizeNoZoom.y = ((float)((int)(size_.y * 0.5f)) * 2);
-	}
-	else
-	{
-		roundedSizeNoZoom = sizeNoZoom;
-	}
-	view.setSize(roundedSizeNoZoom.x, roundedSizeNoZoom.y);
+	setSize(size_.x, size_.y);
 }
 
 void View2::setViewport(const Game& game)
@@ -68,21 +58,27 @@ void View2::setViewport(const Game& game)
 	view.setViewport(sf::FloatRect(x, y, w, h));
 }
 
-void View2::updateSize(const Game& game)
+void View2::updateSize(const Game& game, bool dontUpdateViewport)
 {
 	auto pos2 = getPosition();
 	auto size2 = getSize();
 	GameUtils::setAnchorPosSize(anchor, pos2, size2, game.OldDrawRegionSize(), game.DrawRegionSize());
 	setPosition(pos2);
 	setSize(size2);
-	setViewport(game);
+	if (dontUpdateViewport == false)
+	{
+		setViewport(game);
+	}
 	view.zoom(zoomFactor);
 }
 
-void View2::updateViewport(const Game& game)
+void View2::update(const Game& game, bool dontUpdateViewport)
 {
 	setSize(sizeNoZoom);
-	setViewport(game);
+	if (dontUpdateViewport == false)
+	{
+		setViewport(game);
+	}
 	view.zoom(zoomFactor);
 }
 

@@ -5,6 +5,7 @@
       "name": "action.set",
       "id": "closeMsgBox",
       "action": [
+        { "name": "drawable.visible", "id": "msgBox", "visible": false },
         { "name": "resource.pop", "id": "msgBox" },
         { "name": "event.delete", "id": "closeMsgBox" }
       ]
@@ -14,42 +15,16 @@
     "key": "esc",
     "action": "closeMsgBox"
   },
-  "image": [
-    {
-      "id": "textWallBackground",
-      "position": [103, 150],
-      "anchor": "none",
-      "textureRect": [435, 57],
-      "texture": "textWallBackground"
-    },
-    {
-      "id": "textWallBorder1",
-      "position": [101, 147],
-      "anchor": "none",
-      "textureRect": [438, 60],
-      "texture": "textbox"
-    },
-    {
-      "id": "textWallBorder2",
-      "position": [103, 148],
-      "anchor": "none",
-      "textureRect": [155, 244, 436, 59],
-      "texture": "textbox"
-    }
+  "action": [
+    { "name": "drawable.visible", "id": "msgBox", "visible": true },
+    { "name": "game.draw" }
   ],
-  "text": {
-    "id": "textMsg",
-    "font": "smaltextGold",
-    "position": [322, 172],
-    "anchor": "none",
-    "horizontalAlign": "center",
-    "horizontalSpaceOffset": 1,
-    "text": "{1}"
-  },
-  "action": { "name": "game.draw" },
   "event": {
     "id": "closeMsgBox",
-    "action": { "name": "resource.pop", "id": "msgBox" },
+    "action": [
+      { "name": "drawable.visible", "id": "msgBox", "visible": false },
+      { "name": "resource.pop", "id": "msgBox" }
+    ],
     "time": 4.0
   }
 }

@@ -1,6 +1,7 @@
 #include "ParseRectangle.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Panel.h"
 #include "Rectangle.h"
 #include "Utils/ParseUtils.h"
 
@@ -54,6 +55,19 @@ namespace Parser
 		rectangle->setOutlineColor(getColorKey(elem, "outlineColor", sf::Color::White));
 		rectangle->setOutlineThickness((float)getUIntKey(elem, "outlineThickness"));
 
-		game.Resources().addDrawable(id, rectangle, getStringViewKey(elem, "resource"));
+		bool manageObjDrawing = true;
+		if (isValidString(elem, "panel") == true)
+		{
+			std::string panelId = getStringVal(elem["panel"]);
+			auto panel = game.Resources().getDrawable<Panel>(panelId);
+			if (panel != nullptr)
+			{
+				panel->addDrawable(rectangle);
+				manageObjDrawing = false;
+			}
+		}
+		game.Resources().addDrawable(
+			id, rectangle, manageObjDrawing, getStringViewKey(elem, "resource")
+		);
 	}
 }

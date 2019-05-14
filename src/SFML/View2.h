@@ -21,8 +21,12 @@ private:
 public:
 	View2(bool forceEvenSize_ = false) : forceEvenSize(forceEvenSize_) {}
 
-	void updateSize(const Game& game);
-	void updateViewport(const Game& game);
+	void updateSize(const Game& game, bool dontUpdateViewport = false);
+
+	// updates size, zoom and the viewport
+	void update(const Game& game, bool dontUpdateViewport = false);
+
+	void setViewport(const sf::FloatRect& viewport) { view.setViewport(viewport); }
 
 	Anchor getAnchor() const noexcept { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
@@ -38,8 +42,9 @@ public:
 
 	const sf::Vector2f& getVisibleSize() const noexcept { return view.getSize(); }
 	const sf::Vector2f& getSize() const noexcept { return sizeNoZoom; }
+	const sf::Vector2f& getRoundedSize() const noexcept { return roundedSizeNoZoom; }
 	void setSize(float width, float height);
-	void setSize(sf::Vector2f size_);
+	void setSize(const sf::Vector2f& size_);
 
 	const sf::View& getView() const noexcept { return view; }
 

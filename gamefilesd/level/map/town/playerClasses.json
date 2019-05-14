@@ -2,11 +2,8 @@
   "playerClass": [
     {
       "id": "healer",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Pepin the healer",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "healer",
       "actions": {
         "action": { "name": "load", "file": "towners/pepin/load.json" }
@@ -14,11 +11,8 @@
     },
     {
       "id": "storyTeller",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Cain the elder",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "strytell",
       "actions": {
         "action": { "name": "load", "file": "towners/cain/panel.json" }
@@ -26,11 +20,8 @@
     },
     {
       "id": "blacksmith",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Griswold the blacksmith",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "smithn",
       "actions": {
         "action": { "name": "load", "file": "towners/griswold/panel.json" }
@@ -38,11 +29,8 @@
     },
     {
       "id": "tavernOwner",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Ogden the tavern owner",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "twnfn",
       "actions": {
         "action": { "name": "load", "file": "towners/ogden/load.json" }
@@ -50,11 +38,8 @@
     },
     {
       "id": "drunk",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Farnham the drunk",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "twndrunk",
       "actions": {
         "action": { "name": "load", "file": "towners/farnham/panel.json" }
@@ -62,11 +47,8 @@
     },
     {
       "id": "barmaid",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Gillian the barmaid",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "wmnn",
       "actions": {
         "action": { "name": "load", "file": "towners/gillian/load.json" }
@@ -74,11 +56,8 @@
     },
     {
       "id": "boy",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Wirt the peg-legged boy",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "pegkid1",
       "actions": {
         "action": { "name": "load", "file": "towners/wirt/panel.json" }
@@ -86,11 +65,8 @@
     },
     {
       "id": "witch",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Adria the witch",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "witch",
       "actions": {
         "action": { "name": "load", "file": "towners/adria/panel.json" }
@@ -98,11 +74,8 @@
     },
     {
       "id": "deadGuy",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "nameClassifier": "deadGuy",
-      "type": "Human",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "deadguy",
       "actions": {
         "action": { "name": "load", "file": "towners/deadGuy/load.json" }
@@ -110,11 +83,9 @@
     },
     {
       "id": "cow",
-      "replaceVars": true,
+      "fromId": "defaultPlayer",
       "name": "Cow",
       "type": "Animal",
-      "outline": "|outlineFriend|",
-      "outlineIgnore": "0x000000",
       "texturePacks": "cow",
       "actions": {
         "action": {

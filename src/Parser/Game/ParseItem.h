@@ -9,7 +9,7 @@ class Level;
 
 namespace Parser
 {
-	std::unique_ptr<Item> parseItemObj(Game& game,
+	std::shared_ptr<Item> parseItemObj(Game& game,
 		Level& level, const rapidjson::Value& elem);
 	void parseItem(Game& game, const rapidjson::Value& elem);
 }

@@ -1,12 +1,10 @@
 {
   "playerClass": {
     "id": "skeletonKing",
-    "replaceVars": true,
+    "fromId": "defaultMonster",
     "name": "The Skeleton King",
     "type": "Undead",
     "descriptions": { "index": 0, "name": "resistImune" },
-    "outline": "|outlineEnemy|",
-    "outlineIgnore": "0x000000",
     "defaults": {
       "level": 14,
       "experience": 570,

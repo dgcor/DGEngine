@@ -44,6 +44,26 @@ namespace Parser
 	uint64_t getUInt64Key(const rapidjson::Value& elem,
 		const char* key, uint64_t val = {});
 
+	template<class T>
+	T getNumberKey(const rapidjson::Value& elem, const char* key, T val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getNumberVal<T>(elem[key], val);
+		}
+		return val;
+	}
+
+	template<class T>
+	T getUnsignedNumberKey(const rapidjson::Value& elem, const char* key, T val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getUnsignedNumberVal<T>(elem[key], val);
+		}
+		return val;
+	}
+
 	template <class T, class NumType>
 	T getVector2NumberKey(const rapidjson::Value& elem, const char* key, const T& val = {})
 	{

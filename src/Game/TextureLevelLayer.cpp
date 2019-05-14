@@ -1,5 +1,6 @@
 #include "TextureLevelLayer.h"
 #include <cmath>
+#include "LevelSurface.h"
 #include <SFML/Graphics/Sprite.hpp>
 
 void TextureLevelLayer::update(sf::Time elapsedTime_)
@@ -32,8 +33,7 @@ void TextureLevelLayer::update(sf::Time elapsedTime_)
 	}
 }
 
-void TextureLevelLayer::draw(sf::RenderTexture& levelTexture,
-	const LevelLayerInfo& layerInfo, const sf::Vector2f& viewCenter) const
+void TextureLevelLayer::draw(const LevelSurface& surface) const
 {
 	if (texture == nullptr)
 	{
@@ -43,16 +43,16 @@ void TextureLevelLayer::draw(sf::RenderTexture& levelTexture,
 	if (rect.left == 0 && rect.top == 0 &&
 		rect.width == 0 && rect.height == 0)
 	{
-		rect.left = (int)layerInfo.visibleRect.left;
-		rect.top = (int)layerInfo.visibleRect.top;
-		rect.width = (int)layerInfo.visibleRect.width;
-		rect.height = (int)layerInfo.visibleRect.height;
+		rect.left = (int)surface.visibleRect.left;
+		rect.top = (int)surface.visibleRect.top;
+		rect.width = (int)surface.visibleRect.width;
+		rect.height = (int)surface.visibleRect.height;
 
 		auto size = texture->getSize();
 		if (parallaxSpeed != 0.f)
 		{
-			rect.left += (int)(std::round((double)viewCenter.x * parallaxSpeed)) % size.x;
-			rect.top += (int)(std::round((double)viewCenter.y * parallaxSpeed)) % size.y;
+			rect.left += (int)(std::round((double)surface.getCenter().x * parallaxSpeed)) % size.x;
+			rect.top += (int)(std::round((double)surface.getCenter().y * parallaxSpeed)) % size.y;
 		}
 		if (parallaxFixedSpeedOffset.x != 0.f)
 		{
@@ -64,6 +64,6 @@ void TextureLevelLayer::draw(sf::RenderTexture& levelTexture,
 		}
 	}
 	sf::Sprite sprite(*texture, rect);
-	sprite.setPosition({ layerInfo.visibleRect.left, layerInfo.visibleRect.top });
-	levelTexture.draw(sprite);
+	sprite.setPosition({ surface.visibleRect.left, surface.visibleRect.top });
+	surface.draw(sprite);
 }

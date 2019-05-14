@@ -1,8 +1,22 @@
 {
-  "action": { "name": "resource.add", "id": "charPanelLabels" },
+  "panel": {
+    "id": "charPanel",
+    "visible": false
+  },
+  "button": {
+    "id": "charPanelBk",
+    "panel": "charPanel",
+    "texture": "char",
+    "anchor": "left",
+    "captureInputEvents": true,
+    "onHoverEnter": "clearLevelHoverActions",
+    "onHoverLeave": "setLevelHoverActions",
+    "onRightClick": "rightClickLevel"
+  },
   "text": [
     {
       "id": "charName",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [86, 22],
       "anchor": "left",
@@ -11,6 +25,7 @@
     },
     {
       "id": "charClass",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [234, 22],
       "anchor": "left",
@@ -19,6 +34,7 @@
     },
     {
       "id": "charLevel",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [88, 59],
       "anchor": "left",
@@ -27,6 +43,7 @@
     },
     {
       "id": "charExp",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [258, 59],
       "anchor": "left",
@@ -35,6 +52,7 @@
     },
     {
       "id": "charExpNext",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [258, 87],
       "anchor": "left",
@@ -43,6 +61,7 @@
     },
     {
       "id": "charGold",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [258, 136],
       "anchor": "left",
@@ -52,6 +71,7 @@
     },
     {
       "id": "charStr",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [110, 145],
       "anchor": "left",
@@ -61,6 +81,7 @@
     },
     {
       "id": "charStrNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [158, 145],
       "anchor": "left",
@@ -70,6 +91,7 @@
     },
     {
       "id": "charMag",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [111, 173],
       "anchor": "left",
@@ -79,6 +101,7 @@
     },
     {
       "id": "charMagNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [158, 173],
       "anchor": "left",
@@ -88,6 +111,7 @@
     },
     {
       "id": "charDex",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [110, 201],
       "anchor": "left",
@@ -97,6 +121,7 @@
     },
     {
       "id": "charDexNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [158, 201],
       "anchor": "left",
@@ -106,6 +131,7 @@
     },
     {
       "id": "charVit",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [110, 229],
       "anchor": "left",
@@ -115,6 +141,7 @@
     },
     {
       "id": "charVitNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [158, 229],
       "anchor": "left",
@@ -124,6 +151,7 @@
     },
     {
       "id": "charPoints",
+      "panel": "charPanel",
       "font": "smaltextRed",
       "position": [111, 256],
       "anchor": "left",
@@ -132,6 +160,7 @@
     },
     {
       "id": "charLife",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [111, 294],
       "anchor": "left",
@@ -141,6 +170,7 @@
     },
     {
       "id": "charLifeNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [159, 294],
       "anchor": "left",
@@ -150,6 +180,7 @@
     },
     {
       "id": "charMana",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [111, 322],
       "anchor": "left",
@@ -159,6 +190,7 @@
     },
     {
       "id": "charManaNow",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [159, 322],
       "anchor": "left",
@@ -168,6 +200,7 @@
     },
     {
       "id": "charArmor",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [280, 173],
       "anchor": "left",
@@ -177,6 +210,7 @@
     },
     {
       "id": "charToHit",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [279, 201],
       "anchor": "left",
@@ -186,6 +220,7 @@
     },
     {
       "id": "charDamage",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [280, 229],
       "anchor": "left",
@@ -194,6 +229,7 @@
     },
     {
       "id": "charResMagic",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [279, 266],
       "anchor": "left",
@@ -203,6 +239,7 @@
     },
     {
       "id": "charResFire",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [279, 294],
       "anchor": "left",
@@ -212,6 +249,7 @@
     },
     {
       "id": "charResLight",
+      "panel": "charPanel",
       "font": "smaltext",
       "position": [279, 322],
       "anchor": "left",
@@ -223,10 +261,11 @@
   "button": [
     {
       "id": "charStrAddPoint",
+      "panel": "charPanel",
       "position": [137, 138],
       "anchor": "left",
-      "texture": "red",
-      "textureRect": [41, 22],
+      "texture": "charbut",
+      "textureRect": [0, 22, 41, 22],
       "clickUp": true,
       "visible": true,
       "onClick": "charStrAddPoint",
@@ -235,10 +274,11 @@
     },
     {
       "id": "charMagAddPoint",
+      "panel": "charPanel",
       "position": [137, 166],
       "anchor": "left",
-      "texture": "red",
-      "textureRect": [41, 22],
+      "texture": "charbut",
+      "textureRect": [0, 66, 41, 22],
       "clickUp": true,
       "visible": true,
       "onClick": "charMagAddPoint",
@@ -247,10 +287,11 @@
     },
     {
       "id": "charDexAddPoint",
+      "panel": "charPanel",
       "position": [137, 195],
       "anchor": "left",
-      "texture": "red",
-      "textureRect": [41, 22],
+      "texture": "charbut",
+      "textureRect": [0, 110, 41, 22],
       "clickUp": true,
       "visible": true,
       "onClick": "charDexAddPoint",
@@ -259,16 +300,16 @@
     },
     {
       "id": "charVitAddPoint",
+      "panel": "charPanel",
       "position": [137, 223],
       "anchor": "left",
-      "texture": "red",
-      "textureRect": [41, 22],
+      "texture": "charbut",
+      "textureRect": [0, 154, 41, 22],
       "clickUp": true,
       "visible": true,
       "onClick": "charVitAddPoint",
       "onClickIn": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 176, 41, 22] },
       "onClickOut": { "name": "image.setTextureRect", "id": "charVitAddPoint", "rect": [0, 154, 41, 22] }
     }
-  ],
-  "action": "updateCharLabels"
+  ]
 }

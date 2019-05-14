@@ -99,7 +99,7 @@
       "id": "updateSpellBook",
       "action": {
         "name": "if.equal",
-        "param1": "%game.hasResource.charPanelSpellBook%",
+        "param1": "%spellBookPanel.visible%",
         "param2": true,
         "then": {
           "name": "switch",

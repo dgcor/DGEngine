@@ -12,6 +12,8 @@
     { "name": "level.clearQuests" },
     { "name": "resource.popAll", "id": "currentLevel" },
     { "name": "event.deleteAll" },
+    { "name": "load", "file": "level/monster/defaultClass.json" },
+    { "name": "load", "file": "level/player/defaultClass.json" },
     { "name": "resource.add", "id": "currentLevel" },
     { "name": "load", "file": "level/map/{1}/sounds.json" },
     { "name": "load", "file": "level/map/{1}/level.json" },

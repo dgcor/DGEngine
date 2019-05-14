@@ -12,7 +12,7 @@ class Inventory
 {
 private:
 	// if index >= 0, it points to the item.
-	typedef std::pair<std::unique_ptr<Item>, int32_t> ItemCell;
+	typedef std::pair<std::shared_ptr<Item>, int32_t> ItemCell;
 
 	std::vector<ItemCell> items;
 	PairUInt8 size;
@@ -22,11 +22,11 @@ private:
 	// Doesn't perform the check for allowed class types. only for items whose size is 1
 	unsigned countFreeSlotsNoChecks(uint16_t classIdHash16) const;
 
-	bool setAndDontEnforceItemSize(size_t idx, std::unique_ptr<Item>& item,
-		std::unique_ptr<Item>& oldItem);
+	bool setAndDontEnforceItemSize(size_t idx, std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem);
 
-	bool setAndEnforceItemSize(const PairUInt8& position, std::unique_ptr<Item>& item,
-		std::unique_ptr<Item>& oldItem);
+	bool setAndEnforceItemSize(const PairUInt8& position, std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem);
 
 	bool isSlotEmpty(int x, int y,
 		const PairUInt8& itemSize, size_t& itemIdx) const;
@@ -126,12 +126,12 @@ public:
 	Item* get(size_t x, size_t y) const { return get(x + y * size.x); }
 	Item* get(const PairUInt8& pos) const { return get(pos.x, pos.y); }
 
-	bool set(size_t idx, std::unique_ptr<Item>& item);
-	bool set(size_t idx, std::unique_ptr<Item>& item, std::unique_ptr<Item>& oldItem);
+	bool set(size_t idx, std::shared_ptr<Item>& item);
+	bool set(size_t idx, std::shared_ptr<Item>& item, std::shared_ptr<Item>& oldItem);
 
-	bool set(const PairUInt8& position, std::unique_ptr<Item>& item);
-	bool set(const PairUInt8& position, std::unique_ptr<Item>& item,
-		std::unique_ptr<Item>& oldItem);
+	bool set(const PairUInt8& position, std::shared_ptr<Item>& item);
+	bool set(const PairUInt8& position, std::shared_ptr<Item>& item,
+		std::shared_ptr<Item>& oldItem);
 
 	bool isFull() const noexcept;
 

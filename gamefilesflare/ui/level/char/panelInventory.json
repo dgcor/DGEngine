@@ -1,8 +1,49 @@
 {
-  "action": { "name": "resource.add", "id": "charPanelInventory" },
+  "panel": {
+    "id": "invPanel",
+    "position": [320, 0],
+    "visible": false
+  },
   "button": [
     {
+      "id": "invPanelBk",
+      "panel": "invPanel",
+      "texture": "inventory",
+      "textureRect": [0, 0, 320, 352],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "invPanelBk2",
+      "panel": "invPanel",
+      "texture": "character",
+      "textureRect": [0, 0, 26, 26],
+      "anchor": "right",
+      "position": [320, 0],
+      "captureInputEvents": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
+      "id": "invPanelBk3",
+      "panel": "invPanel",
+      "texture": "inventory",
+      "textureRect": [0, 414, 320, 2],
+      "anchor": "right",
+      "position": [320, 351],
+      "captureInputEvents": true,
+      "onHoverEnter": "clearLevelHoverActions",
+      "onHoverLeave": "setLevelHoverActions",
+      "onRightClick": "rightClickLevel"
+    },
+    {
       "id": "playerLeftHand",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -13,6 +54,7 @@
     },
     {
       "id": "playerRightHand",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -23,6 +65,7 @@
     },
     {
       "id": "playerArmor",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -33,6 +76,7 @@
     },
     {
       "id": "playerHelmet",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -43,6 +87,7 @@
     },
     {
       "id": "playerAmulet",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -53,6 +98,7 @@
     },
     {
       "id": "playerLeftRing",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -63,6 +109,7 @@
     },
     {
       "id": "playerRightRing",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -73,6 +120,7 @@
     },
     {
       "id": "btnStash",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [256, 128],
       "anchor": "right",
@@ -84,6 +132,7 @@
     {
       "id": "imgLeftHand",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -94,6 +143,7 @@
     {
       "id": "imgRightHand",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -104,6 +154,7 @@
     {
       "id": "imgArmor",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -114,6 +165,7 @@
     {
       "id": "imgHelmet",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -124,6 +176,7 @@
     {
       "id": "imgAmulet",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -134,6 +187,7 @@
     {
       "id": "imgLeftRing",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -144,6 +198,7 @@
     {
       "id": "imgRightRing",
       "replaceVars": true,
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "outline": "|outlineItemInv|",
@@ -153,6 +208,7 @@
     },
     {
       "id": "imgBkStash11",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -160,6 +216,7 @@
     },
     {
       "id": "imgBkStash12",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -167,6 +224,7 @@
     },
     {
       "id": "imgBkStash13",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -174,6 +232,7 @@
     },
     {
       "id": "imgBkStash14",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -181,6 +240,7 @@
     },
     {
       "id": "imgBkStash21",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -188,6 +248,7 @@
     },
     {
       "id": "imgBkStash22",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -195,6 +256,7 @@
     },
     {
       "id": "imgBkStash23",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -202,6 +264,7 @@
     },
     {
       "id": "imgBkStash24",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -209,6 +272,7 @@
     },
     {
       "id": "imgBkStash31",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -216,6 +280,7 @@
     },
     {
       "id": "imgBkStash32",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -223,6 +288,7 @@
     },
     {
       "id": "imgBkStash33",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -230,6 +296,7 @@
     },
     {
       "id": "imgBkStash34",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -237,6 +304,7 @@
     },
     {
       "id": "imgBkStash41",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -244,6 +312,7 @@
     },
     {
       "id": "imgBkStash42",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -251,6 +320,7 @@
     },
     {
       "id": "imgBkStash43",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -258,6 +328,7 @@
     },
     {
       "id": "imgBkStash44",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -265,6 +336,7 @@
     },
     {
       "id": "imgBkStash51",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -272,6 +344,7 @@
     },
     {
       "id": "imgBkStash52",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -279,6 +352,7 @@
     },
     {
       "id": "imgBkStash53",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -286,6 +360,7 @@
     },
     {
       "id": "imgBkStash54",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -293,6 +368,7 @@
     },
     {
       "id": "imgBkStash61",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -300,6 +376,7 @@
     },
     {
       "id": "imgBkStash62",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -307,6 +384,7 @@
     },
     {
       "id": "imgBkStash63",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -314,6 +392,7 @@
     },
     {
       "id": "imgBkStash64",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -321,6 +400,7 @@
     },
     {
       "id": "imgBkStash71",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -328,6 +408,7 @@
     },
     {
       "id": "imgBkStash72",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -335,6 +416,7 @@
     },
     {
       "id": "imgBkStash73",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -342,6 +424,7 @@
     },
     {
       "id": "imgBkStash74",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -349,6 +432,7 @@
     },
     {
       "id": "imgBkStash81",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -356,6 +440,7 @@
     },
     {
       "id": "imgBkStash82",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -363,6 +448,7 @@
     },
     {
       "id": "imgBkStash83",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
@@ -370,14 +456,11 @@
     },
     {
       "id": "imgBkStash84",
+      "panel": "invPanel",
       "texture": "empty",
       "textureRect": [32, 32],
       "anchor": "right",
       "position": [576, 320]
     }
-  ],
-  "action": [
-    "updateBodyItems",
-    "updateStashItems"
   ]
 }

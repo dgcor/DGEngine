@@ -56,7 +56,7 @@
           "param2": true,
           "then": ["updateStashItems", "updateBodyItems"]
         },
-        "updateCharLabels"
+        "updateCharPanel"
       ]
     }
   ]

@@ -1,0 +1,10 @@
+{
+  "playerClass": {
+    "id": "defaultPlayer",
+    "replaceVars": true,
+    "type": "Human",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
+    "anchorOffset": [0, -80]
+  }
+}

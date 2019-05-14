@@ -51,10 +51,10 @@ void Player::updateSpeed()
 	}
 }
 
-void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
+void Player::updateWalkPathStep(PairFloat& newMapPos)
 {
-	newDrawPos.x -= std::round((drawPosA.x - drawPosB.x) * currPositionStep);
-	newDrawPos.y -= std::round((drawPosA.y - drawPosB.y) * currPositionStep);
+	newMapPos.x -= (mapPosA.x - mapPosB.x) * currPositionStep;
+	newMapPos.y -= (mapPosA.y - mapPosB.y) * currPositionStep;
 
 	if (currPositionStep >= 1.f)
 	{
@@ -62,8 +62,8 @@ void Player::updateWalkPathStep(sf::Vector2f& newDrawPos)
 		{
 			walkPath.pop_back();
 		}
-		drawPosA = drawPosB;
-		newDrawPos = drawPosB;
+		mapPosA = mapPosB;
+		newMapPos = mapPosB;
 	}
 	else
 	{
@@ -79,8 +79,8 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 	{
 		currentWalkTime -= speed.walk;
 
-		auto newDrawPos = drawPosA;
-		if (drawPosA == drawPosB)
+		auto newMapPos = mapPosA;
+		if (mapPosA == mapPosB)
 		{
 			if (walkPath.empty() == true &&
 				hasWalkingAnimation() == true)
@@ -116,15 +116,15 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 				setDirection(getPlayerDirection(mapPosition, nextMapPos));
 				MapPosition(map, nextMapPos);
 				currPositionStep = 0.025f;
-				updateWalkPathStep(newDrawPos);
+				updateWalkPathStep(newMapPos);
 				break;
 			}
 		}
 		else
 		{
-			updateWalkPathStep(newDrawPos);
+			updateWalkPathStep(newMapPos);
 		}
-		LevelObject::updateDrawPosition(map, newDrawPos);
+		LevelObject::updateDrawPosition(map, newMapPos);
 	}
 }
 
@@ -225,8 +225,8 @@ bool Player::getTexture(size_t textureNumber, TextureInfo& ti) const
 
 bool Player::MapPosition(LevelMap& map, const PairFloat& pos)
 {
-	drawPosA = map.toDrawCoord(mapPosition);
-	drawPosB = map.toDrawCoord(pos);
+	mapPosA = mapPosition;
+	mapPosB = pos;
 	bool success = false;
 	if (mapPosition != pos)
 	{
@@ -251,7 +251,7 @@ bool Player::move(LevelMap& map, const PairFloat& pos)
 	setStandAnimation();
 	playerStatus = PlayerStatus::Stand;
 	resetAnimationTime();
-	drawPosA = drawPosB = map.toDrawCoord(pos);
+	mapPosA = mapPosB = pos;
 	bool success = updateMapPositionBack(map, pos);
 	if (success == true)
 	{
@@ -309,7 +309,7 @@ void Player::updateAnimation(const Game& game)
 	}
 }
 
-void Player::update(Game& game, Level& level)
+void Player::update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr)
 {
 	processQueuedActions(game);
 
@@ -346,7 +346,7 @@ void Player::update(Game& game, Level& level)
 		break;
 	}
 
-	updateHover(game, level);
+	updateHover(game, level, thisPtr);
 }
 
 const std::string& Player::Name() const
@@ -1133,7 +1133,7 @@ bool Player::hasFreeItemSlot(const Item& item) const
 	return inventories.hasFreeSlot(item);
 }
 
-std::unique_ptr<Item> Player::SelectedItem(std::unique_ptr<Item> item) noexcept
+std::shared_ptr<Item> Player::SelectedItem(std::shared_ptr<Item> item) noexcept
 {
 	auto old = std::move(selectedItem);
 	selectedItem = std::move(item);
@@ -1191,14 +1191,14 @@ void Player::SelectedSpell(const std::string& id) noexcept
 	selectedSpell = getSpellInstance(id);
 }
 
-bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item)
+bool Player::setItem(size_t invIdx, size_t itemIdx, std::shared_ptr<Item>& item)
 {
-	std::unique_ptr<Item> oldItem;
+	std::shared_ptr<Item> oldItem;
 	return setItem(invIdx, itemIdx, item, oldItem);
 }
 
-bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
-	std::unique_ptr<Item>& oldItem)
+bool Player::setItem(size_t invIdx, size_t itemIdx, std::shared_ptr<Item>& item,
+	std::shared_ptr<Item>& oldItem)
 {
 	if (invIdx >= inventories.size())
 	{
@@ -1228,7 +1228,7 @@ bool Player::setItem(size_t invIdx, size_t itemIdx, std::unique_ptr<Item>& item,
 	return ret;
 }
 
-bool Player::setItemInFreeSlot(size_t invIdx, std::unique_ptr<Item>& item,
+bool Player::setItemInFreeSlot(size_t invIdx, std::shared_ptr<Item>& item,
 	InventoryPosition invPos, bool splitIntoMultiple)
 {
 	if (invIdx < inventories.size())

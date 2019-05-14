@@ -83,6 +83,8 @@ set(SOURCE_FILES
     src/Movie2.h
     src/Palette.cpp
     src/Palette.h
+    src/Panel.cpp
+    src/Panel.h
     src/Pcx.cpp
     src/Pcx.h
     src/PhysFSStream.cpp
@@ -183,7 +185,6 @@ set(SOURCE_FILES
     src/Game/LevelHelper.cpp
     src/Game/LevelHelper.h
     src/Game/LevelLayer.h
-    src/Game/LevelLayerInfo.h
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
     src/Game/LevelObject.cpp
@@ -191,6 +192,8 @@ set(SOURCE_FILES
     src/Game/LevelObjectClass.cpp
     src/Game/LevelObjectClass.h
     src/Game/LevelObjectClassDefaults.h
+    src/Game/LevelSurface.cpp
+    src/Game/LevelSurface.h
     src/Game/LightMap.h
     src/Game/LightSource.h
     src/Game/Number.h
@@ -289,6 +292,8 @@ set(SOURCE_FILES
     src/Parser/ParseMovie.h
     src/Parser/ParsePalette.cpp
     src/Parser/ParsePalette.h
+    src/Parser/ParsePanel.cpp
+    src/Parser/ParsePanel.h
     src/Parser/ParsePredicate.cpp
     src/Parser/ParsePredicate.h
     src/Parser/Parser.cpp

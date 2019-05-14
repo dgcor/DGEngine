@@ -411,7 +411,7 @@ public:
 					auto selectedItem = selectedItem2.get();
 					if (selectedItem != nullptr)
 					{
-						std::unique_ptr<Item> oldItem2;
+						std::shared_ptr<Item> oldItem2;
 						if (player->setItem(invIdx, itemIdx, selectedItem2, oldItem2) == true)
 						{
 							auto oldItem = oldItem2.get();
@@ -434,8 +434,8 @@ public:
 					}
 					else
 					{
-						std::unique_ptr<Item> nullItem;
-						std::unique_ptr<Item> oldItem2;
+						std::shared_ptr<Item> nullItem;
+						std::shared_ptr<Item> oldItem2;
 						player->setItem(invIdx, itemIdx, nullItem, oldItem2);
 						auto oldItem = oldItem2.get();
 						if (oldItem != nullptr)

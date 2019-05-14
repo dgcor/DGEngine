@@ -22,6 +22,7 @@
 #include "ParseMountFile.h"
 #include "ParseMovie.h"
 #include "ParsePalette.h"
+#include "ParsePanel.h"
 #include "ParseRectangle.h"
 #include "ParseScrollableText.h"
 #include "ParseSound.h"
@@ -460,6 +461,17 @@ namespace Parser
 		case str2int16("palette"): {
 			if (elem.IsArray() == false) {
 				parsePalette(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("panel"): {
+			if (elem.IsArray() == false) {
+				parsePanel(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

@@ -7,30 +7,47 @@
 #include "LevelLayer.h"
 #include "LevelMap.h"
 #include "LevelObjectClass.h"
+#include "LevelSurface.h"
 #include "Quest.h"
 #include "Save/SaveLevel.h"
-#include "SFML/View2.h"
 #include "UIObject.h"
 #include <unordered_map>
 #include "Utils/EasedValue.h"
 #include "Utils/FixedArray.h"
 
+class Panel;
 class Player;
+
+struct LevelDrawable
+{
+	std::string id;
+	std::weak_ptr<Panel> drawable;
+	std::weak_ptr<LevelObject> anchorTo;
+	sf::Vector2f offset;
+	float visibleRectOffset{ -1 };
+};
 
 class Level : public UIObject
 {
 private:
-	mutable sf::RenderTexture levelTexture;
+	LevelSurface surface;
+	LevelSurface automapSurface;
+
+	FixedArray<LevelLayer, 8> levelLayers;
+
+	uint16_t indexToDrawLevelObjects{ 0 };
+	int16_t automapPlayerDirectionBaseIndex{ -1 };
+
 	sf::Shader* shader{ nullptr };
-	View2 view{ true };
-	View2 automapView{ true };
 	sf::Vector2f automapPosition{ 0.f, 0.f };
 	sf::Vector2f automapSize{ 1.f, 1.f };
 	bool automapRelativeCoords{ true };
-	bool viewPortNeedsUpdate{ false };
+	bool viewNeedsUpdate{ false };
 	EasedValuef zoomValue{ 1.f };
 
 	LevelMap map;
+
+	std::vector<LevelDrawable> drawables;
 
 	sf::Vector2f mousePositionf;
 	bool hasMouseInside{ false };
@@ -48,14 +65,6 @@ private:
 	std::string name;
 	std::string path;
 
-	LevelLayerInfo defaultLayerInfo;
-	LevelLayerInfo automapLayerInfo;
-
-	FixedArray<LevelLayer, 8> levelLayers;
-
-	uint16_t indexToDrawLevelObjects{ 0 };
-	int16_t automapPlayerDirectionBaseIndex{ -1 };
-
 	std::shared_ptr<Action> leftAction;
 	std::shared_ptr<Action> rightAction;
 	std::shared_ptr<Action> hoverEnterAction;
@@ -65,12 +74,12 @@ private:
 
 	PairFloat clickedMapPosition;
 
-	std::vector<std::unique_ptr<LevelObject>> levelObjects;
-	std::unordered_map<std::string, LevelObject*> levelObjectIds;
+	std::vector<std::shared_ptr<LevelObject>> levelObjects;
+	std::unordered_map<std::string, std::shared_ptr<LevelObject>> levelObjectIds;
 
-	LevelObject* clickedObject{ nullptr };
-	LevelObject* hoverObject{ nullptr };
-	Player* currentPlayer{ nullptr };
+	std::weak_ptr<LevelObject> clickedObject;
+	std::weak_ptr<LevelObject> hoverObject;
+	std::weak_ptr<Player> currentPlayer;
 
 	std::unordered_map<std::string, std::unique_ptr<Classifier>> classifiers;
 	std::unordered_map<std::string, std::unique_ptr<LevelObjectClass>> levelObjectClasses;
@@ -98,7 +107,7 @@ private:
 	void setCurrentMapPosition(const PairFloat& mapPos, bool smooth) noexcept;
 	void setCurrentMapViewCenter(const sf::Vector2f& coord_, bool smooth) noexcept;
 
-	void addLevelObject(std::unique_ptr<LevelObject> obj, const PairFloat& mapCoord);
+	void addLevelObject(std::shared_ptr<LevelObject> obj, const PairFloat& mapCoord);
 
 	// clears the clickedObject, hoverObject, currentPlayer if they're pointing to the given object.
 	void clearCache(const LevelObject* obj) noexcept;
@@ -106,19 +115,17 @@ private:
 	// Removes level object from level. Object still needs to be deleted from map.
 	// Returns the removed object.
 	template <class T>
-	std::unique_ptr<T> removeLevelObject(const LevelObject* obj)
+	std::shared_ptr<T> removeLevelObject(const LevelObject* obj)
 	{
-		std::unique_ptr<T> oldObj;
+		std::shared_ptr<T> oldObj;
 		for (auto it = levelObjects.begin(); it != levelObjects.end(); ++it)
 		{
 			if (it->get() == obj)
 			{
-				auto oldObjPtr = dynamic_cast<T*>(it->get());
-				it->release();
-				oldObj.reset(oldObjPtr);
-				if (oldObjPtr->getId().empty() == false)
+				oldObj = std::move(std::dynamic_pointer_cast<T>(*it));
+				if (oldObj->getId().empty() == false)
 				{
-					levelObjectIds.erase(oldObjPtr->getId());
+					levelObjectIds.erase(oldObj->getId());
 				}
 				levelObjects.erase(it);
 				break;
@@ -131,10 +138,10 @@ private:
 	LevelObject* parseLevelObjectIdOrMapPosition(
 		const std::string_view str, std::string_view& props) const;
 
+	void setLevelDrawablePosition(LevelDrawable& obj, Panel& panelObj);
+	void updateDrawables(Game& game);
 	void updateLevelObjectPositions();
 	void updateMouse(const Game& game);
-	void updateVisibleArea();
-	void updateLayerInfoVisibleArea(LevelLayerInfo& layerInfo, View2& layerView);
 	void updateTilesetLayersVisibleArea();
 	void updateZoom(const Game& game);
 
@@ -163,6 +170,11 @@ public:
 
 	void setAutomap(const TilesetLevelLayer& automapLayer, int tileWidth,
 		int tileHeight, const sf::FloatRect& viewportOffset);
+
+	void addDrawable(LevelDrawable obj);
+	Panel* getDrawable(size_t idx) const;
+	LevelDrawable* getLevelDrawable(const std::string& id);
+	size_t getItemCount() const noexcept { return drawables.size(); }
 
 	Misc::Helper2D<const Level, const LevelCell&, int32_t> operator[] (int32_t x) const noexcept
 	{
@@ -239,7 +251,6 @@ public:
 				{
 					levelObjectIds.erase((*it)->getId());
 				}
-				clearCache(it->get());
 				it = levelObjects.erase(it);
 			}
 			else
@@ -257,6 +268,7 @@ public:
 
 	LevelObject* getLevelObject(const std::string id) const;
 	LevelObject* getLevelObjectByClass(const std::string_view classId) const noexcept;
+	std::weak_ptr<LevelObject> getLevelObjectPtr(const std::string id) const;
 
 	void addClassifier(const std::string key, std::unique_ptr<Classifier> obj)
 	{
@@ -301,38 +313,32 @@ public:
 	// doesn't clear currently used player classes
 	void clearPlayerTextures() noexcept;
 
-	void resetView()
-	{
-		view.reset();
-		automapView.reset();
-	}
-
 	void executeHoverEnterAction(Game& game);
 	void executeHoverLeaveAction(Game& game);
 
 	const PairFloat& getClickedMapPosition() const noexcept { return clickedMapPosition; }
 
-	LevelObject* getClickedObject() const noexcept { return clickedObject; }
-	void setClickedObject(LevelObject* object) noexcept { clickedObject = object; }
+	LevelObject* getClickedObject() const noexcept { return clickedObject.lock().get(); }
+	void setClickedObject(std::weak_ptr<LevelObject> object) noexcept { clickedObject = object; }
 
-	LevelObject* getHoverObject() const noexcept { return hoverObject; }
-	void setHoverObject(LevelObject* object) noexcept { hoverObject = object; }
+	LevelObject* getHoverObject() const noexcept { return hoverObject.lock().get(); }
+	void setHoverObject(std::weak_ptr<LevelObject> object) noexcept { hoverObject = object; }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
 
-	virtual Anchor getAnchor() const noexcept { return view.getAnchor(); }
-	virtual void setAnchor(const Anchor anchor) noexcept { view.setAnchor(anchor); }
+	virtual Anchor getAnchor() const noexcept { return surface.getAnchor(); }
+	virtual void setAnchor(const Anchor anchor) noexcept { surface.setAnchor(anchor); }
 
-	Anchor getAutomapAnchor() const noexcept { return automapView.getAnchor(); }
-	void setAutomapAnchor(const Anchor anchor) noexcept { automapView.setAnchor(anchor); }
+	Anchor getAutomapAnchor() const noexcept { return automapSurface.getAnchor(); }
+	void setAutomapAnchor(const Anchor anchor) noexcept { automapSurface.setAnchor(anchor); }
 
 	virtual void updateSize(const Game& game);
 
-	virtual const sf::Vector2f& DrawPosition() const noexcept { return view.getPosition(); }
-	virtual const sf::Vector2f& Position() const noexcept { return view.getPosition(); }
+	virtual const sf::Vector2f& DrawPosition() const noexcept { return surface.Position(); }
+	virtual const sf::Vector2f& Position() const noexcept { return surface.Position(); }
 	virtual void Position(const sf::Vector2f& position) noexcept;
-	virtual sf::Vector2f Size() const noexcept { return view.getSize(); }
+	virtual sf::Vector2f Size() const noexcept { return surface.Size(); }
 	virtual void Size(const sf::Vector2f& size);
 
 	bool getAutomapRelativeCoords() const noexcept { return automapRelativeCoords; }
@@ -349,13 +355,9 @@ public:
 	float Zoom() const noexcept { return zoomValue.getFinal(); }
 	void Zoom(float factor, bool smooth = false) noexcept;
 
-	void updateViewport(const Game& game)
-	{
-		view.updateViewport(game);
-		automapView.updateViewport(game);
-	}
+	void updateView() { viewNeedsUpdate = true; }
 
-	void addLevelObject(std::unique_ptr<LevelObject> obj);
+	void addLevelObject(std::shared_ptr<LevelObject> obj);
 
 	// Deletes level object by id. If id is empty, no action is performed.
 	void deleteLevelObjectById(const std::string_view id);
@@ -376,8 +378,8 @@ public:
 
 	void setSmoothMovement(bool smooth) noexcept { smoothMovement = smooth; }
 
-	Player* getCurrentPlayer() const noexcept { return currentPlayer; }
-	void setCurrentPlayer(Player* player_) noexcept;
+	Player* getCurrentPlayer() const noexcept { return currentPlayer.lock().get(); }
+	void setCurrentPlayer(std::weak_ptr<Player> player_) noexcept;
 
 	bool FollowCurrentPlayer() const noexcept { return followCurrentPlayer; }
 	void FollowCurrentPlayer(bool follow) noexcept { followCurrentPlayer = follow; }
@@ -385,11 +387,11 @@ public:
 	// only updates if level view is following current player
 	bool updateCurrentMapViewCenter(bool smooth) noexcept;
 
-	int32_t TileWidth() const noexcept { return defaultLayerInfo.tileWidth; }
-	int32_t TileHeight() const noexcept { return defaultLayerInfo.tileHeight; }
+	int32_t TileWidth() const noexcept { return surface.tileWidth; }
+	int32_t TileHeight() const noexcept { return surface.tileHeight; }
 
-	int32_t AutomapTileWidth() const noexcept { return automapLayerInfo.tileWidth; }
-	int32_t AutomapTileHeight() const noexcept { return automapLayerInfo.tileHeight; }
+	int32_t AutomapTileWidth() const noexcept { return automapSurface.tileWidth; }
+	int32_t AutomapTileHeight() const noexcept { return automapSurface.tileHeight; }
 
 	virtual bool Pause() const noexcept { return pause; }
 	virtual void Pause(bool pause_) noexcept { pause = pause_; }
@@ -413,8 +415,8 @@ public:
 
 	bool hasAutomap() const noexcept;
 
-	bool ShowAutomap() const noexcept { return automapLayerInfo.visible; }
-	void ShowAutomap(bool show_) noexcept { automapLayerInfo.visible = show_; }
+	bool ShowAutomap() const noexcept { return automapSurface.visible; }
+	void ShowAutomap(bool show_) noexcept { automapSurface.visible = show_; }
 
 	InputEvent getCaptureInputEvents() const noexcept { return captureInputEvents; }
 	void setCaptureInputEvents(InputEvent e) noexcept { captureInputEvents = e; }
@@ -444,15 +446,15 @@ public:
 	Item* getItem(const ItemLocation& location) const;
 	Item* getItem(const ItemLocation& location, Player*& player) const;
 
-	std::unique_ptr<Item> removeItem(const PairFloat& mapCoord);
-	std::unique_ptr<Item> removeItem(const ItemCoordInventory& itemCoord);
-	std::unique_ptr<Item> removeItem(const ItemCoordInventory& itemCoord, Player*& player);
-	std::unique_ptr<Item> removeItem(const ItemLocation& location);
-	std::unique_ptr<Item> removeItem(const ItemLocation& location, Player*& player);
+	std::shared_ptr<Item> removeItem(const PairFloat& mapCoord);
+	std::shared_ptr<Item> removeItem(const ItemCoordInventory& itemCoord);
+	std::shared_ptr<Item> removeItem(const ItemCoordInventory& itemCoord, Player*& player);
+	std::shared_ptr<Item> removeItem(const ItemLocation& location);
+	std::shared_ptr<Item> removeItem(const ItemLocation& location, Player*& player);
 
-	bool setItem(const PairFloat& mapCoord, std::unique_ptr<Item>& item);
-	bool setItem(const ItemCoordInventory& itemCoord, std::unique_ptr<Item>& item);
-	bool setItem(const ItemLocation& location, std::unique_ptr<Item>& item);
+	bool setItem(const PairFloat& mapCoord, std::shared_ptr<Item>& item);
+	bool setItem(const ItemCoordInventory& itemCoord, std::shared_ptr<Item>& item);
+	bool setItem(const ItemLocation& location, std::shared_ptr<Item>& item);
 
 	bool deleteItem(const PairFloat& mapCoord);
 	bool deleteItem(const ItemCoordInventory& itemCoord);

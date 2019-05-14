@@ -1,0 +1,21 @@
+{
+  "panel": {
+    "id": "levelTooltip",
+    "level": "level",
+    "relativePositions": true,
+    "visible": false,
+    "visibleRectOffset": 10
+  },
+  "rectangle": {
+    "id": "levelTooltipBk",
+    "panel": "levelTooltip",
+    "color": "0x000000AA"
+  },
+  "text": {
+    "id": "levelTooltipText",
+    "panel": "levelTooltip",
+    "font": "smaltext",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1
+  }
+}
