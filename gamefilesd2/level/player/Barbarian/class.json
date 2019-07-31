@@ -1,0 +1,89 @@
+{
+  "playerClass": {
+    "id": "Barbarian",
+    "replaceVars": true,
+    "name": "Barbarian",
+    "type": "Human",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
+    "light": [100, 255, 20],
+    "defaults": {
+      "experience": 0,
+      "points": 0,
+      "strength": 30,
+      "magic": 10,
+      "dexterity": 20,
+      "vitality": 25,
+      "bonusLife": 2,
+      "bonusMana": 1,
+      "bonusHealing": 2,
+      "spellM": 1,
+      "defaultDamageMin": 1,
+      "levelUp": 5
+    },
+    "maxStrength": 250,
+    "maxMagic": 50,
+    "maxDexterity": 60,
+    "maxVitality": 100,
+    "maxResistMagic": 75,
+    "maxResistFire": 75,
+    "maxResistLightning": 75,
+    "formulas": {
+      "life": "(2 * vitality) + (2 * vitalityItems) + (2 * level) + lifeItems + 18",
+      "mana": "magic + magicItems + level + manaItems - 1",
+      "armor": "dexterityNow * 0.2 + armorItems",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow * level / 100"
+    },
+    "texturePacks": [
+      "barbarianNormal",
+      "barbarianNormalAxe",
+      "barbarianNormalBow",
+      "barbarianNormalShieldSword",
+      "barbarianNormalShieldClub",
+      "barbarianNormalClub",
+      "barbarianNormalSword",
+      "barbarianNormalStaff",
+      "barbarianNormalShield",
+      "barbarianLeather",
+      "barbarianLeatherAxe",
+      "barbarianLeatherBow",
+      "barbarianLeatherShieldSword",
+      "barbarianLeatherShieldClub",
+      "barbarianLeatherClub",
+      "barbarianLeatherSword",
+      "barbarianLeatherStaff",
+      "barbarianLeatherShield",
+      "barbarianPlate",
+      "barbarianPlateAxe",
+      "barbarianPlateBow",
+      "barbarianPlateShieldSword",
+      "barbarianPlateShieldClub",
+      "barbarianPlateClub",
+      "barbarianPlateSword",
+      "barbarianPlateStaff",
+      "barbarianPlateShield"
+    ],
+    "textureIndexes": [
+      { "name": "Stand1", "index": 0 },
+      { "name": "Stand2", "index": 0 },
+      { "name": "Walk1", "index": 1 },
+      { "name": "Walk2", "index": 1 }
+    ],
+    "animationSpeeds": [
+      { "name": "Walk1", "animation": 20, "walk": 100 },
+      { "name": "Walk2", "animation": 20, "walk": 100 },
+      { "name": "Die1", "animation": 20 },
+      { "name": "Die2", "animation": 20 }
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" },
+      { "index": 1, "id": "die" }
+    ],
+    "walkSound": 0,
+    "dieSound": 1
+  }
+}

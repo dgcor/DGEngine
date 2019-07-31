@@ -1,6 +1,5 @@
 #include "InputText.h"
 #include "Game.h"
-#include "GameUtils.h"
 #include "Utils/Utils.h"
 
 std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16) const noexcept
@@ -8,12 +7,12 @@ std::shared_ptr<Action> InputText::getAction(uint16_t nameHash16) const noexcept
 	switch (nameHash16)
 	{
 	case str2int16("change"):
-		return actionChange;
+		return changeAction;
 	case str2int16("click"):
 	case str2int16("enter"):
-		return actionEnter;
+		return enterAction;
 	case str2int16("minLength"):
-		return actionMinLength;
+		return minLengthAction;
 	default:
 		return nullptr;
 	}
@@ -24,14 +23,14 @@ bool InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& ac
 	switch (nameHash16)
 	{
 	case str2int16("change"):
-		actionChange = action;
+		changeAction = action;
 		break;
 	case str2int16("click"):
 	case str2int16("enter"):
-		actionEnter = action;
+		enterAction = action;
 		break;
 	case str2int16("minLength"):
-		actionMinLength = action;
+		minLengthAction = action;
 		break;
 	default:
 		return false;
@@ -104,15 +103,15 @@ void InputText::click(Game& game)
 {
 	if (isValidMin(text->getText()) == false)
 	{
-		if (actionMinLength != nullptr)
+		if (minLengthAction != nullptr)
 		{
-			game.Events().addBack(actionMinLength);
+			game.Events().addBack(minLengthAction);
 		}
 		return;
 	}
-	if (actionEnter != nullptr)
+	if (enterAction != nullptr)
 	{
-		game.Events().addBack(actionEnter);
+		game.Events().addBack(enterAction);
 	}
 }
 
@@ -151,14 +150,11 @@ void InputText::update(Game& game)
 				}
 				text->setText(txt);
 			}
-			if (actionChange != nullptr)
-			{
-				game.Events().addBack(actionChange);
-			}
+			triggerOnChange = true;
 			break;
 		}
 	}
-	text->update(game);
+	Text::update(game);
 }
 
 bool InputText::getProperty(const std::string_view prop, Variable& var) const

@@ -4,7 +4,9 @@
 #include <memory>
 #include "Palette.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Vertex.hpp>
 #include <string>
+#include <vector>
 
 class BitmapFontTexturePack;
 class Game;
@@ -22,6 +24,8 @@ private:
 
 	float calculateLineLength(const char* text, int horizSpaceOffset) const noexcept;
 
+	Palette* getPalette() const noexcept;
+
 public:
 	BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_);
 
@@ -33,12 +37,15 @@ public:
 	bool hasPalette() const noexcept { return palette != nullptr; }
 
 	sf::Vector2f calculateSize(const std::string& text) const;
+
 	sf::Vector2f calculateSize(const std::string& text,
 		int horizSpaceOffset, int vertSpaceOffset, unsigned* lineCount = nullptr) const;
 
-	void draw(const sf::Vector2f& pos, const std::string& text,
-		const Game& game, sf::RenderTarget& target, const sf::Color& color) const;
-	void draw(const sf::Vector2f& pos, const std::string& text,
-		const Game& game, sf::RenderTarget& target, const sf::Color& color,
-		int horizSpaceOffset, int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
+	void updateVertexString(std::vector<sf::Vertex>& vertexText,
+		const std::string& text, sf::Color color, int horizSpaceOffset,
+		int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
+
+	void draw(const std::vector<sf::Vertex>& vertexText,
+		const sf::Vector2f& pos, const sf::Vector2f& size,
+		const Game& game, sf::RenderTarget& target) const;
 };

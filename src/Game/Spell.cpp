@@ -128,7 +128,7 @@ bool Spell::getDescription(size_t idx, const Queryable& obj, std::string& descri
 	return descriptionClassifiers.getText(idx, obj, description, false);
 }
 
-bool Spell::getTexture(size_t textureNumber, TextureInfo& ti) const
+bool Spell::getTexture(uint32_t textureNumber, TextureInfo& ti) const
 {
 	switch (textureNumber)
 	{
@@ -142,7 +142,7 @@ bool Spell::getTexture(size_t textureNumber, TextureInfo& ti) const
 	}
 }
 
-bool SpellInstance::getTexture(size_t textureNumber, TextureInfo& ti) const
+bool SpellInstance::getTexture(uint32_t textureNumber, TextureInfo& ti) const
 {
 	if (spell != nullptr)
 	{

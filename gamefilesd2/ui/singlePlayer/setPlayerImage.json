@@ -1,0 +1,29 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Amazon",
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 1 }
+      },
+      {
+        "value": "Barbarian",
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 0 }
+      },
+      {
+        "value": "Necromancer",
+        "action": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 2 }
+      },
+      {
+        "value": "Paladin",
+        "action": "Barbarian"
+      },
+      {
+        "value": "Sorceress",
+        "action": "Amazon"
+      }
+    ],
+    "default": { "name": "image.setTexture", "id": "heros", "texturePack": "heros", "index": 3 }
+  }
+}

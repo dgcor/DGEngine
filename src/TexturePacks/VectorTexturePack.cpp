@@ -1,7 +1,7 @@
 #include "VectorTexturePack.h"
 #include "TextureInfo.h"
 
-bool VectorTexturePack::get(size_t index, TextureInfo& ti) const
+bool VectorTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
 	if (index >= textures.size() ||
 		textures[index].getNativeHandle() == 0)
@@ -12,11 +12,12 @@ bool VectorTexturePack::get(size_t index, TextureInfo& ti) const
 	updateTextureRect(ti);
 	ti.offset = offset;
 	ti.absoluteOffset = false;
+	ti.blendMode = BlendMode::Alpha;
 	ti.palette = palette;
 	return true;
 }
 
-void VectorTexturePack::set(size_t index, const sf::Texture& texture)
+void VectorTexturePack::set(uint32_t index, const sf::Texture& texture)
 {
 	if (index < textures.size())
 	{
@@ -32,7 +33,7 @@ void VectorTexturePack::set(size_t index, const sf::Texture& texture)
 			}
 			else
 			{
-				lastTextureIndex = std::numeric_limits<size_t>::max();
+				lastTextureIndex = std::numeric_limits<uint32_t>::max();
 			}
 		}
 		textures[index] = texture;

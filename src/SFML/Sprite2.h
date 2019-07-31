@@ -18,13 +18,16 @@ struct SpriteShaderCache
 	uint8_t light{ 0 };
 };
 
-class Sprite2 : public sf::Sprite
+class Sprite2 : private sf::Sprite
 {
 private:
+	sf::Vector2f position;
+	sf::Vector2f offset;
 	std::shared_ptr<Palette> palette;
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color ignore{ sf::Color::Transparent };
 	bool outlineEnabled{ false };
+	BlendMode blendMode{ BlendMode::Alpha };
 
 	// returns false if shader can be skipped (no palette used, no outline, max light)
 	bool needsSpriteShader(uint8_t light) const noexcept;
@@ -35,6 +38,14 @@ public:
 		const std::shared_ptr<Palette>& palette_ = nullptr)
 		: sf::Sprite(texture), palette(palette_) {}
 
+	const sf::Vector2f& getDrawPosition() const { return sf::Sprite::getPosition(); }
+	const sf::Vector2f& getPosition() const { return position; }
+	void setPosition(const sf::Vector2f& position_);
+	void setPosition(const sf::Vector2f& position_, const sf::Vector2f& offset_);
+	const sf::Vector2f& getOffset() const { return offset; }
+	void setOffset(const sf::Vector2f& offset_);
+
+	using sf::Sprite::getColor;
 	void setColor(const sf::Color& color);
 
 	const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
@@ -48,8 +59,16 @@ public:
 	void setOutlineEnabled(bool enable) noexcept;
 	bool isOutlineEnabled() const noexcept { return outlineEnabled; }
 
+	void setTexture(const sf::Texture& texture, bool resetRect = false);
 	void setTexture(const TextureInfo& ti, bool resetRect);
-	using sf::Sprite::setTexture;
+
+	using sf::Sprite::getLocalBounds;
+	using sf::Sprite::getGlobalBounds;
+	using sf::Sprite::getTexture;
+	using sf::Sprite::getTextureRect;
+	using sf::Sprite::setTextureRect;
+	using sf::Sprite::setScale;
+	using sf::Sprite::setOrigin;
 
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light = 255) const;
 

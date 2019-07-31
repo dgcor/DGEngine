@@ -1,0 +1,140 @@
+{
+  "load": "level/player/Paladin/textureFiles.json",
+  "compositeTexture": [
+    {
+      "id": "paladinNormal",
+      "groups": [
+        {
+          "file": "data/global/CHARS/PA/COF/PANUHTH.COF",
+          "texturePacks": [
+            "PAHDLITNU1HS",
+            "PATRLITNU1HS",
+            "PALGLITNU1HS",
+            "PARALITNU1HS",
+            "PALALITNU1HS",
+            "PASHKITNU1HS",
+            "PAS1LITNU1HS",
+            "PAS2LITNU1HS"
+          ]
+        },
+        {
+          "file": "data/global/CHARS/PA/COF/PATWHTH.COF",
+          "texturePacks": [
+            "PAHDLITTW1HS",
+            "PATRLITTW1HS",
+            "PALGLITTW1HS",
+            "PARALITTW1HS",
+            "PALALITTW1HS",
+            "PASHKITTW1HS",
+            "PAS1LITTW1HS",
+            "PAS2LITTW1HS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paladinNormalAxe",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalBow",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalShieldSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalShieldClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalStaff",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinNormalShield",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeather",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherAxe",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherBow",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherShieldSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherShieldClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherStaff",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinLeatherShield",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlate",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateAxe",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateBow",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateShieldSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateShieldClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateClub",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateSword",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateStaff",
+      "fromId": "paladinNormal"
+    },
+    {
+      "id": "paladinPlateShield",
+      "fromId": "paladinNormal"
+    }
+  ]
+}

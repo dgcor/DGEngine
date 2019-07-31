@@ -1,9 +1,9 @@
 #include "SimpleImageContainer.h"
 #include "ImageUtils.h"
 
-SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, size_t xFrames_,
-	size_t yFrames_, bool horizontalDirection_, const sf::Color& transparencyMask)
-	: horizontalDirection(horizontalDirection_)
+SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, uint32_t xFrames_,
+	uint32_t yFrames_, uint32_t directions_, bool horizontalDirection_,
+	const sf::Color& transparencyMask) : horizontalDirection(horizontalDirection_)
 {
 	numFrames = xFrames_ * yFrames_;
 	if (numFrames == 0)
@@ -29,9 +29,15 @@ SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, size
 	maxFrames = (horizontalDirection_ == true ? xFrames_ : yFrames_);
 	subImageSizeX = imgSize.x / xFrames_;
 	subImageSizeY = imgSize.y / yFrames_;
+
+	if (directions_ > 0 && (numFrames % directions_) == 0)
+	{
+		directions = directions_;
+	}
 }
 
-sf::Image2 SimpleImageContainer::get(size_t index, const PaletteArray* palette) const
+sf::Image2 SimpleImageContainer::get(uint32_t index,
+	const PaletteArray* palette, ImageInfo& imgInfo) const
 {
 	sf::Image2 img;
 	if (numFrames == 0 ||
@@ -39,6 +45,9 @@ sf::Image2 SimpleImageContainer::get(size_t index, const PaletteArray* palette) 
 	{
 		return img;
 	}
+
+	imgInfo.offset = {};
+	imgInfo.blendMode = blendMode;
 
 	img.create(subImageSizeX, subImageSizeY, sf::Color::Transparent);
 

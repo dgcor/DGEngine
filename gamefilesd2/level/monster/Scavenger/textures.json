@@ -1,0 +1,16 @@
+{
+  "load": "level/monster/Scavenger/textureFiles.json",
+  "texturePack": {
+    "id": "scavenger",
+    "imageContainer": [
+      "S7TRLITA1HTH",
+      "S7TRLITDDHTH",
+      "S7TRLITDTHTH",
+      "S7TRLITNUHTH",
+      "S7TRLITGHHTH",
+      "S7TRLITWLHTH"
+    ],
+    "palette": "units",
+    "normalizeDirections": true
+  }
+}

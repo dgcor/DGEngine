@@ -20,6 +20,23 @@ namespace Parser
 			return nullptr;
 		}
 
+		std::unique_ptr<DrawableText> text;
+
+		if (holdsFreeTypeFont(font) == true)
+		{
+			auto fontSize = getUIntKey(elem, "fontSize", 12);
+			text = std::make_unique<StringText>(std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
+		}
+		else
+		{
+			text = std::make_unique<BitmapText>(std::get<std::shared_ptr<BitmapFont>>(font));
+		}
+
+		text->setHorizontalSpaceOffset(getIntKey(elem, "horizontalSpaceOffset"));
+		text->setVerticalSpaceOffset(getIntKey(elem, "verticalSpaceOffset"));
+		text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
+		text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
+
 		std::string displayText;
 
 		if (elem.HasMember("text") == true)
@@ -31,29 +48,17 @@ namespace Parser
 			displayText = FileUtils::readText(getStringCharVal(elem["file"]));
 		}
 
-		std::unique_ptr<DrawableText> text;
-
-		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
-		auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
-
-		if (holdsFreeTypeFont(font) == true)
+		if (elem.HasMember("splitText") == true)
 		{
-			auto fontSize = getUIntKey(elem, "fontSize", 12);
-			text = std::make_unique<StringText>(displayText,
-				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
-
-			text->setHorizontalSpaceOffset(horizSpaceOffset);
-			text->setVerticalSpaceOffset(vertSpaceOffset);
-		}
-		else
-		{
-			text = std::make_unique<BitmapText>(displayText,
-				std::get<std::shared_ptr<BitmapFont>>(font), horizSpaceOffset, vertSpaceOffset);
+			auto split = getUIntVal(elem["splitText"]);
+			if (split > 0)
+			{
+				displayText = Utils::splitInLines(displayText, split);
+			}
 		}
 
 		text->setColor(getColorKey(elem, "color", sf::Color::White));
-		text->setHorizontalAlign(GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign")));
-		text->setVerticalAlign(GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom));
+		text->setText(displayText);
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		text->setAnchor(anchor);
@@ -70,32 +75,26 @@ namespace Parser
 		return text;
 	}
 
-	std::unique_ptr<Text> parseText2Obj(Game& game, const Value& elem)
-	{
-		auto text = std::make_unique<Text>();
-		if (parseText2Obj(game, elem, *text) == false)
-		{
-			return nullptr;
-		}
-		return text;
-	}
-
-	bool parseText2Obj(Game& game, const Value& elem, Text& text)
+	std::unique_ptr<BindableText> parseTextObj(Game& game, const Value& elem)
 	{
 		auto drawableText = parseDrawableTextObj(game, elem);
 		if (drawableText == nullptr)
 		{
-			return false;
+			return nullptr;
 		}
-		text.setText(std::move(drawableText));
+		auto text = std::make_unique<BindableText>(std::move(drawableText));
+		parseTextObj(game, elem, *text);
+		return text;
+	}
 
+	void parseTextObj(Game& game, const Value& elem, BindableText& text)
+	{
 		auto hasBinding = elem.HasMember("binding") == true;
 		if (hasBinding == true)
 		{
 			text.setBinding(getStringVectorKey(elem, "binding"));
+			text.setFormat(getStringViewKey(elem, "format", "[1]"));
 		}
-		text.setFormat(getStringViewKey(elem, "format", "[1]"));
-
 		if (elem.HasMember("onChange"))
 		{
 			text.setAction(str2int16("change"), parseAction(game, elem["onChange"]));
@@ -104,7 +103,6 @@ namespace Parser
 		{
 			text.update(game);
 		}
-		return true;
 	}
 
 	void parseText(Game& game, const Value& elem)
@@ -113,12 +111,12 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
-		std::shared_ptr<Text> text(parseText2Obj(game, elem));
+		std::shared_ptr<Text> text(parseTextObj(game, elem));
 		if (text == nullptr)
 		{
 			return;

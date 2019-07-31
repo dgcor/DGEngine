@@ -19,6 +19,7 @@ private:
 	PairFloat mapPosA;
 	PairFloat mapPosB;
 	float currPositionStep = 0.f;
+	bool executeActionOnDestination{ false };
 
 	std::vector<PairFloat> walkPath;
 
@@ -143,7 +144,7 @@ public:
 
 	const PairFloat& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
 
-	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
 
 	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
 	virtual bool Passable() const noexcept { return false; }
@@ -184,7 +185,9 @@ public:
 	bool setNumber(const std::string_view prop, const Number32& value, const Level* level) noexcept;
 
 	void clearWalkPath() noexcept { walkPath.clear(); }
-	void setWalkPath(const std::vector<PairFloat>& walkPath_);
+	void setWalkPath(const std::vector<PairFloat>& walkPath_, bool doAction);
+	void Walk(const LevelMap& map, const PairFloat& walkToMapPos, bool doAction);
+	void Walk(const LevelMap& map, const PlayerDirection direction, bool doAction);
 
 	void setDefaultSpeed(const AnimationSpeed& speed_);
 

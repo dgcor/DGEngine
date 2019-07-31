@@ -20,7 +20,7 @@ public:
 			game.drawLoadingScreen();
 			if (loadingScreen->isComplete())
 			{
-				game.Events().addBack(loadingScreen->getAction());
+				game.Events().addBack(loadingScreen->getAction(str2int16("complete")));
 			}
 		}
 		return true;

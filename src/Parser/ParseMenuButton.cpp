@@ -32,22 +32,23 @@ namespace Parser
 		const sf::Vector2f& origPos,
 		const std::string_view resource)
 	{
-		auto button = std::make_shared<StringButton>();
 		std::unique_ptr<DrawableText> drawableText;
 		if (holdsFreeTypeFont(font) == true)
 		{
-			drawableText = std::make_unique<StringText>("",
-				*std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
+			drawableText = std::make_unique<StringText>(
+				std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
 		}
 		else
 		{
-			drawableText = std::make_unique<BitmapText>("",
-				std::get<std::shared_ptr<BitmapFont>>(font), horizSpaceOffset, vertSpaceOffset);
+			drawableText = std::make_unique<BitmapText>(
+				std::get<std::shared_ptr<BitmapFont>>(font));
 		}
-		button->setText(std::move(drawableText));
+		auto button = std::make_shared<StringButton>(std::move(drawableText));
 
 		button->setAnchor(anchor);
 		button->setColor(color);
+		button->setHorizontalSpaceOffset(horizSpaceOffset);
+		button->setVerticalSpaceOffset(vertSpaceOffset);
 		button->setHorizontalAlign(horizAlign);
 		button->setClickUp(clickUp);
 

@@ -17,9 +17,10 @@
       "horizontalSpaceOffset": 2,
       "onClick": [
         "menu.saveAndCloseAction",
-        { "name": "load", "file": ["ui/level/msgBox/show.json", "saving..."] },
+        { "name": "text.setText", "id": "msgBoxText", "text": "saving..." },
+        "showMsgBox",
         { "name": "load", "file": "level/saveGame.json" },
-        { "name": "loadJson", "json": { "action": "closeMsgBox" } }
+        "closeMsgBox"
       ],
       "onFocus": [
         "anchorLeftPentagram",

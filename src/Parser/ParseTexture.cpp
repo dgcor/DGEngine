@@ -1,5 +1,8 @@
 #include "ParseTexture.h"
 #include "Game.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+#include "ImageContainers/DC6ImageContainer.h"
+#endif
 #include "ImageUtils.h"
 #include "ParseImageContainer.h"
 #include "Utils/ParseUtils.h"
@@ -53,7 +56,8 @@ namespace Parser
 		auto pathLower = Utils::toLower(path);
 
 		if (Utils::endsWith(pathLower, ".cel") == true ||
-			Utils::endsWith(pathLower, ".cl2") == true)
+			Utils::endsWith(pathLower, ".cl2") == true ||
+			Utils::endsWith(pathLower, ".dc6") == true)
 		{
 			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
 			PaletteArray* palArray = nullptr;
@@ -81,6 +85,17 @@ namespace Parser
 				auto frameIdx = getUIntVal(elem["frame"]);
 				img = ImageUtils::loadImageFrame(*imgContainer, palArray, frameIdx);
 			}
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+			else if (elem.HasMember("stitch") == true &&
+				elem.HasMember("size") == true &&
+				dynamic_cast<DC6ImageContainer*>(imgContainer.get()) != nullptr)
+			{
+				auto dc6ImgCont = dynamic_cast<DC6ImageContainer*>(imgContainer.get());
+				auto stitch = getVector2uVal<sf::Vector2u>(elem["stitch"]);
+				auto size = getVector2uVal<sf::Vector2u>(elem["size"]);
+				img = dc6ImgCont->get(stitch, size, palArray);
+			}
+#endif
 			else
 			{
 				img = ImageUtils::loadImage(*imgContainer, pal);
@@ -151,8 +166,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getTexture(fromId);
@@ -221,7 +236,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else
 		{
@@ -258,7 +273,7 @@ namespace Parser
 	{
 		if (isValidString(elem, idKey) == true)
 		{
-			std::string id = elem[idKey].GetString();
+			auto id = elem[idKey].GetStringStr();
 			texture = game.Resources().getTexture(id);
 			if (texture != nullptr)
 			{

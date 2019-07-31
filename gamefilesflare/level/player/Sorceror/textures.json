@@ -1,0 +1,279 @@
+{
+  "load": "level/player/data/male/load.json",
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateAxe",
+    "m_battle_axe",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateBow",
+    "m_longbow",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateShieldSword",
+    "m_greatsword",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateShieldClub",
+    "m_club",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateClub",
+    "m_club",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlate",
+    "",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateSword",
+    "m_greatsword",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateStaff",
+    "m_staff",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorPlateShield",
+    "m_plate_boots",
+    "m_mage_skirt_alt1",
+    "m_mage_sleeves_alt1",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_mage_hood_alt1"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalAxe",
+    "m_battle_axe",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalBow",
+    "m_longbow",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalShieldSword",
+    "m_longsword",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_buckler",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalShieldClub",
+    "m_club",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_buckler",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalClub",
+    "m_club",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormal",
+    "",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalSword",
+    "m_longsword",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalStaff",
+    "m_staff",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorNormalShield",
+    "m_mage_boots",
+    "m_mage_skirt",
+    "m_mage_sleeves",
+    "m_mage_vest",
+    "m_buckler",
+    "m_mage_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherAxe",
+    "m_battle_axe",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherBow",
+    "m_longbow",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherShieldSword",
+    "m_longsword",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_buckler",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherShieldClub",
+    "m_club",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_buckler",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherClub",
+    "m_club",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeather",
+    "",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherSword",
+    "m_longsword",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherStaff",
+    "m_staff",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_mage_hood_alt2"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "sorcerorLeatherShield",
+    "m_leather_boots",
+    "m_mage_skirt_alt2",
+    "m_mage_sleeves_alt2",
+    "m_leather_chest",
+    "m_buckler",
+    "m_mage_hood_alt2"
+  ]
+}

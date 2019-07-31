@@ -6,15 +6,21 @@
     },
     {
       "id": "smaltextBlue",
-      "fromId": "font16g"
+      "clone": "font16g",
+      "replaceVars": true,
+      "fontColor": "|textBlue|"
     },
     {
       "id": "smaltextGold",
-      "fromId": "font16g"
+      "clone": "font16g",
+      "replaceVars": true,
+      "fontColor": "|textGold|"
     },
     {
       "id": "smaltextRed",
-      "fromId": "font16g"
+      "clone": "font16g",
+      "replaceVars": true,
+      "fontColor": "|textRed|"
     },
     {
       "id": "medtexts",

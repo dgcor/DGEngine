@@ -6,7 +6,7 @@ std::shared_ptr<Action> StringButton::getAction(uint16_t nameHash16) const noexc
 	auto action = Button::getAction(nameHash16);
 	if (action == nullptr)
 	{
-		action = Text::getAction(nameHash16);
+		action = BindableText::getAction(nameHash16);
 	}
 	return action;
 }
@@ -15,19 +15,19 @@ bool StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 {
 	if (Button::setAction(nameHash16, action) == false)
 	{
-		return Text::setAction(nameHash16, action);
+		return BindableText::setAction(nameHash16, action);
 	}
 	return true;
 }
 
 void StringButton::update(Game& game)
 {
-	if (Text::Visible() == false)
+	if (BindableText::Visible() == false)
 	{
 		return;
 	}
-	Text::update(game);
-	auto contains = Text::getGlobalBounds().contains(game.MousePositionf());
+	BindableText::update(game);
+	auto contains = BindableText::getGlobalBounds().contains(game.MousePositionf());
 	Button::updateEvents(game, contains);
 }
 
@@ -37,5 +37,5 @@ bool StringButton::getProperty(const std::string_view prop, Variable& var) const
 	{
 		return true;
 	}
-	return Text::getProperty(prop, var);
+	return BindableText::getProperty(prop, var);
 }

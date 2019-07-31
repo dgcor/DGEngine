@@ -1,10 +1,54 @@
 {
+  "texture": [
+    {
+      "id": "loot_leather_armor",
+      "file": "images/loot/leather_armor.png"
+    },
+    {
+      "id": "loot_longsword",
+      "file": "images/loot/longsword.png"
+    },
+    {
+      "id": "loot_hp_potion",
+      "file": "images/loot/hp_potion.png"
+    },
+    {
+      "id": "loot_longbow",
+      "file": "images/loot/longbow.png"
+    },
+    {
+      "id": "loot_book",
+      "file": "images/loot/book.png"
+    },
+    {
+      "id": "loot_steel_armor",
+      "file": "images/loot/steel_armor.png"
+    },
+    {
+      "id": "loot_coins100",
+      "file": "images/loot/coins100.png"
+    },
+    {
+      "id": "loot_shortsword",
+      "file": "images/loot/shortsword.png"
+    },
+    {
+      "id": "loot_scroll",
+      "file": "images/loot/scroll.png"
+    },
+    {
+      "id": "loot_shield",
+      "file": "images/loot/shield.png"
+    },
+    {
+      "id": "loot_staff",
+      "file": "images/loot/staff.png"
+    }
+  ],
   "texturePack": [
     {
       "id": "armor2",
-      "texture": {
-        "file": "images/loot/leather_armor.png"
-      },
+      "texture": "loot_leather_armor",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -18,9 +62,7 @@
     },
     {
       "id": "axe",
-      "texture": {
-        "file": "images/loot/longsword.png"
-      },
+      "texture": "loot_longsword",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -35,9 +77,7 @@
     { "id": "axeflip", "fromId": "axe" },
     {
       "id": "bldstn",
-      "texture": {
-        "file": "images/loot/hp_potion.png"
-      },
+      "texture": "loot_hp_potion",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -52,9 +92,7 @@
     { "id": "bottle", "fromId": "bldstn" },
     {
       "id": "bow",
-      "texture": {
-        "file": "images/loot/longbow.png"
-      },
+      "texture": "loot_longbow",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -72,9 +110,7 @@
     { "id": "fanvil", "fromId": "armor2" },
     {
       "id": "fbook",
-      "texture": {
-        "file": "images/loot/book.png"
-      },
+      "texture": "loot_book",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -105,9 +141,7 @@
     { "id": "food", "fromId": "bottle" },
     {
       "id": "FPlateAr",
-      "texture": {
-        "file": "images/loot/steel_armor.png"
-      },
+      "texture": "loot_steel_armor",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -121,9 +155,7 @@
     },
     {
       "id": "goldflip",
-      "texture": {
-        "file": "images/loot/coins100.png"
-      },
+      "texture": "loot_coins100",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -140,9 +172,7 @@
     { "id": "larmor", "fromId": "armor2" },
     {
       "id": "mace",
-      "texture": {
-        "file": "images/loot/shortsword.png"
-      },
+      "texture": "loot_shortsword",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -157,9 +187,7 @@
     { "id": "manaflip", "fromId": "bottle" },
     {
       "id": "ring",
-      "texture": {
-        "file": "images/loot/ring.png"
-      },
+      "texture": "loot_ring",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -174,9 +202,7 @@
     { "id": "rock", "fromId": "armor2" },
     {
       "id": "scroll",
-      "texture": {
-        "file": "images/loot/scroll.png"
-      },
+      "texture": "loot_scroll",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -190,9 +216,7 @@
     },
     {
       "id": "shield",
-      "texture": {
-        "file": "images/loot/shield.png"
-      },
+      "texture": "loot_shield",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [
@@ -206,9 +230,7 @@
     },
     {
       "id": "staff",
-      "texture": {
-        "file": "images/loot/staff.png"
-      },
+      "texture": "loot_staff",
       "invertOffsets": true,
       "absoluteOffsets": true,
       "rects": [

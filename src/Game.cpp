@@ -120,26 +120,23 @@ void Game::init()
 	}
 }
 
-void Game::WindowSize(const sf::Vector2u& size_)
+void Game::WindowSize(sf::Vector2u size_)
 {
-	if (size_.x >= minSize.x && size_.y >= minSize.y)
+	size_.x = std::max(minSize.x, size_.x);
+	size_.y = std::max(minSize.y, size_.y);
+	if (window.isOpen() == true)
 	{
-		if (window.isOpen() == true)
-		{
-			window.setSize(size_);
-		}
-		else
-		{
-			size = size_;
-		}
+		window.setSize(size_);
+	}
+	else
+	{
+		size = size_;
 	}
 }
 
 void Game::RefSize(const sf::Vector2u& size_)
 {
-	if (window.isOpen() == false &&
-		size_.x >= minSize.x &&
-		size_.y >= minSize.y)
+	if (size_.x >= 640 && size_.y >= 480)
 	{
 		refSize = size_;
 	}
@@ -147,14 +144,30 @@ void Game::RefSize(const sf::Vector2u& size_)
 
 void Game::MinSize(const sf::Vector2u& size_)
 {
-	if (window.isOpen() == true)
+	bool needsUpdate = false;
+	if (size_.x >= 640 && size_.y >= 480)
 	{
-		return;
+		minSize = size_;
+		if (window.isOpen() == true)
+		{
+			needsUpdate = true;
+		}
 	}
-	minSize = size_;
 	if (size.x < minSize.x && size.y < minSize.y)
 	{
-		size = minSize;
+		if (window.isOpen() == true)
+		{
+			window.setSize(minSize);
+			return;
+		}
+		else
+		{
+			size = minSize;
+		}
+	}
+	if (needsUpdate == true)
+	{
+		updateGameWindowSize();
 	}
 }
 
@@ -162,7 +175,7 @@ void Game::Framerate(int framerate_)
 {
 	if (framerate_ > 0)
 	{
-		framerate = (unsigned)std::clamp(framerate_, 30, 60);
+		framerate = (unsigned)std::clamp(framerate_, 30, 240);
 	}
 	else
 	{
@@ -246,7 +259,10 @@ void Game::processEvents()
 			onTextEntered(evt.text);
 			break;
 		case sf::Event::KeyPressed:
-			onKeyPressed(evt.key);
+			onKeyPressed(evt);
+			break;
+		case sf::Event::KeyReleased:
+			onKeyReleased(evt);
 			break;
 		case sf::Event::MouseWheelScrolled:
 			onMouseWheelScrolled(evt.mouseWheelScroll);
@@ -273,6 +289,7 @@ void Game::processEvents()
 			break;
 		}
 	}
+	resourceManager.processCompositeInputEvents(*this);
 }
 
 void Game::onClosed()
@@ -405,13 +422,13 @@ void Game::onTextEntered(const sf::Event::TextEvent& evt) noexcept
 	textEntered = true;
 }
 
-void Game::onKeyPressed(const sf::Event::KeyEvent& evt)
+void Game::onKeyPressed(sf::Event evt)
 {
 	if (enableInput == false)
 	{
 		return;
 	}
-	keyPressEvt = evt;
+	keyPressEvt = evt.key;
 	keyPressed = true;
 #ifdef __ANDROID__
 	keyPressEvt.system = false;
@@ -420,7 +437,27 @@ void Game::onKeyPressed(const sf::Event::KeyEvent& evt)
 	{
 		return;
 	}
-	auto action = resourceManager.getKeyboardAction(keyPressEvt);
+	auto action = resourceManager.getInputAction(evt);
+	if (action != nullptr)
+	{
+		eventManager.addBack(action);
+	}
+}
+
+void Game::onKeyReleased(sf::Event evt)
+{
+	if (enableInput == false)
+	{
+		return;
+	}
+#ifdef __ANDROID__
+	keyPressEvt.system = false;
+#endif
+	if (loadingScreen != nullptr)
+	{
+		return;
+	}
+	auto action = resourceManager.getInputAction(evt);
 	if (action != nullptr)
 	{
 		eventManager.addBack(action);
@@ -563,7 +600,7 @@ bool Game::drawLoadingScreen()
 	{
 		return false;
 	}
-	loadingScreen->draw(gameTexture);
+	loadingScreen->draw(*this, gameTexture);
 	drawWindow();
 	return true;
 }
@@ -662,13 +699,13 @@ void Game::draw()
 	drawWindow();
 }
 
-void Game::clearInputEvents(InputEvent e) noexcept
+void Game::clearInputEvents(InputEventType e) noexcept
 {
-	if (e == InputEvent::None)
+	if (e == InputEventType::None)
 	{
 		return;
 	}
-	else if (e == InputEvent::All)
+	else if (e == InputEventType::All)
 	{
 		mousePressed = false;
 		mouseReleased = false;
@@ -682,75 +719,75 @@ void Game::clearInputEvents(InputEvent e) noexcept
 		return;
 	}
 	if (mousePressed == true &&
-		((int)e & (int)InputEvent::MousePress) != 0)
+		((int)e & (int)InputEventType::MousePress) != 0)
 	{
-		if (((int)e & (int)InputEvent::LeftClick) != 0 &&
+		if (((int)e & (int)InputEventType::LeftClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Left)
 		{
 			mousePressed = false;
 		}
-		else if (((int)e & (int)InputEvent::MiddleClick) != 0 &&
+		else if (((int)e & (int)InputEventType::MiddleClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Middle)
 		{
 			mousePressed = false;
 		}
-		else if (((int)e & (int)InputEvent::RightClick) != 0 &&
+		else if (((int)e & (int)InputEventType::RightClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Right)
 		{
 			mousePressed = false;
 		}
 	}
 	if (mouseReleased == true &&
-		((int)e & (int)InputEvent::MouseRelease) != 0)
+		((int)e & (int)InputEventType::MouseRelease) != 0)
 	{
-		if (((int)e & (int)InputEvent::LeftClick) != 0 &&
+		if (((int)e & (int)InputEventType::LeftClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Left)
 		{
 			mouseReleased = false;
 		}
-		else if (((int)e & (int)InputEvent::MiddleClick) != 0 &&
+		else if (((int)e & (int)InputEventType::MiddleClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Middle)
 		{
 			mouseReleased = false;
 		}
-		else if (((int)e & (int)InputEvent::RightClick) != 0 &&
+		else if (((int)e & (int)InputEventType::RightClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Right)
 		{
 			mouseReleased = false;
 		}
 	}
 	if (mouseMoved == true &&
-		((int)e & (int)InputEvent::MouseMove) != 0)
+		((int)e & (int)InputEventType::MouseMove) != 0)
 	{
 		mouseMoved = false;
 	}
 	if (mouseScrolled == true &&
-		((int)e & (int)InputEvent::MouseScroll) != 0)
+		((int)e & (int)InputEventType::MouseScroll) != 0)
 	{
 		mouseScrolled = false;
 	}
 	if (keyPressed == true &&
-		((int)e & (int)InputEvent::KeyPress) != 0)
+		((int)e & (int)InputEventType::KeyPress) != 0)
 	{
 		keyPressed = false;
 	}
 	if (textEntered == true &&
-		((int)e & (int)InputEvent::TextEnter) != 0)
+		((int)e & (int)InputEventType::TextEnter) != 0)
 	{
 		textEntered = false;
 	}
 	if (touchBegan == true &&
-		((int)e & (int)InputEvent::TouchBegin) != 0)
+		((int)e & (int)InputEventType::TouchBegin) != 0)
 	{
 		touchBegan = false;
 	}
 	if (touchMoved == true &&
-		((int)e & (int)InputEvent::TouchMove) != 0)
+		((int)e & (int)InputEventType::TouchMove) != 0)
 	{
 		touchMoved = false;
 	}
 	if (touchEnded == true &&
-		((int)e & (int)InputEvent::TouchEnd) != 0)
+		((int)e & (int)InputEventType::TouchEnd) != 0)
 	{
 		touchEnded = false;
 	}
@@ -1096,44 +1133,47 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 	case str2int16("gamma"):
 		var = Variable((int64_t)gamma);
 		break;
+	case str2int16("hasAudio"):
+		var = Variable(resourceManager.hasAudioSource(std::string(props.second)));
+		break;
+	case str2int16("hasCompositeTexture"):
+		var = Variable(resourceManager.hasCompositeTexture(std::string(props.second)));
+		break;
 	case str2int16("hasDrawable"):
 		var = Variable(resourceManager.hasDrawable(std::string(props.second)));
 		break;
 	case str2int16("hasEvent"):
 		var = Variable(eventManager.exists(props.second));
 		break;
-	case str2int16("hasResource"):
-		var = Variable(resourceManager.resourceExists(props.second));
-		break;
 	case str2int16("hasFont"):
 		var = Variable(resourceManager.hasFont(std::string(props.second)));
-		break;
-	case str2int16("hasTexture"):
-		var = Variable(resourceManager.hasTexture(std::string(props.second)));
-		break;
-	case str2int16("hasAudio"):
-		var = Variable(resourceManager.hasAudioSource(std::string(props.second)));
-		break;
-	case str2int16("hasSong"):
-		var = Variable(resourceManager.hasSong(std::string(props.second)));
-		break;
-	case str2int16("hasPalette"):
-		var = Variable(resourceManager.hasPalette(std::string(props.second)));
-		break;
-	case str2int16("hasImageContainer"):
-		var = Variable(resourceManager.hasImageContainer(std::string(props.second)));
-		break;
-	case str2int16("hasTexturePack"):
-		var = Variable(resourceManager.hasTexturePack(std::string(props.second)));
-		break;
-	case str2int16("hasShader"):
-		var = Variable(resourceManager.Shaders().has(std::string(props.second)));
 		break;
 	case str2int16("hasGameShader"):
 		var = Variable(shaders.hasGameShader());
 		break;
+	case str2int16("hasImageContainer"):
+		var = Variable(resourceManager.hasImageContainer(std::string(props.second)));
+		break;
+	case str2int16("hasPalette"):
+		var = Variable(resourceManager.hasPalette(std::string(props.second)));
+		break;
+	case str2int16("hasResource"):
+		var = Variable(resourceManager.resourceExists(props.second));
+		break;
+	case str2int16("hasShader"):
+		var = Variable(resourceManager.Shaders().has(std::string(props.second)));
+		break;
+	case str2int16("hasSong"):
+		var = Variable(resourceManager.hasSong(std::string(props.second)));
+		break;
 	case str2int16("hasSpriteShader"):
 		var = Variable(shaders.hasSpriteShader());
+		break;
+	case str2int16("hasTexture"):
+		var = Variable(resourceManager.hasTexture(std::string(props.second)));
+		break;
+	case str2int16("hasTexturePack"):
+		var = Variable(resourceManager.hasTexturePack(std::string(props.second)));
 		break;
 	case str2int16("keepAR"):
 		var = Variable(keepAR);

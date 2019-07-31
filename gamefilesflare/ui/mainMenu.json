@@ -54,6 +54,7 @@
   "audio": {
     "id": "main",
     "file": "music/title_theme.ogg",
+    "volume": 50,
     "loop": true,
     "play": true
   },

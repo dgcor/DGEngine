@@ -1,8 +1,10 @@
 #pragma once
 
 #define RAPIDJSON_HAS_STDSTRING 1
+#define RAPIDJSON_HAS_STDSTRINGVIEW 1
 
 #include "rapidjson/document.h"
+#include "rapidjson/pointer.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"

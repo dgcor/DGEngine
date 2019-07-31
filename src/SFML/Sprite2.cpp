@@ -1,5 +1,25 @@
 #include "Sprite2.h"
+#include "SFMLUtils.h"
 #include "ShaderManager.h"
+
+void Sprite2::setPosition(const sf::Vector2f& position_)
+{
+	position = position_;
+	sf::Sprite::setPosition(position + offset);
+}
+
+void Sprite2::setPosition(const sf::Vector2f& position_, const sf::Vector2f& offset_)
+{
+	position = position_;
+	offset = offset_;
+	sf::Sprite::setPosition(position + offset);
+}
+
+void Sprite2::setOffset(const sf::Vector2f& offset_)
+{
+	offset = offset_;
+	sf::Sprite::setPosition(position + offset);
+}
 
 void Sprite2::setColor(const sf::Color& color)
 {
@@ -20,6 +40,12 @@ void Sprite2::setOutlineEnabled(bool enable) noexcept
 	outlineEnabled = enable;
 }
 
+void Sprite2::setTexture(const sf::Texture& texture, bool resetRect)
+{
+	sf::Sprite::setTexture(texture, resetRect);
+	blendMode = BlendMode::Alpha;
+}
+
 void Sprite2::setTexture(const TextureInfo& ti, bool resetRect)
 {
 	sf::Sprite::setTexture(*ti.texture);
@@ -34,6 +60,7 @@ void Sprite2::setTexture(const TextureInfo& ti, bool resetRect)
 		oldRect.top = ti.textureRect.top;
 		setTextureRect(oldRect);
 	}
+	blendMode = ti.blendMode;
 	setPalette(ti.palette);
 }
 
@@ -50,7 +77,8 @@ bool Sprite2::needsSpriteShader(uint8_t light) const noexcept
 
 void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light) const
 {
-	sf::RenderStates states(sf::RenderStates::Default);
+	sf::RenderStates states(SFMLUtils::getBlendMode(blendMode));
+
 	if (spriteShader != nullptr &&
 		needsSpriteShader(light) == true)
 	{
@@ -84,7 +112,8 @@ void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t l
 void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
 	SpriteShaderCache& cache, uint8_t light) const
 {
-	sf::RenderStates states(sf::RenderStates::Default);
+	sf::RenderStates states(SFMLUtils::getBlendMode(blendMode));
+
 	if (spriteShader != nullptr &&
 		needsSpriteShader(light) == true)
 	{

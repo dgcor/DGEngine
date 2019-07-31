@@ -15,7 +15,7 @@
           "name": "if.equal",
           "param1": "%currentLevel.hasCurrentPlayer%",
           "param2": true,
-          "then": { "name": "player.moveToClick", "player": "hero" },
+          "then": { "name": "player.walkToClick", "player": "hero" },
           "else": { "name": "level.moveToClick" }
         }
       }

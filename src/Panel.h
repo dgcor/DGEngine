@@ -8,9 +8,15 @@ class Panel : public UIObject
 private:
 	std::vector<std::weak_ptr<UIObject>> drawables;
 	sf::Vector2f position;
+	mutable sf::Vector2f drawPosition;
+	mutable sf::Vector2f drawSize;
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	bool visible{ true };
 	bool relativePositions{ true };
+	mutable bool sizePosNeedsUpdate{ true };
+
+	// calculate the draw position/size based on all its children's draw positions/sizes
+	void updateDrawPositionAndSize() const;
 
 public:
 	Panel(bool relativePositions_) : relativePositions(relativePositions_) {}
@@ -23,13 +29,10 @@ public:
 	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
 	virtual void updateSize(const Game& game);
 
-	// calculate the draw position/size based on all its children's draw positions/sizes
-	void getDrawPositionAndSize(sf::Vector2f& drawPos, sf::Vector2f& drawSize) const;
-
-	virtual const sf::Vector2f& DrawPosition() const { return position; }
-	virtual const sf::Vector2f& Position() const { return position; }
+	virtual const sf::Vector2f& DrawPosition() const { return drawPosition; }
+	virtual const sf::Vector2f& Position() const;
 	virtual void Position(const sf::Vector2f& newPosition);
-	virtual sf::Vector2f Size() const { return {}; }
+	virtual sf::Vector2f Size() const;
 	virtual void Size(const sf::Vector2f& size) {}
 
 	virtual bool Visible() const noexcept { return visible; }

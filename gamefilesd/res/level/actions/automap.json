@@ -30,9 +30,20 @@
           { "name": "if.regex",
             "param1": "\\d*",
             "param2": "%currentLevel.name%",
-            "then": { "name": "load", "file": ["ui/level/noMap.json", "level ", "%currentLevel.name%"] },
-            "else": { "name": "load", "file": ["ui/level/noMap.json", "", "%currentLevel.name%"] }
+            "then": {
+              "name": "text.setText",
+              "id": "msgBoxText",
+              "text": "No automap available in level %currentLevel.name%",
+              "replaceAll": true
+            },
+            "else": {
+              "name": "text.setText",
+              "id": "msgBoxText",
+              "text": "No automap available in %currentLevel.name%",
+              "replaceAll": true
+            }
           },
+          "showMsgBox",
           { "name": "drawable.visible", "id": "txtMapLabel", "visible": false }
         ]
       }

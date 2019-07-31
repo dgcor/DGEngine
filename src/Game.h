@@ -98,7 +98,8 @@ private:
 	void onGainedFocus() noexcept;
 
 	void onTextEntered(const sf::Event::TextEvent& evt) noexcept;
-	void onKeyPressed(const sf::Event::KeyEvent& evt);
+	void onKeyPressed(sf::Event evt);
+	void onKeyReleased(sf::Event evt);
 	void onMouseWheelScrolled(const sf::Event::MouseWheelScrollEvent& evt);
 	void onMouseButtonPressed(const sf::Event::MouseButtonEvent& evt);
 	void onMouseButtonReleased(const sf::Event::MouseButtonEvent& evt);
@@ -147,7 +148,7 @@ public:
 	{
 		return sf::Vector2f((float)drawRegionSize.x, (float)drawRegionSize.y);
 	}
-	void WindowSize(const sf::Vector2u& size_);
+	void WindowSize(sf::Vector2u size_);
 	const sf::Vector2u& RefSize() const noexcept { return refSize; }
 	void RefSize(const sf::Vector2u& size_);
 	const sf::Vector2u& MinSize() const noexcept { return minSize; }
@@ -192,7 +193,7 @@ public:
 	void clearTouchMoved() noexcept { touchMoved = false; }
 	void clearTouchEnded() noexcept { touchEnded = false; }
 
-	void clearInputEvents(InputEvent e) noexcept;
+	void clearInputEvents(InputEventType e) noexcept;
 
 	void MinWidth(unsigned width_) noexcept { size.x = width_; }
 	void MinHeight(unsigned height_) noexcept { size.y = height_; }

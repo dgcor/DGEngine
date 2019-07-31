@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayerNew", "ignorePrevious": true },
+    { "name": "text.setText", "id": "label1", "text": "New Single Player Hero" }
+  ],
+  "load": "ui/singlePlayer/newHero.json"
+}

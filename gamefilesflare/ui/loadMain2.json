@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "shader.load", "id": "highlight", "fragmentFile": "res/shaders/sprite/highlight.frag" },
+    { "name": "game.setShader", "shader": "highlight", "gameShader": "sprite" }
+  ],
+  "load": "ui/loadMain.json"
+}

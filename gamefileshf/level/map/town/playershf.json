@@ -2,6 +2,7 @@
   "player": {
     "id": "lester",
     "class": "farmer",
+    "direction": "Front",
     "mapPosition": [62, 16]
   }
 }

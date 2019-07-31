@@ -1,0 +1,19 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "variable.set", "key": "charName", "value": "{3}" },
+      { "name": "resource.popAll" },
+      { "name": "loadJson", "json": { "minWindowSize": [640, 480] } },
+      { "name": "event.deleteAll" },
+      { "name": "load", "file": "loadingScreens/d2.json" },
+      { "name": "load", "file": "gameSettings.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "load", "file": ["level/loadFull2.json", "{2}"] },
+          { "name": "loadingScreen.setProgress", "progress": 100 }
+        ]
+      }
+    ]
+  }
+}

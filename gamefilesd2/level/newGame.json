@@ -1,0 +1,22 @@
+{
+  "action": {
+    "name": "game.fadeOut",
+    "action": [
+      { "name": "variable.set", "key": "charName", "value": "%heroName.text%" },
+      { "name": "variable.set", "key": "automapZoom", "value": 0 },
+      { "name": "resource.popAll" },
+      { "name": "loadJson", "json": { "minWindowSize": [640, 480] } },
+      { "name": "load", "file": "loadingScreens/d2.json" },
+      { "name": "io.deleteAll", "file": "%tempDir%", "deleteRoot": false },
+      { "name": "dir.create", "file": "%charName%" },
+      { "name": "load", "file": "gameSettings.json" },
+      { "name": "game.fadeIn",
+        "action": [
+          { "name": "load", "file": ["level/loadFull2.json", "town"] },
+          { "name": "load", "file": "level/saveGame.json" },
+          { "name": "loadingScreen.setProgress", "progress": 100 }
+        ]
+      }
+    ]
+  }
+}

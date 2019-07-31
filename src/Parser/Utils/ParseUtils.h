@@ -14,11 +14,11 @@ namespace Parser
 
 	bool getIdFromFile(const std::string_view file, std::string& id);
 
-	bool isValidArray(const rapidjson::Value& elem, const char* key);
+	bool isValidArray(const rapidjson::Value& elem, const std::string_view key);
 
 	bool isValidId(const std::string_view id) noexcept;
 
 	bool isValidString(const rapidjson::Value& elem);
 
-	bool isValidString(const rapidjson::Value& elem, const char* key);
+	bool isValidString(const rapidjson::Value& elem, const std::string_view key);
 }

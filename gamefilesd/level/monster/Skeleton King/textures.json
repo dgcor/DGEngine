@@ -1,0 +1,15 @@
+{
+  "load": "level/monster/Skeleton King/textureFiles.json",
+  "texturePack": {
+    "id": "skeletonKing",
+    "imageContainer": [
+      "skinga",
+      "skingd",
+      "skingh",
+      "skingn",
+      "skings",
+      "skingw"
+    ],
+    "palette": "town"
+  }
+}

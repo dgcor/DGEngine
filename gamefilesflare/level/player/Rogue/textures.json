@@ -1,0 +1,279 @@
+{
+  "load": "level/player/data/female/load.json",
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateAxe",
+    "f_battle_axe",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateBow",
+    "f_longbow",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateShieldSword",
+    "f_greatsword",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_shield",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateShieldClub",
+    "f_club",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_shield",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateClub",
+    "f_club",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlate",
+    "",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateSword",
+    "f_greatsword",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateStaff",
+    "f_staff",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "roguePlateShield",
+    "f_plate_boots",
+    "f_plate_greaves",
+    "f_chain_gloves",
+    "f_plate_cuirass",
+    "f_shield",
+    "f_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalAxe",
+    "f_battle_axe",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalBow",
+    "f_longbow",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalShieldSword",
+    "f_longsword",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_buckler",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalShieldClub",
+    "f_club",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_buckler",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalClub",
+    "f_club",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormal",
+    "",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalSword",
+    "f_longsword",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalStaff",
+    "f_staff",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueNormalShield",
+    "f_cloth_sandals",
+    "f_cloth_pants",
+    "f_cloth_gloves",
+    "f_cloth_shirt",
+    "f_buckler",
+    "f_head_long"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherAxe",
+    "f_battle_axe",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherBow",
+    "f_longbow",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherShieldSword",
+    "f_longsword",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_buckler",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherShieldClub",
+    "f_club",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_buckler",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherClub",
+    "f_club",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeather",
+    "",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherSword",
+    "f_longsword",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherStaff",
+    "f_staff",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "rogueLeatherShield",
+    "f_leather_boots",
+    "f_leather_pants",
+    "f_leather_gloves",
+    "f_leather_chest",
+    "f_buckler",
+    "f_leather_hood"
+  ]
+}

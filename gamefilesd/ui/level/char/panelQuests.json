@@ -74,7 +74,7 @@
             { "name": "game.clearPlayingSounds" },
             { "name": "button.click", "id": "quest" },
             { "name": "load", "file": "texts/quests/%id%.json" },
-            { "name": "resource.moveToTop", "id": "removeGold" }
+            { "name": "resource.bringToFront", "id": "removeGold" }
           ]
         },
         { "name": "sound.play", "id": "titlslct" }

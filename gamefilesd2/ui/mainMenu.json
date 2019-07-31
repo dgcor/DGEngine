@@ -1,0 +1,379 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasResource.mainMenu%",
+    "param2": false,
+    "then": { "name": "load", "file": "ui/mainMenuBase.json" }
+  },
+  "keyboard": [
+    {
+      "key": ["enter", " "],
+      "action": { "name": "button.click", "id": "btnSinglePlayer" }
+    },
+    {
+      "key": ["up", "w"],
+      "action": "focus.moveUp"
+    },
+    {
+      "key": "tab",
+      "shift": true,
+      "action": "focus.moveUp"
+    },
+    {
+      "key": ["down", "s", "tab"],
+      "action": "focus.moveDown"
+    },
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "btnExit" }
+    },
+    {
+      "key": "f1",
+      "action": {
+        "name": "game.fadeOut",
+        "action": {
+          "name": "load",
+          "file": "ui/gameInfo.json"
+        }
+      }
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "ShortButtonBlank",
+      "file": "data/global/ui/CharSelect/ShortButtonBlank.dc6",
+      "imageContainer": "ShortButtonBlank",
+      "palette": "units"
+    },
+    {
+      "id": "MediumButtonBlank",
+      "file": "data/global/ui/FrontEnd/MediumButtonBlank.dc6",
+      "imageContainer": "MediumButtonBlank",
+      "palette": "units"
+    },
+    {
+      "id": "WideButtonBlank",
+      "file": "data/global/ui/FrontEnd/WideButtonBlank.dc6",
+      "imageContainer": "WideButtonBlank",
+      "palette": "units"
+    },
+    {
+      "id": "ts01a",
+      "file": "data/global/ui/FrontEnd/ts01a.DC6",
+      "imageContainer": "ts01a",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts02a",
+      "file": "data/global/ui/FrontEnd/ts02a.DC6",
+      "imageContainer": "ts02a",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts03a",
+      "file": "data/global/ui/FrontEnd/ts03a.DC6",
+      "imageContainer": "ts03a",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts04a",
+      "file": "data/global/ui/FrontEnd/ts04a.DC6",
+      "imageContainer": "ts04a",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts05b",
+      "file": "data/global/ui/FrontEnd/ts05b.DC6",
+      "imageContainer": "ts05b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts06b",
+      "file": "data/global/ui/FrontEnd/ts06b.DC6",
+      "imageContainer": "ts06b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts07b",
+      "file": "data/global/ui/FrontEnd/ts07b.DC6",
+      "imageContainer": "ts07b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts08b",
+      "file": "data/global/ui/FrontEnd/ts08b.DC6",
+      "imageContainer": "ts08b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts09b",
+      "file": "data/global/ui/FrontEnd/ts09b.DC6",
+      "imageContainer": "ts09b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts10b",
+      "file": "data/global/ui/FrontEnd/ts10b.DC6",
+      "imageContainer": "ts10b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts11b",
+      "file": "data/global/ui/FrontEnd/ts11b.DC6",
+      "imageContainer": "ts11b",
+      "palette": "sky",
+      "useOffsets": true
+    },
+    {
+      "id": "ts12b",
+      "file": "data/global/ui/FrontEnd/ts12b.DC6",
+      "imageContainer": "ts12b",
+      "palette": "sky",
+      "useOffsets": true
+    }
+  ],
+  "cursor": {
+    "texture": "cursor"
+  },
+  "action": [
+    "loadMainMenuImg",
+    "loadLogoImg"
+  ],
+  "button": [
+    {
+      "id": "btnSinglePlayer",
+      "texturePack": "WideButtonBlank",
+      "textureIndex": 0,
+      "position": [184, 129],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "load", "file": "ui/singlePlayer/main.json" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "btnSinglePlayer",
+          "texturePack": "WideButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtSinglePlayer",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "btnSinglePlayer",
+          "texturePack": "WideButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtSinglePlayer",
+          "offset": [2, -2]
+        }
+      ]
+    },
+    {
+      "id": "btnSettings",
+      "texturePack": "WideButtonBlank",
+      "textureIndex": 0,
+      "position": [184, 171],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "load", "file": "ui/settings.json" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "btnSettings",
+          "texturePack": "WideButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtSettings",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "btnSettings",
+          "texturePack": "WideButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtSettings",
+          "offset": [2, -2]
+        }
+      ]
+    },
+    {
+      "id": "btnCredits",
+      "texturePack": "ShortButtonBlank",
+      "textureIndex": 0,
+      "position": [184, 443],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "load", "file": "ui/credits.json" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "btnCredits",
+          "texturePack": "ShortButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtCredits",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "btnCredits",
+          "texturePack": "ShortButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtCredits",
+          "offset": [2, -2]
+        }
+      ]
+    },
+    {
+      "id": "btnCinematics",
+      "texturePack": "ShortButtonBlank",
+      "textureIndex": 0,
+      "position": [322, 443],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "load", "file": "ui/cinematics.json" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "btnCinematics",
+          "texturePack": "ShortButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtCinematics",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "btnCinematics",
+          "texturePack": "ShortButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtCinematics",
+          "offset": [2, -2]
+        }
+      ]
+    },
+    {
+      "id": "btnExit",
+      "texturePack": "WideButtonBlank",
+      "textureIndex": 0,
+      "position": [184, 473],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "game.close" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "btnExit",
+          "texturePack": "WideButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtExit",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "btnExit",
+          "texturePack": "WideButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtExit",
+          "offset": [2, -2]
+        }
+      ]
+    }
+  ],
+  "text": [
+    {
+      "id": "txtSinglePlayer",
+      "font": "fontexocet10",
+      "position": [320, 138],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "SINGLE PLAYER"
+    },
+    {
+      "id": "txtSettings",
+      "font": "fontexocet10",
+      "position": [320, 180],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "SETTINGS"
+    },
+    {
+      "id": "txtCredits",
+      "font": "fontridiculous",
+      "position": [251, 447],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "CREDITS"
+    },
+    {
+      "id": "txtCinematics",
+      "font": "fontridiculous",
+      "position": [390, 447],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "CINEMATICS"
+    },
+    {
+      "id": "txtExit",
+      "font": "fontexocet10",
+      "position": [320, 482],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "EXIT DIABLO II"
+    },
+    {
+      "id": "versionInfo",
+      "font": "font16",
+      "position": [-5, 493],
+      "anchor": "none",
+      "binding": "%game.version%",
+      "format": "v [1]"
+    }
+  ]
+}

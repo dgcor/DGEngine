@@ -15,7 +15,7 @@ struct AnimationSpeed
 	AnimationSpeed(sf::Time animation_, sf::Time walk_) noexcept : animation(animation_), walk(walk_) {}
 };
 
-enum class InventoryPosition : size_t
+enum class InventoryPosition : uint32_t
 {
 	TopLeft,
 	TopRight,
@@ -27,7 +27,7 @@ enum class InventoryPosition : size_t
 typedef int32_t LevelObjValue;
 typedef std::pair<uint16_t, LevelObjValue> LevelObjProperty;
 
-enum class PlayerDirection : size_t
+enum class PlayerDirection : uint32_t
 {
 	Front,
 	FrontLeft,
@@ -41,7 +41,7 @@ enum class PlayerDirection : size_t
 	Size
 };
 
-enum class PlayerInventory : size_t
+enum class PlayerInventory : uint32_t
 {
 	Body,
 	Belt,
@@ -49,7 +49,7 @@ enum class PlayerInventory : size_t
 	Size
 };
 
-enum class PlayerItemMount : size_t
+enum class PlayerItemMount : uint32_t
 {
 	LeftHand,
 	RightHand,
@@ -61,7 +61,7 @@ enum class PlayerItemMount : size_t
 	Size
 };
 
-enum class PlayerStatus : size_t
+enum class PlayerStatus : uint32_t
 {
 	Stand,
 	Walk,
@@ -70,7 +70,7 @@ enum class PlayerStatus : size_t
 	Size
 };
 
-enum class PlayerAnimation : size_t
+enum class PlayerAnimation : uint32_t
 {
 	Stand1,
 	Stand2,

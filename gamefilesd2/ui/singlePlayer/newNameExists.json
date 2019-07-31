@@ -1,0 +1,85 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "singlePlayerNameExists"
+  },
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "no" }
+    },
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    }
+  ],
+  "button": {
+    "id": "captureInputEvents",
+    "texture": "hollowBackground",
+    "anchor": "all",
+    "textureRect": [640, 480],
+    "captureInputEvents": true,
+    "resizable": true
+  },
+  "image": {
+    "id": "background",
+    "position": [0, 208],
+    "anchor": "none",
+    "textureRect": [640, 272],
+    "texture": "background"
+  },
+  "text": {
+    "id": "characterExists",
+    "font": "font24s",
+    "position": [120, 236],
+    "anchor": "none",
+    "text": "Character already exists. Do you\nwant to overwrite \"{1}\"?"
+  },
+  "animation": [
+    {
+      "id": "pent1",
+      "texturePack": "focus",
+      "position": [230, 392],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent2",
+      "texturePack": "focus",
+      "position": [380, 392],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": [
+    {
+      "id": "yes",
+      "horizontalAlign": "center",
+      "font": "font30g",
+      "position": [319, 392],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": [
+        { "name": "io.deleteAll", "file": "{1}" },
+        { "name": "load", "file": "level/newGame.json" }
+      ],
+      "onFocus": "anchorPentagrams",
+      "sound": "titlslct",
+      "text": "Yes"
+    },
+    {
+      "id": "no",
+      "horizontalAlign": "center",
+      "font": "font30g",
+      "position": [319, 428],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": { "name": "resource.pop" },
+      "onFocus": "anchorPentagrams",
+      "sound": "titlslct",
+      "text": "No"
+    }
+  ]
+}

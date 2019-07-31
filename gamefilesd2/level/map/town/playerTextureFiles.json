@@ -1,0 +1,79 @@
+{
+  "texturePack": [
+    {
+      "imageContainer": "cow",
+      "file": "towners/animals/cow.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "MPLALITNUHTH",
+      "file": "data/global/monsters/MP/LA/MPLALITNUHTH.DC6",
+      "palette": "units",
+      "useOffsets": true,
+      "normalizeDirections": true
+    },
+    {
+      "imageContainer": "MPRALITNUHTH",
+      "file": "data/global/monsters/MP/RA/MPRALITNUHTH.DC6",
+      "palette": "units",
+      "useOffsets": true,
+      "normalizeDirections": true
+    },
+    {
+      "imageContainer": "MPTRLITNUHTH",
+      "file": "data/global/monsters/MP/TR/MPTRLITNUHTH.DC6",
+      "palette": "units",
+      "useOffsets": true,
+      "normalizeDirections": true
+    },
+    {
+      "imageContainer": "deadguy",
+      "file": "towners/butch/deadguy.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "healer",
+      "file": "towners/healer/healer.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "twnfn",
+      "file": "towners/twnf/twnfn.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "smithn",
+      "file": "towners/smith/smithn.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "pegkid1",
+      "file": "towners/townboy/pegkid1.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "twndrunk",
+      "file": "towners/drunk/twndrunk.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "witch",
+      "file": "towners/townwmn1/witch.cel",
+      "palette": "town"
+    },
+    {
+      "imageContainer": "wmnn",
+      "file": "towners/townwmn1/wmnn.cel",
+      "palette": "town"
+    }
+  ],
+  "compositeTexture": {
+    "id": "strytell",
+    "file": "data/global/monsters/MP/cof/MPNUHTH.COF",
+    "texturePacks": [
+      "MPTRLITNUHTH",
+      "MPLALITNUHTH",
+      "MPRALITNUHTH"
+    ]
+  }
+}

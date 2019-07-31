@@ -1,0 +1,53 @@
+{
+  "load": "ui/mainMenuBase.json",
+  "action": {
+    "name": "resource.add",
+    "id": "splashScreen"
+  },
+  "keyboard": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "skip" }
+  },
+  "texture": {
+    "id": "trademark",
+    "file": "data/global/ui/FrontEnd/trademark.DC6",
+    "palette": "sky"
+  },
+  "image": {
+    "id": "title",
+    "texture": "trademark",
+    "position": [-80, -60],
+    "anchor": "none"
+  },
+  "action": "loadLogoImg",
+  "button": {
+    "id": "skip",
+    "texture": "empty",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": [
+      { "name": "event.delete", "id": "load" },
+      { "name": "resource.pop" },
+      { "name": "load", "file": "ui/mainMenu.json" }
+    ]
+  },
+  "text": {
+    "id": "copyright",
+    "font": "fontformal12",
+    "position": [320, 431],
+    "anchor": "none",
+    "color": "0xB8A782",
+    "horizontalAlign": "center",
+    "verticalSpaceOffset": 4,
+    "text": "(c) 2000 - 2016 Blizzard Entertainment\nAll Rights Reserved."
+  },
+  "event": {
+    "id": "load",
+    "action": [
+      { "name": "resource.pop" },
+      { "name": "load", "file": "ui/mainMenu.json" }
+    ],
+    "time": 7.0
+  }
+}

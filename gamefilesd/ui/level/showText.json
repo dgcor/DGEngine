@@ -35,13 +35,17 @@
       "afterShowText"
     ]
   },
-  "scrollableText": {
-    "id": "textBox",
+  "text": {
+    "id": "textBoxText",
     "font": "medtexts",
-    "refresh": {2},
     "file": "{3}",
     "horizontalSpaceOffset": 2,
-    "verticalSpaceOffset": 17,
+    "verticalSpaceOffset": 17
+  },
+  "scrollable": {
+    "id": "textBoxScroll",
+    "drawable": "textBoxText",
+    "refresh": {2},
     "position": [48, 49],
     "size": [550, 257],
     "anchor": "none",

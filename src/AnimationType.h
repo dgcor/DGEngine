@@ -1,8 +1,10 @@
 #pragma once
 
-enum class AnimationType : int
+#include <cstdint>
+
+enum class AnimationType : int32_t
 {
-	PlayOnce,
 	Looped,
-	BackAndForth
+	BackAndForth,
+	PlayOnce
 };

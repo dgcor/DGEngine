@@ -2,7 +2,9 @@
 #include "FileUtils.h"
 #include "Game.h"
 #include "Game/Level.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "Game/LevelHelper.h"
+#endif
 #include "Game/LevelMap.h"
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
@@ -85,6 +87,7 @@ namespace Parser
 
 		if (isValidString(elem, "min") == true)
 		{
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 			// l4.min and town.min contain 16 blocks, all others 10.
 			auto minBlocks = getUIntKey(elem, "minBlocks", 10);
 			if (minBlocks != 10 && minBlocks != 16)
@@ -97,7 +100,7 @@ namespace Parser
 				return false;
 			}
 
-			auto pal = game.Resources().getPalette(elem["palette"].GetString());
+			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
 			if (pal == nullptr)
 			{
 				return false;
@@ -132,6 +135,9 @@ namespace Parser
 			tileSize.first = 64;
 			tileSize.second = 32;
 			success = true;
+#else
+			return false;
+#endif
 		}
 		else
 		{
@@ -405,7 +411,7 @@ namespace Parser
 	{
 		if (isValidString(elem, "automap") == true)
 		{
-			auto automap = game.Resources().getTexturePack(elem["automap"].GetString());
+			auto automap = game.Resources().getTexturePack(elem["automap"].GetStringStr());
 			if (automap != nullptr)
 			{
 				auto index = getLayerIndex(elem);
@@ -539,7 +545,7 @@ namespace Parser
 		}
 		if (elem.HasMember("captureInputEvents"))
 		{
-			auto captureInputEvents = getInputEventVal(getQueryVal(queryObj, elem["captureInputEvents"]));
+			auto captureInputEvents = getInputEventTypeVal(getQueryVal(queryObj, elem["captureInputEvents"]));
 			level->setCaptureInputEvents(captureInputEvents);
 		}
 		if (elem.HasMember("onLeftClick"))

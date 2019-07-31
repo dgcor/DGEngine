@@ -52,10 +52,12 @@
         "updateBeltItems",
         {
           "name": "if.equal",
-          "param1": "%game.hasResource.charPanelInventory%",
+          "param1": "%invPanel.visible%",
           "param2": true,
           "then": ["updateStashItems", "updateBodyItems"]
         },
+        "updateSelectedSpell",
+        "updateSpellBook",
         "updateCharPanel"
       ]
     }

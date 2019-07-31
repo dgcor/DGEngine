@@ -1,6 +1,5 @@
 #include "JsonUtils.h"
 #include "Game.h"
-#include "rapidjson/pointer.h"
 #include "Utils/Utils.h"
 
 namespace JsonUtils
@@ -12,7 +11,7 @@ namespace JsonUtils
 		if (query.IsString() == true)
 		{
 			auto elemPtr = &elem;
-			std::string_view queryStr(query.GetString(), query.GetStringLength());
+			auto queryStr = query.GetStringView();
 			while (true)
 			{
 				auto str1 = Utils::splitStringIn2(queryStr, '{');
@@ -118,7 +117,7 @@ namespace JsonUtils
 		{
 			return;
 		}
-		std::string str1(elem.GetString(), elem.GetStringLength());
+		std::string str1(elem.GetStringView());
 
 		if (changeValueType == true &&
 			str1 == str)
@@ -144,7 +143,7 @@ namespace JsonUtils
 			return;
 		}
 
-		std::string_view str(elem.GetString(), elem.GetStringLength());
+		auto str = elem.GetStringView();
 		std::string str2;
 		size_t firstTokenStart = 0;
 		bool hadMatch = false;
@@ -194,7 +193,7 @@ namespace JsonUtils
 	{
 		if (elem.IsString() == true)
 		{
-			std::string_view str1(elem.GetString(), elem.GetStringLength());
+			auto str1 = elem.GetStringView();
 			std::string str2(str1);
 			Utils::replaceStringInPlace(str2, oldStr, newStr);
 			if (str1 != str2)
@@ -258,7 +257,7 @@ namespace JsonUtils
 				return;
 			}
 
-			std::string_view str(elem.GetString(), elem.GetStringLength());
+			auto str = elem.GetStringView();
 			std::string str2;
 			size_t firstTokenStart = 0;
 			bool hadMatch = false;

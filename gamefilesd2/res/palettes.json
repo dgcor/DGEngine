@@ -1,0 +1,139 @@
+{
+  "palette": [
+    {
+      "file": "levels/towndata/town.pal"
+    },
+    {
+      "id": "textBlue",
+      "clone": "town"
+    },
+    {
+      "id": "textGold",
+      "clone": "town"
+    },
+    {
+      "id": "textRed",
+      "clone": "town"
+    },
+    {
+      "palette": "town",
+      "trnFile": "plrgfx/infra.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "plrgfx/stone.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell0.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell1.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell2.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell3.trn"
+    },
+    {
+      "palette": "town",
+      "trnFile": "res/trn/spell4.trn"
+    },
+    {
+      "id": "act1",
+      "file": "data/global/palette/ACT1/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "act2",
+      "file": "data/global/palette/ACT2/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "act3",
+      "file": "data/global/palette/ACT3/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "act4",
+      "file": "data/global/palette/ACT4/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "act5",
+      "file": "data/global/palette/ACT5/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "endgame",
+      "file": "data/global/palette/EndGame/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "fechar",
+      "file": "data/global/palette/fechar/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "loading",
+      "file": "data/global/palette/loading/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "menu0",
+      "file": "data/global/palette/Menu0/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "menu1",
+      "file": "data/global/palette/menu1/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "menu2",
+      "file": "data/global/palette/menu2/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "menu3",
+      "file": "data/global/palette/menu3/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "menu4",
+      "file": "data/global/palette/menu4/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "sky",
+      "file": "data/global/palette/Sky/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "static",
+      "file": "data/global/palette/STATIC/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "trademark",
+      "file": "data/global/palette/Trademark/pal.dat",
+      "colorFormat": "BGR"
+    },
+    {
+      "id": "units",
+      "file": "data/global/palette/Units/pal.dat",
+      "colorFormat": "BGR"
+    }
+  ],
+  "action": [
+    { "name": "palette.replace", "id": "textBlue", "idSource": "town", "srcStart": 178, "size": 14, "dstStart": 240 },
+    { "name": "palette.replace", "id": "textBlue", "idSource": "town", "srcStart": 189, "size": 2, "dstStart": 254 },
+    { "name": "palette.replace", "id": "textGold", "idSource": "town", "srcStart": 194, "size": 14, "dstStart": 240 },
+    { "name": "palette.replace", "id": "textGold", "idSource": "town", "srcStart": 205, "size": 2, "dstStart": 254 },
+    { "name": "palette.replace", "id": "textRed", "idSource": "town", "srcStart": 224, "size": 16, "dstStart": 240 }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "level": {
+    "id": "level",
+    "automapAnchor": ["top", "right"],
+    "automapRelativeCoords": false,
+    "automapPosition": [504, 0],
+    "automapSize": [136, 156],
+    "automapPlayerDirectionIndex": 1024,
+    "smoothMovement": true
+  }
+}

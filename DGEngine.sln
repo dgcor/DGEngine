@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DGEngine", "DGEngine.vcxproj", "{B30255A6-E921-4847-9FB1-26842AB465A4}"
 EndProject
@@ -9,6 +9,7 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Clang|Win32 = Debug Clang|Win32
 		Debug Code Analysis|Win32 = Debug Code Analysis|Win32
+		Debug NoDiabloFormatSupport|Win32 = Debug NoDiabloFormatSupport|Win32
 		Debug NoMovie|Win32 = Debug NoMovie|Win32
 		Debug|Win32 = Debug|Win32
 		Release NoMovie|Win32 = Release NoMovie|Win32
@@ -20,6 +21,8 @@ Global
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug Clang|Win32.Build.0 = Debug Clang|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug Code Analysis|Win32.ActiveCfg = Debug Code Analysis|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug Code Analysis|Win32.Build.0 = Debug Code Analysis|Win32
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoDiabloFormatSupport|Win32.ActiveCfg = Debug NoDiabloFormatSupport|Win32
+		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoDiabloFormatSupport|Win32.Build.0 = Debug NoDiabloFormatSupport|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoMovie|Win32.ActiveCfg = Debug NoMovie|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug NoMovie|Win32.Build.0 = Debug NoMovie|Win32
 		{B30255A6-E921-4847-9FB1-26842AB465A4}.Debug|Win32.ActiveCfg = Debug|Win32

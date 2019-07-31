@@ -37,10 +37,25 @@ void Panel::updateSize(const Game& game)
 			obj->updateSize(game);
 		}
 	}
+	updateDrawPositionAndSize();
+}
+
+const sf::Vector2f& Panel::Position() const
+{
+	if (sizePosNeedsUpdate == true)
+	{
+		sizePosNeedsUpdate = false;
+		updateDrawPositionAndSize();
+	}
+	return position;
 }
 
 void Panel::Position(const sf::Vector2f& newPosition)
 {
+	if (position == newPosition)
+	{
+		return;
+	}
 	for (const auto& drawable : drawables)
 	{
 		if (auto obj = drawable.lock())
@@ -49,24 +64,35 @@ void Panel::Position(const sf::Vector2f& newPosition)
 		}
 	}
 	position = newPosition;
+	updateDrawPositionAndSize();
 }
 
-void Panel::getDrawPositionAndSize(sf::Vector2f& drawPos, sf::Vector2f& drawSize) const
+sf::Vector2f Panel::Size() const
 {
-	drawPos = { std::numeric_limits<float>::max() , std::numeric_limits<float>::max() };
+	if (sizePosNeedsUpdate == true)
+	{
+		sizePosNeedsUpdate = false;
+		updateDrawPositionAndSize();
+	}
+	return drawSize;
+}
+
+void Panel::updateDrawPositionAndSize() const
+{
+	drawPosition = { std::numeric_limits<float>::max() , std::numeric_limits<float>::max() };
 	drawSize = position;
 	for (const auto& drawable : drawables)
 	{
 		if (auto obj = drawable.lock())
 		{
 			const auto& objDrawPos = obj->DrawPosition();
-			if (objDrawPos.x < drawPos.x)
+			if (objDrawPos.x < drawPosition.x)
 			{
-				drawPos.x = objDrawPos.x;
+				drawPosition.x = objDrawPos.x;
 			}
-			if (objDrawPos.y < drawPos.y)
+			if (objDrawPos.y < drawPosition.y)
 			{
-				drawPos.y = objDrawPos.y;
+				drawPosition.y = objDrawPos.y;
 			}
 			auto posAndSize = objDrawPos + obj->Size();
 			if (posAndSize.x > drawSize.x)
@@ -79,11 +105,11 @@ void Panel::getDrawPositionAndSize(sf::Vector2f& drawPos, sf::Vector2f& drawSize
 			}
 		}
 	}
-	if (drawPos.x == std::numeric_limits<float>::max())
+	if (drawPosition.x == std::numeric_limits<float>::max())
 	{
-		drawPos = position;
+		drawPosition = position;
 	}
-	drawSize -= drawPos;
+	drawSize -= drawPosition;
 }
 
 void Panel::draw(const Game& game, sf::RenderTarget& target,
@@ -108,7 +134,17 @@ void Panel::draw(const Game& game, sf::RenderTarget& target,
 
 void Panel::draw(const Game& game, sf::RenderTarget& target) const
 {
-	draw(game, target, { 0.f, 0.f, game.DrawRegionSizef().x, game.DrawRegionSizef().y });
+	if (visible == false)
+	{
+		return;
+	}
+	for (const auto& drawable : drawables)
+	{
+		if (auto obj = drawable.lock())
+		{
+			obj->draw(game, target);
+		}
+	}
 }
 
 void Panel::update(Game& game)
@@ -117,6 +153,9 @@ void Panel::update(Game& game)
 	{
 		return;
 	}
+
+	sizePosNeedsUpdate = true;
+
 	for (auto it = drawables.rbegin(); it != drawables.rend();)
 	{
 		auto obj = it->lock();

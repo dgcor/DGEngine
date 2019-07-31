@@ -21,7 +21,7 @@ namespace Parser
 		const auto& idxElem = elem["index"];
 		if (idxElem.IsString() == true)
 		{
-			itemIdx = (size_t)GameUtils::getPlayerItemMountIndex(idxElem.GetString());
+			itemIdx = GameUtils::getPlayerItemMountIndex(idxElem.GetStringView());
 		}
 		else if (idxElem.IsArray() == true)
 		{
@@ -55,7 +55,7 @@ namespace Parser
 		const auto& invElem = elem["index"];
 		if (invElem.IsString() == true)
 		{
-			invIdx = (size_t)GameUtils::getPlayerInventory(invElem.GetString());
+			invIdx = (size_t)GameUtils::getPlayerInventory(invElem.GetStringView());
 		}
 		else if (invElem.IsUint() == true)
 		{
@@ -176,7 +176,7 @@ namespace Parser
 			return;
 		}
 
-		auto class_ = level->getClass<PlayerClass>(elem["class"].GetString());
+		auto class_ = level->getClass<PlayerClass>(elem["class"].GetStringStr());
 
 		if (class_ == nullptr ||
 			class_->hasTextures() == false)

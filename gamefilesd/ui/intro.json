@@ -4,10 +4,10 @@
     "param1": "%skipIntro%",
     "param2": true,
     "then": [
-      { "name": "load", "file": ["ui/playIntro.json", "ui/splashScreen2.json"] },
+      { "name": "load", "file": ["ui/playIntro.json", "ui/splashScreen.json"] },
       { "name": "variable.set", "key": "skipIntro", "value": true },
       { "name": "load", "file": "ui/saveSettings.json" }
     ],
-    "else": { "name": "load", "file": "ui/splashScreen2.json" }
+    "else": { "name": "load", "file": "ui/splashScreen.json" }
   }
 }

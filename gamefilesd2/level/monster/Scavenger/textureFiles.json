@@ -1,0 +1,10 @@
+{
+  "imageContainer": [
+    { "file": "data/global/monsters/S7/TR/S7TRLITA1HTH.dcc", "blendMode": "add" },
+    { "file": "data/global/monsters/S7/TR/S7TRLITDDHTH.dcc", "blendMode": "add" },
+    { "file": "data/global/monsters/S7/TR/S7TRLITDTHTH.dcc", "blendMode": "add" },
+    { "file": "data/global/monsters/S7/TR/S7TRLITGHHTH.dcc", "blendMode": "add" },
+    { "file": "data/global/monsters/S7/TR/S7TRLITNUHTH.dcc", "blendMode": "add" },
+    { "file": "data/global/monsters/S7/TR/S7TRLITWLHTH.dcc", "blendMode": "add" }
+  ]
+}

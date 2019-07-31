@@ -19,60 +19,19 @@ namespace Parser
 	void parsePlayerClassTexturePack(Game& game,
 		PlayerClass& playerClass, const Value& elem)
 	{
-		auto texturePack = game.Resources().getTexturePack(getStringVal(elem));
-		if (texturePack == nullptr)
+		auto id = getStringVal(elem);
+		auto texturePack = game.Resources().getTexturePack(id);
+		if (texturePack != nullptr)
 		{
+			playerClass.addTexturePack(std::move(texturePack));
 			return;
 		}
-		PlayerClass::Ranges ranges;
-		auto cMultiTexPack = dynamic_cast<CachedMultiTexturePack*>(texturePack.get());
-		if (cMultiTexPack != nullptr)
+		auto compTex = game.Resources().getCompositeTexture(id);
+		if (compTex != nullptr)
 		{
-			auto ranges2 = cMultiTexPack->getRanges();
-			for (const auto& range : ranges2)
-			{
-				PlayerClass::Range range2;
-				range2.range = range;
-				range2.animType = AnimationType::Looped;
-				ranges.push_back(range2);
-			}
-		}
-		playerClass.addTexturePack(texturePack, ranges);
-	}
-
-	void parsePlayerClassTexturePackWithAnims(Game& game,
-		PlayerClass& playerClass, const Value& elem)
-	{
-		auto texturePack = game.Resources().getTexturePack(getStringKey(elem, "texturePack"));
-		if (texturePack == nullptr)
-		{
+			playerClass.addTexturePack(std::move(compTex));
 			return;
 		}
-		PlayerClass::Ranges ranges;
-
-		if (elem.HasMember("animations") == true &&
-			elem["animations"].IsArray() == true)
-		{
-			for (const auto& val : elem["animations"])
-			{
-				if (val.IsArray() == true)
-				{
-					PlayerClass::Range range;
-					range.range = getVector2uVal<std::pair<size_t, size_t>>(val);
-					range.animType = AnimationType::Looped;
-					ranges.push_back(range);
-				}
-				else if (val.IsObject() == true)
-				{
-					PlayerClass::Range range;
-					range.range = getVector2uKey<std::pair<size_t, size_t>>(val, "range");
-					range.animType = getAnimationTypeKey(val, "type");
-					ranges.push_back(range);
-				}
-			}
-		}
-
-		playerClass.addTexturePack(texturePack, std::move(ranges));
 	}
 
 	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
@@ -119,7 +78,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = std::string(elem["id"].GetString());
+		id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -137,7 +96,7 @@ namespace Parser
 
 			if (isValidString(elem, "fromId") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
 				if (fromId != id)
 				{
 					auto obj = level.getClass<PlayerClass>(fromId);
@@ -186,19 +145,11 @@ namespace Parser
 			{
 				parsePlayerClassTexturePack(game, *playerClass, texturePacks);
 			}
-			if (texturePacks.IsObject() == true)
-			{
-				parsePlayerClassTexturePackWithAnims(game, *playerClass, texturePacks);
-			}
 			else if (texturePacks.IsArray() == true)
 			{
 				for (const auto& val : texturePacks)
 				{
-					if (val.IsObject() == true)
-					{
-						parsePlayerClassTexturePackWithAnims(game, *playerClass, val);
-					}
-					else
+					if (val.IsString() == true)
 					{
 						parsePlayerClassTexturePack(game, *playerClass, val);
 					}

@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "Button.h"
 #include <cctype>
+#include "Game.h"
 #include "Game/Level.h"
 
 void ResourceManager::addResource(const std::string& id)
@@ -99,7 +100,7 @@ bool ResourceManager::resourceExists(const std::string_view id) const noexcept
 	return false;
 }
 
-void ResourceManager::moveResourceToTop(const std::string& id)
+void ResourceManager::bringResourceToFront(const std::string& id)
 {
 	auto it = std::find_if(resources.begin(), resources.end(),
 		[&id](const auto& res) -> bool { return res.id == id; }
@@ -144,14 +145,20 @@ void ResourceManager::popCursor(bool popAll)
 	}
 }
 
-void ResourceManager::setKeyboardAction(const sf::Event::KeyEvent& key, const std::shared_ptr<Action>& obj)
+void ResourceManager::setInputAction(const sf::Event& evt, const std::shared_ptr<Action>& obj)
 {
-	if (key.code == sf::Keyboard::KeyCount)
+	if (evt.type == sf::Event::KeyPressed &&
+		evt.key.code == sf::Keyboard::KeyCount)
 	{
 		resources.back().anyKeyAction = obj;
 		return;
 	}
-	resources.back().keyboardActions[key] = obj;
+	resources.back().inputActions[evt] = obj;
+}
+
+void ResourceManager::setInputAction(const CompositeInputEvent& evt, const std::shared_ptr<Action>& obj)
+{
+	resources.back().compositeInputActions.push_back(std::make_pair(evt, obj));
 }
 
 void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Action>& obj)
@@ -159,88 +166,22 @@ void ResourceManager::setAction(const std::string& key, const std::shared_ptr<Ac
 	resources.back().actions[key] = obj;
 }
 
-bool ResourceManager::addFont(ResourceBundle& res,
-	const std::string& key, const Font& obj)
-{
-	if (res.fonts.find(key) == res.fonts.cend())
-	{
-		res.fonts[key] = obj;
-		return true;
-	}
-	return false;
-}
-
 bool ResourceManager::addFont(const std::string& key,
 	const Font& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addFont(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addFont(res, key, obj);
-		}
-	}
-	return false;
-}
-
-bool ResourceManager::addTexture(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<sf::Texture>& obj)
-{
-	if (res.textures.find(key) == res.textures.cend())
-	{
-		res.textures[key] = obj;
-		return true;
-	}
-	return false;
+	return addResource(key, obj, resourceId);
 }
 
 bool ResourceManager::addTexture(const std::string& key,
 	const std::shared_ptr<sf::Texture>& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addTexture(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addTexture(res, key, obj);
-		}
-	}
-	return false;
-}
-
-bool ResourceManager::addAudioSource(ResourceBundle& res,
-	const std::string& key, const AudioSource& obj)
-{
-	if (res.audioSources.find(key) == res.audioSources.cend())
-	{
-		res.audioSources[key] = obj;
-		return true;
-	}
-	return false;
+	return addResource(key, obj, resourceId);
 }
 
 bool ResourceManager::addAudioSource(const std::string& key,
 	const AudioSource& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addAudioSource(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addAudioSource(res, key, obj);
-		}
-	}
-	return false;
+	return addResource(key, obj, resourceId);
 }
 
 bool ResourceManager::addSong(ResourceBundle& res,
@@ -271,88 +212,28 @@ bool ResourceManager::addSong(const std::string& key,
 	return false;
 }
 
-bool ResourceManager::addPalette(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<Palette>& obj)
-{
-	if (hasPalette(key) == false)
-	{
-		res.palettes[key] = obj;
-		return true;
-	}
-	return false;
-}
-
 bool ResourceManager::addPalette(const std::string& key,
 	const std::shared_ptr<Palette>& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addPalette(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addPalette(res, key, obj);
-		}
-	}
-	return false;
-}
-
-bool ResourceManager::addImageContainer(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<ImageContainer>& obj)
-{
-	if (hasImageContainer(key) == false)
-	{
-		res.imageContainers[key] = obj;
-		return true;
-	}
-	return false;
+	return addResource(key, obj, resourceId);
 }
 
 bool ResourceManager::addImageContainer(const std::string& key,
 	const std::shared_ptr<ImageContainer>& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addImageContainer(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addImageContainer(res, key, obj);
-		}
-	}
-	return false;
-}
-
-bool ResourceManager::addTexturePack(ResourceBundle& res,
-	const std::string& key, const std::shared_ptr<TexturePack>& obj)
-{
-	if (hasTexturePack(key) == false)
-	{
-		res.texturePacks[key] = obj;
-		return true;
-	}
-	return false;
+	return addResource(key, obj, resourceId);
 }
 
 bool ResourceManager::addTexturePack(const std::string& key,
 	const std::shared_ptr<TexturePack>& obj, const std::string_view resourceId)
 {
-	if (resourceId.empty() == true)
-	{
-		return addTexturePack(resources.back(), key, obj);
-	}
-	for (auto& res : reverse(resources))
-	{
-		if (res.id == resourceId)
-		{
-			return addTexturePack(res, key, obj);
-		}
-	}
-	return false;
+	return addResource(key, obj, resourceId);
+}
+
+bool ResourceManager::addCompositeTexture(const std::string& key,
+	const std::shared_ptr<CompositeTexture>& obj, const std::string_view resourceId)
+{
+	return addResource(key, obj, resourceId);
 }
 
 void ResourceManager::addDrawable(ResourceBundle& res, const std::string& key,
@@ -419,21 +300,22 @@ void ResourceManager::clearFinishedSounds()
 	}
 }
 
-std::shared_ptr<Action> ResourceManager::getKeyboardAction(const sf::Event::KeyEvent& key) const
+std::shared_ptr<Action> ResourceManager::getInputAction(const sf::Event& key) const
 {
 	for (const auto& res : reverse(resources))
 	{
-		if (res.anyKeyAction != nullptr)
+		if (key.type == sf::Event::KeyPressed &&
+			res.anyKeyAction != nullptr)
 		{
 			return res.anyKeyAction;
 		}
-		const auto elem = res.keyboardActions.find(key);
-		if (elem != res.keyboardActions.cend())
+		const auto elem = res.inputActions.find(key);
+		if (elem != res.inputActions.cend())
 		{
 			return elem->second;
 		}
 	}
-	return nullptr;
+	return {};
 }
 
 std::shared_ptr<Action> ResourceManager::getAction(const std::string& key) const
@@ -451,41 +333,17 @@ std::shared_ptr<Action> ResourceManager::getAction(const std::string& key) const
 
 Font ResourceManager::getFont(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.fonts.find(key);
-		if (elem != res.fonts.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
+	return getResource<Font>(key);
 }
 
 std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.textures.find(key);
-		if (elem != res.textures.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
+	return getResource<std::shared_ptr<sf::Texture>>(key);
 }
 
 AudioSource ResourceManager::getAudioSource(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.audioSources.find(key);
-		if (elem != res.audioSources.cend())
-		{
-			return elem->second;
-		}
-	}
-	return {};
+	return getResource<AudioSource>(key);
 }
 
 sf::SoundBuffer* ResourceManager::getSoundBuffer(const std::string& key) const
@@ -517,77 +375,37 @@ std::shared_ptr<sf::Music2> ResourceManager::getSong(const std::string& key) con
 
 std::shared_ptr<Palette> ResourceManager::getPalette(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.palettes.find(key);
-		if (elem != res.palettes.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
+	return getResource<std::shared_ptr<Palette>>(key);
 }
 
 std::shared_ptr<ImageContainer> ResourceManager::getImageContainer(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.imageContainers.find(key);
-		if (elem != res.imageContainers.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
+	return getResource<std::shared_ptr<ImageContainer>>(key);
 }
 
 std::shared_ptr<TexturePack> ResourceManager::getTexturePack(const std::string& key) const
 {
-	for (const auto& res : reverse(resources))
-	{
-		const auto elem = res.texturePacks.find(key);
-		if (elem != res.texturePacks.cend())
-		{
-			return elem->second;
-		}
-	}
-	return nullptr;
+	return getResource<std::shared_ptr<TexturePack>>(key);
+}
+
+std::shared_ptr<CompositeTexture> ResourceManager::getCompositeTexture(const std::string& key) const
+{
+	return getResource<std::shared_ptr<CompositeTexture>>(key);
 }
 
 bool ResourceManager::hasFont(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.fonts.find(key) != resource.fonts.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<Font>(key, false);
 }
 
 bool ResourceManager::hasTexture(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.textures.find(key) != resource.textures.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<std::shared_ptr<sf::Texture>>(key, false);
 }
 
 bool ResourceManager::hasAudioSource(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.audioSources.find(key) != resource.audioSources.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<AudioSource>(key, false);
 }
 
 bool ResourceManager::hasSong(const std::string& key, bool checkTopOnly) const
@@ -608,38 +426,22 @@ bool ResourceManager::hasSong(const std::string& key, bool checkTopOnly) const
 
 bool ResourceManager::hasPalette(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.palettes.find(key) != resource.palettes.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<std::shared_ptr<Palette>>(key, false);
 }
 
 bool ResourceManager::hasImageContainer(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.imageContainers.find(key) != resource.imageContainers.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<std::shared_ptr<ImageContainer>>(key, false);
 }
 
 bool ResourceManager::hasTexturePack(const std::string& key) const
 {
-	for (const auto& resource : resources)
-	{
-		if (resource.texturePacks.find(key) != resource.texturePacks.cend())
-		{
-			return true;
-		}
-	}
-	return false;
+	return hasResource<std::shared_ptr<TexturePack>>(key, false);
+}
+
+bool ResourceManager::hasCompositeTexture(const std::string& key) const
+{
+	return hasResource<std::shared_ptr<CompositeTexture>>(key, false);
 }
 
 bool ResourceManager::hasDrawable(const std::string& key) const
@@ -652,6 +454,46 @@ bool ResourceManager::hasDrawable(const std::string& key) const
 		}
 	}
 	return false;
+}
+
+void ResourceManager::bringDrawableToFront(const std::string& id)
+{
+	for (auto& resource : reverse(resources))
+	{
+		auto itDraw = resource.drawableIds.find(id);
+		if (itDraw == resource.drawableIds.cend())
+		{
+			continue;
+		}
+		auto drawablePtr = itDraw->second.get();
+		auto it = std::find_if(resource.drawables.begin(), resource.drawables.end(),
+			[&drawablePtr](const auto& res) -> bool { return res == drawablePtr; }
+		);
+		if (it != resource.drawables.end())
+		{
+			std::rotate(it, it + 1, resource.drawables.end());
+		}
+	}
+}
+
+void ResourceManager::sendDrawableToBack(const std::string& id)
+{
+	for (auto& resource : reverse(resources))
+	{
+		auto itDraw = resource.drawableIds.find(id);
+		if (itDraw == resource.drawableIds.cend())
+		{
+			continue;
+		}
+		auto drawablePtr = itDraw->second.get();
+		auto it = std::find_if(resource.drawables.begin(), resource.drawables.end(),
+			[&drawablePtr](const auto& res) -> bool { return res == drawablePtr; }
+		);
+		if (it != resource.drawables.end())
+		{
+			std::rotate(resource.drawables.begin(), it, it + 1);
+		}
+	}
 }
 
 void ResourceManager::deleteDrawable(const std::string& id)
@@ -676,6 +518,22 @@ void ResourceManager::deleteDrawable(const std::string& id)
 	}
 }
 
+void ResourceManager::deleteDrawable(UIObject* obj)
+{
+	for (auto& res : reverse(resources))
+	{
+		auto& drawables = res.drawables;
+		for (auto it2 = drawables.begin(); it2 != drawables.end(); ++it2)
+		{
+			if (*it2 == obj)
+			{
+				drawables.erase(it2);
+				return;
+			}
+		}
+	}
+}
+
 void ResourceManager::play(const std::string& key)
 {
 	auto& song = resources.back().songs[key];
@@ -687,10 +545,14 @@ void ResourceManager::play(const std::string& key)
 
 void ResourceManager::playPaused(bool restart)
 {
-	for (auto& res : resources) {
-		for (auto& song : res.songs) {
-			if (song.second->getStatus() == sf::SoundSource::Paused) {
-				if (restart) {
+	for (auto& res : resources)
+	{
+		for (auto& song : res.songs)
+		{
+			if (song.second->getStatus() == sf::SoundSource::Paused)
+			{
+				if (restart)
+				{
 					song.second->setPlayingOffset(sf::Time::Zero);
 				}
 				song.second->play();
@@ -701,9 +563,12 @@ void ResourceManager::playPaused(bool restart)
 
 void ResourceManager::pauseSongs()
 {
-	for (auto& res : resources) {
-		for (auto& song : res.songs) {
-			if (song.second->getStatus() == sf::SoundSource::Playing) {
+	for (auto& res : resources)
+	{
+		for (auto& song : res.songs)
+		{
+			if (song.second->getStatus() == sf::SoundSource::Playing)
+			{
 				song.second->pause();
 			}
 		}
@@ -712,8 +577,10 @@ void ResourceManager::pauseSongs()
 
 void ResourceManager::stopSongs()
 {
-	for (auto& res : resources) {
-		for (auto& song : res.songs) {
+	for (auto& res : resources)
+	{
+		for (auto& song : res.songs)
+		{
 			song.second->stop();
 		}
 	}
@@ -947,5 +814,24 @@ void ResourceManager::updateFocus(Game& game)
 			}
 		}
 		break;
+	}
+}
+
+void ResourceManager::processCompositeInputEvents(Game& game) const
+{
+	for (const auto& res : reverse(resources))
+	{
+		if (res.anyKeyAction != nullptr)
+		{
+			return;
+		}
+		for (const auto& ca : res.compositeInputActions)
+		{
+			if (ca.first.isActive() == true)
+			{
+				game.Events().addBack(ca.second);
+				return;
+			}
+		}
 	}
 }

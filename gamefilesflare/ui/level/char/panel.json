@@ -178,7 +178,7 @@
   "load": "ui/level/char/panelCharacter.json",
   "load": "ui/level/char/panelInventory.json",
   "load": "ui/level/char/panelSpellBook.json",
-  "load": "ui/level/msgBox/msgBox.json",
+  "load": "ui/level/msgBox.json",
   "image": [
     {
       "id": "mapImage",
@@ -249,7 +249,6 @@
       "anchor": "bottom",
       "position": [9, 361],
       "text": "Char",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": [
         {
@@ -260,7 +259,7 @@
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "drawable.visible", "id": "charPanel", "visible": true },
             "hideQuestPanel",
-            { "name": "resource.moveToTop", "id": "removeGold" },
+            { "name": "resource.bringToFront", "id": "removeGold" },
             "updateCharPanel"
           ],
           "else": [
@@ -290,7 +289,6 @@
       "anchor": "bottom",
       "position": [9, 387],
       "text": "Quests",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": [
         {
@@ -301,7 +299,7 @@
             { "name": "load", "file": "ui/level/char/panelQuests.json" },
             { "name": "drawable.visible", "id": "charPanel", "visible": false },
             "showQuestPanel",
-            { "name": "resource.moveToTop", "id": "removeGold" }
+            { "name": "resource.bringToFront", "id": "removeGold" }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelQuests" },
@@ -330,7 +328,6 @@
       "anchor": "bottom",
       "position": [560, 361],
       "text": "Inventory",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": [
         {
@@ -372,7 +369,6 @@
       "anchor": "bottom",
       "position": [560, 387],
       "text": "Spells",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": [
         {
@@ -412,7 +408,6 @@
       "anchor": "bottom",
       "position": [9, 427],
       "text": "Map",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": "showMap",
       "onHoverEnter": {
@@ -434,7 +429,6 @@
       "position": [9, 453],
       "sound": "titlemov",
       "text": "Menu",
-      "verticalAlign": "center",
       "clickUp": true,
       "onClick": {
         "name": "if.equal",

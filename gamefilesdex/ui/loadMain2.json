@@ -3,7 +3,8 @@
     { "name": "shader.load", "id": "warp", "fragmentFile": "res/shaders/game/warp.frag" },
     { "name": "shader.load", "id": "highlight", "fragmentFile": "res/shaders/sprite/highlight.frag" },
     { "name": "game.setShader", "shader": "warp", "gameShader": "game" },
-    { "name": "game.setShader", "shader": "highlight", "gameShader": "sprite" }
+    { "name": "game.setShader", "shader": "highlight", "gameShader": "sprite" },
+    { "name": "variable.set", "key": "jog", "value": true }
   ],
   "load": "ui/loadMain.json"
 }

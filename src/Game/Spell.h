@@ -23,8 +23,8 @@ private:
 
 	std::shared_ptr<TexturePack> texturePack1;
 	std::shared_ptr<TexturePack> texturePack2;
-	size_t textureIdx1;
-	size_t textureIdx2;
+	uint32_t textureIdx1;
+	uint32_t textureIdx2;
 
 	Formulas<std::array<Formula, 6>> formulas;
 	FixedMap<uint16_t, Formula, 4> customFormulas;
@@ -68,7 +68,7 @@ public:
 
 	Spell(const std::shared_ptr<TexturePack>& texturePack1_,
 		const std::shared_ptr<TexturePack>& texturePack2_,
-		size_t textureIdx1_, size_t textureIdx2_) : texturePack1(texturePack1_),
+		uint32_t textureIdx1_, uint32_t textureIdx2_) : texturePack1(texturePack1_),
 		texturePack2(texturePack2_), textureIdx1(textureIdx1_), textureIdx2(textureIdx2_) {}
 
 	bool getNumberPropByHash(const Queryable& spell, const Queryable& player,
@@ -86,7 +86,7 @@ public:
 
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
 
-	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
 
 	void setTexturePack1(const std::shared_ptr<TexturePack>& texturePack_) noexcept
 	{
@@ -97,8 +97,8 @@ public:
 		texturePack2 = texturePack_;
 	}
 
-	void setTextureIndex1(size_t idx_) noexcept { textureIdx1 = idx_; }
-	void setTextureIndex2(size_t idx_) noexcept { textureIdx2 = idx_; }
+	void setTextureIndex1(uint32_t idx_) noexcept { textureIdx1 = idx_; }
+	void setTextureIndex2(uint32_t idx_) noexcept { textureIdx2 = idx_; }
 
 	bool getTexture1(TextureInfo& ti) const
 	{
@@ -166,5 +166,5 @@ struct SpellInstance : public Queryable
 
 	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
 	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
 };

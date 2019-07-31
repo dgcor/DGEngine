@@ -102,14 +102,14 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		bool validId = isValidId(id);
 
 		if (isValidString(elem, "sourceId") == true &&
 			validId == true)
 		{
-			auto source = game.Resources().getAudioSource(elem["sourceId"].GetString());
+			auto source = game.Resources().getAudioSource(elem["sourceId"].GetStringStr());
 
 			if (std::holds_alternative<std::shared_ptr<sf::SoundBuffer>>(source) == true)
 			{
@@ -177,7 +177,7 @@ namespace Parser
 		}
 		else if (isValidString(elem, "file") == true)
 		{
-			std::string file(elem["file"].GetString());
+			std::string file(elem["file"].GetStringStr());
 
 			if (validId == false)
 			{
@@ -201,8 +201,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				std::string fromId(elem["fromId"].GetStringStr());
+				std::string id(elem["id"].GetStringStr());
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getSong(fromId);

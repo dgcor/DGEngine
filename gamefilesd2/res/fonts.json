@@ -1,0 +1,355 @@
+{
+  "texture": [
+    {
+      "id": "font6",
+      "file": "data/local/font/LATIN/font6.DC6",
+      "palette": "units",
+      "size": [144, 176],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "font8",
+      "file": "data/local/font/LATIN/font8.DC6",
+      "palette": "units",
+      "size": [240, 224],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "font16",
+      "file": "data/local/font/LATIN/font16.DC6",
+      "palette": "units",
+      "size": [224, 256],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "font24",
+      "file": "data/local/font/LATIN/font24.DC6",
+      "palette": "units",
+      "size": [352, 416],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "font30",
+      "file": "data/local/font/LATIN/font30.DC6",
+      "palette": "units",
+      "size": [464, 480],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "font42",
+      "file": "data/local/font/LATIN/font42.DC6",
+      "palette": "units",
+      "size": [624, 656],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontexocet8",
+      "file": "data/local/font/LATIN/fontexocet8.DC6",
+      "palette": "units",
+      "size": [208, 208],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontexocet10",
+      "file": "data/local/font/LATIN/fontexocet10.DC6",
+      "palette": "units",
+      "size": [272, 288],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontformal10",
+      "file": "data/local/font/LATIN/fontformal10.DC6",
+      "palette": "units",
+      "size": [240, 240],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontformal11",
+      "file": "data/local/font/LATIN/fontformal11.DC6",
+      "palette": "units",
+      "size": [288, 256],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontformal12",
+      "file": "data/local/font/LATIN/fontformal12.DC6",
+      "palette": "units",
+      "size": [560, 480],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontingamechat",
+      "file": "data/local/font/LATIN/fontingamechat.dc6",
+      "palette": "units",
+      "size": [256, 240],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "fontridiculous",
+      "file": "data/local/font/LATIN/fontridiculous.DC6",
+      "palette": "units",
+      "size": [192, 224],
+      "stitch": [16, 16]
+    },
+    {
+      "id": "ReallyTheLastSucker",
+      "file": "data/local/font/LATIN/ReallyTheLastSucker.dc6",
+      "palette": "units",
+      "size": [144, 176],
+      "stitch": [16, 16]
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "font6",
+      "font": true,
+      "texture": "font6",
+      "charSizeFile": "data/local/font/LATIN/font6.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 7,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "font8",
+      "font": true,
+      "texture": "font8",
+      "charSizeFile": "data/local/font/LATIN/font8.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 14,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "font16",
+      "font": true,
+      "texture": "font16",
+      "charSizeFile": "data/local/font/LATIN/font16.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 10,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "font24",
+      "font": true,
+      "texture": "font24",
+      "charSizeFile": "data/local/font/LATIN/font24.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 24,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "font30",
+      "font": true,
+      "texture": "font30",
+      "charSizeFile": "data/local/font/LATIN/font30.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 30,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "font42",
+      "font": true,
+      "texture": "font42",
+      "charSizeFile": "data/local/font/LATIN/font42.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 42,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontexocet8",
+      "font": true,
+      "texture": "fontexocet8",
+      "charSizeFile": "data/local/font/LATIN/fontexocet8.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 13,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontexocet10",
+      "font": true,
+      "texture": "fontexocet10",
+      "charSizeFile": "data/local/font/LATIN/fontexocet10.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 10,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontformal10",
+      "font": true,
+      "texture": "fontformal10",
+      "charSizeFile": "data/local/font/LATIN/fontformal10.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 15,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontformal11",
+      "font": true,
+      "texture": "fontformal11",
+      "charSizeFile": "data/local/font/LATIN/fontformal11.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 16,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontformal12",
+      "font": true,
+      "texture": "fontformal12",
+      "charSizeFile": "data/local/font/LATIN/fontformal12.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 20,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontingamechat",
+      "font": true,
+      "texture": "fontingamechat",
+      "charSizeFile": "data/local/font/LATIN/fontingamechat.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 15,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "fontridiculous",
+      "font": true,
+      "texture": "fontridiculous",
+      "charSizeFile": "data/local/font/LATIN/fontridiculous.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 7,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    },
+    {
+      "id": "ReallyTheLastSucker",
+      "font": true,
+      "texture": "ReallyTheLastSucker",
+      "charSizeFile": "data/local/font/LATIN/ReallyTheLastSucker.tbl",
+      "charSizeFileStart": 15,
+      "charSizeFileSkip": 14,
+      "charNewLineSize": 7,
+      "frames": [16, 16],
+      "direction": "horizontal"
+    }
+  ],
+  "font": [
+    {
+      "id": "font6",
+      "texturePack": "font6"
+    },
+    {
+      "id": "font8",
+      "texturePack": "font8"
+    },
+    {
+      "id": "font16",
+      "texturePack": "font16"
+    },
+    {
+      "id": "font24",
+      "texturePack": "font24"
+    },
+    {
+      "id": "font30",
+      "texturePack": "font30"
+    },
+    {
+      "id": "font42",
+      "texturePack": "font42"
+    },
+    {
+      "id": "fontexocet8",
+      "texturePack": "fontexocet8",
+      "fontColor": "0x606060"
+    },
+    {
+      "id": "fontexocet10",
+      "texturePack": "fontexocet10",
+      "fontColor": "0x606060"
+    },
+    {
+      "id": "fontformal10",
+      "texturePack": "fontformal10"
+    },
+    {
+      "id": "fontformal11",
+      "texturePack": "fontformal11"
+    },
+    {
+      "id": "fontformal12",
+      "texturePack": "fontformal12"
+    },
+    {
+      "id": "fontingamechat",
+      "texturePack": "fontingamechat"
+    },
+    {
+      "id": "fontridiculous",
+      "texturePack": "fontridiculous",
+      "fontColor": "0x606060"
+    },
+    {
+      "id": "ReallyTheLastSucker",
+      "texturePack": "ReallyTheLastSucker"
+    },
+    {
+      "id": "font16g",
+      "clone": "font16",
+      "fontColor": "0xEDD689"
+    },
+    {
+      "id": "font16s",
+      "fromId": "font16"
+    },
+    {
+      "id": "font24g",
+      "fromId": "font24"
+    },
+    {
+      "id": "font24s",
+      "clone": "font24",
+      "fontColor": "0xBBBBBB"
+    },
+    {
+      "id": "font30g",
+      "fromId": "font30"
+    },
+    {
+      "id": "font30s",
+      "clone": "font30",
+      "fontColor": "0xBBBBBB"
+    },
+    {
+      "id": "font42g",
+      "fromId": "font42"
+    },
+    {
+      "id": "font42y",
+      "clone": "font42",
+      "fontColor": "0xBBBBBB"
+    }
+  ]
+}

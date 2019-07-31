@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "PhysFSStream.h"
 
-Palette::Palette(const std::string_view file)
+Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 {
 	sf::PhysFSStream stream(file.data());
 
@@ -13,16 +13,44 @@ Palette::Palette(const std::string_view file)
 
 	for (auto& color : palette)
 	{
-		stream.read(&color, 3);
+		stream.read(&color.r, 1);
+		stream.read(&color.g, 1);
+		stream.read(&color.b, 1);
+		if (colorFormat >= ColorFormat::RGBA)
+		{
+			stream.read(&color.a, 1);
+		}
+		switch (colorFormat)
+		{
+		case ColorFormat::BGR:
+		case ColorFormat::BGRA:
+			std::swap(color.r, color.b);
+			break;
+		case ColorFormat::ARGB:
+			color = sf::Color(color.toInteger() << 8);
+			break;
+		case ColorFormat::ABGR:
+		{
+			color = sf::Color(color.toInteger() << 8);
+			std::swap(color.r, color.b);
+			break;
+		}
+		default:
+			break;
+		}
 	}
 	loadTexture();
 }
 
-Palette::Palette(const Palette& pal, const std::vector<sf::Uint8> trn)
+Palette::Palette(const Palette& pal, const std::vector<sf::Uint8> trn,
+	size_t start, size_t length)
 {
-	for (size_t i = 0; i < palette.size(); i++)
+	if (start + length <= trn.size())
 	{
-		palette[i] = pal[trn[i]];
+		for (size_t i = 0; i < length; i++)
+		{
+			palette[i] = pal[trn[start + i]];
+		}
 	}
 	loadTexture();
 }

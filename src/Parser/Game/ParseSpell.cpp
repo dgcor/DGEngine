@@ -25,7 +25,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = std::string(elem["id"].GetString());
+		id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -39,7 +39,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			std::string fromId(elem["fromId"].GetString());
+			auto fromId = elem["fromId"].GetStringStr();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<Spell>(fromId);
@@ -56,8 +56,8 @@ namespace Parser
 		auto texturePack2 = game.Resources().getTexturePack(
 			getStringKey(elem, "texturePack2"));
 
-		auto textureIndex1 = (size_t)getUIntKey(elem, "textureIndex1");
-		auto textureIndex2 = (size_t)getUIntKey(elem, "textureIndex2");
+		auto textureIndex1 = getUIntKey(elem, "textureIndex1");
+		auto textureIndex2 = getUIntKey(elem, "textureIndex2");
 
 		if (spell == nullptr)
 		{

@@ -27,7 +27,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = std::string(elem["id"].GetString());
+		id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -41,7 +41,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			std::string fromId(elem["fromId"].GetString());
+			auto fromId = elem["fromId"].GetStringStr();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<ItemClass>(fromId);
@@ -58,7 +58,7 @@ namespace Parser
 		auto InvTexture = game.Resources().getTexturePack(
 			getStringKey(elem, "inventoryTexturePack"));
 
-		auto InvTextureIdx = (size_t)getUIntKey(elem, "inventoryTextureIndex");
+		auto InvTextureIdx = getUIntKey(elem, "inventoryTextureIndex");
 
 		if (itemClass == nullptr)
 		{
@@ -111,7 +111,7 @@ namespace Parser
 		if (elem.HasMember("dropTextureIndexRange") == true)
 		{
 			itemClass->setDropTextureIndexRange(
-				getVector2uVal<std::pair<size_t, size_t>>(elem["dropTextureIndexRange"])
+				getVector2uVal<std::pair<uint32_t, uint32_t>>(elem["dropTextureIndexRange"])
 			);
 		}
 		if (elem.HasMember("name") == true)
@@ -156,9 +156,9 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto nameStr = std::string(it->name.GetString(), it->name.GetStringLength());
-						auto nameHash = str2int16(nameStr);
-						level->setPropertyName(nameHash, nameStr);
+						auto name = it->name.GetStringView();
+						auto nameHash = str2int16(name);
+						level->setPropertyName(nameHash, name);
 						LevelObjValue val;
 						switch (nameHash)
 						{
@@ -174,7 +174,7 @@ namespace Parser
 							val = getMinMaxIntVal<LevelObjValue>(it->value);
 							break;
 						}
-						itemClass->setDefault(nameStr, val);
+						itemClass->setDefault(name, val);
 					}
 				}
 			}
@@ -211,7 +211,7 @@ namespace Parser
 			{
 				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
 				{
-					auto nameHash = str2int16(getStringViewVal(it->name));
+					auto nameHash = str2int16(it->name.GetStringView());
 					if (nameHash != str2int16(""))
 					{
 						if (it->value.IsNull() == true)

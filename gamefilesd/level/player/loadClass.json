@@ -1,0 +1,26 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Rogue",
+        "action": [
+          { "name": "load", "file": "level/player/Rogue/textures.json" },
+          { "name": "load", "file": "level/player/Rogue/class.json" }
+        ]
+      },
+      {
+        "value": "Sorceror",
+        "action": [
+          { "name": "load", "file": "level/player/Sorceror/textures.json" },
+          { "name": "load", "file": "level/player/Sorceror/class.json" }
+        ]
+      }
+    ],
+    "default": [
+      { "name": "load", "file": "level/player/Warrior/textures.json" },
+      { "name": "load", "file": "level/player/Warrior/class.json" }
+    ]
+  }
+}

@@ -1,7 +1,0 @@
-{
-  "load": "level/player/Warrior/cel.json",
-  "texturePack": {
-    "id": "sorcerorNormal",
-    "fromId": "warriorNormal"
-  }
-}

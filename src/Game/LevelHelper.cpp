@@ -1,6 +1,7 @@
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "LevelHelper.h"
 #include <filesystem>
-#include "ImageContainers/CelImageContainer.h"
+#include "ImageContainers/CELImageContainer.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
 #include "TexturePacks/VectorTexturePack.h"
@@ -79,8 +80,12 @@ namespace LevelHelper
 	std::shared_ptr<TexturePack> loadTilesetSprite(
 		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
 	{
-		auto texturePack = std::make_shared<VectorTexturePack>(
-			min.size(), imgPack.getPalette(), imgPack.IsIndexed());
+		std::shared_ptr<Palette> palette;
+		if (imgPack.IsIndexed() == true)
+		{
+			palette = imgPack.getPalette();
+		}
+		auto texturePack = std::make_shared<VectorTexturePack>(min.size(), palette);
 
 		bool hasTile = true;
 		sf::Image2 newPillar;
@@ -91,7 +96,7 @@ namespace LevelHelper
 			texturePack->setOffset(offset);
 		}
 
-		for (size_t i = 0; i < min.size(); i++)
+		for (uint32_t i = 0; i < min.size(); i++)
 		{
 			if (hasTile == true)
 			{
@@ -113,11 +118,11 @@ namespace LevelHelper
 	// reduces the sheet size and number of textures that fit in a texture
 	// to avoid creating big textures with too many blanks.
 	void getIdealTilesetSheetSize(
-		size_t minimumTextureSize, size_t maximumTextureSize,
-		size_t numTexturesToFit,
-		size_t tileWidth, size_t tileHeight,
-		size_t& sheetWidth, size_t& sheetHeight,
-		size_t& numTexturesThatFitX, size_t& numTexturesThatFitY)
+		uint32_t minimumTextureSize, uint32_t maximumTextureSize,
+		uint32_t numTexturesToFit,
+		uint32_t tileWidth, uint32_t tileHeight,
+		uint32_t& sheetWidth, uint32_t& sheetHeight,
+		uint32_t& numTexturesThatFitX, uint32_t& numTexturesThatFitY)
 	{
 		numTexturesThatFitX = maximumTextureSize / tileWidth;
 		numTexturesThatFitY = maximumTextureSize / tileHeight;
@@ -127,7 +132,7 @@ namespace LevelHelper
 		while (sheetWidth > minimumTextureSize &&
 			sheetHeight > minimumTextureSize)
 		{
-			size_t newSheetWidth, newSheetHeight;
+			uint32_t newSheetWidth, newSheetHeight;
 			if (sheetWidth >= sheetHeight)
 			{
 				newSheetWidth = sheetWidth - tileWidth;
@@ -138,8 +143,8 @@ namespace LevelHelper
 				newSheetWidth = sheetWidth;
 				newSheetHeight = sheetHeight - tileHeight;
 			}
-			size_t newMaxFitX = newSheetWidth / tileWidth;
-			size_t newMaxFitY = newSheetHeight / tileHeight;
+			uint32_t newMaxFitX = newSheetWidth / tileWidth;
+			uint32_t newMaxFitY = newSheetHeight / tileHeight;
 			auto maxNumTextures = newMaxFitX * newMaxFitY;
 			if (maxNumTextures < numTexturesToFit)
 			{
@@ -160,39 +165,43 @@ namespace LevelHelper
 		std::shared_ptr<TexturePack> texturePack;
 		SimpleMultiTexturePack* multiTexturePack = nullptr;
 		IndexedTexturePack* indexedTexturePack = nullptr;
-		size_t numTexturesToFit;
+		uint32_t numTexturesToFit;
+
+		std::shared_ptr<Palette> palette;
+		if (imgPack.IsIndexed() == true)
+		{
+			palette = imgPack.getPalette();
+		}
 
 		if (skipBlankTiles == false)
 		{
-			texturePack = std::make_shared<SimpleMultiTexturePack>(
-				imgPack.getPalette(), imgPack.IsIndexed());
+			texturePack = std::make_shared<SimpleMultiTexturePack>(palette);
 			multiTexturePack = (SimpleMultiTexturePack*)texturePack.get();
 			numTexturesToFit = min.size();
 		}
 		else
 		{
-			auto texturePack2 = std::make_unique<SimpleMultiTexturePack>(
-				imgPack.getPalette(), imgPack.IsIndexed());
+			auto texturePack2 = std::make_unique<SimpleMultiTexturePack>(palette);
 			multiTexturePack = texturePack2.get();
 			texturePack = std::make_shared<IndexedTexturePack>(std::move(texturePack2), true);
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 			numTexturesToFit = min.size() - min.blankTopPillars();
 		}
 
-		auto maxTextureSize = sf::Texture::getMaximumSize();
+		uint32_t maxTextureSize = sf::Texture::getMaximumSize();
 		if (maxTextureSize > 1024u)
 		{
 			// with this maximum, all original pillars fit into one texture.
 			maxTextureSize = std::min(maxTextureSize, 2560u);
 		}
-		unsigned pillarWidth = 64;
-		unsigned pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
+		uint32_t pillarWidth = 64;
+		uint32_t pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
 		if (pillarHeight > maxTextureSize)
 		{
 			return texturePack;
 		}
-		size_t i = 0;
-		size_t xMax, yMax, sheetWidth, sheetHeight;
+		uint32_t i = 0;
+		uint32_t xMax, yMax, sheetWidth, sheetHeight;
 
 		getIdealTilesetSheetSize(1024, maxTextureSize, numTexturesToFit,
 			pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
@@ -206,12 +215,12 @@ namespace LevelHelper
 			newPillar.create(sheetWidth, sheetHeight, sf::Color::Transparent);
 
 			bool loop = true;
-			size_t x = 0;
-			size_t y = 0;
+			uint32_t x = 0;
+			uint32_t y = 0;
 			while (loop == true)
 			{
-				size_t newX = x * pillarWidth;
-				size_t newY = y * pillarHeight;
+				uint32_t newX = x * pillarWidth;
+				uint32_t newY = y * pillarHeight;
 
 				bool hasTile = drawMinPillar(newPillar, newX, newY, min[i], imgPack, top);
 
@@ -243,7 +252,7 @@ namespace LevelHelper
 				}
 			}
 			multiTexturePack->addTexturePack(std::make_shared<sf::Texture>(newPillar),
-				std::make_pair(xMax, yMax), offset, 0, true);
+				std::make_pair(xMax, yMax), offset, 0, 0, true, AnimationType::Looped);
 
 			// calculate new sheet size for the remaining tiles.
 			if (mainLoop == true)
@@ -284,25 +293,25 @@ namespace LevelHelper
 				return;
 			}
 
-			size_t numTexturesToFit = min.size();
+			uint32_t numTexturesToFit = min.size();
 			if (bottomTopOrBoth == 1 &&
 				skipBlankTiles == true)
 			{
 				numTexturesToFit -= min.blankTopPillars();
 			}
-			unsigned pillarWidth = 64;
-			unsigned pillarHeight = (bottomTopOrBoth != 0 ? (min[0].size() * 32) : 32);
+			uint32_t pillarWidth = 64;
+			uint32_t pillarHeight = (bottomTopOrBoth != 0 ? (min[0].size() * 32) : 32);
 			if (pillarHeight > maxTextureSize)
 			{
 				return;
 			}
-			size_t i = 0;
-			size_t xMax, yMax, sheetWidth, sheetHeight;
+			uint32_t i = 0;
+			uint32_t xMax, yMax, sheetWidth, sheetHeight;
 
 			getIdealTilesetSheetSize(1024, maxTextureSize, numTexturesToFit,
 				pillarWidth, pillarHeight, sheetWidth, sheetHeight, xMax, yMax);
 
-			size_t file = 1;
+			uint32_t file = 1;
 
 			bool mainLoop = true;
 			while (mainLoop == true)
@@ -311,12 +320,12 @@ namespace LevelHelper
 				newPillar.create(sheetWidth, sheetHeight, sf::Color::Transparent);
 
 				bool loop = true;
-				size_t x = 0;
-				size_t y = 0;
+				uint32_t x = 0;
+				uint32_t y = 0;
 				while (loop == true)
 				{
-					size_t newX = x * pillarWidth;
-					size_t newY = y * pillarHeight;
+					uint32_t newX = x * pillarWidth;
+					uint32_t newY = y * pillarHeight;
 					bool hasTile = false;
 
 					if (bottomTopOrBoth < 0)
@@ -384,7 +393,7 @@ namespace LevelHelper
 	}
 
 	void loadAndSaveTilesetSprite(const std::string& celFile,
-		const std::string& palFile, const std::string& outFilePath,
+		const std::string& palFile, Palette::ColorFormat colorFormat, const std::string& outFilePath,
 		int bottomTopOrBoth, bool skipBlankTiles, unsigned maxTextureSize, unsigned minBlock)
 	{
 		try
@@ -424,8 +433,8 @@ namespace LevelHelper
 				minPath.replace_extension(".MIN");
 			}
 
-			auto pal = std::make_shared<Palette>(palPath.string());
-			CelImageContainer celImgContainer(celPath.string());
+			auto pal = std::make_shared<Palette>(palPath.string(), colorFormat);
+			CELImageContainer celImgContainer(celPath.string());
 			CachedImagePack imgPack(&celImgContainer, pal, false);
 			Min min(minPath.string(), minBlock);
 
@@ -437,3 +446,4 @@ namespace LevelHelper
 		catch (std::exception&) {}
 	}
 }
+#endif

@@ -170,26 +170,38 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 	}
 }
 
-BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex, int rows_,
-	int columns_, bool verticalDirection, const sf::Image& img)
-	: texture(tex), rows(rows_), columns(columns_)
+BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex,
+	const std::shared_ptr<Palette>& palette_, int rows_, int columns_,
+	bool verticalDirection, const sf::Image& img)
+	: texture(tex), palette(palette_), rows(rows_), columns(columns_)
 {
 	this->calculateCharSizes(img, verticalDirection);
 }
 
-BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex, int rows_,
-	int columns_, bool verticalDirection, const std::vector<uint8_t>& charSizes)
-	: texture(tex), rows(rows_), columns(columns_)
+BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex,
+	const std::shared_ptr<Palette>& palette_, int rows_, int columns_,
+	bool verticalDirection, const std::vector<uint8_t>& charSizes,
+	size_t startPos, size_t skipNBytes, uint8_t spaceSize, uint8_t newLineSize)
+	: texture(tex), palette(palette_), rows(rows_), columns(columns_)
 {
 	size_t charStartIdx = 0;
 	if (charSizes.size() == 130 || charSizes.size() == 258)
 	{
 		charStartIdx = 2;
 	}
-	else if ((charSizes.size() == 128 || charSizes.size() == 256) == false)
+	else if ((charSizes.size() == 128 || charSizes.size() == 256) == false &&
+		charSizes.size() <= 256)
 	{
 		this->calculateCharSizes(tex->copyToImage(), verticalDirection);
 		return;
+	}
+	else
+	{
+		charStartIdx = startPos;
+	}
+	if (skipNBytes == 0)
+	{
+		skipNBytes = 1;
 	}
 
 	int cellW = tex->getSize().x / columns;
@@ -200,7 +212,7 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 	{
 		chars[i].left = cellW * iCol;
 		chars[i].top = cellH * iRow;
-		auto charSizeIdx = i + charStartIdx;
+		auto charSizeIdx = (i * skipNBytes) + charStartIdx;
 		if (charSizeIdx < charSizes.size())
 		{
 			chars[i].width = charSizes[charSizeIdx];
@@ -231,19 +243,28 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 		}
 	}
 
-	if (charStartIdx > 0)
+	if (spaceSize > 0)
+	{
+		chars[' '].width = spaceSize;
+	}
+	else if (charStartIdx == 2 &&
+		(charSizes.size() == 130 || charSizes.size() == 258))
 	{
 		chars[' '].width = charSizes[0];
-		chars['\n'].width = charSizes[1];
 	}
-	else
+
+	if (newLineSize > 0)
 	{
-		chars[' '].width = charSizes[' '];
-		chars['\n'].width = charSizes['\n'];
+		chars['\n'].width = newLineSize;
+	}
+	else if (charStartIdx == 2 &&
+		(charSizes.size() == 130 || charSizes.size() == 258))
+	{
+		chars['\n'].width = charSizes[1];
 	}
 }
 
-bool BitmapFontTexturePack::get(size_t index, TextureInfo& ti) const
+bool BitmapFontTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
 	if (index < chars.size())
 	{
@@ -251,6 +272,7 @@ bool BitmapFontTexturePack::get(size_t index, TextureInfo& ti) const
 		ti.textureRect = chars[index];
 		ti.offset = {};
 		ti.absoluteOffset = false;
+		ti.blendMode = BlendMode::Alpha;
 		ti.palette = palette;
 		return true;
 	}

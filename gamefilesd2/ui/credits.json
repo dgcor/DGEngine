@@ -1,0 +1,148 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "credits",
+    "ignorePrevious": true
+  },
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "back" }
+    },
+    {
+      "key": ["enter", " "],
+      "action": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 5 }
+    },
+    {
+      "key": ["enter", " "],
+      "action": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 35 },
+      "keyUp": true
+    }
+  ],
+  "texture": {
+    "id": "credits",
+    "file": "data/global/ui/CharSelect/creditsbckg.dc6",
+    "palette": "units"
+  },
+  "image": {
+    "id": "credits",
+    "texture": "credits",
+    "position": [-80, -60],
+    "anchor": "none"
+  },
+  "panel": {
+    "id": "creditsPanel"
+  },
+  "text": [
+    {
+      "id": "creditsTitles",
+      "panel": "creditsPanel",
+      "font": "fontformal10",
+      "color": "0xFF5050",
+      "file": "ui/creditsTitles.txt",
+      "position": [565, 0],
+      "horizontalAlign": "center",
+      "verticalSpaceOffset": 4
+    },
+    {
+      "id": "creditsLeft",
+      "panel": "creditsPanel",
+      "font": "fontformal10",
+      "color": "0xB8A782",
+      "file": "ui/creditsLeft.txt",
+      "position": [560, 0],
+      "horizontalAlign": "right",
+      "verticalSpaceOffset": 4
+    },
+    {
+      "id": "creditsCenter",
+      "panel": "creditsPanel",
+      "font": "fontformal10",
+      "color": "0xB8A782",
+      "file": "ui/creditsCenter.txt",
+      "position": [565, 0],
+      "horizontalAlign": "center",
+      "verticalSpaceOffset": 4
+    },
+    {
+      "id": "creditsRight",
+      "panel": "creditsPanel",
+      "font": "fontformal10",
+      "color": "0xB8A782",
+      "file": "ui/creditsRight.txt",
+      "position": [570, 0],
+      "horizontalAlign": "left",
+      "verticalSpaceOffset": 4
+    }
+  ],
+  "scrollable": {
+    "id": "creditsScroll",
+    "drawable": "creditsPanel",
+    "refresh": 35,
+    "anchor": "none",
+    "position": [-80, -60],
+    "size": [800, 600],
+    "onComplete": {
+      "name": "resource.pop",
+      "ignorePrevious": false
+    }
+  },
+  "button": [
+    {
+      "id": "speed",
+      "texture": "empty",
+      "textureRect": [640, 480],
+      "resizable": true,
+      "anchor": "all",
+      "onClickIn": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 5 },
+      "onClickOut": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 35 }
+    },
+    {
+      "id": "back",
+      "texturePack": "MediumButtonBlank",
+      "textureIndex": 0,
+      "position": [-47, 483],
+      "sound": "titlslct",
+      "anchor": "none",
+      "captureInputEvents": true,
+      "clickUp": true,
+      "onClick": {
+        "name": "resource.pop",
+        "ignorePrevious": false
+      },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "back",
+          "texturePack": "MediumButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtBack",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "back",
+          "texturePack": "MediumButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtBack",
+          "offset": [2, -2]
+        }
+      ]
+    }
+  ],
+  "text": {
+    "id": "txtBack",
+    "font": "fontexocet10",
+    "position": [16, 492],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "text": "EXIT"
+  }
+}

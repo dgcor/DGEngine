@@ -1,0 +1,8 @@
+{
+  "texturePack": {
+    "imageContainer": "{3}",
+    "file": "data/global/CHARS/{1}/{2}.dcc",
+    "palette": "units",
+    "normalizeDirections": true
+  }
+}

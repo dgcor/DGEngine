@@ -33,12 +33,15 @@ namespace Parser
 			else
 			{
 				sf::Vector2f offset;
+				auto animType = getAnimationTypeKey(elem, "animationType");
 				auto texPack = std::make_shared<SimpleTexturePack>(
-					texture, frames, offset, 0, false, nullptr, false);
+					texture, frames, offset, 0, 0, false,
+					animType, nullptr
+				);
 
 				if (texPack->size() > 0)
 				{
-					animation = std::make_shared<Animation>(texPack, frames);
+					animation = std::make_shared<Animation>(texPack, frames, animType);
 				}
 				else
 				{
@@ -48,22 +51,35 @@ namespace Parser
 		}
 		else if (isValidString(elem, "texturePack"))
 		{
-			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetString());
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetStringStr());
 			if (texPack == nullptr)
 			{
 				return nullptr;
 			}
-			auto frames = std::make_pair(0u, texPack->size() - 1);
+			AnimationType animType;
+			auto frames = texPack->getRange(-1, -1, animType);
 			frames = getFramesKey(elem, "frames", frames);
-			animation = std::make_shared<Animation>(texPack, frames);
+			animType = getAnimationTypeKey(elem, "animationType", animType);
+			animation = std::make_shared<Animation>(texPack, frames, animType);
+		}
+		else if (isValidString(elem, "compositeTexture"))
+		{
+			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"].GetStringStr());
+			if (compTex == nullptr)
+			{
+				return nullptr;
+			}
+			AnimationType animType;
+			auto frames = compTex->getRange(-1, -1, animType);
+			frames = getFramesKey(elem, "frames", frames);
+			animType = getAnimationTypeKey(elem, "animationType", animType);
+			animation = std::make_shared<Animation>(compTex, frames, animType);
 		}
 		else
 		{
 			return nullptr;
 		}
 
-		auto scale = getFloatKey(elem, "scale", 1.0);
-		animation->scale(sf::Vector2f(scale, scale));
 		auto anchor = getAnchorKey(elem, "anchor");
 		animation->setAnchor(anchor);
 		auto size = animation->Size();
@@ -92,7 +108,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		std::string id(elem["id"].GetStringStr());
 		if (isValidId(id) == false)
 		{
 			return;

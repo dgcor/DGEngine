@@ -21,9 +21,7 @@
 #ifdef __clang__
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(switch-enum)
-#endif
-
-#ifdef _MSC_VER
+#elif defined(_MSC_VER)
 RAPIDJSON_DIAG_PUSH
 RAPIDJSON_DIAG_OFF(4512) // assignment operator could not be generated
 #endif
@@ -129,6 +127,18 @@ public:
     }
 #endif
 
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Constructor that parses a string or URI fragment representation.
+    /*!
+        \param source A string or URI fragment representation of JSON pointer.
+        \param allocator User supplied allocator for this pointer. If no allocator is provided, it creates a self-owned one.
+        \note Requires the definition of the preprocessor symbol \ref RAPIDJSON_HAS_STDSTRING.
+    */
+    explicit GenericPointer(std::basic_string_view<Ch> source, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+        Parse(source.c_str(), source.size());
+    }
+#endif
+
     //! Constructor that parses a string or URI fragment representation, with length of the source string.
     /*!
         \param source A string or URI fragment representation of JSON pointer.
@@ -165,7 +175,12 @@ public:
     GenericPointer(const Token* tokens, size_t tokenCount) : allocator_(), ownAllocator_(), nameBuffer_(), tokens_(const_cast<Token*>(tokens)), tokenCount_(tokenCount), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {}
 
     //! Copy constructor.
-    GenericPointer(const GenericPointer& rhs, Allocator* allocator = 0) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+    GenericPointer(const GenericPointer& rhs) : allocator_(rhs.allocator_), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
+        *this = rhs;
+    }
+
+    //! Copy constructor.
+    GenericPointer(const GenericPointer& rhs, Allocator* allocator) : allocator_(allocator), ownAllocator_(), nameBuffer_(), tokens_(), tokenCount_(), parseErrorOffset_(), parseErrorCode_(kPointerParseErrorNone) {
         *this = rhs;
     }
 
@@ -196,6 +211,36 @@ public:
         }
         return *this;
     }
+
+    //! Swap the content of this pointer with an other.
+    /*!
+        \param other The pointer to swap with.
+        \note Constant complexity.
+    */
+    GenericPointer& Swap(GenericPointer& other) RAPIDJSON_NOEXCEPT {
+        internal::Swap(allocator_, other.allocator_);
+        internal::Swap(ownAllocator_, other.ownAllocator_);
+        internal::Swap(nameBuffer_, other.nameBuffer_);
+        internal::Swap(tokens_, other.tokens_);
+        internal::Swap(tokenCount_, other.tokenCount_);
+        internal::Swap(parseErrorOffset_, other.parseErrorOffset_);
+        internal::Swap(parseErrorCode_, other.parseErrorCode_);
+        return *this;
+    }
+
+    //! free-standing swap function helper
+    /*!
+        Helper function to enable support for common swap implementation pattern based on \c std::swap:
+        \code
+        void swap(MyClass& a, MyClass& b) {
+            using std::swap;
+            swap(a.pointer, b.pointer);
+            // ...
+        }
+        \endcode
+        \see Swap()
+     */
+    friend inline void swap(GenericPointer& a, GenericPointer& b) RAPIDJSON_NOEXCEPT { a.Swap(b); }
 
     //@}
 
@@ -240,7 +285,7 @@ public:
     template <typename T>
     RAPIDJSON_DISABLEIF_RETURN((internal::NotExpr<internal::IsSame<typename internal::RemoveConst<T>::Type, Ch> >), (GenericPointer))
     Append(T* name, Allocator* allocator = 0) const {
-        return Append(name, StrLen(name), allocator);
+        return Append(name, internal::StrLen(name), allocator);
     }
 
 #if RAPIDJSON_HAS_STDSTRING
@@ -252,6 +297,18 @@ public:
     */
     GenericPointer Append(const std::basic_string<Ch>& name, Allocator* allocator = 0) const {
         return Append(name.c_str(), static_cast<SizeType>(name.size()), allocator);
+    }
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Append a name token, and return a new Pointer
+    /*!
+        \param name Name to be appended.
+        \param allocator Allocator for the newly return Pointer.
+        \return A new Pointer with appended token.
+    */
+    GenericPointer Append(std::basic_string_view<Ch> name, Allocator* allocator = 0) const {
+        return Append(name.data(), static_cast<SizeType>(name.size()), allocator);
     }
 #endif
 
@@ -274,7 +331,7 @@ public:
         else {
             Ch name[21];
             for (size_t i = 0; i <= length; i++)
-                name[i] = buffer[i];
+                name[i] = static_cast<Ch>(buffer[i]);
             Token token = { name, length, index };
             return Append(token, allocator);
         }
@@ -352,6 +409,33 @@ public:
         \note When any pointers are invalid, always returns true.
     */
     bool operator!=(const GenericPointer& rhs) const { return !(*this == rhs); }
+
+    //! Less than operator.
+    /*!
+        \note Invalid pointers are always greater than valid ones.
+    */
+    bool operator<(const GenericPointer& rhs) const {
+        if (!IsValid())
+            return false;
+        if (!rhs.IsValid())
+            return true;
+
+        if (tokenCount_ != rhs.tokenCount_)
+            return tokenCount_ < rhs.tokenCount_;
+
+        for (size_t i = 0; i < tokenCount_; i++) {
+            if (tokens_[i].index != rhs.tokens_[i].index)
+                return tokens_[i].index < rhs.tokens_[i].index;
+
+            if (tokens_[i].length != rhs.tokens_[i].length)
+                return tokens_[i].length < rhs.tokens_[i].length;
+
+            if (int cmp = std::memcmp(tokens_[i].name, rhs.tokens_[i].name, sizeof(Ch) * tokens_[i].length))
+                return cmp < 0;
+        }
+
+        return false;
+    }
 
     //@}
 
@@ -532,14 +616,14 @@ public:
     */
     ValueType& GetWithDefault(ValueType& root, const ValueType& defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
-        Value& v = Create(root, allocator, &alreadyExist);
+        ValueType& v = Create(root, allocator, &alreadyExist);
         return alreadyExist ? v : v.CopyFrom(defaultValue, allocator);
     }
 
     //! Query a value in a subtree with default null-terminated string.
     ValueType& GetWithDefault(ValueType& root, const Ch* defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
-        Value& v = Create(root, allocator, &alreadyExist);
+        ValueType& v = Create(root, allocator, &alreadyExist);
         return alreadyExist ? v : v.SetString(defaultValue, allocator);
     }
 
@@ -547,7 +631,16 @@ public:
     //! Query a value in a subtree with default std::basic_string.
     ValueType& GetWithDefault(ValueType& root, const std::basic_string<Ch>& defaultValue, typename ValueType::AllocatorType& allocator) const {
         bool alreadyExist;
-        Value& v = Create(root, allocator, &alreadyExist);
+        ValueType& v = Create(root, allocator, &alreadyExist);
+        return alreadyExist ? v : v.SetString(defaultValue, allocator);
+    }
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Query a value in a subtree with default std::basic_string_view.
+    ValueType& GetWithDefault(ValueType& root, std::basic_string_view<Ch> defaultValue, typename ValueType::AllocatorType& allocator) const {
+        bool alreadyExist;
+        ValueType& v = Create(root, allocator, &alreadyExist);
         return alreadyExist ? v : v.SetString(defaultValue, allocator);
     }
 #endif
@@ -578,6 +671,14 @@ public:
     //! Query a value in a document with default std::basic_string.
     template <typename stackAllocator>
     ValueType& GetWithDefault(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const std::basic_string<Ch>& defaultValue) const {
+        return GetWithDefault(document, defaultValue, document.GetAllocator());
+    }
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Query a value in a document with default std::basic_string_view.
+    template <typename stackAllocator>
+    ValueType& GetWithDefault(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, std::basic_string_view<Ch> defaultValue) const {
         return GetWithDefault(document, defaultValue, document.GetAllocator());
     }
 #endif
@@ -628,6 +729,13 @@ public:
     }
 #endif
 
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Set a std::basic_string_view in a subtree.
+    ValueType& Set(ValueType& root, std::basic_string_view<Ch> value, typename ValueType::AllocatorType& allocator) const {
+        return Create(root, allocator) = ValueType(value, allocator).Move();
+    }
+#endif
+
     //! Set a primitive value in a subtree.
     /*!
         \tparam T Either \ref Type, \c int, \c unsigned, \c int64_t, \c uint64_t, \c bool
@@ -660,6 +768,14 @@ public:
     //! Sets a std::basic_string in a document.
     template <typename stackAllocator>
     ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, const std::basic_string<Ch>& value) const {
+        return Create(document) = ValueType(value, document.GetAllocator()).Move();
+    }
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+    //! Sets a std::basic_string_view in a document.
+    template <typename stackAllocator>
+    ValueType& Set(GenericDocument<EncodingType, typename ValueType::AllocatorType, stackAllocator>& document, std::basic_string_view<Ch> value) const {
         return Create(document) = ValueType(value, document.GetAllocator()).Move();
     }
 #endif
@@ -758,7 +874,7 @@ private:
     */
     Ch* CopyFromRaw(const GenericPointer& rhs, size_t extraToken = 0, size_t extraNameBufferSize = 0) {
         if (!allocator_) // allocator is independently owned.
-            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
+            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
 
         size_t nameBufferSize = rhs.tokenCount_; // null terminators for tokens
         for (Token *t = rhs.tokens_; t != rhs.tokens_ + rhs.tokenCount_; ++t)
@@ -806,7 +922,7 @@ private:
 
         // Create own allocator if user did not supply.
         if (!allocator_)
-            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator());
+            ownAllocator_ = allocator_ = RAPIDJSON_NEW(Allocator)();
 
         // Count number of '/' as tokenCount
         tokenCount_ = 0;
@@ -1029,8 +1145,8 @@ private:
             unsigned char u = static_cast<unsigned char>(c);
             static const char hexDigits[16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
             os_.Put('%');
-            os_.Put(hexDigits[u >> 4]);
-            os_.Put(hexDigits[u & 15]);
+            os_.Put(static_cast<typename OutputStream::Ch>(hexDigits[u >> 4]));
+            os_.Put(static_cast<typename OutputStream::Ch>(hexDigits[u & 15]));
         }
     private:
         OutputStream& os_;
@@ -1116,6 +1232,13 @@ typename T::ValueType& GetValueByPointerWithDefault(T& root, const GenericPointe
 }
 #endif
 
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename T>
+typename T::ValueType& GetValueByPointerWithDefault(T& root, const GenericPointer<typename T::ValueType>& pointer, std::basic_string_view<typename T::Ch> defaultValue, typename T::AllocatorType& a) {
+    return pointer.GetWithDefault(root, defaultValue, a);
+}
+#endif
+
 template <typename T, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename T::ValueType&))
 GetValueByPointerWithDefault(T& root, const GenericPointer<typename T::ValueType>& pointer, T2 defaultValue, typename T::AllocatorType& a) {
@@ -1135,6 +1258,13 @@ typename T::ValueType& GetValueByPointerWithDefault(T& root, const CharType(&sou
 #if RAPIDJSON_HAS_STDSTRING
 template <typename T, typename CharType, size_t N>
 typename T::ValueType& GetValueByPointerWithDefault(T& root, const CharType(&source)[N], const std::basic_string<typename T::Ch>& defaultValue, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).GetWithDefault(root, defaultValue, a);
+}
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename T, typename CharType, size_t N>
+typename T::ValueType& GetValueByPointerWithDefault(T& root, const CharType(&source)[N], std::basic_string_view<typename T::Ch> defaultValue, typename T::AllocatorType& a) {
     return GenericPointer<typename T::ValueType>(source, N - 1).GetWithDefault(root, defaultValue, a);
 }
 #endif
@@ -1164,6 +1294,13 @@ typename DocumentType::ValueType& GetValueByPointerWithDefault(DocumentType& doc
 }
 #endif
 
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename DocumentType>
+typename DocumentType::ValueType& GetValueByPointerWithDefault(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, std::basic_string_view<typename DocumentType::Ch> defaultValue) {
+    return pointer.GetWithDefault(document, defaultValue);
+}
+#endif
+
 template <typename DocumentType, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename DocumentType::ValueType&))
 GetValueByPointerWithDefault(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, T2 defaultValue) {
@@ -1183,6 +1320,13 @@ typename DocumentType::ValueType& GetValueByPointerWithDefault(DocumentType& doc
 #if RAPIDJSON_HAS_STDSTRING
 template <typename DocumentType, typename CharType, size_t N>
 typename DocumentType::ValueType& GetValueByPointerWithDefault(DocumentType& document, const CharType(&source)[N], const std::basic_string<typename DocumentType::Ch>& defaultValue) {
+    return GenericPointer<typename DocumentType::ValueType>(source, N - 1).GetWithDefault(document, defaultValue);
+}
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename DocumentType, typename CharType, size_t N>
+typename DocumentType::ValueType& GetValueByPointerWithDefault(DocumentType& document, const CharType(&source)[N], std::basic_string_view<typename DocumentType::Ch> defaultValue) {
     return GenericPointer<typename DocumentType::ValueType>(source, N - 1).GetWithDefault(document, defaultValue);
 }
 #endif
@@ -1217,6 +1361,13 @@ typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename 
 }
 #endif
 
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename T>
+typename T::ValueType& SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, std::basic_string_view<typename T::Ch> value, typename T::AllocatorType& a) {
+    return pointer.Set(root, value, a);
+}
+#endif
+
 template <typename T, typename T2>
 RAPIDJSON_DISABLEIF_RETURN((internal::OrExpr<internal::IsPointer<T2>, internal::IsGenericValue<T2> >), (typename T::ValueType&))
 SetValueByPointer(T& root, const GenericPointer<typename T::ValueType>& pointer, T2 value, typename T::AllocatorType& a) {
@@ -1241,6 +1392,13 @@ typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], co
 #if RAPIDJSON_HAS_STDSTRING
 template <typename T, typename CharType, size_t N>
 typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], const std::basic_string<typename T::Ch>& value, typename T::AllocatorType& a) {
+    return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
+}
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename T, typename CharType, size_t N>
+typename T::ValueType& SetValueByPointer(T& root, const CharType(&source)[N], std::basic_string_view<typename T::Ch> value, typename T::AllocatorType& a) {
     return GenericPointer<typename T::ValueType>(source, N - 1).Set(root, value, a);
 }
 #endif
@@ -1271,6 +1429,13 @@ typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, cons
 #if RAPIDJSON_HAS_STDSTRING
 template <typename DocumentType>
 typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, const std::basic_string<typename DocumentType::Ch>& value) {
+    return pointer.Set(document, value);
+}
+#endif
+
+#if RAPIDJSON_HAS_STDSTRINGVIEW
+template <typename DocumentType>
+typename DocumentType::ValueType& SetValueByPointer(DocumentType& document, const GenericPointer<typename DocumentType::ValueType>& pointer, std::basic_string_view<typename DocumentType::Ch> value) {
     return pointer.Set(document, value);
 }
 #endif
@@ -1347,11 +1512,7 @@ bool EraseValueByPointer(T& root, const CharType(&source)[N]) {
 
 RAPIDJSON_NAMESPACE_END
 
-#ifdef __clang__
-RAPIDJSON_DIAG_POP
-#endif
-
-#ifdef _MSC_VER
+#if defined(__clang__) || defined(_MSC_VER)
 RAPIDJSON_DIAG_POP
 #endif
 

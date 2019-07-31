@@ -1,0 +1,15 @@
+{
+  "load": "level/monster/Scavenger/textureFiles.json",
+  "texturePack": {
+    "id": "scavenger",
+    "imageContainer": [
+      "scava",
+      "scavd",
+      "scavh",
+      "scavn",
+      "scavs",
+      "scavw"
+    ],
+    "palette": "town"
+  }
+}

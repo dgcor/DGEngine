@@ -93,18 +93,17 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 			{
 				continue;
 			}
-			if (tiles->get((size_t)index, ti) == true)
+			if (tiles->get((uint32_t)index, ti) == true)
 			{
 				auto drawPos = map.toDrawCoord(mapPos, surface.blockWidth, surface.blockHeight);
-				drawPos += ti.offset;
-				tileRect.left = drawPos.x;
-				tileRect.top = drawPos.y;
+				sprite.setPosition(drawPos, ti.offset);
+				tileRect.left = sprite.getDrawPosition().x;
+				tileRect.top = sprite.getDrawPosition().y;
 				tileRect.width = (float)ti.textureRect.width;
 				tileRect.height = (float)ti.textureRect.height;
 				if (surface.visibleRect.intersects(tileRect) == true)
 				{
 					sprite.setTexture(ti, true);
-					sprite.setPosition(drawPos);
 					surface.draw(sprite, spriteShader, spriteCache, light);
 				}
 			}
@@ -118,23 +117,22 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 		level.getCurrentPlayer() != nullptr &&
 		tiles != nullptr)
 	{
-		auto direction = (size_t)level.getCurrentPlayer()->getDirection();
-		auto index = (size_t)level.getAutomapPlayerDirectionBaseIndex() + direction;
-		if (direction < (size_t)PlayerDirection::All &&
+		auto direction = (uint32_t)level.getCurrentPlayer()->getDirection();
+		auto index = (uint32_t)level.getAutomapPlayerDirectionBaseIndex() + direction;
+		if (direction < (uint32_t)PlayerDirection::All &&
 			tiles->get(index, ti) == true)
 		{
 			auto drawPos = level.getCurrentAutomapViewCenter();
 			drawPos.x -= (float)surface.blockWidth;
 			drawPos.y -= (float)surface.blockHeight;
-			drawPos += ti.offset;
-			tileRect.left = drawPos.x;
-			tileRect.top = drawPos.y;
+			sprite.setPosition(drawPos, ti.offset);
+			tileRect.left = sprite.getDrawPosition().x;
+			tileRect.top = sprite.getDrawPosition().y;
 			tileRect.width = (float)ti.textureRect.width;
 			tileRect.height = (float)ti.textureRect.height;
 			if (surface.visibleRect.intersects(tileRect) == true)
 			{
 				sprite.setTexture(ti, true);
-				sprite.setPosition(drawPos);
 				surface.draw(sprite, spriteShader, spriteCache);
 			}
 		}

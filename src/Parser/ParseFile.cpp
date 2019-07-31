@@ -9,6 +9,7 @@
 #include "ParseAudio.h"
 #include "ParseButton.h"
 #include "ParseCircle.h"
+#include "ParseCompositeTexture.h"
 #include "ParseCursor.h"
 #include "ParseEvent.h"
 #include "ParseFont.h"
@@ -24,12 +25,12 @@
 #include "ParsePalette.h"
 #include "ParsePanel.h"
 #include "ParseRectangle.h"
-#include "ParseScrollableText.h"
+#include "ParseScrollable.h"
 #include "ParseSound.h"
-#include "ParseVariable.h"
 #include "ParseText.h"
 #include "ParseTexture.h"
 #include "ParseTexturePack.h"
+#include "ParseVariable.h"
 #include "Parser/Game/ParseClassifier.h"
 #include "Parser/Game/ParseItem.h"
 #include "Parser/Game/ParseItemClass.h"
@@ -222,31 +223,31 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("imageContainer"): {
-			if (elem.IsArray() == false) {
-				parseImageContainer(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("texturePack"): {
-			if (elem.IsArray() == false) {
-				parseTexturePack(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
 		case str2int16("circle"): {
 			if (elem.IsArray() == false) {
 				parseCircle(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("classifier"): {
+			if (elem.IsArray() == false) {
+				parseClassifier(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("compositeTexture"): {
+			if (elem.IsArray() == false) {
+				parseCompositeTexture(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -307,20 +308,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("item"): {
+		case str2int16("imageContainer"): {
 			if (elem.IsArray() == false) {
-				parseItem(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("itemClass"): {
-			if (elem.IsArray() == false) {
-				parseItemClass(game, elem);
+				parseImageContainer(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -336,6 +326,28 @@ namespace Parser
 		case str2int16("inputText"): {
 			if (elem.IsArray() == false) {
 				parseInputText(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("item"): {
+			if (elem.IsArray() == false) {
+				parseItem(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("itemClass"): {
+			if (elem.IsArray() == false) {
+				parseItemClass(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -394,7 +406,7 @@ namespace Parser
 		}
 		case str2int16("load"): {
 			if (elem.IsString()) {
-				parseFile(game, elem.GetString());
+				parseFile(game, elem.GetStringView());
 			}
 			else {
 				parseFile(game, elem);
@@ -439,17 +451,6 @@ namespace Parser
 		case str2int16("movie"): {
 			if (elem.IsArray() == false) {
 				parseMovie(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("classifier"): {
-			if (elem.IsArray() == false) {
-				parseClassifier(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -541,9 +542,9 @@ namespace Parser
 			}
 			break;
 		}
-		case str2int16("scrollableText"): {
+		case str2int16("scrollable"): {
 			if (elem.IsArray() == false) {
-				parseScrollableText(game, elem);
+				parseScrollable(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {
@@ -596,6 +597,17 @@ namespace Parser
 		case str2int16("texture"): {
 			if (elem.IsArray() == false) {
 				parseTexture(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
+			break;
+		}
+		case str2int16("texturePack"): {
+			if (elem.IsArray() == false) {
+				parseTexturePack(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

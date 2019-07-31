@@ -37,11 +37,12 @@ bool LevelObject::getLevelObjProp(const uint16_t propHash16,
 
 bool LevelObject::hasValidState() const noexcept
 {
-	return (texturePack != nullptr);
+	return (animation.holdsNullTexturePack() == false);
 }
 
 bool LevelObject::getCurrentTexture(TextureInfo& ti) const
 {
+	// only returns the first layer of composite textures
 	if (sprite.getTexture() != nullptr)
 	{
 		ti.texture = sprite.getTexture();
@@ -76,7 +77,7 @@ void LevelObject::updateDrawPosition(const LevelMap& map, const PairFloat& mapPo
 
 void LevelObject::updateSpriteDrawPosition()
 {
-	auto drawPosition = basePosition + drawPositionOffset;
+	auto drawPosition = basePosition;
 	if (absoluteOffset == false)
 	{
 		const auto& textureRect = sprite.getTextureRect();
@@ -261,12 +262,8 @@ bool LevelObject::updateMapPositionFront(LevelMap& map, const PairFloat pos)
 
 bool LevelObject::updateTexture()
 {
-	TextureInfo ti;
-	if (texturePack->get(animation.currentTextureIdx, ti) == true)
+	if (animation.updateTexture(sprite, absoluteOffset) == true)
 	{
-		sprite.setTexture(ti, true);
-		drawPositionOffset = ti.offset;
-		absoluteOffset = ti.absoluteOffset;
 		updateSpriteDrawPosition();
 		return true;
 	}

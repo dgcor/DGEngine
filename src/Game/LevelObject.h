@@ -7,9 +7,8 @@
 #include "PairXY.h"
 #include "Queryable.h"
 #include "Save/SaveProperties.h"
-#include "SFML/Sprite2.h"
+#include "SFML/CompositeSprite.h"
 #include <string_view>
-#include "TexturePacks/TexturePack.h"
 #include "Variable.h"
 
 class Game;
@@ -21,15 +20,13 @@ class LevelObject : public Queryable
 protected:
 	const LevelObjectClass* class_{ nullptr };
 
-	Sprite2 sprite;
+	CompositeSprite sprite;
 	sf::Vector2f basePosition;
 	sf::Vector2f anchorPosition;
-	sf::Vector2f drawPositionOffset;
 	bool absoluteOffset{ false };
 	float tileBlockHeight{ 0.f };
 	PairFloat mapPosition{ -1.f, -1.f };
 
-	const TexturePack* texturePack{ nullptr };
 	BaseAnimation animation;
 
 	PairInt8 cellSize;
@@ -76,10 +73,7 @@ public:
 	bool updateTexture();
 
 	const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	sf::Vector2f Size() const
-	{
-		return sf::Vector2f((float)sprite.getTextureRect().width, (float)sprite.getTextureRect().height);
-	}
+	sf::Vector2f Size() const { return sprite.getSize(); }
 	const PairFloat& MapPosition() const noexcept { return mapPosition; }
 
 	// sets map position and updates the object and map
@@ -130,7 +124,6 @@ public:
 	virtual void serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level) const = 0;
 
-	// always pass the game's sprite shader in RenderStates.
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
 		SpriteShaderCache& cache, uint8_t light) const
 	{

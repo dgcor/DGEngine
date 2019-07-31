@@ -13,12 +13,12 @@ namespace GameUtils
 	{
 		switch (str2int16(Utils::toLower(str)))
 		{
-		case str2int16("playonce"):
-			return AnimationType::PlayOnce;
 		case str2int16("looped"):
 			return AnimationType::Looped;
 		case str2int16("backandforth"):
 			return AnimationType::BackAndForth;
+		case str2int16("playonce"):
+			return AnimationType::PlayOnce;
 		default:
 			return val;
 		}
@@ -199,6 +199,47 @@ namespace GameUtils
 		}
 	}
 
+	BlendMode getBlendMode(const std::string_view str, BlendMode val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("alpha"):
+			return BlendMode::Alpha;
+		case str2int16("add"):
+			return BlendMode::Add;
+		case str2int16("multiply"):
+			return BlendMode::Multiply;
+		case str2int16("none"):
+			return BlendMode::None;
+		default:
+			return val;
+		}
+	}
+
+	Palette::ColorFormat getColorFormat(const std::string_view str)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("bgr"):
+			return Palette::ColorFormat::BGR;
+			break;
+		case str2int16("rgba"):
+			return Palette::ColorFormat::RGBA;
+			break;
+		case str2int16("bgra"):
+			return Palette::ColorFormat::BGRA;
+			break;
+		case str2int16("argb"):
+			return Palette::ColorFormat::ARGB;
+			break;
+		case str2int16("abgr"):
+			return Palette::ColorFormat::ABGR;
+			break;
+		default:
+			return Palette::ColorFormat::RGB;
+		}
+	}
+
 	HorizontalAlign getHorizontalAlignment(const std::string_view str, HorizontalAlign val)
 	{
 		switch (str2int16(Utils::toLower(str)))
@@ -231,9 +272,9 @@ namespace GameUtils
 
 	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept
 	{
-		if (num >= sf::Keyboard::Unknown && num < sf::Keyboard::KeyCount)
+		if (num >= 0 && num <= 9)
 		{
-			return static_cast<sf::Keyboard::Key>(num);
+			return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + num);
 		}
 		return val;
 	}
@@ -422,44 +463,44 @@ namespace GameUtils
 		return val;
 	}
 
-	InputEvent getInputEvent(const std::string_view str, InputEvent val)
+	InputEventType getInputEventType(const std::string_view str, InputEventType val)
 	{
 		switch (str2int16(Utils::toLower(str)))
 		{
 		case str2int16("none"):
-			return InputEvent::None;
+			return InputEventType::None;
 		case str2int16("leftclick"):
-			return InputEvent::LeftClick;
+			return InputEventType::LeftClick;
 		case str2int16("middleclick"):
-			return InputEvent::MiddleClick;
+			return InputEventType::MiddleClick;
 		case str2int16("rightclick"):
-			return InputEvent::RightClick;
+			return InputEventType::RightClick;
 		case str2int16("mousepress"):
-			return InputEvent::MousePress;
+			return InputEventType::MousePress;
 		case str2int16("mousemove"):
-			return InputEvent::MouseMove;
+			return InputEventType::MouseMove;
 		case str2int16("mouserelease"):
-			return InputEvent::MouseRelease;
+			return InputEventType::MouseRelease;
 		case str2int16("mousescroll"):
-			return InputEvent::MouseScroll;
+			return InputEventType::MouseScroll;
 		case str2int16("keypress"):
-			return InputEvent::KeyPress;
+			return InputEventType::KeyPress;
 		case str2int16("textenter"):
-			return InputEvent::TextEnter;
+			return InputEventType::TextEnter;
 		case str2int16("touchbegin"):
-			return InputEvent::TouchBegin;
+			return InputEventType::TouchBegin;
 		case str2int16("touchmove"):
-			return InputEvent::TouchMove;
+			return InputEventType::TouchMove;
 		case str2int16("touchend"):
-			return InputEvent::TouchEnd;
+			return InputEventType::TouchEnd;
 		case str2int16("allleftclick"):
-			return InputEvent::All ^ (InputEvent::MiddleClick | InputEvent::RightClick);
+			return InputEventType::All ^ (InputEventType::MiddleClick | InputEventType::RightClick);
 		case str2int16("allmiddleclick"):
-			return InputEvent::All ^ (InputEvent::LeftClick | InputEvent::RightClick);
+			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::RightClick);
 		case str2int16("allrightclick"):
-			return InputEvent::All ^ (InputEvent::LeftClick | InputEvent::MiddleClick);
+			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::MiddleClick);
 		case str2int16("all"):
-			return InputEvent::All;
+			return InputEventType::All;
 		}
 		return val;
 	}

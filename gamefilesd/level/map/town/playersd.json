@@ -3,6 +3,7 @@
     {
       "id": "pepin",
       "class": "healer",
+      "direction": "FrontRight",
       "mapPosition": [55, 79],
       "inventory": {
         "index": 0,
@@ -62,11 +63,13 @@
     {
       "id": "cain",
       "class": "storyTeller",
+      "direction": "Front",
       "mapPosition": [62, 71]
     },
     {
       "id": "griswold",
       "class": "blacksmith",
+      "direction": "FrontLeft",
       "mapPosition": [62, 63],
       "inventory": [
         {
@@ -231,21 +234,25 @@
     {
       "id": "ogden",
       "class": "tavernOwner",
+      "direction": "FrontLeft",
       "mapPosition": [55, 62]
     },
     {
       "id": "farnham",
       "class": "drunk",
+      "direction": "FrontRight",
       "mapPosition": [71, 84]
     },
     {
       "id": "gillian",
       "class": "barmaid",
+      "direction": "FrontRight",
       "mapPosition": [43, 66]
     },
     {
       "id": "wirt",
       "class": "boy",
+      "direction": "Front",
       "mapPosition": [11, 53],
       "inventory": {
         "index": 0,
@@ -264,6 +271,7 @@
     {
       "id": "adria",
       "class": "witch",
+      "direction": "Front",
       "mapPosition": [80, 20],
       "inventory": {
         "index": 0,

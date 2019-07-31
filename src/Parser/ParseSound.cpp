@@ -57,12 +57,12 @@ namespace Parser
 
 	sf::SoundBuffer* parseSingleSoundObj(Game& game, const Value& elem)
 	{
-		std::string file(elem["file"].GetString());
+		auto file = elem["file"].GetStringStr();
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
@@ -127,7 +127,7 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 
 		const auto& fileElem = elem["file"];
@@ -284,8 +284,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getAudioSource(fromId);

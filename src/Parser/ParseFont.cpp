@@ -14,8 +14,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getFont(fromId);
@@ -30,13 +30,61 @@ namespace Parser
 		return false;
 	}
 
+	bool cloneFont(Game& game, const Value& elem)
+	{
+		if (isValidString(elem, "clone") == true)
+		{
+			if (isValidString(elem, "id") == true)
+			{
+				auto cloneId = elem["clone"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
+				if (cloneId != id && isValidId(id) == true)
+				{
+					auto obj = game.Resources().getFont(cloneId);
+					if (holdsNullFont(obj) == true)
+					{
+						return false;
+					}
+					else if (holdsBitmapFont(obj) == true)
+					{
+						auto font = std::make_shared<BitmapFont>(*std::get<std::shared_ptr<BitmapFont>>(obj));
+						if (elem.HasMember("fontPalette") == true &&
+							game.Shaders().hasSpriteShader() == true)
+						{
+							auto palette = game.Resources().getPalette(getStringVal(elem["fontPalette"]));
+							font->setPalette(palette);
+						}
+						if (elem.HasMember("fontColor") == true)
+						{
+							font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+						}
+						game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
+						return true;
+					}
+					else
+					{
+						auto font = std::make_shared<FreeTypeFont>(*std::get<std::shared_ptr<FreeTypeFont>>(obj));
+						if (elem.HasMember("fontColor") == true)
+						{
+							font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+						}
+						game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
+						return true;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+
 	bool parseBitmapFont(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false)
 		{
 			return false;
 		}
-		std::string id(elem["id"].GetString());
+		std::string id(elem["id"].GetStringStr());
 		if (isValidId(id) == false)
 		{
 			return false;
@@ -69,7 +117,7 @@ namespace Parser
 		}
 		if (elem.HasMember("fontColor") == true)
 		{
-			font->setColor(getColorVal(elem["fontColor"]));
+			font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
 		}
 
 		game.Resources().addFont(id, font, resource);
@@ -83,12 +131,12 @@ namespace Parser
 			return false;
 		}
 
-		std::string file(elem["file"].GetString());
+		auto file = elem["file"].GetStringStr();
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
@@ -104,6 +152,10 @@ namespace Parser
 		{
 			return false;
 		}
+		if (elem.HasMember("fontColor") == true)
+		{
+			font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+		}
 
 		game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
 		return true;
@@ -112,6 +164,10 @@ namespace Parser
 	void parseFont(Game& game, const Value& elem)
 	{
 		if (parseFontFromId(game, elem) == true)
+		{
+			return;
+		}
+		if (cloneFont(game, elem) == true)
 		{
 			return;
 		}

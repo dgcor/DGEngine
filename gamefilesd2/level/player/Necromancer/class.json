@@ -1,0 +1,89 @@
+{
+  "playerClass": {
+    "id": "Necromancer",
+    "replaceVars": true,
+    "name": "Necromancer",
+    "type": "Human",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
+    "light": [100, 255, 20],
+    "defaults": {
+      "experience": 0,
+      "points": 0,
+      "strength": 15,
+      "magic": 35,
+      "dexterity": 15,
+      "vitality": 20,
+      "bonusLife": 1,
+      "bonusMana": 2,
+      "bonusHealing": 1,
+      "spellM": 1,
+      "defaultDamageMin": 1,
+      "levelUp": 5
+    },
+    "maxStrength": 45,
+    "maxMagic": 250,
+    "maxDexterity": 85,
+    "maxVitality": 80,
+    "maxResistMagic": 75,
+    "maxResistFire": 75,
+    "maxResistLightning": 75,
+    "formulas": {
+      "life": "vitality + vitalityItems + level + lifeItems + 9",
+      "mana": "(2 * magic) + (2 * magicItems) + (2 * level) + manaItems - 2",
+      "armor": "dexterityNow * 0.2 + armorItems",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow * level / 100"
+    },
+    "texturePacks": [
+      "necromancerNormal",
+      "necromancerNormalAxe",
+      "necromancerNormalBow",
+      "necromancerNormalShieldSword",
+      "necromancerNormalShieldClub",
+      "necromancerNormalClub",
+      "necromancerNormalSword",
+      "necromancerNormalStaff",
+      "necromancerNormalShield",
+      "necromancerLeather",
+      "necromancerLeatherAxe",
+      "necromancerLeatherBow",
+      "necromancerLeatherShieldSword",
+      "necromancerLeatherShieldClub",
+      "necromancerLeatherClub",
+      "necromancerLeatherSword",
+      "necromancerLeatherStaff",
+      "necromancerLeatherShield",
+      "necromancerPlate",
+      "necromancerPlateAxe",
+      "necromancerPlateBow",
+      "necromancerPlateShieldSword",
+      "necromancerPlateShieldClub",
+      "necromancerPlateClub",
+      "necromancerPlateSword",
+      "necromancerPlateStaff",
+      "necromancerPlateShield"
+    ],
+    "textureIndexes": [
+      { "name": "Stand1", "index": 0 },
+      { "name": "Stand2", "index": 0 },
+      { "name": "Walk1", "index": 1 },
+      { "name": "Walk2", "index": 1 }
+    ],
+    "animationSpeeds": [
+      { "name": "Walk1", "animation": 20, "walk": 100 },
+      { "name": "Walk2", "animation": 20, "walk": 100 },
+      { "name": "Die1", "animation": 20 },
+      { "name": "Die2", "animation": 20 }
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" },
+      { "index": 1, "id": "die" }
+    ],
+    "walkSound": 0,
+    "dieSound": 1
+  }
+}

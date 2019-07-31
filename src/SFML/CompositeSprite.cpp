@@ -1,0 +1,106 @@
+#include "CompositeSprite.h"
+
+void CompositeSprite::setPosition(const sf::Vector2f& position_)
+{
+	sprite.setPosition(position_);
+	for (auto& s : extraSprites)
+	{
+		s.setPosition(position_);
+	}
+}
+
+void CompositeSprite::setOffset(const sf::Vector2f& offset_)
+{
+	if (extraSprites.empty() == true)
+	{
+		sprite.setOffset(offset_);
+	}
+	else
+	{
+		auto diff = offset_ - sprite.getOffset();
+		sprite.setOffset(offset_);
+		for (auto& s : extraSprites)
+		{
+			s.setOffset(s.getOffset() + diff);
+		}
+	}
+}
+
+void CompositeSprite::setColor(const sf::Color& color)
+{
+	sprite.setColor(color);
+	for (auto& s : extraSprites)
+	{
+		s.setColor(color);
+	}
+}
+
+void CompositeSprite::setOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
+{
+	sprite.setOutline(outline_, ignore_);
+	for (auto& s : extraSprites)
+	{
+		s.setOutline(outline_, ignore_);
+	}
+}
+
+void CompositeSprite::setOutlineEnabled(bool enable) noexcept
+{
+	sprite.setOutlineEnabled(enable);
+	for (auto& s : extraSprites)
+	{
+		s.setOutlineEnabled(enable);
+	}
+}
+
+void CompositeSprite::setTexture(const sf::Texture& texture, bool resetRect)
+{
+	sprite.setOffset({});
+	sprite.setTexture(texture, resetRect);
+	extraSprites.clear();
+}
+
+void CompositeSprite::setTexture(const TextureInfo& ti)
+{
+	sprite.setOffset(ti.offset);
+	sprite.setTexture(ti, true);
+	extraSprites.clear();
+}
+
+void CompositeSprite::setTexture(const std::vector<TextureInfo>& ti)
+{
+	if (ti.empty() == false)
+	{
+		sprite.setOffset(ti.front().offset);
+		sprite.setTexture(ti.front(), true);
+		extraSprites.resize(ti.size() - 1);
+		for (size_t i = 0; i < extraSprites.size(); i++)
+		{
+			extraSprites[i].setPosition(sprite.getPosition(), ti[i + 1].offset);
+			extraSprites[i].setTexture(ti[i + 1], true);
+			extraSprites[i].setColor(sprite.getColor());
+			extraSprites[i].setOutline(sprite.getOutline(), sprite.getOutlineIgnore());
+			extraSprites[i].setOutlineEnabled(sprite.isOutlineEnabled());
+		}
+	}
+}
+
+void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader) const
+{
+	SpriteShaderCache cache;
+	sprite.draw(target, spriteShader, cache, 255);
+	for (const auto& s : extraSprites)
+	{
+		s.draw(target, spriteShader, cache, 255);
+	}
+}
+
+void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+	SpriteShaderCache& cache, uint8_t light) const
+{
+	sprite.draw(target, spriteShader, cache, light);
+	for (const auto& s : extraSprites)
+	{
+		s.draw(target, spriteShader, cache, light);
+	}
+}

@@ -30,6 +30,8 @@ Tiled and the Flare map exporter.
 
 
 
+
+
 Flare Game Credits - fantasycore
 
 Lead Visual Artists - Clint Bellanger and Justin Nichol

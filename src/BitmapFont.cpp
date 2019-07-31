@@ -12,6 +12,19 @@ BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTexture
 	tab = charTextures_->getCharWidth('\t');
 }
 
+Palette* BitmapFont::getPalette() const noexcept
+{
+	if (palette != nullptr)
+	{
+		return palette.get();
+	}
+	else if (charTextures->getPalette() != nullptr)
+	{
+		return charTextures->getPalette().get();
+	}
+	return nullptr;
+}
+
 float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) const noexcept
 {
 	auto ch = text[0];
@@ -132,29 +145,25 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 	return sf::Vector2f(std::max(maxX, curX), (newLine + curY));
 }
 
-void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
-	const Game& game, sf::RenderTarget& target, const sf::Color& color) const
+void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
+	const std::string& text, sf::Color color, int horizSpaceOffset,
+	int vertSpaceOffset, float sizeX, HorizontalAlign align) const
 {
-	draw(pos, text, game, target, color, 0, 0, 0.f, HorizontalAlign::Left);
-}
+	vertexText.clear();
+	vertexText.resize(text.size() * 6);
 
-void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
-	const Game& game, sf::RenderTarget& target, const sf::Color& color,
-	int horizSpaceOffset, int vertSpaceOffset, float sizeX, HorizontalAlign align) const
-{
-	SpriteShaderCache spriteCache;
-	Sprite2 sprite(charTextures->getTexture(), palette);
-	if (color == sf::Color::White)
+	if (hasPalette() == true)
 	{
-		sprite.setColor(defaultColor);
+		color = sf::Color::White;
 	}
-	else
+	else if (color == sf::Color::White)
 	{
-		sprite.setColor(color);
+		color = defaultColor;
 	}
 
 	//Temp offsets
-	float curX = pos.x, curY = pos.y;
+	float curX = 0.f;
+	float curY = 0.f;
 	bool wasSpace = false;
 
 	if (align == HorizontalAlign::Center)
@@ -165,6 +174,8 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
 	{
 		curX += (sizeX - calculateLineLength(text.data(), horizSpaceOffset));
 	}
+
+	size_t vertIdx = 0;
 
 	//Go through the text
 	for (size_t i = 0; i < text.size(); i++)
@@ -177,7 +188,7 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
 			curY += newLine + vertSpaceOffset;
 
 			//Move back
-			curX = pos.x;
+			curX = 0;
 			if (align == HorizontalAlign::Center)
 			{
 				curX += std::round((sizeX / 2.f) - (calculateLineLength(text.data() + i + 1, horizSpaceOffset) / 2.f));
@@ -205,14 +216,53 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
 			}
 			else
 			{
+				//create the character vertex
 				TextureInfo ti;
 				charTextures->get((size_t)ch, ti);
 
-				//Show the character
-				sprite.setTexture(*ti.texture);
-				sprite.setTextureRect(ti.textureRect);
-				sprite.setPosition(curX, curY);
-				sprite.draw(target, game.Shaders().Sprite, spriteCache);
+				// triangle 1
+
+				// top left
+				vertexText[vertIdx].position.x = curX;
+				vertexText[vertIdx].position.y = curY;
+				vertexText[vertIdx].color = color;
+				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left;
+				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top;
+				vertIdx++;
+
+				// top right
+				vertexText[vertIdx].position.x = curX + (float)ti.textureRect.width;
+				vertexText[vertIdx].position.y = curY;
+				vertexText[vertIdx].color = color;
+				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left + (float)ti.textureRect.width;
+				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top;
+				vertIdx++;
+
+				// bottom left
+				vertexText[vertIdx].position.x = curX;
+				vertexText[vertIdx].position.y = curY + (float)ti.textureRect.height;
+				vertexText[vertIdx].color = color;
+				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left;
+				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top + (float)ti.textureRect.height;
+				vertIdx++;
+
+				// triangle 2
+
+				// top right
+				vertexText[vertIdx] = vertexText[vertIdx - 2];
+				vertIdx++;
+
+				// bottom left
+				vertexText[vertIdx] = vertexText[vertIdx - 2];
+				vertIdx++;
+
+				// bottom right
+				vertexText[vertIdx].position.x = curX + (float)ti.textureRect.width;
+				vertexText[vertIdx].position.y = curY + (float)ti.textureRect.height;
+				vertexText[vertIdx].color = color;
+				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left + (float)ti.textureRect.width;
+				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top + (float)ti.textureRect.height;
+				vertIdx++;
 
 				//Move over the width of the character + padding
 				curX += (float)ti.textureRect.width + (float)(wasSpace ? 0 : padding);
@@ -220,5 +270,45 @@ void BitmapFont::draw(const sf::Vector2f& pos, const std::string& text,
 			}
 			curX += (float)horizSpaceOffset;
 		}
+	}
+
+	vertexText.resize(vertIdx);
+}
+
+void BitmapFont::draw(const std::vector<sf::Vertex>& vertexText,
+	const sf::Vector2f& pos, const sf::Vector2f& size,
+	const Game& game, sf::RenderTarget& target) const
+{
+	sf::Transform t;
+	t.transformRect({ {}, size });
+	t = t.translate(pos);
+
+	sf::Shader* spriteShader = nullptr;
+	auto currPal = getPalette();
+	if (currPal != nullptr)
+	{
+		spriteShader = game.Shaders().Sprite;
+	}
+
+	sf::RenderStates states(sf::BlendAlpha, t, &charTextures->getTexture(), spriteShader);
+
+	if (spriteShader != nullptr)
+	{
+		spriteShader->setUniform("pixelSize", sf::Glsl::Vec2(
+			1.0f / (float)size.x,
+			1.0f / (float)size.y
+		));
+		spriteShader->setUniform("outline", sf::Glsl::Vec4(sf::Color::Transparent));
+		spriteShader->setUniform("ignore", sf::Glsl::Vec4(sf::Color::Transparent));
+		spriteShader->setUniform("light", sf::Glsl::Vec4(sf::Color::Transparent));
+		spriteShader->setUniform("hasPalette", currPal != nullptr);
+		if (currPal != nullptr)
+		{
+			spriteShader->setUniform("palette", currPal->texture);
+		}
+	}
+	if (vertexText.empty() == false)
+	{
+		target.draw(vertexText.data(), vertexText.size(), sf::PrimitiveType::Triangles, states);
 	}
 }

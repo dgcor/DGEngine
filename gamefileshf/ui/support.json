@@ -44,12 +44,16 @@
     "id": "liberationSerif",
     "file": "res/LiberationSerif-Regular.ttf"
   },
-  "scrollableText": {
+  "text": {
     "id": "supportText",
     "font": "liberationSerif",
     "fontSize": 16,
+    "file": "ui/support.txt"
+  },
+  "scrollable": {
+    "id": "supportScroll",
+    "drawable": "supportText",
     "refresh": 50,
-    "file": "ui/support.txt",
     "anchor": "none",
     "position": [30, 115],
     "size": [580, 250],

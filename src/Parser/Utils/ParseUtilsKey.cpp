@@ -13,20 +13,20 @@ namespace Parser
 	using namespace Utils;
 
 	AnimationType getAnimationTypeKey(const rapidjson::Value& elem,
-		const char* key, AnimationType val)
+		const std::string_view key, AnimationType val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getAnimationType(keyElem.GetString(), val);
+				return GameUtils::getAnimationType(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
 	}
 
-	Anchor getAnchorKey(const Value& elem, const char* key, Anchor val)
+	Anchor getAnchorKey(const Value& elem, const std::string_view key, Anchor val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -35,7 +35,16 @@ namespace Parser
 		return val;
 	}
 
-	bool getBoolKey(const Value& elem, const char* key, bool val)
+	BlendMode getBlendModeKey(const Value& elem, const std::string_view key, BlendMode val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getBlendModeVal(elem[key], val);
+		}
+		return val;
+	}
+
+	bool getBoolKey(const Value& elem, const std::string_view key, bool val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsBool() == true)
@@ -45,7 +54,7 @@ namespace Parser
 		return val;
 	}
 
-	double getDoubleKey(const Value& elem, const char* key, double val)
+	double getDoubleKey(const Value& elem, const std::string_view key, double val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsDouble() == true)
@@ -55,7 +64,7 @@ namespace Parser
 		return val;
 	}
 
-	float getFloatKey(const Value& elem, const char* key, float val)
+	float getFloatKey(const Value& elem, const std::string_view key, float val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsFloat() == true)
@@ -65,7 +74,7 @@ namespace Parser
 		return val;
 	}
 
-	int getIntKey(const Value& elem, const char* key, int val)
+	int getIntKey(const Value& elem, const std::string_view key, int val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsInt() == true)
@@ -75,7 +84,7 @@ namespace Parser
 		return val;
 	}
 
-	int64_t getInt64Key(const Value& elem, const char* key, int64_t val)
+	int64_t getInt64Key(const Value& elem, const std::string_view key, int64_t val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsInt64() == true)
@@ -86,7 +95,7 @@ namespace Parser
 	}
 
 	const char* getStringCharKey(const Value& elem,
-		const char* key, const char* val)
+		const std::string_view key, const char* val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsString() == true)
@@ -97,7 +106,7 @@ namespace Parser
 	}
 
 	std::string getStringKey(const Value& elem,
-		const char* key, const std::string& val)
+		const std::string_view key, const std::string& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -107,7 +116,7 @@ namespace Parser
 	}
 
 	std::string_view getStringViewKey(const Value& elem,
-		const char* key, const std::string_view val)
+		const std::string_view key, const std::string_view val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -116,7 +125,7 @@ namespace Parser
 		return val;
 	}
 
-	unsigned getUIntKey(const Value& elem, const char* key, unsigned val)
+	unsigned getUIntKey(const Value& elem, const std::string_view key, unsigned val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsUint() == true)
@@ -126,7 +135,7 @@ namespace Parser
 		return val;
 	}
 
-	uint64_t getUInt64Key(const Value& elem, const char* key, uint64_t val)
+	uint64_t getUInt64Key(const Value& elem, const std::string_view key, uint64_t val)
 	{
 		if (elem.HasMember(key) == true
 			&& elem[key].IsUint64() == true)
@@ -136,8 +145,8 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<size_t, size_t> getFramesKey(const Value& elem,
-		const char* key, const std::pair<size_t, size_t>& val)
+	std::pair<uint32_t, uint32_t> getFramesKey(const Value& elem,
+		const std::string_view key, const std::pair<uint32_t, uint32_t>& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -146,17 +155,7 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<size_t, size_t> getIndexKey(const Value& elem,
-		const char* key, const std::pair<size_t, size_t>& val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getIndexVal(elem[key], val);
-		}
-		return val;
-	}
-
-	sf::Vector2f getPositionKey(const Value& elem, const char* key,
+	sf::Vector2f getPositionKey(const Value& elem, const std::string_view key,
 		const sf::Vector2f& size, const sf::Vector2u& refSize)
 	{
 		if (elem.HasMember(key) == true)
@@ -167,7 +166,7 @@ namespace Parser
 	}
 
 	sf::IntRect getIntRectKey(const Value& elem,
-		const char* key, const sf::IntRect& val)
+		const std::string_view key, const sf::IntRect& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -177,7 +176,7 @@ namespace Parser
 	}
 
 	sf::FloatRect getFloatRectKey(const Value& elem,
-		const char* key, const sf::FloatRect& val)
+		const std::string_view key, const sf::FloatRect& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -186,7 +185,7 @@ namespace Parser
 		return val;
 	}
 
-	sf::Color getColorKey(const Value& elem, const char* key, const sf::Color& val)
+	sf::Color getColorKey(const Value& elem, const std::string_view key, const sf::Color& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -195,7 +194,7 @@ namespace Parser
 		return val;
 	}
 
-	sf::Time getTimeKey(const Value& elem, const char* key, const sf::Time& val)
+	sf::Time getTimeKey(const Value& elem, const std::string_view key, const sf::Time& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -204,7 +203,7 @@ namespace Parser
 		return val;
 	}
 
-	std::vector<std::string> getStringVectorKey(const Value& elem, const char* key)
+	std::vector<std::string> getStringVectorKey(const Value& elem, const std::string_view key)
 	{
 		std::vector<std::string> vec;
 		if (elem.HasMember(key) == true)
@@ -219,14 +218,14 @@ namespace Parser
 			}
 			else if (elemVal.IsString() == true)
 			{
-				vec.push_back({ elemVal.GetString(), elemVal.GetStringLength() });
+				vec.push_back(elemVal.GetStringStr());
 			}
 		}
 		return vec;
 	}
 
 	IgnoreResource getIgnoreResourceKey(const Value& elem,
-		const char* key, IgnoreResource val)
+		const std::string_view key, IgnoreResource val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -235,18 +234,18 @@ namespace Parser
 		return val;
 	}
 
-	InputEvent getInputEventKey(const Value& elem,
-		const char* key, InputEvent val)
+	InputEventType getInputEventTypeKey(const Value& elem,
+		const std::string_view key, InputEventType val)
 	{
 		if (elem.HasMember(key) == true)
 		{
-			return getInputEventVal(elem[key], val);
+			return getInputEventTypeVal(elem[key], val);
 		}
 		return val;
 	}
 
 	size_t getInventoryItemIndexKey(const Value& elem,
-		const char* key, PlayerInventory inv)
+		const std::string_view key, PlayerInventory inv)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -256,7 +255,7 @@ namespace Parser
 	}
 
 	InventoryPosition getInventoryPositionKey(const Value& elem,
-		const char* key, InventoryPosition val)
+		const std::string_view key, InventoryPosition val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -266,7 +265,7 @@ namespace Parser
 	}
 
 	LightSource getLightSourceKey(const rapidjson::Value& elem,
-		const char* key, LightSource val)
+		const std::string_view key, LightSource val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -275,7 +274,7 @@ namespace Parser
 		return val;
 	}
 
-	ItemCoordInventory getItemCoordInventoryKey(const Value& elem, const char* key)
+	ItemCoordInventory getItemCoordInventoryKey(const Value& elem, const std::string_view key)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -284,7 +283,7 @@ namespace Parser
 		return{};
 	}
 
-	ItemLocation getItemLocationKey(const Value& elem, const char* key)
+	ItemLocation getItemLocationKey(const Value& elem, const std::string_view key)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -293,7 +292,7 @@ namespace Parser
 		return{};
 	}
 
-	PairUInt8 getItemXYKey(const Value& elem, const char* key, const PairUInt8& val)
+	PairUInt8 getItemXYKey(const Value& elem, const std::string_view key, const PairUInt8& val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -303,21 +302,21 @@ namespace Parser
 	}
 
 	PlayerDirection getPlayerDirectionKey(const Value& elem,
-		const char* key, PlayerDirection val)
+		const std::string_view key, PlayerDirection val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerDirection(keyElem.GetString(), val);
+				return GameUtils::getPlayerDirection(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
 	}
 
 	PlayerInventory getPlayerInventoryKey(const Value& elem,
-		const char* key, PlayerInventory val)
+		const std::string_view key, PlayerInventory val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -327,44 +326,42 @@ namespace Parser
 	}
 
 	PlayerItemMount getPlayerItemMountKey(const Value& elem,
-		const char* key, PlayerItemMount val)
+		const std::string_view key, PlayerItemMount val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerItemMount(keyElem.GetString(), val);
+				return GameUtils::getPlayerItemMount(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
 	}
 
 	PlayerAnimation getPlayerAnimationKey(const Value& elem,
-		const char* key, PlayerAnimation val)
+		const std::string_view key, PlayerAnimation val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerAnimation(
-					{ keyElem.GetString(), keyElem.GetStringLength() }, val);
+				return GameUtils::getPlayerAnimation(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
 	}
 
 	PlayerStatus getPlayerStatusKey(const Value& elem,
-		const char* key, PlayerStatus val)
+		const std::string_view key, PlayerStatus val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerStatus(
-					{ keyElem.GetString(), keyElem.GetStringLength() }, val);
+				return GameUtils::getPlayerStatus(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
@@ -372,7 +369,7 @@ namespace Parser
 
 	static Value nullValue(Type::kNullType);
 
-	const Value& getQueryKey(const Value* elem, const Value& query, const char* key)
+	const Value& getQueryKey(const Value* elem, const Value& query, const std::string_view key)
 	{
 		if (query.HasMember(key) == true)
 		{
@@ -385,7 +382,7 @@ namespace Parser
 		return nullValue;
 	}
 
-	const Value& getQueryKey(const Value& elem, const Value& query, const char* key)
+	const Value& getQueryKey(const Value& elem, const Value& query, const std::string_view key)
 	{
 		if (query.HasMember(key) == true)
 		{
@@ -394,7 +391,7 @@ namespace Parser
 		return nullValue;
 	}
 
-	ReplaceVars getReplaceVarsKey(const Value& elem, const char* key, ReplaceVars val)
+	ReplaceVars getReplaceVarsKey(const Value& elem, const std::string_view key, ReplaceVars val)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -403,7 +400,7 @@ namespace Parser
 		return val;
 	}
 
-	Variable getVariableKey(const Value& elem, const char* key)
+	Variable getVariableKey(const Value& elem, const std::string_view key)
 	{
 		if (elem.HasMember(key) == true)
 		{
@@ -412,7 +409,7 @@ namespace Parser
 		return Variable();
 	}
 
-	VarOrPredicate getVarOrPredicateKey(Game& game, const Value& elem, const char* key)
+	VarOrPredicate getVarOrPredicateKey(Game& game, const Value& elem, const std::string_view key)
 	{
 		if (elem.HasMember(key) == true)
 		{

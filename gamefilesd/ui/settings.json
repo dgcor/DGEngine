@@ -66,6 +66,10 @@
           },
           {
             "value": "800x600",
+            "action": { "name": "loadJson", "json": { "windowSize": [1024, 768] } }
+          },
+          {
+            "value": "1024x768",
             "action": { "name": "loadJson", "json": { "windowSize": [640, 480] } }
           }
         ],
@@ -95,6 +99,10 @@
           {
             "value": 480,
             "action": { "name": "loadJson", "json": { "maxWindowHeight": 600 } }
+          },
+          {
+            "value": 600,
+            "action": { "name": "loadJson", "json": { "maxWindowHeight": 800 } }
           }
         ],
         "default": { "name": "loadJson", "json": { "maxWindowHeight": 0 } }
@@ -213,6 +221,18 @@
           {
             "value": 60,
             "action": [
+              { "name": "loadJson", "json": { "framerate": 120 } },
+              {
+                "name": "text.setText",
+                "id": "framerate",
+                "binding": "%game.framerate%",
+                "format": "Framerate Limit: [1]"
+              }
+            ]
+          },
+          {
+            "value": 120,
+            "action": [
               { "name": "loadJson", "json": { "framerate": 0 } },
               {
                 "name": "text.setText",
@@ -222,7 +242,7 @@
             ]
           }
         ],
-        "default": { "name": "loadJson", "json": { "windowSize": [640, 480] } }
+        "default": { "name": "loadJson", "json": { "framerate": 60 } }
       },
       "onFocus": "anchorPentagrams"
     },

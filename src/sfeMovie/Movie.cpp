@@ -23,6 +23,8 @@
 
 #include "Movie.hpp"
 #include "MovieImpl.hpp"
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 namespace sfe
 {

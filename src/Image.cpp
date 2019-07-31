@@ -10,9 +10,14 @@ void Image::setOrigin()
 		std::round((float)sprite.getTextureRect().height / 2.f)));
 }
 
-void Image::centerTexture()
+void Image::setTexture(const TextureInfo& ti, bool resetRect)
 {
-	SFMLUtils::spriteCenterTexture(sprite);
+	sprite.setTexture(ti);
+}
+
+void Image::setTexture(const sf::Texture& texture, bool resetRect)
+{
+	sprite.setTexture(texture, resetRect);
 }
 
 void Image::updateSize(const Game& game)
@@ -32,14 +37,14 @@ void Image::updateSize(const Game& game)
 			{ (unsigned)sprite.getTextureRect().width, (unsigned)sprite.getTextureRect().height },
 			game.DrawRegionSize()
 		);
-		sprite.setScale(scale, scale);
+		sprite.setScale({ scale, scale });
 
 		// center image
 		auto newSize = Size();
-		sprite.setPosition(
+		sprite.setPosition({
 			-std::round(std::abs(newSize.x - (float)game.DrawRegionSize().x) / 2.f),
 			-std::round(std::abs(newSize.y - (float)game.DrawRegionSize().y) / 2.f)
-		);
+		});
 	}
 }
 
@@ -58,7 +63,7 @@ void Image::Size(const sf::Vector2f& size)
 	if (resizable == true && stretch == true)
 	{
 		const auto& rect = sprite.getTextureRect();
-		sprite.setScale(size.x / (float)rect.width, size.y / (float)rect.height);
+		sprite.setScale({ size.x / (float)rect.width, size.y / (float)rect.height });
 	}
 	else
 	{

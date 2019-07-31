@@ -155,42 +155,6 @@ public:
 	}
 };
 
-class ActPlayerMoveToClick : public Action
-{
-private:
-	std::string idPlayer;
-	std::string idLevel;
-
-public:
-	ActPlayerMoveToClick(const std::string& idPlayer_, const std::string& idLevel_)
-		: idPlayer(idPlayer_), idLevel(idLevel_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto level = game.Resources().getLevel(idLevel);
-		if (level != nullptr)
-		{
-			auto player = level->getPlayerOrCurrent(idPlayer);
-			if (player != nullptr)
-			{
-				PairFloat a = player->MapPosition();
-				PairFloat b;
-				auto hoverObj = level->getHoverObject();
-				if (hoverObj != nullptr && hoverObj != player)
-				{
-					b = hoverObj->MapPosition();
-				}
-				else
-				{
-					b = level->getMapCoordOverMouse();
-				}
-				player->setWalkPath(level->Map().getPath(a, b));
-			}
-		}
-		return true;
-	}
-};
-
 class ActPlayerSelectSpell : public Action
 {
 private:
@@ -354,6 +318,71 @@ public:
 			{
 				player->setTextureIdx(idx);
 				player->updateTexture();
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerWalk : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	PlayerDirection direction;
+	bool executeAction;
+
+public:
+	ActPlayerWalk(const std::string& idPlayer_, const std::string& idLevel_,
+		PlayerDirection direction_, bool executeAction_) : idPlayer(idPlayer_),
+		idLevel(idLevel_), direction(direction_), executeAction(executeAction_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				player->Walk(level->Map(), direction, executeAction);
+			}
+		}
+		return true;
+	}
+};
+
+class ActPlayerWalkToClick : public Action
+{
+private:
+	std::string idPlayer;
+	std::string idLevel;
+	bool executeAction;
+
+public:
+	ActPlayerWalkToClick(const std::string& idPlayer_, const std::string& idLevel_,
+		bool executeAction_) : idPlayer(idPlayer_), idLevel(idLevel_),
+		executeAction(executeAction_) {}
+
+	virtual bool execute(Game& game)
+	{
+		auto level = game.Resources().getLevel(idLevel);
+		if (level != nullptr)
+		{
+			auto player = level->getPlayerOrCurrent(idPlayer);
+			if (player != nullptr)
+			{
+				PairFloat mapPos;
+				auto hoverObj = level->getHoverObject();
+				if (hoverObj != nullptr && hoverObj != player)
+				{
+					mapPos = hoverObj->MapPosition();
+				}
+				else
+				{
+					mapPos = level->getMapCoordOverMouse();
+				}
+				player->Walk(level->Map(), mapPos, executeAction);
 			}
 		}
 		return true;

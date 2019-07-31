@@ -13,7 +13,7 @@ private:
 	const sf::Texture* texture{ nullptr };
 	sf::IntRect textureRect;
 	std::shared_ptr<TexturePack> texturePack;
-	std::pair<size_t, size_t> textureIndexRange;
+	std::pair<uint32_t, uint32_t> textureIndexRange;
 	sf::Time frameTime;
 	AnimationType animType{ AnimationType::PlayOnce };
 
@@ -28,7 +28,7 @@ private:
 public:
 	SimpleLevelObjectClass(const sf::Texture& texture_) : texture(&texture_) {}
 	SimpleLevelObjectClass(const std::shared_ptr<TexturePack>& texturePack_,
-		const std::pair<size_t, size_t>& textureIndexRange_,
+		const std::pair<uint32_t, uint32_t>& textureIndexRange_,
 		const sf::Time& frameTime_, AnimationType animType_)
 		: texturePack(texturePack_), textureIndexRange(textureIndexRange_),
 		frameTime(frameTime_), animType(animType_) {}
@@ -38,9 +38,9 @@ public:
 	const sf::IntRect& getTextureRect() const noexcept { return textureRect; }
 	void setTextureRect(const sf::IntRect& textureRect_) { textureRect = textureRect_; }
 
-	const TexturePack* getTexturePack() const noexcept { return texturePack.get(); }
+	const std::shared_ptr<TexturePack>& getTexturePack() const noexcept { return texturePack; }
 
-	const std::pair<size_t, size_t>& getTextureIndexRange() const noexcept
+	const std::pair<uint32_t, uint32_t>& getTextureIndexRange() const noexcept
 	{
 		return textureIndexRange;
 	}

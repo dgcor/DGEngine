@@ -13,18 +13,109 @@ void BitmapText::calculateSize()
 	size = font->calculateSize(text, horizSpaceOffset, vertSpaceOffset, &lineCount);
 }
 
+void BitmapText::setFont(const std::shared_ptr<BitmapFont>& font_)
+{
+	font = font_;
+	calculateSize();
+	updateVertexText();
+	calculateDrawPosition();
+}
+
+void BitmapText::setAnchor(const Anchor anchor_) noexcept
+{
+	if (anchor != anchor_)
+	{
+		anchor = anchor_;
+		calculateDrawPosition();
+	}
+}
+
 void BitmapText::updateSize(const Game& game) noexcept
 {
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	calculateDrawPosition();
 }
 
+bool BitmapText::setText(const std::string& str)
+{
+	if (text == str)
+	{
+		return false;
+	}
+	text = str;
+	calculateSize();
+	updateVertexText();
+	calculateDrawPosition();
+	return true;
+}
+
+void BitmapText::updateVertexText()
+{
+	font->updateVertexString(
+		vertexText, text, color, horizSpaceOffset, vertSpaceOffset, size.x, horizAlign
+	);
+}
+
+void BitmapText::setColor(const sf::Color& color_) noexcept
+{
+	color = color_;
+	for (auto& vertex : vertexText)
+	{
+		vertex.color = color_;
+	}
+}
+
+void BitmapText::Position(const sf::Vector2f& position) noexcept
+{
+	pos = position;
+	calculateDrawPosition();
+}
+
+void BitmapText::setHorizontalAlign(const HorizontalAlign align) noexcept
+{
+	if (horizAlign != align)
+	{
+		horizAlign = align;
+		calculateDrawPosition();
+	}
+}
+
+void BitmapText::setVerticalAlign(const VerticalAlign align) noexcept
+{
+	if (vertAlign != align)
+	{
+		vertAlign = align;
+		calculateDrawPosition();
+	}
+}
+
+void BitmapText::setHorizontalSpaceOffset(int offset)
+{
+	if (horizSpaceOffset != offset)
+	{
+		horizSpaceOffset = offset;
+		calculateSize();
+		updateVertexText();
+		calculateDrawPosition();
+	}
+}
+
+void BitmapText::setVerticalSpaceOffset(int offset)
+{
+	if (vertSpaceOffset != offset)
+	{
+		vertSpaceOffset = offset;
+		calculateSize();
+		updateVertexText();
+		calculateDrawPosition();
+	}
+}
+
 void BitmapText::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == true)
 	{
-		font->draw(drawPos, text, game, target, color,
-			horizSpaceOffset, vertSpaceOffset, size.x, horizAlign);
+		font->draw(vertexText, drawPos, size, game, target);
 	}
 }
 

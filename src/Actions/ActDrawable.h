@@ -159,6 +159,21 @@ public:
 	}
 };
 
+class ActDrawableBringToFront : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActDrawableBringToFront(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		game.Resources().bringDrawableToFront(id);
+		return true;
+	}
+};
+
 class ActDrawableCenter : public Action
 {
 private:
@@ -748,6 +763,21 @@ public:
 		{
 			item->setAction(nameHash, action);
 		}
+		return true;
+	}
+};
+
+class ActDrawableSendToBack : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActDrawableSendToBack(const std::string& id_) : id(id_) {}
+
+	virtual bool execute(Game& game)
+	{
+		game.Resources().sendDrawableToBack(id);
 		return true;
 	}
 };

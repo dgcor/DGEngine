@@ -1,5 +1,8 @@
 #include "CmdLineUtils.h"
+#include "GameUtils.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "Game/LevelHelper.h"
+#endif
 #include "FileUtils.h"
 #include "Utils/Utils.h"
 
@@ -39,7 +42,9 @@ namespace CmdLineUtils
 			}
 		}
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 		int bottomTopOrBoth = -2;	// invalid
+#endif
 
 		switch (str2int16(commandStr.first))
 		{
@@ -51,6 +56,7 @@ namespace CmdLineUtils
 			}
 			break;
 		}
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 		case str2int16("--export-tileset-bottom"):
 		case str2int16("--export-tileset-back"):
 			bottomTopOrBoth = 0;
@@ -62,29 +68,38 @@ namespace CmdLineUtils
 		case str2int16("--export-tileset"):
 			bottomTopOrBoth = -1;
 			break;
+#endif
 		default:
 			break;
 		}
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 		if (bottomTopOrBoth != -2 &&
 			FileUtils::exists(argv[3]) == true)
 		{
 			if (argc > 5)
 			{
-				if (FileUtils::exists(argv[4]) == true)
+				auto palStr = Utils::splitStringIn2(std::string_view(argv[4]), ':');
+				auto palPath = std::string(palStr.first);
+				if (FileUtils::exists(palPath.c_str()) == true)
 				{
+					auto colorFormat = GameUtils::getColorFormat(palStr.second);
+
 					LevelHelper::loadAndSaveTilesetSprite(
-						argv[3], argv[4], argv[5], bottomTopOrBoth, false, 5120, minBlocks
+						argv[3], palPath, colorFormat, argv[5],
+						bottomTopOrBoth, false, 5120, minBlocks
 					);
 				}
 			}
 			else
 			{
 				LevelHelper::loadAndSaveTilesetSprite(
-					argv[3], "", argv[4], bottomTopOrBoth, false, 5120, minBlocks
+					argv[3], "", Palette::ColorFormat::RGB, argv[4],
+					bottomTopOrBoth, false, 5120, minBlocks
 				);
 			}
 		}
+#endif
 		return true;
 	}
 }
