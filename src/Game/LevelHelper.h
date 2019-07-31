@@ -1,8 +1,10 @@
 #pragma once
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "CachedImagePack.h"
 #include <memory>
 #include "Min.h"
+#include "Palette.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 
@@ -18,6 +20,7 @@ namespace LevelHelper
 
 	// bottomTopOrBoth : -1 for both, 0 for bottom, 1 for top
 	void loadAndSaveTilesetSprite(const std::string& celFile,
-		const std::string& palFile, const std::string& outFilePath,
+		const std::string& palFile, Palette::ColorFormat colorFormat, const std::string& outFilePath,
 		int bottomTopOrBoth, bool skipBlankTiles, unsigned maxTextureSize, unsigned minBlock);
 }
+#endif

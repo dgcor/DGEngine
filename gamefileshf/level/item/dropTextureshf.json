@@ -1,5 +1,5 @@
 {
-  "load": "level/item/itemCelFileshf.json",
+  "load": "level/item/dropTextureFileshf.json",
   "texturePack": [
     { "id": "bombs1", "imageContainer": "bombs1", "palette": "town" },
     { "id": "teddys1", "imageContainer": "teddys1", "palette": "town" }

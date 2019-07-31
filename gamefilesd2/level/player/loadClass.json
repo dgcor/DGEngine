@@ -1,0 +1,40 @@
+{
+  "action": {
+    "name": "switch",
+    "param": "%charClass%",
+    "case": [
+      {
+        "value": "Amazon",
+        "action": [
+          { "name": "load", "file": "level/player/Amazon/textures.json" },
+          { "name": "load", "file": "level/player/Amazon/class.json" }
+        ]
+      },
+      {
+        "value": "Barbarian",
+        "action": [
+          { "name": "load", "file": "level/player/Barbarian/textures.json" },
+          { "name": "load", "file": "level/player/Barbarian/class.json" }
+        ]
+      },
+      {
+        "value": "Necromancer",
+        "action": [
+          { "name": "load", "file": "level/player/Necromancer/textures.json" },
+          { "name": "load", "file": "level/player/Necromancer/class.json" }
+        ]
+      },
+      {
+        "value": "Sorceress",
+        "action": [
+          { "name": "load", "file": "level/player/Sorceress/textures.json" },
+          { "name": "load", "file": "level/player/Sorceress/class.json" }
+        ]
+      }
+    ],
+    "default": [
+      { "name": "load", "file": "level/player/Paladin/textures.json" },
+      { "name": "load", "file": "level/player/Paladin/class.json" }
+    ]
+  }
+}

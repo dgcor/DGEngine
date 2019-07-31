@@ -1,0 +1,140 @@
+{
+  "load": "level/player/Necromancer/textureFiles.json",
+  "compositeTexture": [
+    {
+      "id": "necromancerNormal",
+      "groups": [
+        {
+          "file": "data/global/CHARS/NE/COF/NENUHTH.COF",
+          "texturePacks": [
+            "NEHDLITNUHTH",
+            "NETRLITNUHTH",
+            "NELGLITNUHTH",
+            "NERALITNUHTH",
+            "NELALITNUHTH",
+            "NESHKITNUHTH",
+            "NES1LITNUHTH",
+            "NES2LITNUHTH"
+          ]
+        },
+        {
+          "file": "data/global/CHARS/NE/COF/NETWHTH.COF",
+          "texturePacks": [
+            "NEHDLITTWHTH",
+            "NETRLITTWHTH",
+            "NELGLITTWHTH",
+            "NERALITTWHTH",
+            "NELALITTWHTH",
+            "NESHKITTWHTH",
+            "NES1LITTWHTH",
+            "NES2LITTWHTH"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "necromancerNormalAxe",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalBow",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalShieldSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalShieldClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalStaff",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerNormalShield",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeather",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherAxe",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherBow",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherShieldSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherShieldClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherStaff",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerLeatherShield",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlate",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateAxe",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateBow",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateShieldSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateShieldClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateClub",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateSword",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateStaff",
+      "fromId": "necromancerNormal"
+    },
+    {
+      "id": "necromancerPlateShield",
+      "fromId": "necromancerNormal"
+    }
+  ]
+}

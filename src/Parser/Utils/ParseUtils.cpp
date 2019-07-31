@@ -33,7 +33,7 @@ namespace Parser
 		return (id.empty() == false);
 	}
 
-	bool isValidArray(const Value& elem, const char* key)
+	bool isValidArray(const Value& elem, const std::string_view key)
 	{
 		return (elem.HasMember(key) == true
 			&& elem[key].IsArray() == true
@@ -63,7 +63,7 @@ namespace Parser
 			&& elem.GetStringLength() > 0);
 	}
 
-	bool isValidString(const Value& elem, const char* key)
+	bool isValidString(const Value& elem, const std::string_view key)
 	{
 		return (elem.HasMember(key) == true
 			&& elem[key].IsString() == true

@@ -1,5 +1,6 @@
 #include "ParseAction.h"
 #include "Actions/ActAction.h"
+#include "Actions/ActAnimation.h"
 #include "Actions/ActAudio.h"
 #include "Actions/ActButton.h"
 #include "Actions/ActCondition.h"
@@ -27,6 +28,7 @@
 #include "Actions/ActQuest.h"
 #include "Actions/ActRandom.h"
 #include "Actions/ActResource.h"
+#include "Actions/ActScrollable.h"
 #include "Actions/ActShader.h"
 #include "Actions/ActSound.h"
 #include "Actions/ActText.h"
@@ -175,6 +177,45 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getActionKey(game, elem, "action"));
 		}
+		case str2int16("animation.pause"):
+		{
+			return std::make_shared<ActAnimationPause>(
+				getStringKey(elem, "id"),
+				getBoolKey(elem, "pause", true));
+		}
+		case str2int16("animation.set"):
+		{
+			if (isValidString(elem, "texturePack") == true)
+			{
+				return std::make_shared<ActAnimationSetAnimation>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "texturePack"),
+					getIntKey(elem, "group", -1),
+					getIntKey(elem, "direction", -1),
+					getTimeKey(elem, "refresh"),
+					getBoolKey(elem, "reset", true),
+					getBoolKey(elem, "updateAnimationType"),
+					false);
+			}
+			else
+			{
+				return std::make_shared<ActAnimationSetAnimation>(
+					getStringKey(elem, "id"),
+					getStringKey(elem, "compositeTexture"),
+					getIntKey(elem, "group", -1),
+					getIntKey(elem, "direction", -1),
+					getTimeKey(elem, "refresh"),
+					getBoolKey(elem, "reset", true),
+					getBoolKey(elem, "updateAnimationType"),
+					true);
+			}
+		}
+		case str2int16("animation.setRefresh"):
+		{
+			return std::make_shared<ActAnimationSetRefresh>(
+				getStringKey(elem, "id"),
+				getTimeKey(elem, "refresh"));
+		}
 		case str2int16("audio.pause"):
 		{
 			return std::make_shared<ActAudioPause>(getStringKey(elem, "id"));
@@ -295,6 +336,7 @@ namespace Parser
 			return std::make_shared<ActDirCreate>(getStringKey(elem, "file"));
 		}
 		case str2int16("drawable.addToPosition"):
+		case str2int16("drawable.move"):
 		{
 			return std::make_shared<ActDrawableAddToPosition>(
 				getStringKey(elem, "id"),
@@ -336,6 +378,10 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getAnchorKey(elem, "anchor"),
 				getVector2fKey<sf::Vector2f>(elem, "offset"));
+		}
+		case str2int16("drawable.bringToFront"):
+		{
+			return std::make_shared<ActDrawableBringToFront>(getStringKey(elem, "id"));
 		}
 		case str2int16("drawable.center"):
 		{
@@ -469,6 +515,10 @@ namespace Parser
 				getStringViewKey(elem, "event"),
 				getActionKey(game, elem, "action"));
 		}
+		case str2int16("drawable.sendToBack"):
+		{
+			return std::make_shared<ActDrawableSendToBack>(getStringKey(elem, "id"));
+		}
 		case str2int16("drawable.setPosition"):
 		{
 			return std::make_shared<ActDrawableSetPosition>(
@@ -585,9 +635,10 @@ namespace Parser
 		{
 			return std::make_shared<ActFocusUpdate>();
 		}
+		case str2int16("font.setColor"):
 		case str2int16("font.setPalette"):
 		{
-			return std::make_shared<ActFontSetPalette>(
+			return std::make_shared<ActFontSetPaletteOrColor>(
 				getStringKey(elem, "id"),
 				getStringKey(elem, "palette"),
 				getColorKey(elem, "color", sf::Color::White));
@@ -620,7 +671,7 @@ namespace Parser
 				getColorKey(elem, "color"),
 				false,
 				getBoolKey(elem, "enableInput", true),
-				getUIntKey(elem, "fade", 25),
+				(uint8_t)getUIntKey(elem, "fade", 25),
 				getTimeKey(elem, "refresh", sf::milliseconds(15)));
 
 			if (elem.HasMember("action"))
@@ -635,7 +686,7 @@ namespace Parser
 				getColorKey(elem, "color", sf::Color::Transparent),
 				true,
 				getBoolKey(elem, "enableInput"),
-				getUIntKey(elem, "fade", 25),
+				(uint8_t)getUIntKey(elem, "fade", 25),
 				getTimeKey(elem, "refresh", sf::milliseconds(15)));
 
 			if (elem.HasMember("action"))
@@ -715,10 +766,6 @@ namespace Parser
 		case str2int16("if.regex"):
 		{
 			return getIfCondition(str2int16("regex"), game, elem);
-		}
-		case str2int16("image.centerTexture"):
-		{
-			return std::make_shared<ActImageCenterTexture>(getStringKey(elem, "id"));
 		}
 		case str2int16("image.enableOutline"):
 		{
@@ -1250,12 +1297,6 @@ namespace Parser
 				getBoolKey(elem, "resetDirection"),
 				getBoolKey(elem, "smooth"));
 		}
-		case str2int16("player.moveToClick"):
-		{
-			return std::make_shared<ActPlayerMoveToClick>(
-				getStringKey(elem, "player"),
-				getStringKey(elem, "level"));
-		}
 		case str2int16("player.removeItemQuantity"):
 		{
 			return std::make_shared<ActPlayerAddItemQuantity>(
@@ -1317,6 +1358,21 @@ namespace Parser
 				getStringKey(elem, "player"),
 				getStringKey(elem, "level"),
 				getUIntKey(elem, "index"));
+		}
+		case str2int16("player.walk"):
+		{
+			return std::make_shared<ActPlayerWalk>(
+				getStringKey(elem, "player"),
+				getStringKey(elem, "level"),
+				getPlayerDirectionKey(elem, "direction"),
+				getBoolKey(elem, "executeAction"));
+		}
+		case str2int16("player.walkToClick"):
+		{
+			return std::make_shared<ActPlayerWalkToClick>(
+				getStringKey(elem, "player"),
+				getStringKey(elem, "level"),
+				getBoolKey(elem, "executeAction", true));
 		}
 		case str2int16("quest.add"):
 		{
@@ -1397,9 +1453,9 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getIgnoreResourceKey(elem, "ignore", IgnoreResource::Draw | IgnoreResource::Update));
 		}
-		case str2int16("resource.moveToTop"):
+		case str2int16("resource.bringToFront"):
 		{
-			return std::make_shared<ActResourceMoveToTop>(getStringKey(elem, "id"));
+			return std::make_shared<ActResourceBringToFront>(getStringKey(elem, "id"));
 		}
 		case str2int16("resource.pop"):
 		{
@@ -1413,6 +1469,12 @@ namespace Parser
 				getStringKey(elem, "id"),
 				getBoolKey(elem, "popBase"),
 				getIgnoreResourceKey(elem, "ignorePrevious"));
+		}
+		case str2int16("scrollable.setSpeed"):
+		{
+			return std::make_shared<ActScrollableSetSpeed>(
+				getStringKey(elem, "id"),
+				getTimeKey(elem, "speed"));
 		}
 		case str2int16("shader.load"):
 		{
@@ -1588,8 +1650,7 @@ namespace Parser
 		{
 			if (elem.GetString()[0] != '#')
 			{
-				std::string str(elem.GetString(), elem.GetStringLength());
-				return game.Resources().getAction(str);
+				return game.Resources().getAction(elem.GetStringStr());
 			}
 			else
 			{
@@ -1639,7 +1700,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			auto action = game.Resources().getAction(elem.GetString());
+			auto action = game.Resources().getAction(elem.GetStringStr());
 			if (action != nullptr)
 			{
 				action->execute(game);

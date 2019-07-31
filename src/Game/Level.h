@@ -89,7 +89,7 @@ private:
 	bool pause{ false };
 	bool visible{ true };
 	bool enableHover{ true };
-	InputEvent captureInputEvents{ InputEvent::All };
+	InputEventType captureInputEvents{ InputEventType::All };
 
 	std::vector<Quest> quests;
 	std::vector<uint32_t> experiencePoints;
@@ -418,8 +418,8 @@ public:
 	bool ShowAutomap() const noexcept { return automapSurface.visible; }
 	void ShowAutomap(bool show_) noexcept { automapSurface.visible = show_; }
 
-	InputEvent getCaptureInputEvents() const noexcept { return captureInputEvents; }
-	void setCaptureInputEvents(InputEvent e) noexcept { captureInputEvents = e; }
+	InputEventType getCaptureInputEvents() const noexcept { return captureInputEvents; }
+	void setCaptureInputEvents(InputEventType e) noexcept { captureInputEvents = e; }
 
 	void save(const std::string_view filePath,
 		Save::Properties& props, const Game& game) const

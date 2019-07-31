@@ -29,7 +29,7 @@ protected:
 	bool beingDragged{ false };
 	bool wasLeftClicked{ false };
 	bool wasRightClicked{ false };
-	InputEvent captureInputEvents{ InputEvent::None };
+	InputEventType captureInputEvents{ InputEventType::None };
 
 	void onHover(Game& game, bool contains);
 	void onMouseButtonPressed(Game& game, bool contains);
@@ -41,8 +41,8 @@ protected:
 	void updateEvents(Game& game, bool contains);
 
 public:
-	InputEvent getCaptureInputEvents() const noexcept { return captureInputEvents; }
-	void setCaptureInputEvents(InputEvent e) noexcept { captureInputEvents = e; }
+	InputEventType getCaptureInputEvents() const noexcept { return captureInputEvents; }
+	void setCaptureInputEvents(InputEventType e) noexcept { captureInputEvents = e; }
 
 	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
 	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;

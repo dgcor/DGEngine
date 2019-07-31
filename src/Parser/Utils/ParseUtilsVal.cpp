@@ -18,7 +18,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return GameUtils::getAnchor(elem.GetString(), val);
+			return GameUtils::getAnchor(elem.GetStringView(), val);
 		}
 		else if (elem.IsArray() == true)
 		{
@@ -28,6 +28,15 @@ namespace Parser
 				ret |= GameUtils::getAnchor(getStringVal(arrElem).c_str(), val);
 			}
 			return ret;
+		}
+		return val;
+	}
+
+	BlendMode getBlendModeVal(const rapidjson::Value& elem, BlendMode val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getBlendMode(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -90,7 +99,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return { elem.GetString(), elem.GetStringLength() };
+			return elem.GetStringStr();
 		}
 		else if (elem.IsInt64() == true)
 		{
@@ -107,7 +116,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return { elem.GetString(), elem.GetStringLength() };
+			return elem.GetStringView();
 		}
 		return val;
 	}
@@ -130,8 +139,8 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<size_t, size_t> getFramesVal(const Value& elem,
-		const std::pair<size_t, size_t>& val)
+	std::pair<uint32_t, uint32_t> getFramesVal(const Value& elem,
+		const std::pair<uint32_t, uint32_t>& val)
 	{
 		if (elem.IsArray() == true)
 		{
@@ -140,20 +149,6 @@ namespace Parser
 		else if (elem.IsUint() == true)
 		{
 			return std::make_pair(1u, elem.GetUint());
-		}
-		return val;
-	}
-
-	std::pair<size_t, size_t> getIndexVal(const Value& elem,
-		const std::pair<size_t, size_t>& val)
-	{
-		if (elem.IsArray() == true)
-		{
-			return getVector2uVal(elem, val);
-		}
-		else if (elem.IsUint() == true)
-		{
-			return std::make_pair(elem.GetUint(), 0u);
 		}
 		return val;
 	}
@@ -173,8 +168,7 @@ namespace Parser
 			}
 			else if (elem[0].IsString() == true)
 			{
-				std::string_view strView(elem[0].GetString(), elem[0].GetStringLength());
-				switch (GameUtils::getHorizontalAlignment(strView))
+				switch (GameUtils::getHorizontalAlignment(elem[0].GetStringView()))
 				{
 				case HorizontalAlign::Left:
 				default:
@@ -193,8 +187,7 @@ namespace Parser
 			}
 			else if (elem[1].IsString() == true)
 			{
-				std::string_view strView(elem[1].GetString(), elem[1].GetStringLength());
-				switch (GameUtils::getVerticalAlignment(strView))
+				switch (GameUtils::getVerticalAlignment(elem[1].GetStringView()))
 				{
 				case VerticalAlign::Top:
 				default:
@@ -261,7 +254,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return SFMLUtils::stringToColor({ elem.GetString(), elem.GetStringLength() });
+			return SFMLUtils::stringToColor(elem.GetStringView());
 		}
 		else if (elem.IsUint() == true)
 		{
@@ -278,7 +271,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getKeyCode({ elem.GetString(), elem.GetStringLength() }, val);
+			return GameUtils::getKeyCode(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -311,35 +304,34 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getIgnoreResource({ elem.GetString(), elem.GetStringLength() }, val);
+			return GameUtils::getIgnoreResource(elem.GetStringView(), val);
 		}
 		return val;
 	}
 
-	InputEvent getInputEventVal(const Value& elem, InputEvent val)
+	InputEventType getInputEventTypeVal(const Value& elem, InputEventType val)
 	{
 		if (elem.IsBool() == true)
 		{
 			if (elem.GetBool() == true)
 			{
-				return InputEvent::All;
+				return InputEventType::All;
 			}
 			else
 			{
-				return InputEvent::None;
+				return InputEventType::None;
 			}
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getInputEvent({ elem.GetString(), elem.GetStringLength() }, val);
+			return GameUtils::getInputEventType(elem.GetStringView(), val);
 		}
 		else if (elem.IsArray() == true)
 		{
-			InputEvent ret = InputEvent::None;
+			InputEventType ret = InputEventType::None;
 			for (const auto& arrElem : elem)
 			{
-				ret |= GameUtils::getInputEvent(
-					{ arrElem.GetString(), arrElem.GetStringLength() }, val);
+				ret |= GameUtils::getInputEventType(arrElem.GetStringView(), val);
 			}
 			return ret;
 		}
@@ -357,7 +349,7 @@ namespace Parser
 		{
 			if (inv == PlayerInventory::Body)
 			{
-				itemIdx = (size_t)GameUtils::getPlayerItemMount({ elem.GetString(), elem.GetStringLength() });
+				itemIdx = (size_t)GameUtils::getPlayerItemMount(elem.GetStringView());
 			}
 		}
 		return itemIdx;
@@ -367,7 +359,7 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return GameUtils::getInventoryPosition({ elem.GetString(), elem.GetStringLength() }, val);
+			return GameUtils::getInventoryPosition(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -453,11 +445,11 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			if (elem.GetString() == std::string_view("min"))
+			if (elem.GetStringView() == "min")
 			{
 				num.setInt32(std::numeric_limits<int32_t>::min());
 			}
-			else if (elem.GetString() == std::string_view("max"))
+			else if (elem.GetStringView() == "max")
 			{
 				num.setInt32(std::numeric_limits<int32_t>::max());
 			}
@@ -489,7 +481,7 @@ namespace Parser
 		if (elem.HasMember("player") == true &&
 			elem["player"].IsString() == true)
 		{
-			playerId = { elem["player"].GetString(), elem["player"].GetStringLength() };
+			playerId = elem["player"].GetStringView();
 		}
 		PlayerInventory inv = PlayerInventory::Body;
 		if (elem.HasMember("inventory") == true)
@@ -552,7 +544,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return GameUtils::getPlayerInventory({ elem.GetString(), elem.GetStringLength() }, val);
+			return GameUtils::getPlayerInventory(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -586,7 +578,7 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			return getReplaceVars({ elem.GetString(), elem.GetStringLength() }, val);
+			return getReplaceVars(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -596,7 +588,7 @@ namespace Parser
 		Variable var;
 		if (elem.IsString() == true)
 		{
-			var.emplace<std::string>(std::string(elem.GetString(), elem.GetStringLength()));
+			var.emplace<std::string>(elem.GetStringStr());
 		}
 		else if (elem.IsInt64() == true)
 		{

@@ -14,6 +14,7 @@ namespace sf
 {
 	class InputStream;
 
+	// based on SFML's Music class
 	class Music2 : public SoundStream
 	{
 	protected:

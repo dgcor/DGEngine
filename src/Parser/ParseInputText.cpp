@@ -17,7 +17,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -44,7 +44,7 @@ namespace Parser
 		}
 		if (isValidString(elem, "regex") == true)
 		{
-			inputText->setRegex(elem["regex"].GetString());
+			inputText->setRegex(elem["regex"].GetStringStr());
 		}
 
 		if (elem.HasMember("onClick"))

@@ -13,7 +13,7 @@ namespace Parser
 	{
 		if (elem.HasMember("origin") &&
 			elem["origin"].IsString() &&
-			elem["origin"].GetString() == std::string("center"))
+			elem["origin"].GetStringView() == "center")
 		{
 			return sf::Vector2f(std::round(width / 2.f), std::round(height / 2.f));
 		}

@@ -3,13 +3,12 @@
 
 ItemClass::ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
 	const std::shared_ptr<TexturePack>& textureInventory_,
-	size_t inventoryIdx_) : textureDrop(textureDrop_),
+	uint32_t inventoryIdx_) : textureDrop(textureDrop_),
 	textureInventory(textureInventory_), inventoryIdx(inventoryIdx_)
 {
 	if (textureDrop_ != nullptr)
 	{
-		dropTextureIndexRange.first = 0;
-		dropTextureIndexRange.second = textureDrop_->size();
+		dropTextureIndexRange = textureDrop_->getRange(-1, -1);
 	}
 }
 
@@ -18,8 +17,7 @@ void ItemClass::setDropTexturePack(const std::shared_ptr<TexturePack>& textureDr
 	textureDrop = textureDrop_;
 	if (textureDrop_ != nullptr)
 	{
-		dropTextureIndexRange.first = 0;
-		dropTextureIndexRange.second = textureDrop_->size();
+		dropTextureIndexRange = textureDrop_->getRange(-1, -1);
 	}
 }
 
@@ -30,7 +28,7 @@ bool ItemClass::getInventoryTexture(const Queryable& item, TextureInfo& ti) cons
 	{
 		if (std::holds_alternative<int64_t>(newInvIdx) == true)
 		{
-			if (textureInventory->get((size_t)std::get<int64_t>(newInvIdx), ti) == true)
+			if (textureInventory->get((uint32_t)std::get<int64_t>(newInvIdx), ti) == true)
 			{
 				return true;
 			}

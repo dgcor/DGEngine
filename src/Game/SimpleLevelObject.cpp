@@ -11,7 +11,7 @@ SimpleLevelObject::SimpleLevelObject(const SimpleLevelObjectClass* class__) : Le
 	}
 	else
 	{
-		texturePack = class__->getTexturePack();
+		animation.setTexturePack(class__->getTexturePack());
 		animation.textureIndexRange = class__->getTextureIndexRange();
 		animation.elapsedTime = class__->getFrameTime();
 		animation.animType = class__->getAnimationType();
@@ -25,7 +25,7 @@ SimpleLevelObject::SimpleLevelObject(const SimpleLevelObjectClass* class__) : Le
 	}
 }
 
-bool SimpleLevelObject::getTexture(size_t textureNumber, TextureInfo& ti) const
+bool SimpleLevelObject::getTexture(uint32_t textureNumber, TextureInfo& ti) const
 {
 	switch (textureNumber)
 	{

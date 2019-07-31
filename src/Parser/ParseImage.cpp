@@ -13,24 +13,43 @@ namespace Parser
 	void parseImage(Game& game, const Value& elem)
 	{
 		if (isValidString(elem, "id") == false ||
-			isValidString(elem, "texture") == false)
+			(isValidString(elem, "texture") == false &&
+				isValidString(elem, "texturePack") == false))
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
 
-		std::shared_ptr<sf::Texture> texture;
-		if (getOrParseTexture(game, elem, "texture", texture) == false ||
-			texture == nullptr)
-		{
-			return;
-		}
+		std::shared_ptr<Image> image;
 
-		auto image = std::make_shared<Image>(*texture);
+		if (elem.HasMember("texture") == true)
+		{
+			std::shared_ptr<sf::Texture> texture;
+			if (getOrParseTexture(game, elem, "texture", texture) == false ||
+				texture == nullptr)
+			{
+				return;
+			}
+			image = std::make_shared<Image>(*texture);
+		}
+		else
+		{
+			auto tex = game.Resources().getTexturePack(getStringVal(elem["texturePack"]));
+			if (tex == nullptr)
+			{
+				return;
+			}
+			TextureInfo ti;
+			if (tex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			{
+				return;
+			}
+			image = std::make_shared<Image>(ti);
+		}
 
 		if (elem.HasMember("textureRect"))
 		{

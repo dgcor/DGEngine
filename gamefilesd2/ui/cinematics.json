@@ -1,0 +1,115 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "cinematics", "ignorePrevious": true },
+    "loadMainMenuImg",
+    "loadLogoImg"
+  ],
+  "keyboard": {
+    "key": "esc",
+    "action": { "name": "button.click", "id": "back" }
+  },
+  "texture": {
+    "id": "CinematicsSelection",
+    "file": "data/global/ui/FrontEnd/CinematicsSelection.dc6",
+    "palette": "units"
+  },
+  "image": {
+    "id": "cinematics",
+    "texture": "CinematicsSelection",
+    "position": ["center", 155],
+    "anchor": "none"
+  },
+  "button": [
+    {
+      "id": "act1",
+      "texturePack": "WideButtonBlank",
+      "textureIndex": 0,
+      "position": [182, 221],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": {
+        "name": "load",
+        "file": ["ui/playVideo.json", "act1", "data/local/video/Eng/d2intro640x292.bik"]
+      },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "act1",
+          "texturePack": "WideButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtAct1",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "act1",
+          "texturePack": "WideButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtAct1",
+          "offset": [2, -2]
+        }
+      ]
+    },
+    {
+      "id": "back",
+      "texturePack": "MediumButtonBlank",
+      "textureIndex": 0,
+      "position": [254, 443],
+      "sound": "titlslct",
+      "anchor": "none",
+      "clickUp": true,
+      "onClick": { "name": "resource.pop" },
+      "onClickIn": [
+        {
+          "name": "image.setTexture",
+          "id": "back",
+          "texturePack": "MediumButtonBlank",
+          "index": 1
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtBack",
+          "offset": [-2, 2]
+        }
+      ],
+      "onClickOut": [
+        {
+          "name": "image.setTexture",
+          "id": "back",
+          "texturePack": "MediumButtonBlank"
+        },
+        {
+          "name": "drawable.move",
+          "id": "txtBack",
+          "offset": [2, -2]
+        }
+      ]
+    }
+  ],
+  "text": [
+    {
+      "id": "txtAct1",
+      "font": "fontexocet10",
+      "position": [319, 230],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Act 1"
+    },
+    {
+      "id": "txtBack",
+      "font": "fontexocet10",
+      "position": [318, 452],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "CANCEL"
+    }
+  ]
+}

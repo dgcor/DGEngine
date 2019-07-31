@@ -1,0 +1,36 @@
+{
+  "keyboard": [
+    {
+      "compositeKey": ["up", "left"],
+      "action": { "name": "player.walk", "player": "hero", "direction": "BackLeft" }
+    },
+    {
+      "compositeKey": ["up", "right"],
+      "action": { "name": "player.walk", "player": "hero", "direction": "BackRight" }
+    },
+    {
+      "compositeKey": ["down", "left"],
+      "action": { "name": "player.walk", "player": "hero", "direction": "FrontLeft" }
+    },
+    {
+      "compositeKey": ["down", "right"],
+      "action": { "name": "player.walk", "player": "hero", "direction": "FrontRight" }
+    },
+    {
+      "compositeKey": "up",
+      "action": { "name": "player.walk", "player": "hero", "direction": "back" }
+    },
+    {
+      "compositeKey": "down",
+      "action": { "name": "player.walk", "player": "hero", "direction": "front" }
+    },
+    {
+      "compositeKey": "left",
+      "action": { "name": "player.walk", "player": "hero", "direction": "left" }
+    },
+    {
+      "compositeKey": "right",
+      "action": { "name": "player.walk", "player": "hero", "direction": "right" }
+    }
+  ]
+}

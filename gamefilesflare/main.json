@@ -21,7 +21,7 @@
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "images/logo/icon.png" },
     "param2": true,
-    "then": { "name": "load", "file": "ui/loadMain.json" },
+    "then": { "name": "load", "file": "ui/loadMain2.json" },
     "else": { "name": "load", "file": ["ui/dataMissing.json", "fantasycore"] }
   }
 }

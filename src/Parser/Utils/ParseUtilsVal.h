@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Anchor.h"
+#include "BlendMode.h"
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
 #include "Game/LightSource.h"
@@ -9,7 +10,10 @@
 #include "InputEvent.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Window/Keyboard.hpp>
 #include <string>
 #include "Variable.h"
 #include "VarOrPredicate.h"
@@ -18,6 +22,8 @@ namespace Parser
 {
 	Anchor getAnchorVal(const rapidjson::Value& elem,
 		Anchor val = Anchor::Top | Anchor::Left);
+
+	BlendMode getBlendModeVal(const rapidjson::Value& elem, BlendMode val = BlendMode::Alpha);
 
 	bool getBoolVal(const rapidjson::Value& elem, bool val = {});
 
@@ -339,11 +345,8 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<size_t, size_t> getFramesVal(const rapidjson::Value& elem,
-		const std::pair<size_t, size_t>& val = {});
-
-	std::pair<size_t, size_t> getIndexVal(const rapidjson::Value& elem,
-		const std::pair<size_t, size_t>& val = {});
+	std::pair<uint32_t, uint32_t> getFramesVal(const rapidjson::Value& elem,
+		const std::pair<uint32_t, uint32_t>& val = {});
 
 	sf::Vector2f getPositionVal(const rapidjson::Value& elem,
 		const sf::Vector2f& size, const sf::Vector2u& refSize);
@@ -366,8 +369,8 @@ namespace Parser
 	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem,
 		IgnoreResource val = IgnoreResource::None);
 
-	InputEvent getInputEventVal(const rapidjson::Value& elem,
-		InputEvent val = InputEvent::None);
+	InputEventType getInputEventTypeVal(const rapidjson::Value& elem,
+		InputEventType val = InputEventType::None);
 
 	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
 		PlayerInventory inv);

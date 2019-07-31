@@ -19,7 +19,7 @@ namespace Parser
 	{
 		if (isValidString(elem, "name") == true)
 		{
-			loopNames[elem["name"].GetString()] = parseAudioTimeSpan(elem);
+			loopNames[elem["name"].GetStringStr()] = parseAudioTimeSpan(elem);
 		}
 	}
 

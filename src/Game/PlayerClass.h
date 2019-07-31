@@ -3,12 +3,12 @@
 #include "AnimationType.h"
 #include "BaseAnimation.h"
 #include "Classifiers.h"
+#include "CompositeTexture.h"
 #include "Formulas.h"
 #include "GameProperties.h"
 #include "LevelObjectClassDefaults.h"
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <string>
-#include "TexturePacks/TexturePack.h"
 
 struct PlayerAI
 {
@@ -18,17 +18,9 @@ struct PlayerAI
 
 class PlayerClass : public LevelObjectClassDefaults<Number32>
 {
-public:
-	struct Range
-	{
-		std::pair<size_t, size_t> range;
-		AnimationType animType{ AnimationType::PlayOnce };
-	};
-	typedef std::vector<Range> Ranges;
-
 private:
-	std::vector<std::pair<std::shared_ptr<TexturePack>, Ranges>> textures;
-	std::array<size_t, (size_t)PlayerAnimation::Size> animationIndexes;
+	std::vector<TexturePackVariant> textures;
+	std::array<uint32_t, (uint32_t)PlayerAnimation::Size> animationIndexes;
 
 	PlayerAI ai;
 
@@ -69,19 +61,19 @@ public:
 	bool hasTextures() const noexcept { return textures.empty() == false; }
 	void clearTextures() noexcept { textures.clear(); }
 
-	TexturePack* getTexturePack(size_t idx) const;
+	TexturePackVariant getTexturePack(size_t idx) const;
 
-	void getTextureAnimationRange(size_t idx,
-		PlayerAnimation animation, BaseAnimation& baseAnim) const;
+	void getTextureAnimationRange(size_t textureIdx,
+		PlayerAnimation animation, uint32_t direction, BaseAnimation& baseAnim) const;
 
-	void addTexturePack(const std::shared_ptr<TexturePack>& texture, Ranges ranges = {})
+	void addTexturePack(TexturePackVariant texture)
 	{
-		textures.push_back(std::make_pair(std::move(texture), std::move(ranges)));
+		textures.push_back(std::move(texture));
 	}
 
 	void clearAnimationIndexes() { animationIndexes.fill(0); }
 
-	size_t getAnimationIndex(PlayerAnimation animation) const noexcept
+	uint32_t getAnimationIndex(PlayerAnimation animation) const noexcept
 	{
 		if (animation < PlayerAnimation::Size)
 		{
@@ -90,7 +82,7 @@ public:
 		return 0;
 	}
 
-	void setStatusTexturePackIndex(PlayerAnimation animation, size_t idx) noexcept
+	void setStatusTexturePackIndex(PlayerAnimation animation, uint32_t idx) noexcept
 	{
 		if (animation < PlayerAnimation::Size)
 		{

@@ -1,33 +1,67 @@
 #include "Animation.h"
 #include "Game.h"
+#include "Utils/Utils.h"
 
-Animation::Animation(const std::shared_ptr<TexturePack>& texturePack_,
-	const std::pair<size_t, size_t>& textureIndexRange, const sf::Time& frameTime,
-	AnimationType type, bool pause) : texturePack(texturePack_),
-	base(textureIndexRange, frameTime, type, pause)
+Animation::Animation(TexturePackVariant texturePackVar_,
+	const std::pair<size_t, size_t>& textureIndexRange, AnimationType type, bool pause)
+	: animation(texturePackVar_, textureIndexRange, sf::milliseconds(50), type, pause)
 {
-	if (texturePack_->isIndexed() == true)
-	{
-		setPalette(texturePack_->getPalette());
-	}
-	updateTexture();
+	animation.updateTexture(sprite);
 }
 
-void Animation::updateTexture()
+void Animation::setAnimation(TexturePackVariant texturePackVar_,
+	int32_t groupIdx, int32_t directionIdx,
+	bool resetAnimation, bool updateAnimationType) noexcept
 {
-	TextureInfo ti;
-	if (texturePack->get(base.currentTextureIdx, ti) == true)
-	{
-		setTexture(*ti.texture);
-		setTextureRect(ti.textureRect);
-	}
+	animation.setTexturePack(std::move(texturePackVar_));
+	animation.setAnimation(
+		groupIdx, directionIdx, resetAnimation, updateAnimationType
+	);
+	animation.updateTexture(sprite);
 }
 
-void Animation::update(Game& game) noexcept
+void Animation::setAnimation(int32_t groupIdx, int32_t directionIdx,
+	bool resetAnimation, bool updateAnimationType) noexcept
+{
+	animation.setAnimation(
+		groupIdx, directionIdx, resetAnimation, updateAnimationType
+	);
+	animation.updateTexture(sprite);
+}
+
+void Animation::update(Game& game)
 {
 	if (Visible() == true &&
-		base.update(game.getElapsedTime()) == true)
+		animation.update(game.getElapsedTime()) == true)
 	{
-		updateTexture();
+		animation.updateTexture(sprite);
 	}
+}
+
+bool Animation::getProperty(const std::string_view prop, Variable& var) const
+{
+	if (prop.size() <= 1)
+	{
+		return false;
+	}
+	auto props = Utils::splitStringIn2(prop, '.');
+	auto propHash = str2int16(props.first);
+	switch (propHash)
+	{
+	case str2int16("finished"):
+		var = Variable(animation.hasPlayOnceAnimationFinished());
+		break;
+	case str2int16("isAtBeginning"):
+		var = Variable(animation.isAnimationAtBeginning());
+		break;
+	case str2int16("isAtEnd"):
+		var = Variable(animation.isAnimationAtEnd());
+		break;
+	case str2int16("paused"):
+		var = Variable(animation.pause);
+		break;
+	default:
+		return getUIObjProp(propHash, props.second, var);
+	}
+	return true;
 }

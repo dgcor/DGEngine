@@ -19,6 +19,17 @@ namespace Parser
 		}
 		else
 		{
+			auto texPack = game.Resources().getTexturePack(getStringKey(elem, "texturePack"));
+			if (texPack != nullptr)
+			{
+				auto frames = std::make_pair(0u, texPack->size() - 1);
+				frames = getFramesKey(elem, "frames", frames);
+				loadingScreen = std::make_unique<LoadingScreen>(texPack, frames);
+			}
+		}
+
+		if (loadingScreen == nullptr)
+		{
 			loadingScreen = std::make_unique<LoadingScreen>();
 		}
 
@@ -30,21 +41,23 @@ namespace Parser
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		loadingScreen->setAnchor(anchor);
-		auto size = loadingScreen->getSize();
+		auto size = loadingScreen->Size();
 		auto pos = getPositionKey(elem, "position", size, game.RefSize());
 		if (getBoolKey(elem, "relativeCoords", true) == true &&
 			game.RefSize() != game.DrawRegionSize())
 		{
 			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
 		}
-		loadingScreen->setPosition(pos);
+		loadingScreen->Position(pos);
 		loadingScreen->setProgressBarColor(getColorKey(elem, "color"));
 		loadingScreen->setProgressBarPositionOffset(getVector2fKey<sf::Vector2f>(elem, "progressBarOffset"));
 		loadingScreen->setProgressBarSize(getVector2fKey<sf::Vector2f>(elem, "size"));
 
 		if (elem.HasMember("onComplete"))
 		{
-			loadingScreen->setAction(parseAction(game, elem["onComplete"]));
+			loadingScreen->setAction(
+				str2int16("complete"), parseAction(game, elem["onComplete"])
+			);
 		}
 
 		game.setLoadingScreen(std::move(loadingScreen));

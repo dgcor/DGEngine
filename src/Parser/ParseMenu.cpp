@@ -140,7 +140,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -161,14 +161,14 @@ namespace Parser
 		auto resource = getStringViewKey(elem, "resource");
 
 		sf::SoundBuffer* sound{ nullptr };
-		if (elem.HasMember("sound"))
+		if (isValidString(elem, "sound"))
 		{
-			sound = game.Resources().getSoundBuffer(elem["sound"].GetString());
+			sound = game.Resources().getSoundBuffer(elem["sound"].GetStringStr());
 		}
 		sf::SoundBuffer* focusSound{ nullptr };
-		if (elem.HasMember("focusSound"))
+		if (isValidString(elem, "focusSound"))
 		{
-			focusSound = game.Resources().getSoundBuffer(elem["focusSound"].GetString());
+			focusSound = game.Resources().getSoundBuffer(elem["focusSound"].GetStringStr());
 		}
 
 		auto font = game.Resources().getFont(getStringKey(elem, "font"));

@@ -1,6 +1,7 @@
 #include "SFMLUtils.h"
 #include <cmath>
 #include <cstdlib>
+#include <SFML/Graphics/Texture.hpp>
 
 namespace SFMLUtils
 {
@@ -65,6 +66,22 @@ namespace SFMLUtils
 		if (updateTexRect == true)
 		{
 			sprite.setTextureRect(texRect);
+		}
+	}
+
+	sf::BlendMode getBlendMode(BlendMode blendMode)
+	{
+		switch (blendMode)
+		{
+		default:
+		case BlendMode::Alpha:
+			return sf::BlendAlpha;
+		case BlendMode::Add:
+			return sf::BlendAdd;
+		case BlendMode::Multiply:
+			return sf::BlendMultiply;
+		case BlendMode::None:
+			return sf::BlendNone;
 		}
 	}
 

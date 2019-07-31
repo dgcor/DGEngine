@@ -1,0 +1,7 @@
+{
+  "action": [
+    { "name": "shader.load", "id": "diablo2", "fragmentFile": "res/shaders/sprite/diablo2.frag" },
+    { "name": "game.setShader", "shader": "diablo2", "gameShader": "sprite" }
+  ],
+  "load": "ui/loadMain.json"
+}

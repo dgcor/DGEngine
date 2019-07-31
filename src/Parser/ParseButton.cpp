@@ -16,20 +16,38 @@ namespace Parser
 
 	std::shared_ptr<Button> parseBitmapButton(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "texture") == false)
+		if (isValidString(elem, "texture") == false &&
+			isValidString(elem, "texturePack") == false)
 		{
 			return nullptr;
 		}
 
 		auto button = std::make_shared<BitmapButton>();
 
-		auto tex = game.Resources().getTexture(elem["texture"].GetString());
-		if (tex == nullptr)
+		if (elem.HasMember("texture") == true)
 		{
-			return nullptr;
-		}
+			auto tex = game.Resources().getTexture(getStringVal(elem["texture"]));
+			if (tex == nullptr)
+			{
+				return nullptr;
+			}
 
-		button->setTexture(*tex.get(), true);
+			button->setTexture(*tex.get(), true);
+		}
+		else
+		{
+			auto tex = game.Resources().getTexturePack(getStringVal(elem["texturePack"]));
+			if (tex == nullptr)
+			{
+				return nullptr;
+			}
+			TextureInfo ti;
+			if (tex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			{
+				return nullptr;
+			}
+			button->setTexture(ti, true);
+		}
 
 		if (elem.HasMember("textureRect"))
 		{
@@ -49,11 +67,13 @@ namespace Parser
 
 	std::shared_ptr<Button> parseStringButton(Game& game, const Value& elem)
 	{
-		auto button = std::make_shared<StringButton>();
-		if (parseText2Obj(game, elem, *button) == false)
+		auto drawableText = parseDrawableTextObj(game, elem);
+		if (drawableText == nullptr)
 		{
 			return nullptr;
 		}
+		auto button = std::make_shared<StringButton>(std::move(drawableText));
+		parseTextObj(game, elem, *button);
 		return button;
 	}
 
@@ -63,7 +83,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		std::string id(elem["id"].GetStringStr());
 		if (isValidId(id) == false)
 		{
 			return;
@@ -71,7 +91,8 @@ namespace Parser
 
 		std::shared_ptr<Button> button;
 
-		if (elem.HasMember("texture") == true)
+		if (elem.HasMember("texture") == true ||
+			elem.HasMember("texturePack") == true)
 		{
 			button = parseBitmapButton(game, elem);
 			if (button != nullptr)
@@ -104,7 +125,7 @@ namespace Parser
 
 		button->enable(getBoolKey(elem, "enable", true));
 		button->setClickUp(getBoolKey(elem, "clickUp"));
-		button->setCaptureInputEvents(getInputEventKey(elem, "captureInputEvents"));
+		button->setCaptureInputEvents(getInputEventTypeKey(elem, "captureInputEvents"));
 
 		if (elem.HasMember("onChange"))
 		{
@@ -146,13 +167,13 @@ namespace Parser
 		{
 			button->setAction(str2int16("hoverLeave"), parseAction(game, elem["onHoverLeave"]));
 		}
-		if (elem.HasMember("sound"))
+		if (isValidString(elem, "sound"))
 		{
-			button->setClickSound(game.Resources().getSoundBuffer(elem["sound"].GetString()));
+			button->setClickSound(game.Resources().getSoundBuffer(elem["sound"].GetStringStr()));
 		}
-		if (elem.HasMember("focusSound"))
+		if (isValidString(elem, "focusSound"))
 		{
-			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetString()));
+			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetStringStr()));
 		}
 
 		bool manageObjDrawing = true;

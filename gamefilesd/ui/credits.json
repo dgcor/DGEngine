@@ -44,12 +44,16 @@
     "id": "liberationSerif",
     "file": "res/LiberationSerif-Regular.ttf"
   },
-  "scrollableText": {
+  "text": {
     "id": "creditsText",
     "font": "liberationSerif",
     "fontSize": 16,
+    "file": "ui/credits.txt"
+  },
+  "scrollable": {
+    "id": "creditsScroll",
+    "drawable": "creditsText",
     "refresh": 50,
-    "file": "ui/credits.txt",
     "anchor": "none",
     "position": [30, 115],
     "size": [580, 250],

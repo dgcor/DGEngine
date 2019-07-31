@@ -1,8 +1,41 @@
 #pragma once
 
+#include <cstdint>
+#include <SFML/Window/Event.hpp>
 #include <type_traits>
+#include <vector>
 
-enum class InputEvent : int
+struct CompareEvent
+{
+	static bool compare(const sf::Event& obj1, const sf::Event& obj2) noexcept;
+
+	size_t operator()(const sf::Event& obj) const noexcept;
+	bool operator()(const sf::Event& obj1, const sf::Event& obj2) const noexcept;
+};
+
+enum class InputType : int32_t
+{
+	Mouse,
+	Keyboard,
+	Joystick
+};
+
+struct InputEvent
+{
+	InputType type;
+	int32_t value;
+
+	bool isActive() const;
+};
+
+struct CompositeInputEvent
+{
+	std::vector<InputEvent> events;
+
+	bool isActive() const;
+};
+
+enum class InputEventType : int32_t
 {
 	None = 0,
 	LeftClick = 1,
@@ -20,12 +53,12 @@ enum class InputEvent : int
 	All = 0xFFF
 };
 
-using T = std::underlying_type_t<InputEvent>;
+using T = std::underlying_type_t<InputEventType>;
 
-constexpr InputEvent operator~ (InputEvent a) noexcept { return (InputEvent)~static_cast<T>(a); }
-constexpr InputEvent operator| (InputEvent a, InputEvent b) noexcept { return (InputEvent)(static_cast<T>(a) | static_cast<T>(b)); }
-constexpr InputEvent operator& (InputEvent a, InputEvent b) noexcept { return (InputEvent)(static_cast<T>(a) & static_cast<T>(b)); }
-constexpr InputEvent operator^ (InputEvent a, InputEvent b) noexcept { return (InputEvent)(static_cast<T>(a) ^ static_cast<T>(b)); }
-constexpr InputEvent& operator|= (InputEvent& a, InputEvent b) noexcept { a = (InputEvent)(static_cast<T>(a) | static_cast<T>(b)); return a; }
-constexpr InputEvent& operator&= (InputEvent& a, InputEvent b) noexcept { a = (InputEvent)(static_cast<T>(a) & static_cast<T>(b)); return a; }
-constexpr InputEvent& operator^= (InputEvent& a, InputEvent b) noexcept { a = (InputEvent)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
+constexpr InputEventType operator~ (InputEventType a) noexcept { return (InputEventType)~static_cast<T>(a); }
+constexpr InputEventType operator| (InputEventType a, InputEventType b) noexcept { return (InputEventType)(static_cast<T>(a) | static_cast<T>(b)); }
+constexpr InputEventType operator& (InputEventType a, InputEventType b) noexcept { return (InputEventType)(static_cast<T>(a) & static_cast<T>(b)); }
+constexpr InputEventType operator^ (InputEventType a, InputEventType b) noexcept { return (InputEventType)(static_cast<T>(a) ^ static_cast<T>(b)); }
+constexpr InputEventType& operator|= (InputEventType& a, InputEventType b) noexcept { a = (InputEventType)(static_cast<T>(a) | static_cast<T>(b)); return a; }
+constexpr InputEventType& operator&= (InputEventType& a, InputEventType b) noexcept { a = (InputEventType)(static_cast<T>(a) & static_cast<T>(b)); return a; }
+constexpr InputEventType& operator^= (InputEventType& a, InputEventType b) noexcept { a = (InputEventType)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }

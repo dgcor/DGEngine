@@ -1,6 +1,7 @@
 {
   "action": [
-    { "name": "load", "file": ["ui/level/msgBox/show.json", "loading..."] },
+    { "name": "text.setText", "id": "msgBoxText", "text": "loading..." },
+    "showMsgBox",
     { "name": "level.pause", "pause": true },
     { "name": "io.deleteAll", "file": "%tempDir%", "deleteRoot": false },
     { "name": "dir.copy", "source": "{2}/level", "destination": "%tempDir%/level" },
@@ -22,7 +23,13 @@
     { "name": "load", "file": "level/showMap.json" },
     { "name": "load", "file": "level/afterLevelLoad.json" },
     { "name": "level.pause", "pause": false },
+<<<<<<< .mine
     { "name": "drawable.visible", "id": "msgBox", "visible": false },
+||||||| .r2628
+    { "name": "loadJson", "json": { "action": "closeMsgBox" } },
+=======
+    "closeMsgBox",
+>>>>>>> .r2731
     "clearPanelText"
   ]
 }

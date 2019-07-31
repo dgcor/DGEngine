@@ -15,7 +15,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -23,19 +23,19 @@ namespace Parser
 
 		auto circle = std::make_shared<Circle>((float)getIntKey(elem, "radius"));
 
-		if (elem.HasMember("texture"))
+		if (isValidString(elem, "texture"))
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetString());
+			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
 			if (texture != nullptr)
 			{
 				circle->setTexture(texture.get());
 			}
 		}
 
-		if (elem.HasMember("textureRect"))
+		if (isValidString(elem, "textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
-			circle->setTextureRect(getIntRectKey(elem, "textureRect", rect));
+			circle->setTextureRect(getIntRectVal(elem["textureRect"], rect));
 		}
 
 		auto anchor = getAnchorKey(elem, "anchor");

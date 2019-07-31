@@ -1,0 +1,140 @@
+{
+  "load": "level/player/Amazon/textureFiles.json",
+  "compositeTexture": [
+    {
+      "id": "amazonNormal",
+      "groups": [
+        {
+          "file": "data/global/CHARS/AM/COF/amnuhth.cof",
+          "texturePacks": [
+            "AMHDLITNU1HT",
+            "AMTRLITNU1HT",
+            "AMLGLITNU1HT",
+            "AMRALITNU1HT",
+            "AMLALITNU1HT",
+            "AMSHKITNU1HT",
+            "AMS1LITNU1HT",
+            "AMS2LITNU1HT"
+          ]
+        },
+        {
+          "file": "data/global/CHARS/AM/COF/amtwhth.cof",
+          "texturePacks": [
+            "AMHDLITTW1HT",
+            "AMTRLITTW1HT",
+            "AMLGLITTW1HT",
+            "AMRALITTW1HT",
+            "AMLALITTW1HT",
+            "AMSHKITTW1HT",
+            "AMS1LITTW1HT",
+            "AMS2LITTW1HT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "amazonNormalAxe",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalBow",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalShieldSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalShieldClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalStaff",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonNormalShield",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeather",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherAxe",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherBow",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherShieldSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherShieldClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherStaff",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonLeatherShield",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlate",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateAxe",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateBow",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateShieldSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateShieldClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateClub",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateSword",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateStaff",
+      "fromId": "amazonNormal"
+    },
+    {
+      "id": "amazonPlateShield",
+      "fromId": "amazonNormal"
+    }
+  ]
+}

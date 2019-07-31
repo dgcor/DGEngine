@@ -24,7 +24,7 @@
 #pragma once
 
 #include <cstdint>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "Stream.hpp"
 
 namespace sfe

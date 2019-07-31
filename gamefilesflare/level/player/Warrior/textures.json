@@ -1,0 +1,279 @@
+{
+  "load": "level/player/data/male/load.json",
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateAxe",
+    "m_battle_axe",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateBow",
+    "m_longbow",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateShieldSword",
+    "m_greatsword",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateShieldClub",
+    "m_club",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateClub",
+    "m_club",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlate",
+    "",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateSword",
+    "m_greatsword",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateStaff",
+    "m_staff",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorPlateShield",
+    "m_plate_boots",
+    "m_plate_greaves",
+    "m_chain_gloves",
+    "m_plate_cuirass",
+    "m_shield",
+    "m_plate_helm"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalAxe",
+    "m_battle_axe",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalBow",
+    "m_longbow",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalShieldSword",
+    "m_longsword",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_buckler",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalShieldClub",
+    "m_club",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_buckler",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalClub",
+    "m_club",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormal",
+    "",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalSword",
+    "m_longsword",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalStaff",
+    "m_staff",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorNormalShield",
+    "m_cloth_sandals",
+    "m_cloth_pants",
+    "m_cloth_gloves",
+    "m_cloth_shirt",
+    "m_buckler",
+    "m_head_short"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherAxe",
+    "m_battle_axe",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherBow",
+    "m_longbow",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherShieldSword",
+    "m_longsword",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_buckler",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherShieldClub",
+    "m_club",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_buckler",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherClub",
+    "m_club",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeather",
+    "",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherSword",
+    "m_longsword",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherStaff",
+    "m_staff",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_leather_hood"
+  ],
+  "load": [
+    "level/player/loadCompositeTexture.json",
+    "warriorLeatherShield",
+    "m_leather_boots",
+    "m_leather_pants",
+    "m_leather_gloves",
+    "m_leather_chest",
+    "m_buckler",
+    "m_leather_hood"
+  ]
+}

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "SFML/Sprite2.h"
+#include "SFML/CompositeSprite.h"
 #include "UIObject.h"
 
 class Image : public virtual UIObject
 {
 protected:
-	Sprite2 sprite;
+	CompositeSprite sprite;
 	Anchor anchor{ Anchor::Top | Anchor::Left };
 	bool resizable{ false };
 	bool stretch{ false };
@@ -26,6 +26,10 @@ public:
 	{
 		sprite.setOutlineEnabled(true);
 	}
+	Image(const TextureInfo& ti) : sprite(ti)
+	{
+		sprite.setOutlineEnabled(true);
+	}
 
 	bool Resizable() const noexcept { return resizable; }
 	void Resizable(bool resizable_) noexcept { resizable = resizable_; }
@@ -36,7 +40,7 @@ public:
 	bool Background() const noexcept { return background; }
 	void Background(bool background_) noexcept { background = background_; }
 
-	void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
+	//void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
 	void setColor(const sf::Color& color) { sprite.setColor(color); }
 	void setOrigin(const sf::Vector2f& origin) { sprite.setOrigin(origin); }
 	void setOrigin();
@@ -57,12 +61,10 @@ public:
 	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { sprite.setPalette(pal); }
 	bool hasPalette() const noexcept { return sprite.hasPalette(); }
 
-	void centerTexture();
-
 	const sf::IntRect& getTextureRect() const { return sprite.getTextureRect(); }
 
-	void setTexture(const TextureInfo& ti, bool resetRect = false) { sprite.setTexture(ti, resetRect); }
-	void setTexture(const sf::Texture& texture, bool resetRect = false) { sprite.setTexture(texture, resetRect); }
+	void setTexture(const TextureInfo& ti, bool resetRect = false);
+	void setTexture(const sf::Texture& texture, bool resetRect = false);
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
 	virtual Anchor getAnchor() const noexcept { return anchor; }
@@ -72,9 +74,9 @@ public:
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
-	virtual const sf::Vector2f& DrawPosition() const { return sprite.getPosition(); }
+	virtual const sf::Vector2f& DrawPosition() const { return sprite.getDrawPosition(); }
 	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { sprite.setPosition(position); }
+	virtual void Position(const sf::Vector2f& position_) { return sprite.setPosition(position_); }
 	virtual sf::Vector2f Size() const;
 	virtual void Size(const sf::Vector2f& size);
 	virtual void draw(const Game& game, sf::RenderTarget& target) const;

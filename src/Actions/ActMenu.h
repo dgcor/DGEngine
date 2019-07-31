@@ -221,7 +221,7 @@ public:
 					if (stringText != nullptr &&
 						holdsFreeTypeFont(newFont) == true)
 					{
-						stringText->setFont(*std::get<std::shared_ptr<FreeTypeFont>>(newFont));
+						stringText->setFont(std::get<std::shared_ptr<FreeTypeFont>>(newFont));
 					}
 				}
 			}

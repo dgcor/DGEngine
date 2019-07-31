@@ -3,8 +3,8 @@
     "name": "if.equal",
     "param1": "%beta%",
     "param2": true,
-    "then": { "name": "load", "file": "level/item/itemCelFilesBeta.json" },
-    "else": { "name": "load", "file": "level/item/itemCelFiles.json" }
+    "then": { "name": "load", "file": "level/item/dropTextureFilesBeta.json" },
+    "else": { "name": "load", "file": "level/item/dropTextureFiles.json" }
   },
   "texturePack": [
     { "id": "armor2", "imageContainer": "armor2", "palette": "town" },

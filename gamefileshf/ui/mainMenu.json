@@ -38,6 +38,7 @@
   "audio": {
     "id": "main",
     "file": "music/dintro.wav",
+    "volume": 50,
     "loop": true,
     "play": true
   },

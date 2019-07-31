@@ -1,0 +1,3 @@
+{
+  "load": ["ui/playVideo.json", "splashScreenVideo", "data/local/video/New_Bliz640x480.bik", "ui/splashScreenVideo2.json"]
+}

@@ -351,7 +351,7 @@ void Button::updateEvents(Game& game, bool contains)
 		onTouchEnded(game, contains);
 	}
 	if (contains == true &&
-		captureInputEvents != InputEvent::None)
+		captureInputEvents != InputEventType::None)
 	{
 		game.clearInputEvents(captureInputEvents);
 	}

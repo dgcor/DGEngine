@@ -1,0 +1,175 @@
+{
+  "minWindowSize": [800, 600],
+  "action": [
+    {
+      "name": "resource.add",
+      "id": "mainMenu"
+    },
+    {
+      "name": "action.set",
+      "id": "loadMainMenuImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "animation": [
+            {
+              "id": "ts01a",
+              "texturePack": "ts01a",
+              "position": [20, 40],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts02a",
+              "texturePack": "ts02a",
+              "position": [220, 40],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts03a",
+              "texturePack": "ts03a",
+              "position": [420, 40],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts04a",
+              "texturePack": "ts04a",
+              "position": [620, 40],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts05b",
+              "texturePack": "ts05b",
+              "position": [20, 240],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts06b",
+              "texturePack": "ts06b",
+              "position": [220, 240],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts07b",
+              "texturePack": "ts07b",
+              "position": [420, 240],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts08b",
+              "texturePack": "ts08b",
+              "position": [620, 240],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts09b",
+              "texturePack": "ts09b",
+              "position": [20, 440],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts10b",
+              "texturePack": "ts10b",
+              "position": [220, 440],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts11b",
+              "texturePack": "ts11b",
+              "position": [420, 440],
+              "anchor": "none",
+              "refresh": 50
+            },
+            {
+              "id": "ts12b",
+              "texturePack": "ts12b",
+              "position": [620, 440],
+              "anchor": "none",
+              "refresh": 50
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "loadLogoImg",
+      "action": {
+        "name": "loadJson",
+        "json": {
+          "animation": {
+            "id": "logo",
+            "compositeTexture": "D2logo",
+            "position": [320, 60],
+            "anchor": "none",
+            "refresh": 50
+          }
+        }
+      }
+    }
+  ],
+  "audio": {
+    "id": "main",
+    "file": "data/global/music/Common/options.wav",
+    "volume": 50,
+    "loop": true,
+    "play": true
+  },
+  "texturePack": [
+    {
+      "id": "D2logoBlackLeft",
+      "file": "data/global/ui/FrontEnd/D2logoBlackLeft.DC6",
+      "imageContainer": "D2logoBlackLeft",
+      "palette": "units",
+      "useOffsets": true
+    },
+    {
+      "id": "D2logoBlackRight",
+      "file": "data/global/ui/FrontEnd/D2logoBlackRight.DC6",
+      "imageContainer": "D2logoBlackRight",
+      "palette": "units",
+      "useOffsets": true
+    },
+    {
+      "id": "D2logoFireLeft",
+      "file": "data/global/ui/FrontEnd/D2logoFireLeft.DC6",
+      "imageContainer": "D2logoFireLeft",
+      "palette": "units",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "D2logoFireRight",
+      "file": "data/global/ui/FrontEnd/D2logoFireRight.DC6",
+      "imageContainer": "D2logoFireRight",
+      "palette": "units",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "focus42",
+      "file": "data/global/ui/CURSOR/focus42.DC6",
+      "imageContainer": "focus42",
+      "palette": "units",
+      "frames": 8
+    }
+  ],
+  "compositeTexture": {
+    "id": "D2logo",
+    "texturePacks": [
+      "D2logoBlackLeft",
+      "D2logoBlackRight",
+      "D2logoFireLeft",
+      "D2logoFireRight"
+    ]
+  }
+}

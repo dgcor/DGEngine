@@ -1,7 +1,9 @@
 #include "ParseImageContainer.h"
 #include "Game.h"
-#include "ImageContainers/CelImageContainer.h"
-#include "ImageContainers/Cl2ImageContainer.h"
+#include "ImageContainers/CELImageContainer.h"
+#include "ImageContainers/CL2ImageContainer.h"
+#include "ImageContainers/DC6ImageContainer.h"
+#include "ImageContainers/DCCImageContainer.h"
 #include "ImageContainers/SimpleImageContainer.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -18,42 +20,47 @@ namespace Parser
 			return nullptr;
 		}
 
+		std::shared_ptr<ImageContainer> imgContainer;
+
 		auto fileName = getStringViewVal(elem[fileElem]);
 		auto fileNameLower = Utils::toLower(fileName);
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 		if (Utils::endsWith(fileNameLower, ".cel") == true)
 		{
-			auto imgContainer = std::make_shared<CelImageContainer>(fileName);
-
-			if (imgContainer->size() == 0)
-			{
-				return nullptr;
-			}
-			return imgContainer;
+			imgContainer = std::make_shared<CELImageContainer>(fileName);
 		}
 		else if (Utils::endsWith(fileNameLower, ".cl2") == true)
 		{
-			auto imgContainer = std::make_shared<Cl2ImageContainer>(fileName);
-
-			if (imgContainer->size() == 0)
-			{
-				return nullptr;
-			}
-			return imgContainer;
+			imgContainer = std::make_shared<CL2ImageContainer>(fileName);
 		}
+		else if (Utils::endsWith(fileNameLower, ".dc6") == true)
+		{
+			auto stitch = getBoolKey(elem, "stitch", true);
+			auto useOffsets = getBoolKey(elem, "useOffsets");
+			imgContainer = std::make_shared<DC6ImageContainer>(fileName, stitch, useOffsets);
+		}
+		else if (Utils::endsWith(fileNameLower, ".dcc") == true)
+		{
+			imgContainer = std::make_shared<DCCImageContainer>(fileName);
+		}
+#else
+		if (false) {}
+#endif
 		else
 		{
 			auto frames = getFramesKey(elem, "frames");
-
-			auto imgContainer = std::make_shared<SimpleImageContainer>(
-				fileName, frames.first, frames.second);
-
-			if (imgContainer->size() == 0)
-			{
-				return nullptr;
-			}
-			return imgContainer;
+			auto directions = getUIntKey(elem, "directions");
+			imgContainer = std::make_shared<SimpleImageContainer>(
+				fileName, frames.first, frames.second, directions, false);
 		}
+
+		if (imgContainer->size() == 0)
+		{
+			return nullptr;
+		}
+		imgContainer->setBlendMode(getBlendModeKey(elem, "blendMode"));
+		return imgContainer;
 	}
 
 	bool parseImageContainerFromId(Game& game, const Value& elem)
@@ -62,8 +69,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getImageContainer(fromId);
@@ -87,7 +94,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else
 		{
@@ -123,7 +130,7 @@ namespace Parser
 	{
 		if (isValidString(elem, idKey) == true)
 		{
-			std::string id = elem[idKey].GetString();
+			auto id = elem[idKey].GetStringStr();
 			imgContainer = game.Resources().getImageContainer(id);
 			if (imgContainer != nullptr)
 			{

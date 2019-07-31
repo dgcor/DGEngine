@@ -3,12 +3,15 @@
 #include "Alignment.h"
 #include "Anchor.h"
 #include "AnimationType.h"
+#include "BlendMode.h"
 #include <cstddef>
 #include "Game/GameProperties.h"
 #include "Game/LevelObject.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
+#include "Palette.h"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <string>
 #include <string_view>
@@ -35,6 +38,10 @@ namespace GameUtils
 
 	Anchor getAnchor(const std::string_view str, Anchor val);
 
+	BlendMode getBlendMode(const std::string_view str, BlendMode val);
+
+	Palette::ColorFormat getColorFormat(const std::string_view str);
+
 	HorizontalAlign getHorizontalAlignment(const std::string_view str,
 		HorizontalAlign val = HorizontalAlign::Left);
 
@@ -43,11 +50,12 @@ namespace GameUtils
 
 	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept;
 
+	// also gets extra keys (casted as sf::Keyboard::Key)
 	sf::Keyboard::Key getKeyCode(const std::string_view str, sf::Keyboard::Key val);
 
 	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val);
 
-	InputEvent getInputEvent(const std::string_view str, InputEvent val);
+	InputEventType getInputEventType(const std::string_view str, InputEventType val);
 
 	InventoryPosition getInventoryPosition(const std::string_view str,
 		InventoryPosition val = InventoryPosition::TopLeft);

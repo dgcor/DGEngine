@@ -2,55 +2,48 @@
 #include "Player.h"
 #include "Utils/Utils.h"
 
-TexturePack* PlayerClass::getTexturePack(size_t idx) const
+TexturePackVariant PlayerClass::getTexturePack(size_t idx) const
 {
 	if (idx < textures.size())
 	{
-		return textures[idx].first.get();
+		return textures[idx];
 	}
 	else if (textures.empty() == false)
 	{
-		return textures.front().first.get();
+		return textures.front();
 	}
-	return nullptr;
+	return {};
 }
 
-void PlayerClass::getTextureAnimationRange(size_t idx,
-	PlayerAnimation animation, BaseAnimation& baseAnim) const
+void PlayerClass::getTextureAnimationRange(size_t textureIdx,
+	PlayerAnimation animation, uint32_t direction, BaseAnimation& baseAnim) const
 {
-	const std::pair<std::shared_ptr<TexturePack>, Ranges>* tex = nullptr;
-	if (idx < textures.size())
+	bool setAnim = false;
+	if (textureIdx < textures.size())
 	{
-		tex = &textures[idx];
+		baseAnim.setTexturePack(textures[textureIdx]);
+		setAnim = true;
 	}
 	else if (textures.empty() == false)
 	{
-		tex = &textures.front();
+		baseAnim.setTexturePack(textures.front());
+		setAnim = true;
 	}
-	if (tex != nullptr)
+	if (setAnim == true)
 	{
-		size_t animIdx = 0;
+		uint32_t animIdx = 0;
 		if (animation < PlayerAnimation::Size)
 		{
 			animIdx = animationIndexes[(size_t)animation];
 		}
-		if (animIdx < tex->second.size())
-		{
-			baseAnim.textureIndexRange = tex->second[animIdx].range;
-			baseAnim.animType = tex->second[animIdx].animType;
-			baseAnim.backDirection = false;
-		}
-		else
-		{
-			baseAnim.textureIndexRange = std::make_pair(0, tex->first->size() - 1);
-			baseAnim.animType = AnimationType::Looped;
-			baseAnim.backDirection = false;
-		}
-		return;
+		baseAnim.setAnimation((int32_t)animIdx, (int32_t)direction, true, true);
 	}
-	baseAnim.textureIndexRange = std::make_pair(0, 0);
-	baseAnim.animType = AnimationType::PlayOnce;
-	baseAnim.backDirection = false;
+	else
+	{
+		baseAnim.textureIndexRange = std::make_pair(0, 0);
+		baseAnim.animType = AnimationType::PlayOnce;
+		baseAnim.backDirection = false;
+	}
 }
 
 AnimationSpeed PlayerClass::getSpeed(PlayerAnimation animation) const noexcept

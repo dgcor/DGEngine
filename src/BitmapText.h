@@ -2,10 +2,13 @@
 
 #include "BitmapFont.h"
 #include "DrawableText.h"
+#include <SFML/Graphics/Vertex.hpp>
+#include <vector>
 
 class BitmapText : public DrawableText
 {
 private:
+	std::vector<sf::Vertex> vertexText;
 	std::string text;
 	std::shared_ptr<BitmapFont> font;
 	sf::Vector2f pos;
@@ -22,95 +25,40 @@ private:
 
 	void calculateDrawPosition() noexcept;
 	void calculateSize();
+	void updateVertexText();
 
 public:
-	BitmapText(const std::string& text_, const std::shared_ptr<BitmapFont>& font_,
-		int horizSpaceOffset_ = 0, int vertSpaceOffset_ = 0) : text(text_), font(font_),
-		horizSpaceOffset(horizSpaceOffset_), vertSpaceOffset(vertSpaceOffset_)
-	{
-		calculateSize();
-		calculateDrawPosition();
-	}
+	BitmapText(const std::shared_ptr<BitmapFont>& font_) : font(font_) {}
 
-	void setFont(const std::shared_ptr<BitmapFont>& font_) noexcept { font = font_; }
+	void setFont(const std::shared_ptr<BitmapFont>& font_);
 
 	virtual std::string getText() const { return text; }
 
 	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept
-	{
-		if (anchor != anchor_)
-		{
-			anchor = anchor_;
-			calculateDrawPosition();
-		}
-	}
+	virtual void setAnchor(const Anchor anchor_) noexcept;
+
 	virtual void updateSize(const Game& game) noexcept;
 
-	virtual bool setText(const std::string& str)
-	{
-		if (text == str)
-		{
-			return false;
-		}
-		text = str;
-		calculateSize();
-		calculateDrawPosition();
-		return true;
-	}
+	virtual bool setText(const std::string& str);
 
 	virtual unsigned getLineCount() const noexcept { return lineCount; }
 
-	virtual void setColor(const sf::Color& color_) noexcept { color = color_; }
+	virtual void setColor(const sf::Color& color_) noexcept;
 
 	virtual const sf::Vector2f& DrawPosition() const noexcept { return drawPos; }
 	virtual const sf::Vector2f& Position() const noexcept { return pos; }
-	virtual void Position(const sf::Vector2f& position) noexcept
-	{
-		pos = position;
-		calculateDrawPosition();
-	}
+	virtual void Position(const sf::Vector2f& position) noexcept;
 	virtual sf::Vector2f Size() const noexcept { return size; }
 	virtual void Size(const sf::Vector2f& size_) noexcept {}
 
 	virtual sf::FloatRect getLocalBounds() const { return sf::FloatRect(drawPos, size); }
 	virtual sf::FloatRect getGlobalBounds() const { return sf::FloatRect(drawPos, size); }
 
-	virtual void setHorizontalAlign(const HorizontalAlign align) noexcept
-	{
-		if (horizAlign != align)
-		{
-			horizAlign = align;
-			calculateDrawPosition();
-		}
-	}
-	virtual void setVerticalAlign(const VerticalAlign align) noexcept
-	{
-		if (vertAlign != align)
-		{
-			vertAlign = align;
-			calculateDrawPosition();
-		}
-	}
+	virtual void setHorizontalAlign(const HorizontalAlign align) noexcept;
+	virtual void setVerticalAlign(const VerticalAlign align) noexcept;
 
-	virtual void setHorizontalSpaceOffset(int offset)
-	{
-		if (horizSpaceOffset != offset)
-		{
-			horizSpaceOffset = offset;
-			calculateSize();
-			calculateDrawPosition();
-		}
-	}
-	virtual void setVerticalSpaceOffset(int offset)
-	{
-		if (vertSpaceOffset != offset)
-		{
-			vertSpaceOffset = offset;
-			calculateSize();
-			calculateDrawPosition();
-		}
-	}
+	virtual void setHorizontalSpaceOffset(int offset);
+	virtual void setVerticalSpaceOffset(int offset);
 
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }

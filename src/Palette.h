@@ -17,9 +17,20 @@ public:
 	sf::Texture texture;
 	PaletteArray palette;
 
+	enum class ColorFormat
+	{
+		RGB,
+		BGR,
+		RGBA,
+		BGRA,
+		ARGB,
+		ABGR,
+	};
+
 	Palette() noexcept {}
-	Palette(const std::string_view  file);
-	Palette(const Palette& pal, const std::vector<sf::Uint8> trn);
+	Palette(const std::string_view  file, ColorFormat colorFormat);
+	Palette(const Palette& pal, const std::vector<sf::Uint8> trn,
+		size_t start, size_t length);
 
 	const sf::Color& operator[](size_t index) const noexcept { return palette[index]; }
 

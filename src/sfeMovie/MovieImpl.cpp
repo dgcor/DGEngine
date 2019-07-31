@@ -24,6 +24,8 @@
 #include "MovieImpl.hpp"
 #include <cmath>
 #include "Demuxer.hpp"
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 #include "Timer.hpp"
 
 namespace sfe

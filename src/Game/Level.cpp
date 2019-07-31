@@ -714,7 +714,7 @@ void Level::update(Game& game)
 		{
 			onTouchBegan(game);
 		}
-		if (captureInputEvents != InputEvent::None)
+		if (captureInputEvents != InputEventType::None)
 		{
 			game.clearInputEvents(captureInputEvents);
 		}
@@ -787,9 +787,8 @@ void Level::setLevelDrawablePosition(LevelDrawable& obj, Panel& panelObj)
 {
 	if (auto anchorTo = obj.anchorTo.lock())
 	{
-		sf::Vector2f drawPos;
-		sf::Vector2f drawSize;
-		panelObj.getDrawPositionAndSize(drawPos, drawSize);
+		const sf::Vector2f& drawPos = panelObj.DrawPosition();
+		sf::Vector2f drawSize = panelObj.Size();
 		auto newPos = anchorTo->getAnchorPosition() + obj.offset;
 		auto drawPosOffset = drawPos - panelObj.Position();
 		auto newDrawPos = newPos + drawPosOffset;

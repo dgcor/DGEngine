@@ -1,7 +1,0 @@
-{
-  "load": "level/player/Warrior/cel.json",
-  "texturePack": {
-    "id": "rogueNormal",
-    "fromId": "warriorNormal"
-  }
-}

@@ -1,0 +1,19 @@
+{
+  "action": {
+    "name": "action.set",
+    "id": "updatePlayerSpeed",
+    "action": {
+      "name": "if.equal",
+      "param1": "%currentLevel.path%",
+      "param2": "town",
+      "then": {
+        "name": "if.equal",
+        "param1": "%jog%",
+        "param2": true,
+        "then": { "name": "player.setDefaultSpeed", "animation": 35, "walk": 200 },
+        "else": { "name": "player.setDefaultSpeed" }
+      },
+      "else": { "name": "player.setDefaultSpeed" }
+    }
+  }
+}

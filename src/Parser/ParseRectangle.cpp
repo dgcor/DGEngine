@@ -15,7 +15,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetString());
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -23,9 +23,9 @@ namespace Parser
 
 		auto rectangle = std::make_shared<Rectangle>(getVector2fKey<sf::Vector2f>(elem, "size"));
 
-		if (elem.HasMember("texture"))
+		if (isValidString(elem, "texture"))
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetString());
+			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
 			if (texture != nullptr)
 			{
 				rectangle->setTexture(texture.get());

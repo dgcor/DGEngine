@@ -82,7 +82,7 @@ public:
 	void resetDropAnimation(Level& level) noexcept;
 	void resetDropAnimation(LevelMap& map) noexcept;
 
-	virtual bool getTexture(size_t textureNumber, TextureInfo& ti) const;
+	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
 
 	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
 	virtual bool Passable() const noexcept { return true; }

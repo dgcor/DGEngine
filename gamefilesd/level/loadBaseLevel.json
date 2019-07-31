@@ -65,5 +65,7 @@
       1583495809
     ]
   },
+  "load": "level/loadBaseLevel2.json",
+  "load": "level/keys.json",
   "load": "ui/level/char/panel.json"
 }

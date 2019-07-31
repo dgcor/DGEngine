@@ -16,23 +16,10 @@ Player::Player(const PlayerClass* class__, const Level& level) : LevelObject(cla
 
 void Player::calculateRange()
 {
-	texturePack = Class()->getTexturePack(textureIdx);
-	if (texturePack != nullptr
-		&& playerDirection < PlayerDirection::Size)
-	{
-		Class()->getTextureAnimationRange(textureIdx, playerAnimation, animation);
-		if (playerDirection != PlayerDirection::All)
-		{
-			auto period = (((animation.textureIndexRange.second + 1) - animation.textureIndexRange.first) / 8);
-			animation.textureIndexRange.first += ((size_t)playerDirection * period);
-			animation.textureIndexRange.second = animation.textureIndexRange.first + period - 1;
-		}
-	}
-	else
-	{
-		animation.clear();
-	}
-	animation.reset();
+	animation.setTexturePack(Class()->getTexturePack(textureIdx));
+	Class()->getTextureAnimationRange(
+		textureIdx, playerAnimation, (uint32_t)playerDirection, animation
+	);
 }
 
 void Player::updateSpeed()
@@ -97,7 +84,10 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 					const auto levelObj = map[nextMapPos].front();
 					if (levelObj != nullptr)
 					{
-						levelObj->executeAction(game);
+						if (executeActionOnDestination == true)
+						{
+							levelObj->executeAction(game);
+						}
 						walkPath.pop_back();
 
 						setStandAnimation();
@@ -128,7 +118,7 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 	}
 }
 
-void Player::setWalkPath(const std::vector<PairFloat>& walkPath_)
+void Player::setWalkPath(const std::vector<PairFloat>& walkPath_, bool doAction)
 {
 	if (walkPath_.empty() == true ||
 		playerStatus == PlayerStatus::Dead)
@@ -136,10 +126,64 @@ void Player::setWalkPath(const std::vector<PairFloat>& walkPath_)
 		return;
 	}
 	walkPath = walkPath_;
+	executeActionOnDestination = doAction;
 	playerStatus = PlayerStatus::Walk;
 	if (walkPath.empty() == false)
 	{
 		mapPositionMoveTo = walkPath.front();
+	}
+}
+
+void Player::Walk(const LevelMap& map, const PairFloat& walkToMapPos, bool doAction)
+{
+	setWalkPath(map.getPath(mapPosition, walkToMapPos), doAction);
+}
+
+void Player::Walk(const LevelMap& map, const PlayerDirection direction, bool doAction)
+{
+	PairFloat a = mapPosition;
+	PairFloat b = a;
+	switch (direction)
+	{
+	case PlayerDirection::Front:
+		b.x++;
+		b.y++;
+		break;
+	case PlayerDirection::FrontLeft:
+		b.y++;
+		break;
+	case PlayerDirection::Left:
+		b.x--;
+		b.y++;
+		break;
+	case PlayerDirection::BackLeft:
+		b.x--;
+		break;
+	case PlayerDirection::Back:
+		b.x--;
+		b.y--;
+		break;
+	case PlayerDirection::BackRight:
+		b.y--;
+		break;
+	case PlayerDirection::Right:
+		b.x++;
+		b.y--;
+		break;
+	case PlayerDirection::FrontRight:
+		b.x++;
+		break;
+	default:
+		break;
+	}
+	if (a != b &&
+		map.isMapCoordValid(b) == true &&
+		map[b].Passable() == true)
+	{
+		std::vector<PairFloat> path;
+		path.push_back(b);
+		path.push_back(a);
+		setWalkPath(path, doAction);
 	}
 }
 
@@ -212,7 +256,7 @@ void Player::setStatus(PlayerStatus status_) noexcept
 	}
 }
 
-bool Player::getTexture(size_t textureNumber, TextureInfo& ti) const
+bool Player::getTexture(uint32_t textureNumber, TextureInfo& ti) const
 {
 	switch (textureNumber)
 	{
@@ -272,7 +316,7 @@ void Player::updateAI(Level& level)
 	auto plr = level.getCurrentPlayer();
 	if (plr != nullptr)
 	{
-		setWalkPath(level.Map().getPath(mapPosition, plr->MapPosition()));
+		setWalkPath(level.Map().getPath(mapPosition, plr->MapPosition()), false);
 	}
 }
 

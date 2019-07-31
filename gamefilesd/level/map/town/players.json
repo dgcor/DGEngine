@@ -4,8 +4,8 @@
       "name": "if.equal",
       "param1": "%beta%",
       "param2": true,
-      "then": { "name": "load", "file": "level/map/town/playerCelFilesBeta.json" },
-      "else": { "name": "load", "file": "level/map/town/playerCelFiles.json" }
+      "then": { "name": "load", "file": "level/map/town/playerTextureFilesBeta.json" },
+      "else": { "name": "load", "file": "level/map/town/playerTextureFiles.json" }
     },
     { "name": "load", "file": "level/map/town/playerClasses.json" }
   ]

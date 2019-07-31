@@ -16,8 +16,9 @@
   },
   "button": {
     "id": "background",
+    "replaceVars": "value",
     "texture": "background",
-    "textureRect": [640, 480],
+    "textureRect": ["|game.refSize.x|", "|game.refSize.y|"],
     "resizable": true,
     "anchor": "all",
     "onClick": [
@@ -40,8 +41,9 @@
   },
   "movie": {
     "id": "movie",
+    "replaceVars": "value",
     "file": "{2}",
-    "size": [640, 480],
+    "size": ["|game.refSize.x|", "|game.refSize.y|"],
     "anchor": "all",
     "onComplete": [
       {

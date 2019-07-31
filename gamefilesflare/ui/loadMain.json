@@ -1,4 +1,5 @@
 {
+  "action": { "name": "variable.set", "key": "jog", "value": true },
   "icon": {
     "file": "images/logo/icon.png"
   },
@@ -7,9 +8,9 @@
   },
   "load": "level/setupTempFolder.json",
   "load": "res/actions.json",
+  "load": "res/palettes.json",
   "load": "res/fonts.json",
   "load": "res/music.json",
-  "load": "res/palettes.json",
   "load": "res/sounds.json",
   "load": "res/textures.json",
   "load": "ui/mainMenu.json"

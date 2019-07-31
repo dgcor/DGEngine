@@ -1,0 +1,89 @@
+{
+  "playerClass": {
+    "id": "Amazon",
+    "replaceVars": true,
+    "name": "Amazon",
+    "type": "Human",
+    "outline": "|outlineFriend|",
+    "outlineIgnore": "0x000000",
+    "light": [100, 255, 20],
+    "defaults": {
+      "experience": 0,
+      "points": 0,
+      "strength": 20,
+      "magic": 15,
+      "dexterity": 30,
+      "vitality": 20,
+      "bonusLife": 1.5,
+      "bonusMana": 1.5,
+      "bonusHealing": 1.5,
+      "spellM": 0.75,
+      "defaultDamageMin": 1,
+      "levelUp": 5
+    },
+    "maxStrength": 55,
+    "maxMagic": 70,
+    "maxDexterity": 250,
+    "maxVitality": 80,
+    "maxResistMagic": 75,
+    "maxResistFire": 75,
+    "maxResistLightning": 75,
+    "formulas": {
+      "life": "vitality + (1.5 * vitalityItems) + (2 * level) + lifeItems + 23",
+      "mana": "magic + (1.5 * magicItems) + (2 * level) + manaItems + 5",
+      "armor": "dexterityNow * 0.2 + armorItems",
+      "toHit": "dexterityNow * 0.5 + toHitItems + 50",
+      "damage": "strengthNow + dexterityNow * level / 200"
+    },
+    "texturePacks": [
+      "amazonNormal",
+      "amazonNormalAxe",
+      "amazonNormalBow",
+      "amazonNormalShieldSword",
+      "amazonNormalShieldClub",
+      "amazonNormalClub",
+      "amazonNormalSword",
+      "amazonNormalStaff",
+      "amazonNormalShield",
+      "amazonLeather",
+      "amazonLeatherAxe",
+      "amazonLeatherBow",
+      "amazonLeatherShieldSword",
+      "amazonLeatherShieldClub",
+      "amazonLeatherClub",
+      "amazonLeatherSword",
+      "amazonLeatherStaff",
+      "amazonLeatherShield",
+      "amazonPlate",
+      "amazonPlateAxe",
+      "amazonPlateBow",
+      "amazonPlateShieldSword",
+      "amazonPlateShieldClub",
+      "amazonPlateClub",
+      "amazonPlateSword",
+      "amazonPlateStaff",
+      "amazonPlateShield"
+    ],
+    "textureIndexes": [
+      { "name": "Stand1", "index": 0 },
+      { "name": "Stand2", "index": 0 },
+      { "name": "Walk1", "index": 1 },
+      { "name": "Walk2", "index": 1 }
+    ],
+    "animationSpeeds": [
+      { "name": "Walk1", "animation": 20, "walk": 100 },
+      { "name": "Walk2", "animation": 20, "walk": 100 },
+      { "name": "Die1", "animation": 20 },
+      { "name": "Die2", "animation": 20 }
+    ],
+    "actions": {
+      "levelChange": "updateCharPoints"
+    },
+    "sounds": [
+      { "index": 0, "id": "walk" },
+      { "index": 1, "id": "die" }
+    ],
+    "walkSound": 0,
+    "dieSound": 1
+  }
+}

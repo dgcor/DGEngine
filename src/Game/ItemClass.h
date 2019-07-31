@@ -15,8 +15,8 @@ class ItemClass : public LevelObjectClassDefaults<LevelObjValue>
 private:
 	std::shared_ptr<TexturePack> textureDrop;
 	std::shared_ptr<TexturePack> textureInventory;
-	std::pair<size_t, size_t> dropTextureIndexRange;
-	size_t inventoryIdx;
+	std::pair<uint32_t, uint32_t> dropTextureIndexRange;
+	uint32_t inventoryIdx;
 
 	std::string name;
 	std::string shortName;
@@ -50,14 +50,14 @@ private:
 public:
 	ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
 		const std::shared_ptr<TexturePack>& textureInventory_,
-		size_t inventoryIdx_);
+		uint32_t inventoryIdx_);
 
 	void setDropTexturePack(const std::shared_ptr<TexturePack>& textureDrop_) noexcept;
-	const std::pair<size_t, size_t>& getDropTextureIndexRange() const noexcept
+	const std::pair<uint32_t, uint32_t>& getDropTextureIndexRange() const noexcept
 	{
 		return dropTextureIndexRange;
 	}
-	void setDropTextureIndexRange(const std::pair<size_t, size_t>& textureIndexRange) noexcept
+	void setDropTextureIndexRange(const std::pair<uint32_t, uint32_t>& textureIndexRange) noexcept
 	{
 		dropTextureIndexRange = textureIndexRange;
 	}
@@ -66,12 +66,12 @@ public:
 	{
 		textureInventory = textureInventory_;
 	}
-	void setInventoryTextureIndex(size_t inventoryIdx_) noexcept
+	void setInventoryTextureIndex(uint32_t inventoryIdx_) noexcept
 	{
 		inventoryIdx = inventoryIdx_;
 	}
 
-	const TexturePack* getDropTexturePack() const noexcept { return textureDrop.get(); }
+	const std::shared_ptr<TexturePack>& getDropTexturePack() const noexcept { return textureDrop; }
 	const TexturePack* getInventoryTexturePack() const noexcept { return textureInventory.get(); }
 
 	bool getInventoryTexture(const Queryable& item, TextureInfo& ti) const;

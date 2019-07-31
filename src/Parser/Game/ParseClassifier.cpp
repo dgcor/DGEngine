@@ -71,7 +71,7 @@ namespace Parser
 		{
 			return false;
 		}
-		valueInterval.property = elem["property"].GetString();
+		valueInterval.property = elem["property"].GetStringStr();
 		return true;
 	}
 
@@ -105,7 +105,7 @@ namespace Parser
 				std::numeric_limits<LevelObjValue>::min(),
 				std::numeric_limits<LevelObjValue>::max()
 			);
-			classifierVal.value = std::string(elem.GetString());
+			classifierVal.value = elem.GetStringStr();
 			valueInterval.values.push_back(classifierVal);
 			valueIntervals.push_back(valueInterval);
 		}
@@ -118,7 +118,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id = elem["id"].GetString();
+		auto id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return;

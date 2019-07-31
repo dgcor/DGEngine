@@ -1,0 +1,71 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayerNewName" },
+    { "name": "text.setText", "id": "label2", "text": "Enter Name" }
+  ],
+  "texturePack": {
+    "id": "caret",
+    "texture": "font24g",
+    "rects": [[168, 312, 4, 26], [0, 0, 4, 26]]
+  },
+  "inputText": {
+    "id": "heroName",
+    "font": "font24g",
+    "position": [308, 318],
+    "anchor": "none",
+    "minLength": 1,
+    "maxLength": 15,
+    "regex": "[\\w ]*",
+    "onClick": {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "%heroName.text%" },
+      "param2": true,
+      "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "%heroName.text%"] },
+      "else": { "name": "load", "file": "level/newGame.json" }
+    },
+    "onMinLength": [
+      { "name": "resource.pop" },
+      { "name": "load", "file": "ui/singlePlayer/newNameTooShort.json" }
+    ],
+    "onChange": {
+      "name": "drawable.anchor",
+      "anchor": "right",
+      "id": "caret",
+      "idAnchor": "heroName"
+    }
+  },
+  "image": {
+    "id": "background",
+    "position": [0, 208],
+    "anchor": "none",
+    "textureRect": [640, 272],
+    "texture": "background"
+  },
+  "animation": {
+    "id": "caret",
+    "texturePack": "caret",
+    "position": [310, 318],
+    "anchor": "none",
+    "refresh": 0.5
+  },
+  "button": [
+    {
+      "id": "ok",
+      "font": "font30g",
+      "position": [329, 429],
+      "anchor": "none",
+      "onClick": { "name": "inputText.click", "id": "heroName" },
+      "sound": "titlslct",
+      "text": "OK"
+    },
+    {
+      "id": "cancel",
+      "font": "font30g",
+      "position": [451, 429],
+      "anchor": "none",
+      "onClick": { "name": "resource.pop" },
+      "sound": "titlslct",
+      "text": "Cancel"
+    }
+  ]
+}

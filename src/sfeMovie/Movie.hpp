@@ -24,10 +24,12 @@
 #pragma once
 
 #include <memory>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Graphics/Transformable.hpp>
 #include <SFML/System.hpp>
 #include "StreamSelection.hpp"
 #include <string_view>
+#include <vector>
 
 namespace sfe
 {

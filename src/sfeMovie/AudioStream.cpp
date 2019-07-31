@@ -265,11 +265,17 @@ namespace sfe
 						}
 					}
 
-					std::memcpy((void *)(data.samples + data.sampleCount),
+					std::memcpy((void*)(data.samples + data.sampleCount),
 						samplesBuffer, samplesCount * BytesPerSample);
 					data.sampleCount += samplesCount;
 				}
 			} while (needsMoreDecoding);
+
+			bool leaveLoop = false;
+			if (packet->data == nullptr)
+			{
+				leaveLoop = true;
+			}
 
 #if LIBAVCODEC_VERSION_MAJOR > 56
 			av_packet_unref(packet);
@@ -277,6 +283,11 @@ namespace sfe
 			av_free_packet(packet);
 #endif
 			av_free(packet);
+
+			if (leaveLoop == true)
+			{
+				break;
+			}
 		}
 		return (packet != nullptr);
 	}
@@ -422,7 +433,7 @@ namespace sfe
 		}
 
 		/* convert to destination format */
-		err = swr_convert(m_swrCtx, m_dstData, m_dstNbSamples, (const uint8_t **)frame->extended_data, frame->nb_samples);
+		err = swr_convert(m_swrCtx, m_dstData, m_dstNbSamples, (const uint8_t**)frame->extended_data, frame->nb_samples);
 		if (err < 0)
 		{
 			return;

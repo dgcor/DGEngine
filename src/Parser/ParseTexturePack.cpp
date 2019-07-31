@@ -20,8 +20,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetString());
-				std::string id(elem["id"].GetString());
+				auto fromId = elem["fromId"].GetStringStr();
+				auto id = elem["id"].GetStringStr();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getTexturePack(fromId);
@@ -70,20 +70,25 @@ namespace Parser
 		auto offset = getVector2fKey<sf::Vector2f>(elem, "offset");
 
 		std::shared_ptr<Palette> pal;
-		if (elem.HasMember("palette") == true)
+		if (isValidString(elem, "palette") == true)
 		{
-			pal = game.Resources().getPalette(elem["palette"].GetString());
+			pal = game.Resources().getPalette(elem["palette"].GetStringStr());
 		}
 
 		bool useIndexedImages = pal != nullptr && game.Shaders().hasSpriteShader();
+		auto normalizeDirections = getBoolKey(elem, "normalizeDirections");
 
 		if (imgVec.size() == 1)
 		{
-			return std::make_unique<CachedTexturePack>(imgVec.front(), offset, pal, useIndexedImages);
+			return std::make_unique<CachedTexturePack>(
+				imgVec.front(), offset, pal, useIndexedImages, normalizeDirections
+			);
 		}
 		else
 		{
-			return std::make_unique<CachedMultiTexturePack>(imgVec, offset, pal, useIndexedImages);
+			return std::make_unique<CachedMultiTexturePack>(
+				imgVec, offset, pal, useIndexedImages, normalizeDirections
+			);
 		}
 	}
 
@@ -99,9 +104,8 @@ namespace Parser
 		std::shared_ptr<Palette> palette;
 		if (isValidString(elem, "palette") == true)
 		{
-			palette = game.Resources().getPalette(elem["palette"].GetString());
+			palette = game.Resources().getPalette(elem["palette"].GetStringStr());
 		}
-		auto isIndexed = palette != nullptr && getBoolKey(elem, "indexed");
 
 		auto frames = getFramesKey(elem, "frames");
 		if (frames.first == 0 || frames.second == 0)
@@ -110,10 +114,14 @@ namespace Parser
 		}
 		auto offset = getVector2fKey<sf::Vector2f>(elem, "offset");
 		auto startIndex = getUIntKey(elem, "startIndex");
-		bool isHorizontal = getStringKey(elem, "direction") == "horizontal";
+		auto directions = getUIntKey(elem, "directions");
+		bool isHorizontal = getStringViewKey(elem, "direction") == "horizontal";
+		auto animType = getAnimationTypeKey(elem, "animationType");
 
 		auto texturePack = std::make_unique<SimpleTexturePack>(
-			texture, frames, offset, startIndex, isHorizontal, palette, isIndexed);
+			texture, frames, offset, startIndex,
+			directions, isHorizontal, animType, palette
+		);
 
 		if (texturePack->size() == 0)
 		{
@@ -144,12 +152,16 @@ namespace Parser
 				}
 				auto offset = globalOffset + getVector2fKey<sf::Vector2f>(val, "offset");
 				auto startIndex = getUIntKey(val, "startIndex");
-				bool isHorizontal = getStringKey(val, "direction") == "horizontal";
+				auto directions = getUIntKey(elem, "directions");
+				bool isHorizontal = getStringViewKey(val, "direction") == "horizontal";
+				auto animType = getAnimationTypeKey(val, "animationType");
 				texturePack->addTexturePack(
-					texture, frames, offset, startIndex, isHorizontal);
+					texture, frames, offset, startIndex,
+					directions, isHorizontal, animType
+				);
 			}
 		}
-		if (texturePack->getTextureCount() == 0)
+		if (texturePack->size() == 0)
 		{
 			return false;
 		}
@@ -162,12 +174,10 @@ namespace Parser
 		std::shared_ptr<Palette> palette;
 		if (isValidString(elem, "palette") == true)
 		{
-			palette = game.Resources().getPalette(elem["palette"].GetString());
+			palette = game.Resources().getPalette(elem["palette"].GetStringStr());
 		}
 
-		auto isIndexed = palette != nullptr && getBoolKey(elem, "indexed");
-
-		auto texturePack = std::make_unique<SimpleMultiTexturePack>(palette, isIndexed);
+		auto texturePack = std::make_unique<SimpleMultiTexturePack>(palette);
 		if (parseMultiTextureTexturePackHelper(game, elem, texturePack.get()) == false)
 		{
 			return nullptr;
@@ -179,6 +189,7 @@ namespace Parser
 		Game& game, const Value& elem)
 	{
 		sf::Image img;
+		bool existingTexture = true;
 		auto textureId = getStringKey(elem, "texture");
 		auto texture = game.Resources().getTexture(textureId);
 		if (texture == nullptr)
@@ -194,10 +205,17 @@ namespace Parser
 			{
 				return nullptr;
 			}
+			existingTexture = false;
 			if (isValidId(textureId) == true)
 			{
 				game.Resources().addTexture(textureId, texture, getStringViewKey(elem, "resource"));
 			}
+		}
+
+		std::shared_ptr<Palette> palette;
+		if (existingTexture == true && isValidString(elem, "palette") == true)
+		{
+			palette = game.Resources().getPalette(elem["palette"].GetStringStr());
 		}
 
 		auto rows = getIntKey(elem, "rows", 16);
@@ -208,9 +226,15 @@ namespace Parser
 
 		if (elem.HasMember("charSizeFile") == true)
 		{
-			NumberVector<uint8_t> charSizes(getStringViewVal(elem["charSizeFile"]), 0, 258);
+			NumberVector<uint8_t> charSizes(getStringViewVal(elem["charSizeFile"]), 0, 0x7FFF);
+			auto startPos = getUIntKey(elem, "charSizeFileStart", 0);
+			auto skipNBytes = getUIntKey(elem, "charSizeFileSkip", 1);
+			auto spaceSize = (uint8_t)getUIntKey(elem, "charSpaceSize", 0);
+			auto newLineSize = (uint8_t)getUIntKey(elem, "charNewLineSize", 0);
 			texturePack = std::make_shared<BitmapFontTexturePack>(
-				texture, rows, cols, isVertical, charSizes.getContainer());
+				texture, palette, rows, cols, isVertical, charSizes.getContainer(),
+				startPos, skipNBytes, spaceSize, newLineSize
+			);
 		}
 		else
 		{
@@ -219,7 +243,7 @@ namespace Parser
 				img = texture->copyToImage();
 			}
 			texturePack = std::make_shared<BitmapFontTexturePack>(
-				texture, rows, cols, isVertical, img);
+				texture, palette, rows, cols, isVertical, img);
 		}
 		return texturePack;
 	}
@@ -289,6 +313,18 @@ namespace Parser
 					}
 				}
 			}
+			if (isValidArray(elem, "groups") == true)
+			{
+				AnimationType animType;
+				auto range = ((TexturePack*)texturePack2.get())->getRange(-1, -1, animType);
+				for (const auto& val : elem["groups"])
+				{
+					range = getFramesKey(val, "range", range);
+					animType = getAnimationTypeKey(val, "animationType", animType);
+					auto directions = getUIntKey(val, "directions");
+					texturePack2->addGroup(range.first, range.second, directions, animType);
+				}
+			}
 			texturePack = std::move(texturePack2);
 		}
 		if (isValidArray(elem, "textureIndexes") == true)
@@ -311,7 +347,7 @@ namespace Parser
 			}
 			texturePack = std::move(texturePack2);
 		}
-		if (isValidArray(elem, "animations") == true)
+		if (isValidArray(elem, "animatedTextures") == true)
 		{
 			auto animTexturePack = dynamic_cast<IndexedTexturePack*>(texturePack.get());
 			if (animTexturePack == nullptr)
@@ -321,20 +357,20 @@ namespace Parser
 				animTexturePack = texturePack2.get();
 				texturePack = std::move(texturePack2);
 			}
-			for (const auto& animVal : elem["animations"])
+			for (const auto& animVal : elem["animatedTextures"])
 			{
 				if (isValidArray(animVal, "indexes") == false)
 				{
 					continue;
 				}
-				std::vector<size_t> indexes;
+				std::vector<uint32_t> indexes;
 				for (const auto& indexVal : animVal["indexes"])
 				{
 					indexes.push_back(getUIntVal(indexVal));
 				}
 				auto animIndex = getUIntKey(animVal, "index", indexes.front());
 				auto refresh = getTimeKey(animVal, "refresh", sf::milliseconds(50));
-				animTexturePack->addAnimation(animIndex, refresh, indexes);
+				animTexturePack->addAnimatedTexture(animIndex, refresh, indexes);
 			}
 		}
 		return texturePack;
@@ -349,7 +385,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else
 		{
@@ -357,7 +393,7 @@ namespace Parser
 			{
 				return;
 			}
-			std::string file(elem["file"].GetString());
+			auto file = elem["file"].GetStringView();
 			if (getIdFromFile(file, id) == false)
 			{
 				return;

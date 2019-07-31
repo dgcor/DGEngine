@@ -24,6 +24,7 @@
 #pragma once
 
 #include <memory>
+#include <SFML/Graphics/Sprite.hpp>
 #include <string_view>
 #include "VideoStream.hpp"
 

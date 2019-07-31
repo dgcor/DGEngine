@@ -1,0 +1,42 @@
+{
+  "action": [
+    {
+      "name": "action.set",
+      "id": "showMsgBox",
+      "action": {
+        "name": "if.equal",
+        "param1": "%game.hasResource.msgBox%",
+        "param2": true,
+        "then": { "name": "event.resetTime", "id": "closeMsgBox" },
+        "else": {
+          "name": "loadJson",
+          "json": {
+            "action": { "name": "resource.add", "id": "msgBox" },
+            "keyboard": { "key": "esc", "action": "closeMsgBox" },
+            "action": [
+              { "name": "drawable.visible", "id": "msgBox", "visible": true },
+              { "name": "game.draw" }
+            ],
+            "event": {
+              "id": "closeMsgBox",
+              "action": [
+                { "name": "drawable.visible", "id": "msgBox", "visible": false },
+                { "name": "resource.pop", "id": "msgBox" }
+              ],
+              "time": 4.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "closeMsgBox",
+      "action": [
+        { "name": "drawable.visible", "id": "msgBox", "visible": false },
+        { "name": "resource.pop", "id": "msgBox" },
+        { "name": "event.delete", "id": "closeMsgBox" }
+      ]
+    }
+  ]
+}

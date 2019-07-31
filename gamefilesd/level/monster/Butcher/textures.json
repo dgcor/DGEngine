@@ -1,0 +1,14 @@
+{
+  "load": "level/monster/Butcher/textureFiles.json",
+  "texturePack": {
+    "id": "butcher",
+    "imageContainer": [
+      "fatca",
+      "fatcd",
+      "fatch",
+      "fatcn",
+      "fatcw"
+    ],
+    "palette": "town"
+  }
+}

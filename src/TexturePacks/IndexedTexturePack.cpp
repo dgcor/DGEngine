@@ -10,7 +10,7 @@ IndexedTexturePack::IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_
 	}
 }
 
-bool IndexedTexturePack::getTexture(size_t index, TextureInfo& ti) const
+bool IndexedTexturePack::getTexture(uint32_t index, TextureInfo& ti) const
 {
 	auto it = textureIndexes.find(index);
 	if (it != textureIndexes.cend())
@@ -24,19 +24,19 @@ bool IndexedTexturePack::getTexture(size_t index, TextureInfo& ti) const
 	return texturePack->get(index, ti);
 }
 
-bool IndexedTexturePack::get(size_t index, TextureInfo& ti) const
+bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
-	auto it = animationIndexes.find(index);
-	if (it != animationIndexes.cend())
+	auto it = animatedIndexes.find(index);
+	if (it != animatedIndexes.cend())
 	{
-		index = animations[it->second].getCurrentAnimationIndex();
+		index = animatedTextures[it->second].getCurrentAnimationIndex();
 	}
 	return getTexture(index, ti);
 }
 
 void IndexedTexturePack::update(sf::Time elapsedTime)
 {
-	for (auto& anim : animations)
+	for (auto& anim : animatedTextures)
 	{
 		if (anim.refresh.update(elapsedTime) == true)
 		{
@@ -52,27 +52,27 @@ void IndexedTexturePack::update(sf::Time elapsedTime)
 	}
 }
 
-void IndexedTexturePack::addAnimation(size_t animIndex,
-	sf::Time refresh, const std::vector<size_t>& indexes)
+void IndexedTexturePack::addAnimatedTexture(uint32_t animIndex,
+	sf::Time refresh, const std::vector<uint32_t>& indexes)
 {
-	auto it = animationIndexes.find(animIndex);
-	if (it != animationIndexes.cend())
+	auto it = animatedIndexes.find(animIndex);
+	if (it != animatedIndexes.cend())
 	{
 		return;
 	}
-	animationIndexes[animIndex] = animations.size();
+	animatedIndexes[animIndex] = animatedTextures.size();
 	TexturePackAnimation anim;
 	anim.refresh = refresh;
 	anim.indexes = indexes;
-	animations.push_back(anim);
+	animatedTextures.push_back(anim);
 }
 
-void IndexedTexturePack::mapTextureIndex(size_t mapIndex)
+void IndexedTexturePack::mapTextureIndex(uint32_t mapIndex)
 {
 	mapTextureIndex(mapIndex, textureIndexes.size());
 }
 
-void IndexedTexturePack::mapTextureIndex(size_t mapIndex, size_t toIndex)
+void IndexedTexturePack::mapTextureIndex(uint32_t mapIndex, uint32_t toIndex)
 {
 	textureIndexes[mapIndex] = toIndex;
 	if (onlyUseIndexed == true)

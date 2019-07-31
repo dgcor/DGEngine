@@ -9,6 +9,10 @@
       <Configuration>Debug Code Analysis</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug NoDiabloFormatSupport|Win32">
+      <Configuration>Debug NoDiabloFormatSupport</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug NoMovie|Win32">
       <Configuration>Debug NoMovie</Configuration>
       <Platform>Win32</Platform>
@@ -33,6 +37,7 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\BaseAnimation.cpp" />
+    <ClCompile Include="src\BindableText.cpp" />
     <ClCompile Include="src\BitmapButton.cpp" />
     <ClCompile Include="src\BitmapFont.cpp" />
     <ClCompile Include="src\BitmapText.cpp" />
@@ -40,6 +45,7 @@
     <ClCompile Include="src\CachedImagePack.cpp" />
     <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\CmdLineUtils.cpp" />
+    <ClCompile Include="src\CompositeTexture.cpp" />
     <ClCompile Include="src\Dun.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\FadeInOut.cpp" />
@@ -75,11 +81,13 @@
     <ClCompile Include="src\Game\TilesetLevelLayer.cpp" />
     <ClCompile Include="src\IfCondition.cpp" />
     <ClCompile Include="src\Image.cpp" />
-    <ClCompile Include="src\ImageContainers\CelBaseImageContainer.cpp" />
-    <ClCompile Include="src\ImageContainers\CelImageContainer.cpp" />
-    <ClCompile Include="src\ImageContainers\Cl2ImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\CELImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\CL2ImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\DC6ImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\DCCImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\SimpleImageContainer.cpp" />
     <ClCompile Include="src\ImageUtils.cpp" />
+    <ClCompile Include="src\InputEvent.cpp" />
     <ClCompile Include="src\InputText.cpp" />
     <ClCompile Include="src\Json\JsonUtils.cpp" />
     <ClCompile Include="src\LoadingScreen.cpp" />
@@ -105,6 +113,7 @@
     <ClCompile Include="src\Parser\ParseAudioCommon.cpp" />
     <ClCompile Include="src\Parser\ParseButton.cpp" />
     <ClCompile Include="src\Parser\ParseCircle.cpp" />
+    <ClCompile Include="src\Parser\ParseCompositeTexture.cpp" />
     <ClCompile Include="src\Parser\ParseCondition.cpp" />
     <ClCompile Include="src\Parser\ParseCursor.cpp" />
     <ClCompile Include="src\Parser\ParseEvent.cpp" />
@@ -125,7 +134,7 @@
     <ClCompile Include="src\Parser\ParsePredicate.cpp" />
     <ClCompile Include="src\Parser\Parser.cpp" />
     <ClCompile Include="src\Parser\ParseRectangle.cpp" />
-    <ClCompile Include="src\Parser\ParseScrollableText.cpp" />
+    <ClCompile Include="src\Parser\ParseScrollable.cpp" />
     <ClCompile Include="src\Parser\ParseSound.cpp" />
     <ClCompile Include="src\Parser\ParseText.cpp" />
     <ClCompile Include="src\Parser\ParseTexture.cpp" />
@@ -139,7 +148,7 @@
     <ClCompile Include="src\PhysFSStream.cpp" />
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
-    <ClCompile Include="src\ScrollableText.cpp" />
+    <ClCompile Include="src\Scrollable.cpp" />
     <ClCompile Include="src\sfeMovie\AudioStream.cpp" />
     <ClCompile Include="src\sfeMovie\Demuxer.cpp" />
     <ClCompile Include="src\sfeMovie\Movie.cpp" />
@@ -147,10 +156,12 @@
     <ClCompile Include="src\sfeMovie\Stream.cpp" />
     <ClCompile Include="src\sfeMovie\Timer.cpp" />
     <ClCompile Include="src\sfeMovie\VideoStream.cpp" />
+    <ClCompile Include="src\SFML\CompositeSprite.cpp" />
     <ClCompile Include="src\SFML\Music2.cpp" />
     <ClCompile Include="src\SFML\MusicLoops.cpp" />
     <ClCompile Include="src\SFML\SFMLUtils.cpp" />
     <ClCompile Include="src\SFML\Sprite2.cpp" />
+    <ClCompile Include="src\SFML\Text2.cpp" />
     <ClCompile Include="src\SFML\View2.cpp" />
     <ClCompile Include="src\ShaderManager.cpp" />
     <ClCompile Include="src\Sol.cpp" />
@@ -172,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Actions\ActAction.h" />
+    <ClInclude Include="src\Actions\ActAnimation.h" />
     <ClInclude Include="src\Actions\ActAudio.h" />
     <ClInclude Include="src\Actions\ActButton.h" />
     <ClInclude Include="src\Actions\ActCondition.h" />
@@ -200,6 +212,7 @@
     <ClInclude Include="src\Actions\ActQuest.h" />
     <ClInclude Include="src\Actions\ActRandom.h" />
     <ClInclude Include="src\Actions\ActResource.h" />
+    <ClInclude Include="src\Actions\ActScrollable.h" />
     <ClInclude Include="src\Actions\ActShader.h" />
     <ClInclude Include="src\Actions\ActSound.h" />
     <ClInclude Include="src\Actions\ActText.h" />
@@ -211,9 +224,12 @@
     <ClInclude Include="src\AnimationType.h" />
     <ClInclude Include="src\AudioSource.h" />
     <ClInclude Include="src\BaseAnimation.h" />
+    <ClInclude Include="src\BindableText.h" />
+    <ClInclude Include="src\BlendMode.h" />
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\CmdLineUtils.h" />
+    <ClInclude Include="src\CompositeTexture.h" />
     <ClInclude Include="src\endian\big_endian.hpp" />
     <ClInclude Include="src\endian\detail\helpers.hpp" />
     <ClInclude Include="src\endian\detail\stream.hpp" />
@@ -269,9 +285,10 @@
     <ClInclude Include="src\IfCondition.h" />
     <ClInclude Include="src\IgnoreResource.h" />
     <ClInclude Include="src\Image.h" />
-    <ClInclude Include="src\ImageContainers\CelBaseImageContainer.h" />
-    <ClInclude Include="src\ImageContainers\CelImageContainer.h" />
-    <ClInclude Include="src\ImageContainers\Cl2ImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\CELImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\CL2ImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\DC6ImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\DCCImageContainer.h" />
     <ClInclude Include="src\ImageContainers\ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\SimpleImageContainer.h" />
     <ClInclude Include="src\ImageUtils.h" />
@@ -297,6 +314,7 @@
     <ClInclude Include="src\Parser\ParseAudioCommon.h" />
     <ClInclude Include="src\Parser\ParseButton.h" />
     <ClInclude Include="src\Parser\ParseCircle.h" />
+    <ClInclude Include="src\Parser\ParseCompositeTexture.h" />
     <ClInclude Include="src\Parser\ParseCondition.h" />
     <ClInclude Include="src\Parser\ParseCursor.h" />
     <ClInclude Include="src\Parser\ParseEvent.h" />
@@ -318,7 +336,7 @@
     <ClInclude Include="src\Parser\Parser.h" />
     <ClInclude Include="src\Parser\ParseRectangle.h" />
     <ClInclude Include="src\Parser\ParserProperties.h" />
-    <ClInclude Include="src\Parser\ParseScrollableText.h" />
+    <ClInclude Include="src\Parser\ParseScrollable.h" />
     <ClInclude Include="src\Parser\ParseSound.h" />
     <ClInclude Include="src\Parser\ParseText.h" />
     <ClInclude Include="src\Parser\ParseTexture.h" />
@@ -335,6 +353,7 @@
     <ClInclude Include="src\Predicates\PredPlayer.h" />
     <ClInclude Include="src\Queryable.h" />
     <ClInclude Include="src\Rectangle.h" />
+    <ClInclude Include="src\Scrollable.h" />
     <ClInclude Include="src\sfeMovie\AudioStream.hpp" />
     <ClInclude Include="src\sfeMovie\Demuxer.hpp" />
     <ClInclude Include="src\sfeMovie\Movie.hpp" />
@@ -360,11 +379,13 @@
     <ClInclude Include="src\Pcx.h" />
     <ClInclude Include="src\PhysFSStream.h" />
     <ClInclude Include="src\ResourceManager.h" />
-    <ClInclude Include="src\ScrollableText.h" />
+    <ClInclude Include="src\SFML\CompositeSprite.h" />
+    <ClInclude Include="src\SFML\Image2.h" />
     <ClInclude Include="src\SFML\Music2.h" />
     <ClInclude Include="src\SFML\MusicLoops.h" />
     <ClInclude Include="src\SFML\SFMLUtils.h" />
     <ClInclude Include="src\SFML\Sprite2.h" />
+    <ClInclude Include="src\SFML\Text2.h" />
     <ClInclude Include="src\SFML\View2.h" />
     <ClInclude Include="src\ShaderManager.h" />
     <ClInclude Include="src\Sol.h" />
@@ -421,6 +442,12 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -436,7 +463,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>LLVM_v142</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -466,6 +493,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -486,6 +516,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|Win32'" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
     <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>true</RunCodeAnalysis>
@@ -502,6 +533,24 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\SFML\lib;.\PhysicsFS\MinSizeRel;.\FFmpeg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>.\src;.\SFML\include;.\PhysicsFS\src;.\FFmpeg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <PreprocessorDefinitions>NO_DIABLO_FORMAT_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>

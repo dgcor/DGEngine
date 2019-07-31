@@ -16,7 +16,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = std::string(elem["id"].GetString());
+		id = elem["id"].GetStringStr();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -28,7 +28,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			std::string fromId(elem["fromId"].GetString());
+			auto fromId = elem["fromId"].GetStringStr();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<SimpleLevelObjectClass>(fromId);
@@ -44,7 +44,7 @@ namespace Parser
 
 		if (isValidString(elem, "texture") == true)
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetString());
+			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
 			if (texture == nullptr)
 			{
 				return nullptr;
@@ -60,7 +60,7 @@ namespace Parser
 		}
 		else if (isValidString(elem, "texturePack") == true)
 		{
-			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetString());
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetStringStr());
 			if (texPack == nullptr)
 			{
 				return nullptr;
@@ -136,7 +136,7 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto name = std::string(it->name.GetString(), it->name.GetStringLength());
+						auto name = it->name.GetStringView();
 						auto nameHash = str2int16(name);
 						level->setPropertyName(nameHash, name);
 						levelObjClass->setDefaultByHash(nameHash,

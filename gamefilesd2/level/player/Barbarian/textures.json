@@ -1,0 +1,140 @@
+{
+  "load": "level/player/Barbarian/textureFiles.json",
+  "compositeTexture": [
+    {
+      "id": "barbarianNormal",
+      "groups": [
+        {
+          "file": "data/global/CHARS/BA/COF/BANUHTH.COF",
+          "texturePacks": [
+            "BAHDLITNUHTH",
+            "BATRLITNUHTH",
+            "BALGLITNUHTH",
+            "BARALITNUHTH",
+            "BALALITNUHTH",
+            "BASHKITNUHTH",
+            "BAS1LITNUHTH",
+            "BAS2LITNUHTH"
+          ]
+        },
+        {
+          "file": "data/global/CHARS/BA/COF/BATWHTH.COF",
+          "texturePacks": [
+            "BAHDLITTWHTH",
+            "BATRLITTWHTH",
+            "BALGLITTWHTH",
+            "BARALITTWHTH",
+            "BALALITTWHTH",
+            "BASHKITTWHTH",
+            "BAS1LITTWHTH",
+            "BAS2LITTWHTH"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "barbarianNormalAxe",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalBow",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalShieldSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalShieldClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalStaff",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianNormalShield",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeather",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherAxe",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherBow",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherShieldSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherShieldClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherStaff",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianLeatherShield",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlate",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateAxe",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateBow",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateShieldSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateShieldClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateClub",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateSword",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateStaff",
+      "fromId": "barbarianNormal"
+    },
+    {
+      "id": "barbarianPlateShield",
+      "fromId": "barbarianNormal"
+    }
+  ]
+}

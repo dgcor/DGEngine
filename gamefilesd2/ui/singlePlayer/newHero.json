@@ -1,0 +1,1137 @@
+{
+  "action": [
+    { "name": "resource.add", "id": "singlePlayerNewHero" },
+    { "name": "variable.set", "key": "blockInput", "value": false },
+    { "name": "variable.set", "key": "charClass", "value": "" },
+    {
+      "name": "action.set",
+      "id": "clearVars",
+      "action": [
+        { "name": "event.deleteAll" },
+        { "name": "variable.clear", "key": "blockInput" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "clearText",
+      "action": [
+        { "name": "text.setText", "id": "className", "text": "" },
+        { "name": "text.setText", "id": "classDescr", "text": "" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setAmazonText",
+      "action": [
+        {
+          "name": "text.setText",
+          "id": "className",
+          "text": "Amazon"
+        },
+        {
+          "name": "text.setText",
+          "id": "classDescr",
+          "text": "Skilled with the spear and the bow,\nshe is a very versatile fighter."
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setBarbarianText",
+      "action": [
+        {
+          "name": "text.setText",
+          "id": "className",
+          "text": "Barbarian"
+        },
+        {
+          "name": "text.setText",
+          "id": "classDescr",
+          "text": "He is unequaled in close-quarters\ncombat and mastery of weapons."
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setNecromancerText",
+      "action": [
+        {
+          "name": "text.setText",
+          "id": "className",
+          "text": "Necromancer"
+        },
+        {
+          "name": "text.setText",
+          "id": "classDescr",
+          "text": "Summoning undead minions and cursing\nhis enemies are his specialities."
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setPaladinText",
+      "action": [
+        {
+          "name": "text.setText",
+          "id": "className",
+          "text": "Paladin"
+        },
+        {
+          "name": "text.setText",
+          "id": "classDescr",
+          "text": "He is a natural party leader, holy\nman, and blessed warrior."
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "setSorceressText",
+      "action": [
+        {
+          "name": "text.setText",
+          "id": "className",
+          "text": "Sorceress"
+        },
+        {
+          "name": "text.setText",
+          "id": "classDescr",
+          "text": "She has mastered the elemental\nmagicks -- fire, lightning, and ice."
+        }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "moveAnimationBackwards",
+      "action": {
+        "name": "switch",
+        "param": "%charClass%",
+        "case": [
+          {
+            "value": "Amazon",
+            "action": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMBW", "refresh": 45 },
+              { "name": "drawable.visible", "id": "newName", "visible": false },
+              { "name": "audio.pause", "id": "amazon_select" },
+              { "name": "audio.play", "id": "amazon_deselect" },
+              {
+                "name": "event.add",
+                "id": "backward",
+                "time": 25,
+                "addToFront": true,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgAmazon.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    {
+                      "name": "if.equal",
+                      "param1": "%charClass%",
+                      "param2": "Amazon",
+                      "then": [
+                        { "name": "variable.set", "key": "blockInput", "value": false },
+                        { "name": "variable.set", "key": "charClass", "value": "" }
+                      ]
+                    },
+                    { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMNU1", "refresh": 110 },
+                    { "name": "event.delete", "id": "backward" }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "value": "Barbarian",
+            "action": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BABW" },
+              { "name": "drawable.visible", "id": "newName", "visible": false },
+              { "name": "audio.pause", "id": "barbarian_select" },
+              { "name": "audio.play", "id": "barbarian_deselect" },
+              {
+                "name": "event.add",
+                "id": "backward",
+                "time": 25,
+                "addToFront": true,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgBarbarian.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    {
+                      "name": "if.equal",
+                      "param1": "%charClass%",
+                      "param2": "Barbarian",
+                      "then": [
+                        { "name": "variable.set", "key": "blockInput", "value": false },
+                        { "name": "variable.set", "key": "charClass", "value": "" }
+                      ]
+                    },
+                    { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BANU1", "refresh": 80 },
+                    { "name": "event.delete", "id": "backward" }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "value": "Necromancer",
+            "action": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NEBW", "refresh": 42 },
+              { "name": "drawable.visible", "id": "newName", "visible": false },
+              { "name": "audio.pause", "id": "necromancer_select" },
+              { "name": "audio.play", "id": "necromancer_deselect" },
+              {
+                "name": "event.add",
+                "id": "backward",
+                "time": 25,
+                "addToFront": true,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgNecromancer.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    {
+                      "name": "if.equal",
+                      "param1": "%charClass%",
+                      "param2": "Necromancer",
+                      "then": [
+                        { "name": "variable.set", "key": "blockInput", "value": false },
+                        { "name": "variable.set", "key": "charClass", "value": "" }
+                      ]
+                    },
+                    { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NENU1", "refresh": 110 },
+                    { "name": "event.delete", "id": "backward" }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "value": "Paladin",
+            "action": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "animation.set", "id": "imgPaladin", "texturePack": "PABW", "refresh": 40 },
+              { "name": "drawable.visible", "id": "newName", "visible": false },
+              { "name": "audio.pause", "id": "paladin_select" },
+              { "name": "audio.play", "id": "paladin_deselect" },
+              {
+                "name": "event.add",
+                "id": "backward",
+                "time": 25,
+                "addToFront": true,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgPaladin.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    {
+                      "name": "if.equal",
+                      "param1": "%charClass%",
+                      "param2": "Paladin",
+                      "then": [
+                        { "name": "variable.set", "key": "blockInput", "value": false },
+                        { "name": "variable.set", "key": "charClass", "value": "" }
+                      ]
+                    },
+                    { "name": "animation.set", "id": "imgPaladin", "texturePack": "PANU1", "refresh": 80 },
+                    { "name": "event.delete", "id": "backward" }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "value": "Sorceress",
+            "action": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SOBW" },
+              { "name": "drawable.visible", "id": "newName", "visible": false },
+              { "name": "audio.pause", "id": "sorceress_select" },
+              { "name": "audio.play", "id": "sorceress_deselect" },
+              {
+                "name": "event.add",
+                "id": "backward",
+                "time": 25,
+                "addToFront": true,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgSorceress.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    {
+                      "name": "if.equal",
+                      "param1": "%charClass%",
+                      "param2": "Sorceress",
+                      "then": [
+                        { "name": "variable.set", "key": "blockInput", "value": false },
+                        { "name": "variable.set", "key": "charClass", "value": "" }
+                      ]
+                    },
+                    { "name": "animation.set", "id": "imgSorceress", "texturePack": "SONU1", "refresh": 80 },
+                    { "name": "event.delete", "id": "backward" }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "audio": [
+    { "id": "amazon_deselect", "file": "DATA/GLOBAL/SFX/cursor/intro/amazon deselect.wav" },
+    { "id": "amazon_select", "file": "DATA/GLOBAL/SFX/cursor/intro/amazon select.wav" },
+    { "id": "barbarian_deselect", "file": "DATA/GLOBAL/SFX/cursor/intro/barbarian deselect.wav" },
+    { "id": "barbarian_select", "file": "DATA/GLOBAL/SFX/cursor/intro/barbarian select.wav" },
+    { "id": "necromancer_deselect", "file": "DATA/GLOBAL/SFX/cursor/intro/necromancer deselect.wav" },
+    { "id": "necromancer_select", "file": "DATA/GLOBAL/SFX/cursor/intro/necromancer select.wav" },
+    { "id": "paladin_deselect", "file": "DATA/GLOBAL/SFX/cursor/intro/paladin deselect.wav" },
+    { "id": "paladin_select", "file": "DATA/GLOBAL/SFX/cursor/intro/paladin select.wav" },
+    { "id": "sorceress_deselect", "file": "DATA/GLOBAL/SFX/cursor/intro/sorceress deselect.wav" },
+    { "id": "sorceress_select", "file": "DATA/GLOBAL/SFX/cursor/intro/sorceress select.wav" }
+  ],
+  "texture": [
+    {
+      "id": "CharacterCreate",
+      "file": "data/global/ui/FrontEnd/CharacterCreate.DC6",
+      "palette": "fechar"
+    },
+    {
+      "id": "textbox",
+      "file": "data/global/ui/FrontEnd/textbox.dc6",
+      "palette": "fechar"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "fire",
+      "file": "data/global/ui/FrontEnd/fire.DC6",
+      "imageContainer": "fire",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "AMBW",
+      "file": "data/global/ui/FrontEnd/amazon/AMBW.DC6",
+      "imageContainer": "AMBW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "AMFW",
+      "file": "data/global/ui/FrontEnd/amazon/AMFW.DC6",
+      "imageContainer": "AMFW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "AMFWs",
+      "file": "data/global/ui/FrontEnd/amazon/AMFWs.DC6",
+      "imageContainer": "AMFWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "AMNU1",
+      "file": "data/global/ui/FrontEnd/amazon/AMNU1.DC6",
+      "imageContainer": "AMNU1",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "AMNU2",
+      "file": "data/global/ui/FrontEnd/amazon/AMNU2.DC6",
+      "imageContainer": "AMNU2",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "AMNU3",
+      "file": "data/global/ui/FrontEnd/amazon/AMNU3.DC6",
+      "imageContainer": "AMNU3",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "BABW",
+      "file": "data/global/ui/FrontEnd/barbarian/babw.DC6",
+      "imageContainer": "BABW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "BAFW",
+      "file": "data/global/ui/FrontEnd/barbarian/bafw.DC6",
+      "imageContainer": "BAFW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "BAFWs",
+      "file": "data/global/ui/FrontEnd/barbarian/BAFWs.DC6",
+      "imageContainer": "BAFWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "BANU1",
+      "file": "data/global/ui/FrontEnd/barbarian/banu1.DC6",
+      "imageContainer": "BANU1",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "BANU2",
+      "file": "data/global/ui/FrontEnd/barbarian/banu2.DC6",
+      "imageContainer": "BANU2",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "BANU3",
+      "file": "data/global/ui/FrontEnd/barbarian/banu3.DC6",
+      "imageContainer": "BANU3",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NEBW",
+      "file": "data/global/ui/FrontEnd/necromancer/NEBW.DC6",
+      "imageContainer": "NEBW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NEBWs",
+      "file": "data/global/ui/FrontEnd/necromancer/NEBWs.DC6",
+      "imageContainer": "NEBWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "NEFW",
+      "file": "data/global/ui/FrontEnd/necromancer/NEFW.DC6",
+      "imageContainer": "NEFW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NEFWs",
+      "file": "data/global/ui/FrontEnd/necromancer/NEFWs.DC6",
+      "imageContainer": "NEFWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "NENU1",
+      "file": "data/global/ui/FrontEnd/necromancer/NENU1.DC6",
+      "imageContainer": "NENU1",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NENU2",
+      "file": "data/global/ui/FrontEnd/necromancer/NENU2.DC6",
+      "imageContainer": "NENU2",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NENU3",
+      "file": "data/global/ui/FrontEnd/necromancer/NENU3.DC6",
+      "imageContainer": "NENU3",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "NENU3s",
+      "file": "data/global/ui/FrontEnd/necromancer/NENU3s.DC6",
+      "imageContainer": "NENU3s",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "PABW",
+      "file": "data/global/ui/FrontEnd/paladin/PABW.DC6",
+      "imageContainer": "PABW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "PAFW",
+      "file": "data/global/ui/FrontEnd/paladin/PAFW.DC6",
+      "imageContainer": "PAFW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "PAFWs",
+      "file": "data/global/ui/FrontEnd/paladin/PAFWs.DC6",
+      "imageContainer": "PAFWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "PANU1",
+      "file": "data/global/ui/FrontEnd/paladin/PANU1.DC6",
+      "imageContainer": "PANU1",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "PANU2",
+      "file": "data/global/ui/FrontEnd/paladin/PANU2.DC6",
+      "imageContainer": "PANU2",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "PANU3",
+      "file": "data/global/ui/FrontEnd/paladin/PANU3.DC6",
+      "imageContainer": "PANU3",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SOBW",
+      "file": "data/global/ui/FrontEnd/sorceress/SOBW.DC6",
+      "imageContainer": "SOBW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SOBWs",
+      "file": "data/global/ui/FrontEnd/sorceress/SOBWs.DC6",
+      "imageContainer": "SOBWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "SOFW",
+      "file": "data/global/ui/FrontEnd/sorceress/SOFW.DC6",
+      "imageContainer": "SOFW",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SOFWs",
+      "file": "data/global/ui/FrontEnd/sorceress/SOFWs.DC6",
+      "imageContainer": "SOFWs",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "id": "SONU1",
+      "file": "data/global/ui/FrontEnd/sorceress/SONU1.DC6",
+      "imageContainer": "SONU1",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SONU2",
+      "file": "data/global/ui/FrontEnd/sorceress/SONU2.DC6",
+      "imageContainer": "SONU2",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SONU3",
+      "file": "data/global/ui/FrontEnd/sorceress/SONU3.DC6",
+      "imageContainer": "SONU3",
+      "palette": "fechar",
+      "useOffsets": true
+    },
+    {
+      "id": "SONU3s",
+      "file": "data/global/ui/FrontEnd/sorceress/SONU3s.DC6",
+      "imageContainer": "SONU3s",
+      "palette": "fechar",
+      "useOffsets": true,
+      "blendMode": "add"
+    }
+  ],
+  "compositeTexture": [
+    {
+      "id": "AMFW",
+      "texturePacks": [
+        "AMFW",
+        "AMFWs"
+      ]
+    },
+    {
+      "id": "BAFW",
+      "texturePacks": [
+        "BAFW",
+        "BAFWs"
+      ]
+    },
+    {
+      "id": "NEBW",
+      "texturePacks": [
+        "NEBW",
+        "NEBWs"
+      ]
+    },
+    {
+      "id": "NEFW",
+      "texturePacks": [
+        "NEFW",
+        "NEFWs"
+      ]
+    },
+    {
+      "id": "NENU3",
+      "texturePacks": [
+        "NENU3",
+        "NENU3s"
+      ]
+    },
+    {
+      "id": "PAFW",
+      "texturePacks": [
+        "PAFW",
+        "PAFWs"
+      ]
+    },
+    {
+      "id": "SOBW",
+      "texturePacks": [
+        "SOBW",
+        "SOBWs"
+      ]
+    },
+    {
+      "id": "SOFW",
+      "texturePacks": [
+        "SOFW",
+        "SOFWs"
+      ]
+    },
+    {
+      "id": "SONU3",
+      "texturePacks": [
+        "SONU3",
+        "SONU3s"
+      ]
+    }
+  ],
+  "image": {
+    "id": "CharacterCreate",
+    "texture": "CharacterCreate",
+    "position": [-80, -60],
+    "anchor": "none"
+  },
+  "panel": {
+    "id": "newName",
+    "anchor": "none",
+    "visible": false
+  },
+  "image": {
+    "id": "textbox",
+    "panel": "newName",
+    "texture": "textbox",
+    "position": [239, 434],
+    "anchor": "none"
+  },
+  "text": [
+    {
+      "id": "selectClass",
+      "font": "font30",
+      "position": [320, -40],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Select Hero Class"
+    },
+    {
+      "id": "className",
+      "font": "font30",
+      "position": [320, 10],
+      "anchor": "none",
+      "horizontalAlign": "center"
+    },
+    {
+      "id": "classDescr",
+      "font": "font16",
+      "position": [320, 45],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "verticalSpaceOffset": 4
+    },
+    {
+      "id": "charName",
+      "panel": "newName",
+      "font": "font16g",
+      "position": [240, 415],
+      "anchor": "none",
+      "text": "Character Name"
+    }
+  ],
+  "animation": [
+    {
+      "id": "imgBarbarian",
+      "texturePack": "BANU1",
+      "position": [320, 271],
+      "anchor": "none",
+      "refresh": 80
+    },
+    {
+      "id": "imgAmazon",
+      "texturePack": "AMNU1",
+      "position": [115, 282],
+      "anchor": "none",
+      "refresh": 110
+    },
+    {
+      "id": "imgNecromancer",
+      "texturePack": "NENU1",
+      "position": [221, 274],
+      "anchor": "none",
+      "refresh": 110
+    },
+    {
+      "id": "imgSorceress",
+      "texturePack": "SONU1",
+      "position": [441, 285],
+      "anchor": "none",
+      "refresh": 80
+    },
+    {
+      "id": "imgPaladin",
+      "texturePack": "PANU1",
+      "position": [530, 300],
+      "anchor": "none",
+      "refresh": 80
+    },
+    {
+      "id": "fire",
+      "texturePack": "fire",
+      "position": [300, 262],
+      "anchor": "none",
+      "refresh": 40
+    }
+  ],
+  "button": [
+    {
+      "id": "amazon",
+      "texture": "empty",
+      "anchor": "none",
+      "position": [70, 174],
+      "textureRect": [0, 0, 92, 190],
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%blockInput%",
+        "param2": false,
+        "then": [
+          "moveAnimationBackwards",
+          {
+            "name": "if.notEqual",
+            "param1": "%charClass%",
+            "param2": "Amazon",
+            "then": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "variable.set", "key": "charClass", "value": "Amazon" },
+              "setAmazonText",
+              { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMFW", "refresh": 45 },
+              { "name": "drawable.visible", "id": "newName", "visible": true },
+              { "name": "audio.play", "id": "amazon_select" },
+              {
+                "name": "event.add",
+                "id": "forward",
+                "time": 25,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgAmazon.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMNU3", "refresh": 75 },
+                    { "name": "event.delete", "id": "forward" },
+                    { "name": "variable.set", "key": "blockInput", "value": false }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "onHoverEnter": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Amazon",
+          "then": { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMNU2", "refresh": 110, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "setAmazonText"
+        }
+      ],
+      "onHoverLeave": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Amazon",
+          "then": { "name": "animation.set", "id": "imgAmazon", "texturePack": "AMNU1", "refresh": 110, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "clearText"
+        }
+      ]
+    },
+    {
+      "id": "necromancer",
+      "texture": "empty",
+      "anchor": "none",
+      "position": [186, 154],
+      "textureRect": [0, 0, 64, 184],
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%blockInput%",
+        "param2": false,
+        "then": [
+          "moveAnimationBackwards",
+          {
+            "name": "if.notEqual",
+            "param1": "%charClass%",
+            "param2": "Necromancer",
+            "then": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "variable.set", "key": "charClass", "value": "Necromancer" },
+              "setNecromancerText",
+              { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NEFW", "refresh": 42 },
+              { "name": "drawable.visible", "id": "newName", "visible": true },
+              { "name": "audio.play", "id": "necromancer_select" },
+              {
+                "name": "event.add",
+                "id": "forward",
+                "time": 25,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgNecromancer.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NENU3", "refresh": 75 },
+                    { "name": "event.delete", "id": "forward" },
+                    { "name": "variable.set", "key": "blockInput", "value": false }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "onHoverEnter": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Necromancer",
+          "then": { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NENU2", "refresh": 110, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "setNecromancerText"
+        }
+      ],
+      "onHoverLeave": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Necromancer",
+          "then": { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NENU1", "refresh": 110, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "clearText"
+        }
+      ]
+    },
+    {
+      "id": "barbarian",
+      "texture": "empty",
+      "anchor": "none",
+      "position": [280, 136],
+      "textureRect": [0, 0, 84, 188],
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%blockInput%",
+        "param2": false,
+        "then": [
+          "moveAnimationBackwards",
+          {
+            "name": "if.notEqual",
+            "param1": "%charClass%",
+            "param2": "Barbarian",
+            "then": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "variable.set", "key": "charClass", "value": "Barbarian" },
+              "setBarbarianText",
+              { "name": "animation.set", "id": "imgBarbarian", "compositeTexture": "BAFW", "refresh": 40 },
+              { "name": "drawable.visible", "id": "newName", "visible": true },
+              { "name": "audio.play", "id": "barbarian_select" },
+              {
+                "name": "event.add",
+                "id": "forward",
+                "time": 25,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgBarbarian.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BANU3" },
+                    { "name": "event.delete", "id": "forward" },
+                    { "name": "variable.set", "key": "blockInput", "value": false }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "onHoverEnter": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Barbarian",
+          "then": { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BANU2", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "setBarbarianText"
+        }
+      ],
+      "onHoverLeave": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Barbarian",
+          "then": { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BANU1", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "clearText"
+        }
+      ]
+    },
+    {
+      "id": "sorceress",
+      "texture": "empty",
+      "anchor": "none",
+      "position": [378, 172],
+      "textureRect": [0, 0, 88, 172],
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%blockInput%",
+        "param2": false,
+        "then": [
+          "moveAnimationBackwards",
+          {
+            "name": "if.notEqual",
+            "param1": "%charClass%",
+            "param2": "Sorceress",
+            "then": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "variable.set", "key": "charClass", "value": "Sorceress" },
+              "setSorceressText",
+              { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SOFW", "refresh": 40 },
+              { "name": "drawable.visible", "id": "newName", "visible": true },
+              { "name": "audio.play", "id": "sorceress_select" },
+              {
+                "name": "event.add",
+                "id": "forward",
+                "time": 25,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgSorceress.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SONU3" },
+                    { "name": "event.delete", "id": "forward" },
+                    { "name": "variable.set", "key": "blockInput", "value": false }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "onHoverEnter": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Sorceress",
+          "then": { "name": "animation.set", "id": "imgSorceress", "texturePack": "SONU2", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "setSorceressText"
+        }
+      ],
+      "onHoverLeave": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Sorceress",
+          "then": { "name": "animation.set", "id": "imgSorceress", "texturePack": "SONU1", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "clearText"
+        }
+      ]
+    },
+    {
+      "id": "paladin",
+      "texture": "empty",
+      "anchor": "none",
+      "position": [494, 174],
+      "textureRect": [0, 0, 84, 180],
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%blockInput%",
+        "param2": false,
+        "then": [
+          "moveAnimationBackwards",
+          {
+            "name": "if.notEqual",
+            "param1": "%charClass%",
+            "param2": "Paladin",
+            "then": [
+              { "name": "variable.set", "key": "blockInput", "value": true },
+              { "name": "variable.set", "key": "charClass", "value": "Paladin" },
+              "setPaladinText",
+              { "name": "animation.set", "id": "imgPaladin", "compositeTexture": "PAFW", "refresh": 40 },
+              { "name": "drawable.visible", "id": "newName", "visible": true },
+              { "name": "audio.play", "id": "paladin_select" },
+              {
+                "name": "event.add",
+                "id": "forward",
+                "time": 25,
+                "action": {
+                  "name": "if.equal",
+                  "param1": "%imgPaladin.isAtEnd%",
+                  "param2": true,
+                  "then": [
+                    { "name": "animation.set", "id": "imgPaladin", "texturePack": "PANU3", "refresh": 75 },
+                    { "name": "event.delete", "id": "forward" },
+                    { "name": "variable.set", "key": "blockInput", "value": false }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "onHoverEnter": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Paladin",
+          "then": { "name": "animation.set", "id": "imgPaladin", "texturePack": "PANU2", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "setPaladinText"
+        }
+      ],
+      "onHoverLeave": [
+        {
+          "name": "if.notEqual",
+          "param1": "%charClass%",
+          "param2": "Paladin",
+          "then": { "name": "animation.set", "id": "imgPaladin", "texturePack": "PANU1", "refresh": 80, "reset": false }
+        },
+        {
+          "name": "if.equal",
+          "param1": "%charClass%",
+          "param2": "",
+          "then": "clearText"
+        }
+      ]
+    },
+    {
+      "id": "ok",
+      "panel": "newName",
+      "font": "font30g",
+      "position": [640, 480],
+      "anchor": "none",
+      "onClick": {
+        "name": "if.equal",
+        "param1": "%newName.visible%",
+        "param2": true,
+        "then": { "name": "inputText.click", "id": "heroName" }
+      },
+      "sound": "titlslct",
+      "text": "OK"
+    },
+    {
+      "id": "cancel",
+      "font": "font30g",
+      "position": [-40, 480],
+      "anchor": "none",
+      "onClick": [
+        "clearVars",
+        { "name": "resource.pop" },
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/singlePlayer/select.json" }
+      ],
+      "sound": "titlslct",
+      "text": "Cancel"
+    }
+  ],
+  "inputText": {
+    "id": "heroName",
+    "panel": "newName",
+    "font": "fontingamechat",
+    "position": [246, 439],
+    "anchor": "none",
+    "minLength": 1,
+    "maxLength": 15,
+    "regex": "[\\w ]*",
+    "onClick": {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "%heroName.text%" },
+      "param2": true,
+      "then": { "name": "load", "file": ["ui/singlePlayer/newNameExists.json", "%heroName.text%"] },
+      "else": [
+        "clearVars",
+        { "name": "load", "file": "level/newGame.json" }
+      ]
+    },
+    "onMinLength": { "name": "load", "file": "ui/singlePlayer/newNameTooShort.json" },
+    "onChange": {
+      "name": "drawable.anchor",
+      "anchor": "right",
+      "id": "caret",
+      "idAnchor": "heroName"
+    }
+  }
+}

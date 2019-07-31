@@ -20,7 +20,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto class_ = level->getClass<SimpleLevelObjectClass>(elem["class"].GetString());
+		auto class_ = level->getClass<SimpleLevelObjectClass>(elem["class"].GetStringStr());
 		if (class_ == nullptr)
 		{
 			return;
@@ -66,7 +66,7 @@ namespace Parser
 				{
 					if (it->name.GetStringLength() > 0)
 					{
-						auto name = std::string(it->name.GetString(), it->name.GetStringLength());
+						auto name = it->name.GetStringView();
 						auto nameHash = str2int16(name);
 						level->setPropertyName(nameHash, name);
 						levelObj->setIntByHash(nameHash,

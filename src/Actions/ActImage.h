@@ -5,25 +5,6 @@
 #include "Image.h"
 #include "Utils/Utils.h"
 
-class ActImageCenterTexture : public Action
-{
-private:
-	std::string id;
-
-public:
-	ActImageCenterTexture(const std::string& id_) : id(id_) {}
-
-	virtual bool execute(Game& game)
-	{
-		auto image = game.Resources().getDrawable<Image>(id);
-		if (image != nullptr)
-		{
-			image->centerTexture();
-		}
-		return true;
-	}
-};
-
 class ActImageEnableOutline : public Action
 {
 private:

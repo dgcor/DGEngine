@@ -32,6 +32,13 @@ namespace Utils
 		const std::string_view str, char delimiter);
 
 	template <class T>
+	inline void hashCombine(std::size_t& s, const T& v) noexcept
+	{
+		std::hash<T> h;
+		s ^= h(v) + 0x9e3779b9 + (s << 6) + (s >> 2);
+	}
+
+	template <class T>
 	constexpr T char2intT(const char* str, size_t length) noexcept
 	{
 		T hash = 5381;

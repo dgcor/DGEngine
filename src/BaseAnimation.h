@@ -4,15 +4,22 @@
 #pragma once
 
 #include "AnimationType.h"
+#include "CompositeTexture.h"
 #include <cstddef>
 #include <utility>
 #include "Utils/ElapsedTime.h"
+#include <variant>
+
+class CompositeSprite;
 
 class BaseAnimation
 {
+private:
+	TexturePackVariant texturePackVar;
+
 public:
-	std::pair<size_t, size_t> textureIndexRange;
-	size_t currentTextureIdx{ 0 };
+	std::pair<uint32_t, uint32_t> textureIndexRange;
+	uint32_t currentTextureIdx{ 0 };
 
 	ElapsedTime elapsedTime{ sf::milliseconds(50) };
 	AnimationType animType{ AnimationType::PlayOnce };
@@ -24,10 +31,13 @@ private:
 
 public:
 	BaseAnimation() {}
-	BaseAnimation(const std::pair<size_t, size_t>& textureIndexRange_,
+
+	BaseAnimation(TexturePackVariant texturePackVar_,
+		const std::pair<uint32_t, uint32_t>& textureIndexRange_,
 		const sf::Time& frameTime_, AnimationType animType_, bool pause_)
-		: textureIndexRange(textureIndexRange_), currentTextureIdx(textureIndexRange_.first),
-		elapsedTime(frameTime_), animType(animType_), pause(pause_) {}
+		: texturePackVar(texturePackVar_), textureIndexRange(textureIndexRange_),
+		currentTextureIdx(textureIndexRange_.first), elapsedTime(frameTime_),
+		animType(animType_), pause(pause_) {}
 
 	void clear() noexcept
 	{
@@ -41,5 +51,26 @@ public:
 		backDirection = false;
 	}
 
+	void setTexturePack(TexturePackVariant texturePackVar_) noexcept
+	{
+		texturePackVar = std::move(texturePackVar_);
+	}
+
+	void setAnimation(int32_t groupIdx, int32_t directionIdx,
+		bool resetAnimation, bool updateAnimationType);
+
+	constexpr bool holdsNullTexturePack() const noexcept
+	{
+		return texturePackVar.holdsNullTexturePack();
+	}
+
+	bool isAnimationAtBeginning() const noexcept;
+	bool isAnimationAtEnd() const noexcept;
+
+	bool hasPlayOnceAnimationFinished() const noexcept;
+
 	bool update(sf::Time elapsedTime_) noexcept;
+
+	bool updateTexture(CompositeSprite& sprite, bool& absoluteOffset) const;
+	bool updateTexture(CompositeSprite& sprite) const;
 };

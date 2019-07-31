@@ -1,0 +1,33 @@
+{
+  "texture": [
+    {
+      "id": "background",
+      "color": "0x000000",
+      "size": [1, 1]
+    },
+    {
+      "id": "empty",
+      "color": "0x00000000",
+      "size": [1, 1]
+    },
+    {
+      "id": "hollowBackground",
+      "color": "0x00000088",
+      "size": [1, 1]
+    },
+    {
+      "id": "textWallBackground",
+      "color": [
+        "0x000000FF", "0x00000000",
+        "0x00000000", "0x000000FF"
+      ],
+      "size": [2, 2]
+    },
+    {
+      "id": "cursor",
+      "file": "data/global/ui/CURSOR/ppress.DC6",
+      "frame": 0,
+      "palette": "units"
+    }
+  ]
+}

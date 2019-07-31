@@ -23,7 +23,7 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetString();
+			id = elem["id"].GetStringStr();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{

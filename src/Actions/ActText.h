@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Action.h"
+#include "BindableText.h"
 #include "BitmapText.h"
 #include "Game.h"
 #include "StringText.h"
-#include "Text.h"
 #include "TextUtils.h"
 
 class ActTextAppendText : public Action
@@ -37,7 +37,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getDrawable<Text>(id);
+		auto text = game.Resources().getDrawable<BindableText>(id);
 		if (text != nullptr)
 		{
 			auto str = text->getText();
@@ -99,7 +99,7 @@ public:
 				if (stringText != nullptr &&
 					holdsFreeTypeFont(newFont) == true)
 				{
-					stringText->setFont(*std::get<std::shared_ptr<FreeTypeFont>>(newFont));
+					stringText->setFont(std::get<std::shared_ptr<FreeTypeFont>>(newFont));
 				}
 			}
 		}
@@ -179,7 +179,7 @@ public:
 
 	virtual bool execute(Game& game)
 	{
-		auto text = game.Resources().getDrawable<Text>(id);
+		auto text = game.Resources().getDrawable<BindableText>(id);
 		if (text != nullptr)
 		{
 			text->setText(TextUtils::getText(game, textOp, textFormat, bindings));

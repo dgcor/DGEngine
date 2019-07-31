@@ -1,4 +1,4 @@
 {
-  "load": "level/monster/Scavenger/cel.json",
+  "load": "level/monster/Scavenger/textures.json",
   "load": "level/monster/Scavenger/class.json"
 }

@@ -1,0 +1,83 @@
+{
+  "action": [
+    { "name": "resource.pop" },
+    { "name": "resource.add", "id": "singlePlayerDelete" },
+    { "name": "text.setText", "id": "label1", "text": "Delete Single Player Hero" },
+    { "name": "text.setText", "id": "label2", "text": "Select Hero" }
+  ],
+  "keyboard": [
+    {
+      "key": "esc",
+      "action": { "name": "button.click", "id": "no" }
+    },
+    {
+      "key": ["enter", " "],
+      "action": "focus.click"
+    }
+  ],
+  "image": {
+    "id": "background",
+    "position": [0, 208],
+    "anchor": "none",
+    "textureRect": [640, 272],
+    "texture": "background"
+  },
+  "text": {
+    "id": "areYouSure",
+    "font": "font24s",
+    "position": [120, 236],
+    "anchor": "none",
+    "text": "Are you sure you want to\ndelete the character \"{1}\"?"
+  },
+  "animation": [
+    {
+      "id": "pent1",
+      "texturePack": "focus",
+      "position": [230, 392],
+      "anchor": "none",
+      "refresh": 50
+    },
+    {
+      "id": "pent2",
+      "texturePack": "focus",
+      "position": [380, 392],
+      "anchor": "none",
+      "refresh": 50
+    }
+  ],
+  "button": [
+    {
+      "id": "yes",
+      "horizontalAlign": "center",
+      "font": "font30g",
+      "position": [319, 392],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": [
+        { "name": "io.deleteAll", "file": "{1}" },
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/singlePlayer/select.json" }
+      ],
+      "onFocus": "anchorPentagrams",
+      "sound": "titlslct",
+      "text": "Yes"
+    },
+    {
+      "id": "no",
+      "horizontalAlign": "center",
+      "font": "font30g",
+      "position": [319, 428],
+      "anchor": "none",
+      "focus": true,
+      "focusSound": "titlemov",
+      "onClick": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/singlePlayer/select.json" }
+      ],
+      "onFocus": "anchorPentagrams",
+      "sound": "titlslct",
+      "text": "No"
+    }
+  ]
+}

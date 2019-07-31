@@ -1,0 +1,140 @@
+{
+  "load": "level/player/Sorceress/textureFiles.json",
+  "compositeTexture": [
+    {
+      "id": "sorceressNormal",
+      "groups": [
+        {
+          "file": "data/global/CHARS/SO/COF/SONUHTH.COF",
+          "texturePacks": [
+            "SOHDLITNUHTH",
+            "SOTRLITNUHTH",
+            "SOLGLITNUHTH",
+            "SORALITNUHTH",
+            "SOLALITNUHTH",
+            "SOSHKITNUHTH",
+            "SOS1LITNUHTH",
+            "SOS2LITNUHTH"
+          ]
+        },
+        {
+          "file": "data/global/CHARS/SO/COF/SOTWHTH.COF",
+          "texturePacks": [
+            "SOHDLITTWHTH",
+            "SOTRLITTWHTH",
+            "SOLGLITTWHTH",
+            "SORALITTWHTH",
+            "SOLALITTWHTH",
+            "SOSHKITTWHTH",
+            "SOS1LITTWHTH",
+            "SOS2LITTWHTH"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sorceressNormalAxe",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalBow",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalShieldSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalShieldClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalStaff",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressNormalShield",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeather",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherAxe",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherBow",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherShieldSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherShieldClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherStaff",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressLeatherShield",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlate",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateAxe",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateBow",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateShieldSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateShieldClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateClub",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateSword",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateStaff",
+      "fromId": "sorceressNormal"
+    },
+    {
+      "id": "sorceressPlateShield",
+      "fromId": "sorceressNormal"
+    }
+  ]
+}

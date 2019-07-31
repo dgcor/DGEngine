@@ -17,6 +17,7 @@
       "bonusLife": 1.5,
       "bonusMana": 1.5,
       "bonusHealing": 1.5,
+      "spellM": 0.75,
       "defaultDamageMin": 1,
       "levelUp": 5
     },
@@ -34,13 +35,35 @@
       "toHit": "dexterityNow * 0.5 + toHitItems + 50",
       "damage": "strengthNow + dexterityNow * level / 200"
     },
-    "texturePacks": {
-      "texturePack": "rogueNormal",
-      "animations": [
-        { "range": [0, 32], "type": "backAndForth" },
-        { "range": [32, 96], "type": "looped" }
-      ]
-    },
+    "texturePacks": [
+      "rogueNormal",
+      "rogueNormalAxe",
+      "rogueNormalBow",
+      "rogueNormalShieldSword",
+      "rogueNormalShieldClub",
+      "rogueNormalClub",
+      "rogueNormalSword",
+      "rogueNormalStaff",
+      "rogueNormalShield",
+      "rogueLeather",
+      "rogueLeatherAxe",
+      "rogueLeatherBow",
+      "rogueLeatherShieldSword",
+      "rogueLeatherShieldClub",
+      "rogueLeatherClub",
+      "rogueLeatherSword",
+      "rogueLeatherStaff",
+      "rogueLeatherShield",
+      "roguePlate",
+      "roguePlateAxe",
+      "roguePlateBow",
+      "roguePlateShieldSword",
+      "roguePlateShieldClub",
+      "roguePlateClub",
+      "roguePlateSword",
+      "roguePlateStaff",
+      "roguePlateShield"
+    ],
     "textureIndexes": [
       { "name": "Stand1", "index": 0 },
       { "name": "Stand2", "index": 0 },

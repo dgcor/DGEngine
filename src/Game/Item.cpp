@@ -8,9 +8,8 @@
 
 Item::Item(const ItemClass* class__) : LevelObject(class__)
 {
-	texturePack = class__->getDropTexturePack();
+	animation.setTexturePack(class__->getDropTexturePack());
 	animation.textureIndexRange = class__->getDropTextureIndexRange();
-	animation.textureIndexRange.second--;
 	animation.currentTextureIdx = animation.textureIndexRange.second;
 	animation.elapsedTime = class__->AnimationSpeed();
 	animation.animType = AnimationType::PlayOnce;
@@ -41,7 +40,7 @@ void Item::resetDropAnimation(LevelMap& map) noexcept
 	}
 }
 
-bool Item::getTexture(size_t textureNumber, TextureInfo& ti) const
+bool Item::getTexture(uint32_t textureNumber, TextureInfo& ti) const
 {
 	switch (textureNumber)
 	{

@@ -121,7 +121,7 @@
   "load": "ui/level/char/panelCharacter.json",
   "load": "ui/level/char/panelInventory.json",
   "load": "ui/level/char/panelSpellBook.json",
-  "load": "ui/level/msgBox/msgBox.json",
+  "load": "ui/level/msgBox.json",
   "image": [
     {
       "id": "mapImage",
@@ -184,7 +184,7 @@
             { "name": "resource.pop", "id": "charPanelQuests" },
             { "name": "drawable.visible", "id": "charPanel", "visible": true },
             { "name": "drawable.visible", "id": "questPanel", "visible": false },
-            { "name": "resource.moveToTop", "id": "removeGold" },
+            { "name": "resource.bringToFront", "id": "removeGold" },
             "updateCharPanel"
           ],
           "else": [
@@ -226,7 +226,7 @@
             { "name": "load", "file": "ui/level/char/panelQuests.json" },
             { "name": "drawable.visible", "id": "charPanel", "visible": false },
             { "name": "drawable.visible", "id": "questPanel", "visible": true },
-            { "name": "resource.moveToTop", "id": "removeGold" }
+            { "name": "resource.bringToFront", "id": "removeGold" }
           ],
           "else": [
             { "name": "resource.pop", "id": "charPanelQuests" },

@@ -1,0 +1,65 @@
+{
+  "title" : "Diablo II",
+  "version": "1.14d",
+  "saveDir": ".diablo2",
+  "refWindowSize": [640, 480],
+  "minWindowSize": [800, 600],
+  "windowSize": [800, 600],
+  "maxWindowHeight": 600,
+  "framerate": 60,
+  "keepAR": true,
+  "stretchToFit": true,
+  "smoothScreen": true,
+  "load": "settings.json",
+  "init": true,
+  "mountFile": [
+    { "file": "gamefilesd" },
+    { "file": "DIABDAT.MPQ" },
+    { "file": "d2data.mpq" },
+    { "file": "d2char.mpq" },
+    { "file": "d2music.mpq" },
+    { "file": "d2sfx.mpq" },
+    { "file": "d2speech.mpq" },
+    { "file": "d2video.mpq" }
+  ],
+  "action": {
+    "name": "if.equal",
+    "param1": { "name": "file.exists", "file": "data/global/ui/Logo/logo.DC6" },
+    "param2": true,
+    "then": {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "data/global/CHARS/AM/COF/ama1bow.cof" },
+      "param2": true,
+      "then": {
+        "name": "if.equal",
+        "param1": { "name": "file.exists", "file": "data/global/music/Act1/andarielaction.wav" },
+        "param2": true,
+        "then": {
+          "name": "if.equal",
+          "param1": { "name": "file.exists", "file": "DATA/GLOBAL/SFX/ambient/creature/bat1.wav" },
+          "param2": true,
+          "then": {
+            "name": "if.equal",
+            "param1": { "name": "file.exists", "file": "data/local/sfx/Act1/Akara/Aka_act1_gossip_01.wav" },
+            "param2": true,
+            "then": {
+              "name": "if.equal",
+              "param1": { "name": "file.exists", "file": "ui_art/logo.pcx" },
+              "param2": true,
+              "then": [
+                { "name": "variable.set", "key": "colorCycling", "value": true },
+                { "name": "load", "file": "ui/loadMain2.json" }
+              ],
+              "else": { "name": "load", "file": ["ui/dataMissing.json", "DIABDAT"] }
+            },
+            "else": { "name": "load", "file": ["ui/dataMissing.json", "d2speech"] }
+          },
+          "else": { "name": "load", "file": ["ui/dataMissing.json", "d2sfx"] }
+        },
+        "else": { "name": "load", "file": ["ui/dataMissing.json", "d2music"] }
+      },
+      "else": { "name": "load", "file": ["ui/dataMissing.json", "d2char"] }
+    },
+    "else": { "name": "load", "file": ["ui/dataMissing.json", "d2data"] }
+  }
+}

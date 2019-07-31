@@ -14,6 +14,7 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 
 option(DGENGINE_MOVIE_SUPPORT "Enable Movie support" TRUE)
+option(DGENGINE_DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
 
 if(DGENGINE_MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
@@ -33,12 +34,15 @@ set(SOURCE_FILES
     src/AudioSource.h
     src/BaseAnimation.cpp
     src/BaseAnimation.h
+    src/BindableText.cpp
+    src/BindableText.h
     src/BitmapButton.cpp
     src/BitmapButton.h
     src/BitmapFont.cpp
     src/BitmapFont.h
     src/BitmapText.cpp
     src/BitmapText.h
+    src/BlendMode.h
     src/Button.cpp
     src/Button.h
     src/CachedImagePack.cpp
@@ -47,6 +51,8 @@ set(SOURCE_FILES
     src/Circle.h
     src/CmdLineUtils.cpp
     src/CmdLineUtils.h
+    src/CompositeTexture.cpp
+    src/CompositeTexture.h
     src/DrawableText.h
     src/Dun.cpp
     src/Dun.h
@@ -70,6 +76,7 @@ set(SOURCE_FILES
     src/Image.h
     src/ImageUtils.cpp
     src/ImageUtils.h
+    src/InputEvent.cpp
     src/InputEvent.h
     src/InputText.cpp
     src/InputText.h
@@ -94,8 +101,8 @@ set(SOURCE_FILES
     src/Rectangle.h
     src/ResourceManager.cpp
     src/ResourceManager.h
-    src/ScrollableText.cpp
-    src/ScrollableText.h
+    src/Scrollable.cpp
+    src/Scrollable.h
     src/ShaderManager.cpp
     src/ShaderManager.h
     src/Sol.cpp
@@ -118,6 +125,7 @@ set(SOURCE_FILES
     src/Variable.h
     src/VarOrPredicate.h
     src/Actions/ActAction.h
+    src/Actions/ActAnimation.h
     src/Actions/ActAudio.h
     src/Actions/ActButton.h
     src/Actions/ActCondition.h
@@ -146,6 +154,7 @@ set(SOURCE_FILES
     src/Actions/ActQuest.h
     src/Actions/ActRandom.h
     src/Actions/ActResource.h
+    src/Actions/ActScrollable.h
     src/Actions/ActShader.h
     src/Actions/ActSound.h
     src/Actions/ActText.h
@@ -182,8 +191,6 @@ set(SOURCE_FILES
     src/Game/Level.h
     src/Game/LevelCell.cpp
     src/Game/LevelCell.h
-    src/Game/LevelHelper.cpp
-    src/Game/LevelHelper.h
     src/Game/LevelLayer.h
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
@@ -236,12 +243,6 @@ set(SOURCE_FILES
     src/gsl/pointers
     src/gsl/span
     src/gsl/string_span
-    src/ImageContainers/CelBaseImageContainer.cpp
-    src/ImageContainers/CelBaseImageContainer.h
-    src/ImageContainers/CelImageContainer.cpp
-    src/ImageContainers/CelImageContainer.h
-    src/ImageContainers/Cl2ImageContainer.cpp
-    src/ImageContainers/Cl2ImageContainer.h
     src/ImageContainers/ImageContainer.h
     src/ImageContainers/SimpleImageContainer.cpp
     src/ImageContainers/SimpleImageContainer.h
@@ -260,6 +261,8 @@ set(SOURCE_FILES
     src/Parser/ParseButton.h
     src/Parser/ParseCircle.cpp
     src/Parser/ParseCircle.h
+    src/Parser/ParseCompositeTexture.cpp
+    src/Parser/ParseCompositeTexture.h
     src/Parser/ParseCondition.cpp
     src/Parser/ParseCondition.h
     src/Parser/ParseCursor.cpp
@@ -301,8 +304,8 @@ set(SOURCE_FILES
     src/Parser/ParseRectangle.cpp
     src/Parser/ParseRectangle.h
     src/Parser/ParserProperties.h
-    src/Parser/ParseScrollableText.cpp
-    src/Parser/ParseScrollableText.h
+    src/Parser/ParseScrollable.cpp
+    src/Parser/ParseScrollable.h
     src/Parser/ParseSound.cpp
     src/Parser/ParseSound.h
     src/Parser/ParseText.cpp
@@ -381,6 +384,8 @@ set(SOURCE_FILES
     src/rapidjson/internal/swap.h
     src/rapidjson/msinttypes/inttypes.h
     src/rapidjson/msinttypes/stdint.h
+    src/SFML/CompositeSprite.cpp
+    src/SFML/CompositeSprite.h
     src/SFML/Image2.h
     src/SFML/Music2.cpp
     src/SFML/Music2.h
@@ -390,6 +395,8 @@ set(SOURCE_FILES
     src/SFML/SFMLUtils.h
     src/SFML/Sprite2.cpp
     src/SFML/Sprite2.h
+    src/SFML/Text2.cpp
+    src/SFML/Text2.h
     src/SFML/View2.cpp
     src/SFML/View2.h
     src/TexturePacks/BitmapFontTexturePack.cpp
@@ -441,6 +448,23 @@ if(FFmpeg_FOUND)
     )
 else()
     add_definitions(-DUSE_SFML_MOVIE_STUB)
+endif()
+
+if(DGENGINE_DIABLO_FORMAT_SUPPORT)
+    SET(SOURCE_FILES ${SOURCE_FILES}
+        src/Game/LevelHelper.cpp
+        src/Game/LevelHelper.h
+        src/ImageContainers/CELImageContainer.cpp
+        src/ImageContainers/CELImageContainer.h
+        src/ImageContainers/CL2ImageContainer.cpp
+        src/ImageContainers/CL2ImageContainer.h
+        src/ImageContainers/DC6ImageContainer.cpp
+        src/ImageContainers/DC6ImageContainer.h
+        src/ImageContainers/DCCImageContainer.cpp
+        src/ImageContainers/DCCImageContainer.h
+    )
+else()
+    add_definitions(-DNO_DIABLO_FORMAT_SUPPORT)
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

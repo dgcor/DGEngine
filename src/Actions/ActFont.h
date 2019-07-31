@@ -4,7 +4,7 @@
 #include "Font.h"
 #include "Game.h"
 
-class ActFontSetPalette : public Action
+class ActFontSetPaletteOrColor : public Action
 {
 private:
 	std::string id;
@@ -12,7 +12,7 @@ private:
 	sf::Color color;
 
 public:
-	ActFontSetPalette(const std::string& id_,
+	ActFontSetPaletteOrColor(const std::string& id_,
 		const std::string& idPalette_, const sf::Color& color_)
 		: id(id_), idPalette(idPalette_), color(color_) {}
 
@@ -34,6 +34,11 @@ public:
 			{
 				bitmapFont->setColor(color);
 			}
+		}
+		else if (holdsFreeTypeFont(font) == true)
+		{
+			auto freeTypeFont = std::get<std::shared_ptr<FreeTypeFont>>(font);
+			freeTypeFont->setColor(color);
 		}
 		return true;
 	}

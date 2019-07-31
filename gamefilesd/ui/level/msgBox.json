@@ -1,0 +1,42 @@
+{
+  "panel": {
+    "id": "msgBox",
+    "anchor": "none",
+    "visible": false
+  },
+  "image": [
+    {
+      "id": "textWallBackground",
+      "panel": "msgBox",
+      "position": [103, 150],
+      "anchor": "none",
+      "textureRect": [435, 57],
+      "texture": "textWallBackground"
+    },
+    {
+      "id": "textWallBorder1",
+      "panel": "msgBox",
+      "position": [101, 147],
+      "anchor": "none",
+      "textureRect": [438, 60],
+      "texture": "textbox"
+    },
+    {
+      "id": "textWallBorder2",
+      "panel": "msgBox",
+      "position": [103, 148],
+      "anchor": "none",
+      "textureRect": [155, 244, 436, 59],
+      "texture": "textbox"
+    }
+  ],
+  "text": {
+    "id": "msgBoxText",
+    "panel": "msgBox",
+    "font": "smaltextGold",
+    "position": [322, 172],
+    "anchor": "none",
+    "horizontalAlign": "center",
+    "horizontalSpaceOffset": 1
+  }
+}

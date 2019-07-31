@@ -49,19 +49,19 @@ public:
 	}
 };
 
-class ActResourceMoveToTop : public Action
+class ActResourceBringToFront : public Action
 {
 private:
 	std::string id;
 
 public:
-	ActResourceMoveToTop(const std::string& id_) : id(id_) {}
+	ActResourceBringToFront(const std::string& id_) : id(id_) {}
 
 	virtual bool execute(Game& game)
 	{
 		if (id.empty() == false)
 		{
-			game.Resources().moveResourceToTop(id);
+			game.Resources().bringResourceToFront(id);
 		}
 		return true;
 	}
