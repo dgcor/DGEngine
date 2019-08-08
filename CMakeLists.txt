@@ -470,8 +470,32 @@ else()
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+add_executable(dt1_test
+	dt1_test.cpp
+	src/ImageContainers/DT1ImageContainer.cpp
+	src/ImageContainers/DT1ImageContainer.h
+	
+    src/ImageContainers/ImageContainer.h
+    src/ImageContainers/SimpleImageContainer.cpp
+    src/ImageContainers/SimpleImageContainer.h
+    src/Utils/Utils.cpp
+    src/Utils/Utils.h
+    src/FileUtils.cpp
+    src/FileUtils.h
+    #src/Image.cpp
+    #src/Image.h
+    src/ImageUtils.cpp
+    src/ImageUtils.h
+    src/CachedImagePack.cpp
+    src/CachedImagePack.h
+    src/Pcx.cpp
+    src/Pcx.h
+    src/PhysFSStream.cpp
+    src/PhysFSStream.h
+)
 
 target_link_libraries(${PROJECT_NAME} stdc++fs)
+target_link_libraries(dt1_test stdc++fs)
 
 if(FFmpeg_FOUND)
     include_directories(${FFmpeg_INCLUDES})
@@ -481,12 +505,16 @@ endif()
 if(PHYSFS_FOUND)
     include_directories(${PHYSFS_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY})
+    target_link_libraries(dt1_test ${PHYSFS_LIBRARY})
 endif()
 
 if(SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
+    target_link_libraries(dt1_test ${SFML_LIBRARIES})
 endif()
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET dt1_test PROPERTY CXX_STANDARD 17)
+set_property(TARGET dt1_test PROPERTY CXX_STANDARD_REQUIRED ON)
