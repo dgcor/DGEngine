@@ -333,6 +333,7 @@ namespace DT1
 
 DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
 {
+    std::vector<uint8_t> fileData;
     sf::PhysFSStream file(fileName.data());
     if (file.hasError())
         return;
@@ -351,12 +352,14 @@ DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
 
     for (auto& tile : tiles)
     {
+        assert(tile.blockHeadersPointer == fileStream.position());
         tile.blocks.reserve(tile.numBlocks);
         for (int i = 0; i < tile.numBlocks; i++)
             tile.blocks.emplace_back(fileStream);
 
         for (auto& blockHeader : tile.blocks)
         {
+            assert(tile.blockHeadersPointer + blockHeader.fileOffset == fileStream.position());
             blockHeader.colormap.resize(blockHeader.length);
             fileStream.read(blockHeader.colormap.data(), blockHeader.length);
         }

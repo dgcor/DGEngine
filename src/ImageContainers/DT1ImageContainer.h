@@ -163,7 +163,6 @@ namespace DT1
 class DT1ImageContainer : public ImageContainer
 {
 private:
-    std::vector<uint8_t> fileData;
     BlendMode blendMode{ BlendMode::Alpha };
     DT1::Header header;
     std::vector<DT1::Tile> tiles;
