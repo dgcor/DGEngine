@@ -8,9 +8,8 @@
 
 // DT1 decoding code based on Diablo 2 Engine Riiablo by collinsmith
 // https://github.com/collinsmith/riiablo
-class DT1ImageContainer : public ImageContainer
+namespace DT1
 {
-private:
     class Header
     {
     public:
@@ -22,92 +21,92 @@ private:
         Header(LittleEndianStreamReader& fileStream);
     };
 
+    class Orientation
+    {
+    private:
+        int32_t value;
+
+    public:
+        /** Floors */
+        static constexpr int FLOOR = 0;
+        /** Left Wall */
+        static constexpr int LEFT_WALL = 1;
+        /** Right Wall */
+        static constexpr int RIGHT_WALL = 2;
+        /** Right part of north corner wall */
+        static constexpr int RIGHT_NORTH_CORNER_WALL = 3;
+        /** Left part of north corner wall */
+        static constexpr int LEFT_NORTH_CORNER_WALL = 4;
+        /** Left end wall */
+        static constexpr int LEFT_END_WALL = 5;
+        /** Right end wall */
+        static constexpr int RIGHT_END_WALL = 6;
+        /** South corner wall */
+        static constexpr int SOUTH_CORNER_WALL = 7;
+        /** Left wall with door */
+        static constexpr int LEFT_WALL_DOOR = 8;
+        /** Right wall with door */
+        static constexpr int RIGHT_WALL_DOOR = 9;
+        /** Special Cell */
+        static constexpr int SPECIAL_10 = 10;
+        /** Special Cell */
+        static constexpr int SPECIAL_11 = 11;
+        /** Pillars; columns and standalone objects */
+        static constexpr int PILLAR = 12;
+        /** Shadows */
+        static constexpr int SHADOW = 13;
+        /** Trees */
+        static constexpr int TREE = 14;
+        /** Roofs */
+        static constexpr int ROOF = 15;
+        /** Lower walls equivalent to Orientation 1
+        *  @see #LEFT_WALL */
+        static constexpr int LOWER_LEFT_WALL = 16;
+        /** Lower walls equivalent to Orientation 2
+        *  @see #RIGHT_WALL */
+        static constexpr int LOWER_RIGHT_WALL = 17;
+        /** Lower walls equivalent to Orientation 3 and 4
+        *  @see #RIGHT_NORTH_CORNER_WALL
+        *  @see #LEFT_NORTH_CORNER_WALL */
+        static constexpr int LOWER_NORTH_CORNER_WALL = 18;
+        /** Lower walls equivalent to Orientation 7
+        *  @see #SOUTH_CORNER_WALL */
+        static constexpr int LOWER_SOUTH_CORNER_WALL = 19;
+
+        Orientation() = default;
+        Orientation(int32_t value_) { value = value_; }
+        int32_t rawValue() const { return value; }
+        int getDirection() const;
+        bool isFloor() const;
+        bool isRoof() const;
+        bool isWall() const;
+        bool isSpecial() const;;
+    };
+
+    class Block
+    {
+    public:
+        int16_t x;
+        int16_t y;
+        uint8_t gridX;
+        uint8_t gridY;
+        int16_t format;
+        int32_t length;
+        int32_t fileOffset;
+
+        std::vector<uint8_t> colormap;
+
+        Block() = default;
+        Block(LittleEndianStreamReader& fileStream);
+    };
+
     class Tile
     {
     private:
-        class Block
-        {
-        public:
-            int16_t x;
-            int16_t y;
-            uint8_t gridX;
-            uint8_t gridY;
-            int16_t format;
-            int32_t length;
-            int32_t fileOffset;
-
-            std::vector<uint8_t> colormap;
-
-            Block() = default;
-            Block(LittleEndianStreamReader& fileStream);
-        };
-
         void drawIsometricBlock(sf::Image2& img, const PaletteArray* palette, int x0, int y0, const uint8_t* data, int length) const;
         void drawRLEBlock(sf::Image2& img, const PaletteArray* palette, int x0, int y0, const uint8_t* data, int length) const;
 
     public:
-        class Orientation
-        {
-        private:
-            int32_t value;
-
-        public:
-            /** Floors */
-            static constexpr int FLOOR = 0;
-            /** Left Wall */
-            static constexpr int LEFT_WALL = 1;
-            /** Right Wall */
-            static constexpr int RIGHT_WALL = 2;
-            /** Right part of north corner wall */
-            static constexpr int RIGHT_NORTH_CORNER_WALL = 3;
-            /** Left part of north corner wall */
-            static constexpr int LEFT_NORTH_CORNER_WALL = 4;
-            /** Left end wall */
-            static constexpr int LEFT_END_WALL = 5;
-            /** Right end wall */
-            static constexpr int RIGHT_END_WALL = 6;
-            /** South corner wall */
-            static constexpr int SOUTH_CORNER_WALL = 7;
-            /** Left wall with door */
-            static constexpr int LEFT_WALL_DOOR = 8;
-            /** Right wall with door */
-            static constexpr int RIGHT_WALL_DOOR = 9;
-            /** Special Cell */
-            static constexpr int SPECIAL_10 = 10;
-            /** Special Cell */
-            static constexpr int SPECIAL_11 = 11;
-            /** Pillars; columns and standalone objects */
-            static constexpr int PILLAR = 12;
-            /** Shadows */
-            static constexpr int SHADOW = 13;
-            /** Trees */
-            static constexpr int TREE = 14;
-            /** Roofs */
-            static constexpr int ROOF = 15;
-            /** Lower walls equivalent to Orientation 1
-            *  @see #LEFT_WALL */
-            static constexpr int LOWER_LEFT_WALL = 16;
-            /** Lower walls equivalent to Orientation 2
-            *  @see #RIGHT_WALL */
-            static constexpr int LOWER_RIGHT_WALL = 17;
-            /** Lower walls equivalent to Orientation 3 and 4
-            *  @see #RIGHT_NORTH_CORNER_WALL
-            *  @see #LEFT_NORTH_CORNER_WALL */
-            static constexpr int LOWER_NORTH_CORNER_WALL = 18;
-            /** Lower walls equivalent to Orientation 7
-            *  @see #SOUTH_CORNER_WALL */
-            static constexpr int LOWER_SOUTH_CORNER_WALL = 19;
-
-            Orientation() = default;
-            Orientation(int32_t value_) { value = value_; }
-            int32_t rawValue() const { return value; }
-            int getDirection() const;
-            bool isFloor() const;
-            bool isRoof() const;
-            bool isWall() const;
-            bool isSpecial() const;;
-        };
-
         static constexpr int WIDTH = 160;
         static constexpr int HEIGHT = 80;
 
@@ -159,26 +158,29 @@ private:
         static int getSubIndex(int index);
         static int getOrientation(int index);
     };
+}
 
-
+class DT1ImageContainer : public ImageContainer
+{
+private:
     std::vector<uint8_t> fileData;
     BlendMode blendMode{ BlendMode::Alpha };
-    Header header;
-    std::vector<Tile> tiles;
+    DT1::Header header;
+    std::vector<DT1::Tile> tiles;
 
 public:
-	DT1ImageContainer(const std::string_view fileName);
+    DT1ImageContainer(const std::string_view fileName);
 
-	virtual BlendMode getBlendMode() const noexcept { return blendMode; }
-	virtual void setBlendMode(BlendMode blendMode_) noexcept { blendMode = blendMode_; }
+    virtual BlendMode getBlendMode() const noexcept { return blendMode; }
+    virtual void setBlendMode(BlendMode blendMode_) noexcept { blendMode = blendMode_; }
 
-	virtual sf::Image2 get(uint32_t index,
-		const PaletteArray* palette, ImageInfo& imgInfo) const;
+    virtual sf::Image2 get(uint32_t index,
+        const PaletteArray* palette, ImageInfo& imgInfo) const;
 
-	virtual uint32_t size() const noexcept { return tiles.size(); }
+    virtual uint32_t size() const noexcept { return tiles.size(); }
 
-	// TODO: Make sure getDirections should always return 1.
-	virtual uint32_t getDirections() const noexcept { return 1; }
+    // TODO: Make sure getDirections should always return 1.
+    virtual uint32_t getDirections() const noexcept { return 1; }
 };
 
 #endif

@@ -41,14 +41,14 @@ namespace Parser
 			auto useOffsets = getBoolKey(elem, "useOffsets");
 			imgContainer = std::make_shared<DC6ImageContainer>(fileName, stitch, useOffsets);
 		}
-        else if (Utils::endsWith(fileNameLower, ".dcc") == true)
-        {
-            imgContainer = std::make_shared<DCCImageContainer>(fileName);
-        }
-        else if (Utils::endsWith(fileNameLower, ".dt1") == true)
-        {
-            imgContainer = std::make_shared<DT1ImageContainer>(fileName);
-        }
+		else if (Utils::endsWith(fileNameLower, ".dcc") == true)
+		{
+			imgContainer = std::make_shared<DCCImageContainer>(fileName);
+		}
+		else if (Utils::endsWith(fileNameLower, ".dt1") == true)
+		{
+			imgContainer = std::make_shared<DT1ImageContainer>(fileName);
+		}
 #else
 		if (false) {}
 #endif

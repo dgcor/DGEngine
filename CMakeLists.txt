@@ -471,10 +471,9 @@ endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 add_executable(dt1_test
-	dt1_test.cpp
-	src/ImageContainers/DT1ImageContainer.cpp
-	src/ImageContainers/DT1ImageContainer.h
-	
+    dt1_test.cpp
+    src/ImageContainers/DT1ImageContainer.cpp
+    src/ImageContainers/DT1ImageContainer.h
     src/ImageContainers/ImageContainer.h
     src/ImageContainers/SimpleImageContainer.cpp
     src/ImageContainers/SimpleImageContainer.h
@@ -482,8 +481,6 @@ add_executable(dt1_test
     src/Utils/Utils.h
     src/FileUtils.cpp
     src/FileUtils.h
-    #src/Image.cpp
-    #src/Image.h
     src/ImageUtils.cpp
     src/ImageUtils.h
     src/CachedImagePack.cpp
