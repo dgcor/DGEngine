@@ -472,6 +472,8 @@ endif()
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 add_executable(dt1_test
     dt1_test.cpp
+    ds1.cpp
+    ds1.h
     src/ImageContainers/DT1ImageContainer.cpp
     src/ImageContainers/DT1ImageContainer.h
     src/ImageContainers/ImageContainer.h

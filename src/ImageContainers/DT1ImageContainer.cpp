@@ -348,7 +348,10 @@ DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
 
     tiles.reserve(header.numTiles);
     for (int i = 0; i < header.numTiles; i++)
+    {
         tiles.emplace_back(fileStream);
+        tilesById[tiles[i].id].push_back(i);
+    }
 
     for (auto& tile : tiles)
     {

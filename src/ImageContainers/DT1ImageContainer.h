@@ -5,6 +5,7 @@
 #include "ImageContainer.h"
 #include "StreamReader.h"
 #include <string_view>
+#include <map>
 
 // DT1 decoding code based on Diablo 2 Engine Riiablo by collinsmith
 // https://github.com/collinsmith/riiablo
@@ -166,6 +167,7 @@ private:
     BlendMode blendMode{ BlendMode::Alpha };
     DT1::Header header;
     std::vector<DT1::Tile> tiles;
+    std::map<int, std::vector<int>> tilesById;
 
 public:
     DT1ImageContainer(const std::string_view fileName);
@@ -175,6 +177,14 @@ public:
 
     virtual sf::Image2 get(uint32_t index,
         const PaletteArray* palette, ImageInfo& imgInfo) const;
+
+    const std::vector<DT1::Tile>& getTiles() const { return tiles; }
+    const std::vector<int> getTilesById(int id)
+    {
+        if (tilesById.count(id) == 0)
+           return {};
+        return tilesById.at(id);
+    }
 
     virtual uint32_t size() const noexcept { return tiles.size(); }
 
