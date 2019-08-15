@@ -147,6 +147,8 @@ namespace DT1
         int32_t numBlocks;
         int32_t id;
 
+        int yOffset;
+
         std::vector<Block> blocks;
 
         Tile() = default;

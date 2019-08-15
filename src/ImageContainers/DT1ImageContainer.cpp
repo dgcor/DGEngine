@@ -99,41 +99,28 @@ namespace DT1
         assert(allZeros(zeros1, sizeof(zeros1)));
         assert(allZeros(zeros2, sizeof(zeros2)));
         // assert(allZeros(zeros3, sizeof(zeros3)));
+
+        yOffset = 0;
+        if (height < 0)
+        {
+            height = -height;
+            yOffset = height;
+        }
+
+        // TODO: Check if this is needed?
+        //if (orientation.isSpecial())
+        //    width = WIDTH;
     }
 
     sf::Image2 Tile::decode(const PaletteArray* palette) const
     {
-        int absWidth = width;
-        int absHeight = -height;
-
-        if (orientation.isSpecial())
-            absWidth = WIDTH;
-
-        int y_add = 96;
-        if (orientation.isFloor() || orientation.isRoof())
-        {
-            if (height != 0)
-            {
-                absHeight = 80;
-                y_add = 0;
-            }
-        }
-        else if (orientation.rawValue() < Orientation::ROOF)
-        {
-            if (height != 0)
-            {
-                absHeight -= 32;
-                y_add = absHeight;
-            }
-        }
-
         sf::Image2 img;
-        img.create(absWidth, absHeight, sf::Color::Transparent);
+        img.create(width, height, sf::Color::Transparent);
 
         for (const auto& block : blocks)
         {
             int x0 = block.x;
-            int y0 = y_add + block.y;
+            int y0 = block.y >= 0 ? block.y : yOffset + block.y;
             const uint8_t* data = block.colormap.data();
             int length = block.length;
             int format = block.format;

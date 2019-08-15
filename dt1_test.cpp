@@ -88,7 +88,13 @@ int main(int argc, char* argv[])
                 const auto& tile = tiles[selectedTileIndex];
                 if (orientations.count(tile.orientation.rawValue()) != 0)
                 {
-                    // yPixel += tile.roofHeight;
+                    // 128 is height of floor tile images (just centers the output image).
+                    yPixel -= tile.yOffset - 128;
+                    yPixel = std::max(0, yPixel);
+
+                    //if (tile.orientation.rawValue() == DT1::Orientation::ROOF)
+                    //    yPixel += tile.roofHeight;
+
                     auto info = DT1ImageContainer::ImageInfo();
                     auto tileImage = dt1.get(selectedTileIndex, &palette, info);
                     lvlImage.copy(tileImage, xPixel, yPixel, sf::IntRect(0, 0, 0, 0), true);
