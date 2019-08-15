@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
             (DT1::Tile::HEIGHT / 2) * (ds1.width + ds1.height),
             sf::Color::Transparent);
 
-    auto drawTile = [&](int32_t id, int x, int y, const std::set<int>& orientations) {
+    std::function<void(int32_t, int, int, const std::set<int>&)> drawTile = [&](int32_t id, int x, int y, const std::set<int>& orientations) {
         int xPixel = (DT1::Tile::WIDTH / 2) * (x - y + (ds1.height - 1));
         int yPixel = (DT1::Tile::HEIGHT / 2) * (x + y);
         for (auto& dt1 : dt1s)
@@ -98,6 +98,14 @@ int main(int argc, char* argv[])
                     auto info = DT1ImageContainer::ImageInfo();
                     auto tileImage = dt1.get(selectedTileIndex, &palette, info);
                     lvlImage.copy(tileImage, xPixel, yPixel, sf::IntRect(0, 0, 0, 0), true);
+
+                    // Draw sibling textures...
+                    if (tile.orientation.rawValue() == DT1::Orientation::RIGHT_NORTH_CORNER_WALL)
+                    {
+                        auto siblingTileId = DT1::Tile::createIndex(DT1::Orientation::LEFT_NORTH_CORNER_WALL, tile.mainIndex, tile.subIndex);
+                        drawTile(siblingTileId, x, y, { DT1::Orientation::LEFT_NORTH_CORNER_WALL });
+                    }
+
                     break;
                 }
             }
