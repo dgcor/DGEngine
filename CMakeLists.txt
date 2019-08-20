@@ -462,6 +462,8 @@ if(DGENGINE_DIABLO_FORMAT_SUPPORT)
         src/ImageContainers/DC6ImageContainer.h
         src/ImageContainers/DCCImageContainer.cpp
         src/ImageContainers/DCCImageContainer.h
+        src/ImageContainers/DT1ImageContainer.cpp
+        src/ImageContainers/DT1ImageContainer.h
     )
 else()
     add_definitions(-DNO_DIABLO_FORMAT_SUPPORT)
