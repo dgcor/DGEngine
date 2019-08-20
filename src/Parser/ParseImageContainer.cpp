@@ -4,6 +4,7 @@
 #include "ImageContainers/CL2ImageContainer.h"
 #include "ImageContainers/DC6ImageContainer.h"
 #include "ImageContainers/DCCImageContainer.h"
+#include "ImageContainers/DT1ImageContainer.h"
 #include "ImageContainers/SimpleImageContainer.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
@@ -43,6 +44,10 @@ namespace Parser
 		else if (Utils::endsWith(fileNameLower, ".dcc") == true)
 		{
 			imgContainer = std::make_shared<DCCImageContainer>(fileName);
+		}
+		else if (Utils::endsWith(fileNameLower, ".dt1") == true)
+		{
+			imgContainer = std::make_shared<DT1ImageContainer>(fileName);
 		}
 #else
 		if (false) {}
