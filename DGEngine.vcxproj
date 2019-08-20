@@ -85,6 +85,7 @@
     <ClCompile Include="src\ImageContainers\CL2ImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\DC6ImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\DCCImageContainer.cpp" />
+    <ClCompile Include="src\ImageContainers\DT1ImageContainer.cpp" />
     <ClCompile Include="src\ImageContainers\SimpleImageContainer.cpp" />
     <ClCompile Include="src\ImageUtils.cpp" />
     <ClCompile Include="src\InputEvent.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="src\ImageContainers\CL2ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\DC6ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\DCCImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\DT1ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\ImageContainer.h" />
     <ClInclude Include="src\ImageContainers\SimpleImageContainer.h" />
     <ClInclude Include="src\ImageUtils.h" />
@@ -419,6 +421,7 @@
     <ClInclude Include="src\VarOrPredicate.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="src\gsl\gsl" />
     <None Include="src\gsl\gsl_algorithm" />
     <None Include="src\gsl\gsl_assert" />

@@ -23,13 +23,7 @@
     { "name": "load", "file": "level/showMap.json" },
     { "name": "load", "file": "level/afterLevelLoad.json" },
     { "name": "level.pause", "pause": false },
-<<<<<<< .mine
-    { "name": "drawable.visible", "id": "msgBox", "visible": false },
-||||||| .r2628
-    { "name": "loadJson", "json": { "action": "closeMsgBox" } },
-=======
     "closeMsgBox",
->>>>>>> .r2731
     "clearPanelText"
   ]
 }
