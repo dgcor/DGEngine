@@ -112,14 +112,20 @@ void LevelSurface::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-void LevelSurface::draw(const Game& game, const Panel& obj) const
+bool LevelSurface::draw(const Game& game, const Panel& obj) const
 {
-	obj.draw(game, texture, visibleRect);
+	return obj.draw(game, texture, visibleRect);
 }
 
 void LevelSurface::draw(const sf::Drawable& obj) const
 {
 	texture.draw(obj);
+}
+
+void LevelSurface::draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
+	const Palette* palette, sf::Shader* spriteShader) const
+{
+	obj.draw(vertexTexture, palette, spriteShader, texture);
 }
 
 void LevelSurface::init(const Game& game)

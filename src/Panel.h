@@ -38,7 +38,7 @@ public:
 	virtual bool Visible() const noexcept { return visible; }
 	virtual void Visible(bool visible_) noexcept { visible = visible_; }
 
-	void draw(const Game& game, sf::RenderTarget& target,
+	bool draw(const Game& game, sf::RenderTarget& target,
 		const sf::FloatRect& visibleRect) const;
 	virtual void draw(const Game& game, sf::RenderTarget& target) const;
 	virtual void update(Game& game);

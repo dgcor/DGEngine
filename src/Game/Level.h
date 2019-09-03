@@ -95,6 +95,8 @@ private:
 	std::vector<uint32_t> experiencePoints;
 	std::unordered_map<uint16_t, std::string> propertyNames;
 
+	int epoch{ 0 };
+
 	static const LevelCell& get(int32_t x, int32_t y, const Level& level) noexcept
 	{
 		return level.map[x][y];

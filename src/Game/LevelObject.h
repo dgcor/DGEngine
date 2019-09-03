@@ -87,7 +87,7 @@ public:
 
 	// Game
 
-	uint8_t getLight() const noexcept { return class_->getLightSource().maxLight; }
+	uint8_t getLight() const noexcept { return class_->getLightSource().light; }
 	LightSource getLightSource() const noexcept { return class_->getLightSource(); }
 
 	void executeAction(Game& game) const
@@ -125,9 +125,9 @@ public:
 		const Game& game, const Level& level) const = 0;
 
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-		SpriteShaderCache& cache, uint8_t light) const
+		SpriteShaderCache& cache) const
 	{
-		sprite.draw(target, spriteShader, cache, light);
+		sprite.draw(target, spriteShader, cache);
 	}
 
 	// Update

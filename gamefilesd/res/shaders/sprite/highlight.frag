@@ -4,7 +4,6 @@ uniform sampler2D texture;
 uniform vec2 pixelSize;
 uniform vec4 outline;
 uniform vec4 ignore;
-uniform vec4 light;
 uniform bool hasPalette;
 
 void main()
@@ -21,10 +20,6 @@ void main()
 		pixel.r = min(pixel.r + 0.1, 1.0);
 		pixel.g = min(pixel.g + 0.1, 1.0);
 		pixel.b = min(pixel.b + 0.1, 1.0);
-	}
-	else
-	{
-		pixel = pixel - light;
 	}
 	gl_FragColor = pixel;
 }

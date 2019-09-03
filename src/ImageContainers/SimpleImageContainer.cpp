@@ -47,7 +47,9 @@ sf::Image2 SimpleImageContainer::get(uint32_t index,
 	}
 
 	imgInfo.offset = {};
+	imgInfo.absoluteOffset = false;
 	imgInfo.blendMode = blendMode;
+	imgInfo.nextIndex = -1;
 
 	img.create(subImageSizeX, subImageSizeY, sf::Color::Transparent);
 

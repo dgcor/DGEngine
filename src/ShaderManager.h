@@ -8,9 +8,11 @@
 struct GameShaders
 {
 	sf::Shader* Game{ nullptr };
+	sf::Shader* Level{ nullptr };
 	sf::Shader* Sprite{ nullptr };
 
 	bool hasGameShader() const noexcept { return Game != nullptr; }
+	bool hasLevelShader() const noexcept { return Level != nullptr; }
 	bool hasSpriteShader() const noexcept { return Sprite != nullptr; }
 };
 
@@ -18,6 +20,7 @@ class ShaderManager
 {
 private:
 	static const std::string gameText;
+	static const std::string levelText;
 	static const std::string spriteText;
 
 	std::unordered_map<std::string, std::shared_ptr<sf::Shader>> shaders;

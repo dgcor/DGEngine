@@ -1,4 +1,5 @@
 #include "ParseLevel.h"
+#include "DS1.h"
 #include "FileUtils.h"
 #include "Game.h"
 #include "Game/Level.h"
@@ -119,14 +120,14 @@ namespace Parser
 			auto defaultTile = map.getTileBlock((int16_t)getIntKey(elem, "outOfBoundsTile", -1));
 
 			TilesetLevelLayer layer1(
-				LevelHelper::loadTilesetSprite(imgPack, min, false, false, true),
+				LevelHelper::loadTilesetSprite(imgPack, min, false, false),
 				0,
 				defaultTile
 			);
 			levelLayers.push_back({ layer1, {}, false });
 
 			TilesetLevelLayer layer2(
-				LevelHelper::loadTilesetSprite(imgPack, min, true, true, true),
+				LevelHelper::loadTilesetSprite(imgPack, min, true, true),
 				0,
 				defaultTile
 			);
@@ -141,8 +142,7 @@ namespace Parser
 		}
 		else
 		{
-			tileSize = getVector2uKey<std::pair<int32_t, int32_t>>(
-				elem, "tileSize", std::make_pair(64, 32));
+			tileSize = getVector2uKey(elem, "tileSize", tileSize);
 		}
 
 		if (elem.HasMember("layers") == true)
@@ -165,7 +165,7 @@ namespace Parser
 	}
 
 	Dun getDunFromLayer(const Value* queryDoc, const Value& elem,
-		int16_t indexOffset, int16_t defaultTile)
+		int32_t indexOffset, int32_t defaultTile)
 	{
 		auto width = getUIntVal(getQueryKey(queryDoc, elem, "width"));
 		auto height = getUIntVal(getQueryKey(queryDoc, elem, "height"));
@@ -182,20 +182,20 @@ namespace Parser
 		}
 		for (size_t i = 0; i < elemData.Size(); i++)
 		{
-			dun.set(i, ((int16_t)getIntIdx(elemData, i) + indexOffset));
+			dun.set(i, (getIntIdx(elemData, i) + indexOffset));
 		}
 		return dun;
 	}
 
 	void parseMapLayers(const Value* queryDoc, const Value& elem,
-		LevelMap& map, const PairInt32& mapPos, int16_t defaultTile,
+		LevelMap& map, const PairInt32& mapPos, int32_t defaultTile,
 		bool resizeToFit)
 	{
 		if (isValidArray(elem, "layers") == false)
 		{
 			return;
 		}
-		auto indexOffset = (int16_t)getIntKey(elem, "indexOffset");
+		auto indexOffset = (int32_t)getIntKey(elem, "indexOffset");
 		auto pos = getVector2iKey<PairInt32>(elem, "position");
 		pos.x += mapPos.x;
 		pos.y += mapPos.y;
@@ -235,7 +235,7 @@ namespace Parser
 	}
 
 	void parseMapObj(const Value* queryDoc, const Value& elem, LevelMap& map,
-		const PairInt32& mapPos, int16_t defaultTile, bool resizeToFit)
+		const PairInt32& mapPos, int32_t defaultTile, bool resizeToFit)
 	{
 		std::string file;
 
@@ -265,8 +265,14 @@ namespace Parser
 				hasJsonFile = true;
 			}
 		}
+		else if (Utils::endsWith(Utils::toLower(file), ".ds1") == true)
+		{
+			auto ds1 = DS1::Decoder(file);
+			map.setD2Area(0, 0, ds1);
+			return;
+		}
 
-		defaultTile = (int16_t)getIntKey(elem, "defaultTile", defaultTile);
+		defaultTile = getIntKey(elem, "defaultTile", defaultTile);
 
 		if (elem.HasMember("layers") == true)
 		{
@@ -274,7 +280,7 @@ namespace Parser
 		}
 		if (hasJsonFile == false)
 		{
-			Dun dun(file, defaultTile);
+			D1Dun dun(file, defaultTile);
 			if (dun.Width() > 0 && dun.Height() > 0)
 			{
 				auto pos = getVector2uKey<PairInt32>(elem, "position");
@@ -293,7 +299,7 @@ namespace Parser
 	}
 
 	void parseMap(const Value* queryDoc, const Value& elem, LevelMap& map,
-		const PairInt32& mapPos, int16_t defaultTile,
+		const PairInt32& mapPos, int32_t defaultTile,
 		bool resizeToFit, int recursionLevel)
 	{
 		if (elem.HasMember("map") == false ||
@@ -338,7 +344,7 @@ namespace Parser
 	}
 
 	void parseMap(const Value* queryDoc, const Value& elem,
-		LevelMap& map, int16_t defaultTile)
+		LevelMap& map, int32_t defaultTile)
 	{
 		bool resizeToFit = getBoolKey(elem, "resizeToFit", true);
 		if (getBoolKey(elem, "clear", resizeToFit) == true)
@@ -351,7 +357,7 @@ namespace Parser
 	void parseLevelMap(Game& game, const Value* queryDoc, const Value& elem, Level& level)
 	{
 		auto mapPtr = &level.Map();
-		auto defaultTile = (int16_t)getIntVal(getQueryKey(queryDoc, elem, "defaultTile"), -1);
+		auto defaultTile = getIntVal(getQueryKey(queryDoc, elem, "defaultTile"), -1);
 		PairInt32 mapSize = getVector2uVal<PairInt32>(
 			getQueryKey(queryDoc, elem, "mapSize"),
 			mapPtr->MapSizei()
@@ -387,12 +393,16 @@ namespace Parser
 		{
 			mapPtr->setDefaultLightSource(getLightSourceVal(
 				getQueryKey(queryDoc, elem, "defaultLight"),
-				{ 0, 255, 10, LightEasing::Linear }
+				{ 255, 10 }
 			));
 		}
 
 		std::vector<LevelLayer> levelLayers;
-		std::pair<int32_t, int32_t> tileSize;
+		auto tileSize = std::make_pair(level.TileWidth(), level.TileHeight());
+		if (tileSize.first == 0 && tileSize.second == 0)
+		{
+			tileSize = std::make_pair(64, 32);
+		}
 		int32_t indexToDrawObjects;
 
 		if (getOrParseLevelTexturePack(game, elem, *mapPtr,
@@ -507,6 +517,7 @@ namespace Parser
 			level = levelPtr.get();
 			game.Resources().setCurrentLevel(level);
 			level->Id(id);
+			level->setShader(game.Shaders().Level);
 		}
 
 		if (existingLevel == false)

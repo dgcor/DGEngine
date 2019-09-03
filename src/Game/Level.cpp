@@ -73,7 +73,6 @@ void Level::Init(const Game& game, LevelMap map_,
 	automapSurface.init(game);
 	updateTilesetLayersVisibleArea();
 
-	map.initLights();
 	updateLevelObjectPositions();
 	viewNeedsUpdate = true;
 }
@@ -83,7 +82,6 @@ void Level::Init()
 	clickedObject.reset();
 	hoverObject.reset();
 
-	map.initLights();
 	updateLevelObjectPositions();
 	viewNeedsUpdate = true;
 }
@@ -519,14 +517,6 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		}
 	}
 
-	for (const auto& item : drawables)
-	{
-		if (auto obj = item.drawable.lock())
-		{
-			surface.draw(game, *obj);
-		}
-	}
-
 	sf::RenderStates states(sf::RenderStates::Default);
 	if (shader != nullptr)
 	{
@@ -545,9 +535,35 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 			surface.Size().x,
 			surface.Size().y
 		));
+
+		shader->setUniform("visibleRect", sf::Glsl::Vec4(
+			surface.visibleRect.left,
+			surface.visibleRect.top,
+			surface.visibleRect.width,
+			surface.visibleRect.height
+		));
+
+		shader->setUniform("numberOfLights", (int)map.lightArray.size());
+		shader->setUniformArray("lights", map.lightArray.data(), map.lightArray.size());
+		shader->setUniform("defaultLight", ((float)map.getDefaultLight() / 255.f));
+		shader->setUniform("radiusSize", (float)(std::max(map.MapSizef().x, map.MapSizef().y)));
+	}
+	surface.draw(target, states);
+
+	surface.clear(sf::Color::Transparent);
+	bool hasDrawn = false;
+	for (const auto& item : drawables)
+	{
+		if (auto obj = item.drawable.lock())
+		{
+			hasDrawn |= surface.draw(game, *obj);
+		}
+	}
+	if (hasDrawn == true)
+	{
+		surface.draw(target, sf::RenderStates::Default);
 	}
 
-	surface.draw(target, states);
 	automapSurface.draw(target, sf::RenderStates::Default);
 
 	target.setView(origView);
@@ -679,7 +695,9 @@ void Level::update(Game& game)
 
 	updateZoom(game);
 	updateMouse(game);
-	map.updateLights();
+	map.updateLights(levelObjects, currentMapViewCenter);
+
+	epoch++;
 
 	for (auto& layer : levelLayers)
 	{
@@ -688,7 +706,7 @@ void Level::update(Game& game)
 			auto tiles = std::get<TilesetLevelLayer>(layer.layer).tiles.get();
 			if (tiles != nullptr)
 			{
-				tiles->update(game.getElapsedTime());
+				tiles->update(epoch, game.getElapsedTime());
 			}
 		}
 		if (holdsTextureLevelLayer(layer.layer) == true)

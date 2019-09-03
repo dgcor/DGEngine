@@ -46,6 +46,7 @@
     <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\CmdLineUtils.cpp" />
     <ClCompile Include="src\CompositeTexture.cpp" />
+    <ClCompile Include="src\DS1.cpp" />
     <ClCompile Include="src\Dun.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\FadeInOut.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="src\SFML\SFMLUtils.cpp" />
     <ClCompile Include="src\SFML\Sprite2.cpp" />
     <ClCompile Include="src\SFML\Text2.cpp" />
+    <ClCompile Include="src\SFML\VertexArray2.cpp" />
     <ClCompile Include="src\SFML\View2.cpp" />
     <ClCompile Include="src\ShaderManager.cpp" />
     <ClCompile Include="src\Sol.cpp" />
@@ -174,8 +176,8 @@
     <ClCompile Include="src\TexturePacks\IndexedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\RectTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\SimpleTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\StackedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\TexturePack.cpp" />
-    <ClCompile Include="src\TexturePacks\VectorTexturePack.cpp" />
     <ClCompile Include="src\TextUtils.cpp" />
     <ClCompile Include="src\TileSet.cpp" />
     <ClCompile Include="src\UIObject.cpp" />
@@ -231,13 +233,7 @@
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\CmdLineUtils.h" />
     <ClInclude Include="src\CompositeTexture.h" />
-    <ClInclude Include="src\endian\big_endian.hpp" />
-    <ClInclude Include="src\endian\detail\helpers.hpp" />
-    <ClInclude Include="src\endian\detail\stream.hpp" />
-    <ClInclude Include="src\endian\is_big_endian.hpp" />
-    <ClInclude Include="src\endian\little_endian.hpp" />
-    <ClInclude Include="src\endian\stream_reader.hpp" />
-    <ClInclude Include="src\endian\stream_writer.hpp" />
+    <ClInclude Include="src\DS1.h" />
     <ClInclude Include="src\FadeInOut.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\Font.h" />
@@ -388,6 +384,7 @@
     <ClInclude Include="src\SFML\SFMLUtils.h" />
     <ClInclude Include="src\SFML\Sprite2.h" />
     <ClInclude Include="src\SFML\Text2.h" />
+    <ClInclude Include="src\SFML\VertexArray2.h" />
     <ClInclude Include="src\SFML\View2.h" />
     <ClInclude Include="src\ShaderManager.h" />
     <ClInclude Include="src\Sol.h" />
@@ -401,8 +398,8 @@
     <ClInclude Include="src\TexturePacks\IndexedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\RectTexturePack.h" />
     <ClInclude Include="src\TexturePacks\SimpleTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\StackedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\TexturePack.h" />
-    <ClInclude Include="src\TexturePacks\VectorTexturePack.h" />
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\TileSet.h" />
     <ClInclude Include="src\UIObject.h" />
@@ -422,15 +419,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="src\gsl\gsl" />
-    <None Include="src\gsl\gsl_algorithm" />
-    <None Include="src\gsl\gsl_assert" />
-    <None Include="src\gsl\gsl_byte" />
-    <None Include="src\gsl\gsl_util" />
-    <None Include="src\gsl\multi_span" />
-    <None Include="src\gsl\pointers" />
-    <None Include="src\gsl\span" />
-    <None Include="src\gsl\string_span" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B30255A6-E921-4847-9FB1-26842AB465A4}</ProjectGuid>

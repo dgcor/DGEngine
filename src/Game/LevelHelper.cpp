@@ -4,7 +4,6 @@
 #include "ImageContainers/CELImageContainer.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
-#include "TexturePacks/VectorTexturePack.h"
 #include "Utils/Utils.h"
 
 namespace LevelHelper
@@ -77,44 +76,6 @@ namespace LevelHelper
 		return notTransparent;
 	}
 
-	std::shared_ptr<TexturePack> loadTilesetSprite(
-		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
-	{
-		std::shared_ptr<Palette> palette;
-		if (imgPack.IsIndexed() == true)
-		{
-			palette = imgPack.getPalette();
-		}
-		auto texturePack = std::make_shared<VectorTexturePack>(min.size(), palette);
-
-		bool hasTile = true;
-		sf::Image2 newPillar;
-		unsigned pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
-		if (top == true)
-		{
-			sf::Vector2f offset(0.f, -(float)pillarHeight);
-			texturePack->setOffset(offset);
-		}
-
-		for (uint32_t i = 0; i < min.size(); i++)
-		{
-			if (hasTile == true)
-			{
-				newPillar.create(64, pillarHeight, sf::Color::Transparent);
-				hasTile = false;
-			}
-
-			hasTile = drawMinPillar(newPillar, 0, 0, min[i], imgPack, top);
-
-			if (skipBlankTiles == false ||
-				hasTile == true)
-			{
-				texturePack->set(i, newPillar);
-			}
-		}
-		return texturePack;
-	}
-
 	// reduces the sheet size and number of textures that fit in a texture
 	// to avoid creating big textures with too many blanks.
 	void getIdealTilesetSheetSize(
@@ -159,8 +120,8 @@ namespace LevelHelper
 
 	// creates spritesheets for level sprites based on the maximum supported texture size
 	// and tries to fit as many tiles into the smallest number of textures.
-	std::shared_ptr<TexturePack> loadTilesetAndBatchSprites(
-		CachedImagePack& imgPack, const Min& min, bool top, bool skipBlankTiles)
+	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
+		const Min& min, bool top, bool skipBlankTiles)
 	{
 		std::shared_ptr<TexturePack> texturePack;
 		SimpleMultiTexturePack* multiTexturePack = nullptr;
@@ -183,7 +144,7 @@ namespace LevelHelper
 		{
 			auto texturePack2 = std::make_unique<SimpleMultiTexturePack>(palette);
 			multiTexturePack = texturePack2.get();
-			texturePack = std::make_shared<IndexedTexturePack>(std::move(texturePack2), true);
+			texturePack = std::make_shared<IndexedTexturePack>(std::move(texturePack2), true, false);
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 			numTexturesToFit = min.size() - min.blankTopPillars();
 		}
@@ -264,19 +225,6 @@ namespace LevelHelper
 			}
 		}
 		return texturePack;
-	}
-
-	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
-		const Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether)
-	{
-		if (batchSpritesTogether == false)
-		{
-			return loadTilesetSprite(imgPack, min, top, skipBlankTiles);
-		}
-		else
-		{
-			return loadTilesetAndBatchSprites(imgPack, min, top, skipBlankTiles);
-		}
 	}
 
 	void saveTilesetSprite(const std::string& outFilePath, const std::string& outFileName,

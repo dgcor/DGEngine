@@ -210,8 +210,8 @@
       { "rect": [329, 915, 50, 57], "offset": [29, 45] }
     ],
     "animatedTextures": [
-      { "indexes": [167, 168, 169, 170, 171, 172, 173, 174], "refresh": 120 },
-      { "indexes": [265, 266, 267, 268], "refresh": 120 }
+      { "indexes": [167, 168, 169, 170, 171, 172, 173, 174], "refresh": 60 },
+      { "indexes": [265, 266, 267, 268], "refresh": 60 }
     ],
     "textureIndexes": [
       16,

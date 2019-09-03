@@ -88,19 +88,19 @@ void CompositeSprite::setTexture(const std::vector<TextureInfo>& ti)
 void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader) const
 {
 	SpriteShaderCache cache;
-	sprite.draw(target, spriteShader, cache, 255);
+	sprite.draw(target, spriteShader, cache);
 	for (const auto& s : extraSprites)
 	{
-		s.draw(target, spriteShader, cache, 255);
+		s.draw(target, spriteShader, cache);
 	}
 }
 
 void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-	SpriteShaderCache& cache, uint8_t light) const
+	SpriteShaderCache& cache) const
 {
-	sprite.draw(target, spriteShader, cache, light);
+	sprite.draw(target, spriteShader, cache);
 	for (const auto& s : extraSprites)
 	{
-		s.draw(target, spriteShader, cache, light);
+		s.draw(target, spriteShader, cache);
 	}
 }

@@ -7,6 +7,14 @@ indent_size              = 2
 indent_style             = space
 insert_final_newline     = false
 
+[gamefiles**.{frag,vert}]
+charset                  = utf-8
+end_of_line              = lf
+indent_size              = 4
+indent_style             = tab
+insert_final_newline     = false
+trim_trailing_whitespace = true
+
 [src/**]
 charset                  = utf-8
 end_of_line              = lf
@@ -15,7 +23,7 @@ indent_style             = tab
 insert_final_newline     = true
 trim_trailing_whitespace = true
 
-[src/{endian,gsl,rapidjson}/**]
+[src/{endian,gsl,rapidjson,rectpack2D}/**]
 indent_size              = unset
 indent_style             = unset
 insert_final_newline     = unset

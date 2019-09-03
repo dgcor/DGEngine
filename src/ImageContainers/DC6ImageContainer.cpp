@@ -318,6 +318,7 @@ sf::Image2 DC6ImageContainer::get(uint32_t index,
 		imgInfo.absoluteOffset = false;
 	}
 	imgInfo.blendMode = blendMode;
+	imgInfo.nextIndex = -1;
 
 	sf::Image2 img;
 	img.create(frameHeader.width, frameHeader.height, sf::Color::Transparent);

@@ -270,10 +270,11 @@ bool BitmapFontTexturePack::get(uint32_t index, TextureInfo& ti) const
 	{
 		ti.texture = texture.get();
 		ti.textureRect = chars[index];
+		ti.palette = palette;
 		ti.offset = {};
 		ti.absoluteOffset = false;
 		ti.blendMode = BlendMode::Alpha;
-		ti.palette = palette;
+		ti.nextIndex = -1;
 		return true;
 	}
 	return false;

@@ -52,14 +52,15 @@ bool BitmapText::setText(const std::string& str)
 void BitmapText::updateVertexText()
 {
 	font->updateVertexString(
-		vertexText, text, color, horizSpaceOffset, vertSpaceOffset, size.x, horizAlign
+		vertexText.vertices, text, color, horizSpaceOffset,
+		vertSpaceOffset, size.x, horizAlign
 	);
 }
 
 void BitmapText::setColor(const sf::Color& color_) noexcept
 {
 	color = color_;
-	for (auto& vertex : vertexText)
+	for (auto& vertex : vertexText.vertices)
 	{
 		vertex.color = color_;
 	}
@@ -115,7 +116,7 @@ void BitmapText::draw(const Game& game, sf::RenderTarget& target) const
 {
 	if (visible == true)
 	{
-		font->draw(vertexText, drawPos, size, game, target);
+		font->draw(vertexText, drawPos, size, game.Shaders().Sprite, target);
 	}
 }
 

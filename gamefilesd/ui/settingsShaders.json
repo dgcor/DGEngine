@@ -104,12 +104,51 @@
       "onFocus": "anchorPentagrams"
     },
     {
+      "id": "maxLights",
+      "font": "font42g",
+      "sound": "titlemov",
+      "focus": true,
+      "focusSound": "titlemov",
+      "position": [319, 277],
+      "anchor": "none",
+      "horizontalAlign": "center",
+      "text": "Max Lights: 64",
+      "onClick": {
+        "name": "switch",
+        "param": "%maxLights.text%",
+        "case": [
+          {
+            "value": "Max Lights: 64",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 0" }
+          },
+          {
+            "value": "Max Lights: 0",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 2" }
+          },
+          {
+            "value": "Max Lights: 2",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 4" }
+          },
+          {
+            "value": "Max Lights: 4",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 16" }
+          },
+          {
+            "value": "Max Lights: 16",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+          }
+        ],
+        "default": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+      },
+      "onFocus": "anchorPentagrams"
+    },
+    {
       "id": "back",
       "font": "font42g",
       "sound": "titlslct",
       "focus": true,
       "focusSound": "titlemov",
-      "position": [319, 277],
+      "position": [319, 320],
       "anchor": "none",
       "horizontalAlign": "center",
       "text": "OK",
@@ -193,6 +232,29 @@
               }
             ],
             "default": { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" }
+          },
+          {
+            "name": "switch",
+            "param": "%maxLights.text%",
+            "case": [
+              {
+                "value": "Max Lights: 0",
+                "action": { "name": "game.setProperty", "property": "maxLights", "value": 0 }
+              },
+              {
+                "value": "Max Lights: 2",
+                "action": { "name": "game.setProperty", "property": "maxLights", "value": 2 }
+              },
+              {
+                "value": "Max Lights: 4",
+                "action": { "name": "game.setProperty", "property": "maxLights", "value": 4 }
+              },
+              {
+                "value": "Max Lights: 16",
+                "action": { "name": "game.setProperty", "property": "maxLights", "value": 16 }
+              }
+            ],
+            "default": { "name": "game.setProperty", "property": "maxLights", "value": 64 }
           },
           { "name": "resource.pop" },
           { "name": "game.fadeIn" }

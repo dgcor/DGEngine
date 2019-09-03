@@ -3,11 +3,15 @@
 #include "ImageContainers/ImageContainer.h"
 #include <memory>
 #include "Palette.h"
+#include <vector>
 
 namespace ImageUtils
 {
 	void applyMask(sf::Image& image,
 		const sf::Color& transparencyMask = sf::Color::Transparent);
+
+	sf::Image createPackedImage(const ImageContainer& imgContainer,
+		const std::shared_ptr<Palette>& pal, std::vector<sf::IntRect>& rects);
 
 	sf::Image loadImage(const std::string_view fileName,
 		const sf::Color& transparencyMask = sf::Color::Transparent);

@@ -36,9 +36,12 @@ public:
 		elements.fill({});
 	}
 
-	constexpr size_t empty() const noexcept { return numElements == 0; }
+	constexpr Val_* data() noexcept { return elements.data(); }
+	constexpr const Val_* data() const noexcept { return elements.data(); }
 
-	constexpr size_t full() const noexcept { return numElements >= elements.size(); }
+	constexpr bool empty() const noexcept { return numElements == 0; }
+
+	constexpr bool full() const noexcept { return numElements >= elements.size(); }
 
 	constexpr size_t size() const noexcept { return numElements; }
 

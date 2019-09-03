@@ -13,6 +13,7 @@ public:
 		sf::Vector2f offset;
 		bool absoluteOffset{ false };
 		BlendMode blendMode{ BlendMode::Alpha };
+		int32_t nextIndex{ -1 };
 	};
 
 	virtual ~ImageContainer() = default;

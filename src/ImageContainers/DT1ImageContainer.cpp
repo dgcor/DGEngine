@@ -337,7 +337,7 @@ DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
 	for (int i = 0; i < header.numTiles; i++)
 	{
 		tiles.emplace_back(fileStream);
-		tilesById[tiles[i].id].push_back(i);
+		tileIndexes[tiles[i].id].push_back(i);
 	}
 
 	for (auto& tile : tiles)
@@ -362,13 +362,38 @@ sf::Image2 DT1ImageContainer::get(uint32_t index,
 	const PaletteArray* palette, ImageInfo& imgInfo) const
 {
 	if (index >= tiles.size())
+	{
 		return {};
+	}
 
-	imgInfo.offset = {};
-	imgInfo.absoluteOffset = false;
+	const auto& tile = tiles[index];
+
+	imgInfo.offset = {0, -(float)(tile.yOffset - 128)};
+	imgInfo.absoluteOffset = true;
 	imgInfo.blendMode = blendMode;
 
-	return tiles[index].decode(palette);
+	// set nextIndex for sibling textures
+	if (tile.orientation.rawValue() == DT1::Orientation::RIGHT_NORTH_CORNER_WALL)
+	{
+		imgInfo.nextIndex = DT1::Tile::createIndex(
+			DT1::Orientation::LEFT_NORTH_CORNER_WALL, tile.mainIndex, tile.subIndex
+		);
+	}
+	else
+	{
+		imgInfo.nextIndex = -1;
+	}
+
+	return tile.decode(palette);
+}
+
+const std::vector<uint32_t> DT1ImageContainer::getTilesById(uint32_t id) const
+{
+	if (tileIndexes.count(id) == 0)
+	{
+		return {};
+	}
+	return tileIndexes.at(id);
 }
 
 #endif

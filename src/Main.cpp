@@ -1,7 +1,7 @@
-#include <iostream>
 #include "CmdLineUtils.h"
 #include "FileUtils.h"
 #include "Game.h"
+#include <iostream>
 
 int main(int argc, char* argv[])
 {

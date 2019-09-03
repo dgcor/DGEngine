@@ -4,7 +4,7 @@
     "file": "levels/l3data/l3_2.pal"
   },
   "load": "level/default/caves.json",
-  "level": { "id": "level", "defaultLight": [185, 0, 7] },
+  "level": { "id": "level", "defaultLight": [185, 7] },
   "load": "level/automap/caves/load.json",
   "load": "level/map/l10/levelObjects.json",
   "load": "level/map/l10/monsters.json",

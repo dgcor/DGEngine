@@ -22,15 +22,16 @@ class IndexedTexturePack : public TexturePack
 	std::unordered_map<uint32_t, uint32_t> textureIndexes;
 	uint32_t numIndexedTextures{ 0 };
 	bool onlyUseIndexed{ false };
-
-	bool getTexture(uint32_t index, TextureInfo& ti) const;
+	bool translateAnimatedIndexes{ false };
+	int lastEpoch{ 0 };
 
 public:
-	IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_, bool onlyUseIndexed_);
+	IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
+		bool onlyUseIndexed_, bool translateAnimatedIndexes_);
 
 	virtual bool get(uint32_t index, TextureInfo& ti) const;
 
-	virtual void update(sf::Time elapsedTime);
+	virtual void update(int epoch, sf::Time elapsedTime);
 
 	TexturePack* getTexturePack() const noexcept { return texturePack.get(); }
 
@@ -39,6 +40,8 @@ public:
 
 	void mapTextureIndex(uint32_t mapIndex);
 	void mapTextureIndex(uint32_t mapIndex, uint32_t toIndex);
+
+	virtual const sf::Texture* getTexture() const noexcept { return texturePack->getTexture(); }
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return texturePack->getPalette(); }
 	virtual uint32_t size() const noexcept { return numIndexedTextures; }

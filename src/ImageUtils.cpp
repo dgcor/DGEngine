@@ -2,6 +2,7 @@
 #include "CachedImagePack.h"
 #include "Pcx.h"
 #include "PhysFSStream.h"
+#include "rectpack2D/finders_interface.h"
 #include "Utils/NumberVector.h"
 #include "Utils/Utils.h"
 
@@ -30,6 +31,69 @@ namespace ImageUtils
 				}
 			}
 		}
+	}
+
+	sf::Image createPackedImage(const ImageContainer& imgContainer,
+		const std::shared_ptr<Palette>& pal, std::vector<sf::IntRect>& rects)
+	{
+		if (imgContainer.size() == 1)
+		{
+			return imgContainer.get(0, (pal == nullptr ? nullptr : &pal->palette));
+		}
+
+		using spaces_t = rectpack2D::empty_spaces<false, rectpack2D::default_empty_spaces>;
+		using rect_t = rectpack2D::output_rect_t<spaces_t>;
+
+		bool success = true;
+
+		auto reportSuccessful = [](rect_t&) {
+			return rectpack2D::callback_result::CONTINUE_PACKING;
+		};
+
+		auto reportUnsuccessful = [&success](rect_t&) {
+			success = false;
+			return rectpack2D::callback_result::ABORT_PACKING;
+		};
+
+		const auto maxSide = (int)std::min(sf::Texture::getMaximumSize(), 3072u);
+		const auto discardStep = 2;
+
+		CachedImagePack imgCache(&imgContainer, pal);
+
+		std::vector<rect_t> imgRects;
+
+		for (size_t i = 0; i < imgCache.size(); i++)
+		{
+			auto frameSize = imgCache[i].getSize();
+			imgRects.push_back(rect_t(0, 0, (int)frameSize.x, (int)frameSize.y));
+		}
+
+		const auto resultSize = rectpack2D::find_best_packing<spaces_t>(
+			imgRects,
+			make_finder_input(
+				maxSide,
+				discardStep,
+				reportSuccessful,
+				reportUnsuccessful,
+				rectpack2D::flipping_option::DISABLED
+			)
+		);
+
+		if (success == false)
+		{
+			return {};
+		}
+
+		sf::Image img;
+		img.create(resultSize.w, resultSize.h, sf::Color::Transparent);
+
+		for (size_t i = 0; i < imgRects.size(); i++)
+		{
+			const auto& r = imgRects[i];
+			rects.push_back({ r.x, r.y, r.w, r.h });
+			img.copy(imgCache[i], r.x, r.y);
+		}
+		return img;
 	}
 
 	sf::Image loadImage(const std::string_view fileName, const sf::Color& transparencyMask)

@@ -31,6 +31,6 @@
     "min": "Nlevels/TownData/Town.MIN",
     "minBlocks": 16,
     "sol": "Nlevels/TownData/Town.SOL",
-    "defaultLight": 255
+    "defaultLight": 220
   }
 }

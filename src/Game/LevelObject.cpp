@@ -214,30 +214,23 @@ bool LevelObject::move(Level& level, const PairFloat& pos)
 
 bool LevelObject::remove(LevelMap& map) const
 {
-	bool success = false;
 	if (map.isMapCoordValid(mapPosition) == true)
 	{
-		success = map[mapPosition].removeObject(this);
-		if (success == true)
-		{
-			map.removeLight(mapPosition, getLightSource());
-		}
+		return map[mapPosition].removeObject(this);
 	}
-	return success;
+	return false;
 }
 
 bool LevelObject::updateMapPositionBack(LevelMap& map, const PairFloat pos)
 {
-	if (map.isMapCoordValid(mapPosition) == true &&
-		map[mapPosition].removeObject(this) == true)
+	if (map.isMapCoordValid(mapPosition) == true)
 	{
-		map.removeLight(mapPosition, getLightSource());
+		map[mapPosition].removeObject(this);
 	}
 	bool success = map.isMapCoordValid(pos);
 	if (success == true)
 	{
 		map[pos].addBack(this);
-		map.addLight(pos, getLightSource());
 	}
 	mapPosition = pos;
 	return success;
@@ -245,16 +238,14 @@ bool LevelObject::updateMapPositionBack(LevelMap& map, const PairFloat pos)
 
 bool LevelObject::updateMapPositionFront(LevelMap& map, const PairFloat pos)
 {
-	if (map.isMapCoordValid(mapPosition) == true &&
-		map[mapPosition].removeObject(this) == true)
+	if (map.isMapCoordValid(mapPosition) == true)
 	{
-		map.removeLight(mapPosition, getLightSource());
+		map[mapPosition].removeObject(this);
 	}
 	bool success = map.isMapCoordValid(pos);
 	if (success == true)
 	{
 		map[pos].addFront(this);
-		map.addLight(pos, getLightSource());
 	}
 	mapPosition = pos;
 	return success;

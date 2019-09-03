@@ -2,6 +2,7 @@
 #include "Level.h"
 #include "LevelSurface.h"
 #include "Player.h"
+#include "SFML/VertexArray2.h"
 
 void TilesetLevelLayer::updateVisibleArea(const LevelSurface& surface, const LevelMap& map)
 {
@@ -32,10 +33,57 @@ void TilesetLevelLayer::updateVisibleArea(const LevelSurface& surface, const Lev
 	visibleEnd.y = (int32_t)mapBL.y;
 }
 
+static void addTile(std::vector<sf::Vertex>& vertices,
+	float curX, float curY, const sf::IntRect& textureRect)
+{
+	auto vertIdx = vertices.size();
+	vertices.resize(vertices.size() + 6);
+
+	// triangle 1
+
+	// top left
+	vertices[vertIdx].position.x = curX;
+	vertices[vertIdx].position.y = curY;
+	vertices[vertIdx].texCoords.x = (float)textureRect.left;
+	vertices[vertIdx].texCoords.y = (float)textureRect.top;
+	vertIdx++;
+
+	// top right
+	vertices[vertIdx].position.x = curX + (float)textureRect.width;
+	vertices[vertIdx].position.y = curY;
+	vertices[vertIdx].texCoords.x = (float)textureRect.left + (float)textureRect.width;
+	vertices[vertIdx].texCoords.y = (float)textureRect.top;
+	vertIdx++;
+
+	// bottom left
+	vertices[vertIdx].position.x = curX;
+	vertices[vertIdx].position.y = curY + (float)textureRect.height;
+	vertices[vertIdx].texCoords.x = (float)textureRect.left;
+	vertices[vertIdx].texCoords.y = (float)textureRect.top + (float)textureRect.height;
+	vertIdx++;
+
+	// triangle 2
+
+	// top right
+	vertices[vertIdx] = vertices[vertIdx - 2];
+	vertIdx++;
+
+	// bottom left
+	vertices[vertIdx] = vertices[vertIdx - 2];
+	vertIdx++;
+
+	// bottom right
+	vertices[vertIdx].position.x = curX + (float)textureRect.width;
+	vertices[vertIdx].position.y = curY + (float)textureRect.height;
+	vertices[vertIdx].texCoords.x = (float)textureRect.left + (float)textureRect.width;
+	vertices[vertIdx].texCoords.y = (float)textureRect.top + (float)textureRect.height;
+}
+
 void TilesetLevelLayer::draw(const LevelSurface& surface,
 	SpriteShaderCache& spriteCache, sf::Shader* spriteShader,
 	const Level& level, bool drawLevelObjects, bool isAutomap) const
 {
+	VertexArray2 vertexLayer;
 	Sprite2 sprite;
 	TextureInfo ti;
 	sf::FloatRect tileRect;
@@ -48,28 +96,32 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 			return;
 		}
 	}
+
+	const sf::Texture* tilesetTexture = nullptr;
+	if (tiles != nullptr &&
+		drawLevelObjects == false)
+	{
+		tilesetTexture = tiles->getTexture();
+	}
+	if (tilesetTexture != nullptr)
+	{
+		auto reserve = (visibleEnd.x - visibleStart.x) * (visibleEnd.y - visibleStart.y) * 6;
+		vertexLayer.vertices.reserve(reserve);
+	}
+
 	const auto& map = level.Map();
 	PairInt32 mapPos;
 	for (mapPos.x = visibleStart.x; mapPos.x < visibleEnd.x; mapPos.x++)
 	{
 		for (mapPos.y = visibleStart.y; mapPos.y < visibleEnd.y; mapPos.y++)
 		{
-			uint8_t light = 255;
-			int16_t index;
+			int32_t index;
 			if (map.isMapCoordValid(mapPos) == false)
 			{
-				if (isAutomap == false)
-				{
-					light = map.getDefaultLight();
-				}
 				index = outOfBoundsTile.getTileIndex(mapPos.x, mapPos.y);
 			}
 			else
 			{
-				if (isAutomap == false)
-				{
-					light = std::max(map[mapPos].getDefaultLight(), map[mapPos].getCurrentLight());
-				}
 				index = map[mapPos].getTileIndex(layerIdx);
 
 				if (drawLevelObjects == true)
@@ -78,8 +130,7 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 					{
 						if (drawObj != nullptr)
 						{
-							auto objLight = std::max(drawObj->getLight(), light);
-							surface.draw(*drawObj, spriteShader, spriteCache, objLight);
+							surface.draw(*drawObj, spriteShader, spriteCache);
 						}
 					}
 					if (tiles == nullptr ||
@@ -89,23 +140,28 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 					}
 				}
 			}
-			if (index < 0 || light == 0)
-			{
-				continue;
-			}
-			if (tiles->get((uint32_t)index, ti) == true)
+			while (index >= 0 && tiles->get((uint32_t)index, ti) == true)
 			{
 				auto drawPos = map.toDrawCoord(mapPos, surface.blockWidth, surface.blockHeight);
-				sprite.setPosition(drawPos, ti.offset);
-				tileRect.left = sprite.getDrawPosition().x;
-				tileRect.top = sprite.getDrawPosition().y;
+				drawPos += ti.offset;
+				tileRect.left = drawPos.x;
+				tileRect.top = drawPos.y;
 				tileRect.width = (float)ti.textureRect.width;
 				tileRect.height = (float)ti.textureRect.height;
 				if (surface.visibleRect.intersects(tileRect) == true)
 				{
-					sprite.setTexture(ti, true);
-					surface.draw(sprite, spriteShader, spriteCache, light);
+					if (tilesetTexture == nullptr)
+					{
+						sprite.setPosition(drawPos);
+						sprite.setTexture(ti, true);
+						surface.draw(sprite, spriteShader, spriteCache);
+					}
+					else
+					{
+						addTile(vertexLayer.vertices, drawPos.x, drawPos.y, ti.textureRect);
+					}
 				}
+				index = ti.nextIndex;
 			}
 		}
 	}
@@ -122,19 +178,31 @@ void TilesetLevelLayer::draw(const LevelSurface& surface,
 		if (direction < (uint32_t)PlayerDirection::All &&
 			tiles->get(index, ti) == true)
 		{
-			auto drawPos = level.getCurrentAutomapViewCenter();
+			auto drawPos = level.getCurrentAutomapViewCenter() + ti.offset;
 			drawPos.x -= (float)surface.blockWidth;
 			drawPos.y -= (float)surface.blockHeight;
-			sprite.setPosition(drawPos, ti.offset);
-			tileRect.left = sprite.getDrawPosition().x;
-			tileRect.top = sprite.getDrawPosition().y;
+			tileRect.left = drawPos.x;
+			tileRect.top = drawPos.y;
 			tileRect.width = (float)ti.textureRect.width;
 			tileRect.height = (float)ti.textureRect.height;
 			if (surface.visibleRect.intersects(tileRect) == true)
 			{
-				sprite.setTexture(ti, true);
-				surface.draw(sprite, spriteShader, spriteCache);
+				if (tilesetTexture == nullptr)
+				{
+					sprite.setPosition(drawPos);
+					sprite.setTexture(ti, true);
+					surface.draw(sprite, spriteShader, spriteCache);
+				}
+				else
+				{
+					addTile(vertexLayer.vertices, drawPos.x, drawPos.y, ti.textureRect);
+				}
 			}
 		}
+	}
+
+	if (tilesetTexture != nullptr)
+	{
+		surface.draw(vertexLayer, tilesetTexture, tiles->getPalette().get(), spriteShader);
 	}
 }

@@ -5,9 +5,9 @@
 #include "ImageContainer.h"
 #include "StreamReader.h"
 #include <string_view>
-#include <map>
+#include <unordered_map>
 
-// DT1 decoding code based on Diablo 2 Engine Riiablo by collinsmith
+// DT1 decoding code based on Diablo 2 Engine Riiablo by Collin Smith
 // https://github.com/collinsmith/riiablo
 namespace DT1
 {
@@ -166,10 +166,10 @@ namespace DT1
 class DT1ImageContainer : public ImageContainer
 {
 private:
-	BlendMode blendMode{ BlendMode::Alpha };
 	DT1::Header header;
 	std::vector<DT1::Tile> tiles;
-	std::map<int, std::vector<int>> tilesById;
+	std::unordered_map<uint32_t, std::vector<uint32_t>> tileIndexes;
+	BlendMode blendMode{ BlendMode::Alpha };
 
 public:
 	DT1ImageContainer(const std::string_view fileName);
@@ -181,16 +181,15 @@ public:
 		const PaletteArray* palette, ImageInfo& imgInfo) const;
 
 	const std::vector<DT1::Tile>& getTiles() const { return tiles; }
-	const std::vector<int> getTilesById(int id) const
+	const std::vector<uint32_t> getTilesById(uint32_t id) const;
+
+	const std::unordered_map<uint32_t, std::vector<uint32_t>>& getTileIndexes() const noexcept
 	{
-		if (tilesById.count(id) == 0)
-			return {};
-		return tilesById.at(id);
+		return tileIndexes;
 	}
 
 	virtual uint32_t size() const noexcept { return tiles.size(); }
 
-	// TODO: Make sure getDirections should always return 1.
 	virtual uint32_t getDirections() const noexcept { return 1; }
 };
 

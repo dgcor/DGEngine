@@ -1,0 +1,93 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "fromId": "act1"
+        }
+      }
+    }
+  },
+  "texturePack": [
+    {
+      "id": "treegroups",
+      "file": "data/global/tiles/ACT1/OUTDOORS/treegroups.dt1",
+      "imageContainer": "treegroups",
+      "palette": "level"
+    },
+    {
+      "id": "stonewall",
+      "file": "data/global/tiles/ACT1/OUTDOORS/stonewall.dt1",
+      "imageContainer": "stonewall",
+      "palette": "level"
+    },
+    {
+      "id": "floor",
+      "file": "data/global/tiles/ACT1/TOWN/floor.dt1",
+      "imageContainer": "floor",
+      "palette": "level"
+    },
+    {
+      "id": "warp",
+      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1",
+      "imageContainer": "warp",
+      "palette": "level"
+    },
+    {
+      "id": "river",
+      "file": "data/global/tiles/ACT1/OUTDOORS/river.dt1",
+      "imageContainer": "river",
+      "palette": "level"
+    },
+    {
+      "id": "objects",
+      "file": "data/global/tiles/ACT1/TOWN/objects.dt1",
+      "imageContainer": "objects",
+      "palette": "level"
+    },
+    {
+      "id": "fence",
+      "file": "data/global/tiles/ACT1/TOWN/fence.dt1",
+      "imageContainer": "fence",
+      "palette": "level"
+    },
+    {
+      "id": "objects2",
+      "file": "data/global/tiles/ACT1/OUTDOORS/objects.dt1",
+      "imageContainer": "objects2",
+      "palette": "level"
+    },
+    {
+      "id": "town",
+      "texturePacks": [
+        "treegroups",
+        "stonewall",
+        "floor",
+        "warp",
+        "river",
+        "objects",
+        "fence",
+        "objects2"
+      ]
+    }
+  ],
+  "level": {
+    "id": "level",
+    "tileSize": [160, 80],
+    "layers": [
+      { "index": 0, "texturePack": "town" },
+      { "index": 1, "texturePack": "town" },
+      { "index": 2, "texturePack": "town" },
+      { "index": 3, "texturePack": "town", "drawObjects": true },
+      { "index": 4, "texturePack": "town" },
+      { "index": 5, "texturePack": "town" },
+      { "index": 6, "texturePack": "town" }
+    ],
+    "defaultLight": 255
+  }
+}

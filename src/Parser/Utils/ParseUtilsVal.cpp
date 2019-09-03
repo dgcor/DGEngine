@@ -368,54 +368,20 @@ namespace Parser
 	{
 		if (elem.IsUint() == true)
 		{
-			val.maxLight = elem.GetUint();
+			val.light = elem.GetUint();
 		}
 		else if (elem.IsArray() == true)
 		{
 			switch (elem.Size())
 			{
-			case 4:
-			{
-				switch (str2int16(getStringViewVal(elem[3])))
-				{
-				case str2int16("linear"):
-					val.easing = LightEasing::Linear;
-					break;
-				case str2int16("sine"):
-					val.easing = LightEasing::Sine;
-					break;
-				case str2int16("quad"):
-					val.easing = LightEasing::Quad;
-					break;
-				case str2int16("cubic"):
-					val.easing = LightEasing::Cubic;
-					break;
-				case str2int16("quart"):
-					val.easing = LightEasing::Quart;
-					break;
-				case str2int16("quint"):
-					val.easing = LightEasing::Quint;
-					break;
-				case str2int16("expo"):
-					val.easing = LightEasing::Expo;
-					break;
-				case str2int16("circ"):
-					val.easing = LightEasing::Circ;
-					break;
-				default:
-					break;
-				}
-			}
-			case 3:
-				val.radius = getUIntVal(elem[2], val.radius);
 			case 2:
 			{
-				val.maxLight = getUIntVal(elem[1], val.maxLight);
-				val.minLight = getUIntVal(elem[0], val.minLight);
+				val.light = getUIntVal(elem[0], val.light);
+				val.radius = getUIntVal(elem[1], val.radius);
 				break;
 			}
 			case 1:
-				val.maxLight = getUIntVal(elem[0], val.maxLight);
+				val.light = getUIntVal(elem[0], val.light);
 				break;
 			default:
 				break;

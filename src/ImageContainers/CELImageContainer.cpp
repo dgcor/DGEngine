@@ -831,6 +831,7 @@ sf::Image2 CELImageContainer::get(uint32_t index,
 	imgInfo.offset = {};
 	imgInfo.absoluteOffset = false;
 	imgInfo.blendMode = blendMode;
+	imgInfo.nextIndex = -1;
 
 	auto frameSize = frameOffsets[index].second - frameOffsets[index].first;
 	gsl::span<const uint8_t> frameData(&fileData[frameOffsets[index].first], frameSize);

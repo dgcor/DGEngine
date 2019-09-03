@@ -1178,6 +1178,9 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 	case str2int16("keepAR"):
 		var = Variable(keepAR);
 		break;
+	case str2int16("maxLights"):
+		var = Variable((int64_t)LevelMap::MaxLights());
+		break;
 	case str2int16("maxWindowHeight"):
 		var = Variable((int64_t)maxHeight);
 		break;
@@ -1311,6 +1314,14 @@ void Game::setGameProperty(const std::string_view prop, const Variable& val)
 		if (std::holds_alternative<bool>(val) == true)
 		{
 			KeepAR(std::get<bool>(val));
+		}
+	}
+	break;
+	case str2int16("maxLights"):
+	{
+		if (std::holds_alternative<int64_t>(val) == true)
+		{
+			LevelMap::MaxLights((size_t)std::get<int64_t>(val));
 		}
 	}
 	break;
@@ -1471,6 +1482,9 @@ void Game::setShader(const std::string_view id, sf::Shader* shader) noexcept
 	{
 	case str2int16("game"):
 		shaders.Game = shader;
+		break;
+	case str2int16("level"):
+		shaders.Level = shader;
 		break;
 	case str2int16("sprite"):
 		shaders.Sprite = shader;
