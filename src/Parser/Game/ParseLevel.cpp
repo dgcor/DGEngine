@@ -1,11 +1,7 @@
 #include "ParseLevel.h"
-#include "DS1.h"
 #include "FileUtils.h"
 #include "Game.h"
 #include "Game/Level.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
-#include "Game/LevelHelper.h"
-#endif
 #include "Game/LevelMap.h"
 #include "GameUtils.h"
 #include "Json/JsonUtils.h"
@@ -13,6 +9,10 @@
 #include "Parser/ParseImageContainer.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "Utils/Utils.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+#include "DS1.h"
+#include "Game/LevelHelper.h"
+#endif
 
 namespace Parser
 {
@@ -265,12 +265,14 @@ namespace Parser
 				hasJsonFile = true;
 			}
 		}
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 		else if (Utils::endsWith(Utils::toLower(file), ".ds1") == true)
 		{
 			auto ds1 = DS1::Decoder(file);
 			map.setD2Area(0, 0, ds1);
 			return;
 		}
+#endif
 
 		defaultTile = getIntKey(elem, "defaultTile", defaultTile);
 

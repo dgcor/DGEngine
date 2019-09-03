@@ -192,5 +192,4 @@ public:
 
 	virtual uint32_t getDirections() const noexcept { return 1; }
 };
-
 #endif

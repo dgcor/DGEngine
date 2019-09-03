@@ -1,6 +1,8 @@
 #include "ParseTexturePack.h"
 #include "Game.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "ImageContainers/DT1ImageContainer.h"
+#endif
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
 #include "TexturePacks/BitmapFontTexturePack.h"
@@ -38,6 +40,7 @@ namespace Parser
 		return false;
 	}
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 	void parseDT1ImageContainerTexturePack(Game& game, const Value& elem,
 		const DT1ImageContainer& imgCont, IndexedTexturePack& texturePack)
 	{
@@ -59,6 +62,7 @@ namespace Parser
 			}
 		}
 	}
+#endif
 
 	std::unique_ptr<TexturePack> parseImageContainerTexturePack(
 		Game& game, const Value& elem)
@@ -107,6 +111,8 @@ namespace Parser
 			auto texturePack = std::make_unique<CachedTexturePack>(
 				imgVec.front(), offset, pal, useIndexedImages, normalizeDirections
 			);
+
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 			auto dt1ImgCont = dynamic_cast<DT1ImageContainer*>(imgVec.front().get());
 			if (dt1ImgCont == nullptr)
 			{
@@ -119,6 +125,9 @@ namespace Parser
 			parseDT1ImageContainerTexturePack(game, elem, *dt1ImgCont, *texturePack2);
 
 			return texturePack2;
+#else
+			return texturePack;
+#endif
 		}
 		else
 		{

@@ -54,8 +54,6 @@ set(SOURCE_FILES
     src/CompositeTexture.cpp
     src/CompositeTexture.h
     src/DrawableText.h
-    src/DS1.cpp
-    src/DS1.h
     src/Dun.cpp
     src/Dun.h
     src/Event.cpp
@@ -405,6 +403,8 @@ endif()
 
 if(DGENGINE_DIABLO_FORMAT_SUPPORT)
     SET(SOURCE_FILES ${SOURCE_FILES}
+        src/DS1.cpp
+        src/DS1.h
         src/Game/LevelHelper.cpp
         src/Game/LevelHelper.h
         src/ImageContainers/CELImageContainer.cpp

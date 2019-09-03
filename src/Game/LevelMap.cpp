@@ -302,6 +302,7 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 	}
 }
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 {
 	resize(dun.width * 2, dun.height * 2);
@@ -385,6 +386,7 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 		addLevelLayer(dun.walls, dun.numWalls, i, { DT1::Orientation::ROOF });
 	}
 }
+#endif
 
 bool LevelMap::isLayerUsed(size_t layer) const noexcept
 {

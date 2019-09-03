@@ -1,3 +1,4 @@
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
 #include <cassert>
 #include "gsl/gsl"
@@ -307,3 +308,4 @@ namespace DS1
 			numPaths = 0;
 	}
 }
+#endif

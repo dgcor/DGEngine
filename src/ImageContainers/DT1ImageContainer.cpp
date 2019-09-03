@@ -395,5 +395,4 @@ const std::vector<uint32_t> DT1ImageContainer::getTilesById(uint32_t id) const
 	}
 	return tileIndexes.at(id);
 }
-
 #endif
