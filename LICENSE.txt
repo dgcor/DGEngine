@@ -27,6 +27,12 @@ It uses the GPL3 license.
 
 https://github.com/Lectem/Worldstone
 
+DS1 and DT1 decoding code is based on Riiablo by Collin Smith
+and was written by Grant Ramsay. It uses the Apache 2.0 license.
+
+https://github.com/collinsmith/riiablo
+https://github.com/grantramsay
+
 the A* algorithm by Justin Heyes-Jones uses the MIT license.
 
 https://github.com/justinhj/astar-algorithm-cpp
@@ -60,6 +66,10 @@ https://icculus.org/physfs/
 RapidJSON uses the MIT license.
 
 https://github.com/miloyip/rapidjson/
+
+rectpack2D uses the MIT license.
+
+https://github.com/TeamHypersomnia/rectpack2D
 
 Simple Iterator Template implementation by Vinícius Garcia uses the MIT license.
 

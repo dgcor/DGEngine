@@ -58,5 +58,5 @@ public:
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader) const;
 
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-		SpriteShaderCache& cache, uint8_t light) const;
+		SpriteShaderCache& cache) const;
 };

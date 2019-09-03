@@ -1,7 +1,6 @@
 #include "BitmapFont.h"
 #include <cmath>
-#include "Game.h"
-#include "SFML/Sprite2.h"
+#include "TextureInfo.h"
 #include "TexturePacks/BitmapFontTexturePack.h"
 
 BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_)
@@ -12,7 +11,7 @@ BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTexture
 	tab = charTextures_->getCharWidth('\t');
 }
 
-Palette* BitmapFont::getPalette() const noexcept
+const Palette* BitmapFont::getPalette() const noexcept
 {
 	if (palette != nullptr)
 	{
@@ -275,40 +274,12 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 	vertexText.resize(vertIdx);
 }
 
-void BitmapFont::draw(const std::vector<sf::Vertex>& vertexText,
+void BitmapFont::draw(const VertexArray2& vertexText,
 	const sf::Vector2f& pos, const sf::Vector2f& size,
-	const Game& game, sf::RenderTarget& target) const
+	sf::Shader* spriteShader, sf::RenderTarget& target) const
 {
-	sf::Transform t;
-	t.transformRect({ {}, size });
-	t = t.translate(pos);
-
-	sf::Shader* spriteShader = nullptr;
-	auto currPal = getPalette();
-	if (currPal != nullptr)
-	{
-		spriteShader = game.Shaders().Sprite;
-	}
-
-	sf::RenderStates states(sf::BlendAlpha, t, &charTextures->getTexture(), spriteShader);
-
-	if (spriteShader != nullptr)
-	{
-		spriteShader->setUniform("pixelSize", sf::Glsl::Vec2(
-			1.0f / (float)size.x,
-			1.0f / (float)size.y
-		));
-		spriteShader->setUniform("outline", sf::Glsl::Vec4(sf::Color::Transparent));
-		spriteShader->setUniform("ignore", sf::Glsl::Vec4(sf::Color::Transparent));
-		spriteShader->setUniform("light", sf::Glsl::Vec4(sf::Color::Transparent));
-		spriteShader->setUniform("hasPalette", currPal != nullptr);
-		if (currPal != nullptr)
-		{
-			spriteShader->setUniform("palette", currPal->texture);
-		}
-	}
-	if (vertexText.empty() == false)
-	{
-		target.draw(vertexText.data(), vertexText.size(), sf::PrimitiveType::Triangles, states);
-	}
+	vertexText.draw(
+		charTextures->getTexture(), pos, size,
+		getPalette(), spriteShader, target
+	);
 }

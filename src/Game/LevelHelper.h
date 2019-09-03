@@ -11,7 +11,7 @@
 namespace LevelHelper
 {
 	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
-		const Min& min, bool top, bool skipBlankTiles, bool batchSpritesTogether);
+		const Min& min, bool top, bool skipBlankTiles);
 
 	// bottomTopOrBoth : -1 for both, 0 for bottom, 1 for top
 	void saveTilesetSprite(const std::string& outFilePath, const std::string& outFileName,

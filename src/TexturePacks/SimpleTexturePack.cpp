@@ -70,6 +70,7 @@ static void getTexture(const MultiTexture& t, uint32_t index, TextureInfo& ti) n
 	ti.offset = t.offset;
 	ti.absoluteOffset = false;
 	ti.blendMode = BlendMode::Alpha;
+	ti.nextIndex = -1;
 }
 
 static uint32_t getDirectionHelper(const MultiTexture& t, uint32_t frameIdx) noexcept
@@ -110,7 +111,7 @@ bool SimpleTexturePack::get(uint32_t index, TextureInfo& ti) const noexcept
 	{
 		return false;
 	}
-	getTexture(t, index, ti);
+	::getTexture(t, index, ti);
 	ti.palette = palette;
 	return true;
 }
@@ -157,7 +158,7 @@ bool SimpleMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 		{
 			return false;
 		}
-		getTexture(texVec[indexY], indexX, ti);
+		::getTexture(texVec[indexY], indexX, ti);
 		ti.palette = palette;
 		return true;
 	}
@@ -175,7 +176,7 @@ bool SimpleMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 
 	} while (indexX >= texVec[indexY].numFrames);
 
-	getTexture(texVec[indexY], indexX, ti);
+	::getTexture(texVec[indexY], indexX, ti);
 	ti.palette = palette;
 	return true;
 }
@@ -227,6 +228,15 @@ void SimpleMultiTexturePack::addTexturePack(const std::shared_ptr<sf::Texture>& 
 		texVec.push_back(t);
 		textureCount += t.numFrames;
 	}
+}
+
+const sf::Texture* SimpleMultiTexturePack::getTexture() const noexcept
+{
+	if (texVec.size() == 1)
+	{
+		return texVec.front().texture.get();
+	}
+	return nullptr;
 }
 
 uint32_t SimpleMultiTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept

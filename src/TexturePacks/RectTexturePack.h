@@ -41,6 +41,8 @@ public:
 
 	virtual bool get(uint32_t index, TextureInfo& ti) const;
 
+	virtual const sf::Texture* getTexture() const noexcept { return texturePack->getTexture(); }
+
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return texturePack->getPalette(); }
 	virtual uint32_t size() const noexcept { return rects.size(); }
 

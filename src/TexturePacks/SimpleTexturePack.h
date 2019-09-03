@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Texture.hpp>
 #include "TexturePack.h"
 #include <vector>
 
@@ -32,6 +31,8 @@ public:
 
 	virtual bool get(uint32_t index, TextureInfo& ti) const noexcept;
 
+	virtual const sf::Texture* getTexture() const noexcept { return t.texture.get(); }
+
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
 	virtual uint32_t size() const noexcept { return t.numFrames; }
 
@@ -62,6 +63,8 @@ public:
 		const std::pair<uint32_t, uint32_t>& frames, const sf::Vector2f& offset,
 		uint32_t startIndex, uint32_t directions, bool horizontalDirection,
 		AnimationType animType);
+
+	virtual const sf::Texture* getTexture() const noexcept;
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
 	virtual uint32_t size() const noexcept { return textureCount; }

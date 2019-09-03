@@ -60,10 +60,11 @@ bool CachedTexturePack::get(uint32_t index, TextureInfo& ti) const
 	}
 	ti.texture = &cache[index].first;
 	updateTextureRect(ti);
+	ti.palette = palette;
 	ti.offset = cache[index].second.offset + offset;
 	ti.absoluteOffset = cache[index].second.absoluteOffset;
 	ti.blendMode = cache[index].second.blendMode;
-	ti.palette = palette;
+	ti.nextIndex = cache[index].second.nextIndex;
 	return true;
 }
 
@@ -161,10 +162,11 @@ bool CachedMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 	}
 	ti.texture = &cache[index].first;
 	updateTextureRect(ti);
+	ti.palette = palette;
 	ti.offset = cache[index].second.offset + offset;
 	ti.absoluteOffset = cache[index].second.absoluteOffset;
 	ti.blendMode = cache[index].second.blendMode;
-	ti.palette = palette;
+	ti.nextIndex = -1;
 	return true;
 }
 

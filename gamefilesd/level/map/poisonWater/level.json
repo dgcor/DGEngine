@@ -18,7 +18,7 @@
     }
   ],
   "load": "level/default/caves.json",
-  "level": { "id": "level", "defaultLight": [185, 0, 7] },
+  "level": { "id": "level", "defaultLight": [185, 7] },
   "load": "level/automap/caves/load.json",
   "load": "level/map/poisonWater/levelObjects.json",
   "load": "level/map/poisonWater/monsters.json",

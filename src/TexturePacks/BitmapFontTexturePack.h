@@ -3,7 +3,6 @@
 #include <array>
 #include "BlendMode.h"
 #include <SFML/Graphics/Rect.hpp>
-#include <SFML/Graphics/Texture.hpp>
 #include "TexturePack.h"
 
 class BitmapFontTexturePack : public TexturePack
@@ -29,7 +28,7 @@ public:
 
 	int getCharWidth(char c) const noexcept { return chars[(unsigned char)c].width; }
 
-	const sf::Texture& getTexture() const noexcept { return *texture.get(); }
+	virtual const sf::Texture* getTexture() const noexcept { return texture.get(); }
 
 	virtual bool get(uint32_t index, TextureInfo& ti) const;
 

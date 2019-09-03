@@ -64,23 +64,22 @@ void Sprite2::setTexture(const TextureInfo& ti, bool resetRect)
 	setPalette(ti.palette);
 }
 
-bool Sprite2::needsSpriteShader(uint8_t light) const noexcept
+bool Sprite2::needsSpriteShader() const noexcept
 {
 	if (hasPalette() == false &&
-		(isOutlineEnabled() == false || hasOutline() == false) &&
-		light == 255)
+		(isOutlineEnabled() == false || hasOutline() == false))
 	{
 		return false;
 	}
 	return true;
 }
 
-void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light) const
+void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader) const
 {
 	sf::RenderStates states(SFMLUtils::getBlendMode(blendMode));
 
 	if (spriteShader != nullptr &&
-		needsSpriteShader(light) == true)
+		needsSpriteShader() == true)
 	{
 		states.shader = spriteShader;
 
@@ -98,8 +97,6 @@ void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t l
 			spriteShader->setUniform("outline", sf::Glsl::Vec4(sf::Color::Transparent));
 			spriteShader->setUniform("ignore", sf::Glsl::Vec4(sf::Color::Transparent));
 		}
-		sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
-		spriteShader->setUniform("light", sf::Glsl::Vec4(lightColor));
 		spriteShader->setUniform("hasPalette", hasPalette());
 		if (hasPalette() == true)
 		{
@@ -110,12 +107,12 @@ void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t l
 }
 
 void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-	SpriteShaderCache& cache, uint8_t light) const
+	SpriteShaderCache& cache) const
 {
 	sf::RenderStates states(SFMLUtils::getBlendMode(blendMode));
 
 	if (spriteShader != nullptr &&
-		needsSpriteShader(light) == true)
+		needsSpriteShader() == true)
 	{
 		states.shader = spriteShader;
 
@@ -158,14 +155,6 @@ void Sprite2::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
 		{
 			cache.ignore = ignore2;
 			spriteShader->setUniform("ignore", sf::Glsl::Vec4(ignore2));
-		}
-
-		if (updateAll == true ||
-			light != cache.light)
-		{
-			cache.light = light;
-			sf::Color lightColor(0xFF - light, 0xFF - light, 0xFF - light, 0);
-			spriteShader->setUniform("light", sf::Glsl::Vec4(lightColor));
 		}
 
 		if (updateAll == true ||

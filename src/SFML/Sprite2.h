@@ -15,7 +15,6 @@ struct SpriteShaderCache
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color ignore{ sf::Color::Transparent };
 	sf::Vector2i textureSize;
-	uint8_t light{ 0 };
 };
 
 class Sprite2 : private sf::Sprite
@@ -29,8 +28,8 @@ private:
 	bool outlineEnabled{ false };
 	BlendMode blendMode{ BlendMode::Alpha };
 
-	// returns false if shader can be skipped (no palette used, no outline, max light)
-	bool needsSpriteShader(uint8_t light) const noexcept;
+	// returns false if shader can be skipped (no palette used, no outline)
+	bool needsSpriteShader() const noexcept;
 
 public:
 	Sprite2() noexcept : sf::Sprite() {}
@@ -70,8 +69,8 @@ public:
 	using sf::Sprite::setScale;
 	using sf::Sprite::setOrigin;
 
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader, uint8_t light = 255) const;
+	void draw(sf::RenderTarget& target, sf::Shader* spriteShader) const;
 
 	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-		SpriteShaderCache& cache, uint8_t light = 255) const;
+		SpriteShaderCache& cache) const;
 };

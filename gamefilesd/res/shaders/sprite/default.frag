@@ -4,7 +4,6 @@ uniform sampler2D texture;
 uniform vec2 pixelSize;
 uniform vec4 outline;
 uniform vec4 ignore;
-uniform vec4 light;
 uniform bool hasPalette;
 
 void main()
@@ -13,11 +12,7 @@ void main()
 
 	if (hasPalette == true && pixel.a == 1.0)
 	{
-		pixel = texture2D(palette, vec2(pixel.r, 0.0)) - light;
-	}
-	else
-	{
-		pixel = pixel - light;
+		pixel = texture2D(palette, vec2(pixel.r, 0.0));
 	}
 
 	if (outline.a > 0.0 && pixel.a == 0.0)

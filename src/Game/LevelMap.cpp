@@ -2,15 +2,17 @@
 #include "PathFinder.h"
 #include "Utils/EasingFunctions.h"
 
+size_t LevelMap::maxLights{ MaxNumberOfLightsToUse };
+
 LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
-	int32_t width_, int32_t height_, int16_t defaultTile)
+	int32_t width_, int32_t height_, int32_t defaultTile)
 	: tileSet(tilFileName), sol(solFileName)
 {
 	resize(width_, height_);
 	clear(defaultTile);
 }
 
-LevelMap::LevelMap(int32_t width_, int32_t height_, int16_t defaultTile)
+LevelMap::LevelMap(int32_t width_, int32_t height_, int32_t defaultTile)
 {
 	resize(width_, height_);
 	clear(defaultTile);
@@ -26,7 +28,7 @@ void LevelMap::resize(int32_t width_, int32_t height_)
 	cells.resize(mapSizei.x * mapSizei.y, {});
 }
 
-void LevelMap::clear(int16_t defaultTile)
+void LevelMap::clear(int32_t defaultTile)
 {
 	if (defaultTile < 0)
 	{
@@ -64,191 +66,114 @@ void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexc
 	defaultBlockHeight = std::max(1, tileHeight_ / 2);
 }
 
-uint8_t LevelMap::getTileLight(size_t layer, const LevelCell& cell) const
+void LevelMap::loadLightMap(const std::string_view fileName)
 {
-	auto tileIndex = cell.getTileIndex(layer);
-	if (tileIndex < 0)
-	{
-		return 0;
-	}
-	return lightMap.get((size_t)tileIndex);
+	lightMap.load(fileName, 0, 0xFFFF);
+	lightsNeedUpdate = true;
 }
 
-void LevelMap::addLight(PairInt32 lightPos, LightSource lightSource)
+uint8_t LevelMap::getLight(size_t index) const
 {
-	if (lightSource.maxLight == 0 ||
-		lightSource.minLight > lightSource.maxLight)
-	{
-		return;
-	}
-	pendingLights.push_back({ lightPos, lightSource, false });
+	return std::max(getDefaultLight(), lightMap.get(index));
 }
 
-void LevelMap::addLight(PairFloat lightPos, LightSource lightSource)
+void LevelMap::updateMapLights()
 {
-	addLight(PairInt32((int32_t)lightPos.x, (int32_t)lightPos.y), lightSource);
-}
-
-void LevelMap::removeLight(PairInt32 lightPos, LightSource lightSource)
-{
-	if (lightSource.maxLight == 0 ||
-		lightSource.minLight > lightSource.maxLight)
+	LightStruct ls;
+	ls.lightSource = defaultLight;
+	for (ls.mapPos.y = 0; ls.mapPos.y < mapSizei.y; ls.mapPos.y++)
 	{
-		return;
-	}
-	pendingLights.push_back({ lightPos, lightSource, true });
-}
-
-void LevelMap::removeLight(PairFloat lightPos, LightSource lightSource)
-{
-	removeLight(PairInt32((int32_t)lightPos.x, (int32_t)lightPos.y), lightSource);
-}
-
-void LevelMap::doLight(PairInt32 lightPos, LightSource ls,
-	const std::function<void(LevelCell*, uint8_t)>& doLightFunc)
-{
-	if (defaultSource.maxLight == 255 ||
-		ls.maxLight == 0 ||
-		ls.minLight > ls.maxLight)
-	{
-		return;
-	}
-
-	// limit real radius
-	int32_t radius = std::min(128, (int32_t)ls.radius);
-	int32_t radiusSquared = radius * radius;
-	double range = ((double)ls.maxLight - (double)ls.minLight);
-
-	PairInt32 mapPosStart(lightPos.x - radius, lightPos.y - radius);
-	PairInt32 mapPosEnd(lightPos.x + radius + 1, lightPos.y + radius + 1);
-
-	mapPosStart.x = std::max(mapPosStart.x, 0);
-	mapPosStart.y = std::max(mapPosStart.y, 0);
-	mapPosEnd.x = std::min(mapPosEnd.x, mapSizei.x);
-	mapPosEnd.y = std::min(mapPosEnd.y, mapSizei.y);
-
-	auto easingFunc = EasingFunctions::easeLinear<double>;
-
-	switch (ls.easing)
-	{
-	default:
-	case LightEasing::Linear:
-		easingFunc = EasingFunctions::easeLinear<double>;
-		break;
-	case LightEasing::Sine:
-		easingFunc = EasingFunctions::easeInSine<double>;
-		break;
-	case LightEasing::Quad:
-		easingFunc = EasingFunctions::easeInQuad<double>;
-		break;
-	case LightEasing::Cubic:
-		easingFunc = EasingFunctions::easeInCubic<double>;
-		break;
-	case LightEasing::Quart:
-		easingFunc = EasingFunctions::easeInQuart<double>;
-		break;
-	case LightEasing::Quint:
-		easingFunc = EasingFunctions::easeInQuint<double>;
-		break;
-	case LightEasing::Expo:
-		easingFunc = EasingFunctions::easeInExpo<double>;
-		break;
-	case LightEasing::Circ:
-		easingFunc = EasingFunctions::easeInCirc<double>;
-		break;
-	}
-
-	PairInt32 mapPos;
-
-	for (mapPos.y = mapPosStart.y; mapPos.y < mapPosEnd.y; mapPos.y++)
-	{
-		for (mapPos.x = mapPosStart.x; mapPos.x < mapPosEnd.x; mapPos.x++)
+		for (ls.mapPos.x = 0; ls.mapPos.x < mapSizei.x; ls.mapPos.x++)
 		{
-			auto dist_y = mapPos.y - lightPos.y;
-			auto dist_x = mapPos.x - lightPos.x;
-			auto xxyy = (dist_x * dist_x) + (dist_y * dist_y);
-			if (xxyy <= radiusSquared)
+			auto& cell = (*this)[ls.mapPos];
+			ls.lightSource.light = lightMap.get(cell.getTileIndex(0));
+			if (ls.lightSource.light > 0 &&
+				ls.lightSource.radius > 0)
 			{
-				double distance = std::sqrt(xxyy);
-				auto easedLight = easingFunc(
-					distance,
-					(double)ls.maxLight,
-					-range,
-					(double)ls.radius);
-				auto light = (uint8_t)std::round(easedLight);
-				doLightFunc(&(*this)[mapPos], light);
+				ls.drawPos = toDrawCoord(ls.mapPos);
+				ls.drawPos.x += defaultBlockWidth;
+				ls.drawPos.y += defaultBlockHeight;
+				mapLights.push_back(ls);
 			}
 		}
 	}
 }
 
-void LevelMap::doDefaultLight(PairInt32 lightPos, LightSource lightSource)
+void LevelMap::updateLights(const std::vector<std::shared_ptr<LevelObject>>& levelObjects,
+	const sf::Vector2f& drawCenter)
 {
-	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::setDefaultLight;
-	doLight(lightPos, lightSource, func);
-}
-
-void LevelMap::doLight(PairInt32 lightPos, LightSource lightSource)
-{
-	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::addLight;
-	doLight(lightPos, lightSource, func);
-}
-
-void LevelMap::undoLight(PairInt32 lightPos, LightSource lightSource)
-{
-	static std::function<void(LevelCell*, uint8_t)> func = &LevelCell::subtractLight;
-	doLight(lightPos, lightSource, func);
-}
-
-void LevelMap::initLights()
-{
-	for (auto& cell : cells)
-	{
-		cell.clearLights(defaultSource.maxLight);
-	}
-	if (defaultSource.maxLight == 255)
+	if (defaultLight.light == 255 ||
+		maxLights == 0)
 	{
 		return;
 	}
-	LightSource ls = defaultSource;
-	for (int j = 0; j < mapSizei.y; j++)
+	if (lightsNeedUpdate == true)
 	{
-		for (int i = 0; i < mapSizei.x; i++)
+		lightsNeedUpdate = false;
+		updateMapLights();
+	}
+
+	LightStruct ls;
+	allLights.clear();
+	for (const auto& levelObject : levelObjects)
+	{
+		ls.lightSource = levelObject->getLightSource();
+		if (ls.lightSource.light > 0 &&
+			ls.lightSource.radius > 0)
 		{
-			auto& cell = (*this)[i][j];
-			ls.maxLight = lightMap.get(cell.getTileIndex(0));
-			doDefaultLight({i, j}, ls);
-			for (auto& obj : cell)
-			{
-				auto lightSource = obj->getLightSource();
-				addLight(obj->MapPosition(), lightSource);
-			}
+			ls.mapPos = levelObject->MapPosition();
+			ls.drawPos = levelObject->getBasePosition();
+			allLights.push_back(ls);
 		}
+	}
+
+	allLights.insert(allLights.end(), mapLights.begin(), mapLights.end());
+
+	auto mapCenter = toMapCoord(drawCenter);
+
+	std::sort(allLights.begin(), allLights.end(),
+		[&mapCenter](const LightStruct& lhs, const LightStruct& rhs)
+		{
+			auto diffX = lhs.mapPos.x - mapCenter.x;
+			auto diffY = lhs.mapPos.y - mapCenter.y;
+			auto diffA = std::sqrt(diffX * diffX + diffY * diffY);
+			auto costA = diffA * 1000.f + (float)(lhs.lightSource.light * lhs.lightSource.radius);
+
+			diffX = rhs.mapPos.x - mapCenter.x;
+			diffY = rhs.mapPos.y - mapCenter.y;
+			auto diffB = std::sqrt(diffX * diffX + diffY * diffY);
+			auto costB = diffB * 1000.f + (float)(rhs.lightSource.light * rhs.lightSource.radius);
+
+			return costA < costB;
+		});
+
+	if (allLights.size() > maxLights)
+	{
+		allLights.resize(maxLights);
+	}
+
+	lightArray.clear();
+	for (const auto& light : allLights)
+	{
+		if (lightArray.full() == true)
+		{
+			break;
+		}
+		lightArray.push_back(light.drawPos.x);
+		lightArray.push_back(light.drawPos.y);
+		lightArray.push_back((float)light.lightSource.light / 255.f);
+		lightArray.push_back((float)light.lightSource.radius);
 	}
 }
 
-void LevelMap::updateLights()
+void LevelMap::MaxLights(size_t maxLights_) noexcept
 {
-	if (pendingLights.empty() == true)
-	{
-		return;
-	}
-	for (auto& l : pendingLights)
-	{
-		if (l.remove == false)
-		{
-			doLight(l.mapPos, l.lightSource);
-		}
-		else
-		{
-			undoLight(l.mapPos, l.lightSource);
-		}
-	}
-	pendingLights.clear();
+	maxLights = std::min(maxLights_, (size_t)MaxNumberOfLightsToUse);
 }
 
 void LevelMap::setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun)
 {
+	lightsNeedUpdate = true;
 	auto dWidth = dun.Width() * 2;
 	auto dHeight = dun.Height() * 2;
 	for (size_t j = 0; j < dHeight; j++)
@@ -314,6 +239,10 @@ void LevelMap::setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun)
 
 void LevelMap::setSimpleAreaUseSol(size_t layer, int32_t x, int32_t y, const Dun& dun)
 {
+	if (layer == 0)
+	{
+		lightsNeedUpdate = true;
+	}
 	for (size_t j = 0; j < dun.Height(); j++)
 	{
 		for (size_t i = 0; i < dun.Width(); i++)
@@ -343,6 +272,10 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 	{
 		return;
 	}
+	if (layer == 0)
+	{
+		lightsNeedUpdate = true;
+	}
 	for (size_t j = 0; j < dun.Height(); j++)
 	{
 		for (size_t i = 0; i < dun.Width(); i++)
@@ -366,6 +299,90 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 			}
 			cell.setTileIndex(layer, tileIndex);
 		}
+	}
+}
+
+void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
+{
+	resize(dun.width * 2, dun.height * 2);
+
+	size_t currLayer = 0;
+
+	auto addLevelLayer = [&](std::unordered_map<int, DS1::Cell> dunCells, int increment,
+		int offset, const std::set<int>& orientations) {
+
+			if (currLayer >= LevelCell::NumberOfLayers)
+			{
+				return;
+			}
+
+			int index = offset;
+			for (int y = 0; y < dun.height; y++)
+			{
+				for (int x = 0; x < dun.width; x++)
+				{
+					auto it = dunCells.find(index);
+					if (it != dunCells.end())
+					{
+						auto id = it->second.id;
+						if (orientations.count(DT1::Tile::getOrientation(id)) != 0)
+						{
+							auto& cell = cells[x + (y * mapSizei.x)];
+							cell.setTileIndex(currLayer, id);
+						}
+					}
+					index += increment;
+				}
+			}
+			currLayer++;
+	};
+
+	// Draw lower walls
+	for (int i = 0; i < dun.numWalls; i++)
+	{
+		addLevelLayer(dun.walls, dun.numWalls, i, {
+				DT1::Orientation::LOWER_LEFT_WALL,
+				DT1::Orientation::LOWER_RIGHT_WALL,
+				DT1::Orientation::LOWER_NORTH_CORNER_WALL,
+				DT1::Orientation::LOWER_SOUTH_CORNER_WALL }
+		);
+	}
+
+	// Draw floors
+	for (int i = 0; i < dun.numFloors; i++)
+	{
+		addLevelLayer(dun.floors, dun.numFloors, i, { DT1::Orientation::FLOOR });
+	}
+
+	// Draw shadows
+	// TODO: Draws shadows everywhere, must be more to it...
+	//for (int i = 0; i < dun.numShadows; i++)
+	//    addLevelLayer(dun.shadows, dun.numShadows, i, { DT1::Orientation::SHADOW });
+
+	// TODO: Draw walkable
+
+	// Draw walls
+	for (int i = 0; i < dun.numWalls; i++)
+	{
+		addLevelLayer(dun.walls, dun.numWalls, i, {
+				DT1::Orientation::LEFT_WALL,
+				DT1::Orientation::LEFT_NORTH_CORNER_WALL,
+				DT1::Orientation::LEFT_END_WALL,
+				DT1::Orientation::LEFT_WALL_DOOR,
+				DT1::Orientation::RIGHT_WALL,
+				DT1::Orientation::RIGHT_NORTH_CORNER_WALL,
+				DT1::Orientation::RIGHT_END_WALL,
+				DT1::Orientation::RIGHT_WALL_DOOR,
+				DT1::Orientation::SOUTH_CORNER_WALL,
+				DT1::Orientation::PILLAR,
+				DT1::Orientation::TREE }
+		);
+	}
+
+	// Draw roofs
+	for (int i = 0; i < dun.numWalls; i++)
+	{
+		addLevelLayer(dun.walls, dun.numWalls, i, { DT1::Orientation::ROOF });
 	}
 }
 
@@ -409,7 +426,7 @@ PairFloat LevelMap::toMapCoord(const sf::Vector2f& drawCoord) const noexcept
 }
 
 PairFloat LevelMap::toMapCoord(const sf::Vector2f& drawCoord,
-	int32_t blockWidth, int32_t blockHeight) const noexcept
+	int32_t blockWidth, int32_t blockHeight) noexcept
 {
 	return PairFloat(
 		std::round((drawCoord.x / blockWidth + drawCoord.y / blockHeight) / 2),
@@ -518,7 +535,7 @@ std::vector<PairFloat> LevelMap::getPath(const PairFloat& a, const PairFloat& b)
 std::string LevelMap::toCSV(bool zeroBasedIndex) const
 {
 	std::string str;
-	int16_t inc = (zeroBasedIndex == true ? 0 : 1);
+	int32_t inc = (zeroBasedIndex == true ? 0 : 1);
 
 	for (int j = 0; j < mapSizei.y; j++)
 	{

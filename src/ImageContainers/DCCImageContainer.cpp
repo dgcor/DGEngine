@@ -1015,6 +1015,7 @@ sf::Image2 DCCImageContainer::get(uint32_t index,
 			}
 			imgInfo.absoluteOffset = true;
 			imgInfo.blendMode = blendMode;
+			imgInfo.nextIndex = -1;
 
 			return img;
 		}

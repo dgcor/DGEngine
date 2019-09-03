@@ -2,7 +2,8 @@
 #include "TextureInfo.h"
 
 IndexedTexturePack::IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
-	bool onlyUseIndexed_) : texturePack(std::move(texturePack_)), onlyUseIndexed(onlyUseIndexed_)
+	bool onlyUseIndexed_, bool translateAnimatedIndexes_) : texturePack(std::move(texturePack_)),
+	onlyUseIndexed(onlyUseIndexed_), translateAnimatedIndexes(translateAnimatedIndexes_)
 {
 	if (onlyUseIndexed == false)
 	{
@@ -10,32 +11,38 @@ IndexedTexturePack::IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_
 	}
 }
 
-bool IndexedTexturePack::getTexture(uint32_t index, TextureInfo& ti) const
-{
-	auto it = textureIndexes.find(index);
-	if (it != textureIndexes.cend())
-	{
-		index = it->second;
-	}
-	else if (onlyUseIndexed == true)
-	{
-		return false;
-	}
-	return texturePack->get(index, ti);
-}
-
 bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
+	bool translateIndex = true;
 	auto it = animatedIndexes.find(index);
 	if (it != animatedIndexes.cend())
 	{
 		index = animatedTextures[it->second].getCurrentAnimationIndex();
+		translateIndex = translateAnimatedIndexes;
 	}
-	return getTexture(index, ti);
+	if (translateIndex == true)
+	{
+		auto it = textureIndexes.find(index);
+		if (it != textureIndexes.cend())
+		{
+			index = it->second;
+		}
+		else if (onlyUseIndexed == true)
+		{
+			return false;
+		}
+	}
+	return texturePack->get(index, ti);
 }
 
-void IndexedTexturePack::update(sf::Time elapsedTime)
+void IndexedTexturePack::update(int epoch, sf::Time elapsedTime)
 {
+	if (lastEpoch == epoch)
+	{
+		return;
+	}
+	lastEpoch = epoch;
+
 	for (auto& anim : animatedTextures)
 	{
 		if (anim.refresh.update(elapsedTime) == true)

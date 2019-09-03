@@ -5,11 +5,10 @@
 #include "Palette.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Vertex.hpp>
+#include "SFML/VertexArray2.h"
 #include <string>
-#include <vector>
 
 class BitmapFontTexturePack;
-class Game;
 
 class BitmapFont
 {
@@ -24,7 +23,7 @@ private:
 
 	float calculateLineLength(const char* text, int horizSpaceOffset) const noexcept;
 
-	Palette* getPalette() const noexcept;
+	const Palette* getPalette() const noexcept;
 
 public:
 	BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_);
@@ -45,7 +44,7 @@ public:
 		const std::string& text, sf::Color color, int horizSpaceOffset,
 		int vertSpaceOffset, float sizeX, HorizontalAlign align) const;
 
-	void draw(const std::vector<sf::Vertex>& vertexText,
+	void draw(const VertexArray2& vertexText,
 		const sf::Vector2f& pos, const sf::Vector2f& size,
-		const Game& game, sf::RenderTarget& target) const;
+		sf::Shader* spriteShader, sf::RenderTarget& target) const;
 };

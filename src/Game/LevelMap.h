@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "DS1.h"
 #include "Dun.h"
 #include <functional>
 #include "LevelCell.h"
@@ -8,18 +9,22 @@
 #include "PairXY.h"
 #include "Sol.h"
 #include "TileSet.h"
+#include "Utils/FixedArray.h"
 #include "Utils/Helper2D.h"
 #include <vector>
 
 class LevelMap
 {
+public:
+	static constexpr auto MaxNumberOfLightsToUse = 64u;
+
 private:
 
 	struct LightStruct
 	{
-		PairInt32 mapPos;
+		PairFloat mapPos;
+		sf::Vector2f drawPos;
 		LightSource lightSource;
-		bool remove{ false };
 	};
 
 	std::vector<LevelCell> cells;
@@ -33,13 +38,21 @@ private:
 	int32_t defaultBlockWidth{ 1 };
 	int32_t defaultBlockHeight{ 1 };
 
-	LightSource defaultSource;
+	LightSource defaultLight;
 
 	TileSet tileSet;
 	Sol sol;
 	LightMap lightMap;
 
-	std::vector<LightStruct> pendingLights;
+	std::vector<LightStruct> mapLights;
+	std::vector<LightStruct> allLights;
+	static size_t maxLights;
+	bool lightsNeedUpdate{ false };
+
+public:
+	FixedArray<float, MaxNumberOfLightsToUse * 4> lightArray;
+
+private:
 
 	static const LevelCell& get(int32_t x, int32_t y, const LevelMap& map)
 	{
@@ -59,22 +72,7 @@ private:
 		return get((int32_t)x, (int32_t)y, map);
 	}
 
-	// get the Tile's light for the layer, ignoring any object's light.
-	// returns 0 if tile index is invalid.
-	uint8_t getTileLight(size_t layer, const LevelCell& cell) const;
-
-	// applies light function to map position.
-	void doLight(PairInt32 lightPos, LightSource lightSource,
-		const std::function<void(LevelCell*, uint8_t)>& doLightFunc);
-
-	// adds light to map position.
-	void doDefaultLight(PairInt32 lightPos, LightSource lightSource);
-
-	// adds light to map position.
-	void doLight(PairInt32 lightPos, LightSource lightSource);
-
-	// subtracts light from map position.
-	void undoLight(PairInt32 lightPos, LightSource lightSource);
+	void updateMapLights();
 
 public:
 	using iterator = std::vector<LevelCell>::iterator;
@@ -97,8 +95,8 @@ public:
 
 	LevelMap() noexcept {}
 	LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
-		int32_t width_, int32_t height_, int16_t defaultTile = -1);
-	LevelMap(int32_t width_, int32_t height_, int16_t defaultTile = -1);
+		int32_t width_, int32_t height_, int32_t defaultTile = -1);
+	LevelMap(int32_t width_, int32_t height_, int32_t defaultTile = -1);
 
 	LevelMap& operator=(const LevelMap&) = default;
 	LevelMap& operator=(LevelMap&&) = default;
@@ -108,23 +106,21 @@ public:
 	void resize(int32_t width_, int32_t height_);
 
 	// clears map and keeps size
-	void clear(int16_t defaultTile = -1);
+	void clear(int32_t defaultTile = -1);
 
 	void setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
 
-	uint8_t getDefaultLight() const noexcept { return defaultSource.maxLight; }
-	void setDefaultLightSource(LightSource light_) noexcept { defaultSource = light_; }
+	uint8_t getDefaultLight() const noexcept { return defaultLight.light; }
+	void setDefaultLightSource(LightSource light_) noexcept { defaultLight = light_; }
 
-	void addLight(PairInt32 lightPos, LightSource lightSource);
-	void addLight(PairFloat lightPos, LightSource lightSource);
-	void removeLight(PairInt32 lightPos, LightSource lightSource);
-	void removeLight(PairFloat lightPos, LightSource lightSource);
+	void loadLightMap(const std::string_view fileName);
+	uint8_t getLight(size_t index) const;
 
-	void loadLightMap(const std::string_view fileName) { lightMap.load(fileName, 0, 0xFFFF); }
-	uint8_t getLight(size_t index) const { return std::max(getDefaultLight(), lightMap.get(index)); }
+	void updateLights(const std::vector<std::shared_ptr<LevelObject>>& levelObjects,
+		const sf::Vector2f& drawCenter);
 
-	void initLights();
-	void updateLights();
+	static size_t MaxLights() noexcept { return maxLights; }
+	static void MaxLights(size_t maxLights_) noexcept;
 
 	// sets area (tileBlock Dun file) for layer 0 and uses the Sol file to set the Sol layer.
 	void setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun);
@@ -135,6 +131,8 @@ public:
 	// sets area (indexes Dun file)
 	void setSimpleArea(size_t layer, int32_t x, int32_t y,
 		const Dun& dun, bool normalizeSolLayer = true);
+
+	void setD2Area(int32_t x, int32_t y, DS1::Decoder& dun);
 
 	Misc::Helper2D<LevelMap, LevelCell&, int32_t> operator[] (int32_t x) noexcept
 	{
@@ -174,7 +172,8 @@ public:
 	}
 
 	template <class T>
-	sf::Vector2f toDrawCoord(const T& mapPos, int32_t blockWidth, int32_t blockHeight) const
+	constexpr static sf::Vector2f toDrawCoord(const T& mapPos,
+		int32_t blockWidth, int32_t blockHeight)
 	{
 		return sf::Vector2f(
 			(float)std::round((mapPos.x - mapPos.y) * blockWidth),
@@ -183,7 +182,8 @@ public:
 	}
 
 	PairFloat toMapCoord(const sf::Vector2f& drawCoord) const noexcept;
-	PairFloat toMapCoord(const sf::Vector2f& drawCoord, int32_t blockWidth, int32_t blockHeight) const noexcept;
+	static PairFloat toMapCoord(const sf::Vector2f& drawCoord,
+		int32_t blockWidth, int32_t blockHeight) noexcept;
 
 	TileBlock getTileBlock(int16_t index) const;
 
@@ -198,7 +198,6 @@ public:
 			auto obj = (*this)[mapCoord].template removeObject<T>();
 			if (obj != nullptr)
 			{
-				removeLight(mapCoord, obj->getLightSource());
 				return obj;
 			}
 		}

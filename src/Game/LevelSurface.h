@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
+#include "SFML/VertexArray2.h"
 #include "SFML/View2.h"
 
 class Panel;
@@ -51,14 +52,16 @@ public:
 	sf::Vector2f getPosition(const sf::Vector2f& point) const;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	void draw(const Game& game, const Panel& obj) const;
+	bool draw(const Game& game, const Panel& obj) const;
 	void draw(const sf::Drawable& obj) const;
+	void draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
+		const Palette* palette, sf::Shader* spriteShader) const;
 
 	template <class T>
 	void draw(const T& obj, sf::Shader* spriteShader,
-		SpriteShaderCache& cache, uint8_t light = 255) const
+		SpriteShaderCache& cache) const
 	{
-		obj.draw(texture, spriteShader, cache, light);
+		obj.draw(texture, spriteShader, cache);
 	}
 
 	void init(const Game& game);

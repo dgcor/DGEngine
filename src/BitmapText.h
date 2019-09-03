@@ -2,13 +2,12 @@
 
 #include "BitmapFont.h"
 #include "DrawableText.h"
-#include <SFML/Graphics/Vertex.hpp>
-#include <vector>
+#include "SFML/VertexArray2.h"
 
 class BitmapText : public DrawableText
 {
 private:
-	std::vector<sf::Vertex> vertexText;
+	VertexArray2 vertexText;
 	std::string text;
 	std::shared_ptr<BitmapFont> font;
 	sf::Vector2f pos;

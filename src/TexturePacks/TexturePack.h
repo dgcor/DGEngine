@@ -2,6 +2,7 @@
 
 #include "AnimationType.h"
 #include <memory>
+#include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Time.hpp>
 #include <utility>
 
@@ -26,7 +27,11 @@ public:
 	// if texture is an index texture, sets the palette in TextureInfo
 	virtual bool get(uint32_t index, TextureInfo& ti) const = 0;
 
-	virtual void update(sf::Time elapsedTime) {}
+	virtual void update(int epoch, sf::Time elapsedTime) {}
+
+	// returns a texture only if the same texture is used for all calls to get
+	// returns nullptr if more than one texture is used
+	virtual const sf::Texture* getTexture() const noexcept { return nullptr; }
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept = 0;
 	virtual uint32_t size() const noexcept = 0;

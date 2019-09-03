@@ -1,5 +1,6 @@
 #include "ParseTexturePack.h"
 #include "Game.h"
+#include "ImageContainers/DT1ImageContainer.h"
 #include "ParseImageContainer.h"
 #include "ParseTexture.h"
 #include "TexturePacks/BitmapFontTexturePack.h"
@@ -7,6 +8,7 @@
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/RectTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
+#include "TexturePacks/StackedTexturePack.h"
 #include "Utils/NumberVector.h"
 #include "Utils/ParseUtils.h"
 
@@ -34,6 +36,28 @@ namespace Parser
 			return true;
 		}
 		return false;
+	}
+
+	void parseDT1ImageContainerTexturePack(Game& game, const Value& elem,
+		const DT1ImageContainer& imgCont, IndexedTexturePack& texturePack)
+	{
+		const auto& tileIndexes = imgCont.getTileIndexes();
+
+		for (const auto& ti : tileIndexes)
+		{
+			if (ti.second.size() == 0)
+			{
+				continue;
+			}
+			else if (ti.second.size() > 1)
+			{
+				texturePack.addAnimatedTexture(ti.first, sf::milliseconds(100), ti.second);
+			}
+			else
+			{
+				texturePack.mapTextureIndex(ti.first, ti.second.front());
+			}
+		}
 	}
 
 	std::unique_ptr<TexturePack> parseImageContainerTexturePack(
@@ -80,9 +104,21 @@ namespace Parser
 
 		if (imgVec.size() == 1)
 		{
-			return std::make_unique<CachedTexturePack>(
+			auto texturePack = std::make_unique<CachedTexturePack>(
 				imgVec.front(), offset, pal, useIndexedImages, normalizeDirections
 			);
+			auto dt1ImgCont = dynamic_cast<DT1ImageContainer*>(imgVec.front().get());
+			if (dt1ImgCont == nullptr)
+			{
+				return texturePack;
+			}
+
+			auto texturePack2 = std::make_unique<IndexedTexturePack>(
+				std::move(texturePack), true, false);
+
+			parseDT1ImageContainerTexturePack(game, elem, *dt1ImgCont, *texturePack2);
+
+			return texturePack2;
 		}
 		else
 		{
@@ -248,11 +284,35 @@ namespace Parser
 		return texturePack;
 	}
 
+	std::shared_ptr<StackedTexturePack> parseStackedTexturePackObj(
+		Game& game, const Value& elem)
+	{
+		auto texturePack = std::make_shared<StackedTexturePack>();
+
+		for (const auto& val : elem["texturePacks"])
+		{
+			auto texPack = game.Resources().getTexturePack(getStringVal(val));
+			if (texPack != nullptr)
+			{
+				texturePack->addTexturePack(texPack);
+			}
+		}
+		if (texturePack->size() == 0)
+		{
+			return nullptr;
+		}
+		return texturePack;
+	}
+
 	std::shared_ptr<TexturePack> parseTexturePackObj(Game& game, const Value& elem)
 	{
 		if (getBoolKey(elem, "font") == true)
 		{
 			return parseBitmapFontTexturePackObj(game, elem);
+		}
+		else if (isValidArray(elem, "texturePacks") == true)
+		{
+			return parseStackedTexturePackObj(game, elem);
 		}
 
 		std::unique_ptr<TexturePack> texturePack;
@@ -330,7 +390,10 @@ namespace Parser
 		if (isValidArray(elem, "textureIndexes") == true)
 		{
 			auto texturePack2 = std::make_unique<IndexedTexturePack>(
-				std::move(texturePack), getBoolKey(elem, "onlyUseIndexed", true));
+				std::move(texturePack),
+				getBoolKey(elem, "onlyUseIndexed", true),
+				getBoolKey(elem, "translateAnimatedIndexes", true)
+			);
 			for (const auto& val : elem["textureIndexes"])
 			{
 				if (val.IsUint() == true)
@@ -353,7 +416,10 @@ namespace Parser
 			if (animTexturePack == nullptr)
 			{
 				auto texturePack2 = std::make_unique<IndexedTexturePack>(
-					std::move(texturePack), getBoolKey(elem, "onlyUseIndexed"));
+					std::move(texturePack),
+					getBoolKey(elem, "onlyUseIndexed"),
+					getBoolKey(elem, "translateAnimatedIndexes")
+				);
 				animTexturePack = texturePack2.get();
 				texturePack = std::move(texturePack2);
 			}

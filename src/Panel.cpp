@@ -112,13 +112,14 @@ void Panel::updateDrawPositionAndSize() const
 	drawSize -= drawPosition;
 }
 
-void Panel::draw(const Game& game, sf::RenderTarget& target,
+bool Panel::draw(const Game& game, sf::RenderTarget& target,
 	const sf::FloatRect& visibleRect) const
 {
 	if (visible == false)
 	{
-		return;
+		return false;
 	}
+	bool hasDrawn = false;
 	for (const auto& drawable : drawables)
 	{
 		if (auto obj = drawable.lock())
@@ -127,9 +128,11 @@ void Panel::draw(const Game& game, sf::RenderTarget& target,
 			if (visibleRect.intersects(itemRect) == true)
 			{
 				obj->draw(game, target);
+				hasDrawn = true;
 			}
 		}
 	}
+	return hasDrawn;
 }
 
 void Panel::draw(const Game& game, sf::RenderTarget& target) const

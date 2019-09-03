@@ -54,6 +54,8 @@ set(SOURCE_FILES
     src/CompositeTexture.cpp
     src/CompositeTexture.h
     src/DrawableText.h
+    src/DS1.cpp
+    src/DS1.h
     src/Dun.cpp
     src/Dun.h
     src/Event.cpp
@@ -160,13 +162,6 @@ set(SOURCE_FILES
     src/Actions/ActText.h
     src/Actions/ActVariable.h
     src/Actions/ActVisibility.h
-    src/endian/big_endian.hpp
-    src/endian/is_big_endian.hpp
-    src/endian/little_endian.hpp
-    src/endian/stream_reader.hpp
-    src/endian/stream_writer.hpp
-    src/endian/detail/helpers.hpp
-    src/endian/detail/stream.hpp
     src/Game/Classifier.cpp
     src/Game/Classifier.h
     src/Game/Classifiers.h
@@ -234,15 +229,6 @@ set(SOURCE_FILES
     src/Game/Save/SaveSimpleLevelObject.h
     src/Game/Save/SaveUtils.cpp
     src/Game/Save/SaveUtils.h
-    src/gsl/gsl
-    src/gsl/gsl_algorithm
-    src/gsl/gsl_assert
-    src/gsl/gsl_byte
-    src/gsl/gsl_util
-    src/gsl/multi_span
-    src/gsl/pointers
-    src/gsl/span
-    src/gsl/string_span
     src/ImageContainers/ImageContainer.h
     src/ImageContainers/SimpleImageContainer.cpp
     src/ImageContainers/SimpleImageContainer.h
@@ -349,41 +335,6 @@ set(SOURCE_FILES
     src/Predicates/PredItem.h
     src/Predicates/PredLevelObject.h
     src/Predicates/PredPlayer.h
-    src/rapidjson/allocators.h
-    src/rapidjson/document.h
-    src/rapidjson/encodedstream.h
-    src/rapidjson/encodings.h
-    src/rapidjson/filereadstream.h
-    src/rapidjson/filewritestream.h
-    src/rapidjson/fwd.h
-    src/rapidjson/istreamwrapper.h
-    src/rapidjson/memorybuffer.h
-    src/rapidjson/memorystream.h
-    src/rapidjson/ostreamwrapper.h
-    src/rapidjson/pointer.h
-    src/rapidjson/prettywriter.h
-    src/rapidjson/rapidjson.h
-    src/rapidjson/reader.h
-    src/rapidjson/schema.h
-    src/rapidjson/stream.h
-    src/rapidjson/stringbuffer.h
-    src/rapidjson/writer.h
-    src/rapidjson/error/en.h
-    src/rapidjson/error/error.h
-    src/rapidjson/internal/biginteger.h
-    src/rapidjson/internal/diyfp.h
-    src/rapidjson/internal/dtoa.h
-    src/rapidjson/internal/ieee754.h
-    src/rapidjson/internal/itoa.h
-    src/rapidjson/internal/meta.h
-    src/rapidjson/internal/pow10.h
-    src/rapidjson/internal/regex.h
-    src/rapidjson/internal/stack.h
-    src/rapidjson/internal/strfunc.h
-    src/rapidjson/internal/strtod.h
-    src/rapidjson/internal/swap.h
-    src/rapidjson/msinttypes/inttypes.h
-    src/rapidjson/msinttypes/stdint.h
     src/SFML/CompositeSprite.cpp
     src/SFML/CompositeSprite.h
     src/SFML/Image2.h
@@ -397,6 +348,8 @@ set(SOURCE_FILES
     src/SFML/Sprite2.h
     src/SFML/Text2.cpp
     src/SFML/Text2.h
+    src/SFML/VertexArray2.cpp
+    src/SFML/VertexArray2.h
     src/SFML/View2.cpp
     src/SFML/View2.h
     src/TexturePacks/BitmapFontTexturePack.cpp
@@ -409,10 +362,10 @@ set(SOURCE_FILES
     src/TexturePacks/RectTexturePack.h
     src/TexturePacks/SimpleTexturePack.cpp
     src/TexturePacks/SimpleTexturePack.h
+    src/TexturePacks/StackedTexturePack.cpp
+    src/TexturePacks/StackedTexturePack.h
     src/TexturePacks/TexturePack.cpp
     src/TexturePacks/TexturePack.h
-    src/TexturePacks/VectorTexturePack.cpp
-    src/TexturePacks/VectorTexturePack.h
     src/Utils/EasedValue.h
     src/Utils/EasingFunctions.h
     src/Utils/ElapsedTime.h
