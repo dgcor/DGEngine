@@ -1,7 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
+#endif
 #include "Dun.h"
 #include <functional>
 #include "LevelCell.h"
@@ -132,7 +134,9 @@ public:
 	void setSimpleArea(size_t layer, int32_t x, int32_t y,
 		const Dun& dun, bool normalizeSolLayer = true);
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 	void setD2Area(int32_t x, int32_t y, DS1::Decoder& dun);
+#endif
 
 	Misc::Helper2D<LevelMap, LevelCell&, int32_t> operator[] (int32_t x) noexcept
 	{

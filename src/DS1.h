@@ -1,5 +1,6 @@
 #pragma once
 
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <cstdint>
 #include "ImageContainers/DT1ImageContainer.h"
 #include "StreamReader.h"
@@ -255,3 +256,4 @@ namespace DS1
 		int getAct() const { return act; }
 	};
 }
+#endif
