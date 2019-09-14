@@ -167,7 +167,6 @@
     <ClCompile Include="src\SFML\VertexArray2.cpp" />
     <ClCompile Include="src\SFML\View2.cpp" />
     <ClCompile Include="src\ShaderManager.cpp" />
-    <ClCompile Include="src\Sol.cpp" />
     <ClCompile Include="src\StringButton.cpp" />
     <ClCompile Include="src\StringText.cpp" />
     <ClCompile Include="src\Text.cpp" />
@@ -242,6 +241,7 @@
     <ClInclude Include="src\Game\Classifier.h" />
     <ClInclude Include="src\Game\Classifiers.h" />
     <ClInclude Include="src\Game\ColorLevelLayer.h" />
+    <ClInclude Include="src\Game\FlagsVector.h" />
     <ClInclude Include="src\Game\Formula.h" />
     <ClInclude Include="src\Game\Formulas.h" />
     <ClInclude Include="src\Game\GameHashes.h" />
@@ -253,6 +253,7 @@
     <ClInclude Include="src\Game\ItemLocation.h" />
     <ClInclude Include="src\Game\Level.h" />
     <ClInclude Include="src\Game\LevelCell.h" />
+    <ClInclude Include="src\Game\LevelFlags.h" />
     <ClInclude Include="src\Game\LevelHelper.h" />
     <ClInclude Include="src\Game\LevelLayer.h" />
     <ClInclude Include="src\Game\LevelMap.h" />
@@ -387,7 +388,6 @@
     <ClInclude Include="src\SFML\VertexArray2.h" />
     <ClInclude Include="src\SFML\View2.h" />
     <ClInclude Include="src\ShaderManager.h" />
-    <ClInclude Include="src\Sol.h" />
     <ClInclude Include="src\StreamReader.h" />
     <ClInclude Include="src\StringButton.h" />
     <ClInclude Include="src\StringText.h" />

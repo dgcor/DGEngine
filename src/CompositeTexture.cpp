@@ -50,7 +50,7 @@ namespace
 	// HD, TR, LG, RA, LA, RH, LH, SH, S1, S2, S3, S4, S5, S6, S7, S8
 }
 
-void CompositeTexture::addGroup(const std::string_view fileName)
+void CompositeTexture::addGroup(const std::string_view fileName, bool fixLayerOrdering)
 {
 	std::vector<uint8_t> fileData;
 
@@ -120,7 +120,50 @@ void CompositeTexture::addGroup(const std::string_view fileName)
 	size_t layersOrdersSize = header.frames * header.directions * header.layers;
 	auto layersOrdersStartIdx = layersOrders.size();
 	layersOrders.resize(layersOrdersStartIdx + layersOrdersSize);
-	fileStream.read((uint8_t*)layersOrders.data() + layersOrdersStartIdx, layersOrdersSize);
+
+	bool layerOrderingWasRead = false;
+
+	if (fixLayerOrdering == true &&
+		(header.directions == 8 || header.directions == 16 || header.directions == 32))
+	{
+		// Re-map COF directions
+		layerOrderingWasRead = true;
+		for (size_t cofDirection = 0; cofDirection < header.directions; cofDirection++)
+		{
+			auto newDirection = cofDirection;
+
+			if (header.directions == 8)
+			{
+				static const uint8_t directionTable[8] = {
+					4, 0, 5, 1, 6, 2, 7, 3
+				};
+				newDirection = directionTable[cofDirection];
+			}
+			else if (header.directions == 16)
+			{
+				static const uint8_t directionTable[16] = {
+					4, 8, 0, 9, 5, 10, 1, 11, 6, 12, 2, 13, 7, 14, 3, 15
+				};
+				newDirection = directionTable[cofDirection];
+			}
+			else if (header.directions == 32)
+			{
+				static const uint8_t directionTable[32] = {
+					4, 16, 8, 17, 0, 18, 9, 19, 5, 20, 10, 21, 1, 22, 11, 23,
+					6, 24, 12, 25, 2, 26, 13, 27, 7, 28, 14, 29, 3, 30, 15, 31
+				};
+				newDirection = directionTable[cofDirection];
+			}
+
+			auto len = header.frames * header.layers;
+			auto destIdx = layersOrdersStartIdx + newDirection * len;
+			fileStream.read((uint8_t*)layersOrders.data() + destIdx, len);
+		}
+	}
+	if (layerOrderingWasRead == false)
+	{
+		fileStream.read((uint8_t*)layersOrders.data() + layersOrdersStartIdx, layersOrdersSize);
+	}
 
 	// normalize indexes from 0-16 to 0-<number of layers>
 	uint8_t newIdx = 0;

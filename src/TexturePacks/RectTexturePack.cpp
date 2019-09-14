@@ -7,6 +7,11 @@ void RectTexturePack::addRect(uint32_t index,
 	rects.push_back({ index, rect, offset });
 }
 
+void RectTexturePack::addRect(const sf::IntRect& rect, const sf::Vector2f& offset)
+{
+	rects.push_back({ (uint32_t)rects.size(), rect, offset });
+}
+
 void RectTexturePack::addGroup(uint32_t startIdx,
 	uint32_t stopIdx, uint32_t directions, AnimationType animType)
 {

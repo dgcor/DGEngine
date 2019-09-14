@@ -5,11 +5,10 @@
 #include "DS1.h"
 #endif
 #include "Dun.h"
-#include <functional>
+#include "FlagsVector.h"
 #include "LevelCell.h"
 #include "LightMap.h"
 #include "PairXY.h"
-#include "Sol.h"
 #include "TileSet.h"
 #include "Utils/FixedArray.h"
 #include "Utils/Helper2D.h"
@@ -40,10 +39,12 @@ private:
 	int32_t defaultBlockWidth{ 1 };
 	int32_t defaultBlockHeight{ 1 };
 
+	uint32_t defaultSubTiles{ 1 };
+
 	LightSource defaultLight;
 
 	TileSet tileSet;
-	Sol sol;
+	std::variant<FlagsVector, std::weak_ptr<LevelFlags>> flagsVariant;
 	LightMap lightMap;
 
 	std::vector<LightStruct> mapLights;
@@ -74,6 +75,9 @@ private:
 		return get((int32_t)x, (int32_t)y, map);
 	}
 
+	const LevelFlags* getFlags();
+	void getSubIndex(int32_t x, int32_t y, uint32_t& subIndex);
+
 	void updateMapLights();
 
 public:
@@ -96,8 +100,10 @@ public:
 	const_reverse_iterator crend() const noexcept { return cells.crend(); }
 
 	LevelMap() noexcept {}
-	LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
+	LevelMap(const std::string_view tilFileName, const std::string_view flagsFileName,
 		int32_t width_, int32_t height_, int32_t defaultTile = -1);
+	LevelMap(std::weak_ptr<LevelFlags> flags_, int32_t width_,
+		int32_t height_, int32_t defaultTile = -1);
 	LevelMap(int32_t width_, int32_t height_, int32_t defaultTile = -1);
 
 	LevelMap& operator=(const LevelMap&) = default;
@@ -110,7 +116,9 @@ public:
 	// clears map and keeps size
 	void clear(int32_t defaultTile = -1);
 
-	void setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept;
+	void setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_, uint32_t subTiles_) noexcept;
+
+	void setFlags(std::weak_ptr<LevelFlags> flags_) noexcept { flagsVariant = flags_; }
 
 	uint8_t getDefaultLight() const noexcept { return defaultLight.light; }
 	void setDefaultLightSource(LightSource light_) noexcept { defaultLight = light_; }
@@ -124,15 +132,15 @@ public:
 	static size_t MaxLights() noexcept { return maxLights; }
 	static void MaxLights(size_t maxLights_) noexcept;
 
-	// sets area (tileBlock Dun file) for layer 0 and uses the Sol file to set the Sol layer.
-	void setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun);
+	// sets area (tileBlock Dun file) for layer 0 and uses the Flags file to set the Flags layer.
+	void setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun);
 
-	// sets area (indexes Dun file) for layer n and uses the Sol file to set the Sol layer.
-	void setSimpleAreaUseSol(size_t layer, int32_t x, int32_t y, const Dun& dun);
+	// sets area (indexes Dun file) for layer n and uses the Flags file to set the Flags layer.
+	void setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Dun& dun);
 
 	// sets area (indexes Dun file)
 	void setSimpleArea(size_t layer, int32_t x, int32_t y,
-		const Dun& dun, bool normalizeSolLayer = true);
+		const Dun& dun, bool normalizeFlagsLayer = true);
 
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 	void setD2Area(int32_t x, int32_t y, DS1::Decoder& dun);

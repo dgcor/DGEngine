@@ -29,6 +29,8 @@ public:
 	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept;
 	virtual std::pair<uint32_t, uint32_t> getRange(
 		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+
+	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
 };
 
 class CachedMultiTexturePack : public TexturePack

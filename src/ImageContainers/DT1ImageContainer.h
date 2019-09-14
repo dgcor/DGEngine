@@ -191,5 +191,7 @@ public:
 	virtual uint32_t size() const noexcept { return tiles.size(); }
 
 	virtual uint32_t getDirections() const noexcept { return 1; }
+
+	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
 };
 #endif

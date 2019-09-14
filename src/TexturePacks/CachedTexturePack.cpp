@@ -116,6 +116,11 @@ std::pair<uint32_t, uint32_t> CachedTexturePack::getRange(
 	);
 }
 
+int32_t CachedTexturePack::getFlags(uint32_t index, uint32_t subIndex) const
+{
+	return imgPack->getFlags(index, subIndex);
+}
+
 CachedMultiTexturePack::CachedMultiTexturePack(
 	const std::vector<std::shared_ptr<ImageContainer>>& imgVec_,
 	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_,

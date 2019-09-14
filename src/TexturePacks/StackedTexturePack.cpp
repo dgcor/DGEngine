@@ -52,3 +52,15 @@ uint32_t StackedTexturePack::size() const noexcept
 	}
 	return 0;
 }
+
+int32_t StackedTexturePack::getFlags(uint32_t index, uint32_t subIndex) const
+{
+	for (const auto& texturePack : texturePacks)
+	{
+		if (auto flags = texturePack->getFlags(index, subIndex))
+		{
+			return flags;
+		}
+	}
+	return 0;
+}

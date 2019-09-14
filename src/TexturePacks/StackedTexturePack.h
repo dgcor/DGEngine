@@ -20,4 +20,6 @@ public:
 
 	virtual const std::shared_ptr<Palette>& getPalette() const noexcept;
 	virtual uint32_t size() const noexcept;
+
+	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
 };

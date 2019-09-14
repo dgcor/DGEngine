@@ -105,8 +105,6 @@ set(SOURCE_FILES
     src/Scrollable.h
     src/ShaderManager.cpp
     src/ShaderManager.h
-    src/Sol.cpp
-    src/Sol.h
     src/StreamReader.h
     src/StringButton.cpp
     src/StringButton.h
@@ -165,6 +163,7 @@ set(SOURCE_FILES
     src/Game/Classifiers.h
     src/Game/ColorLevelLayer.cpp
     src/Game/ColorLevelLayer.h
+    src/Game/FlagsVector.h
     src/Game/Formula.cpp
     src/Game/Formula.h
     src/Game/Formulas.h
@@ -184,6 +183,7 @@ set(SOURCE_FILES
     src/Game/Level.h
     src/Game/LevelCell.cpp
     src/Game/LevelCell.h
+    src/Game/LevelFlags.h
     src/Game/LevelLayer.h
     src/Game/LevelMap.cpp
     src/Game/LevelMap.h
