@@ -55,9 +55,9 @@ void Save::serialize(void* serializeObj, Properties& props,
 		// layer
 		writer.StartObject();
 
-		if (i == LevelCell::SolLayer)
+		if (i == LevelCell::FlagsLayer)
 		{
-			writeString(writer, "index", "sol");
+			writeString(writer, "index", "flags");
 		}
 		else
 		{

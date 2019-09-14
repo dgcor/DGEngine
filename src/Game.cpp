@@ -1215,6 +1215,9 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 		case str2int16("majorVersion"):
 			var = Variable((int64_t)getOpenGLMajorVersion());
 			break;
+		case str2int16("maxTextureSize"):
+			var = Variable((int64_t)sf::Texture::getMaximumSize());
+			break;
 		case str2int16("minorVersion"):
 			var = Variable((int64_t)getOpenGLMinorVersion());
 			break;

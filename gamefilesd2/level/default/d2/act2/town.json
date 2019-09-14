@@ -1,0 +1,142 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "fromId": "act2"
+        }
+      }
+    }
+  },
+  "texturePack": [
+    {
+      "id": "warp",
+      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1",
+      "imageContainer": "warp",
+      "palette": "level"
+    },
+    {
+      "id": "mesa",
+      "file": "data/global/tiles/ACT2/Outdoors/mesa.dt1",
+      "imageContainer": "mesa",
+      "palette": "level"
+    },
+    {
+      "id": "palm",
+      "file": "data/global/tiles/ACT2/Outdoors/palm.dt1",
+      "imageContainer": "palm",
+      "palette": "level"
+    },
+    {
+      "id": "palace",
+      "file": "data/global/tiles/ACT2/palace/palace.dt1",
+      "imageContainer": "palace",
+      "palette": "level"
+    },
+    {
+      "id": "build",
+      "file": "data/global/tiles/ACT2/Town/build.dt1",
+      "imageContainer": "build",
+      "palette": "level"
+    },
+    {
+      "id": "canal",
+      "file": "data/global/tiles/ACT2/Town/canal.dt1",
+      "imageContainer": "canal",
+      "palette": "level"
+    },
+    {
+      "id": "curbs",
+      "file": "data/global/tiles/ACT2/Town/curbs.dt1",
+      "imageContainer": "curbs",
+      "palette": "level"
+    },
+    {
+      "id": "gate",
+      "file": "data/global/tiles/ACT2/Town/gate.dt1",
+      "imageContainer": "gate",
+      "palette": "level"
+    },
+    {
+      "id": "ground",
+      "file": "data/global/tiles/ACT2/Town/ground.dt1",
+      "imageContainer": "ground",
+      "palette": "level"
+    },
+    {
+      "id": "guard",
+      "file": "data/global/tiles/ACT2/Town/guard.dt1",
+      "imageContainer": "guard",
+      "palette": "level"
+    },
+    {
+      "id": "shop",
+      "file": "data/global/tiles/ACT2/Town/shop.dt1",
+      "imageContainer": "shop",
+      "palette": "level"
+    },
+    {
+      "id": "tavern",
+      "file": "data/global/tiles/ACT2/Town/tavern.dt1",
+      "imageContainer": "tavern",
+      "palette": "level"
+    },
+    {
+      "id": "wagon",
+      "file": "data/global/tiles/ACT2/Town/wagon.dt1",
+      "imageContainer": "wagon",
+      "palette": "level"
+    },
+    {
+      "id": "walls",
+      "file": "data/global/tiles/ACT2/Town/walls.dt1",
+      "imageContainer": "walls",
+      "palette": "level"
+    },
+    {
+      "id": "town",
+      "texturePacks": [
+        "warp",
+        "palm",
+        "canal",
+        "curbs",
+        "gate",
+        "ground",
+        "guard",
+        "shop",
+        "tavern",
+        "wagon",
+        "walls",
+        "palace",
+        "build",
+        "mesa"
+      ]
+    }
+  ],
+  "level": {
+    "id": "level",
+    "tileSize": [32, 16],
+    "subTiles": 5,
+    "layers": [
+      { "index": 0, "texturePack": "town" },
+      { "index": 1, "texturePack": "town" },
+      { "index": 2, "texturePack": "town" },
+      { "index": 3, "texturePack": "town", "drawObjects": true },
+      { "index": 4, "texturePack": "town" },
+      { "index": 5, "texturePack": "town" },
+      { "index": 6, "texturePack": "town" },
+      { "index": 7, "texturePack": "town" },
+      { "index": 8, "texturePack": "town" },
+      { "index": 9, "texturePack": "town" },
+      { "index": 10, "texturePack": "town" },
+      { "index": 11, "texturePack": "town" }
+    ],
+    "flags": "town",
+    "defaultLight": 255
+  }
+}

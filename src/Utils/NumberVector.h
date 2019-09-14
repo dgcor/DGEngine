@@ -103,11 +103,11 @@ public:
 		} while (loop == true);
 	}
 
-	uint8_t get(size_t index) const
+	T get(size_t index) const
 	{
 		if (index >= data.size())
 		{
-			return 0;
+			return {};
 		}
 		else
 		{

@@ -11,7 +11,7 @@ IndexedTexturePack::IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_
 	}
 }
 
-bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
+bool IndexedTexturePack::translateIndex(uint32_t& index) const
 {
 	bool translateIndex = true;
 	auto it = animatedIndexes.find(index);
@@ -32,7 +32,16 @@ bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
 			return false;
 		}
 	}
-	return texturePack->get(index, ti);
+	return true;
+}
+
+bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
+{
+	if (translateIndex(index) == true)
+	{
+		return texturePack->get(index, ti);
+	}
+	return false;
 }
 
 void IndexedTexturePack::update(int epoch, sf::Time elapsedTime)
@@ -90,4 +99,13 @@ void IndexedTexturePack::mapTextureIndex(uint32_t mapIndex, uint32_t toIndex)
 	{
 		numIndexedTextures = std::max(numIndexedTextures, mapIndex + 1);
 	}
+}
+
+int32_t IndexedTexturePack::getFlags(uint32_t index, uint32_t subIndex) const
+{
+	if (translateIndex(index) == true)
+	{
+		return texturePack->getFlags(index, subIndex);
+	}
+	return 0;
 }

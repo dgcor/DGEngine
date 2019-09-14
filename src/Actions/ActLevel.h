@@ -399,7 +399,7 @@ public:
 			auto automap = game.Resources().getTexturePack(idTexturePack);
 			if (automap != nullptr)
 			{
-				auto idx = std::min(layerIdx, (uint16_t)LevelCell::SolLayer);
+				auto idx = std::min(layerIdx, (uint16_t)LevelCell::FlagsLayer);
 				level->setAutomap(
 					TilesetLevelLayer(automap, idx, {}),
 					tileSize.first,

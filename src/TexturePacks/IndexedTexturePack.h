@@ -25,6 +25,8 @@ class IndexedTexturePack : public TexturePack
 	bool translateAnimatedIndexes{ false };
 	int lastEpoch{ 0 };
 
+	bool translateIndex(uint32_t& index) const;
+
 public:
 	IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
 		bool onlyUseIndexed_, bool translateAnimatedIndexes_);
@@ -55,4 +57,6 @@ public:
 	{
 		return texturePack->getDirection(frameIdx);
 	}
+
+	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
 };

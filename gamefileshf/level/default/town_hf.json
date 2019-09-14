@@ -20,7 +20,7 @@
     "til": "Nlevels/TownData/Town.TIL",
     "min": "Nlevels/TownData/Town.MIN",
     "minBlocks": 16,
-    "sol": "Nlevels/TownData/Town.SOL",
+    "flags": "Nlevels/TownData/Town.SOL",
     "defaultLight": 255
   }
 }

@@ -158,8 +158,8 @@ private:
 
 public:
 	void Init(const Game& game, LevelMap map_,
-		const std::vector<LevelLayer>& levelLayers_,
-		int32_t tileWidth, int32_t tileHeight, int32_t indexToDrawObjects);
+		const std::vector<LevelLayer>& levelLayers_, int32_t tileWidth,
+		int32_t tileHeight, uint32_t subTiles, int32_t indexToDrawObjects);
 	void Init();
 
 	void setShader(sf::Shader* shader_) noexcept { shader = shader_; }
@@ -391,9 +391,11 @@ public:
 
 	int32_t TileWidth() const noexcept { return surface.tileWidth; }
 	int32_t TileHeight() const noexcept { return surface.tileHeight; }
+	uint32_t SubTiles() const noexcept { return surface.subTiles; }
 
 	int32_t AutomapTileWidth() const noexcept { return automapSurface.tileWidth; }
 	int32_t AutomapTileHeight() const noexcept { return automapSurface.tileHeight; }
+	uint32_t AutomapSubTiles() const noexcept { return automapSurface.subTiles; }
 
 	virtual bool Pause() const noexcept { return pause; }
 	virtual void Pause(bool pause_) noexcept { pause = pause_; }

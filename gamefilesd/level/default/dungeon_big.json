@@ -8,7 +8,7 @@
     ],
     "tileSize": [128, 64],
     "til": "levels/l1data/l1.til",
-    "sol": "levels/l1data/l1.sol",
+    "flags": "levels/l1data/l1.sol",
     "defaultLight": 255
   }
 }

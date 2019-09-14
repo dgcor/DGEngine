@@ -32,7 +32,7 @@
     "til": "Nlevels/L5Data/L5.TIL",
     "min": "Nlevels/L5Data/L5.MIN",
     "minBlocks": 10,
-    "sol": "Nlevels/L5Data/L5.SOL",
+    "flags": "Nlevels/L5Data/L5.SOL",
     "defaultLight": 255
   }
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include "LevelFlags.h"
 #include "LevelObject.h"
 #include "Item.h"
 #include <vector>
@@ -10,7 +11,7 @@ class LevelCell
 public:
 	// number of layers including sol layer
 	static constexpr size_t NumberOfLayers = 12;
-	static constexpr size_t SolLayer = NumberOfLayers - 1;
+	static constexpr size_t FlagsLayer = NumberOfLayers - 1;
 
 private:
 	std::array<int32_t, NumberOfLayers> tileIndexes{ -1, -1, -1, -1,- 1, -1, -1, -1, -1, -1, -1, 0 };
@@ -43,7 +44,7 @@ public:
 
 	void setTileIndex(size_t layer, int32_t tileIndex_) noexcept { tileIndexes[layer] = tileIndex_; }
 
-	bool PassableIgnoreObject() const noexcept { return !(tileIndexes[SolLayer] & 0x01); }
+	bool PassableIgnoreObject() const noexcept { return LevelFlags::Passable(tileIndexes[FlagsLayer]); }
 	bool PassableIgnoreObject(const LevelObject* ignoreObj) const;
 	bool Passable() const;
 

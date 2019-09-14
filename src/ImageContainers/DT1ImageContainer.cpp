@@ -260,24 +260,12 @@ namespace DT1
 
 	bool Orientation::isFloor() const
 	{
-		switch (value)
-		{
-		case FLOOR:
-			return true;
-		default:
-			return false;
-		}
+		return value == FLOOR;
 	}
 
 	bool Orientation::isRoof() const
 	{
-		switch (value)
-		{
-		case ROOF:
-			return true;
-		default:
-			return false;
-		}
+		return value == ROOF;
 	}
 
 	bool Orientation::isWall() const
@@ -394,5 +382,19 @@ const std::vector<uint32_t> DT1ImageContainer::getTilesById(uint32_t id) const
 		return {};
 	}
 	return tileIndexes.at(id);
+}
+
+int32_t DT1ImageContainer::getFlags(uint32_t index, uint32_t subIndex) const
+{
+	if (index >= tiles.size())
+	{
+		return 0;
+	}
+	const auto& tile = tiles[index];
+	if (subIndex < DT1::Tile::NUM_SUBTILES)
+	{
+		return tile.flags[subIndex];
+	}
+	return 0;
 }
 #endif

@@ -30,7 +30,7 @@
     "til": "levels/l3data/l3.til",
     "min": "levels/l3data/l3.min",
     "minBlocks": 10,
-    "sol": "levels/l3data/l3.sol",
+    "flags": "levels/l3data/l3.sol",
     "defaultLight": 255,
     "lightMap": "level/data/l3/lightMap.txt"
   }

@@ -78,7 +78,8 @@
   ],
   "level": {
     "id": "level",
-    "tileSize": [160, 80],
+    "tileSize": [32, 16],
+    "subTiles": 5,
     "layers": [
       { "index": 0, "texturePack": "town" },
       { "index": 1, "texturePack": "town" },
@@ -86,8 +87,14 @@
       { "index": 3, "texturePack": "town", "drawObjects": true },
       { "index": 4, "texturePack": "town" },
       { "index": 5, "texturePack": "town" },
-      { "index": 6, "texturePack": "town" }
+      { "index": 6, "texturePack": "town" },
+      { "index": 7, "texturePack": "town" },
+      { "index": 8, "texturePack": "town" },
+      { "index": 9, "texturePack": "town" },
+      { "index": 10, "texturePack": "town" },
+      { "index": 11, "texturePack": "town" }
     ],
+    "flags": "town",
     "defaultLight": 255
   }
 }

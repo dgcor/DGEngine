@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AnimationType.h"
+#include "Game/LevelFlags.h"
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Time.hpp>
@@ -9,7 +10,7 @@
 class Palette;
 struct TextureInfo;
 
-class TexturePack
+class TexturePack : public LevelFlags
 {
 protected:
 	static void updateTextureRect(TextureInfo& ti);

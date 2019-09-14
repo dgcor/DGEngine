@@ -23,7 +23,7 @@
     "til": "levels/l1data/l1.til",
     "min": "levels/l1data/l1.min",
     "minBlocks": 10,
-    "sol": "levels/l1data/l1.sol",
+    "flags": "levels/l1data/l1.sol",
     "defaultLight": 255
   }
 }

@@ -1,0 +1,93 @@
+{
+  "action": {
+    "name": "if.equal",
+    "param1": "%game.hasPalette.level%",
+    "param2": false,
+    "then": {
+      "name": "loadJson",
+      "json": {
+        "palette": {
+          "id": "level",
+          "fromId": "act4"
+        }
+      }
+    }
+  },
+  "texturePack": [
+    {
+      "id": "floor",
+      "file": "data/global/tiles/ACT4/Lava/floor.dt1",
+      "imageContainer": "floor",
+      "palette": "level"
+    },
+    {
+      "id": "floornew",
+      "file": "data/global/tiles/ACT4/Lava/floornew.dt1",
+      "imageContainer": "floornew",
+      "palette": "level"
+    },
+    {
+      "id": "walls",
+      "file": "data/global/tiles/ACT4/Lava/walls.dt1",
+      "imageContainer": "walls",
+      "palette": "level"
+    },
+    {
+      "id": "intwalls",
+      "file": "data/global/tiles/ACT4/Lava/intwalls.dt1",
+      "imageContainer": "intwalls",
+      "palette": "level"
+    },
+    {
+      "id": "extwalls",
+      "file": "data/global/tiles/ACT4/Lava/extwalls.dt1",
+      "imageContainer": "extwalls",
+      "palette": "level"
+    },
+    {
+      "id": "specials",
+      "file": "data/global/tiles/ACT4/Lava/specials.dt1",
+      "imageContainer": "specials",
+      "palette": "level"
+    },
+    {
+      "id": "rocks",
+      "file": "data/global/tiles/ACT4/Lava/rocks.dt1",
+      "imageContainer": "rocks",
+      "palette": "level"
+    },
+    {
+      "id": "lava",
+      "texturePacks": [
+        "floor",
+        "floornew",
+        "walls",
+        "intwalls",
+        "extwalls",
+        "specials",
+        "rocks"
+      ]
+    }
+  ],
+  "level": {
+    "id": "level",
+    "tileSize": [32, 16],
+    "subTiles": 5,
+    "layers": [
+      { "index": 0, "texturePack": "lava" },
+      { "index": 1, "texturePack": "lava" },
+      { "index": 2, "texturePack": "lava" },
+      { "index": 3, "texturePack": "lava" },
+      { "index": 4, "texturePack": "lava" },
+      { "index": 5, "texturePack": "lava", "drawObjects": true },
+      { "index": 6, "texturePack": "lava" },
+      { "index": 7, "texturePack": "lava" },
+      { "index": 8, "texturePack": "lava" },
+      { "index": 9, "texturePack": "lava" },
+      { "index": 10, "texturePack": "lava" },
+      { "index": 11, "texturePack": "lava" }
+    ],
+    "flags": "lava",
+    "defaultLight": 255
+  }
+}

@@ -2,10 +2,11 @@
 
 #include "BlendMode.h"
 #include <cstdint>
+#include "Game/LevelFlags.h"
 #include "Palette.h"
 #include "SFML/Image2.h"
 
-class ImageContainer
+class ImageContainer : public LevelFlags
 {
 public:
 	struct ImageInfo

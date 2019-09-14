@@ -4,9 +4,16 @@
 
 size_t LevelMap::maxLights{ MaxNumberOfLightsToUse };
 
-LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view solFileName,
+LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view flagsFileName,
 	int32_t width_, int32_t height_, int32_t defaultTile)
-	: tileSet(tilFileName), sol(solFileName)
+	: tileSet(tilFileName), flagsVariant(flagsFileName)
+{
+	resize(width_, height_);
+	clear(defaultTile);
+}
+
+LevelMap::LevelMap(std::weak_ptr<LevelFlags> flags_, int32_t width_,
+	int32_t height_, int32_t defaultTile) : flagsVariant(flags_)
 {
 	resize(width_, height_);
 	clear(defaultTile);
@@ -40,6 +47,7 @@ void LevelMap::clear(int32_t defaultTile)
 		{
 			cells.assign(cells.size(), {});
 
+			auto flags = getFlags();
 			const auto& defaultTileBlock = tileSet[defaultTile];
 			for (int32_t j = 0; j < mapSizei.y; j++)
 			{
@@ -47,7 +55,7 @@ void LevelMap::clear(int32_t defaultTile)
 				{
 					auto tileIdx = defaultTileBlock.getTileIndex(i, j);
 					(*this)[i][j].setTileIndex(0, tileIdx);
-					(*this)[i][j].setTileIndex(LevelCell::SolLayer, sol.get(tileIdx));
+					(*this)[i][j].setTileIndex(LevelCell::FlagsLayer, flags->getFlags(tileIdx));
 				}
 			}
 		}
@@ -58,12 +66,13 @@ void LevelMap::clear(int32_t defaultTile)
 	}
 };
 
-void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_) noexcept
+void LevelMap::setDefaultTileSize(int32_t tileWidth_, int32_t tileHeight_, uint32_t subTiles_) noexcept
 {
 	defaultTileWidth = tileWidth_;
 	defaultTileHeight = tileHeight_;
 	defaultBlockWidth = std::max(1, tileWidth_ / 2);
 	defaultBlockHeight = std::max(1, tileHeight_ / 2);
+	defaultSubTiles = subTiles_;
 }
 
 void LevelMap::loadLightMap(const std::string_view fileName)
@@ -171,9 +180,29 @@ void LevelMap::MaxLights(size_t maxLights_) noexcept
 	maxLights = std::min(maxLights_, (size_t)MaxNumberOfLightsToUse);
 }
 
-void LevelMap::setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun)
+const LevelFlags* LevelMap::getFlags()
+{
+	if (std::holds_alternative<std::weak_ptr<LevelFlags>>(flagsVariant) == true)
+	{
+		auto flagsPtr = std::get<std::weak_ptr<LevelFlags>>(flagsVariant).lock().get();
+		if (flagsPtr != nullptr)
+		{
+			return flagsPtr;
+		}
+		flagsVariant = FlagsVector();
+	}
+	return &std::get<FlagsVector>(flagsVariant);
+}
+
+void LevelMap::getSubIndex(int32_t x, int32_t y, uint32_t& subIndex)
+{
+	subIndex = 0;
+}
+
+void LevelMap::setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun)
 {
 	lightsNeedUpdate = true;
+	auto flags = getFlags();
 	auto dWidth = dun.Width() * 2;
 	auto dHeight = dun.Height() * 2;
 	for (size_t j = 0; j < dHeight; j++)
@@ -232,17 +261,18 @@ void LevelMap::setTileSetAreaUseSol(int32_t x, int32_t y, const Dun& dun)
 			auto& cell = cells[cellX + (cellY * mapSizei.x)];
 
 			cell.setTileIndex(0, tileIndex);
-			cell.setTileIndex(LevelCell::SolLayer, sol.get(tileIndex));
+			cell.setTileIndex(LevelCell::FlagsLayer, flags->getFlags(tileIndex));
 		}
 	}
 }
 
-void LevelMap::setSimpleAreaUseSol(size_t layer, int32_t x, int32_t y, const Dun& dun)
+void LevelMap::setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Dun& dun)
 {
 	if (layer == 0)
 	{
 		lightsNeedUpdate = true;
 	}
+	auto flags = getFlags();
 	for (size_t j = 0; j < dun.Height(); j++)
 	{
 		for (size_t i = 0; i < dun.Width(); i++)
@@ -260,13 +290,16 @@ void LevelMap::setSimpleAreaUseSol(size_t layer, int32_t x, int32_t y, const Dun
 
 			auto tileIndex = dun[i][j];
 			cell.setTileIndex(layer, tileIndex);
-			cell.setTileIndex(LevelCell::SolLayer, (tileIndex >= 0 ? sol.get(tileIndex) : 0));
+			cell.setTileIndex(
+				LevelCell::FlagsLayer,
+				(tileIndex >= 0 ? flags->getFlags(tileIndex) : 0)
+			);
 		}
 	}
 }
 
 void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
-	const Dun& dun, bool normalizeSolLayer)
+	const Dun& dun, bool normalizeFlagsLayer)
 {
 	if (layer > LevelCell::NumberOfLayers)
 	{
@@ -292,8 +325,7 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 			auto& cell = cells[(size_t)(cellX + (cellY * mapSizei.x))];
 
 			auto tileIndex = dun[i][j];
-			if (layer == LevelCell::SolLayer &&
-				normalizeSolLayer == true)
+			if (layer == LevelCell::FlagsLayer && normalizeFlagsLayer == true)
 			{
 				tileIndex = (tileIndex != 0 ? 1 : 0);
 			}
@@ -305,9 +337,10 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 {
-	resize(dun.width * 2, dun.height * 2);
+	resize(dun.width * defaultSubTiles, dun.height * defaultSubTiles);
 
 	size_t currLayer = 0;
+	auto flags = getFlags();
 
 	auto addLevelLayer = [&](std::unordered_map<int, DS1::Cell> dunCells, int increment,
 		int offset, const std::set<int>& orientations) {
@@ -322,14 +355,32 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 			{
 				for (int x = 0; x < dun.width; x++)
 				{
+					int32_t id = -1;
 					auto it = dunCells.find(index);
 					if (it != dunCells.end())
 					{
-						auto id = it->second.id;
-						if (orientations.count(DT1::Tile::getOrientation(id)) != 0)
+						auto id2 = it->second.id;
+						if (orientations.count(DT1::Tile::getOrientation(id2)) != 0)
 						{
-							auto& cell = cells[x + (y * mapSizei.x)];
+							id = id2;
+							auto celIdx = (x * defaultSubTiles) + ((y * defaultSubTiles) * mapSizei.x);
+							auto& cell = cells[celIdx];
 							cell.setTileIndex(currLayer, id);
+						}
+					}
+					if (currLayer == 0 || id >= 0)
+					{
+						for (uint32_t subY = 0; subY < defaultSubTiles; subY++)
+						{
+							for (uint32_t subX = 0; subX < defaultSubTiles; subX++)
+							{
+								auto subIndex = subX + ((defaultSubTiles - subY - 1) * defaultSubTiles);
+								int32_t tileFlags = id >= 0 ? flags->getFlags(id, subIndex) : 0;
+
+								auto celIdx = (x * defaultSubTiles + subX) + ((y * defaultSubTiles + subY) * mapSizei.x);
+								auto& cell = cells[celIdx];
+								cell.setTileIndex(LevelCell::FlagsLayer, tileFlags);
+							}
 						}
 					}
 					index += increment;
@@ -338,7 +389,7 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 			currLayer++;
 	};
 
-	// Draw lower walls
+	// lower walls
 	for (int i = 0; i < dun.numWalls; i++)
 	{
 		addLevelLayer(dun.walls, dun.numWalls, i, {
@@ -349,20 +400,20 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 		);
 	}
 
-	// Draw floors
+	// floors
 	for (int i = 0; i < dun.numFloors; i++)
 	{
 		addLevelLayer(dun.floors, dun.numFloors, i, { DT1::Orientation::FLOOR });
 	}
 
-	// Draw shadows
+	// shadows
 	// TODO: Draws shadows everywhere, must be more to it...
 	//for (int i = 0; i < dun.numShadows; i++)
 	//    addLevelLayer(dun.shadows, dun.numShadows, i, { DT1::Orientation::SHADOW });
 
-	// TODO: Draw walkable
+	// TODO: walkable
 
-	// Draw walls
+	// walls
 	for (int i = 0; i < dun.numWalls; i++)
 	{
 		addLevelLayer(dun.walls, dun.numWalls, i, {
@@ -380,7 +431,7 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 		);
 	}
 
-	// Draw roofs
+	// roofs
 	for (int i = 0; i < dun.numWalls; i++)
 	{
 		addLevelLayer(dun.walls, dun.numWalls, i, { DT1::Orientation::ROOF });

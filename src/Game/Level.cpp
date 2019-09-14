@@ -8,9 +8,8 @@
 #include "Utils/Utils.h"
 
 void Level::Init(const Game& game, LevelMap map_,
-	const std::vector<LevelLayer>& levelLayers_,
-	int32_t tileWidth, int32_t tileHeight,
-	int32_t indexToDrawObjects)
+	const std::vector<LevelLayer>& levelLayers_, int32_t tileWidth,
+	int32_t tileHeight, uint32_t subTiles, int32_t indexToDrawObjects)
 {
 	map = std::move(map_);
 	clickedObject.reset();
@@ -20,12 +19,14 @@ void Level::Init(const Game& game, LevelMap map_,
 	surface.tileHeight = std::max(tileHeight, 2);
 	surface.blockWidth = surface.tileWidth / 2;
 	surface.blockHeight = surface.tileHeight / 2;
+	surface.subTiles = std::clamp(subTiles, 1u, 8u);
 	surface.visible = true;
 
 	automapSurface.tileWidth = surface.tileWidth;
 	automapSurface.tileHeight = surface.tileHeight;
 	automapSurface.blockWidth = surface.blockWidth;
 	automapSurface.blockHeight = surface.blockHeight;
+	automapSurface.subTiles = surface.subTiles;
 
 	levelLayers.clear();
 	for (const auto& layer : levelLayers_)
@@ -65,7 +66,7 @@ void Level::Init(const Game& game, LevelMap map_,
 		levelLayers.push_back({ TilesetLevelLayer(), {}, false });
 	}
 
-	map.setDefaultTileSize(surface.tileWidth, surface.tileHeight);
+	map.setDefaultTileSize(surface.tileWidth, surface.tileHeight, surface.subTiles);
 
 	setCurrentMapPosition(PairFloat(-1.f, -1.f), false);
 

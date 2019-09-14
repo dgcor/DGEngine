@@ -12,13 +12,16 @@ void TilesetLevelLayer::updateVisibleArea(const LevelSurface& surface, const Lev
 	constexpr static auto maxPillarHeight = 256.f;
 
 	sf::Vector2f TL{
-		surface.visibleRect.left - (float)surface.tileWidth,
-		surface.visibleRect.top - (float)surface.tileHeight
+		surface.visibleRect.left - (float)(surface.tileWidth * surface.subTiles),
+		surface.visibleRect.top - (float)(surface.tileHeight * surface.subTiles)
 	};
-	sf::Vector2f TR{ TL.x + surface.visibleRect.width + surface.tileWidth, TL.y };
+	sf::Vector2f TR{
+		TL.x + surface.visibleRect.width + (float)(surface.tileWidth * surface.subTiles),
+		TL.y
+	};
 	sf::Vector2f BL{
 		TL.x,
-		TL.y + surface.visibleRect.height + maxPillarHeight + surface.tileHeight
+		TL.y + surface.visibleRect.height + maxPillarHeight + (float)(surface.tileHeight * surface.subTiles)
 	};
 	sf::Vector2f BR{ TR.x, BL.y };
 

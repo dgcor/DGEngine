@@ -29,7 +29,7 @@
           "data": "/layers/{name=object}/data"
         },
         {
-          "index": "sol",
+          "index": "flags",
           "normalize": true,
           "width": "/layers/{name=collision}/width",
           "height": "/layers/{name=collision}/height",

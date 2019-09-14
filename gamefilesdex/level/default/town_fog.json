@@ -30,7 +30,7 @@
     "til": "levels/towndata/town.til",
     "min": "levels/towndata/town.min",
     "minBlocks": 16,
-    "sol": "levels/towndata/town.sol",
+    "flags": "levels/towndata/town.sol",
     "defaultLight": 220
   }
 }

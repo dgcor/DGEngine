@@ -80,7 +80,8 @@ namespace Parser
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 		if (isValidString(elem, "file") == true)
 		{
-			compTexture.addGroup(elem["file"].GetStringView());
+			bool fixLayerOrdering = getBoolKey(elem, "fixLayerOrdering", true);
+			compTexture.addGroup(elem["file"].GetStringView(), fixLayerOrdering);
 			return;
 		}
 #endif

@@ -23,9 +23,9 @@ namespace Parser
 		if (isValidString(elem, "index") == true)
 		{
 			auto str = getStringViewVal(elem["index"]);
-			if (str == "sol")
+			if (str == "flags")
 			{
-				return LevelCell::SolLayer;
+				return LevelCell::FlagsLayer;
 			}
 			return LevelCell::NumberOfLayers;
 		}
@@ -221,7 +221,7 @@ namespace Parser
 				}
 				if (elemLayers.Size() == 1)
 				{
-					map.setSimpleAreaUseSol(0, pos2.x, pos2.y, dun);
+					map.setSimpleAreaUseFlags(0, pos2.x, pos2.y, dun);
 					continue;
 				}
 				auto index = getLayerIndex(elemLayer);
@@ -295,7 +295,7 @@ namespace Parser
 						(int32_t)(pos.y + (dun.Height() * 2))
 					);
 				}
-				map.setTileSetAreaUseSol(pos.x, pos.y, dun);
+				map.setTileSetAreaUseFlags(pos.x, pos.y, dun);
 			}
 		}
 	}
@@ -366,17 +366,33 @@ namespace Parser
 		);
 
 		auto& elemTil = getQueryKey(queryDoc, elem, "til");
-		auto& elemSol = getQueryKey(queryDoc, elem, "sol");
+		auto& elemFlags = getQueryKey(queryDoc, elem, "flags");
 
 		if (isValidString(elemTil) == true &&
-			isValidString(elemSol) == true)
+			isValidString(elemFlags) == true)
 		{
 			auto til = getStringViewVal(elemTil);
-			auto sol = getStringViewVal(elemSol);
-			*mapPtr = LevelMap(til, sol, mapSize.x, mapSize.y, defaultTile);
+			auto flags = getStringViewVal(elemFlags);
+			*mapPtr = LevelMap(til, flags, mapSize.x, mapSize.y, defaultTile);
+		}
+		else if (isValidString(elemFlags) == true &&
+			isValidId(elemFlags.GetStringView()) == true)
+		{
+			auto flags = elemFlags.GetStringStr();
+			auto texPack = game.Resources().getTexturePack(flags);
+			if (texPack != nullptr)
+			{
+				auto levelFlags = std::dynamic_pointer_cast<LevelFlags>(texPack);
+				*mapPtr = LevelMap(levelFlags, mapSize.x, mapSize.y, defaultTile);
+			}
 		}
 		else
 		{
+			if (elem.HasMember("flags") == true &&
+				elem["flags"].IsNull() == true)
+			{
+				mapPtr->setFlags({});
+			}
 			if (mapSize != mapPtr->MapSizei())
 			{
 				mapPtr->resize(mapSize.x, mapSize.y);
@@ -405,13 +421,14 @@ namespace Parser
 		{
 			tileSize = std::make_pair(64, 32);
 		}
+		auto subTiles = getUIntKey(elem, "subTiles", level.SubTiles());
 		int32_t indexToDrawObjects;
 
 		if (getOrParseLevelTexturePack(game, elem, *mapPtr,
 			levelLayers, tileSize, indexToDrawObjects) == true)
 		{
 			level.Init(game, std::move(*mapPtr), levelLayers,
-				tileSize.first, tileSize.second, indexToDrawObjects);
+				tileSize.first, tileSize.second, subTiles, indexToDrawObjects);
 		}
 		else
 		{

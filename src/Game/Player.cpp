@@ -54,7 +54,7 @@ void Player::updateWalkPathStep(PairFloat& newMapPos)
 	}
 	else
 	{
-		currPositionStep += 0.025f;
+		currPositionStep += positionStep;
 	}
 }
 
@@ -105,7 +105,8 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 				setWalkAnimation();
 				setDirection(getPlayerDirection(mapPosition, nextMapPos));
 				MapPosition(map, nextMapPos);
-				currPositionStep = 0.025f;
+				positionStep = 1.6f / map.DefaultTileWidth();
+				currPositionStep = positionStep;
 				updateWalkPathStep(newMapPos);
 				break;
 			}

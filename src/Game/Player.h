@@ -18,6 +18,7 @@ private:
 	PairFloat mapPositionMoveTo;
 	PairFloat mapPosA;
 	PairFloat mapPosB;
+	float positionStep = 0.f;
 	float currPositionStep = 0.f;
 	bool executeActionOnDestination{ false };
 

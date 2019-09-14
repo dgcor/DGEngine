@@ -36,6 +36,7 @@ public:
 		: texturePack(std::move(texturePack_)), absoluteOffsets(absoluteOffsets_) {}
 
 	void addRect(uint32_t index, const sf::IntRect& rect, const sf::Vector2f& offset);
+	void addRect(const sf::IntRect& rect, const sf::Vector2f& offset);
 
 	void addGroup(uint32_t startIdx, uint32_t stopIdx, uint32_t directions, AnimationType animType);
 
@@ -51,4 +52,9 @@ public:
 	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept;
 	virtual std::pair<uint32_t, uint32_t> getRange(
 		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+
+	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const
+	{
+		return texturePack->getFlags(index, subIndex);
+	}
 };

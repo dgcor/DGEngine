@@ -30,7 +30,7 @@
     "til": "levels/l4data/l4.til",
     "min": "levels/l4data/l4.min",
     "minBlocks": 16,
-    "sol": "levels/l4data/l4.sol",
+    "flags": "levels/l4data/l4.sol",
     "defaultLight": 255
   }
 }
