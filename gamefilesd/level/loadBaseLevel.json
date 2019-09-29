@@ -3,6 +3,7 @@
     "id": "level",
     "anchor": "all",
     "size": [640, 352],
+    "lightRadius": 64,
     "automapPlayerDirectionIndex": 1024,
     "playerClassClearIndex": 1,
     "playerClearIndex": 1,

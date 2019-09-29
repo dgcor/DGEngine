@@ -112,13 +112,13 @@
       "position": [319, 277],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "Max Lights: 64",
+      "text": "Max Lights: 128",
       "onClick": {
         "name": "switch",
         "param": "%maxLights.text%",
         "case": [
           {
-            "value": "Max Lights: 64",
+            "value": "Max Lights: 128",
             "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 0" }
           },
           {
@@ -136,9 +136,13 @@
           {
             "value": "Max Lights: 16",
             "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+          },
+          {
+            "value": "Max Lights: 64",
+            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 128" }
           }
         ],
-        "default": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+        "default": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 128" }
       },
       "onFocus": "anchorPentagrams"
     },

@@ -13,7 +13,7 @@ public:
 	ActGameAddToProperty(const std::string& prop_, const Variable& value_)
 		: prop(prop_), value(value_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		Variable propVal;
 		if (game.getGameProperty(prop, propVal) == true)
@@ -56,7 +56,7 @@ public:
 class ActGameClearPlayingSounds : public Action
 {
 public:
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		game.Resources().clearPlayingSounds();
 		return true;
@@ -66,7 +66,7 @@ public:
 class ActGameClose : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.close();
 		return true;
@@ -76,7 +76,7 @@ public:
 class ActGameDraw : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.draw();
 		return true;
@@ -91,7 +91,7 @@ private:
 public:
 	ActGameEnableInput(bool enable_) noexcept : enable(enable_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		game.EnableInput(enable);
 		return true;
@@ -108,7 +108,7 @@ public:
 	ActGameLoad(const std::string& file_, const std::string& mainFile_)
 		: file(file_), mainFile(mainFile_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.load(game.getPath() + file, mainFile);
 		return true;
@@ -123,7 +123,7 @@ private:
 public:
 	ActGamePauseOnFocusLoss(bool pause_) noexcept : pause(pause_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		game.PauseOnFocusLoss(pause);
 		return true;
@@ -138,7 +138,7 @@ private:
 public:
 	ActGameSetGamma(const Variable& gamma_) noexcept : gamma(gamma_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto val = game.getVarOrProp<int64_t, unsigned>(gamma, 0u);
 		game.Gamma(val);
@@ -154,7 +154,7 @@ private:
 public:
 	ActGameSetMusicVolume(const Variable& volume_) noexcept : volume(volume_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto val = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
 		game.MusicVolume(val);
@@ -187,7 +187,7 @@ public:
 		hasValueRange = true;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto value2 = game.getVarOrProp(value);
 		if (std::holds_alternative<int64_t>(value2) == true)
@@ -213,7 +213,7 @@ private:
 public:
 	ActGameSetSoundVolume(const Variable& volume_) noexcept : volume(volume_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto val = game.getVarOrProp<int64_t, unsigned>(volume, 100u);
 		game.SoundVolume(val);

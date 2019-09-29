@@ -79,6 +79,13 @@
           ]
         },
         {
+          "property": "toLightRadius",
+          "value": [
+            { "min": "min", "max": -1, "value": "%toLightRadius%% to Light Radius" },
+            { "min": 1, "max": "max", "value": "+%toLightRadius%% to Light Radius" }
+          ]
+        },
+        {
           "property": "toArmor",
           "value": [
             { "min": "min", "max": -1, "value": "%toArmor%% Armor" },

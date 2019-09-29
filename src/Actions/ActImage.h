@@ -15,7 +15,7 @@ public:
 	ActImageEnableOutline(const std::string& id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -43,7 +43,7 @@ public:
 		inputRangeMin(inputRangeMin_), inputRangeMax(inputRangeMax_),
 		sizeRange(sizeRange_), applyToY(applyToY_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (sizeRange.y > sizeRange.x)
 		{
@@ -105,7 +105,7 @@ public:
 		const sf::Color& outline_, const sf::Color& ignore_)
 		: id(id_), outline(outline_), ignore(ignore_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -128,7 +128,7 @@ public:
 		const std::string& idPalette_, const sf::Color& color_)
 		: id(id_), idPalette(idPalette_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -162,7 +162,7 @@ public:
 		const std::string& idTexture_, bool resetRect_)
 		: id(id_), idTexture(idTexture_), resetRect(resetRect_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -192,7 +192,7 @@ public:
 		bool resetRect_) : id(id_), query(query_),
 		textureIdx(textureIdx_), resetRect(resetRect_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -225,7 +225,7 @@ public:
 		bool resetRect_) : id(id_), idTexturePack(idTexturePack_),
 		textureIdx(textureIdx_), resetRect(resetRect_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)
@@ -254,7 +254,7 @@ public:
 	ActImageSetTextureRect(const std::string& id_,
 		const sf::IntRect& rect_) : id(id_), rect(rect_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto image = game.Resources().getDrawable<Image>(id);
 		if (image != nullptr)

@@ -39,6 +39,7 @@ private:
 	int16_t automapPlayerDirectionBaseIndex{ -1 };
 
 	sf::Shader* shader{ nullptr };
+	float lightRadius{ 64.f };
 	sf::Vector2f automapPosition{ 0.f, 0.f };
 	sf::Vector2f automapSize{ 1.f, 1.f };
 	bool automapRelativeCoords{ true };
@@ -326,22 +327,25 @@ public:
 	LevelObject* getHoverObject() const noexcept { return hoverObject.lock().get(); }
 	void setHoverObject(std::weak_ptr<LevelObject> object) noexcept { hoverObject = object; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
-	virtual Anchor getAnchor() const noexcept { return surface.getAnchor(); }
-	virtual void setAnchor(const Anchor anchor) noexcept { surface.setAnchor(anchor); }
+	Anchor getAnchor() const noexcept override { return surface.getAnchor(); }
+	void setAnchor(const Anchor anchor) noexcept override { surface.setAnchor(anchor); }
 
 	Anchor getAutomapAnchor() const noexcept { return automapSurface.getAnchor(); }
 	void setAutomapAnchor(const Anchor anchor) noexcept { automapSurface.setAnchor(anchor); }
 
-	virtual void updateSize(const Game& game);
+	void updateSize(const Game& game) override;
 
-	virtual const sf::Vector2f& DrawPosition() const noexcept { return surface.Position(); }
-	virtual const sf::Vector2f& Position() const noexcept { return surface.Position(); }
-	virtual void Position(const sf::Vector2f& position) noexcept;
-	virtual sf::Vector2f Size() const noexcept { return surface.Size(); }
-	virtual void Size(const sf::Vector2f& size);
+	const sf::Vector2f& DrawPosition() const noexcept override { return surface.Position(); }
+	const sf::Vector2f& Position() const noexcept override { return surface.Position(); }
+	void Position(const sf::Vector2f& position) noexcept override;
+	sf::Vector2f Size() const noexcept override { return surface.Size(); }
+	void Size(const sf::Vector2f& size) override;
+
+	float LightRadius() const noexcept { return lightRadius; }
+	void LightRadius(float lightRadius_) noexcept;
 
 	bool getAutomapRelativeCoords() const noexcept { return automapRelativeCoords; }
 	void setAutomapRelativeCoords(bool relative) noexcept { automapRelativeCoords = relative; }
@@ -397,11 +401,11 @@ public:
 	int32_t AutomapTileHeight() const noexcept { return automapSurface.tileHeight; }
 	uint32_t AutomapSubTiles() const noexcept { return automapSurface.subTiles; }
 
-	virtual bool Pause() const noexcept { return pause; }
-	virtual void Pause(bool pause_) noexcept { pause = pause_; }
+	bool Pause() const noexcept { return pause; }
+	void Pause(bool pause_) noexcept { pause = pause_; }
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
 	bool EnableHover() const noexcept { return enableHover; }
 	void EnableHover(bool enable_) noexcept { enableHover = enable_; }
@@ -430,16 +434,16 @@ public:
 	{
 		Save::save(filePath, props, game, *this);
 	}
-	virtual void serialize(void* serializeObj,
-		Save::Properties& props, const Game& game, const Level& level)
+	void serialize(void* serializeObj, Save::Properties& props,
+		const Game& game, const Level& level)
 	{
 		Save::serialize(serializeObj, props, game, *this);
 	}
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
-	virtual void update(Game& game);
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	virtual const Queryable* getQueryable(const std::string_view prop) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
+	void update(Game& game) override;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
+	const Queryable* getQueryable(const std::string_view prop) const override;
 
 	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
 		const std::string_view prop) const;

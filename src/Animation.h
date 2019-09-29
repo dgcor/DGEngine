@@ -30,7 +30,7 @@ public:
 	sf::Time getFrameTime() const noexcept { return animation.elapsedTime.timeout; }
 	void setFrameTime(sf::Time time) noexcept { animation.elapsedTime.timeout = time; }
 
-	virtual void update(Game& game);
+	void update(Game& game) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

@@ -22,22 +22,22 @@ private:
 public:
 	StringText(const std::shared_ptr<FreeTypeFont>& font_, unsigned int characterSize = 30);
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_);
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) override;
+	void updateSize(const Game& game) override;
 
-	virtual bool setText(const std::string& str);
+	bool setText(const std::string& str) override;
 
-	virtual unsigned getLineCount() const noexcept { return text.getLineCount(); }
+	unsigned getLineCount() const noexcept override { return text.getLineCount(); }
 
 	void setFont(const std::shared_ptr<FreeTypeFont>& font_);
 	void setCharacterSize(unsigned int size) { text.setCharacterSize(size); }
 	void setStyle(sf::Uint32 style) { text.setStyle(style); }
-	virtual void setColor(const sf::Color& color_);
+	void setColor(const sf::Color& color_) override;
 	void setOutlineColor(const sf::Color& color_) { text.setOutlineColor(color_); }
 	void setOutlineThickness(float thickness) { text.setOutlineThickness(thickness); }
 
-	virtual std::string getText() const { return text.getString().toAnsiString(); }
+	std::string getText() const override { return text.getString().toAnsiString(); }
 	const sf::Font* getFont() const { return text.getFont(); }
 	unsigned int getCharacterSize() const { return text.getCharacterSize(); }
 	sf::Uint32 getStyle() const { return text.getStyle(); }
@@ -45,25 +45,25 @@ public:
 	const sf::Color& getOutlineColor() const { return text.getOutlineColor(); }
 	float getOutlineThickness() const { return text.getOutlineThickness(); }
 	sf::Vector2f findCharacterPos(std::size_t index) const { return text.findCharacterPos(index); }
-	virtual sf::FloatRect getLocalBounds() const { return text.getLocalBounds(); }
-	virtual sf::FloatRect getGlobalBounds() const { return text.getGlobalBounds(); }
+	sf::FloatRect getLocalBounds() const override { return text.getLocalBounds(); }
+	sf::FloatRect getGlobalBounds() const override { return text.getGlobalBounds(); }
 
-	virtual const sf::Vector2f& DrawPosition() const { return text.getPosition(); }
-	virtual const sf::Vector2f& Position() const noexcept { return pos; }
-	virtual void Position(const sf::Vector2f& position);
-	virtual sf::Vector2f Size() const;
-	virtual void Size(const sf::Vector2f& size) noexcept {}
+	const sf::Vector2f& DrawPosition() const override { return text.getPosition(); }
+	const sf::Vector2f& Position() const noexcept override { return pos; }
+	void Position(const sf::Vector2f& position) override;
+	sf::Vector2f Size() const override;
+	void Size(const sf::Vector2f& size) noexcept override {}
 
-	virtual void setHorizontalAlign(const HorizontalAlign align);
-	virtual void setVerticalAlign(const VerticalAlign align);
+	void setHorizontalAlign(const HorizontalAlign align) override;
+	void setVerticalAlign(const VerticalAlign align) override;
 
-	virtual void setHorizontalSpaceOffset(int offset) noexcept;
-	virtual void setVerticalSpaceOffset(int offset) noexcept;
+	void setHorizontalSpaceOffset(int offset) noexcept override;
+	void setVerticalSpaceOffset(int offset) noexcept override;
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

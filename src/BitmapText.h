@@ -31,38 +31,38 @@ public:
 
 	void setFont(const std::shared_ptr<BitmapFont>& font_);
 
-	virtual std::string getText() const { return text; }
+	std::string getText() const override { return text; }
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept;
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) noexcept override;
 
-	virtual void updateSize(const Game& game) noexcept;
+	void updateSize(const Game& game) noexcept override;
 
-	virtual bool setText(const std::string& str);
+	bool setText(const std::string& str) override;
 
-	virtual unsigned getLineCount() const noexcept { return lineCount; }
+	unsigned getLineCount() const noexcept override { return lineCount; }
 
-	virtual void setColor(const sf::Color& color_) noexcept;
+	void setColor(const sf::Color& color_) noexcept override;
 
-	virtual const sf::Vector2f& DrawPosition() const noexcept { return drawPos; }
-	virtual const sf::Vector2f& Position() const noexcept { return pos; }
-	virtual void Position(const sf::Vector2f& position) noexcept;
-	virtual sf::Vector2f Size() const noexcept { return size; }
-	virtual void Size(const sf::Vector2f& size_) noexcept {}
+	const sf::Vector2f& DrawPosition() const noexcept override { return drawPos; }
+	const sf::Vector2f& Position() const noexcept override { return pos; }
+	void Position(const sf::Vector2f& position) noexcept override;
+	sf::Vector2f Size() const noexcept override { return size; }
+	void Size(const sf::Vector2f& size_) noexcept override {}
 
-	virtual sf::FloatRect getLocalBounds() const { return sf::FloatRect(drawPos, size); }
-	virtual sf::FloatRect getGlobalBounds() const { return sf::FloatRect(drawPos, size); }
+	sf::FloatRect getLocalBounds() const override { return sf::FloatRect(drawPos, size); }
+	sf::FloatRect getGlobalBounds() const override { return sf::FloatRect(drawPos, size); }
 
-	virtual void setHorizontalAlign(const HorizontalAlign align) noexcept;
-	virtual void setVerticalAlign(const VerticalAlign align) noexcept;
+	void setHorizontalAlign(const HorizontalAlign align) noexcept override;
+	void setVerticalAlign(const VerticalAlign align) noexcept override;
 
-	virtual void setHorizontalSpaceOffset(int offset);
-	virtual void setVerticalSpaceOffset(int offset);
+	void setHorizontalSpaceOffset(int offset) override;
+	void setVerticalSpaceOffset(int offset) override;
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

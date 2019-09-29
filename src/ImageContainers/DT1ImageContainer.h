@@ -174,11 +174,10 @@ private:
 public:
 	DT1ImageContainer(const std::string_view fileName);
 
-	virtual BlendMode getBlendMode() const noexcept { return blendMode; }
-	virtual void setBlendMode(BlendMode blendMode_) noexcept { blendMode = blendMode_; }
+	BlendMode getBlendMode() const noexcept override { return blendMode; }
+	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
 
-	virtual sf::Image2 get(uint32_t index,
-		const PaletteArray* palette, ImageInfo& imgInfo) const;
+	sf::Image2 get(uint32_t index, const PaletteArray* palette, ImageInfo& imgInfo) const override;
 
 	const std::vector<DT1::Tile>& getTiles() const { return tiles; }
 	const std::vector<uint32_t> getTilesById(uint32_t id) const;
@@ -188,10 +187,10 @@ public:
 		return tileIndexes;
 	}
 
-	virtual uint32_t size() const noexcept { return tiles.size(); }
+	uint32_t size() const noexcept override { return tiles.size(); }
 
-	virtual uint32_t getDirections() const noexcept { return 1; }
+	uint32_t getDirections() const noexcept override { return 1; }
 
-	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
+	int32_t getFlags(uint32_t index, uint32_t subIndex) const override;
 };
 #endif

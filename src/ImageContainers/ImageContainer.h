@@ -22,8 +22,7 @@ public:
 	virtual BlendMode getBlendMode() const noexcept = 0;
 	virtual void setBlendMode(BlendMode blendMode_) noexcept = 0;
 
-	virtual sf::Image2 get(uint32_t index,
-		const PaletteArray* palette, ImageInfo& imgInfo) const = 0;
+	virtual sf::Image2 get(uint32_t index, const PaletteArray* palette, ImageInfo& imgInfo) const = 0;
 
 	sf::Image2 get(uint32_t index, const PaletteArray* palette) const
 	{

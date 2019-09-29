@@ -17,7 +17,7 @@ public:
 	ActDrawableAddToPosition(const std::string& id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -38,7 +38,7 @@ public:
 	ActDrawableAddToSize(const std::string& id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -62,7 +62,7 @@ public:
 		Anchor anchor_, const sf::Vector2f& offset_)
 		: id(id_), idAnchor(idAnchor_), anchor(anchor_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto itemAnchor = game.Resources().getDrawable(idAnchor);
 		auto itemToChange = game.Resources().getDrawable(id);
@@ -93,7 +93,7 @@ public:
 		const std::string& idAnchorTo_, float offset_, bool applyToY_)
 		: id(id_), idAnchorTo(idAnchorTo_), offset(offset_), applyToY(applyToY_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchorTo = game.Resources().getDrawable(idAnchorTo);
@@ -141,7 +141,7 @@ public:
 	ActDrawableAnchorToFocused(const std::string& id_, Anchor anchor_,
 		const sf::Vector2f& offset_) : id(id_), anchor(anchor_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto itemAnchor = game.Resources().getFocused();
 		auto itemToChange = game.Resources().getDrawable(id);
@@ -167,7 +167,7 @@ private:
 public:
 	ActDrawableBringToFront(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().bringDrawableToFront(id);
 		return true;
@@ -185,7 +185,7 @@ public:
 	ActDrawableCenter(const std::string& id_, const std::string& idCenterOn_,
 		const sf::Vector2f& offset_) : id(id_), idCenterOn(idCenterOn_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemCenter = game.Resources().getDrawable(idCenterOn);
@@ -217,7 +217,7 @@ public:
 		unsigned range_, const Variable& steps_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_), steps(steps_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -271,7 +271,7 @@ public:
 		unsigned range_, const Variable& steps_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_), steps(steps_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -320,7 +320,7 @@ private:
 public:
 	ActDrawableDelete(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().deleteDrawable(id);
 		return true;
@@ -337,7 +337,7 @@ public:
 	ActDrawableExecuteAction(const std::string& id_, uint16_t actionHash16_)
 		: id(id_), actionHash16(actionHash16_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -362,7 +362,7 @@ public:
 	ActDrawableHorizontalAnchorToFocused(const std::string& id_, float offset_)
 		: id(id_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto itemAnchor = game.Resources().getFocused();
 		auto itemToChange = game.Resources().getDrawable(id);
@@ -394,7 +394,7 @@ public:
 		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		position(position_), min(min_), max(max_), steps(steps_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -445,7 +445,7 @@ public:
 		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		position(position_), min(min_), max(max_), steps(steps_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -494,7 +494,7 @@ public:
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		steps(steps_), stepOffset(stepOffset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -543,7 +543,7 @@ public:
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		steps(steps_), stepOffset(stepOffset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemAnchor = game.Resources().getDrawable(idAnchorTo);
@@ -594,7 +594,7 @@ public:
 		inputRangeMin(inputRangeMin_), inputRangeMax(inputRangeMax_),
 		sizeRange(sizeRange_), applyToY(applyToY_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (sizeRange.y > sizeRange.x)
 		{
@@ -638,7 +638,7 @@ public:
 	ActDrawableResizeOnMouseX(const std::string& id_, const sf::Vector2f& range_)
 		: id(id_), range(range_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -670,7 +670,7 @@ public:
 	ActDrawableResizeOnMouseY(const std::string& id_, const sf::Vector2f& range_)
 		: id(id_), range(range_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -703,7 +703,7 @@ public:
 	ActDrawableResizeToPositionX(const std::string& id_, const std::string& idToPosition_,
 		float offset_) : id(id_), idToPosition(idToPosition_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemToPosition = game.Resources().getDrawable(idToPosition);
@@ -729,7 +729,7 @@ public:
 	ActDrawableResizeToPositionY(const std::string& id_, const std::string& idToPosition_,
 		float offset_) : id(id_), idToPosition(idToPosition_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		auto itemToPosition = game.Resources().getDrawable(idToPosition);
@@ -756,7 +756,7 @@ public:
 		const std::string_view name, const std::shared_ptr<Action>& action_)
 		: id(id_), nameHash(str2int16(name)), action(action_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -775,7 +775,7 @@ private:
 public:
 	ActDrawableSendToBack(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().sendDrawableToBack(id);
 		return true;
@@ -795,7 +795,7 @@ public:
 		const sf::Vector2f& offset_, bool relativeCoords_) : id(id_),
 		pos(pos_), offset(offset_), relativeCoords(relativeCoords_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -825,7 +825,7 @@ public:
 	ActDrawableSetPositionXY(const std::string& id_, float pos_,
 		bool applyToY_) : id(id_), pos(pos_), applyToY(applyToY_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -854,7 +854,7 @@ private:
 public:
 	ActDrawableSetSize(const std::string& id_, const sf::Vector2f& size_) : id(id_), size(size_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -876,7 +876,7 @@ public:
 	ActDrawableSetSizeXY(const std::string& id_, float size_,
 		bool applyToY_) : id(id_), size(size_), applyToY(applyToY_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -906,7 +906,7 @@ public:
 	ActDrawableVerticalAnchorToFocused(const std::string& id_, float offset_)
 		: id(id_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto itemAnchor = game.Resources().getFocused();
 		auto itemToChange = game.Resources().getDrawable(id);

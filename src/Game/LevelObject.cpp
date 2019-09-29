@@ -14,6 +14,12 @@ bool LevelObject::getLevelObjProp(const uint16_t propHash16,
 	case str2int16("id"):
 		var = Variable(id);
 		break;
+	case str2int16("light"):
+		var = Variable((int64_t)lightSource.light);
+		break;
+	case str2int16("lightRadius"):
+		var = Variable((int64_t)lightSource.radius);
+		break;
 	case str2int16("mapPosition"):
 	{
 		if (prop == "x")

@@ -363,7 +363,7 @@ namespace Parser
 		if (elem.HasMember("light") == true)
 		{
 			playerClass->setLightSource(
-				getLightSourceVal(elem["light"], { 255, 16 })
+				getLightSourceVal(elem["light"], { 255, 10 })
 			);
 		}
 	}

@@ -35,9 +35,9 @@ public:
 		return (SimpleLevelObjectClass*)class_;
 	}
 
-	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
+	bool getTexture(uint32_t textureNumber, TextureInfo& ti) const override;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const noexcept
+	bool getNumberProp(const std::string_view prop, Number32& value) const noexcept override
 	{
 		LevelObjValue val;
 		bool ret = getInt(prop, val);
@@ -47,20 +47,20 @@ public:
 		}
 		return ret;
 	}
-	virtual bool Passable() const noexcept { return true; }
+	bool Passable() const noexcept override { return true; }
 
-	virtual void serialize(void* serializeObj, Save::Properties& props,
-		const Game& game, const Level& level) const
+	void serialize(void* serializeObj, Save::Properties& props,
+		const Game& game, const Level& level) const override
 	{
 		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
-	virtual void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr);
+	void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	virtual void setProperty(const std::string_view prop, const Variable& val) noexcept {}
+	bool getProperty(const std::string_view prop, Variable& var) const override;
+	void setProperty(const std::string_view prop, const Variable& val) noexcept override {}
 
-	virtual const std::string_view getType() const { return "levelObject"; }
+	const std::string_view getType() const override { return "levelObject"; }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;
 	bool hasInt(const std::string_view prop) const noexcept;

@@ -40,20 +40,20 @@ public:
 
 	void addGroup(uint32_t startIdx, uint32_t stopIdx, uint32_t directions, AnimationType animType);
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const override;
 
-	virtual const sf::Texture* getTexture() const noexcept { return texturePack->getTexture(); }
+	const sf::Texture* getTexture() const noexcept override { return texturePack->getTexture(); }
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return texturePack->getPalette(); }
-	virtual uint32_t size() const noexcept { return rects.size(); }
+	const std::shared_ptr<Palette>& getPalette() const noexcept override { return texturePack->getPalette(); }
+	uint32_t size() const noexcept override { return rects.size(); }
 
-	virtual uint32_t getGroupCount() const noexcept;
-	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept;
-	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept;
-	virtual std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+	uint32_t getGroupCount() const noexcept override;
+	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
+	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
+	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
+		int32_t directionIdx, AnimationType& animType) const override;
 
-	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const
+	int32_t getFlags(uint32_t index, uint32_t subIndex) const override
 	{
 		return texturePack->getFlags(index, subIndex);
 	}

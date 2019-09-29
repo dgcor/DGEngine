@@ -35,15 +35,15 @@ namespace sf
 	public:
 		PhysFSStream(const std::string& fileName) : PhysFSStream(fileName.c_str()) {}
 		PhysFSStream(const char* fileName);
-		virtual ~PhysFSStream();
+		~PhysFSStream() override;
 
 		bool load(const std::string& fileName) { return load(fileName.c_str()); }
 		bool load(const char* fileName);
 
-		virtual sf::Int64 read(void* data, sf::Int64 size) noexcept;
-		virtual sf::Int64 seek(sf::Int64 position) noexcept;
-		virtual sf::Int64 tell() noexcept;
-		virtual sf::Int64 getSize() noexcept;
+		sf::Int64 read(void* data, sf::Int64 size) noexcept override;
+		sf::Int64 seek(sf::Int64 position) noexcept override;
+		sf::Int64 tell() noexcept override;
+		sf::Int64 getSize() noexcept override;
 
 		bool hasError() const noexcept { return file == nullptr; }
 

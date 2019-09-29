@@ -25,23 +25,23 @@ public:
 	UIObject* getDrawable(size_t idx) const;
 	size_t getItemCount() const noexcept { return drawables.size(); }
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
+	void updateSize(const Game& game) override;
 
-	virtual const sf::Vector2f& DrawPosition() const { return drawPosition; }
-	virtual const sf::Vector2f& Position() const;
-	virtual void Position(const sf::Vector2f& newPosition);
-	virtual sf::Vector2f Size() const;
-	virtual void Size(const sf::Vector2f& size) {}
+	const sf::Vector2f& DrawPosition() const override { return drawPosition; }
+	const sf::Vector2f& Position() const override;
+	void Position(const sf::Vector2f& newPosition) override;
+	sf::Vector2f Size() const override;
+	void Size(const sf::Vector2f& size) override {}
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
 	bool draw(const Game& game, sf::RenderTarget& target,
 		const sf::FloatRect& visibleRect) const;
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
-	virtual void update(Game& game);
+	void draw(const Game& game, sf::RenderTarget& target) const override;
+	void update(Game& game) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

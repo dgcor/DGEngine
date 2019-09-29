@@ -6,18 +6,18 @@
 class BitmapButton : public Button, public Image
 {
 public:
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override
 	{
 		return Button::getAction(nameHash16);
 	}
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override
 	{
 		return Button::setAction(nameHash16, action);
 	}
 
-	virtual void setColor(const sf::Color& color_) { sprite.setColor(color_); }
+	void setColor(const sf::Color& color_) override { sprite.setColor(color_); }
 
-	virtual void update(Game& game);
+	void update(Game& game) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

@@ -79,14 +79,14 @@ public:
 	bool getNumberPropByHash(const Queryable& player, uint16_t propHash,
 		const std::string_view minMaxNumber, LevelObjValue& value) const;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
+	bool getNumberProp(const std::string_view prop, Number32& value) const override;
 
 	bool getProperty(const Queryable& spell, const Queryable& player,
 		uint16_t propHash, const std::string_view prop, Variable& var) const;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 
-	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
+	bool getTexture(uint32_t textureNumber, TextureInfo& ti) const override;
 
 	void setTexturePack1(const std::shared_ptr<TexturePack>& texturePack_) noexcept
 	{
@@ -164,7 +164,7 @@ struct SpellInstance : public Queryable
 	bool getNumberPropByHash(const Queryable& player, uint16_t propHash,
 		const std::string_view minMaxNumber, LevelObjValue& value) const;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
+	bool getNumberProp(const std::string_view prop, Number32& value) const override;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
+	bool getTexture(uint32_t textureNumber, TextureInfo& ti) const override;
 };

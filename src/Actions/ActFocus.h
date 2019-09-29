@@ -15,7 +15,7 @@ public:
 	ActFocusAdd(const std::string& id_, const std::string& resource_, bool setFocus_)
 		: id(id_), resource(resource_), setFocus(setFocus_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto button = game.Resources().getDrawableSharedPtr<Button>(id);
 		if (button != nullptr)
@@ -38,7 +38,7 @@ private:
 public:
 	ActFocusClick(bool playSound_) noexcept : playSound(playSound_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().clickFocused(game, playSound);
 		return true;
@@ -48,7 +48,7 @@ public:
 class ActFocusMoveDown : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().moveFocusDown(game);
 		return true;
@@ -58,7 +58,7 @@ public:
 class ActFocusMoveUp : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().moveFocusUp(game);
 		return true;
@@ -74,7 +74,7 @@ private:
 public:
 	ActFocusSet(const std::string& id_, bool focus_) : id(id_), focus(focus_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
@@ -96,7 +96,7 @@ public:
 class ActFocusUpdate : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().updateFocus(game);
 		return true;

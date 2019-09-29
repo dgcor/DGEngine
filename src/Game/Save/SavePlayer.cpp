@@ -261,7 +261,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 				writeBool(writer, "bodyInventory", true);
 			}
 
-			if (inv.getEnforceItemSize() == true)
+			if (inv.EnforceItemSize() == true)
 			{
 				writeBool(writer, "enforceItemSize", true);
 			}

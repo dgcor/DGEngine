@@ -44,8 +44,8 @@ public:
 	InputEventType getCaptureInputEvents() const noexcept { return captureInputEvents; }
 	void setCaptureInputEvents(InputEventType e) noexcept { captureInputEvents = e; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
 	bool click(Game& game, bool playSound);
 	void enable(bool enable) noexcept { enabled = enable; }
@@ -58,5 +58,5 @@ public:
 
 	virtual void setColor(const sf::Color& color_) = 0;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

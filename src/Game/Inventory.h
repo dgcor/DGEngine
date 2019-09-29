@@ -16,6 +16,7 @@ private:
 
 	std::vector<ItemCell> items;
 	PairUInt8 size;
+	uint16_t itemCount{ 0 };
 	std::vector<uint16_t> allowedTypes;
 	bool enforceItemSize{ false };
 
@@ -107,9 +108,10 @@ public:
 
 	size_t Size() const noexcept { return items.size(); }
 	const PairUInt8& getXYSize() const noexcept { return size; }
+	uint16_t ItemCount() const noexcept { return itemCount; }
 
-	bool getEnforceItemSize() const noexcept { return enforceItemSize; }
-	void setEnforceItemSize(bool enforceItemSize_) noexcept { enforceItemSize = enforceItemSize_; }
+	bool EnforceItemSize() const noexcept { return enforceItemSize; }
+	void EnforceItemSize(bool enforceItemSize_) noexcept { enforceItemSize = enforceItemSize_; }
 
 	const std::vector<uint16_t>& AllowedTypes() const noexcept { return allowedTypes; }
 

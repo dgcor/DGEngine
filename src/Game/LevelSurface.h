@@ -45,6 +45,8 @@ public:
 	const sf::Vector2f& Size() const;
 	void Size(const sf::Vector2f& size_);
 
+	float getLightZoomFactor() const noexcept;
+
 	const sf::Vector2f& getCenter() const;
 
 	void setCenter(float newViewCenterX, float newViewCenterY);

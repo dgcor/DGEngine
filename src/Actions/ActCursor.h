@@ -12,7 +12,7 @@ private:
 public:
 	ActCursorCenterOnDrawable(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto obj = game.Resources().getDrawable(id);
 		if (obj != nullptr)
@@ -37,7 +37,7 @@ private:
 public:
 	ActCursorEnableOutline(bool enable_) noexcept : enable(enable_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto cursor = game.Resources().getCursor();
 		if (cursor != nullptr)
@@ -56,7 +56,7 @@ private:
 public:
 	ActCursorPop(bool popAll_) noexcept : popAll(popAll_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().popCursor(popAll);
 		game.updateCursorPosition();
@@ -72,7 +72,7 @@ private:
 public:
 	ActCursorSetColor(const sf::Color& color_) noexcept : color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto cursor = game.Resources().getCursor();
 		if (cursor != nullptr)
@@ -93,7 +93,7 @@ public:
 	ActCursorSetOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
 		: outline(outline_), ignore(ignore_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto cursor = game.Resources().getCursor();
 		if (cursor != nullptr)
@@ -114,7 +114,7 @@ public:
 	ActCursorSetPalette(const std::string& idPalette_, const sf::Color& color_)
 		: idPalette(idPalette_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto cursor = game.Resources().getCursor();
 		if (cursor != nullptr)
@@ -144,7 +144,7 @@ private:
 public:
 	ActCursorSetPosition(const sf::Vector2i& pos_) : pos(pos_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.setMousePosition(pos);
 		return true;
@@ -159,7 +159,7 @@ private:
 public:
 	ActCursorShow(bool show_) noexcept : show(show_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.setMouseCursorVisible(show);
 		return true;

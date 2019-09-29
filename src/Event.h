@@ -25,5 +25,5 @@ public:
 
 	void resetTime() noexcept { elapsedTime.reset(); }
 
-	virtual bool execute(Game& game);
+	bool execute(Game& game) override;
 };

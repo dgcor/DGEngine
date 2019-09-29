@@ -14,7 +14,7 @@ public:
 	ActLevelObjDelete(const std::string& idLevel_, const std::string& idObject_)
 		: idLevel(idLevel_), idObject(idObject_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -35,7 +35,7 @@ public:
 	ActLevelObjDeleteByClass(const std::string& idLevel_, const std::string& idClass_)
 		: idLevel(idLevel_), idClass(idClass_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -56,7 +56,7 @@ public:
 	ActLevelObjExecuteAction(const std::string& idLevel_,
 		const std::string& idObject_) : idLevel(idLevel_), idObject(idObject_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -83,7 +83,7 @@ public:
 		const sf::Color& outline_, const sf::Color& ignore_)
 		: idLevel(idLevel_), outline(outline_), ignore(ignore_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -110,7 +110,7 @@ public:
 		const std::string& idPalette_, const sf::Color& color_)
 		: idLevel(idLevel_), idPalette(idPalette_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

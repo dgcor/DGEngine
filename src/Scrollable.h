@@ -30,27 +30,27 @@ public:
 	void setLoop(bool loop_) noexcept { loop = loop_; }
 	void setPause(bool pause_) noexcept { pause = pause_; }
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
-	virtual Anchor getAnchor() const noexcept { return view.getAnchor(); }
-	virtual void setAnchor(const Anchor anchor) noexcept { view.setAnchor(anchor); }
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return view.getAnchor(); }
+	void setAnchor(const Anchor anchor) noexcept override { view.setAnchor(anchor); }
+	void updateSize(const Game& game) override;
 
-	virtual const sf::Vector2f& DrawPosition() const noexcept { return view.getPosition(); }
-	virtual const sf::Vector2f& Position() const noexcept { return view.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) noexcept { view.setPosition(position); }
-	virtual sf::Vector2f Size() const noexcept { return view.getSize(); }
-	virtual void Size(const sf::Vector2f& size) { view.setSize(size); }
+	const sf::Vector2f& DrawPosition() const noexcept override { return view.getPosition(); }
+	const sf::Vector2f& Position() const noexcept override { return view.getPosition(); }
+	void Position(const sf::Vector2f& position) noexcept override { view.setPosition(position); }
+	sf::Vector2f Size() const noexcept override { return view.getSize(); }
+	void Size(const sf::Vector2f& size) override { view.setSize(size); }
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
 
-	virtual void update(Game& game);
+	void update(Game& game) override;
 
 	void updateView(const Game& game) { view.update(game); }
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

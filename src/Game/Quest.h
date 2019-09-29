@@ -23,5 +23,5 @@ public:
 	int State() const noexcept { return state; }
 	void State(int state_) noexcept { state = state_; }
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const noexcept;
+	bool getProperty(const std::string_view prop, Variable& var) const noexcept override;
 };

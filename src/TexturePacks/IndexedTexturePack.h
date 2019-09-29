@@ -31,9 +31,9 @@ public:
 	IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
 		bool onlyUseIndexed_, bool translateAnimatedIndexes_);
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const  override;
 
-	virtual void update(int epoch, sf::Time elapsedTime);
+	void update(int epoch, sf::Time elapsedTime) override;
 
 	TexturePack* getTexturePack() const noexcept { return texturePack.get(); }
 
@@ -43,20 +43,20 @@ public:
 	void mapTextureIndex(uint32_t mapIndex);
 	void mapTextureIndex(uint32_t mapIndex, uint32_t toIndex);
 
-	virtual const sf::Texture* getTexture() const noexcept { return texturePack->getTexture(); }
+	const sf::Texture* getTexture() const noexcept override { return texturePack->getTexture(); }
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return texturePack->getPalette(); }
-	virtual uint32_t size() const noexcept { return numIndexedTextures; }
+	const std::shared_ptr<Palette>& getPalette() const noexcept override { return texturePack->getPalette(); }
+	uint32_t size() const noexcept override { return numIndexedTextures; }
 
-	virtual uint32_t getGroupCount() const noexcept { return texturePack->getGroupCount(); }
-	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept
+	uint32_t getGroupCount() const noexcept override { return texturePack->getGroupCount(); }
+	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override
 	{
 		return texturePack->getDirectionCount(groupIdx);
 	}
-	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept
+	uint32_t getDirection(uint32_t frameIdx) const noexcept override
 	{
 		return texturePack->getDirection(frameIdx);
 	}
 
-	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
+	int32_t getFlags(uint32_t index, uint32_t subIndex) const override;
 };

@@ -42,7 +42,7 @@ namespace sfe
 
 		/** Default destructor
 		 */
-		virtual ~AudioStream();
+		~AudioStream() override;
 
 		/** Empty the encoded data queue, destroy all the packets and flush the decoding pipeline
 		 */

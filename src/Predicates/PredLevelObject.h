@@ -17,7 +17,7 @@ public:
 		const std::string& idObject_, const sf::FloatRect& mapLocationRange_)
 		: idLevel(idLevel_), idObject(idObject_), mapLocationRange(mapLocationRange_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -48,7 +48,7 @@ public:
 		const std::string& idClass_, const sf::FloatRect& mapLocationRange_)
 		: idLevel(idLevel_), idClass(idClass_), mapLocationRange(mapLocationRange_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

@@ -17,7 +17,7 @@ public:
 	ActDirCopy(const std::string& dirSrc_, const std::string& dirDst_)
 		: dirSrc(dirSrc_), dirDst(dirDst_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		FileUtils::copyDir(GameUtils::replaceStringWithVarOrProp(dirSrc, game).c_str(),
 			GameUtils::replaceStringWithVarOrProp(dirDst, game).c_str());
@@ -33,7 +33,7 @@ private:
 public:
 	ActDirCreate(const std::string& dir_) : dir(dir_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		FileUtils::createDir(GameUtils::replaceStringWithVarOrProp(dir, game).c_str());
 		return true;
@@ -55,7 +55,7 @@ public:
 		ReplaceVars replaceVars_) : dir(dir_), filesRead(filesRead_),
 		fileWrite(fileWrite_), nullText(nullText_), replaceVars(replaceVars_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (filesRead.size() > 0)
 		{
@@ -128,7 +128,7 @@ private:
 public:
 	ActIODelete(const std::string& dir_) : dir(dir_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		FileUtils::deleteFile(GameUtils::replaceStringWithVarOrProp(dir, game).c_str());
 		return true;
@@ -145,7 +145,7 @@ public:
 	ActIODeleteAll(const std::string& dir_, bool deleteRoot_)
 		: dir(dir_), deleteRoot(deleteRoot_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		FileUtils::deleteAll(GameUtils::replaceStringWithVarOrProp(dir, game).c_str(), deleteRoot);
 		return true;

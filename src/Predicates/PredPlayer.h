@@ -17,7 +17,7 @@ public:
 		const std::string& idPlayer_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemLocation(itemLocation_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -48,7 +48,7 @@ public:
 		const std::string& idPlayer_, const std::string& idSpell_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), idSpell(idSpell_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -79,7 +79,7 @@ public:
 		const std::string& idPlayer_, const std::string& itemClass_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemClass(itemClass_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -110,7 +110,7 @@ public:
 		const std::string& idPlayer_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemCoord(itemCoord_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

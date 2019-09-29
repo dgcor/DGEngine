@@ -16,7 +16,7 @@ public:
 		const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), itemLocation(itemLocation_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

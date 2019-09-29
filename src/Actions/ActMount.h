@@ -17,7 +17,7 @@ public:
 		mountPoint(mountPoint_), appendToSearchPath(appendToSearchPath_),
 		useSaveDir(useSaveDir_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		std::string file2;
 		if (useSaveDir == false)
@@ -43,7 +43,7 @@ public:
 	ActUnmount(const std::string& file_, bool useSaveDir_)
 		: file(file_), useSaveDir(useSaveDir_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		std::string file2;
 		if (useSaveDir == false)
@@ -62,7 +62,7 @@ public:
 class ActUnmountAll : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		FileUtils::unmountAll();
 		return true;

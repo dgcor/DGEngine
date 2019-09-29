@@ -36,7 +36,7 @@ namespace sfe
 	{
 	public:
 		MovieImpl(sf::Transformable& movieView);
-		virtual ~MovieImpl();
+		~MovieImpl() override;
 
 		/** @see Movie::openFromFile()
 		 */

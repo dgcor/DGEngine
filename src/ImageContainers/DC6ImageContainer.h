@@ -33,17 +33,16 @@ private:
 public:
 	DC6ImageContainer(const std::string_view fileName, bool stitchFrames, bool useOffsets_);
 
-	virtual BlendMode getBlendMode() const noexcept { return blendMode; }
-	virtual void setBlendMode(BlendMode blendMode_) noexcept { blendMode = blendMode_; }
+	BlendMode getBlendMode() const noexcept override { return blendMode; }
+	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
 
 	sf::Image2 get(const sf::Vector2u& stitch_, const sf::Vector2u& size_,
 		const PaletteArray* palette) const;
 
-	virtual sf::Image2 get(uint32_t index,
-		const PaletteArray* palette, ImageInfo& imgInfo) const;
+	sf::Image2 get(uint32_t index, const PaletteArray* palette, ImageInfo& imgInfo) const override;
 
-	virtual uint32_t size() const noexcept;
+	uint32_t size() const noexcept override;
 
-	virtual uint32_t getDirections() const noexcept { return directions; }
+	uint32_t getDirections() const noexcept override { return directions; }
 };
 #endif

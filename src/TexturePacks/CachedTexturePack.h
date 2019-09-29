@@ -20,17 +20,17 @@ public:
 		const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_,
 		bool isIndexed_, bool normalizeDirections_);
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const override;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
-	virtual uint32_t size() const noexcept { return cache.size(); }
+	const std::shared_ptr<Palette>& getPalette() const noexcept override { return palette; }
+	uint32_t size() const noexcept override { return cache.size(); }
 
-	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept;
-	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept;
-	virtual std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
+	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
+	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
+		int32_t directionIdx, AnimationType& animType) const override;
 
-	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
+	int32_t getFlags(uint32_t index, uint32_t subIndex) const override;
 };
 
 class CachedMultiTexturePack : public TexturePack
@@ -50,14 +50,14 @@ public:
 		const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_,
 		bool isIndexed_, bool normalizeDirections_);
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const override;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
-	virtual uint32_t size() const noexcept { return textureCount; }
+	const std::shared_ptr<Palette>& getPalette() const noexcept override { return palette; }
+	uint32_t size() const noexcept override { return textureCount; }
 
-	virtual uint32_t getGroupCount() const noexcept { return imgVec.size(); }
-	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept;
-	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept;
-	virtual std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+	uint32_t getGroupCount() const noexcept override { return imgVec.size(); }
+	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
+	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
+	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
+		int32_t directionIdx, AnimationType& animType) const override;
 };

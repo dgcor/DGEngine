@@ -11,7 +11,7 @@ private:
 public:
 	ActToggleVisible(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)
@@ -31,7 +31,7 @@ private:
 public:
 	ActSetVisible(const std::string& id_, bool visible_) : id(id_), visible(visible_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto item = game.Resources().getDrawable(id);
 		if (item != nullptr)

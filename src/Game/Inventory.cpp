@@ -169,8 +169,13 @@ bool Inventory::setAndDontEnforceItemSize(size_t idx, std::shared_ptr<Item>& ite
 	if (item != nullptr)
 	{
 		item->clearMapPosition();
+		itemCount++;
 	}
 	oldItem = std::move(items[idx].first);
+	if (oldItem != nullptr)
+	{
+		itemCount--;
+	}
 	items[idx].first = std::move(item);
 	items[idx].second = -1;
 
@@ -284,7 +289,14 @@ bool Inventory::setAndEnforceItemSize(const PairUInt8& position,
 	{
 		oldItem = nullptr;
 	}
-
+	if (itemPtr != nullptr)
+	{
+		itemCount++;
+	}
+	if (oldItemPtr != nullptr)
+	{
+		itemCount--;
+	}
 	return true;
 }
 
@@ -765,6 +777,9 @@ bool Inventory::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	case str2int16("isFull"):
 		var = Variable(isFull());
+		break;
+	case str2int16("itemCount"):
+		var = Variable((int64_t)itemCount);
 		break;
 	case str2int16("size"):
 	{

@@ -12,14 +12,14 @@ private:
 public:
 	void addTexturePack(const std::shared_ptr<TexturePack>& texturePack);
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const override;
 
-	virtual void update(int epoch, sf::Time elapsedTime);
+	void update(int epoch, sf::Time elapsedTime) override;
 
-	virtual const sf::Texture* getTexture() const noexcept;
+	const sf::Texture* getTexture() const noexcept override;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept;
-	virtual uint32_t size() const noexcept;
+	const std::shared_ptr<Palette>& getPalette() const noexcept override;
+	uint32_t size() const noexcept override;
 
-	virtual int32_t getFlags(uint32_t index, uint32_t subIndex) const;
+	int32_t getFlags(uint32_t index, uint32_t subIndex) const override;
 };

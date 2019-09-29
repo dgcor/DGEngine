@@ -314,11 +314,11 @@ public:
 	// ex: getQueryAction("btn1.click")
 	std::shared_ptr<Action> getQueryAction(const std::string_view prop) const;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 	bool getGameProperty(const std::string_view prop, Variable& var) const;
 	void setGameProperty(const std::string_view prop, const Variable& val);
 
-	virtual const Queryable* getQueryable(const std::string_view prop) const;
+	const Queryable* getQueryable(const std::string_view prop) const override;
 
 	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
 		const std::string_view prop) const;

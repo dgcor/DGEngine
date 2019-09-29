@@ -18,7 +18,7 @@ public:
 		const sf::Time& time_, bool addToFront_) : id(id_), action(action_),
 		time(time_), addToFront(addToFront_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (action != nullptr)
 		{
@@ -45,7 +45,7 @@ private:
 public:
 	ActEventDelete(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Events().remove(id);
 		return true;
@@ -57,7 +57,7 @@ class ActEventDeleteAll : public Action
 public:
 	ActEventDeleteAll() {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Events().removeAll();
 		return true;
@@ -72,7 +72,7 @@ private:
 public:
 	ActEventResetTime(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Events().resetTime(id);
 		return true;

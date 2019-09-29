@@ -21,10 +21,10 @@ public:
 		const std::pair<size_t, size_t>& textureIndexRange)
 		: Animation(texturePack_, textureIndexRange) {}
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
-	virtual void Position(const sf::Vector2f& position_);
+	void Position(const sf::Vector2f& position_) override;
 
 	void setProgressBarColor(const sf::Color& color) { progressBar.setFillColor(color); }
 	void setProgressBarPositionOffset(const sf::Vector2f& offset)
@@ -37,7 +37,7 @@ public:
 	void setProgress(int percent_);
 	bool isComplete() const noexcept { return percent >= 100; }
 
-	virtual void updateSize(const Game& game);
+	void updateSize(const Game& game) override;
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
 };

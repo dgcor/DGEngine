@@ -24,6 +24,6 @@ namespace sf
 		void setLoop(bool loop_) { loop = loop_; }
 		bool getLoop() const { return loop; }
 
-		virtual Int64 onLoop();
+		Int64 onLoop() override;
 	};
 }

@@ -565,6 +565,10 @@ namespace Parser
 			auto smoothMovement = getBoolVal(getQueryVal(queryObj, elem["smoothMovement"]));
 			level->setSmoothMovement(smoothMovement);
 		}
+		if (elem.HasMember("lightRadius") == true)
+		{
+			level->LightRadius((float)getUIntVal(getQueryVal(queryObj, elem["lightRadius"]), 64));
+		}
 
 		level->updateView();
 

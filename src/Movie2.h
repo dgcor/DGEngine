@@ -40,32 +40,32 @@ public:
 	void setVolume(float volume) noexcept {}
 #endif
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
+	void updateSize(const Game& game) override;
 
-	virtual const sf::Vector2f& DrawPosition() const { return movie.getPosition(); }
-	virtual const sf::Vector2f& Position() const { return movie.getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { movie.setPosition(position); }
+	const sf::Vector2f& DrawPosition() const override { return movie.getPosition(); }
+	const sf::Vector2f& Position() const override { return movie.getPosition(); }
+	void Position(const sf::Vector2f& position) override { movie.setPosition(position); }
 #ifndef USE_SFML_MOVIE_STUB
-	virtual sf::Vector2f Size() const noexcept { return size; }
-	virtual void Size(const sf::Vector2f& size_)
+	sf::Vector2f Size() const noexcept override { return size; }
+	void Size(const sf::Vector2f& size_) override
 	{
 		size = size_;
 		movie.fit(sf::FloatRect(movie.getPosition(), size_));
 	}
 #else
-	virtual sf::Vector2f Size() const { return movie.getSize(); }
-	virtual void Size(const sf::Vector2f& size) { movie.setSize(size); }
+	sf::Vector2f Size() const override { return movie.getSize(); }
+	void Size(const sf::Vector2f& size) override { movie.setSize(size); }
 #endif
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
-	virtual void update(Game& game);
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
+	void update(Game& game) override;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

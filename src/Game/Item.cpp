@@ -13,6 +13,7 @@ Item::Item(const ItemClass* class__) : LevelObject(class__)
 	animation.currentTextureIdx = animation.textureIndexRange.second;
 	animation.elapsedTime = class__->AnimationSpeed();
 	animation.animType = AnimationType::PlayOnce;
+	lightSource = class__->getLightSource();
 	cellSize.x = 1;
 	cellSize.y = 1;
 	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());

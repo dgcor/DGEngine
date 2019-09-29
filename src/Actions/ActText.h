@@ -35,7 +35,7 @@ public:
 	void ReplaceAll() noexcept { textOp |= TextUtils::TextOp::ReplaceAll; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text = game.Resources().getDrawable<BindableText>(id);
 		if (text != nullptr)
@@ -57,7 +57,7 @@ private:
 public:
 	ActTextSetColor(const std::string& id_, const sf::Color& color_) : id(id_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
@@ -78,7 +78,7 @@ public:
 	ActTextSetFont(const std::string& id_, const std::string& idFont_)
 		: id(id_), idFont(idFont_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text2 = game.Resources().getDrawable<Text>(id);
 		if (text2 != nullptr)
@@ -131,7 +131,7 @@ public:
 		hasVertSpaceOffset = true;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text = game.Resources().getDrawable<Text>(id);
 		if (text != nullptr)
@@ -177,7 +177,7 @@ public:
 	void ReplaceAll() noexcept { textOp |= TextUtils::TextOp::ReplaceAll; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text = game.Resources().getDrawable<BindableText>(id);
 		if (text != nullptr)

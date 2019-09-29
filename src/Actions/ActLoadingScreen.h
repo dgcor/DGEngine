@@ -11,7 +11,7 @@ private:
 public:
 	ActLoadingScreenSetProgress(int progress_) noexcept : progress(progress_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto loadingScreen = game.getLoadingScreen();
 		if (loadingScreen != nullptr)
@@ -30,7 +30,7 @@ public:
 class ActLoadingScreenClear : public Action
 {
 public:
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		game.setLoadingScreen(nullptr);
 		return true;

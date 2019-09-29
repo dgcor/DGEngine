@@ -17,7 +17,7 @@
 class LevelMap
 {
 public:
-	static constexpr auto MaxNumberOfLightsToUse = 64u;
+	static constexpr auto MaxNumberOfLightsToUse = 128u;
 
 private:
 

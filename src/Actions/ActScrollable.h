@@ -14,7 +14,7 @@ public:
 	ActScrollableSetSpeed(const std::string& id_, const sf::Time& speed_)
 		: id(id_), speed(speed_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto obj = game.Resources().getDrawable<Scrollable>(id);
 		if (obj != nullptr)

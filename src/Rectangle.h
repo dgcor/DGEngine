@@ -12,20 +12,20 @@ private:
 public:
 	Rectangle(const sf::Vector2f& size = sf::Vector2f(0, 0)) : sf::RectangleShape(size) {}
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
+	void updateSize(const Game& game) override;
 
-	virtual const sf::Vector2f& DrawPosition() const { return this->getPosition(); }
-	virtual const sf::Vector2f& Position() const { return this->getPosition(); }
-	virtual void Position(const sf::Vector2f& position) { this->setPosition(position); }
-	virtual sf::Vector2f Size() const { return this->getSize(); }
-	virtual void Size(const sf::Vector2f& size) { this->setSize(size); }
+	const sf::Vector2f& DrawPosition() const override { return this->getPosition(); }
+	const sf::Vector2f& Position() const override { return this->getPosition(); }
+	void Position(const sf::Vector2f& position) override { this->setPosition(position); }
+	sf::Vector2f Size() const override { return this->getSize(); }
+	void Size(const sf::Vector2f& size) override { this->setSize(size); }
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual void draw(const Game& game, sf::RenderTarget& target) const
+	void draw(const Game& game, sf::RenderTarget& target) const override
 	{
 		if (visible == true)
 		{
@@ -33,5 +33,5 @@ public:
 		}
 	}
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };
