@@ -41,8 +41,8 @@ public:
 	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept { return 1; }
 	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept { return 0; }
 
-	virtual std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
+	virtual std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
+		int32_t directionIdx, AnimationType& animType) const;
 
 	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx, int32_t directionIdx) const
 	{

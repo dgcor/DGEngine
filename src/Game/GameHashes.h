@@ -51,6 +51,8 @@ namespace ItemProp
 
 	const uint16_t LevelUp = str2int16("levelUp");
 
+	const uint16_t ToLightRadius = str2int16("toLightRadius");
+
 	const uint16_t SingleItemDamage = str2int16("singleItemDamage");
 
 	const uint16_t Durability = str2int16("durability");

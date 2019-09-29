@@ -139,33 +139,33 @@ public:
 	}
 
 	using LevelObject::MapPosition;
-	virtual bool MapPosition(LevelMap& map, const PairFloat& pos);
+	bool MapPosition(LevelMap& map, const PairFloat& pos) override;
 	using LevelObject::move;
-	virtual bool move(LevelMap& map, const PairFloat& pos);
+	bool move(LevelMap& map, const PairFloat& pos) override;
 
 	const PairFloat& MapPositionMoveTo() const noexcept { return mapPositionMoveTo; }
 
-	virtual bool getTexture(uint32_t textureNumber, TextureInfo& ti) const;
+	bool getTexture(uint32_t textureNumber, TextureInfo& ti) const override;
 
-	virtual bool getNumberProp(const std::string_view prop, Number32& value) const;
-	virtual bool Passable() const noexcept { return false; }
+	bool getNumberProp(const std::string_view prop, Number32& value) const override;
+	bool Passable() const noexcept override { return false; }
 
-	virtual void serialize(void* serializeObj, Save::Properties& props,
-		const Game& game, const Level& level) const
+	void serialize(void* serializeObj, Save::Properties& props,
+		const Game& game, const Level& level) const override
 	{
 		Save::serialize(serializeObj, props, game, level, *this);
 	}
 
-	virtual void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr);
+	void update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
-	virtual void setProperty(const std::string_view prop, const Variable& val);
-	virtual const Queryable* getQueryable(const std::string_view prop) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
+	void setProperty(const std::string_view prop, const Variable& val) override;
+	const Queryable* getQueryable(const std::string_view prop) const override;
 
 	std::vector<std::variant<const Queryable*, Variable>> getQueryableList(
 		const std::string_view prop) const;
 
-	virtual const std::string_view getType() const { return "player"; }
+	const std::string_view getType() const override { return "player"; }
 
 	bool hasIntByHash(uint16_t propHash) const noexcept;
 	bool hasInt(const std::string_view prop) const noexcept;

@@ -13,7 +13,7 @@ private:
 public:
 	ActAnimationPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto animation = game.Resources().getDrawable<Animation>(id);
 		if (animation != nullptr)
@@ -45,7 +45,7 @@ public:
 		resetAnimation(resetAnimation_), updateAnimationType(updateAnimationType_),
 		setCompositeTexture(setCompositeTexture_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto animation = game.Resources().getDrawable<Animation>(id);
 		if (animation != nullptr)
@@ -103,7 +103,7 @@ public:
 	ActAnimationSetRefresh(const std::string& id_, sf::Time refresh_)
 		: id(id_), refresh(refresh_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (refresh.asMicroseconds() > 0)
 		{

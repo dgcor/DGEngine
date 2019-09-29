@@ -27,14 +27,13 @@ private:
 public:
 	CELImageContainer(const std::string_view fileName);
 
-	virtual BlendMode getBlendMode() const noexcept { return blendMode; }
-	virtual void setBlendMode(BlendMode blendMode_) noexcept { blendMode = blendMode_; }
+	BlendMode getBlendMode() const noexcept override { return blendMode; }
+	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
 
-	virtual sf::Image2 get(uint32_t index,
-		const PaletteArray * palette, ImageInfo& imgInfo) const;
+	sf::Image2 get(uint32_t index, const PaletteArray * palette, ImageInfo& imgInfo) const override;
 
-	virtual uint32_t size() const noexcept { return frameOffsets.size(); }
+	uint32_t size() const noexcept override { return frameOffsets.size(); }
 
-	virtual uint32_t getDirections() const noexcept { return directions; }
+	uint32_t getDirections() const noexcept override { return directions; }
 };
 #endif

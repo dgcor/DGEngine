@@ -65,9 +65,9 @@ namespace sf
 		Int64 onLoopFile();
 		Int64 onLoopBuffer();
 
-		virtual bool onGetData(Chunk& data);
-		virtual void onSeek(Time timeOffset);
-		virtual Int64 onLoop();
+		bool onGetData(Chunk& data) override;
+		void onSeek(Time timeOffset) override;
+		Int64 onLoop() override;
 
 	public:
 		Music2() : m_file(), m_loopSpan(0, 0) { }

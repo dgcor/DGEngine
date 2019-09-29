@@ -14,7 +14,7 @@ public:
 	ActVariableAdd(const std::string& key_, const Variable& value_)
 		: key(key_), value(value_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		Variable value2;
 		if (game.getVariableNoToken(key, value2) == true)
@@ -46,7 +46,7 @@ private:
 public:
 	ActVariableClear(const std::string& key_) : key(key_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (key.empty() == false)
 		{
@@ -66,7 +66,7 @@ public:
 	ActVariableSave(const std::string& filePath_, const std::vector<std::string>& vars_)
 		: filePath(filePath_), vars(vars_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (filePath.empty() == false)
 		{
@@ -87,7 +87,7 @@ public:
 	ActVariableSet(const std::string& key_, const Variable& val_,
 		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (key.empty() == false)
 		{
@@ -116,7 +116,7 @@ public:
 	ActVariableSetIfNull(const std::string& key_, const Variable& val_,
 		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (key.empty() == false)
 		{
@@ -148,7 +148,7 @@ public:
 	ActVariablesSet(const std::vector<std::pair<std::string, Variable>>& variables_,
 		bool resolveValue_) : variables(variables_), resolveValue(resolveValue_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		for (const auto& keyVar : variables)
 		{

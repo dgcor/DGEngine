@@ -17,7 +17,7 @@ public:
 		const sf::FloatRect& viewportOffset_, bool automap_) : id(id_),
 		color(color_), viewportOffset(viewportOffset_), automap(automap_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -43,7 +43,7 @@ public:
 		bool automap_) : id(id_), idTexture(idTexture_), textureRect(textureRect_),
 		viewportOffset(viewportOffset_), automap(automap_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -73,7 +73,7 @@ public:
 		const std::string& idAnchor_, const sf::Vector2f& offset_) : id(id_),
 		idDrawable(idDrawable_), idAnchor(idAnchor_), offset(offset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -100,7 +100,7 @@ public:
 		const std::vector<std::string>& excludeIds_)
 		: id(id_), excludeIds(excludeIds_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -122,7 +122,7 @@ public:
 		const std::vector<std::string>& excludeIds_)
 		: id(id_), excludeIds(excludeIds_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -144,7 +144,7 @@ public:
 		const std::vector<std::string>& excludeIds_)
 		: id(id_), excludeIds(excludeIds_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -163,7 +163,7 @@ private:
 public:
 	ActLevelClearPlayerClasses(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -185,7 +185,7 @@ public:
 		const std::vector<std::string>& excludeIds_)
 		: id(id_), excludeIds(excludeIds_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -204,7 +204,7 @@ private:
 public:
 	ActLevelClearPlayerTextures(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -223,7 +223,7 @@ private:
 public:
 	ActLevelClearQuests(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -244,7 +244,7 @@ public:
 	ActLevelEnableHover(const std::string& id_, bool enableHover_)
 		: id(id_), enableHover(enableHover_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -266,7 +266,7 @@ public:
 	ActLevelMove(const std::string& id_, const PairFloat& pos_, bool smooth_)
 		: id(id_), pos(pos_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -287,7 +287,7 @@ public:
 	ActLevelMoveToClick(const std::string& id_, bool smooth_)
 		: id(id_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -309,7 +309,7 @@ public:
 	ActLevelMoveToPlayer(const std::string& id_, const std::string& idPlayer_,
 		bool smooth_) : id(id_), idPlayer(idPlayer_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -333,7 +333,7 @@ private:
 public:
 	ActLevelPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -359,7 +359,7 @@ public:
 		: id(id_), file(file_), saveDefaults(saveDefaults_),
 		saveCurrentPlayer(saveCurrentPlayer_), saveQuests(saveQuests_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -391,7 +391,7 @@ public:
 		const sf::FloatRect& viewportOffset_) : id(id_), idTexturePack(idTexturePack_),
 		tileSize(tileSize_), layerIdx(layerIdx_), viewportOffset(viewportOffset_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -422,7 +422,7 @@ public:
 	ActLevelSetAutomapPosition(const std::string& id_, const sf::Vector2f& position_)
 		: id(id_), position(position_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -451,7 +451,7 @@ public:
 	ActLevelSetAutomapSize(const std::string& id_, const sf::Vector2f& size_)
 		: id(id_), size(size_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -472,7 +472,7 @@ public:
 	ActLevelSetShader(const std::string& id_, const std::string& idShader_)
 		: id(id_), idShader(idShader_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -494,7 +494,7 @@ public:
 	ActLevelSetSmoothMovement(const std::string& id_, bool smooth_)
 		: id(id_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -515,7 +515,7 @@ public:
 	ActLevelShowAutomap(const std::string& id_, bool show_)
 		: id(id_), show(show_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
@@ -538,7 +538,7 @@ public:
 	ActLevelZoom(const std::string& id_, int percentage_, bool relative_, bool smooth_)
 		: id(id_), percentage(percentage_), relative(relative_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)

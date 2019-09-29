@@ -28,7 +28,7 @@ protected:
 	PairFloat mapPosition{ -1.f, -1.f };
 
 	BaseAnimation animation;
-
+	LightSource lightSource;
 	PairInt8 cellSize;
 
 	bool enableHover{ true };
@@ -66,7 +66,7 @@ protected:
 
 public:
 	LevelObject(const LevelObjectClass* class__) : class_(class__) {}
-	virtual ~LevelObject() = default;
+	~LevelObject() override = default;
 
 	const sf::Vector2f& getBasePosition() const noexcept { return basePosition; }
 	const sf::Vector2f& getAnchorPosition() const noexcept { return anchorPosition; }
@@ -87,8 +87,11 @@ public:
 
 	// Game
 
-	uint8_t getLight() const noexcept { return class_->getLightSource().light; }
-	LightSource getLightSource() const noexcept { return class_->getLightSource(); }
+	uint8_t getDefaultLight() const noexcept { return class_->getLightSource().light; }
+	LightSource getDefaultLightSource() const noexcept { return class_->getLightSource(); }
+
+	uint8_t getLight() const noexcept { return lightSource.light; }
+	LightSource getLightSource() const noexcept { return lightSource; }
 
 	void executeAction(Game& game) const
 	{

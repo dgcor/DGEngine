@@ -13,7 +13,7 @@ private:
 public:
 	ActMoviePause(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto movie = game.Resources().getDrawable<Movie>(id);
 		if (movie != nullptr)
@@ -32,7 +32,7 @@ private:
 public:
 	ActMoviePlay(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto movie = game.Resources().getDrawable<Movie>(id);
 		if (movie != nullptr)

@@ -47,7 +47,7 @@ namespace sfe
 
 		/** Default destructor
 		 */
-		virtual ~VideoStream();
+		~VideoStream() override;
 
 		/** Get the stream kind (either audio or video stream)
 		 *

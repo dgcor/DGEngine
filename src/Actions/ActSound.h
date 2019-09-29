@@ -22,7 +22,7 @@ public:
 		Parser::getIdFromFile(file_, id);
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto sndBuffer = game.Resources().getSoundBuffer(id);
 
@@ -59,7 +59,7 @@ public:
 	ActSoundPlay(const std::string& id_, const Variable& volume_,
 		bool unique_) : id(id_), volume(volume_), unique(unique_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto sndBuffer = game.Resources().getSoundBuffer(id);
 		if (sndBuffer != nullptr)

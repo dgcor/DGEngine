@@ -39,6 +39,16 @@ void LevelSurface::Size(const sf::Vector2f& size_)
 	sprite.setSize(drawView.getRoundedSize());
 }
 
+float LevelSurface::getLightZoomFactor() const noexcept
+{
+	auto zoom = mapView.getZoom();
+	if (supportsBigTextures == true && zoom > 1.f)
+	{
+		zoom *= 0.5;
+	}
+	return zoom;
+}
+
 const sf::Vector2f& LevelSurface::getCenter() const
 {
 	return mapView.getCenter();

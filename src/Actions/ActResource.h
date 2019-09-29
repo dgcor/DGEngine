@@ -21,7 +21,7 @@ public:
 		hasIgnore = true;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (hasIgnore == true)
 		{
@@ -42,7 +42,7 @@ public:
 	ActResourceIgnore(const std::string& id_, IgnoreResource ignorePrevious_)
 		: id(id_), ignore(ignorePrevious_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		game.Resources().ignoreResources(id, ignore);
 		return true;
@@ -57,7 +57,7 @@ private:
 public:
 	ActResourceBringToFront(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (id.empty() == false)
 		{
@@ -77,7 +77,7 @@ public:
 	ActResourcePop(const std::string& id_, IgnoreResource ignorePrevious_)
 		: id(id_), ignorePrevious(ignorePrevious_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (id.size() > 0)
 		{
@@ -103,7 +103,7 @@ public:
 	ActResourcePopAll(const std::string& id_, bool popBaseResources_, IgnoreResource ignorePrevious_)
 		: id(id_), popBaseResources(popBaseResources_), ignorePrevious(ignorePrevious_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (id.size() > 0)
 		{

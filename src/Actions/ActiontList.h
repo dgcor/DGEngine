@@ -12,7 +12,7 @@ private:
 public:
 	void add(const std::shared_ptr<Action>& action) { actions.push_back(action); }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		for (auto& action : actions)
 		{

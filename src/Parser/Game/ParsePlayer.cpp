@@ -91,7 +91,7 @@ namespace Parser
 			return;
 		}
 
-		inventory.setEnforceItemSize(getBoolKey(elem, "enforceItemSize"));
+		inventory.EnforceItemSize(getBoolKey(elem, "enforceItemSize"));
 
 		if (getBoolKey(elem, "bodyInventory") == true)
 		{

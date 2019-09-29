@@ -16,5 +16,5 @@ public:
 	void setBinding(std::vector<std::string> bindings_);
 	void setFormat(const std::string_view format_) { format = format_; }
 
-	virtual void update(Game& game);
+	void update(Game& game) override;
 };

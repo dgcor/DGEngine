@@ -15,7 +15,7 @@ public:
 	ActQuestAdd(const std::string& idLevel_, Quest quest_)
 		: idLevel(idLevel_), quest(std::move(quest_)) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -36,7 +36,7 @@ public:
 	ActQuestDelete(const std::string& idLevel_, const std::string& idQuest_)
 		: idLevel(idLevel_), idQuest(idQuest_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -58,7 +58,7 @@ public:
 	ActQuestSetState(const std::string& idLevel_, const std::string& idQuest_, int state_)
 		: idLevel(idLevel_), idQuest(idQuest_), state(state_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

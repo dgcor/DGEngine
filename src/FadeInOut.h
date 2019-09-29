@@ -28,5 +28,5 @@ public:
 	void Reset(sf::Color color_, bool isFadeOut_, bool enableInput_, uint8_t fadeOffset_,
 		const sf::Time& timeout_, const std::shared_ptr<Action>& action_);
 
-	virtual void update(Game& game) noexcept;
+	void update(Game& game) noexcept;
 };

@@ -40,7 +40,7 @@ public:
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -68,7 +68,7 @@ public:
 	ActMenuClick(const std::string& id_, size_t idx_, bool playSound_)
 		: id(id_), idx(idx_), playSound(playSound_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -94,7 +94,7 @@ public:
 	ActMenuClickVisible(const std::string& id_, size_t idx_, bool playSound_)
 		: id(id_), idx(idx_), playSound(playSound_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -124,7 +124,7 @@ public:
 		: idMenu(idMenu_), idScrollbar(idScrollbar_), idAnchorTo(idAnchorTo_),
 		range(range_), focus(focus_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(idMenu);
 		auto scrollBar = game.Resources().getDrawable(idScrollbar);
@@ -171,7 +171,7 @@ public:
 	ActMenuSetColor(const std::string& id_, size_t idx_, const sf::Color& color_)
 		: id(id_), idx(idx_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -197,7 +197,7 @@ public:
 	ActMenuSetFont(const std::string& id_, size_t idx_, const std::string& idFont_)
 		: id(id_), idx(idx_), idFont(idFont_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -240,7 +240,7 @@ public:
 	ActMenuSetIndex(const std::string& id_, const Variable& idxVar_)
 		: id(id_), idxVar(idxVar_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
@@ -283,7 +283,7 @@ public:
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)

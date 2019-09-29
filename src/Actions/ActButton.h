@@ -15,7 +15,7 @@ public:
 	ActButtonClick(const std::string& id_, bool playSound_)
 		: id(id_), playSound(playSound_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
@@ -36,7 +36,7 @@ public:
 	ActButtonEnable(const std::string& id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
-	virtual bool execute(Game& game) noexcept
+	bool execute(Game& game) noexcept override
 	{
 		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)
@@ -57,7 +57,7 @@ public:
 	ActButtonSetColor(const std::string& id_, const sf::Color& color_)
 		: id(id_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto button = game.Resources().getDrawable<Button>(id);
 		if (button != nullptr)

@@ -18,7 +18,7 @@ public:
 		: id(id_), fragmentShaderFile(fragmentShaderFile_),
 		vertexShaderFile(vertexShaderFile_), geometryShaderFile(geometryShaderFile_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (fragmentShaderFile.empty() == false)
 		{
@@ -56,7 +56,7 @@ public:
 	ActShaderSetGameShader(const std::string& id_, const std::string& gameShaderId_)
 		: id(id_), gameShaderId(gameShaderId_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto shader = game.Resources().Shaders().get(id);
 		game.setShader(gameShaderId, shader);
@@ -76,7 +76,7 @@ public:
 	ActShaderSetUniform(const std::string& id_, const std::string& key_,
 		const T& value_) : id(id_), key(key_), value(value_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto shader = game.Resources().Shaders().get(id);
 		if (shader != nullptr)

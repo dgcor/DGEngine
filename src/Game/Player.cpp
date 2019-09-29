@@ -7,6 +7,7 @@
 Player::Player(const PlayerClass* class__, const Level& level) : LevelObject(class__)
 {
 	animation.animType = AnimationType::Looped;
+	lightSource = class__->getLightSource();
 	cellSize.x = -2;
 	cellSize.y = -2;
 	sprite.setOutline(class__->Outline(), class__->OutlineIgnore());
@@ -1350,8 +1351,9 @@ void Player::updateBodyItemValues()
 	resistMagicItems = 0;
 	resistFireItems = 0;
 	resistLightningItems = 0;
+	lightSource = getDefaultLightSource();
+	LevelObjValue toLightRadius = 0;
 	LevelObjValue singleItemDamage = 0;
-	int equipedItems = 0;
 
 	if (bodyInventoryIdx >= inventories.size())
 	{
@@ -1359,8 +1361,6 @@ void Player::updateBodyItemValues()
 	}
 	for (const auto& item : inventories[bodyInventoryIdx])
 	{
-		equipedItems++;
-
 		if (item.Identified() == true)
 		{
 			auto allAttributes = item.getIntByHash(ItemProp::AllAttributes);
@@ -1369,9 +1369,6 @@ void Player::updateBodyItemValues()
 			dexterityItems += allAttributes + item.getIntByHash(ItemProp::Dexterity);
 			vitalityItems += allAttributes + item.getIntByHash(ItemProp::Vitality);
 		}
-	}
-	for (const auto& item : inventories[bodyInventoryIdx])
-	{
 		if (canUseObject(item) == false)
 		{
 			continue;
@@ -1398,9 +1395,11 @@ void Player::updateBodyItemValues()
 		damageMinItems += item.getIntByHash(ItemProp::DamageMin);
 		damageMaxItems += item.getIntByHash(ItemProp::DamageMax);
 
-		if (equipedItems == 1)
+		toLightRadius += item.getIntByHash(ItemProp::ToLightRadius);
+
+		if (damageMax <= 0)
 		{
-			singleItemDamage = item.getIntByHash(ItemProp::SingleItemDamage);
+			singleItemDamage = std::max(singleItemDamage, item.getIntByHash(ItemProp::SingleItemDamage));
 		}
 	}
 	auto toArmorPercentage = (float)toArmor * 0.01f;
@@ -1446,6 +1445,13 @@ void Player::updateBodyItemValues()
 	if (damageMin > damageMax)
 	{
 		damageMax = damageMin;
+	}
+	if (toLightRadius != 0)
+	{
+		auto radiusPercentage = (float)std::clamp(toLightRadius, -80, 50) * 0.01f;
+		auto newRadius = (float)lightSource.radius;
+		newRadius = std::round(newRadius + (newRadius * radiusPercentage));
+		lightSource.radius = (uint8_t)std::clamp(newRadius, 1.f, 255.f);
 	}
 }
 

@@ -16,7 +16,7 @@ public:
 		const std::string& idPalette_, const sf::Color& color_)
 		: id(id_), idPalette(idPalette_), color(color_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto font = game.Resources().getFont(id);
 		if (holdsBitmapFont(font) == true)

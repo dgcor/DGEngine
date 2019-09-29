@@ -304,6 +304,11 @@ void Level::Position(const sf::Vector2f& position) noexcept
 	updateAutomapRelativePosition();
 }
 
+void Level::LightRadius(float lightRadius_) noexcept
+{
+	lightRadius = std::clamp(lightRadius_, 4.f, 256.f);
+}
+
 void Level::updateAutomapRelativePosition()
 {
 	if (automapRelativeCoords == true)
@@ -547,7 +552,7 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		shader->setUniform("numberOfLights", (int)map.lightArray.size());
 		shader->setUniformArray("lights", map.lightArray.data(), map.lightArray.size());
 		shader->setUniform("defaultLight", ((float)map.getDefaultLight() / 255.f));
-		shader->setUniform("radiusSize", (float)(std::max(map.MapSizef().x, map.MapSizef().y)));
+		shader->setUniform("lightRadius", lightRadius * surface.getLightZoomFactor());
 	}
 	surface.draw(target, states);
 

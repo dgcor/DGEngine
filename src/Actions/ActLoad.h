@@ -15,7 +15,7 @@ public:
 	ActLoad(const std::vector<std::string>& args_) : args(args_) {}
 	ActLoad(const std::string& file_) { args.push_back(file_); }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (args.size() > 0)
 		{
@@ -44,7 +44,7 @@ public:
 	ActLoadJson(const std::string& json_, const std::vector<std::string>& args_)
 		: json(json_), args(args_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (args.empty() == true)
 		{
@@ -74,7 +74,7 @@ public:
 		args.push_back(file_);
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (args.size() > 0)
 		{

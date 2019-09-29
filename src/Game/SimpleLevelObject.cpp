@@ -17,6 +17,7 @@ SimpleLevelObject::SimpleLevelObject(const SimpleLevelObjectClass* class__) : Le
 		animation.animType = class__->getAnimationType();
 		updateTexture();
 	}
+	lightSource = class__->getLightSource();
 	cellSize = class__->getCellSize();
 
 	for (const auto& prop : class__->Defaults())

@@ -148,7 +148,7 @@
           ]
         },
         {
-          "property": "lightRadius",
+          "property": "toLightRadius",
           "value": [
             { "min": "min", "max": -20, "value": 0 },
             { "min": 20, "max": 39, "value": 750 },
@@ -249,7 +249,7 @@
           ]
         },
         {
-          "property": "lightRadius",
+          "property": "toLightRadius",
           "value": [
             { "min": "min", "max": -20, "value": 0 },
             { "min": 20, "max": 39, "value": 750 },

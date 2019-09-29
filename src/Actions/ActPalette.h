@@ -21,7 +21,7 @@ public:
 		: idDstPal(idDstPal_), idSrcPal(idSrcPal_), srcStart(srcStart_),
 		size(size_), dstStart(dstStart_), step((int)size_), stepReplace(stepReplace_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto dstPal = game.Resources().getPalette(idDstPal);
 		auto srcPal = game.Resources().getPalette(idSrcPal);
@@ -60,7 +60,7 @@ public:
 		const std::pair<size_t, size_t>& range_) noexcept
 		: id(id_), shift(shift_), range(range_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto palette = game.Resources().getPalette(id);
 		if (palette != nullptr)
@@ -83,7 +83,7 @@ public:
 		const std::pair<size_t, size_t>& range_) noexcept
 		: id(id_), shift(shift_), range(range_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto palette = game.Resources().getPalette(id);
 		if (palette != nullptr)

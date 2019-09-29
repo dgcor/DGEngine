@@ -61,7 +61,7 @@ namespace sfe
 
 		/** Default destructor
 		 */
-		virtual ~Demuxer();
+		~Demuxer() override;
 
 		/** Return a list of audio streams found in the media
 		 * The map key is the index of the stream

@@ -12,7 +12,7 @@ private:
 public:
 	PredFileExists(const std::string& file_) : file(file_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto file2 = game.getVarOrPropStringS(file);
 		if (file2.empty() == false)
@@ -31,7 +31,7 @@ private:
 public:
 	PredGamefileExists(const std::string& file_) : file(file_) {}
 
-	virtual Variable getResult(const Game& game) const
+	Variable getResult(const Game& game) const override
 	{
 		auto file2 = game.getPath() + game.getVarOrPropStringS(file);
 		if (file2.empty() == false)

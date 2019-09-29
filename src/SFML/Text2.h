@@ -32,7 +32,7 @@ namespace sf
 		mutable bool m_geometryNeedUpdate;
 		mutable Uint64 m_fontTextureId;
 
-		virtual void draw(RenderTarget& target, RenderStates states) const;
+		void draw(RenderTarget& target, RenderStates states) const override;
 
 		float calculateLineLength(const Uint32* text) const;
 		void calculateSize() const;

@@ -21,8 +21,8 @@ private:
 public:
 	using Text::Text;
 
-	virtual std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept;
-	virtual bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept;
+	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
+	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
 	void setMinLength(size_t length) noexcept { minLength = length; }
 	void setMaxLength(size_t length) noexcept { maxLength = length; }
@@ -32,7 +32,7 @@ public:
 
 	void click(Game& game);
 
-	virtual void update(Game& game);
+	void update(Game& game) override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

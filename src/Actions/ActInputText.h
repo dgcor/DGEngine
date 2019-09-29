@@ -12,7 +12,7 @@ private:
 public:
 	ActInputTextClick(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto text = game.Resources().getDrawable<InputText>(id);
 		if (text != nullptr)

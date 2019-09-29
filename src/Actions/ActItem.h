@@ -32,7 +32,7 @@ public:
 	ActItemAddCursor(const std::string& idLevel_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), itemLocation(itemLocation_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -60,7 +60,7 @@ public:
 		const Variable& quantity_, bool remove_) : idLevel(idLevel_),
 		itemLocation(itemLocation_), quantity(quantity_), remove(remove_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -89,7 +89,7 @@ public:
 	ActItemDelete(const std::string& idLevel_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), itemLocation(itemLocation_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -110,7 +110,7 @@ public:
 	ActItemDrop(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -150,7 +150,7 @@ public:
 		const ItemLocation& itemLocation_, uint16_t actionHash16_)
 		: idLevel(idLevel_), itemLocation(itemLocation_), actionHash16(actionHash16_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -204,7 +204,7 @@ public:
 		inventoryFullAction = action_;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -269,7 +269,7 @@ public:
 	ActItemMove(const std::string& idLevel_, const ItemLocation& from_,
 		const ItemLocation& to_) : idLevel(idLevel_), from(from_), to(to_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -294,7 +294,7 @@ public:
 		const std::string& prop_, const Variable& value_) : itemLocation(itemLocation_),
 		idLevel(idLevel_), prop(prop_), value(value_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -340,7 +340,7 @@ public:
 		inventoryFullAction = action_;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -385,7 +385,7 @@ public:
 	ActItemUpdate(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr &&
@@ -463,7 +463,7 @@ public:
 	ActItemUse(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

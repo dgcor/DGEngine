@@ -12,7 +12,7 @@ private:
 public:
 	ActAudioPause(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
@@ -26,7 +26,7 @@ public:
 class ActAudioPauseAll : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().pauseSongs();
 		return true;
@@ -52,7 +52,7 @@ public:
 		hasLoop = true;
 	}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (clear == true)
 		{
@@ -94,7 +94,7 @@ private:
 public:
 	ActAudioResumeAll(bool restart_) noexcept : restart(restart_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().playPaused(restart);
 		return true;
@@ -110,7 +110,7 @@ private:
 public:
 	ActAudioSeek(const std::string& id_, const sf::Time& time_) : id(id_), time(time_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
@@ -131,7 +131,7 @@ public:
 	ActAudioSetVolume(const std::string& id_, const Variable& volume_)
 		: id(id_), volume(volume_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
@@ -155,7 +155,7 @@ private:
 public:
 	ActAudioStop(const std::string& id_) : id(id_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto song = game.Resources().getSong(id);
 		if (song != nullptr)
@@ -169,7 +169,7 @@ public:
 class ActAudioStopAll : public Action
 {
 public:
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		game.Resources().stopSongs();
 		return true;

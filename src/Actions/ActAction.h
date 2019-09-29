@@ -15,7 +15,7 @@ public:
 	ActActionSet(const std::string& key_, const std::shared_ptr<Action>& action_)
 		: key(key_), action(action_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (key.empty() == false)
 		{

@@ -23,7 +23,7 @@ public:
 		bool remove_) : idPlayer(idPlayer_), idLevel(idLevel_), itemClass(itemClass_),
 		invPos(invPos_), quantity(quantity_), remove(remove_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -67,7 +67,7 @@ public:
 		const std::string& prop_, const Variable& value_, bool remove_) : idPlayer(idPlayer_),
 		idLevel(idLevel_), prop(prop_), value(value_), remove(remove_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -135,7 +135,7 @@ public:
 		: idPlayer(idPlayer_), idLevel(idLevel_), position(pos_),
 		resetDirection(resetDirection_), smooth(smooth_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -167,7 +167,7 @@ public:
 		const std::string& idLevel_, const std::string& spell_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), spell(spell_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -194,7 +194,7 @@ public:
 		const std::string& idLevel_, const AnimationSpeed& speed_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), speed(speed_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -221,7 +221,7 @@ public:
 		const std::string& idLevel_, PlayerDirection direction_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), direction(direction_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -249,7 +249,7 @@ public:
 		const std::string& prop_, const Variable& value_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), prop(prop_), value(value_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -280,7 +280,7 @@ public:
 	ActPlayerSetRestStatus(const std::string& idPlayer_, const std::string& idLevel_,
 		uint8_t status_) : idPlayer(idPlayer_), idLevel(idLevel_), status(status_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -308,7 +308,7 @@ public:
 		const std::string& idLevel_, size_t idx_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), idx(idx_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -337,7 +337,7 @@ public:
 		PlayerDirection direction_, bool executeAction_) : idPlayer(idPlayer_),
 		idLevel(idLevel_), direction(direction_), executeAction(executeAction_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
@@ -364,7 +364,7 @@ public:
 		bool executeAction_) : idPlayer(idPlayer_), idLevel(idLevel_),
 		executeAction(executeAction_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)

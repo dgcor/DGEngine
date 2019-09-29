@@ -28,10 +28,10 @@ public:
 
 	int getCharWidth(char c) const noexcept { return chars[(unsigned char)c].width; }
 
-	virtual const sf::Texture* getTexture() const noexcept { return texture.get(); }
+	const sf::Texture* getTexture() const noexcept override { return texture.get(); }
 
-	virtual bool get(uint32_t index, TextureInfo& ti) const;
+	bool get(uint32_t index, TextureInfo& ti) const override;
 
-	virtual const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
-	virtual uint32_t size() const noexcept { return chars.size(); }
+	const std::shared_ptr<Palette>& getPalette() const noexcept override { return palette; }
+	uint32_t size() const noexcept override { return chars.size(); }
 };

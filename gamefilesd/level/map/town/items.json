@@ -91,7 +91,11 @@
     },
     {
       "class": "club",
-      "mapPosition": [59, 74]
+      "mapPosition": [59, 74],
+      "properties": {
+        "toLightRadius": 20,
+        "magical": true
+      }
     },
     {
       "class": "compositeBow",

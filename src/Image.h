@@ -67,19 +67,19 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false);
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
-	virtual Anchor getAnchor() const noexcept { return anchor; }
-	virtual void setAnchor(const Anchor anchor_) noexcept { anchor = anchor_; }
-	virtual void updateSize(const Game& game);
+	Anchor getAnchor() const noexcept override { return anchor; }
+	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
+	void updateSize(const Game& game) override;
 
-	virtual bool Visible() const noexcept { return visible; }
-	virtual void Visible(bool visible_) noexcept { visible = visible_; }
+	bool Visible() const noexcept override { return visible; }
+	void Visible(bool visible_) noexcept override { visible = visible_; }
 
-	virtual const sf::Vector2f& DrawPosition() const { return sprite.getDrawPosition(); }
-	virtual const sf::Vector2f& Position() const { return sprite.getPosition(); }
-	virtual void Position(const sf::Vector2f& position_) { return sprite.setPosition(position_); }
-	virtual sf::Vector2f Size() const;
-	virtual void Size(const sf::Vector2f& size);
-	virtual void draw(const Game& game, sf::RenderTarget& target) const;
+	const sf::Vector2f& DrawPosition() const override { return sprite.getDrawPosition(); }
+	const sf::Vector2f& Position() const override { return sprite.getPosition(); }
+	void Position(const sf::Vector2f& position_) override { return sprite.setPosition(position_); }
+	sf::Vector2f Size() const override;
+	void Size(const sf::Vector2f& size) override;
+	void draw(const Game& game, sf::RenderTarget& target) const override;
 
-	virtual bool getProperty(const std::string_view prop, Variable& var) const;
+	bool getProperty(const std::string_view prop, Variable& var) const override;
 };

@@ -26,7 +26,7 @@ public:
 		: conditionHash16(conditionHash16_), param1(param1_),
 		param2(param2_), condThen(then_), condElse(else_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		auto var1 = IfCondition::getVariable(game, param1);
 		auto var2 = IfCondition::getVariable(game, param2);
@@ -63,7 +63,7 @@ public:
 		const std::shared_ptr<Action>& then_, const std::shared_ptr<Action>& else_)
 		: var(var_), list(list_), condThen(then_), condElse(else_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (list.empty() == false)
 		{
@@ -101,7 +101,7 @@ public:
 
 	IfCondition& Conditions() noexcept { return conditions; }
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (conditions.eval(game) == true)
 		{
@@ -135,7 +135,7 @@ public:
 		const std::shared_ptr<Action>& defaultAction_)
 		: var(var_), conditions(conditions_), defaultAction(defaultAction_) {}
 
-	virtual bool execute(Game& game)
+	bool execute(Game& game) override
 	{
 		if (conditions.empty() == false)
 		{

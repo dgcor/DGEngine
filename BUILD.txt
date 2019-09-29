@@ -1,14 +1,14 @@
 Windows
 
-To compile in Windows, you need Visual Studio 2017, since this project
-uses C++ features that are present only in VS2017.
+To compile in Windows, you can use CMake or the Visual Studio 2019 project.
 
-The provided project expects the following folders in the root of the
-project to build properly.
+The easiest way to get the required dependencies is to use vcpkg.
+
+vcpkg install physfs:x86-windows sfml:x86-windows ffmpeg:x86-windows
+vcpkg install physfs:x86-windows-static sfml:x86-windows-static ffmpeg:x86-windows-static
 
 /PhysicsFS - https://icculus.org/physfs
              version >= 2.1
-             Compile using MinSizeRel.
 
 /SFML - http://www.sfml-dev.org/
         SFML 2.5.0
@@ -16,36 +16,8 @@ project to build properly.
 /FFmpeg - http://ffmpeg.zeranoe.com/builds/
           Get both 32 bit shared and dev packages (version 2.x or 3.x)
 
-DGEngine now bundles a modified version of sfeMovie (no subtitle support,
-FFmpeg 3.x API suport), so you only need FFmpeg >= 2.8 now.
-
 If you want to skip movie playback support, use the preprocessor define
 USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.
-The provided project uses sfeMovie and will fail to compile if you don't have
-sfeMovie with OpenFromStream support installed. Use this to fix that.
-
-To prevent missing DLL errors when running from Visual Studio,
-place the following in the root of the project:
-
-avcodec-56.dll          (FFmpeg 2)
-avdevice-56.dll         (FFmpeg 2)
-avfilter-5.dll          (FFmpeg 2)
-avformat-56.dll         (FFmpeg 2)
-avutil-54.dll           (FFmpeg 2)
-openal32.dll            (SFML)
-physfs.dll              (PhysicsFS)
-sfml-audio-2.dll        (SFML)
-sfml-audio-d-2.dll      (SFML)
-sfml-graphics-2.dll     (SFML)
-sfml-graphics-d-2.dll   (SFML)
-sfml-network-2.dll      (SFML)
-sfml-network-d-2.dll    (SFML)
-sfml-system-2.dll       (SFML)
-sfml-system-d-2.dll     (SFML)
-sfml-window-2.dll       (SFML)
-sfml-window-d-2.dll     (SFML)
-swresample-1.dll        (FFmpeg 2)
-swscale-3.dll           (FFmpeg 2)
 
 Linux
 
