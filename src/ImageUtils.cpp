@@ -5,6 +5,7 @@
 #include "rectpack2D/finders_interface.h"
 #include "Utils/NumberVector.h"
 #include "Utils/Utils.h"
+#include <iostream>
 
 namespace ImageUtils
 {
@@ -106,6 +107,7 @@ namespace ImageUtils
 		}
 		else
 		{
+			std::cout << "filename: " << fileName << std::endl;
 			sf::PhysFSStream file(fileName.data());
 			if (file.hasError() == true)
 			{

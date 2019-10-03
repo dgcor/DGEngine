@@ -42,7 +42,7 @@ namespace FileUtils
 					return true;
 				}
 			}
-			path = path.replace_extension(".mpq");
+			path = path.replace_extension(".MPQ");
 			if (std::filesystem::exists(path) == true)
 			{
 				return true;
@@ -82,7 +82,7 @@ namespace FileUtils
 					return true;
 				}
 			}
-			path = path.replace_extension(".mpq");
+			path = path.replace_extension(".MPQ");
 			if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
@@ -111,7 +111,7 @@ namespace FileUtils
 		try
 		{
 			std::filesystem::path path(file);
-
+			
 			if (path.has_extension() == true)
 			{
 				path = path.replace_extension();
@@ -120,7 +120,7 @@ namespace FileUtils
 					return true;
 				}
 			}
-			path = path.replace_extension(".mpq");
+			path = path.replace_extension(".MPQ");
 			if (PHYSFS_unmount(path.u8string().c_str()) != 0)
 			{
 				return true;

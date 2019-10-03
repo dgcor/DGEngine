@@ -9,6 +9,8 @@ namespace Parser
 
 	void parseGame(Game& game, const std::string_view filePath, const std::string_view fileName)
 	{
+		//PHYSFS_addToSearchPath(".", 0);
+
 		if (FileUtils::mount(filePath, "", false) == false)
 		{
 			throw std::runtime_error(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
