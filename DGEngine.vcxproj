@@ -71,6 +71,8 @@
     <ClCompile Include="src\Game\LevelObject.cpp" />
     <ClCompile Include="src\Game\LevelObjectClass.cpp" />
     <ClCompile Include="src\Game\LevelSurface.cpp" />
+    <ClCompile Include="src\Game\Monster.cpp" />
+    <ClCompile Include="src\Game\MonsterClass.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
@@ -295,6 +297,8 @@
     <ClInclude Include="src\Game\LevelSurface.h" />
     <ClInclude Include="src\Game\LightMap.h" />
     <ClInclude Include="src\Game\LightSource.h" />
+    <ClInclude Include="src\Game\Monster.h" />
+    <ClInclude Include="src\Game\MonsterClass.h" />
     <ClInclude Include="src\Game\Number.h" />
     <ClInclude Include="src\Game\PairXY.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
