@@ -184,7 +184,7 @@ public:
 	}
 
 	template <class T>
-	constexpr static sf::Vector2f toDrawCoord(const T& mapPos,
+	static sf::Vector2f toDrawCoord(const T& mapPos,
 		int32_t blockWidth, int32_t blockHeight)
 	{
 		return sf::Vector2f(

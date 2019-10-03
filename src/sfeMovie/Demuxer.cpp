@@ -40,11 +40,13 @@ namespace sfe
 	// Load all the decoders
 	static void loadFFmpeg()
 	{
+#if LIBAVFORMAT_VERSION_MAJOR < 58
 		static std::once_flag flag1;
 		static std::once_flag flag2;
 
 		std::call_once(flag1, []() {av_register_all(); });
 		std::call_once(flag2, []() {avcodec_register_all(); });
+#endif
 	}
 
 	Demuxer::Demuxer(const std::string_view sourceFile, Timer* timer,
