@@ -1316,7 +1316,7 @@ namespace Parser
 		}
 		case str2int16("player.setDefaultSpeed"):
 		{
-			auto speed = getPlayerAnimationSpeedVal(elem);
+			auto speed = getCharacterAnimationSpeedVal(elem);
 			if (elem.HasMember("animation") == false)
 			{
 				speed.animation = sf::Time::Zero;

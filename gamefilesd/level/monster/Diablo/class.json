@@ -1,5 +1,5 @@
 {
-  "playerClass": {
+  "monsterClass": {
     "id": "diablo",
     "fromId": "defaultMonster",
     "name": "The Dark Lord",

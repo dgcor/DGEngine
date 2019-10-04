@@ -1,5 +1,5 @@
 {
-  "playerClass": {
+  "monsterClass": {
     "id": "scavenger",
     "fromId": "defaultMonster",
     "name": "Scavenger",
@@ -15,6 +15,7 @@
       "life": "3",
       "armor": "10",
       "toHit": "50"
+	  "damage": ":rnd(damageMax - damageMin) + damageMin";
     },
     "texturePacks": "scavenger",
     "textureIndexes": [

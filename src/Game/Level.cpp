@@ -4,6 +4,7 @@
 #include "GameUtils.h"
 #include "Panel.h"
 #include "Player.h"
+#include "Monster.h"
 #include "SimpleLevelObject.h"
 #include "Utils/Utils.h"
 
@@ -1156,6 +1157,11 @@ Player* Level::getPlayerOrCurrent(const std::string id) const noexcept
 		return currentPlayer.lock().get();
 	}
 	return getLevelObject<Player>(id);
+}
+
+Monster* Level::getMonster(const std::string id) const noexcept
+{
+	return getLevelObject<Monster>(id);
 }
 
 void Level::setCurrentPlayer(std::weak_ptr<Player> player_) noexcept

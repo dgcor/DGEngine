@@ -339,7 +339,7 @@ namespace Parser
 		return val;
 	}
 
-	PlayerAnimation getPlayerAnimationKey(const Value& elem,
+	PlayerAnimation getCharacterAnimationKey(const Value& elem,
 		const std::string_view key, PlayerAnimation val)
 	{
 		if (elem.HasMember(key) == true)

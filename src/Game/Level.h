@@ -17,6 +17,7 @@
 
 class Panel;
 class Player;
+class Monster;
 
 struct LevelDrawable
 {
@@ -310,6 +311,8 @@ public:
 	}
 
 	Player* getPlayerOrCurrent(const std::string id) const noexcept;
+
+	Monster* getMonster(const std::string id) const noexcept;
 
 	// doesn't clear currently used player classes
 	void clearPlayerClasses();

@@ -39,6 +39,7 @@
 #include "Parser/Game/ParseLevelObjectClass.h"
 #include "Parser/Game/ParsePlayer.h"
 #include "Parser/Game/ParsePlayerClass.h"
+#include "Parser/Game/ParseMonsterClass.h"
 #include "Parser/Game/ParseQuest.h"
 #include "Parser/Game/ParseSpell.h"
 #include "PhysFSStream.h"
@@ -435,6 +436,17 @@ namespace Parser
 		case str2int16("minWindowSize"): {
 			sf::Vector2u minSize(640, 480);
 			game.MinSize(getVector2uVal<sf::Vector2u>(elem, minSize));
+			break;
+		}
+		case str2int16("monsterClass"): {
+			if (elem.IsArray() == false) {
+				parseMonsterClass(game, elem);
+			}
+			else {
+				for (const auto& val : elem) {
+					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+				}
+			}
 			break;
 		}
 		case str2int16("mountFile"): {

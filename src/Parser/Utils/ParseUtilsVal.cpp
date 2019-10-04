@@ -471,7 +471,7 @@ namespace Parser
 		return ItemCoordInventory(playerId);
 	}
 
-	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem)
+	AnimationSpeed getCharacterAnimationSpeedVal(const rapidjson::Value& elem)
 	{
 		AnimationSpeed speed;
 		speed.animation = GameUtils::getTime(getIntKey(elem, "animation", 5));

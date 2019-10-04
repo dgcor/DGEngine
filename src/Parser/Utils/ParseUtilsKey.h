@@ -209,7 +209,7 @@ namespace Parser
 	PlayerItemMount getPlayerItemMountKey(const rapidjson::Value& elem,
 		const std::string_view key, PlayerItemMount val = PlayerItemMount::LeftHand);
 
-	PlayerAnimation getPlayerAnimationKey(const rapidjson::Value& elem,
+	PlayerAnimation getCharacterAnimationKey(const rapidjson::Value& elem,
 		const std::string_view key, PlayerAnimation val = PlayerAnimation::Stand1);
 
 	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,

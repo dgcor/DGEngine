@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Monster.h"
 #include "Game.h"
 #include "GameUtils.h"
 #include "Level.h"
@@ -331,6 +332,13 @@ void Player::updateWalk(Game& game, Level& level)
 void Player::updateAttack(Game& game, Level& level)
 {
 	updateAnimation(game);
+
+	auto monster = level.getMonster(level.getClickedObject()->getId());
+	if (monster != nullptr)
+	{
+		monster->LifeDamage(toDamage);
+	}
+	
 }
 
 void Player::updateDead(Game& game, Level& level)

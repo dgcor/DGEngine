@@ -1,7 +1,7 @@
-#include "ParsePlayerClass.h"
+#include "ParseMonsterClass.h"
 #include "Game.h"
 #include "Game/Level.h"
-#include "Game/PlayerClass.h"
+#include "Game/MonsterClass.h"
 #include "Parser/ParseAction.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "TexturePacks/CachedTexturePack.h"
@@ -10,39 +10,39 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	void parsePlayerClassTexturePackIndex(PlayerClass& playerClass, const Value& elem)
+	void parseMonsterClassTexturePackIndex(MonsterClass& monsterClass, const Value& elem)
 	{
-		playerClass.setStatusTexturePackIndex(getCharacterAnimationKey(elem, "name"),
+		monsterClass.setStatusTexturePackIndex(getCharacterAnimationKey(elem, "name"),
 			getUIntKey(elem, "index"));
 	}
 
-	void parsePlayerClassTexturePack(Game& game,
-		PlayerClass& playerClass, const Value& elem)
+	void parseMonsterClassTexturePack(Game& game,
+		MonsterClass& monsterClass, const Value& elem)
 	{
 		auto id = getStringVal(elem);
 		auto texturePack = game.Resources().getTexturePack(id);
 		if (texturePack != nullptr)
 		{
-			playerClass.addTexturePack(std::move(texturePack));
+			monsterClass.addTexturePack(std::move(texturePack));
 			return;
 		}
 		auto compTex = game.Resources().getCompositeTexture(id);
 		if (compTex != nullptr)
 		{
-			playerClass.addTexturePack(std::move(compTex));
+			monsterClass.addTexturePack(std::move(compTex));
 			return;
 		}
 	}
 
-	void parsePlayerAnimationSpeed(PlayerClass& playerClass, const Value& elem)
+	void parseMonsterAnimationSpeed(MonsterClass& monsterClass, const Value& elem)
 	{
-		playerClass.setSpeed(
+		monsterClass.setSpeed(
 			getCharacterAnimationKey(elem, "name"),
 			getCharacterAnimationSpeedVal(elem)
 		);
 	}
 
-	void parsePlayerSound(Game& game, PlayerClass& playerClass, const Value& elem)
+	void parseMonsterSound(Game& game, MonsterClass& monsterClass, const Value& elem)
 	{
 		auto id = getStringKey(elem, "id");
 		if (isValidId(id) == false)
@@ -59,19 +59,19 @@ namespace Parser
 		{
 			return;
 		}
-		playerClass.setSound((size_t)idx, *sndBuffer);
+		monsterClass.setSound((size_t)idx, *sndBuffer);
 	}
 
-	void parseDescriptionValue(PlayerClass& playerClass,
+	void parseDescriptionValue(MonsterClass& monsterClass,
 		const Level& level, const Value& elem)
 	{
-		playerClass.setDescription(
+		monsterClass.setDescription(
 			getUIntKey(elem, "index"),
 			level.getClassifier(getStringKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
-	PlayerClass* parsePlayerClassHelper(const Game& game,
+	MonsterClass* parseMonsterClassHelper(const Game& game,
 		Level& level, const Value& elem, std::string& id)
 	{
 		if (isValidString(elem, "id") == false)
@@ -84,43 +84,43 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto playerClass = level.getClass<PlayerClass>(id);
-		if (playerClass == nullptr)
+		auto monsterClass = level.getClass<MonsterClass>(id);
+		if (monsterClass == nullptr)
 		{
 			if (level.hasClass(id) == true)
 			{
 				return nullptr;
 			}
 
-			std::unique_ptr<PlayerClass> playerClassPtr;
+			std::unique_ptr<MonsterClass> monsterClassPtr;
 
 			if (isValidString(elem, "fromId") == true)
 			{
 				auto fromId = elem["fromId"].GetStringStr();
 				if (fromId != id)
 				{
-					auto obj = level.getClass<PlayerClass>(fromId);
+					auto obj = level.getClass<MonsterClass>(fromId);
 					if (obj != nullptr)
 					{
-						playerClassPtr = std::make_unique<PlayerClass>(*obj);
+						monsterClassPtr = std::make_unique<MonsterClass>(*obj);
 					}
 				}
 			}
 			else
 			{
-				playerClassPtr = std::make_unique<PlayerClass>();
+				monsterClassPtr = std::make_unique<MonsterClass>();
 			}
-			if (playerClassPtr != nullptr)
+			if (monsterClassPtr != nullptr)
 			{
-				playerClass = playerClassPtr.get();
-				playerClass->Id(id);
-				level.addClass(id, std::move(playerClassPtr));
+				monsterClass = monsterClassPtr.get();
+				monsterClass->Id(id);
+				level.addClass(id, std::move(monsterClassPtr));
 			}
 		}
-		return playerClass;
+		return monsterClass;
 	}
 
-	void parsePlayerClass(Game& game, const Value& elem)
+	void parseMonsterClass(Game& game, const Value& elem)
 	{
 		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
 		if (level == nullptr)
@@ -128,22 +128,22 @@ namespace Parser
 			return;
 		}
 		std::string id;
-		auto playerClass = parsePlayerClassHelper(game, *level, elem, id);
-		if (playerClass == nullptr)
+		auto monsterClass = parseMonsterClassHelper(game, *level, elem, id);
+		if (monsterClass == nullptr)
 		{
 			return;
 		}
 
-		playerClass->Id(id);
+		monsterClass->Id(id);
 
 		if (elem.HasMember("texturePacks") == true &&
-			playerClass->hasTextures() == false)
+			monsterClass->hasTextures() == false)
 		{
 			const auto& texturePacks = elem["texturePacks"];
 
 			if (texturePacks.IsString() == true)
 			{
-				parsePlayerClassTexturePack(game, *playerClass, texturePacks);
+				parseMonsterClassTexturePack(game, *monsterClass, texturePacks);
 			}
 			else if (texturePacks.IsArray() == true)
 			{
@@ -151,7 +151,7 @@ namespace Parser
 				{
 					if (val.IsString() == true)
 					{
-						parsePlayerClassTexturePack(game, *playerClass, val);
+						parseMonsterClassTexturePack(game, *monsterClass, val);
 					}
 				}
 			}
@@ -163,35 +163,35 @@ namespace Parser
 
 			if (textureIndexes.IsObject() == true)
 			{
-				parsePlayerClassTexturePackIndex(*playerClass, textureIndexes);
+				parseMonsterClassTexturePackIndex(*monsterClass, textureIndexes);
 			}
 			else if (textureIndexes.IsArray() == true)
 			{
 				for (const auto& val : textureIndexes)
 				{
-					parsePlayerClassTexturePackIndex(*playerClass, val);
+					parseMonsterClassTexturePackIndex(*monsterClass, val);
 				}
 			}
 		}
 
 		if (elem.HasMember("anchorOffset") == true)
 		{
-			playerClass->setAnchorOffset(
+			monsterClass->setAnchorOffset(
 				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
 			);
 		}
 		if (elem.HasMember("name") == true)
 		{
-			playerClass->Name(getStringVal(elem["name"]));
+			monsterClass->Name(getStringVal(elem["name"]));
 		}
 		if (elem.HasMember("type") == true)
 		{
-			playerClass->Type(getStringVal(elem["type"]));
+			monsterClass->Type(getStringVal(elem["type"]));
 		}
 
 		if (elem.HasMember("nameClassifier") == true)
 		{
-			playerClass->setNameClassifier(
+			monsterClass->setNameClassifier(
 				level->getClassifier(getStringKey(elem, "nameClassifier")));
 		}
 
@@ -207,7 +207,7 @@ namespace Parser
 						auto name = getStringViewVal(it->name);
 						auto nameHash = str2int16(name);
 						level->setPropertyName(nameHash, name);
-						playerClass->setDefaultByHash(nameHash,
+						monsterClass->setDefaultByHash(nameHash,
 							getMinMaxNumber32Val(it->value));
 					}
 				}
@@ -226,13 +226,13 @@ namespace Parser
 						std::shared_ptr<Action> action;
 						if (it->value.IsString() == true)
 						{
-							action = playerClass->getAction(str2int16(getStringViewVal(it->value)));
+							action = monsterClass->getAction(str2int16(getStringViewVal(it->value)));
 						}
 						if (action == nullptr)
 						{
 							action = parseAction(game, it->value);
 						}
-						playerClass->setAction(str2int16(getStringViewVal(it->name)), action);
+						monsterClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
 				}
 			}
@@ -243,13 +243,13 @@ namespace Parser
 			const auto& descriptions = elem["descriptions"];
 			if (descriptions.IsObject() == true)
 			{
-				parseDescriptionValue(*playerClass, *level, descriptions);
+				parseDescriptionValue(*monsterClass, *level, descriptions);
 			}
 			else if (descriptions.IsArray() == true)
 			{
 				for (const auto& val : descriptions)
 				{
-					parseDescriptionValue(*playerClass, *level, val);
+					parseDescriptionValue(*monsterClass, *level, val);
 				}
 			}
 		}
@@ -264,7 +264,7 @@ namespace Parser
 					auto nameHash = str2int16(getStringViewVal(it->name));
 					if (nameHash != str2int16(""))
 					{
-						playerClass->setFormula(nameHash, getStringVal(it->value));
+						monsterClass->setFormula(nameHash, getStringVal(it->value));
 					}
 				}
 			}
@@ -275,13 +275,13 @@ namespace Parser
 			const auto& speeds = elem["animationSpeeds"];
 			if (speeds.IsObject() == true)
 			{
-				parsePlayerAnimationSpeed(*playerClass, speeds);
+				parseMonsterAnimationSpeed(*monsterClass, speeds);
 			}
 			else if (speeds.IsArray() == true)
 			{
 				for (const auto& val : speeds)
 				{
-					parsePlayerAnimationSpeed(*playerClass, val);
+					parseMonsterAnimationSpeed(*monsterClass, val);
 				}
 			}
 		}
@@ -291,78 +291,61 @@ namespace Parser
 			const auto& sounds = elem["sounds"];
 			if (sounds.IsObject() == true)
 			{
-				parsePlayerSound(game, *playerClass, sounds);
+				parseMonsterSound(game, *monsterClass, sounds);
 			}
 			else if (sounds.IsArray() == true)
 			{
 				for (const auto& val : sounds)
 				{
-					parsePlayerSound(game, *playerClass, val);
+					parseMonsterSound(game, *monsterClass, val);
 				}
 			}
 		}
 
 		if (elem.HasMember("attackSound") == true)
 		{
-			playerClass->setAttackSound((int16_t)getIntVal(elem["attackSound"], -1));
+			monsterClass->setAttackSound((int16_t)getIntVal(elem["attackSound"], -1));
 		}
 		if (elem.HasMember("defendSound") == true)
 		{
-			playerClass->setDefendSound((int16_t)getIntVal(elem["defendSound"], -1));
+			monsterClass->setDefendSound((int16_t)getIntVal(elem["defendSound"], -1));
 		}
 		if (elem.HasMember("dieSound") == true)
 		{
-			playerClass->setDieSound((int16_t)getIntVal(elem["dieSound"], -1));
+			monsterClass->setDieSound((int16_t)getIntVal(elem["dieSound"], -1));
 		}
 		if (elem.HasMember("hitSound") == true)
 		{
-			playerClass->setHitSound((int16_t)getIntVal(elem["hitSound"], -1));
+			monsterClass->setHitSound((int16_t)getIntVal(elem["hitSound"], -1));
 		}
 		if (elem.HasMember("walkSound") == true)
 		{
-			playerClass->setWalkSound((int16_t)getIntVal(elem["walkSound"], -1));
-		}
-
-		if (elem.HasMember("maxStrength") == true)
-		{
-			playerClass->MaxStrength(getIntVal(elem["maxStrength"], 250));
-		}
-		if (elem.HasMember("maxMagic") == true)
-		{
-			playerClass->MaxMagic(getIntVal(elem["maxMagic"], 250));
-		}
-		if (elem.HasMember("maxDexterity") == true)
-		{
-			playerClass->MaxDexterity(getIntVal(elem["maxDexterity"], 250));
-		}
-		if (elem.HasMember("maxVitality") == true)
-		{
-			playerClass->MaxVitality(getIntVal(elem["maxVitality"], 250));
+			monsterClass->setWalkSound((int16_t)getIntVal(elem["walkSound"], -1));
 		}
 		if (elem.HasMember("maxResistMagic") == true)
 		{
-			playerClass->MaxResistMagic(getIntVal(elem["maxResistMagic"], 100));
+			monsterClass->MaxResistMagic(getIntVal(elem["maxResistMagic"], 100));
 		}
 		if (elem.HasMember("maxResistFire") == true)
 		{
-			playerClass->MaxResistFire(getIntVal(elem["maxResistFire"], 100));
+			monsterClass->MaxResistFire(getIntVal(elem["maxResistFire"], 100));
 		}
 		if (elem.HasMember("maxResistLightning") == true)
 		{
-			playerClass->MaxResistLightning(getIntVal(elem["maxResistLightning"], 100));
+			monsterClass->MaxResistLightning(getIntVal(elem["maxResistLightning"], 100));
 		}
 
 		if (elem.HasMember("outline") == true)
 		{
-			playerClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
+			monsterClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
 		}
 		if (elem.HasMember("outlineIgnore") == true)
 		{
-			playerClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
+			monsterClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
 		}
 		if (elem.HasMember("light") == true)
 		{
-			playerClass->setLightSource(
+			monsterClass->setLightSource(
 				getLightSourceVal(elem["light"], { 255, 10 })
 			);
 		}

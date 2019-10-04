@@ -1,5 +1,5 @@
 {
-  "playerClass": {
+  "monsterClass": {
     "id": "skeletonKing",
     "fromId": "defaultMonster",
     "name": "The Skeleton King",

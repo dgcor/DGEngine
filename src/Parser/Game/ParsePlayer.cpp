@@ -201,7 +201,7 @@ namespace Parser
 		player->Hoverable(getBoolKey(elem, "enableHover", true));
 
 		player->setDirection(getPlayerDirectionKey(elem, "direction"));
-		player->setAnimation(getPlayerAnimationKey(elem, "animation"));
+		player->setAnimation(getCharacterAnimationKey(elem, "animation"));
 		player->setTextureIdx(getUIntKey(elem, "textureIndex"));
 		player->setStatus(getPlayerStatusKey(elem, "status"));
 		player->setRestStatus((uint8_t)getUIntKey(elem, "restStatus"));

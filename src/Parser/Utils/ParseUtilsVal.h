@@ -417,7 +417,7 @@ namespace Parser
 
 	ItemLocation getItemLocationVal(const rapidjson::Value& elem);
 
-	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem);
+	AnimationSpeed getCharacterAnimationSpeedVal(const rapidjson::Value& elem);
 
 	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
 		PlayerInventory val = PlayerInventory::Body);

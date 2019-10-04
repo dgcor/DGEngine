@@ -111,6 +111,7 @@
     <ClCompile Include="src\Parser\Game\ParseLevel.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevelObject.cpp" />
     <ClCompile Include="src\Parser\Game\ParseLevelObjectClass.cpp" />
+    <ClCompile Include="src\Parser\Game\ParseMonsterClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayer.cpp" />
     <ClCompile Include="src\Parser\Game\ParsePlayerClass.cpp" />
     <ClCompile Include="src\Parser\Game\ParseQuest.cpp" />
@@ -339,6 +340,7 @@
     <ClInclude Include="src\Parser\Game\ParseLevel.h" />
     <ClInclude Include="src\Parser\Game\ParseLevelObject.h" />
     <ClInclude Include="src\Parser\Game\ParseLevelObjectClass.h" />
+    <ClInclude Include="src\Parser\Game\ParseMonsterClass.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayer.h" />
     <ClInclude Include="src\Parser\Game\ParsePlayerClass.h" />
     <ClInclude Include="src\Parser\Game\ParseQuest.h" />
