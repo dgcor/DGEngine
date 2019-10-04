@@ -14,8 +14,8 @@
     "formulas": {
       "life": "3",
       "armor": "10",
-      "toHit": "50"
-	  "damage": ":rnd(damageMax - damageMin) + damageMin";
+      "toHit": "50",
+	  "damage": ":rnd(damageMax - damageMin) + damageMin"
     },
     "texturePacks": "scavenger",
     "textureIndexes": [
