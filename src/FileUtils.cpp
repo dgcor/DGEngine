@@ -8,6 +8,12 @@
 
 namespace FileUtils
 {
+#ifdef FALLBACK_TO_LOWERCASE_FILENAME
+	static constexpr bool FALLBACK_TO_LOWERCASE = true;
+#else
+	static constexpr bool FALLBACK_TO_LOWERCASE = false;
+#endif
+
 	void initPhysFS(const char* argv0)
 	{
 		static const char* mainArgv0 = argv0;
@@ -272,7 +278,16 @@ namespace FileUtils
 
 	bool exists(const char* filePath) noexcept
 	{
-		return PHYSFS_exists(filePath) != 0;
+		auto fileExists = PHYSFS_exists(filePath) != 0;
+		if constexpr (FALLBACK_TO_LOWERCASE == true)
+		{
+			if (fileExists == false)
+			{
+				auto lowerCasefilePath = Utils::toLower(filePath);
+				fileExists = PHYSFS_exists(lowerCasefilePath.c_str()) != 0;
+			}
+		}
+		return fileExists;
 	}
 
 	std::vector<std::string> getFileList(const std::string_view filePath,

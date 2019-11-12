@@ -30,7 +30,7 @@ namespace sf
 	class PhysFSStream : public sf::InputStream, public sf::NonCopyable
 	{
 	private:
-		PHYSFS_File* file;
+		PHYSFS_File* file{ nullptr };
 
 	public:
 		PhysFSStream(const std::string& fileName);
