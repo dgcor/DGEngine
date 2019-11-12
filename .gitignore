@@ -16,6 +16,12 @@
 /CMakeCache.txt
 /CMakeFiles
 /cmake_install.cmake
+/d2char
+/d2data
+/d2music
+/d2sfx
+/d2speech
+/d2video
 /Debug
 /Debug Clang
 /Debug Code Analysis
