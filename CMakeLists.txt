@@ -15,6 +15,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 
 option(DGENGINE_MOVIE_SUPPORT "Enable Movie support" TRUE)
 option(DGENGINE_DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
+option(DGENGINE_FALLBACK_TO_LOWERCASE_FILENAME "Enable falling back to all lowercase names if file is not found" TRUE)
 
 if(DGENGINE_MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
@@ -420,6 +421,10 @@ if(DGENGINE_DIABLO_FORMAT_SUPPORT)
     )
 else()
     add_definitions(-DNO_DIABLO_FORMAT_SUPPORT)
+endif()
+
+if(DGENGINE_FALLBACK_TO_LOWERCASE_FILENAME)
+    add_definitions(-DFALLBACK_TO_LOWERCASE_FILENAME)
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

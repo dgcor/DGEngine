@@ -20,10 +20,22 @@
 //distribution.
 
 #include "PhysFSStream.h"
+#include "Utils/Utils.h"
+
+#ifdef FALLBACK_TO_LOWERCASE_FILENAME
+static constexpr bool FALLBACK_TO_LOWERCASE = true;
+#else
+static constexpr bool FALLBACK_TO_LOWERCASE = false;
+#endif
+
+sf::PhysFSStream::PhysFSStream(const std::string& fileName)
+{
+	load(fileName);
+}
 
 sf::PhysFSStream::PhysFSStream(const char* fileName)
 {
-	file = PHYSFS_openRead(fileName);
+	load(fileName);
 }
 
 sf::PhysFSStream::~PhysFSStream()
@@ -34,11 +46,36 @@ sf::PhysFSStream::~PhysFSStream()
 	}
 }
 
+bool sf::PhysFSStream::load(const std::string& fileName)
+{
+	if (file == nullptr)
+	{
+		file = PHYSFS_openRead(fileName.c_str());
+	}
+	if constexpr (FALLBACK_TO_LOWERCASE == true)
+	{
+		if (file == nullptr)
+		{
+			auto lowerCaseFileName = Utils::toLower(fileName);
+			file = PHYSFS_openRead(lowerCaseFileName.c_str());
+		}
+	}
+	return (file != nullptr);
+}
+
 bool sf::PhysFSStream::load(const char* fileName)
 {
 	if (file == nullptr)
 	{
 		file = PHYSFS_openRead(fileName);
+	}
+	if constexpr (FALLBACK_TO_LOWERCASE == true)
+	{
+		if (file == nullptr)
+		{
+			auto lowerCaseFileName = Utils::toLower(fileName);
+			file = PHYSFS_openRead(lowerCaseFileName.c_str());
+		}
 	}
 	return (file != nullptr);
 }
