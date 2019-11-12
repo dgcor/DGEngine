@@ -33,11 +33,11 @@ namespace sf
 		PHYSFS_File* file;
 
 	public:
-		PhysFSStream(const std::string& fileName) : PhysFSStream(fileName.c_str()) {}
+		PhysFSStream(const std::string& fileName);
 		PhysFSStream(const char* fileName);
 		~PhysFSStream() override;
 
-		bool load(const std::string& fileName) { return load(fileName.c_str()); }
+		bool load(const std::string& fileName);
 		bool load(const char* fileName);
 
 		sf::Int64 read(void* data, sf::Int64 size) noexcept override;
