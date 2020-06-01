@@ -6,15 +6,22 @@ The easiest way to get the required dependencies is to use vcpkg.
 
 vcpkg install physfs:x86-windows sfml:x86-windows ffmpeg:x86-windows
 vcpkg install physfs:x86-windows-static sfml:x86-windows-static ffmpeg:x86-windows-static
+vcpkg install physfs:x64-windows sfml:x64-windows ffmpeg:x64-windows
+vcpkg install physfs:x64-windows-static sfml:x64-windows-static ffmpeg:x64-windows-static
+
+There is a custom vcpkg triplet that links ffmpeg dynamically.
+
+vcpkg install physfs:x86-windows-static sfml:x86-windows-static ffmpeg:x86-windows-static --overlay-triplets=vcpkg/triplets
+vcpkg install physfs:x64-windows-static sfml:x64-windows-static ffmpeg:x64-windows-static --overlay-triplets=vcpkg/triplets
 
 /PhysicsFS - https://icculus.org/physfs
              version >= 2.1
 
-/SFML - http://www.sfml-dev.org/
+/SFML - https://www.sfml-dev.org/
         SFML 2.5.0
 
-/FFmpeg - http://ffmpeg.zeranoe.com/builds/
-          Get both 32 bit shared and dev packages (version 2.x or 3.x)
+/FFmpeg - https://ffmpeg.zeranoe.com/builds/
+          Get both shared and dev packages (version 3.x or 4.x)
 
 If you want to skip movie playback support, use the preprocessor define
 USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.

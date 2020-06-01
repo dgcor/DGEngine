@@ -151,7 +151,7 @@ namespace sfe
 
 	private:
 
-		static const int kBufferSize = 1024 * 1024 * 500;
+		static const int kBufferSize = 1024 * 1024 * 16;
 
 		class InputStreamIOContext
 		{
@@ -199,13 +199,18 @@ namespace sfe
 			static int read(void* opaque, unsigned char* buf, int buf_size)
 			{
 				InputStreamIOContext* h = static_cast<InputStreamIOContext*>(opaque);
-				return (int)h->m_inputStream->read(buf, buf_size);
+				auto readBytes = h->m_inputStream->read(buf, buf_size);
+				if (readBytes == 0)
+				{
+					return AVERROR_EOF;
+				}
+				return (int)readBytes;
 			}
 
 			static int64_t seek(void* opaque, int64_t offset, int whence)
 			{
 				InputStreamIOContext* h = static_cast<InputStreamIOContext*>(opaque);
-				if (0x10000 == whence)
+				if (whence == AVSEEK_SIZE)
 				{
 					return h->m_inputStream->getSize();
 				}
@@ -286,7 +291,7 @@ namespace sfe
 		static constexpr size_t AudioStreamIndex = 0;
 		static constexpr size_t VideoStreamIndex = 1;
 
-		InputStreamIOContext m_streamContext;
+		std::unique_ptr<InputStreamIOContext> m_streamContext;
 		AVFormatContext* m_formatCtx{ nullptr };
 		bool m_eofReached{ false };
 		std::vector<std::pair<std::unique_ptr<AudioStream>, int>> m_audioStreams;

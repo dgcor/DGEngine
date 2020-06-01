@@ -49,26 +49,16 @@ namespace sfe
 		}
 
 		// RGBA video buffer
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		auto avErr = av_image_alloc(m_rgbaVideoBuffer, m_rgbaVideoLinesize,
 			m_stream->codecpar->width, m_stream->codecpar->height,
 			AV_PIX_FMT_RGBA, 1);
-#else
-		auto avErr = av_image_alloc(m_rgbaVideoBuffer, m_rgbaVideoLinesize,
-			m_stream->codec->width, m_stream->codec->height,
-			AV_PIX_FMT_RGBA, 1);
-#endif
 		if (avErr < 0)
 		{
 			return;
 		}
 
 		// SFML video frame
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		auto texErr = m_texture.create(m_stream->codecpar->width, m_stream->codecpar->height);
-#else
-		auto texErr = m_texture.create(m_stream->codec->width, m_stream->codec->height);
-#endif
 		if (texErr == false)
 		{
 			return;
@@ -113,11 +103,7 @@ namespace sfe
 
 	sf::Vector2i VideoStream::getFrameSize() const
 	{
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		return sf::Vector2i(m_stream->codecpar->width, m_stream->codecpar->height);
-#else
-		return sf::Vector2i(m_stream->codec->width, m_stream->codec->height);
-#endif
 	}
 
 	float VideoStream::getFrameRate() const
@@ -216,17 +202,10 @@ namespace sfe
 					// To take that into account we accumulate this time difference for reuse in getSynchronizationGap()
 					m_codecBufferingDelays.push_back(packetDuration(packet));
 
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 					if (m_codecBufferingDelays.size() > (size_t)m_stream->codecpar->video_delay)
 					{
 						m_codecBufferingDelays.pop_front();
 					}
-#else
-					if (m_codecBufferingDelays.size() > (size_t)m_stream->codec->delay)
-					{
-						m_codecBufferingDelays.pop_front();
-					}
-#endif
 				}
 
 				if (needsMoreDecoding)
@@ -235,11 +214,7 @@ namespace sfe
 				}
 				else
 				{
-#if LIBAVCODEC_VERSION_MAJOR > 56
 					av_packet_unref(packet);
-#else
-					av_free_packet(packet);
-#endif
 					av_free(packet);
 				}
 
@@ -268,7 +243,6 @@ namespace sfe
 
 	bool VideoStream::decodePacket(AVPacket* packet, AVFrame* outputFrame, bool& gotFrame, bool& needsMoreDecoding)
 	{
-#if LIBAVCODEC_VERSION_MAJOR > 56
 		int ret;
 		gotFrame = false;
 		needsMoreDecoding = false;
@@ -291,29 +265,6 @@ namespace sfe
 		}
 		gotFrame = true;
 		return true;
-#else
-		int gotPicture = 0;
-		needsMoreDecoding = false;
-		int decodedLength = avcodec_decode_video2(m_stream->codec, outputFrame, &gotPicture, packet);
-
-		gotFrame = (gotPicture != 0);
-
-		if (decodedLength > 0 || gotFrame)
-		{
-			if (decodedLength < packet->size)
-			{
-				needsMoreDecoding = true;
-				packet->data += decodedLength;
-				packet->size -= decodedLength;
-			}
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-#endif
 	}
 
 	void VideoStream::initRescaler()
@@ -326,15 +277,9 @@ namespace sfe
 			algorithm |= SWS_ACCURATE_RND;
 		}
 
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		m_swsCtx = sws_getCachedContext(nullptr, m_stream->codecpar->width, m_stream->codecpar->height, (AVPixelFormat)m_stream->codecpar->format,
 			m_stream->codecpar->width, m_stream->codecpar->height, AV_PIX_FMT_RGBA,
 			algorithm, nullptr, nullptr, nullptr);
-#else
-		m_swsCtx = sws_getCachedContext(nullptr, m_stream->codec->width, m_stream->codec->height, m_stream->codec->pix_fmt,
-			m_stream->codec->width, m_stream->codec->height, AV_PIX_FMT_RGBA,
-			algorithm, nullptr, nullptr, nullptr);
-#endif
 	}
 
 	void VideoStream::rescale(AVFrame* frame, uint8_t* outVideoBuffer[4], int outVideoLinesize[4])

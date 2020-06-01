@@ -37,18 +37,6 @@ extern "C"
 
 namespace sfe
 {
-	// Load all the decoders
-	static void loadFFmpeg()
-	{
-#if LIBAVFORMAT_VERSION_MAJOR < 58
-		static std::once_flag flag1;
-		static std::once_flag flag2;
-
-		std::call_once(flag1, []() {av_register_all(); });
-		std::call_once(flag2, []() {avcodec_register_all(); });
-#endif
-	}
-
 	Demuxer::Demuxer(const std::string_view sourceFile, Timer* timer,
 		VideoStream::Delegate& videoDelegate) : m_timer(timer)
 	{
@@ -57,7 +45,6 @@ namespace sfe
 		{
 			return;
 		}
-		loadFFmpeg();
 		init(sourceFile.data(), videoDelegate);
 	}
 
@@ -68,15 +55,14 @@ namespace sfe
 		{
 			return;
 		}
-		loadFFmpeg();
 
-		m_streamContext = InputStreamIOContext(&inputStream);
+		m_streamContext = std::make_unique<InputStreamIOContext>(&inputStream);
 		m_formatCtx = ::avformat_alloc_context();
 		if (m_formatCtx == nullptr)
 		{
 			return;
 		}
-		m_formatCtx->pb = m_streamContext.getAVIOContext();
+		m_formatCtx->pb = m_streamContext->getAVIOContext();
 		init("", videoDelegate);
 	}
 
@@ -113,11 +99,7 @@ namespace sfe
 		{
 			AVStream* & ffstream = m_formatCtx->streams[i];
 
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 			switch (ffstream->codecpar->codec_type)
-#else
-			switch (ffstream->codec->codec_type)
-#endif
 			{
 			case AVMEDIA_TYPE_VIDEO:
 			{
@@ -338,11 +320,7 @@ namespace sfe
 			{
 				if (distributePacket(pkt, stream) == false)
 				{
-#if LIBAVCODEC_VERSION_MAJOR > 56
 					av_packet_unref(pkt);
-#else
-					av_free_packet(pkt);
-#endif
 					av_free(pkt);
 				}
 			}
@@ -389,11 +367,7 @@ namespace sfe
 
 		if (err < 0)
 		{
-#if LIBAVCODEC_VERSION_MAJOR > 56
 			av_packet_unref(pkt);
-#else
-			av_free_packet(pkt);
-#endif
 			av_free(pkt);
 			pkt = nullptr;
 		}
@@ -416,11 +390,7 @@ namespace sfe
 	{
 		for (auto packet : buffer)
 		{
-#if LIBAVCODEC_VERSION_MAJOR > 56
 			av_packet_unref(packet);
-#else
-			av_free_packet(packet);
-#endif
 			av_free(packet);
 		}
 		buffer.clear();
@@ -445,11 +415,7 @@ namespace sfe
 			}
 		}
 
-#if LIBAVCODEC_VERSION_MAJOR > 56
 		av_packet_unref(packet);
-#else
-		av_free_packet(packet);
-#endif
 		av_free(packet);
 	}
 

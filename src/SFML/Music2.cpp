@@ -8,6 +8,10 @@ namespace sf
 	Music2::~Music2()
 	{
 		stop();
+		if (m_type == 1)
+		{
+			m_file.~MusicFile();
+		}
 	}
 
 	bool Music2::openFromFile(const std::string& filename)
