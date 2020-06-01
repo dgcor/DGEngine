@@ -1,10 +1,12 @@
 #include "ParseImageContainer.h"
 #include "Game.h"
+#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "ImageContainers/CELImageContainer.h"
 #include "ImageContainers/CL2ImageContainer.h"
 #include "ImageContainers/DC6ImageContainer.h"
 #include "ImageContainers/DCCImageContainer.h"
 #include "ImageContainers/DT1ImageContainer.h"
+#endif
 #include "ImageContainers/SimpleImageContainer.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"

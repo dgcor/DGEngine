@@ -181,9 +181,8 @@ namespace sfe
 		DataSource& m_dataSource;
 		Timer* m_timer{ nullptr };
 		AVCodec* m_codec{ nullptr };
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		AVCodecContext* m_codecCtx{ nullptr };
-#endif
+
 		int m_streamID{ -1 };
 		std::string m_language;
 		std::list<AVPacket*> m_packetList;

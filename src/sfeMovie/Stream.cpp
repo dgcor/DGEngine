@@ -51,7 +51,6 @@ namespace sfe
 		}
 
 		// Get the decoder
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		m_codec = avcodec_find_decoder(m_stream->codecpar->codec_id);
 		if (m_codec == nullptr)
 		{
@@ -62,16 +61,6 @@ namespace sfe
 		m_codecCtx = avcodec_alloc_context3(m_codec);
 		avcodec_parameters_to_context(m_codecCtx, stream->codecpar);
 		auto err = avcodec_open2(m_codecCtx, m_codec, nullptr);
-#else
-		m_codec = avcodec_find_decoder(m_stream->codec->codec_id);
-		if (m_codec == nullptr)
-		{
-			return;
-		}
-
-		// Load the codec
-		auto err = avcodec_open2(m_stream->codec, m_codec, nullptr);
-#endif
 		if (err < 0)
 		{
 			return;
@@ -89,17 +78,10 @@ namespace sfe
 		disconnect();
 		Stream::flushBuffers();
 
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 		if (m_formatCtx && m_stream && m_codecCtx)
 		{
 			avcodec_free_context(&m_codecCtx);
 		}
-#else
-		if (m_formatCtx && m_stream && m_stream->codec)
-		{
-			avcodec_close(m_stream->codec);
-		}
-#endif
 	}
 
 	bool Stream::hasError() const noexcept
@@ -160,11 +142,7 @@ namespace sfe
 		}
 		else
 		{
-#if LIBAVFORMAT_VERSION_MAJOR > 56
 			if (m_codecCtx->codec->capabilities & AV_CODEC_CAP_DELAY)
-#else
-			if (m_stream->codec->codec->capabilities & AV_CODEC_CAP_DELAY)
-#endif
 			{
 				AVPacket* flushPacket = (AVPacket*)av_malloc(sizeof(*flushPacket));
 				av_init_packet(flushPacket);
@@ -181,27 +159,17 @@ namespace sfe
 	{
 		sf::Lock l(m_readerMutex);
 
-#if LIBAVCODEC_VERSION_MAJOR > 56
 		if (m_formatCtx != nullptr && m_codecCtx != nullptr)
 		{
 			avcodec_flush_buffers(m_codecCtx);
 		}
-#else
-		if (m_formatCtx != nullptr && m_stream != nullptr)
-		{
-			avcodec_flush_buffers(m_stream->codec);
-		}
-#endif
+
 		while (m_packetList.empty() == false)
 		{
 			auto pkt = m_packetList.front();
 			m_packetList.pop_front();
 
-#if LIBAVCODEC_VERSION_MAJOR > 56
 			av_packet_unref(pkt);
-#else
-			av_free_packet(pkt);
-#endif
 			av_free(pkt);
 		}
 	}

@@ -81,7 +81,7 @@ namespace DT1
 		bool isFloor() const;
 		bool isRoof() const;
 		bool isWall() const;
-		bool isSpecial() const;;
+		bool isSpecial() const;
 	};
 
 	class Block

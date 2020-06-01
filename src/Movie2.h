@@ -13,8 +13,8 @@ class Movie : public UIObject
 {
 private:
 #ifndef USE_SFML_MOVIE_STUB
-	sfe::Movie movie;
 	std::unique_ptr<sf::PhysFSStream> file;
+	sfe::Movie movie;
 	sf::Vector2f size;
 #else
 	sf::RectangleShape movie;

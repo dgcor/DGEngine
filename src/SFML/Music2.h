@@ -23,7 +23,7 @@ namespace sf
 			InputSoundFile file;
 			std::vector<Int16> samples;
 
-			~MusicFile() {};
+			~MusicFile() = default;
 		};
 
 		struct MusicBuffer

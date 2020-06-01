@@ -40,39 +40,39 @@ private:
 
 	uint32_t maxHeight{ 0 };
 
-	unsigned framerate;
-	bool smoothScreen;
-	bool stretchToFit;
-	bool keepAR;
-	bool enableInput;
-	bool pauseOnFocusLoss;
-	bool paused;
+	unsigned framerate{};
+	bool smoothScreen{};
+	bool stretchToFit{};
+	bool keepAR{};
+	bool enableInput{};
+	bool pauseOnFocusLoss{};
+	bool paused{};
 
 	sf::Vector2i mousePositioni;
 	sf::Vector2f mousePositionf;
 
-	sf::Event::MouseButtonEvent mousePressEvt;
-	sf::Event::MouseButtonEvent mouseReleaseEvt;
-	sf::Event::MouseMoveEvent mouseMoveEvt;
-	sf::Event::MouseWheelScrollEvent mouseScrollEvt;
-	sf::Event::KeyEvent keyPressEvt;
-	sf::Event::TextEvent textEnteredEvt;
-	sf::Event::TouchEvent touchBeganEvt;
-	sf::Event::TouchEvent touchMovedEvt;
-	sf::Event::TouchEvent touchEndedEvt;
-	bool mousePressed;
-	bool mouseReleased;
-	bool mouseMoved;
-	bool mouseScrolled;
-	bool keyPressed;
-	bool textEntered;
-	bool touchBegan;
-	bool touchMoved;
-	bool touchEnded;
+	sf::Event::MouseButtonEvent mousePressEvt{};
+	sf::Event::MouseButtonEvent mouseReleaseEvt{};
+	sf::Event::MouseMoveEvent mouseMoveEvt{};
+	sf::Event::MouseWheelScrollEvent mouseScrollEvt{};
+	sf::Event::KeyEvent keyPressEvt{};
+	sf::Event::TextEvent textEnteredEvt{};
+	sf::Event::TouchEvent touchBeganEvt{};
+	sf::Event::TouchEvent touchMovedEvt{};
+	sf::Event::TouchEvent touchEndedEvt{};
+	bool mousePressed{};
+	bool mouseReleased{};
+	bool mouseMoved{};
+	bool mouseScrolled{};
+	bool keyPressed{};
+	bool textEntered{};
+	bool touchBegan{};
+	bool touchMoved{};
+	bool touchEnded{};
 
-	unsigned musicVolume;
-	unsigned soundVolume;
-	unsigned gamma;
+	unsigned musicVolume{};
+	unsigned soundVolume{};
+	unsigned gamma{};
 
 	sf::Time elapsedTime;
 	sf::Time totalElapsedTime;
