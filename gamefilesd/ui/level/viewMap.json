@@ -22,7 +22,7 @@
     { "name": "image.setTexture", "id": "mapImage", "texture": "{1}", "resetRect": true },
     { "name": "drawable.visible", "id": "mapImage", "visible": true }
   ],
-  "keyboard": {
+  "inputEvent": {
     "key": "any",
     "action": { "name": "button.click", "id": "viewMapButton" }
   },

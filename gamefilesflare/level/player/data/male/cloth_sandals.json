@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_cloth_sandals",
+    "file": "images/avatar/male/cloth_sandals.png"
+  },
   "texturePack": {
     "id": "m_cloth_sandals",
-    "texture": {
-      "id": "m_cloth_sandals",
-      "file": "images/avatar/male/cloth_sandals.png"
-    },
+    "texture": "m_cloth_sandals",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_clothes",
+    "file": "images/avatar/female/clothes.png"
+  },
   "texturePack": {
     "id": "f_clothes",
-    "texture": {
-      "id": "f_clothes",
-      "file": "images/avatar/female/clothes.png"
-    },
+    "texture": "f_clothes",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

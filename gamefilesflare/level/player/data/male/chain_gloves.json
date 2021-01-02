@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_chain_gloves",
+    "file": "images/avatar/male/chain_gloves.png"
+  },
   "texturePack": {
     "id": "m_chain_gloves",
-    "texture": {
-      "id": "m_chain_gloves",
-      "file": "images/avatar/male/chain_gloves.png"
-    },
+    "texture": "m_chain_gloves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -9,9 +9,11 @@ class ActAnimationPause : public Action
 private:
 	std::string id;
 	bool pause;
+	bool reset;
 
 public:
-	ActAnimationPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
+	ActAnimationPause(const std::string_view id_, bool pause_, bool reset_)
+		: id(id_), pause(pause_), reset(reset_) {}
 
 	bool execute(Game& game) override
 	{
@@ -19,6 +21,11 @@ public:
 		if (animation != nullptr)
 		{
 			animation->Pause(pause);
+			if (reset == true)
+			{
+				animation->reset();
+				animation->updateTexture();
+			}
 		}
 		return true;
 	}
@@ -37,8 +44,8 @@ private:
 	bool setCompositeTexture;
 
 public:
-	ActAnimationSetAnimation(const std::string& id_,
-		const std::string& idTexturePack_, int32_t groupIdx_, int32_t directionIdx_,
+	ActAnimationSetAnimation(const std::string_view id_,
+		const std::string_view idTexturePack_, int32_t groupIdx_, int32_t directionIdx_,
 		sf::Time refresh_, bool resetAnimation_, bool updateAnimationType_,
 		bool setCompositeTexture_) : id(id_), idTexturePack(idTexturePack_),
 		groupIdx(groupIdx_), directionIdx(directionIdx_), refresh(refresh_),
@@ -100,7 +107,7 @@ private:
 	sf::Time refresh;
 
 public:
-	ActAnimationSetRefresh(const std::string& id_, sf::Time refresh_)
+	ActAnimationSetRefresh(const std::string_view id_, sf::Time refresh_)
 		: id(id_), refresh(refresh_) {}
 
 	bool execute(Game& game) override

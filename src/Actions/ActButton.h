@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Button.h"
 #include "Game.h"
-#include <string>
 
 class ActButtonClick : public Action
 {
@@ -12,7 +11,7 @@ private:
 	bool playSound;
 
 public:
-	ActButtonClick(const std::string& id_, bool playSound_)
+	ActButtonClick(const std::string_view id_, bool playSound_)
 		: id(id_), playSound(playSound_) {}
 
 	bool execute(Game& game) override
@@ -33,7 +32,7 @@ private:
 	bool enable;
 
 public:
-	ActButtonEnable(const std::string& id_, bool enable_)
+	ActButtonEnable(const std::string_view id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
 	bool execute(Game& game) noexcept override
@@ -47,6 +46,27 @@ public:
 	}
 };
 
+class ActButtonRightClick : public Action
+{
+private:
+	std::string id;
+	bool playSound;
+
+public:
+	ActButtonRightClick(const std::string_view id_, bool playSound_)
+		: id(id_), playSound(playSound_) {}
+
+	bool execute(Game& game) override
+	{
+		auto button = game.Resources().getDrawable<Button>(id);
+		if (button != nullptr)
+		{
+			button->rightClick(game, playSound);
+		}
+		return true;
+	}
+};
+
 class ActButtonSetColor : public Action
 {
 private:
@@ -54,7 +74,7 @@ private:
 	sf::Color color;
 
 public:
-	ActButtonSetColor(const std::string& id_, const sf::Color& color_)
+	ActButtonSetColor(const std::string_view id_, const sf::Color& color_)
 		: id(id_), color(color_) {}
 
 	bool execute(Game& game) override

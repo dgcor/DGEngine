@@ -1,14 +1,24 @@
 #include "Game.h"
 #include "Button.h"
 #include "FileUtils.h"
-#include "Game/Formula.h"
+#include "Formula.h"
 #include "Game/Level.h"
+#include "GameConstants.h"
 #include "Image.h"
 #include "Json/JsonUtils.h"
+#include <mutex>
 #include "Parser/Parser.h"
+#include <SFML/Audio/SoundFileFactory.hpp>
 #include "SFML/SFMLUtils.h"
+#include "SFML/Wave2.h"
 #include "Utils/ReverseIterable.h"
 #include "Utils/Utils.h"
+
+Game::Game()
+{
+	static std::once_flag initWave2;
+	std::call_once(initWave2, []() { sf::SoundFileFactory::registerReader<Wave2FileReader>(); });
+}
 
 Game::~Game()
 {
@@ -23,10 +33,10 @@ void Game::reset()
 {
 	gameSprite = {};
 
-	refSize = { 640, 480 };
-	minSize = { 640, 480 };
-	size = { 640, 480 };
-	drawRegionSize = { 640, 480 };
+	refSize = { DGENGINE_REF_SIZE_X, DGENGINE_REF_SIZE_Y };
+	minSize = { DGENGINE_MIN_SIZE_X, DGENGINE_MIN_SIZE_Y };
+	size = { DGENGINE_DEFAULT_SIZE_X, DGENGINE_DEFAULT_SIZE_Y };
+	drawRegionSize = { DGENGINE_DEFAULT_SIZE_X, DGENGINE_DEFAULT_SIZE_Y };
 	oldDrawRegionSize = {};
 	maxHeight = { 0 };
 	framerate = { 0 };
@@ -98,12 +108,7 @@ void Game::init()
 		return;
 	}
 
-#ifdef __ANDROID__
-	window.create(sf::VideoMode::getDesktopMode(), title);
-	size = window.getSize();
-#else
 	window.create(sf::VideoMode(size.x, size.y), title);
-#endif
 
 	if (framerate > 0)
 	{
@@ -136,7 +141,7 @@ void Game::WindowSize(sf::Vector2u size_)
 
 void Game::RefSize(const sf::Vector2u& size_)
 {
-	if (size_.x >= 640 && size_.y >= 480)
+	if (size_.x >= DGENGINE_REF_SIZE_X && size_.y >= DGENGINE_REF_SIZE_Y)
 	{
 		refSize = size_;
 	}
@@ -145,7 +150,7 @@ void Game::RefSize(const sf::Vector2u& size_)
 void Game::MinSize(const sf::Vector2u& size_)
 {
 	bool needsUpdate = false;
-	if (size_.x >= 640 && size_.y >= 480)
+	if (size_.x >= DGENGINE_MIN_SIZE_X && size_.y >= DGENGINE_MIN_SIZE_Y)
 	{
 		minSize = size_;
 		if (window.isOpen() == true)
@@ -289,7 +294,7 @@ void Game::processEvents()
 			break;
 		}
 	}
-	resourceManager.processCompositeInputEvents(*this);
+	resourceManager.updateActiveInputEvents();
 }
 
 void Game::onClosed()
@@ -430,9 +435,6 @@ void Game::onKeyPressed(sf::Event evt)
 	}
 	keyPressEvt = evt.key;
 	keyPressed = true;
-#ifdef __ANDROID__
-	keyPressEvt.system = false;
-#endif
 	if (loadingScreen != nullptr)
 	{
 		return;
@@ -450,9 +452,6 @@ void Game::onKeyReleased(sf::Event evt)
 	{
 		return;
 	}
-#ifdef __ANDROID__
-	keyPressEvt.system = false;
-#endif
 	if (loadingScreen != nullptr)
 	{
 		return;
@@ -663,29 +662,62 @@ void Game::drawCursor()
 void Game::drawWindow()
 {
 	gameTexture.display();
-	sf::RenderStates states = sf::RenderStates::Default;
+	auto states(sf::RenderStates::Default);
 	if (shaders.hasGameShader() == true)
 	{
-		states.shader = shaders.Game;
-		shaders.Game->setUniform("elapsedTime", totalElapsedTime.asSeconds());
-		shaders.Game->setUniform("gamma", (float)gamma);
-		shaders.Game->setUniform("fade", sf::Glsl::Vec4(fadeObj.getColor()));
-		if (loadingScreen != nullptr)
+		auto shader = shaders.Game->shader.get();
+		states.shader = shader;
+		for (auto uniformHash : shaders.Game->uniforms)
 		{
-			shaders.Game->setUniform("loading", (float)loadingScreen->getProgress() / 100.f);
+			switch (uniformHash)
+			{
+			case str2int16("elapsedTime"):
+			{
+				shader->setUniform("elapsedTime", totalElapsedTime.asSeconds());
+				break;
+			}
+			case str2int16("gamma"):
+			{
+				shader->setUniform("gamma", (float)gamma);
+				break;
+			}
+			case str2int16("fade"):
+			{
+				shader->setUniform("fade", sf::Glsl::Vec4(fadeObj.getColor()));
+				break;
+			}
+			case str2int16("loading"):
+			{
+				if (loadingScreen != nullptr)
+				{
+					shader->setUniform("loading", (float)loadingScreen->getProgress() / 100.f);
+				}
+				else
+				{
+					shader->setUniform("loading", 1.f);
+				}
+				break;
+			}
+			case str2int16("mousePosition"):
+			{
+				shader->setUniform("mousePosition", sf::Glsl::Vec2(
+					(float)std::clamp(mousePositioni.x, 0, (int)drawRegionSize.x) / (float)drawRegionSize.x,
+					(float)std::clamp(mousePositioni.y, 0, (int)drawRegionSize.y) / (float)drawRegionSize.y
+				));
+				break;
+			}
+			case str2int16("textureSize"):
+			{
+				shader->setUniform("textureSize", sf::Glsl::Vec2(
+					(float)drawRegionSize.x,
+					(float)drawRegionSize.y
+				));
+				break;
+			}
+			default:
+				break;
+			}
 		}
-		else
-		{
-			shaders.Game->setUniform("loading", 1.f);
-		}
-		shaders.Game->setUniform("mousePosition", sf::Glsl::Vec2(
-			(float)std::clamp(mousePositioni.x, 0, (int)drawRegionSize.x) / (float)drawRegionSize.x,
-			(float)std::clamp(mousePositioni.y, 0, (int)drawRegionSize.y) / (float)drawRegionSize.y
-		));
-		shaders.Game->setUniform("textureSize", sf::Glsl::Vec2(
-			(float)drawRegionSize.x,
-			(float)drawRegionSize.y
-		));
 	}
 	fadeObj.update(*this);
 	window.draw(gameSprite, states);
@@ -859,9 +891,9 @@ void Game::addPlayingSound(const sf::SoundBuffer* obj)
 	}
 }
 
-bool Game::getVariableNoToken(const std::string& key, Variable& var) const
+bool Game::getVariableNoToken(const std::string_view key, Variable& var) const
 {
-	auto it = variables.find(key);
+	auto it = variables.find(sv2str(key));
 	if (it != variables.cend())
 	{
 		var = it->second;
@@ -872,7 +904,7 @@ bool Game::getVariableNoToken(const std::string& key, Variable& var) const
 
 bool Game::getVarOrPropNoToken(const std::string_view key, Variable& var) const
 {
-	if (getVariableNoToken(std::string(key), var) == true)
+	if (getVariableNoToken(key, var) == true)
 	{
 		return true;
 	}
@@ -942,26 +974,26 @@ double Game::getVarOrPropDoubleV(const Variable& var) const
 	return VarUtils::toDouble(var);
 }
 
-int64_t Game::getVarOrPropLongS(const std::string_view key) const
+int64_t Game::getVarOrPropInt64S(const std::string_view key) const
 {
 	Variable var;
 	if (getVarOrProp(key, var) == true)
 	{
-		return VarUtils::toLong(var);
+		return VarUtils::toInt64(var);
 	}
 	return 0;
 }
 
-int64_t Game::getVarOrPropLongV(const Variable& var) const
+int64_t Game::getVarOrPropInt64V(const Variable& var) const
 {
 	if (std::holds_alternative<std::string>(var))
 	{
-		return getVarOrPropLongS(std::get<std::string>(var));
+		return getVarOrPropInt64S(std::get<std::string>(var));
 	}
-	return VarUtils::toLong(var);
+	return VarUtils::toInt64(var);
 }
 
-std::string Game::getVarOrPropStringS(const std::string_view key) const
+bool Game::getVarOrPropStringS(const std::string_view key, std::string& outStr) const
 {
 	if ((key.size() > 2) &&
 		(key.front() == '%') &&
@@ -969,21 +1001,37 @@ std::string Game::getVarOrPropStringS(const std::string_view key) const
 	{
 		auto key2 = key.substr(1, key.size() - 2);
 		Variable var;
-		if (getVariableNoToken(std::string(key2), var) == true)
+		if (getVariableNoToken(key2, var) == true)
 		{
-			if (std::holds_alternative<std::string>(var))
+			if (std::holds_alternative<std::string>(var) == true)
 			{
-				auto key3 = std::get<std::string>(var).substr(1, std::get<std::string>(var).size() - 2);
-				getProperty(key3, var);
+				outStr = std::get<std::string>(var);
+				if (getProperty(outStr, var) == true)
+				{
+					outStr = VarUtils::toString(var);
+				}
 			}
-			return VarUtils::toString(var);
+			else
+			{
+				outStr = VarUtils::toString(var);
+			}
+			return true;
 		}
 		else if (getProperty(key2, var) == true)
 		{
-			return VarUtils::toString(var);
+			outStr = VarUtils::toString(var);
+			return true;
 		}
 	}
-	return std::string(key);
+	outStr = key;
+	return false;
+}
+
+std::string Game::getVarOrPropStringS(const std::string_view key) const
+{
+	std::string str;
+	getVarOrPropStringS(key, str);
+	return str;
 }
 
 std::string Game::getVarOrPropStringV(const Variable& var) const
@@ -1056,6 +1104,10 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 	{
 		return false;
 	}
+	if (prop[0] == '#')
+	{
+		return getVariableNoToken(prop.substr(1), var);
+	}
 	auto props = Utils::splitStringIn2(prop, '.');
 	switch (str2int16(props.first))
 	{
@@ -1094,7 +1146,7 @@ bool Game::getProperty(const std::string_view prop, Variable& var) const
 		}
 		else
 		{
-			uiObject = resourceManager.getDrawable(std::string(props.first));
+			uiObject = resourceManager.getDrawable(props.first);
 		}
 		if (uiObject != nullptr)
 		{
@@ -1134,46 +1186,46 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 		var = Variable((int64_t)gamma);
 		break;
 	case str2int16("hasAudio"):
-		var = Variable(resourceManager.hasAudioSource(std::string(props.second)));
+		var = Variable(resourceManager.hasAudioSource(props.second));
 		break;
 	case str2int16("hasCompositeTexture"):
-		var = Variable(resourceManager.hasCompositeTexture(std::string(props.second)));
+		var = Variable(resourceManager.hasCompositeTexture(props.second));
 		break;
 	case str2int16("hasDrawable"):
-		var = Variable(resourceManager.hasDrawable(std::string(props.second)));
+		var = Variable(resourceManager.hasDrawable(props.second));
 		break;
 	case str2int16("hasEvent"):
 		var = Variable(eventManager.exists(props.second));
 		break;
 	case str2int16("hasFont"):
-		var = Variable(resourceManager.hasFont(std::string(props.second)));
+		var = Variable(resourceManager.hasFont(props.second));
 		break;
 	case str2int16("hasGameShader"):
 		var = Variable(shaders.hasGameShader());
 		break;
 	case str2int16("hasImageContainer"):
-		var = Variable(resourceManager.hasImageContainer(std::string(props.second)));
+		var = Variable(resourceManager.hasImageContainer(props.second));
 		break;
 	case str2int16("hasPalette"):
-		var = Variable(resourceManager.hasPalette(std::string(props.second)));
+		var = Variable(resourceManager.hasPalette(props.second));
 		break;
 	case str2int16("hasResource"):
 		var = Variable(resourceManager.resourceExists(props.second));
 		break;
 	case str2int16("hasShader"):
-		var = Variable(resourceManager.Shaders().has(std::string(props.second)));
+		var = Variable(resourceManager.Shaders().has(props.second));
 		break;
 	case str2int16("hasSong"):
-		var = Variable(resourceManager.hasSong(std::string(props.second)));
+		var = Variable(resourceManager.hasSong(props.second));
 		break;
 	case str2int16("hasSpriteShader"):
 		var = Variable(shaders.hasSpriteShader());
 		break;
 	case str2int16("hasTexture"):
-		var = Variable(resourceManager.hasTexture(std::string(props.second)));
+		var = Variable(resourceManager.hasTexture(props.second));
 		break;
 	case str2int16("hasTexturePack"):
-		var = Variable(resourceManager.hasTexturePack(std::string(props.second)));
+		var = Variable(resourceManager.hasTexturePack(props.second));
 		break;
 	case str2int16("keepAR"):
 		var = Variable(keepAR);
@@ -1277,8 +1329,6 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 	case str2int16("title"):
 		var = Variable(title);
 		break;
-	case str2int16("var"):
-		return getVariableNoToken(std::string(props.second), var);
 	case str2int16("version"):
 		var = Variable(version);
 		break;
@@ -1407,7 +1457,7 @@ const Queryable* Game::getQueryable(const std::string_view prop) const
 	}
 	else
 	{
-		queryable = resourceManager.getDrawable(std::string(props.first));
+		queryable = resourceManager.getDrawable(props.first);
 	}
 	if (queryable != nullptr &&
 		props.second.empty() == false)
@@ -1463,7 +1513,7 @@ std::vector<std::variant<const Queryable*, Variable>> Game::getQueryableList(
 			}
 			else
 			{
-				level = resourceManager.getDrawable<Level>(std::string(props.first));
+				level = resourceManager.getDrawable<Level>(props.first);
 			}
 			if (level != nullptr &&
 				props.second.empty() == false)
@@ -1475,7 +1525,7 @@ std::vector<std::variant<const Queryable*, Variable>> Game::getQueryableList(
 	return queriableList;
 }
 
-void Game::setShader(const std::string_view id, sf::Shader* shader) noexcept
+void Game::setShader(const std::string_view id, GameShader* shader) noexcept
 {
 	if (id.size() <= 1)
 	{

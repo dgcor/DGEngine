@@ -3,6 +3,11 @@
 #include "GameUtils.h"
 #include "Utils/Utils.h"
 
+BitmapText::BitmapText(const std::shared_ptr<BitmapFont>& font_) : font(font_)
+{
+	size.y = (float)font->getNewLine();
+}
+
 void BitmapText::calculateDrawPosition() noexcept
 {
 	drawPos = GameUtils::getAlignmentPosition(pos, size, horizAlign, vertAlign);
@@ -36,13 +41,13 @@ void BitmapText::updateSize(const Game& game) noexcept
 	calculateDrawPosition();
 }
 
-bool BitmapText::setText(const std::string& str)
+bool BitmapText::setText(const std::string& utf8Str)
 {
-	if (text == str)
+	if (text == utf8Str)
 	{
 		return false;
 	}
-	text = str;
+	text = utf8Str;
 	calculateSize();
 	updateVertexText();
 	calculateDrawPosition();
@@ -130,6 +135,9 @@ bool BitmapText::getProperty(const std::string_view prop, Variable& var) const
 	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("charCount"):
+		var = Variable((int64_t)sf::Utf8::count(text.begin(), text.end()));
+		break;
 	case str2int16("length"):
 		var = Variable((int64_t)text.size());
 		break;

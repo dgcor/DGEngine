@@ -9,7 +9,7 @@ on:
 jobs:
   build_linux:
     name: linux build
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout DGEngine
       uses: actions/checkout@v2
@@ -30,8 +30,8 @@ jobs:
         git clone -q --depth=1 --branch=2.5.x https://github.com/SFML/SFML.git /home/runner/work/DGEngine/DGEngine/sfml > /dev/null
         git -C /home/runner/work/DGEngine/DGEngine/sfml pull > /dev/null
         cd /home/runner/work/DGEngine/DGEngine/sfml
-        export CC=/usr/bin/gcc-9
-        export CXX=/usr/bin/g++-9
+        export CC=/usr/bin/gcc-10
+        export CXX=/usr/bin/g++-10
         cmake /home/runner/work/DGEngine/DGEngine/sfml/CMakeLists.txt
         sudo make install
 
@@ -43,8 +43,8 @@ jobs:
 
     - name: CMake + make DGEngine
       run: |
-        export CC=/usr/bin/gcc-9
-        export CXX=/usr/bin/g++-9
+        export CC=/usr/bin/gcc-10
+        export CXX=/usr/bin/g++-10
         cmake CMakeLists.txt
         make
 
@@ -62,24 +62,17 @@ jobs:
         path: C:/vcpkg/installed
         key: cache-windows
 
-    - name: Checkout physfs
-      if: steps.cache-windows.outputs.cache-hit != 'true'
-      uses: actions/checkout@v2
-      with:
-       repository: dgengin/physfs
-       path: physfs
-
     - name: Install dependencies
       if: steps.cache-windows.outputs.cache-hit != 'true'
-      run: vcpkg install physfs:x86-windows-static sfml:x86-windows-static --overlay-ports=D:/a/DGEngine/DGEngine/physfs/vcpkg-port
+      run: vcpkg install physfs:x86-windows-static sfml:x86-windows-static --overlay-ports=D:/a/DGEngine/DGEngine/vcpkg/ports
 
     - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.0.0
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: MSBuild DGEngine
       run: |
         vcpkg integrate install
-        msbuild DGEngine.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32
+        msbuild Project.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32
 
     - name: Create DGEngine.zip
       run: 7z a DGEngine.zip "./Release Static NoMovie/DGEngine.exe" LICENSE.* main.json gamefiles*

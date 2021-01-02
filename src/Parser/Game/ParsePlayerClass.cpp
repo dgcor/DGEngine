@@ -9,6 +9,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parsePlayerClassTexturePackIndex(PlayerClass& playerClass, const Value& elem)
 	{
@@ -19,7 +20,7 @@ namespace Parser
 	void parsePlayerClassTexturePack(Game& game,
 		PlayerClass& playerClass, const Value& elem)
 	{
-		auto id = getStringVal(elem);
+		auto id = getStringViewVal(elem);
 		auto texturePack = game.Resources().getTexturePack(id);
 		if (texturePack != nullptr)
 		{
@@ -44,22 +45,22 @@ namespace Parser
 
 	void parsePlayerSound(Game& game, PlayerClass& playerClass, const Value& elem)
 	{
-		auto id = getStringKey(elem, "id");
-		if (isValidId(id) == false)
+		auto sndId = getStringViewKey(elem, "sound");
+		if (isValidId(sndId) == false)
 		{
 			return;
 		}
-		auto sndBuffer = game.Resources().getSoundBuffer(id);
+		auto sndBuffer = game.Resources().getSoundBuffer(sndId);
 		if (sndBuffer == nullptr)
 		{
 			return;
 		}
-		auto idx = getIntKey(elem, "index");
-		if (idx < 0)
+		auto id = getStringViewKey(elem, "id");
+		if (isValidId(id) == false)
 		{
 			return;
 		}
-		playerClass.setSound((size_t)idx, *sndBuffer);
+		playerClass.addSound(id, *sndBuffer);
 	}
 
 	void parseDescriptionValue(PlayerClass& playerClass,
@@ -67,7 +68,7 @@ namespace Parser
 	{
 		playerClass.setDescription(
 			getUIntKey(elem, "index"),
-			level.getClassifier(getStringKey(elem, "name")),
+			level.getClassifier(getStringViewKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
@@ -78,7 +79,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = elem["id"].GetStringStr();
+		id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -96,7 +97,7 @@ namespace Parser
 
 			if (isValidString(elem, "fromId") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
 				if (fromId != id)
 				{
 					auto obj = level.getClass<PlayerClass>(fromId);
@@ -122,7 +123,7 @@ namespace Parser
 
 	void parsePlayerClass(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -136,10 +137,10 @@ namespace Parser
 
 		playerClass->Id(id);
 
-		if (elem.HasMember("texturePacks") == true &&
+		if (elem.HasMember("texturePacks"sv) == true &&
 			playerClass->hasTextures() == false)
 		{
-			const auto& texturePacks = elem["texturePacks"];
+			const auto& texturePacks = elem["texturePacks"sv];
 
 			if (texturePacks.IsString() == true)
 			{
@@ -157,9 +158,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("textureIndexes") == true)
+		if (elem.HasMember("textureIndexes"sv) == true)
 		{
-			const auto& textureIndexes = elem["textureIndexes"];
+			const auto& textureIndexes = elem["textureIndexes"sv];
 
 			if (textureIndexes.IsObject() == true)
 			{
@@ -174,30 +175,30 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("anchorOffset") == true)
+		if (elem.HasMember("anchorOffset"sv) == true)
 		{
 			playerClass->setAnchorOffset(
-				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"sv])
 			);
 		}
-		if (elem.HasMember("name") == true)
+		if (elem.HasMember("name"sv) == true)
 		{
-			playerClass->Name(getStringVal(elem["name"]));
+			playerClass->Name(getStringViewVal(elem["name"sv]));
 		}
-		if (elem.HasMember("type") == true)
+		if (elem.HasMember("type"sv) == true)
 		{
-			playerClass->Type(getStringVal(elem["type"]));
+			playerClass->Type(getStringViewVal(elem["type"sv]));
 		}
 
-		if (elem.HasMember("nameClassifier") == true)
+		if (elem.HasMember("nameClassifier"sv) == true)
 		{
 			playerClass->setNameClassifier(
-				level->getClassifier(getStringKey(elem, "nameClassifier")));
+				level->getClassifier(getStringViewKey(elem, "nameClassifier")));
 		}
 
-		if (elem.HasMember("defaults") == true)
+		if (elem.HasMember("defaults"sv) == true)
 		{
-			const auto& defaults = elem["defaults"];
+			const auto& defaults = elem["defaults"sv];
 			if (defaults.IsObject() == true)
 			{
 				for (auto it = defaults.MemberBegin(); it != defaults.MemberEnd(); ++it)
@@ -214,9 +215,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("actions") == true)
+		if (elem.HasMember("actions"sv) == true)
 		{
-			const auto& actions = elem["actions"];
+			const auto& actions = elem["actions"sv];
 			if (actions.IsObject() == true)
 			{
 				for (auto it = actions.MemberBegin(); it != actions.MemberEnd(); ++it)
@@ -230,7 +231,7 @@ namespace Parser
 						}
 						if (action == nullptr)
 						{
-							action = parseAction(game, it->value);
+							action = getActionVal(game, it->value);
 						}
 						playerClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
@@ -238,9 +239,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("descriptions") == true)
+		if (elem.HasMember("descriptions"sv) == true)
 		{
-			const auto& descriptions = elem["descriptions"];
+			const auto& descriptions = elem["descriptions"sv];
 			if (descriptions.IsObject() == true)
 			{
 				parseDescriptionValue(*playerClass, *level, descriptions);
@@ -254,9 +255,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("formulas") == true)
+		if (elem.HasMember("formulas"sv) == true)
 		{
-			const auto& formulas = elem["formulas"];
+			const auto& formulas = elem["formulas"sv];
 			if (formulas.IsObject() == true)
 			{
 				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
@@ -264,15 +265,15 @@ namespace Parser
 					auto nameHash = str2int16(getStringViewVal(it->name));
 					if (nameHash != str2int16(""))
 					{
-						playerClass->setFormula(nameHash, getStringVal(it->value));
+						playerClass->setFormula(nameHash, getStringViewVal(it->value));
 					}
 				}
 			}
 		}
 
-		if (elem.HasMember("animationSpeeds") == true)
+		if (elem.HasMember("animationSpeeds"sv) == true)
 		{
-			const auto& speeds = elem["animationSpeeds"];
+			const auto& speeds = elem["animationSpeeds"sv];
 			if (speeds.IsObject() == true)
 			{
 				parsePlayerAnimationSpeed(*playerClass, speeds);
@@ -286,9 +287,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("sounds") == true)
+		if (elem.HasMember("sounds"sv) == true)
 		{
-			const auto& sounds = elem["sounds"];
+			const auto& sounds = elem["sounds"sv];
 			if (sounds.IsObject() == true)
 			{
 				parsePlayerSound(game, *playerClass, sounds);
@@ -302,68 +303,47 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("attackSound") == true)
+		if (elem.HasMember("maxStrength"sv) == true)
 		{
-			playerClass->setAttackSound((int16_t)getIntVal(elem["attackSound"], -1));
+			playerClass->MaxStrength(getIntVal(elem["maxStrength"sv], 250));
 		}
-		if (elem.HasMember("defendSound") == true)
+		if (elem.HasMember("maxMagic"sv) == true)
 		{
-			playerClass->setDefendSound((int16_t)getIntVal(elem["defendSound"], -1));
+			playerClass->MaxMagic(getIntVal(elem["maxMagic"sv], 250));
 		}
-		if (elem.HasMember("dieSound") == true)
+		if (elem.HasMember("maxDexterity"sv) == true)
 		{
-			playerClass->setDieSound((int16_t)getIntVal(elem["dieSound"], -1));
+			playerClass->MaxDexterity(getIntVal(elem["maxDexterity"sv], 250));
 		}
-		if (elem.HasMember("hitSound") == true)
+		if (elem.HasMember("maxVitality"sv) == true)
 		{
-			playerClass->setHitSound((int16_t)getIntVal(elem["hitSound"], -1));
+			playerClass->MaxVitality(getIntVal(elem["maxVitality"sv], 250));
 		}
-		if (elem.HasMember("walkSound") == true)
+		if (elem.HasMember("maxResistMagic"sv) == true)
 		{
-			playerClass->setWalkSound((int16_t)getIntVal(elem["walkSound"], -1));
+			playerClass->MaxResistMagic(getIntVal(elem["maxResistMagic"sv], 100));
 		}
-
-		if (elem.HasMember("maxStrength") == true)
+		if (elem.HasMember("maxResistFire"sv) == true)
 		{
-			playerClass->MaxStrength(getIntVal(elem["maxStrength"], 250));
+			playerClass->MaxResistFire(getIntVal(elem["maxResistFire"sv], 100));
 		}
-		if (elem.HasMember("maxMagic") == true)
+		if (elem.HasMember("maxResistLightning"sv) == true)
 		{
-			playerClass->MaxMagic(getIntVal(elem["maxMagic"], 250));
-		}
-		if (elem.HasMember("maxDexterity") == true)
-		{
-			playerClass->MaxDexterity(getIntVal(elem["maxDexterity"], 250));
-		}
-		if (elem.HasMember("maxVitality") == true)
-		{
-			playerClass->MaxVitality(getIntVal(elem["maxVitality"], 250));
-		}
-		if (elem.HasMember("maxResistMagic") == true)
-		{
-			playerClass->MaxResistMagic(getIntVal(elem["maxResistMagic"], 100));
-		}
-		if (elem.HasMember("maxResistFire") == true)
-		{
-			playerClass->MaxResistFire(getIntVal(elem["maxResistFire"], 100));
-		}
-		if (elem.HasMember("maxResistLightning") == true)
-		{
-			playerClass->MaxResistLightning(getIntVal(elem["maxResistLightning"], 100));
+			playerClass->MaxResistLightning(getIntVal(elem["maxResistLightning"sv], 100));
 		}
 
-		if (elem.HasMember("outline") == true)
+		if (elem.HasMember("outline"sv) == true)
 		{
-			playerClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
+			playerClass->Outline(getColorVal(elem["outline"sv], sf::Color::Transparent));
 		}
-		if (elem.HasMember("outlineIgnore") == true)
+		if (elem.HasMember("outlineIgnore"sv) == true)
 		{
-			playerClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
+			playerClass->OutlineIgnore(getColorVal(elem["outlineIgnore"sv], sf::Color::Transparent));
 		}
-		if (elem.HasMember("light") == true)
+		if (elem.HasMember("light"sv) == true)
 		{
 			playerClass->setLightSource(
-				getLightSourceVal(elem["light"], { 255, 10 })
+				getLightSourceVal(elem["light"sv], { 255, 10 })
 			);
 		}
 	}

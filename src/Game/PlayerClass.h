@@ -6,23 +6,17 @@
 #include "CompositeTexture.h"
 #include "Formulas.h"
 #include "GameProperties.h"
+#include "LevelObject.h"
 #include "LevelObjectClassDefaults.h"
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <string>
-
-struct PlayerAI
-{
-	bool walksSlowly{ false };
-	int16_t sightRadius{ 0 };
-};
+#include "Utils/UnorderedStringMap.h"
 
 class PlayerClass : public LevelObjectClassDefaults<Number32>
 {
 private:
 	std::vector<TexturePackVariant> textures;
 	std::array<uint32_t, (uint32_t)PlayerAnimation::Size> animationIndexes;
-
-	PlayerAI ai;
 
 	std::string name;
 	std::string type;
@@ -44,13 +38,7 @@ private:
 
 	Formulas<std::array<Formula, 8>> formulas;
 
-	std::array<const sf::SoundBuffer*, 16> sounds{ {nullptr} };
-
-	int16_t attackSound{ -1 };
-	int16_t defendSound{ -1 };
-	int16_t dieSound{ -1 };
-	int16_t hitSound{ -1 };
-	int16_t walkSound{ -1 };
+	UnorderedStringMultiMap<const sf::SoundBuffer*> sounds;
 
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color outlineIgnore{ sf::Color::Transparent };
@@ -93,24 +81,9 @@ public:
 	AnimationSpeed getSpeed(PlayerAnimation animation) const noexcept;
 	void setSpeed(PlayerAnimation animation, const AnimationSpeed& speed);
 
-	const PlayerAI& AI() const noexcept { return ai; }
+	const sf::SoundBuffer* getSound(const std::string_view key, size_t soundNum = 0) const;
 
-	const sf::SoundBuffer* getSound(size_t idx) const noexcept;
-	const sf::SoundBuffer* getSound(size_t idx, size_t size) const;
-
-	void setSound(size_t idx, const sf::SoundBuffer& snd) noexcept;
-
-	int16_t getAttackSound() const noexcept { return attackSound; }
-	int16_t getDefendSound() const noexcept { return defendSound; }
-	int16_t getDieSound() const noexcept { return dieSound; }
-	int16_t getHitSound() const noexcept { return hitSound; }
-	int16_t getWalkSound() const noexcept { return walkSound; }
-
-	void setAttackSound(int16_t soundIdx) noexcept { attackSound = soundIdx; }
-	void setDefendSound(int16_t soundIdx) noexcept { defendSound = soundIdx; }
-	void setDieSound(int16_t soundIdx) noexcept { dieSound = soundIdx; }
-	void setHitSound(int16_t soundIdx) noexcept { hitSound = soundIdx; }
-	void setWalkSound(int16_t soundIdx) noexcept { walkSound = soundIdx; }
+	void addSound(const std::string_view key, const sf::SoundBuffer& snd);
 
 	const std::string& Name() const noexcept { return name; }
 	const std::string& Type() const noexcept { return type; }

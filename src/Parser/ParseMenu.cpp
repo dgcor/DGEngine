@@ -17,14 +17,15 @@ namespace Parser
 {
 	typedef std::tuple<uint16_t, std::string, Variable> FilterObject;
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseFilterObj(const Value& elem, std::vector<FilterObject>& list)
 	{
-		if (elem.HasMember("value") == false)
+		if (elem.HasMember("value"sv) == false)
 		{
 			return;
 		}
-		const auto& valElem = elem["value"];
+		const auto& valElem = elem["value"sv];
 
 		auto conditionHash = str2int16(getStringViewKey(elem, "if"));
 		auto property = getStringKey(elem, "property");
@@ -140,7 +141,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -150,8 +151,8 @@ namespace Parser
 
 		auto anchor = getAnchorKey(elem, "anchor");
 		auto color = getColorKey(elem, "color", sf::Color::White);
-		auto horizAlign = GameUtils::getHorizontalAlignment(getStringKey(elem, "horizontalAlign"));
-		auto vertAlign = GameUtils::getVerticalAlignment(getStringKey(elem, "verticalAlign"), VerticalAlign::Bottom);
+		auto horizAlign = GameUtils::getHorizontalAlignment(getStringViewKey(elem, "horizontalAlign"));
+		auto vertAlign = GameUtils::getVerticalAlignment(getStringViewKey(elem, "verticalAlign"), VerticalAlign::Bottom);
 		auto horizSpaceOffset = getIntKey(elem, "horizontalSpaceOffset");
 		auto vertSpaceOffset = getIntKey(elem, "verticalSpaceOffset");
 		auto fontSize = getUIntKey(elem, "fontSize", 12);
@@ -163,15 +164,15 @@ namespace Parser
 		sf::SoundBuffer* sound{ nullptr };
 		if (isValidString(elem, "sound"))
 		{
-			sound = game.Resources().getSoundBuffer(elem["sound"].GetStringStr());
+			sound = game.Resources().getSoundBuffer(elem["sound"sv].GetStringView());
 		}
 		sf::SoundBuffer* focusSound{ nullptr };
 		if (isValidString(elem, "focusSound"))
 		{
-			focusSound = game.Resources().getSoundBuffer(elem["focusSound"].GetStringStr());
+			focusSound = game.Resources().getSoundBuffer(elem["focusSound"sv].GetStringView());
 		}
 
-		auto font = game.Resources().getFont(getStringKey(elem, "font"));
+		auto font = game.Resources().getFont(getStringViewKey(elem, "font"));
 		if (holdsNullFont(font) == true)
 		{
 			return;
@@ -197,19 +198,19 @@ namespace Parser
 				std::vector<FilterObject> filterList;
 				bool include = true;
 
-				if (val.HasMember("exclude") == true)
+				if (val.HasMember("exclude"sv) == true)
 				{
-					filterList = parseFilterList(val["exclude"]);
+					filterList = parseFilterList(val["exclude"sv]);
 					include = false;
 				}
-				else if (val.HasMember("include") == true)
+				else if (val.HasMember("include"sv) == true)
 				{
-					filterList = parseFilterList(val["include"]);
+					filterList = parseFilterList(val["include"sv]);
 				}
 
 				MemoryPoolAllocator<CrtAllocator> allocator;
 
-				auto menuItems = game.getQueryableList(getStringViewVal(val["load"]));
+				auto menuItems = game.getQueryableList(getStringViewVal(val["load"sv]));
 
 				for (size_t i = 0; i < menuItems.size(); i++)
 				{
@@ -282,22 +283,26 @@ namespace Parser
 			}
 		};
 
-		if (elem.HasMember("items") == true)
+		if (elem.HasMember("items"sv) == true)
 		{
-			const auto& items = elem["items"];
+			const auto& items = elem["items"sv];
 			if (items.IsObject() == true)
 			{
 				processMenuItem(items);
 			}
 			else if (items.IsArray() == true)
 			{
-				for (const auto& val : elem["items"])
+				for (const auto& val : elem["items"sv])
 				{
 					processMenuItem(val);
 				}
 			}
 		}
 
+		if (hasFocus == true)
+		{
+			menu->focusEnabled();
+		}
 		menu->setVerticalAlign(vertAlign);
 		menu->setAnchor(anchor);
 		menu->Size(size);
@@ -307,13 +312,13 @@ namespace Parser
 		menu->setVerticalPad(getUIntKey(elem, "verticalPad"));
 		menu->setVisibleItems(getUIntKey(elem, "visibleItems"));
 
-		if (elem.HasMember("onScrollDown"))
+		if (elem.HasMember("onScrollDown"sv))
 		{
-			menu->setAction(str2int16("scrollDown"), parseAction(game, elem["onScrollDown"]));
+			menu->setAction(str2int16("scrollDown"), getActionVal(game, elem["onScrollDown"sv]));
 		}
-		if (elem.HasMember("onScrollUp"))
+		if (elem.HasMember("onScrollUp"sv))
 		{
-			menu->setAction(str2int16("scrollUp"), parseAction(game, elem["onScrollUp"]));
+			menu->setAction(str2int16("scrollUp"), getActionVal(game, elem["onScrollUp"sv]));
 		}
 
 		menu->updateVisibleItems();
@@ -322,7 +327,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

@@ -95,10 +95,8 @@
       "levelChange": "updateCharPoints"
     },
     "sounds": [
-      { "index": 0, "id": "walk" },
-      { "index": 1, "id": "die" }
-    ],
-    "walkSound": 0,
-    "dieSound": 1
+      { "id": "walk", "sound": "walk" },
+      { "id": "die", "sound": "die" }
+    ]
   }
 }

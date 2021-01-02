@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "skeleton",
+    "file": "images/enemies/skeleton.png"
+  },
   "texturePack": {
     "id": "skeleton",
-    "texture": {
-      "id": "skeleton",
-      "file": "images/enemies/skeleton.png"
-    },
+    "texture": "skeleton",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

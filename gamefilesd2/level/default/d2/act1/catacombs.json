@@ -13,46 +13,69 @@
       }
     }
   },
+  "imageContainer": [
+    {
+      "id": "andariel",
+      "file": "data/global/tiles/ACT1/CATACOMB/andariel.dt1"
+    },
+    {
+      "id": "basewalls",
+      "file": "data/global/tiles/ACT1/CATACOMB/basewalls.dt1"
+    },
+    {
+      "id": "catacombs2",
+      "file": "data/global/tiles/ACT1/CATACOMB/Catacombs2.dt1"
+    },
+    {
+      "id": "floor",
+      "file": "data/global/tiles/ACT1/CATACOMB/floor.dt1"
+    },
+    {
+      "id": "upstr",
+      "file": "data/global/tiles/ACT1/CATACOMB/upstr.dt1"
+    },
+    {
+      "id": "cathstr",
+      "file": "data/global/tiles/ACT1/CATACOMB/cathstr.dt1"
+    },
+    {
+      "id": "dwnstr",
+      "file": "data/global/tiles/ACT1/CATACOMB/dwnstr.dt1"
+    }
+  ],
   "texturePack": [
     {
       "id": "andariel",
-      "file": "data/global/tiles/ACT1/CATACOMB/andariel.dt1",
       "imageContainer": "andariel",
       "palette": "level"
     },
     {
       "id": "basewalls",
-      "file": "data/global/tiles/ACT1/CATACOMB/basewalls.dt1",
       "imageContainer": "basewalls",
       "palette": "level"
     },
     {
       "id": "catacombs2",
-      "file": "data/global/tiles/ACT1/CATACOMB/Catacombs2.dt1",
       "imageContainer": "catacombs2",
       "palette": "level"
     },
     {
       "id": "floor",
-      "file": "data/global/tiles/ACT1/CATACOMB/floor.dt1",
       "imageContainer": "floor",
       "palette": "level"
     },
     {
       "id": "upstr",
-      "file": "data/global/tiles/ACT1/CATACOMB/upstr.dt1",
       "imageContainer": "upstr",
       "palette": "level"
     },
     {
       "id": "cathstr",
-      "file": "data/global/tiles/ACT1/CATACOMB/cathstr.dt1",
       "imageContainer": "cathstr",
       "palette": "level"
     },
     {
       "id": "dwnstr",
-      "file": "data/global/tiles/ACT1/CATACOMB/dwnstr.dt1",
       "imageContainer": "dwnstr",
       "palette": "level"
     },

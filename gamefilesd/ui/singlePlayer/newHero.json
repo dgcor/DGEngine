@@ -34,7 +34,7 @@
       "position": [424, 285],
       "anchor": "none",
       "onClick": [
-        { "name": "sound.play", "id": "titlemov" },
+        "focusSound",
         { "name": "variable.set", "key": "charClass", "value": "Warrior" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
@@ -56,7 +56,7 @@
       "position": [424, 318],
       "anchor": "none",
       "onClick": [
-        { "name": "sound.play", "id": "titlemov" },
+        "focusSound",
         { "name": "variable.set", "key": "charClass", "value": "Rogue" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },
@@ -78,7 +78,7 @@
       "position": [424, 352],
       "anchor": "none",
       "onClick": [
-        { "name": "sound.play", "id": "titlemov" },
+        "focusSound",
         { "name": "variable.set", "key": "charClass", "value": "Sorceror" },
         { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
         { "name": "text.setText", "id": "txtLevel", "text": "1" },

@@ -8,35 +8,44 @@ Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 
 	if (stream.hasError() == true || stream.getSize() < 768)
 	{
-		throw std::exception();
+		uint8_t c = 0;
+		for (auto& color : palette)
+		{
+			color.r = c;
+			color.g = c;
+			color.b = c;
+			c++;
+		}
 	}
-
-	for (auto& color : palette)
+	else
 	{
-		stream.read(&color.r, 1);
-		stream.read(&color.g, 1);
-		stream.read(&color.b, 1);
-		if (colorFormat >= ColorFormat::RGBA)
+		for (auto& color : palette)
 		{
-			stream.read(&color.a, 1);
-		}
-		switch (colorFormat)
-		{
-		case ColorFormat::BGR:
-		case ColorFormat::BGRA:
-			std::swap(color.r, color.b);
-			break;
-		case ColorFormat::ARGB:
-			color = sf::Color(color.toInteger() << 8);
-			break;
-		case ColorFormat::ABGR:
-		{
-			color = sf::Color(color.toInteger() << 8);
-			std::swap(color.r, color.b);
-			break;
-		}
-		default:
-			break;
+			stream.read(&color.r, 1);
+			stream.read(&color.g, 1);
+			stream.read(&color.b, 1);
+			if (colorFormat >= ColorFormat::RGBA)
+			{
+				stream.read(&color.a, 1);
+			}
+			switch (colorFormat)
+			{
+			case ColorFormat::BGR:
+			case ColorFormat::BGRA:
+				std::swap(color.r, color.b);
+				break;
+			case ColorFormat::ARGB:
+				color = sf::Color(color.toInteger() << 8);
+				break;
+			case ColorFormat::ABGR:
+			{
+				color = sf::Color(color.toInteger() << 8);
+				std::swap(color.r, color.b);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
 	loadTexture();

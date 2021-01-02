@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_buckler",
+    "file": "images/avatar/male/buckler.png"
+  },
   "texturePack": {
     "id": "m_buckler",
-    "texture": {
-      "id": "m_buckler",
-      "file": "images/avatar/male/buckler.png"
-    },
+    "texture": "m_buckler",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

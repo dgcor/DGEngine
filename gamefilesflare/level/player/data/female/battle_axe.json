@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_battle_axe",
+    "file": "images/avatar/female/battle_axe.png"
+  },
   "texturePack": {
     "id": "f_battle_axe",
-    "texture": {
-      "id": "f_battle_axe",
-      "file": "images/avatar/female/battle_axe.png"
-    },
+    "texture": "f_battle_axe",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

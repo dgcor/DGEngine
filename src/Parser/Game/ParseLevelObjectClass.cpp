@@ -8,6 +8,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	std::unique_ptr<SimpleLevelObjectClass> parseLevelObjectClassHelper(const Game& game,
 		const Level& level, const Value& elem, std::string& id)
@@ -16,7 +17,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = elem["id"].GetStringStr();
+		id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -28,7 +29,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			auto fromId = elem["fromId"].GetStringStr();
+			auto fromId = elem["fromId"sv].GetStringView();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<SimpleLevelObjectClass>(fromId);
@@ -44,14 +45,14 @@ namespace Parser
 
 		if (isValidString(elem, "texture") == true)
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
+			auto texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
 			if (texture == nullptr)
 			{
 				return nullptr;
 			}
 			levelObjClass = std::make_unique<SimpleLevelObjectClass>(*texture);
 
-			if (elem.HasMember("textureRect") == true)
+			if (elem.HasMember("textureRect"sv) == true)
 			{
 				auto texSize = texture->getSize();
 				sf::IntRect rect(0, 0, (int)texSize.x, (int)texSize.y);
@@ -60,7 +61,7 @@ namespace Parser
 		}
 		else if (isValidString(elem, "texturePack") == true)
 		{
-			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetStringStr());
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"sv].GetStringView());
 			if (texPack == nullptr)
 			{
 				return nullptr;
@@ -79,13 +80,13 @@ namespace Parser
 	{
 		levelObjClass.setDescription(
 			getUIntKey(elem, "index"),
-			level.getClassifier(getStringKey(elem, "name")),
+			level.getClassifier(getStringViewKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
 	void parseLevelObjectClass(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -99,37 +100,37 @@ namespace Parser
 
 		levelObjClass->Id(id);
 
-		if (elem.HasMember("anchorOffset") == true)
+		if (elem.HasMember("anchorOffset"sv) == true)
 		{
 			levelObjClass->setAnchorOffset(
-				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"sv])
 			);
 		}
-		if (elem.HasMember("name") == true)
+		if (elem.HasMember("name"sv) == true)
 		{
-			levelObjClass->Name(getStringViewVal(elem["name"]));
+			levelObjClass->Name(getStringViewVal(elem["name"sv]));
 		}
-		if (elem.HasMember("text1") == true)
+		if (elem.HasMember("text1"sv) == true)
 		{
-			levelObjClass->Text1(getStringViewVal(elem["text1"]));
+			levelObjClass->Text1(getStringViewVal(elem["text1"sv]));
 		}
-		if (elem.HasMember("text2") == true)
+		if (elem.HasMember("text2"sv) == true)
 		{
-			levelObjClass->Text2(getStringViewVal(elem["text2"]));
+			levelObjClass->Text2(getStringViewVal(elem["text2"sv]));
 		}
-		if (elem.HasMember("size") == true)
+		if (elem.HasMember("size"sv) == true)
 		{
-			levelObjClass->setCellSize(getVector2iVal<PairInt8>(elem["size"]));
+			levelObjClass->setCellSize(getVector2iVal<PairInt8>(elem["size"sv]));
 		}
-		if (elem.HasMember("nameClassifier") == true)
+		if (elem.HasMember("nameClassifier"sv) == true)
 		{
 			levelObjClass->setNameClassifier(
-				level->getClassifier(getStringKey(elem, "nameClassifier")));
+				level->getClassifier(getStringViewKey(elem, "nameClassifier")));
 		}
 
-		if (elem.HasMember("defaults") == true)
+		if (elem.HasMember("defaults"sv) == true)
 		{
-			const auto& defaults = elem["defaults"];
+			const auto& defaults = elem["defaults"sv];
 			if (defaults.IsObject() == true)
 			{
 				for (auto it = defaults.MemberBegin(); it != defaults.MemberEnd(); ++it)
@@ -146,9 +147,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("actions") == true)
+		if (elem.HasMember("actions"sv) == true)
 		{
-			const auto& actions = elem["actions"];
+			const auto& actions = elem["actions"sv];
 			if (actions.IsObject() == true)
 			{
 				for (auto it = actions.MemberBegin(); it != actions.MemberEnd(); ++it)
@@ -162,7 +163,7 @@ namespace Parser
 						}
 						if (action == nullptr)
 						{
-							action = parseAction(game, it->value);
+							action = getActionVal(game, it->value);
 						}
 						levelObjClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
@@ -170,9 +171,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("descriptions") == true)
+		if (elem.HasMember("descriptions"sv) == true)
 		{
-			const auto& descriptions = elem["descriptions"];
+			const auto& descriptions = elem["descriptions"sv];
 			if (descriptions.IsObject() == true)
 			{
 				parseDescriptionValue(*levelObjClass, *level, descriptions);

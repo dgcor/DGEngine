@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_head_bald",
+    "file": "images/avatar/male/head_bald.png"
+  },
   "texturePack": {
     "id": "m_head_bald",
-    "texture": {
-      "id": "m_head_bald",
-      "file": "images/avatar/male/head_bald.png"
-    },
+    "texture": "m_head_bald",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

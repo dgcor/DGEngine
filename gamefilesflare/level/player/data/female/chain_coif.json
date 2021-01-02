@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_chain_coif",
+    "file": "images/avatar/female/chain_coif.png"
+  },
   "texturePack": {
     "id": "f_chain_coif",
-    "texture": {
-      "id": "f_chain_coif",
-      "file": "images/avatar/female/chain_coif.png"
-    },
+    "texture": "f_chain_coif",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

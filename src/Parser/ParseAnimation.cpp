@@ -3,45 +3,41 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include "Panel.h"
-#include "ParseTexture.h"
 #include "TexturePacks/SimpleTexturePack.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
-	std::shared_ptr<Animation> parseAnimationObj(Game& game, const Value& elem)
+	std::shared_ptr<Animation> getAnimationObj(Game& game, const Value& elem)
 	{
 		std::shared_ptr<Animation> animation;
 
 		if (isValidString(elem, "texture"))
 		{
-			std::shared_ptr<sf::Texture> texture;
-			bool textureAddedToResources = getOrParseTexture(game, elem, "texture", texture);
+			auto texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
 			if (texture == nullptr)
 			{
 				return nullptr;
 			}
 			auto frames = getFramesKey(elem, "frames");
-			if (textureAddedToResources == true &&
-				((frames.first == 0 || frames.second == 0) ||
-				(frames.first <= 1 && frames.second <= 1)))
+			if ((frames.first == 0 || frames.second == 0) ||
+				(frames.first <= 1 && frames.second <= 1))
 			{
 				animation = std::make_shared<Animation>(*texture);
 			}
 			else
 			{
-				sf::Vector2f offset;
-				auto animType = getAnimationTypeKey(elem, "animationType");
-				auto texPack = std::make_shared<SimpleTexturePack>(
-					texture, frames, offset, 0, 0, false,
-					animType, nullptr
-				);
+				MultiTexture t;
+				t.texture = texture;
+				t.animType = getAnimationTypeKey(elem, "animationType");
+				auto texPack = std::make_shared<SingleTexturePack>(std::move(t), frames, nullptr);
 
 				if (texPack->size() > 0)
 				{
-					animation = std::make_shared<Animation>(texPack, frames, animType);
+					animation = std::make_shared<Animation>(texPack);
 				}
 				else
 				{
@@ -51,29 +47,27 @@ namespace Parser
 		}
 		else if (isValidString(elem, "texturePack"))
 		{
-			auto texPack = game.Resources().getTexturePack(elem["texturePack"].GetStringStr());
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"sv].GetStringView());
 			if (texPack == nullptr)
 			{
 				return nullptr;
 			}
-			AnimationType animType;
-			auto frames = texPack->getRange(-1, -1, animType);
-			frames = getFramesKey(elem, "frames", frames);
-			animType = getAnimationTypeKey(elem, "animationType", animType);
-			animation = std::make_shared<Animation>(texPack, frames, animType);
+			auto animInfo = texPack->getAnimation(-1, -1);
+			animInfo.indexRange = getFramesKey(elem, "frames", animInfo.indexRange);
+			animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
+			animation = std::make_shared<Animation>(texPack, animInfo);
 		}
 		else if (isValidString(elem, "compositeTexture"))
 		{
-			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"].GetStringStr());
+			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
 			if (compTex == nullptr)
 			{
 				return nullptr;
 			}
-			AnimationType animType;
-			auto frames = compTex->getRange(-1, -1, animType);
-			frames = getFramesKey(elem, "frames", frames);
-			animType = getAnimationTypeKey(elem, "animationType", animType);
-			animation = std::make_shared<Animation>(compTex, frames, animType);
+			auto animInfo = compTex->getAnimation(-1, -1);
+			animInfo.indexRange = getFramesKey(elem, "frames", animInfo.indexRange);
+			animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
+			animation = std::make_shared<Animation>(compTex, animInfo);
 		}
 		else
 		{
@@ -91,7 +85,13 @@ namespace Parser
 		}
 		animation->Position(pos);
 		animation->Visible(getBoolKey(elem, "visible", true));
-		animation->setFrameTime(getTimeKey(elem, "refresh", sf::milliseconds(50)));
+		animation->Pause(getBoolKey(elem, "pause"));
+		auto refresh = animation->getFrameTime();
+		if (refresh == sf::Time::Zero)
+		{
+			refresh = sf::milliseconds(50);
+		}
+		animation->setFrameTime(getTimeKey(elem, "refresh", refresh));
 		animation->setColor(getColorKey(elem, "color", sf::Color::White));
 
 		auto outline = getColorKey(elem, "outline", sf::Color::Transparent);
@@ -108,12 +108,12 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetStringStr());
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
-		auto animation = parseAnimationObj(game, elem);
+		auto animation = getAnimationObj(game, elem);
 		if (animation == nullptr)
 		{
 			return;
@@ -122,7 +122,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

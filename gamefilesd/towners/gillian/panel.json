@@ -5,7 +5,7 @@
     { "name": "game.clearPlayingSounds" }
   ],
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "esc",
       "action": { "name": "button.click", "id": "back", "playSound": false }

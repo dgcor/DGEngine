@@ -9,7 +9,7 @@ private:
 	std::string id;
 
 public:
-	ActToggleVisible(const std::string& id_) : id(id_) {}
+	ActToggleVisible(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -29,7 +29,7 @@ private:
 	bool visible;
 
 public:
-	ActSetVisible(const std::string& id_, bool visible_) : id(id_), visible(visible_) {}
+	ActSetVisible(const std::string_view id_, bool visible_) : id(id_), visible(visible_) {}
 
 	bool execute(Game& game) override
 	{

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_reinforced_club",
+    "file": "images/avatar/female/reinforced_club.png"
+  },
   "texturePack": {
     "id": "f_reinforced_club",
-    "texture": {
-      "id": "f_reinforced_club",
-      "file": "images/avatar/female/reinforced_club.png"
-    },
+    "texture": "f_reinforced_club",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

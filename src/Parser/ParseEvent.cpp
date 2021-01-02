@@ -6,6 +6,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseEvent(Game& game, const Value& elem)
 	{
@@ -20,7 +21,7 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			auto id = getStringViewVal(elem["id"]);
+			auto id = getStringViewVal(elem["id"sv]);
 			if (isValidId(id) == true)
 			{
 				evt->setId(id);

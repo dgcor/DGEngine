@@ -7,6 +7,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	sf::SoundBuffer* parseSoundObj(Game& game, const std::string& id,
 		const std::string& file, const std::string_view resource)
@@ -57,12 +58,12 @@ namespace Parser
 
 	sf::SoundBuffer* parseSingleSoundObj(Game& game, const Value& elem)
 	{
-		auto file = elem["file"].GetStringStr();
+		auto file = elem["file"sv].GetStringStr();
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
@@ -72,7 +73,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		if (elem.HasMember("loopNames") == true)
+		if (elem.HasMember("loopNames"sv) == true)
 		{
 			return parseSoundLoopsObj(game, elem, id, file);
 		}
@@ -127,10 +128,10 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 
-		const auto& fileElem = elem["file"];
+		const auto& fileElem = elem["file"sv];
 
 		bool hasFile = true;
 		size_t fileIdx = 0;
@@ -167,7 +168,7 @@ namespace Parser
 			else if (fileVal->IsObject() == true &&
 				isValidString(*fileVal, "name") == true)
 			{
-				fileName = (*fileVal)["name"].GetString();
+				fileName = (*fileVal)["name"sv].GetString();
 			}
 			else
 			{
@@ -211,7 +212,7 @@ namespace Parser
 				if (fileVal->IsObject() == true &&
 					fileVal->HasMember("chunks") == true)
 				{
-					const auto& chunksElem = (*fileVal)["chunks"];
+					const auto& chunksElem = (*fileVal)["chunks"sv];
 					if (chunksElem.IsObject() == true)
 					{
 						chunk = parseAudioTimeSpan(chunksElem);
@@ -269,7 +270,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		if (elem.HasMember("loopNames") == false)
+		if (elem.HasMember("loopNames"sv) == false)
 		{
 			return parseMultiSoundObj(game, id, getStringViewKey(elem, "resource"),
 				samplesBuffer.data(), samplesBuffer.size(), channelCount, sampleRate);
@@ -284,8 +285,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getAudioSource(fromId);

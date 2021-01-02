@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include "Utils/UnorderedStringMap.h"
 #include "Variable.h"
 #include <vector>
 
@@ -84,7 +85,7 @@ private:
 	ResourceManager resourceManager;
 	EventManager eventManager;
 
-	std::unordered_map<std::string, Variable> variables;
+	UnorderedStringMap<Variable> variables;
 
 	std::unique_ptr<LoadingScreen> loadingScreen;
 	FadeInOut fadeObj;
@@ -125,6 +126,7 @@ private:
 	void reset();
 
 public:
+	Game();
 	~Game();
 
 	void load(const std::string_view gamefilePath, const std::string_view mainFile);
@@ -132,7 +134,7 @@ public:
 
 	const GameShaders& Shaders() const noexcept { return shaders; };
 
-	void setShader(const std::string_view id, sf::Shader* shader) noexcept;
+	void setShader(const std::string_view id, GameShader* shader) noexcept;
 
 	unsigned getOpenGLDepthBits() const { return window.getSettings().depthBits; }
 	unsigned getOpenGLStencilBits() const { return window.getSettings().stencilBits; }
@@ -264,10 +266,10 @@ public:
 
 	void play();
 
-	const std::unordered_map<std::string, Variable>& getVariables() const noexcept { return variables; }
+	const UnorderedStringMap<Variable>& getVariables() const noexcept { return variables; }
 
 	// gets variable without tokens. ex: "var"
-	bool getVariableNoToken(const std::string& key, Variable& var) const;
+	bool getVariableNoToken(const std::string_view key, Variable& var) const;
 
 	template <class T, class U>
 	U getVarOrProp(const Variable& var, U defVal = U())
@@ -297,8 +299,9 @@ public:
 	bool getVarOrPropBoolV(const Variable& var) const;
 	double getVarOrPropDoubleS(const std::string_view key) const;
 	double getVarOrPropDoubleV(const Variable& var) const;
-	int64_t getVarOrPropLongS(const std::string_view key) const;
-	int64_t getVarOrPropLongV(const Variable& var) const;
+	int64_t getVarOrPropInt64S(const std::string_view key) const;
+	int64_t getVarOrPropInt64V(const Variable& var) const;
+	bool getVarOrPropStringS(const std::string_view key, std::string& outStr) const;
 	std::string getVarOrPropStringS(const std::string_view key) const;
 	std::string getVarOrPropStringV(const Variable& var) const;
 

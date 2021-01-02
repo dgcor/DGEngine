@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_plate_greaves",
+    "file": "images/avatar/female/plate_greaves.png"
+  },
   "texturePack": {
     "id": "f_plate_greaves",
-    "texture": {
-      "id": "f_plate_greaves",
-      "file": "images/avatar/female/plate_greaves.png"
-    },
+    "texture": "f_plate_greaves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

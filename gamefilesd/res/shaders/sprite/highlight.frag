@@ -1,7 +1,6 @@
 #version 110
 uniform sampler2D palette;
 uniform sampler2D texture;
-uniform vec2 pixelSize;
 uniform vec4 outline;
 uniform vec4 ignore;
 uniform bool hasPalette;

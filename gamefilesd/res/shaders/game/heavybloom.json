@@ -1,0 +1,9 @@
+{
+  "shader": {
+    "id": "heavybloom",
+    "fragmentFile": "res/shaders/game/heavybloom.frag",
+    "vertexFile": "res/shaders/game/heavybloom.vert",
+    "uniforms": "textureSize",
+    "setShader": "game"
+  }
+}

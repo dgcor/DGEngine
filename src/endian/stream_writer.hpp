@@ -25,7 +25,7 @@ public:
     ///
     /// @param data a data pointer to the buffer
     /// @param size the size of the buffer in bytes
-    stream_writer(uint8_t* data, size_type size) noexcept :
+    stream_writer(uint8_t* data, std::size_t size) noexcept :
         stream(data, size)
     { }
 
@@ -60,11 +60,11 @@ public:
     ///
     /// @param data Pointer to the data, to be written to the stream.
     /// @param size Number of bytes from the data pointer.
-    void write(const uint8_t* data, size_type size) noexcept
+    void write(const uint8_t* data, std::size_t size) noexcept
     {
         assert(size <= remaining_size());
 
-        std::copy_n(data, (std::size_t)size, this->remaining_data());
+        std::copy_n(data, size, this->remaining_data());
         skip(size);
     }
 };

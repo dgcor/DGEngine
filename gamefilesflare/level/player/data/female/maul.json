@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_maul",
+    "file": "images/avatar/female/maul.png"
+  },
   "texturePack": {
     "id": "f_maul",
-    "texture": {
-      "id": "f_maul",
-      "file": "images/avatar/female/maul.png"
-    },
+    "texture": "f_maul",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -15,9 +15,14 @@ void BindableText::setBinding(std::vector<std::string> bindings_)
 void BindableText::update(Game& game)
 {
 	if (bindings.size() > 0 &&
-		text->Visible() == true)
+		(bindWhenHidden == true || Visible() == true))
 	{
-		triggerOnChange = text->setText(TextUtils::getFormatString(game, format, bindings));
+		std::string str;
+		bool hasText = TextUtils::getFormatString(game, format, bindings, str);
+		if (alwaysBind == true || hasText == true)
+		{
+			setText(str);
+		}
 	}
 	Text::update(game);
 }

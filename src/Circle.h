@@ -16,10 +16,10 @@ public:
 	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
 	void updateSize(const Game& game) override;
 
-	const sf::Vector2f& DrawPosition() const override { return this->getPosition(); }
-	const sf::Vector2f& Position() const override { return this->getPosition(); }
-	void Position(const sf::Vector2f& position) override { this->setPosition(position); }
-	sf::Vector2f Size() const override { return sf::Vector2f(this->getLocalBounds().width, this->getLocalBounds().height); }
+	const sf::Vector2f& DrawPosition() const override { return getPosition(); }
+	const sf::Vector2f& Position() const override { return getPosition(); }
+	void Position(const sf::Vector2f& position) override { setPosition(position); }
+	sf::Vector2f Size() const override { return sf::Vector2f(getLocalBounds().width, getLocalBounds().height); }
 	void Size(const sf::Vector2f& size) noexcept override {}
 
 	bool Visible() const noexcept override { return visible; }

@@ -14,7 +14,7 @@ private:
 	std::string dirDst;
 
 public:
-	ActDirCopy(const std::string& dirSrc_, const std::string& dirDst_)
+	ActDirCopy(const std::string_view dirSrc_, const std::string_view dirDst_)
 		: dirSrc(dirSrc_), dirDst(dirDst_) {}
 
 	bool execute(Game& game) override
@@ -31,7 +31,7 @@ private:
 	std::string dir;
 
 public:
-	ActDirCreate(const std::string& dir_) : dir(dir_) {}
+	ActDirCreate(const std::string_view dir_) : dir(dir_) {}
 
 	bool execute(Game& game) override
 	{
@@ -50,9 +50,9 @@ private:
 	ReplaceVars replaceVars;
 
 public:
-	ActFileCopy(const std::string& dir_, const std::vector<std::string>& filesRead_,
-		const std::string& fileWrite_, const std::string& nullText_,
-		ReplaceVars replaceVars_) : dir(dir_), filesRead(filesRead_),
+	ActFileCopy(const std::string_view dir_, std::vector<std::string>&& filesRead_,
+		const std::string_view fileWrite_, const std::string_view nullText_,
+		ReplaceVars replaceVars_) : dir(dir_), filesRead(std::move(filesRead_)),
 		fileWrite(fileWrite_), nullText(nullText_), replaceVars(replaceVars_) {}
 
 	bool execute(Game& game) override
@@ -126,7 +126,7 @@ private:
 	std::string dir;
 
 public:
-	ActIODelete(const std::string& dir_) : dir(dir_) {}
+	ActIODelete(const std::string_view dir_) : dir(dir_) {}
 
 	bool execute(Game& game) override
 	{
@@ -142,7 +142,7 @@ private:
 	bool deleteRoot;
 
 public:
-	ActIODeleteAll(const std::string& dir_, bool deleteRoot_)
+	ActIODeleteAll(const std::string_view dir_, bool deleteRoot_)
 		: dir(dir_), deleteRoot(deleteRoot_) {}
 
 	bool execute(Game& game) override

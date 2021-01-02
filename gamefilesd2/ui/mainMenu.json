@@ -5,7 +5,7 @@
     "param2": false,
     "then": { "name": "load", "file": "ui/mainMenuBase.json" }
   },
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": { "name": "button.click", "id": "btnSinglePlayer" }
@@ -38,108 +38,140 @@
       }
     }
   ],
+  "imageContainer": [
+    {
+      "file": "data/global/ui/CharSelect/ShortButtonBlank.dc6"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/MediumButtonBlank.dc6"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/WideButtonBlank.dc6"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts01a.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts02a.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts03a.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts04a.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts05b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts06b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts07b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts08b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts09b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts10b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts11b.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/ts12b.DC6",
+      "useOffsets": true
+    }
+  ],
   "texturePack": [
     {
       "id": "ShortButtonBlank",
-      "file": "data/global/ui/CharSelect/ShortButtonBlank.dc6",
       "imageContainer": "ShortButtonBlank",
       "palette": "units"
     },
     {
       "id": "MediumButtonBlank",
-      "file": "data/global/ui/FrontEnd/MediumButtonBlank.dc6",
       "imageContainer": "MediumButtonBlank",
       "palette": "units"
     },
     {
       "id": "WideButtonBlank",
-      "file": "data/global/ui/FrontEnd/WideButtonBlank.dc6",
       "imageContainer": "WideButtonBlank",
       "palette": "units"
     },
     {
       "id": "ts01a",
-      "file": "data/global/ui/FrontEnd/ts01a.DC6",
       "imageContainer": "ts01a",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts02a",
-      "file": "data/global/ui/FrontEnd/ts02a.DC6",
       "imageContainer": "ts02a",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts03a",
-      "file": "data/global/ui/FrontEnd/ts03a.DC6",
       "imageContainer": "ts03a",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts04a",
-      "file": "data/global/ui/FrontEnd/ts04a.DC6",
       "imageContainer": "ts04a",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts05b",
-      "file": "data/global/ui/FrontEnd/ts05b.DC6",
       "imageContainer": "ts05b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts06b",
-      "file": "data/global/ui/FrontEnd/ts06b.DC6",
       "imageContainer": "ts06b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts07b",
-      "file": "data/global/ui/FrontEnd/ts07b.DC6",
       "imageContainer": "ts07b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts08b",
-      "file": "data/global/ui/FrontEnd/ts08b.DC6",
       "imageContainer": "ts08b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts09b",
-      "file": "data/global/ui/FrontEnd/ts09b.DC6",
       "imageContainer": "ts09b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts10b",
-      "file": "data/global/ui/FrontEnd/ts10b.DC6",
       "imageContainer": "ts10b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts11b",
-      "file": "data/global/ui/FrontEnd/ts11b.DC6",
       "imageContainer": "ts11b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     },
     {
       "id": "ts12b",
-      "file": "data/global/ui/FrontEnd/ts12b.DC6",
       "imageContainer": "ts12b",
-      "palette": "sky",
-      "useOffsets": true
+      "palette": "sky"
     }
   ],
   "cursor": {

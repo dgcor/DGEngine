@@ -6,5 +6,6 @@ enum class AnimationType : int32_t
 {
 	Looped,
 	BackAndForth,
-	PlayOnce
+	PlayOnce,
+	Size
 };

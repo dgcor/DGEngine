@@ -3,6 +3,128 @@
 #include "GameUtils.h"
 #include "Utils/Utils.h"
 
+void Menu::addItem(const std::shared_ptr<StringButton>& item)
+{
+	items.push_back(item);
+	if (vertAlign != VerticalAlign::Bottom)
+	{
+		recalculatePos = true;
+	}
+}
+
+StringButton* Menu::getItem() const
+{
+	return getItem(currentIdx);
+}
+
+StringButton* Menu::getItem(size_t idx) const
+{
+	if (idx < items.size())
+	{
+		return items[idx].get();
+	}
+	return nullptr;
+}
+
+StringButton* Menu::getVisibleItem(size_t idx) const
+{
+	return getItem(start + idx);
+}
+
+size_t Menu::getItemPosition(const Button* item) const
+{
+	for (size_t i = 0; i < items.size(); i++)
+	{
+		if (items[i].get() == item)
+		{
+			return i;
+		}
+	}
+	return 0;
+}
+
+void Menu::ScrollPosition(const sf::Vector2f& position_) noexcept
+{
+	scrollPosition = position_;
+	scrollRect.left = (int)position_.x;
+	scrollRect.top = (int)position_.y;
+}
+
+void Menu::setVerticalAlign(const VerticalAlign align) noexcept
+{
+	if (vertAlign != align)
+	{
+		vertAlign = align;
+		recalculatePos = true;
+	}
+}
+
+void Menu::setVerticalPad(int verticalPad_) noexcept
+{
+	if (verticalPad != verticalPad_)
+	{
+		verticalPad = verticalPad_;
+		recalculatePos = true;
+	}
+}
+
+void Menu::setVisibleItems(size_t visibleItems_) noexcept
+{
+	if (visibleItems == visibleItems_)
+	{
+		return;
+	}
+	auto newVal = std::min(visibleItems_, items.size());
+	if (visibleItems == 0)
+	{
+		visibleItems = newVal;
+		if (newVal > 0)
+		{
+			recalculatePos = true;
+		}
+	}
+	else
+	{
+		if (visibleItems != newVal)
+		{
+			visibleItems = newVal;
+			recalculatePos = true;
+		}
+	}
+}
+
+void Menu::setCurrentIdx(size_t idx) noexcept
+{
+	if (idx < items.size())
+	{
+		currentIdx = idx;
+		if (idx < start || idx >= end)
+		{
+			recalculateVisiblePos = true;
+		}
+	}
+}
+
+void Menu::Position(const sf::Vector2f& position_) noexcept
+{
+	pos = position_;
+	if (visibleItems > 0)
+	{
+		recalculatePos = true;
+	}
+}
+
+sf::Vector2f Menu::Size() const
+{
+	return sf::Vector2f((float)scrollRect.width, (float)scrollRect.height);
+}
+
+void Menu::Size(const sf::Vector2f& size) noexcept
+{
+	scrollRect.width = (int)size.x;
+	scrollRect.height = (int)size.y;
+}
+
 std::shared_ptr<Action> Menu::getAction(uint16_t nameHash16) const noexcept
 {
 	switch (nameHash16)
@@ -165,13 +287,16 @@ void Menu::update(Game& game)
 	for (size_t i = 0; i < items.size(); i++)
 	{
 		auto button = items[i].get();
-		if (button == focus)
+		if (focusEnable == true)
 		{
-			if (recalculateVisiblePos == false)
+			if (button == focus)
 			{
-				recalculateVisiblePos = (currentIdx != i);
+				if (recalculateVisiblePos == false)
+				{
+					recalculateVisiblePos = (currentIdx != i);
+				}
+				currentIdx = i;
 			}
-			currentIdx = i;
 		}
 		if (i >= start && i < end)
 		{

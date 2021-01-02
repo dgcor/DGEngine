@@ -48,7 +48,7 @@ private:
 	// updates item's price based on whether it's identified or not.
 	void updatePrice() const;
 
-	friend void Save::serialize(void* serializeObj, Save::Properties& props,
+	friend void Save::serialize(void* serializeObj, const Save::Properties& props,
 		const Game& game, const Level& level, const Item& item);
 
 public:

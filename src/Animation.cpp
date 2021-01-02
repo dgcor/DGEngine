@@ -2,18 +2,65 @@
 #include "Game.h"
 #include "Utils/Utils.h"
 
-Animation::Animation(TexturePackVariant texturePackVar_,
-	const std::pair<size_t, size_t>& textureIndexRange, AnimationType type, bool pause)
-	: animation(texturePackVar_, textureIndexRange, sf::milliseconds(50), type, pause)
+Animation::Animation(TexturePackVariant texturePackVar, bool pause)
+	: animation(texturePackVar, pause)
 {
 	animation.updateTexture(sprite);
 }
 
-void Animation::setAnimation(TexturePackVariant texturePackVar_,
-	int32_t groupIdx, int32_t directionIdx,
-	bool resetAnimation, bool updateAnimationType) noexcept
+Animation::Animation(TexturePackVariant texturePackVar,
+	const AnimationInfo& animInfo, bool pause) : animation(texturePackVar, animInfo, pause)
 {
-	animation.setTexturePack(std::move(texturePackVar_));
+	animation.updateTexture(sprite);
+}
+
+void Animation::updateTexture()
+{
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(const AnimationInfo& animInfo)
+{
+	animation.setAnimation(animInfo);
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(TexturePackVariant texturePackVar,
+	const AnimationInfo& animInfo)
+{
+	animation.setTexturePack(std::move(texturePackVar));
+	animation.setAnimation(animInfo);
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(int32_t groupIdx, int32_t directionIdx)
+{
+	animation.setAnimation(groupIdx, directionIdx);
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(TexturePackVariant texturePackVar,
+	int32_t groupIdx, int32_t directionIdx)
+{
+	animation.setTexturePack(std::move(texturePackVar));
+	animation.setAnimation(groupIdx, directionIdx);
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(int32_t groupIdx, int32_t directionIdx,
+	bool resetAnimation, bool updateAnimationType)
+{
+	animation.setAnimation(
+		groupIdx, directionIdx, resetAnimation, updateAnimationType
+	);
+	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(TexturePackVariant texturePackVar,
+	int32_t groupIdx, int32_t directionIdx,
+	bool resetAnimation, bool updateAnimationType)
+{
+	animation.setTexturePack(std::move(texturePackVar));
 	animation.setAnimation(
 		groupIdx, directionIdx, resetAnimation, updateAnimationType
 	);
@@ -21,12 +68,63 @@ void Animation::setAnimation(TexturePackVariant texturePackVar_,
 }
 
 void Animation::setAnimation(int32_t groupIdx, int32_t directionIdx,
-	bool resetAnimation, bool updateAnimationType) noexcept
+	AnimationType animationType)
 {
-	animation.setAnimation(
-		groupIdx, directionIdx, resetAnimation, updateAnimationType
-	);
+	animation.setAnimation(groupIdx, directionIdx, animationType);
 	animation.updateTexture(sprite);
+}
+
+void Animation::setAnimation(TexturePackVariant texturePackVar_,
+	int32_t groupIdx, int32_t directionIdx, AnimationType animationType)
+{
+	animation.setTexturePack(std::move(texturePackVar_));
+	animation.setAnimation(groupIdx, directionIdx, animationType);
+	animation.updateTexture(sprite);
+}
+
+bool Animation::holdsNullTexturePack() const noexcept
+{
+	return animation.holdsNullTexturePack();
+}
+
+bool Animation::holdsTexturePack() const noexcept
+{
+	return animation.holdsTexturePack();
+}
+
+bool Animation::holdsTexturePack(const std::shared_ptr<TexturePack>& obj) const noexcept
+{
+	return animation.holdsTexturePack();
+}
+
+bool Animation::holdsCompositeTexture() const noexcept
+{
+	return animation.holdsCompositeTexture();
+}
+
+bool Animation::holdsCompositeTexture(const std::shared_ptr<CompositeTexture>& obj) const noexcept
+{
+	return animation.holdsCompositeTexture();
+}
+
+const std::shared_ptr<TexturePack>& Animation::getTexturePack() const
+{
+	return animation.getTexturePack();
+}
+
+std::shared_ptr<TexturePack>& Animation::getTexturePack()
+{
+	return animation.getTexturePack();
+}
+
+const std::shared_ptr<CompositeTexture>& Animation::getCompositeTexture() const
+{
+	return animation.getCompositeTexture();
+}
+
+std::shared_ptr<CompositeTexture>& Animation::getCompositeTexture()
+{
+	return animation.getCompositeTexture();
 }
 
 void Animation::update(Game& game)

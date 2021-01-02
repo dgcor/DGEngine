@@ -10,6 +10,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseInputText(Game& game, const Value& elem)
 	{
@@ -17,53 +18,53 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
 
-		auto text = parseDrawableTextObj(game, elem);
+		auto text = getDrawableTextObj(game, elem);
 		auto inputText = std::make_shared<InputText>(std::move(text));
 
-		if (elem.HasMember("minLength") == true)
+		if (elem.HasMember("minLength"sv) == true)
 		{
-			inputText->setMinLength(getUIntVal(elem["minLength"]));
+			inputText->setMinLength(getUIntVal(elem["minLength"sv]));
 		}
-		if (elem.HasMember("maxLength") == true)
+		if (elem.HasMember("maxLength"sv) == true)
 		{
-			inputText->setMaxLength(getUIntVal(elem["maxLength"]));
+			inputText->setMaxLength(getUIntVal(elem["maxLength"sv]));
 		}
-		if (elem.HasMember("minValue") == true)
+		if (elem.HasMember("minValue"sv) == true)
 		{
-			inputText->setMinValue(getVariableVal(elem["minValue"]));
+			inputText->setMinValue(getVariableVal(elem["minValue"sv]));
 		}
-		if (elem.HasMember("maxValue") == true)
+		if (elem.HasMember("maxValue"sv) == true)
 		{
-			inputText->setMaxValue(getVariableVal(elem["maxValue"]));
+			inputText->setMaxValue(getVariableVal(elem["maxValue"sv]));
 		}
 		if (isValidString(elem, "regex") == true)
 		{
-			inputText->setRegex(elem["regex"].GetStringStr());
+			inputText->setRegex(elem["regex"sv].GetStringStr());
 		}
 
-		if (elem.HasMember("onClick"))
+		if (elem.HasMember("onClick"sv))
 		{
-			inputText->setAction(str2int16("click"), parseAction(game, elem["onClick"]));
+			inputText->setAction(str2int16("click"), getActionVal(game, elem["onClick"sv]));
 		}
-		if (elem.HasMember("onChange"))
+		if (elem.HasMember("onChange"sv))
 		{
-			inputText->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
+			inputText->setAction(str2int16("change"), getActionVal(game, elem["onChange"sv]));
 		}
-		if (elem.HasMember("onMinLength"))
+		if (elem.HasMember("onMinLength"sv))
 		{
-			inputText->setAction(str2int16("minLength"), parseAction(game, elem["onMinLength"]));
+			inputText->setAction(str2int16("minLength"), getActionVal(game, elem["onMinLength"sv]));
 		}
 
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

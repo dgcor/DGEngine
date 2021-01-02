@@ -8,12 +8,13 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	sf::Vector2f getOrigin(const Value& elem, float width, float height)
 	{
-		if (elem.HasMember("origin") &&
-			elem["origin"].IsString() &&
-			elem["origin"].GetStringView() == "center")
+		if (elem.HasMember("origin"sv) &&
+			elem["origin"sv].IsString() &&
+			elem["origin"sv].GetStringView() == "center")
 		{
 			return sf::Vector2f(std::round(width / 2.f), std::round(height / 2.f));
 		}
@@ -35,9 +36,9 @@ namespace Parser
 			return;
 		}
 
-		if (elem.HasMember("show") == true)
+		if (elem.HasMember("show"sv) == true)
 		{
-			game.setMouseCursorVisible(getBoolVal(elem["show"]));
+			game.setMouseCursorVisible(getBoolVal(elem["show"sv]));
 		}
 
 		if (getBoolKey(elem, "pop") == true)
@@ -46,7 +47,7 @@ namespace Parser
 			game.updateMousePosition();
 		}
 
-		auto cursor = parseAnimationObj(game, elem);
+		auto cursor = getAnimationObj(game, elem);
 		if (cursor == nullptr)
 		{
 			return;

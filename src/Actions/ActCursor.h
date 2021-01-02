@@ -2,7 +2,6 @@
 
 #include "Action.h"
 #include "Game.h"
-#include <string>
 
 class ActCursorCenterOnDrawable : public Action
 {
@@ -10,7 +9,7 @@ private:
 	std::string id;
 
 public:
-	ActCursorCenterOnDrawable(const std::string& id_) : id(id_) {}
+	ActCursorCenterOnDrawable(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -111,7 +110,7 @@ private:
 	sf::Color color;
 
 public:
-	ActCursorSetPalette(const std::string& idPalette_, const sf::Color& color_)
+	ActCursorSetPalette(const std::string_view idPalette_, const sf::Color& color_)
 		: idPalette(idPalette_), color(color_) {}
 
 	bool execute(Game& game) override

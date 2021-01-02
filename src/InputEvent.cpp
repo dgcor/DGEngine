@@ -92,19 +92,3 @@ bool InputEvent::isActive() const
 		return false;
 	}
 }
-
-bool CompositeInputEvent::isActive() const
-{
-	if (events.empty() == true)
-	{
-		return false;
-	}
-	for (const auto& event : events)
-	{
-		if (event.isActive() == false)
-		{
-			return false;
-		}
-	}
-	return true;
-}

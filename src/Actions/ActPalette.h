@@ -2,7 +2,6 @@
 
 #include "Action.h"
 #include "Game.h"
-#include <string>
 
 class ActPaletteReplace : public Action
 {
@@ -16,7 +15,7 @@ private:
 	bool stepReplace;
 
 public:
-	ActPaletteReplace(const std::string& idDstPal_, const std::string& idSrcPal_,
+	ActPaletteReplace(const std::string_view idDstPal_, const std::string_view idSrcPal_,
 		size_t srcStart_, size_t size_, size_t dstStart_, bool stepReplace_) noexcept
 		: idDstPal(idDstPal_), idSrcPal(idSrcPal_), srcStart(srcStart_),
 		size(size_), dstStart(dstStart_), step((int)size_), stepReplace(stepReplace_) {}
@@ -56,7 +55,7 @@ private:
 	std::pair<size_t, size_t> range;
 
 public:
-	ActPaletteShiftLeft(const std::string& id_, size_t shift_,
+	ActPaletteShiftLeft(const std::string_view id_, size_t shift_,
 		const std::pair<size_t, size_t>& range_) noexcept
 		: id(id_), shift(shift_), range(range_) {}
 
@@ -79,7 +78,7 @@ private:
 	std::pair<size_t, size_t> range;
 
 public:
-	ActPaletteShiftRight(const std::string& id_, size_t shift_,
+	ActPaletteShiftRight(const std::string_view id_, size_t shift_,
 		const std::pair<size_t, size_t>& range_) noexcept
 		: id(id_), shift(shift_), range(range_) {}
 

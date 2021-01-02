@@ -1,18 +1,47 @@
 {
-  "texture": {
-    "id": "smaltext",
-    "file": "ctrlpan/smaltext.cel",
-    "palette": "town",
-    "indexed": true,
-    "charMapFile": "res/level/smaltextCharMap.bin"
-  },
-  "texturePack": {
-    "id": "smaltext",
-    "font": true,
-    "texture": "smaltext",
-    "charSizeFile": "res/level/smaltextSize.bin",
-    "palette": "town"
-  },
+  "texture": [
+    {
+      "id": "smaltext",
+      "file": "ctrlpan/smaltext.cel",
+      "indexed": true,
+      "charMapFile": "res/level/smaltextCharMap.bin"
+    },
+    {
+      "id": "medtexts",
+      "file": "data/medtexts.cel",
+      "indexed": true,
+      "charMapFile": "res/level/medtextsCharMap.bin"
+    },
+    {
+      "id": "bigtgold",
+      "file": "data/bigtgold.cel",
+      "indexed": true,
+      "charMapFile": "res/level/bigtgoldCharMap.bin"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "smaltext",
+      "font": true,
+      "texture": "smaltext",
+      "palette": "town",
+      "charSizeFile": "res/level/smaltextSize.bin"
+    },
+    {
+      "id": "medtexts",
+      "font": true,
+      "texture": "medtexts",
+      "palette": "town",
+      "charSizeFile": "res/level/medtextsSize.bin"
+    },
+    {
+      "id": "bigtgold",
+      "font": true,
+      "texture": "bigtgold",
+      "palette": "town",
+      "charSizeFile": "res/level/bigtgoldSize.bin"
+    }
+  ],
   "font": [
     {
       "id": "smaltext",
@@ -42,17 +71,11 @@
     },
     {
       "id": "medtexts",
-      "palette": "town",
-      "file": "data/medtexts.cel",
-      "charMapFile": "res/level/medtextsCharMap.bin",
-      "charSizeFile": "res/level/medtextsSize.bin"
+      "texturePack": "medtexts"
     },
     {
       "id": "bigtgold",
-      "palette": "town",
-      "file": "data/bigtgold.cel",
-      "charMapFile": "res/level/bigtgoldCharMap.bin",
-      "charSizeFile": "res/level/bigtgoldSize.bin"
+      "texturePack": "bigtgold"
     }
   ]
 }

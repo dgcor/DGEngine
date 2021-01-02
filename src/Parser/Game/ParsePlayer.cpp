@@ -9,16 +9,17 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parsePlayerItem(Game& game, Level& level,
 		const Inventory& inventory, Player& player, size_t invIdx, const Value& elem)
 	{
-		if (elem.HasMember("index") == false)
+		if (elem.HasMember("index"sv) == false)
 		{
 			return;
 		}
 		size_t itemIdx = 0;
-		const auto& idxElem = elem["index"];
+		const auto& idxElem = elem["index"sv];
 		if (idxElem.IsString() == true)
 		{
 			itemIdx = GameUtils::getPlayerItemMountIndex(idxElem.GetStringView());
@@ -46,13 +47,13 @@ namespace Parser
 	void parsePlayerInventory(Game& game, Level& level,
 		Player& player, const Value& elem)
 	{
-		if (elem.HasMember("index") == false)
+		if (elem.HasMember("index"sv) == false)
 		{
 			return;
 		}
 
 		size_t invIdx = 0;
-		const auto& invElem = elem["index"];
+		const auto& invElem = elem["index"sv];
 		if (invElem.IsString() == true)
 		{
 			invIdx = (size_t)GameUtils::getPlayerInventory(invElem.GetStringView());
@@ -67,9 +68,9 @@ namespace Parser
 		}
 		auto& inventory = player.getInventory(invIdx);
 		bool wasInitialized = false;
-		if (elem.HasMember("size") == true)
+		if (elem.HasMember("size"sv) == true)
 		{
-			const auto& sizeElem = elem["size"];
+			const auto& sizeElem = elem["size"sv];
 			if (sizeElem.IsUint() == true)
 			{
 				inventory.init(sizeElem.GetUint());
@@ -97,9 +98,9 @@ namespace Parser
 		{
 			player.setBodyInventoryIdx(invIdx);
 		}
-		if (elem.HasMember("allowedClassTypes") == true)
+		if (elem.HasMember("allowedClassTypes"sv) == true)
 		{
-			const auto& classesElem = elem["allowedClassTypes"];
+			const auto& classesElem = elem["allowedClassTypes"sv];
 			if (classesElem.IsString() == true)
 			{
 				auto name = Utils::toLower(getStringViewVal(classesElem));
@@ -118,9 +119,9 @@ namespace Parser
 				}
 			}
 		}
-		if (elem.HasMember("item") == true)
+		if (elem.HasMember("item"sv) == true)
 		{
-			const auto& itemsElem = elem["item"];
+			const auto& itemsElem = elem["item"sv];
 			if (itemsElem.IsArray() == true)
 			{
 				for (const auto& val : itemsElem)
@@ -142,7 +143,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = getStringKey(elem, "class");
+		auto id = getStringViewKey(elem, "class");
 		auto spell = level.getClass<Spell>(id);
 		if (spell == nullptr)
 		{
@@ -158,7 +159,7 @@ namespace Parser
 			return;
 		}
 
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -176,7 +177,7 @@ namespace Parser
 			return;
 		}
 
-		auto class_ = level->getClass<PlayerClass>(elem["class"].GetStringStr());
+		auto class_ = level->getClass<PlayerClass>(elem["class"sv].GetStringView());
 
 		if (class_ == nullptr ||
 			class_->hasTextures() == false)
@@ -184,7 +185,7 @@ namespace Parser
 			return;
 		}
 
-		auto id = getStringKey(elem, "id");
+		auto id = getStringViewKey(elem, "id");
 		if (isValidId(id) == false)
 		{
 			id = {};
@@ -211,13 +212,13 @@ namespace Parser
 		player->setOutline(outline, outlineIgnore);
 		player->setOutlineOnHover(getBoolKey(elem, "outlineOnHover", true));
 
-		player->setAI(getBoolKey(elem, "AI"));
+		player->AIType(getIntKey(elem, "AI"));
 
 		player->Name(getStringViewKey(elem, "name"));
 
-		if (elem.HasMember("properties") == true)
+		if (elem.HasMember("properties"sv) == true)
 		{
-			const auto& props = elem["properties"];
+			const auto& props = elem["properties"sv];
 			if (props.IsObject() == true)
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
@@ -235,9 +236,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("inventory") == true)
+		if (elem.HasMember("inventory"sv) == true)
 		{
-			const auto& invElem = elem["inventory"];
+			const auto& invElem = elem["inventory"sv];
 			if (invElem.IsArray() == true)
 			{
 				for (const auto& val : invElem)
@@ -251,9 +252,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("spell") == true)
+		if (elem.HasMember("spell"sv) == true)
 		{
-			const auto& spellElem = elem["spell"];
+			const auto& spellElem = elem["spell"sv];
 			if (spellElem.IsArray() == true)
 			{
 				for (const auto& val : spellElem)
@@ -267,9 +268,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("selectedSpell") == true)
+		if (elem.HasMember("selectedSpell"sv) == true)
 		{
-			player->SelectedSpell(getStringVal(elem["selectedSpell"]));
+			player->SelectedSpell(getStringViewVal(elem["selectedSpell"sv]));
 		}
 
 		player->MapPosition(*level, mapPos);

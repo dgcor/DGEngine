@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_slingshot",
+    "file": "images/avatar/female/slingshot.png"
+  },
   "texturePack": {
     "id": "f_slingshot",
-    "texture": {
-      "id": "f_slingshot",
-      "file": "images/avatar/female/slingshot.png"
-    },
+    "texture": "f_slingshot",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mage_hood",
+    "file": "images/avatar/female/mage_hood.png"
+  },
   "texturePack": {
     "id": "f_mage_hood",
-    "texture": {
-      "id": "f_mage_hood",
-      "file": "images/avatar/female/mage_hood.png"
-    },
+    "texture": "f_mage_hood",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

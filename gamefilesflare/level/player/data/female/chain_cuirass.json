@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_chain_cuirass",
+    "file": "images/avatar/female/chain_cuirass.png"
+  },
   "texturePack": {
     "id": "f_chain_cuirass",
-    "texture": {
-      "id": "f_chain_cuirass",
-      "file": "images/avatar/female/chain_cuirass.png"
-    },
+    "texture": "f_chain_cuirass",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

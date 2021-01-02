@@ -8,9 +8,9 @@
 #include "Save/SavePlayer.h"
 #include "Spell.h"
 #include <SFML/Audio/Sound.hpp>
-#include <unordered_map>
 #include "Utils/FixedMap.h"
 #include "Utils/LRUCache.h"
+#include "Utils/UnorderedStringMap.h"
 
 class Player : public LevelObject
 {
@@ -38,14 +38,14 @@ private:
 
 	sf::Time currentWalkTime;
 
-	bool useAI{ false };
+	int aiType{ 0 };
 	std::shared_ptr<Item> selectedItem;
 	const SpellInstance* selectedSpell{ nullptr };
 
 	Inventories<(size_t)PlayerInventory::Size> inventories;
 	size_t bodyInventoryIdx{ (size_t)PlayerInventory::Size };
 
-	std::unordered_map<std::string, SpellInstance> spells;
+	UnorderedStringMap<SpellInstance> spells;
 
 	mutable std::string name;
 	mutable std::array<std::string, 2> descriptions;
@@ -97,12 +97,6 @@ private:
 
 	sf::Sound currentSound;
 
-	int16_t attackSound{ -1 };
-	int16_t defendSound{ -1 };
-	int16_t dieSound{ -1 };
-	int16_t hitSound{ -1 };
-	int16_t walkSound{ -1 };
-
 	void calculateRange();
 
 	void updateAI(Level& level);
@@ -125,10 +119,12 @@ private:
 	bool getCustomIntByHash(uint16_t propHash, Number32& value) const noexcept;
 	bool getCustomInt(const std::string_view prop, Number32& value) const noexcept;
 
-	void playSound(int16_t soundIdx);
+	void playSound(const std::string_view key, size_t soundNum = 0);
 
-	friend void Save::serialize(void* serializeObj, Save::Properties& props,
+	friend void Save::serialize(void* serializeObj, const Save::Properties& props,
 		const Game& game, const Level& level, const Player& player);
+
+	friend struct PlayerAI;
 
 public:
 	Player(const PlayerClass* class__, const Level& level);
@@ -220,10 +216,12 @@ public:
 
 	void resetAnimationTime() noexcept { animation.elapsedTime.currentTime = speed.animation; }
 
+	bool blockWalk() const noexcept { return currPositionStep > 0.f && currPositionStep < 0.9f; }
+
 	Item* SelectedItem() const noexcept { return selectedItem.get(); }
 	std::shared_ptr<Item> SelectedItem(std::shared_ptr<Item> item) noexcept;
 
-	void SelectedSpell(const std::string& id) noexcept;
+	void SelectedSpell(const std::string_view id) noexcept;
 
 	Inventory& getInventory(PlayerInventory inv) noexcept { return inventories[(size_t)inv]; }
 	const Inventory& getInventory(PlayerInventory inv) const noexcept { return inventories[(size_t)inv]; }
@@ -238,10 +236,10 @@ public:
 		bodyInventoryIdx = std::min(idx, (size_t)PlayerInventory::Size);
 	}
 
-	bool hasSpell(const std::string& key) const;
-	void addSpell(const std::string key, Spell* obj, LevelObjValue spellLevel = 1);
-	Spell* getSpell(const std::string& key) const;
-	const SpellInstance* getSpellInstance(const std::string& key) const;
+	bool hasSpell(const std::string_view key) const;
+	void addSpell(const std::string_view key, Spell* obj, LevelObjValue spellLevel = 1);
+	Spell* getSpell(const std::string_view key) const;
+	const SpellInstance* getSpellInstance(const std::string_view key) const;
 
 	bool hasEquipedItemType(const std::string_view type) const;
 	bool hasEquipedItemSubType(const std::string_view type) const;
@@ -330,16 +328,10 @@ public:
 
 	uint32_t getMaxItemCapacity(const ItemClass& itemClass) const;
 
-	bool isAI() const noexcept { return useAI; }
-	void setAI(bool ai_) noexcept { useAI = ai_; }
+	int AIType() const noexcept { return aiType; }
+	void AIType(int ai_) noexcept { aiType = ai_; }
 
 	bool hasMaxStats() const noexcept;
-
-	void setAttackSounds(int16_t soundIdx) noexcept { attackSound = soundIdx; }
-	void setDefendSounds(int16_t soundIdx) noexcept { defendSound = soundIdx; }
-	void setDieSounds(int16_t soundIdx) noexcept { dieSound = soundIdx; }
-	void setHitSounds(int16_t soundIdx) noexcept { hitSound = soundIdx; }
-	void setWalkSounds(int16_t soundIdx) noexcept { walkSound = soundIdx; }
 
 	const std::string& Id() const noexcept { return id; }
 	const std::string& Name() const;

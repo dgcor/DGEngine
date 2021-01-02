@@ -18,8 +18,7 @@ public:
 	LoadingScreen(const sf::Texture& texture) : Animation(texture) {}
 
 	LoadingScreen(const std::shared_ptr<TexturePack>& texturePack_,
-		const std::pair<size_t, size_t>& textureIndexRange)
-		: Animation(texturePack_, textureIndexRange) {}
+		const AnimationInfo& animInfo) : Animation(texturePack_, animInfo) {}
 
 	std::shared_ptr<Action> getAction(uint16_t nameHash16) const noexcept override;
 	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;

@@ -8,10 +8,11 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseLevelObject(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -20,7 +21,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto class_ = level->getClass<SimpleLevelObjectClass>(elem["class"].GetStringStr());
+		auto class_ = level->getClass<SimpleLevelObjectClass>(elem["class"sv].GetStringView());
 		if (class_ == nullptr)
 		{
 			return;
@@ -38,7 +39,7 @@ namespace Parser
 			return;
 		}
 
-		auto id = getStringKey(elem, "id");
+		auto id = getStringViewKey(elem, "id");
 		if (isValidId(id) == false)
 		{
 			id = {};
@@ -57,9 +58,9 @@ namespace Parser
 		levelObj->Text2(getStringViewKey(elem, "text2", class_->Text2()));
 		levelObj->setCellSize(getVector2iKey<PairInt8>(elem, "size", class_->getCellSize()));
 
-		if (elem.HasMember("properties") == true)
+		if (elem.HasMember("properties"sv) == true)
 		{
-			const auto& props = elem["properties"];
+			const auto& props = elem["properties"sv];
 			if (props.IsObject() == true)
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)

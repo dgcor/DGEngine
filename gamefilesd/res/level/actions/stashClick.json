@@ -15,7 +15,7 @@
               "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
               "param2": true,
               "then": "updateSelectedItem",
-              "else": "updateStash|$.game.var.stashPosX + 1||$.game.var.stashPosY + 1|Text"
+              "else": "updateStash|$.#stashPosX + 1||$.#stashPosY + 1|Text"
             }
           ]
         }

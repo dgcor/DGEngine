@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_hand_axe",
+    "file": "images/avatar/female/hand_axe.png"
+  },
   "texturePack": {
     "id": "f_hand_axe",
-    "texture": {
-      "id": "f_hand_axe",
-      "file": "images/avatar/female/hand_axe.png"
-    },
+    "texture": "f_hand_axe",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

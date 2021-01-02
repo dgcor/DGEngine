@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_greatsword",
+    "file": "images/avatar/male/greatsword.png"
+  },
   "texturePack": {
     "id": "m_greatsword",
-    "texture": {
-      "id": "m_greatsword",
-      "file": "images/avatar/male/greatsword.png"
-    },
+    "texture": "m_greatsword",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

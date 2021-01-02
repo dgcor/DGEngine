@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_shortsword",
+    "file": "images/avatar/male/shortsword.png"
+  },
   "texturePack": {
     "id": "m_shortsword",
-    "texture": {
-      "id": "m_shortsword",
-      "file": "images/avatar/male/shortsword.png"
-    },
+    "texture": "m_shortsword",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

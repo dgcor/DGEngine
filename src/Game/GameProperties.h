@@ -2,9 +2,9 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "PairXY.h"
 #include <SFML/System/Time.hpp>
 #include <utility>
+#include "Utils/PairXY.h"
 
 struct AnimationSpeed
 {

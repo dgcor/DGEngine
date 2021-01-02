@@ -124,43 +124,55 @@
     "loop": true,
     "play": true
   },
+  "imageContainer": [
+    {
+      "file": "data/global/ui/FrontEnd/D2logoBlackLeft.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/D2logoBlackRight.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/D2logoFireLeft.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/D2logoFireRight.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/CURSOR/focus42.DC6",
+      "frames": 8
+    }
+  ],
   "texturePack": [
     {
       "id": "D2logoBlackLeft",
-      "file": "data/global/ui/FrontEnd/D2logoBlackLeft.DC6",
       "imageContainer": "D2logoBlackLeft",
-      "palette": "units",
-      "useOffsets": true
+      "palette": "units"
     },
     {
       "id": "D2logoBlackRight",
-      "file": "data/global/ui/FrontEnd/D2logoBlackRight.DC6",
       "imageContainer": "D2logoBlackRight",
-      "palette": "units",
-      "useOffsets": true
+      "palette": "units"
     },
     {
       "id": "D2logoFireLeft",
-      "file": "data/global/ui/FrontEnd/D2logoFireLeft.DC6",
       "imageContainer": "D2logoFireLeft",
-      "palette": "units",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "units"
     },
     {
       "id": "D2logoFireRight",
-      "file": "data/global/ui/FrontEnd/D2logoFireRight.DC6",
       "imageContainer": "D2logoFireRight",
-      "palette": "units",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "units"
     },
     {
       "id": "focus42",
-      "file": "data/global/ui/CURSOR/focus42.DC6",
       "imageContainer": "focus42",
-      "palette": "units",
-      "frames": 8
+      "palette": "units"
     }
   ],
   "compositeTexture": {

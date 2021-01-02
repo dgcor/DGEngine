@@ -13,6 +13,17 @@
     },
     { "name": "resource.add", "id": "levelOverlay" }
   ],
+  "shape": {
+    "id": "fadingBottom",
+    "type": "triangleFan",
+    "anchor": ["bottom", "left", "right"],
+    "vertices": [
+      { "position": [0, 352], "color": "0x00000000" },
+      { "position": [640, 352], "color": "0x00000000" },
+      { "position": [640, 400], "color": "0x000000" },
+      { "position": [0, 400], "color": "0x000000" }
+    ]
+  },
   "text": {
     "id": "txtLevelUp",
     "font": "smaltext",
@@ -24,19 +35,30 @@
     "visible": false,
     "text": "Level Up"
   },
-  "button": {
-    "id": "btnLevelUp",
-    "texture": "charbut",
-    "textureRect": [0, 22, 41, 22],
-    "position": [40, 314],
-    "anchor": "bottom",
-    "captureInputEvents": true,
-    "clickUp": true,
-    "visible": false,
-    "onClick": { "name": "button.click", "id": "char" },
-    "onClickIn": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 44, 41, 22] },
-    "onClickOut": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 22, 41, 22] }
-  },
+  "button": [
+    {
+      "id": "btnLevelUp",
+      "texture": "charbut",
+      "textureRect": [0, 22, 41, 22],
+      "position": [40, 314],
+      "anchor": "bottom",
+      "captureInputEvents": true,
+      "clickUp": true,
+      "visible": false,
+      "onClick": { "name": "button.click", "id": "char" },
+      "onClickIn": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 44, 41, 22] },
+      "onClickOut": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 22, 41, 22] }
+    },
+    {
+      "id": "panel8",
+      "texture": "panel8",
+      "textureRect": [0, 15, 640, 129],
+      "position": [0, 351],
+      "anchor": "bottom",
+      "captureInputEvents": true,
+      "onRightClick": "rightClickLevel"
+    }
+  ],
   "image": [
     {
       "id": "itemInfoBk",
@@ -107,18 +129,16 @@
       "visible": false
     }
   ],
-  "button": [
-    {
-      "id": "questPanel",
-      "texture": "quest",
-      "anchor": "left",
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    }
-  ],
+  "button": {
+    "id": "questPanel",
+    "texture": "quest",
+    "anchor": "left",
+    "captureInputEvents": true,
+    "visible": false,
+    "onHoverEnter": "clearLevelHoverActions",
+    "onHoverLeave": "setLevelHoverActions",
+    "onRightClick": "rightClickLevel"
+  },
   "load": "ui/level/char/panelCharacter.json",
   "load": "ui/level/char/panelInventory.json",
   "load": "ui/level/char/panelSpellBook.json",
@@ -129,14 +149,6 @@
       "texture": "empty",
       "anchor": "none",
       "visible": false
-    },
-    {
-      "id": "panel8",
-      "texture": "panel8",
-      "position": [0, 351],
-      "textureRect": [0, 15, 640, 129],
-      "anchor": "bottom",
-      "onRightClick": "rightClickLevel"
     },
     {
       "id": "lifeOrbFull",
@@ -413,7 +425,7 @@
     "horizontalSpaceOffset": 2,
     "verticalAlign": "center"
   },
-  "keyboard": [
+  "inputEvent": [
     { "key": "+", "action": "automapZoomIn" },
     { "key": "-", "action": "automapZoomOut" },
     { "key": "1", "action": "useBelt1Item" },

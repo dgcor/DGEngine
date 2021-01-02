@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_default_legs",
+    "file": "images/avatar/male/default_legs.png"
+  },
   "texturePack": {
     "id": "m_default_legs",
-    "texture": {
-      "id": "m_default_legs",
-      "file": "images/avatar/male/default_legs.png"
-    },
+    "texture": "m_default_legs",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

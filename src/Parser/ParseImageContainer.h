@@ -8,12 +8,8 @@ class ImageContainer;
 
 namespace Parser
 {
-	std::shared_ptr<ImageContainer> parseImageContainerObj(Game& game,
-		const rapidjson::Value& elem, const char* fileElem = "file");
+	std::shared_ptr<ImageContainer> getImageContainerObj(Game& game,
+		const rapidjson::Value& elem);
 
 	void parseImageContainer(Game& game, const rapidjson::Value& elem);
-
-	bool getOrParseImageContainer(Game& game, const rapidjson::Value& elem,
-		const char* idKey, std::shared_ptr<ImageContainer>& imgContainer,
-		const char* fileElem = "file");
 }

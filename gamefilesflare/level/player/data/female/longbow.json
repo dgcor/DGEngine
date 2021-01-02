@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_longbow",
+    "file": "images/avatar/female/longbow.png"
+  },
   "texturePack": {
     "id": "f_longbow",
-    "texture": {
-      "id": "f_longbow",
-      "file": "images/avatar/female/longbow.png"
-    },
+    "texture": "f_longbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

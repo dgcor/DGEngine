@@ -4,7 +4,6 @@
 #include "Anchor.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include <string>
 #include "Utils/Utils.h"
 
 class ActDrawableAddToPosition : public Action
@@ -14,7 +13,7 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAddToPosition(const std::string& id_, const sf::Vector2f& offset_)
+	ActDrawableAddToPosition(const std::string_view id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -35,7 +34,7 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAddToSize(const std::string& id_, const sf::Vector2f& offset_)
+	ActDrawableAddToSize(const std::string_view id_, const sf::Vector2f& offset_)
 		: id(id_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -58,7 +57,7 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAnchor(const std::string& id_, const std::string& idAnchor_,
+	ActDrawableAnchor(const std::string_view id_, const std::string_view idAnchor_,
 		Anchor anchor_, const sf::Vector2f& offset_)
 		: id(id_), idAnchor(idAnchor_), anchor(anchor_), offset(offset_) {}
 
@@ -89,8 +88,8 @@ private:
 	bool applyToY;
 
 public:
-	ActDrawableAnchorSizeXY(const std::string& id_,
-		const std::string& idAnchorTo_, float offset_, bool applyToY_)
+	ActDrawableAnchorSizeXY(const std::string_view id_,
+		const std::string_view idAnchorTo_, float offset_, bool applyToY_)
 		: id(id_), idAnchorTo(idAnchorTo_), offset(offset_), applyToY(applyToY_) {}
 
 	bool execute(Game& game) override
@@ -138,7 +137,7 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActDrawableAnchorToFocused(const std::string& id_, Anchor anchor_,
+	ActDrawableAnchorToFocused(const std::string_view id_, Anchor anchor_,
 		const sf::Vector2f& offset_) : id(id_), anchor(anchor_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -165,7 +164,7 @@ private:
 	std::string id;
 
 public:
-	ActDrawableBringToFront(const std::string& id_) : id(id_) {}
+	ActDrawableBringToFront(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -182,7 +181,7 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActDrawableCenter(const std::string& id_, const std::string& idCenterOn_,
+	ActDrawableCenter(const std::string_view id_, const std::string_view idCenterOn_,
 		const sf::Vector2f& offset_) : id(id_), idCenterOn(idCenterOn_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -213,7 +212,7 @@ private:
 	Variable steps;
 
 public:
-	ActDrawableCenterOnMouseX(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableCenterOnMouseX(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& steps_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_), steps(steps_) {}
 
@@ -267,7 +266,7 @@ private:
 	Variable steps;
 
 public:
-	ActDrawableCenterOnMouseY(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableCenterOnMouseY(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& steps_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_), steps(steps_) {}
 
@@ -318,7 +317,7 @@ private:
 	std::string id;
 
 public:
-	ActDrawableDelete(const std::string& id_) : id(id_) {}
+	ActDrawableDelete(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -334,7 +333,7 @@ private:
 	uint16_t actionHash16;
 
 public:
-	ActDrawableExecuteAction(const std::string& id_, uint16_t actionHash16_)
+	ActDrawableExecuteAction(const std::string_view id_, uint16_t actionHash16_)
 		: id(id_), actionHash16(actionHash16_) {}
 
 	bool execute(Game& game) override
@@ -359,7 +358,7 @@ private:
 	float offset;
 
 public:
-	ActDrawableHorizontalAnchorToFocused(const std::string& id_, float offset_)
+	ActDrawableHorizontalAnchorToFocused(const std::string_view id_, float offset_)
 		: id(id_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -389,7 +388,7 @@ private:
 	Variable steps;
 
 public:
-	ActDrawableMoveX(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableMoveX(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& position_, unsigned min_, unsigned max_,
 		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		position(position_), min(min_), max(max_), steps(steps_) {}
@@ -440,7 +439,7 @@ private:
 	Variable steps;
 
 public:
-	ActDrawableMoveY(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableMoveY(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& position_, unsigned min_, unsigned max_,
 		const Variable& steps_) : id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		position(position_), min(min_), max(max_), steps(steps_) {}
@@ -489,7 +488,7 @@ private:
 	int stepOffset;
 
 public:
-	ActDrawableMoveStepX(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableMoveStepX(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& steps_, int stepOffset_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		steps(steps_), stepOffset(stepOffset_) {}
@@ -538,7 +537,7 @@ private:
 	int stepOffset;
 
 public:
-	ActDrawableMoveStepY(const std::string& id_, const std::string& idAnchorTo_,
+	ActDrawableMoveStepY(const std::string_view id_, const std::string_view idAnchorTo_,
 		unsigned range_, const Variable& steps_, int stepOffset_)
 		: id(id_), idAnchorTo(idAnchorTo_), range(range_),
 		steps(steps_), stepOffset(stepOffset_) {}
@@ -588,7 +587,7 @@ private:
 	bool applyToY;
 
 public:
-	ActDrawableResizeXY(const std::string& id_, const Variable& size_,
+	ActDrawableResizeXY(const std::string_view id_, const Variable& size_,
 		const Variable& inputRangeMin_, const Variable& inputRangeMax_,
 		const sf::Vector2i& sizeRange_, bool applyToY_) : id(id_), size(size_),
 		inputRangeMin(inputRangeMin_), inputRangeMax(inputRangeMax_),
@@ -602,12 +601,12 @@ public:
 			if (item != nullptr)
 			{
 				sf::Vector2i inputRange(
-					(int)game.getVarOrPropLongV(inputRangeMin),
-					(int)game.getVarOrPropLongV(inputRangeMax));
+					(int)game.getVarOrPropInt64V(inputRangeMin),
+					(int)game.getVarOrPropInt64V(inputRangeMax));
 
 				if (inputRange.y > inputRange.x)
 				{
-					auto newSize = game.getVarOrPropLongV(size);
+					auto newSize = game.getVarOrPropInt64V(size);
 					newSize = (int64_t)Utils::normalizeNumber<sf::Vector2i>(
 						(long)newSize, inputRange, sizeRange);
 
@@ -635,7 +634,7 @@ private:
 	sf::Vector2f range;
 
 public:
-	ActDrawableResizeOnMouseX(const std::string& id_, const sf::Vector2f& range_)
+	ActDrawableResizeOnMouseX(const std::string_view id_, const sf::Vector2f& range_)
 		: id(id_), range(range_) {}
 
 	bool execute(Game& game) override
@@ -667,7 +666,7 @@ private:
 	sf::Vector2f range;
 
 public:
-	ActDrawableResizeOnMouseY(const std::string& id_, const sf::Vector2f& range_)
+	ActDrawableResizeOnMouseY(const std::string_view id_, const sf::Vector2f& range_)
 		: id(id_), range(range_) {}
 
 	bool execute(Game& game) override
@@ -700,7 +699,7 @@ private:
 	float offset;
 
 public:
-	ActDrawableResizeToPositionX(const std::string& id_, const std::string& idToPosition_,
+	ActDrawableResizeToPositionX(const std::string_view id_, const std::string_view idToPosition_,
 		float offset_) : id(id_), idToPosition(idToPosition_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -726,7 +725,7 @@ private:
 	float offset;
 
 public:
-	ActDrawableResizeToPositionY(const std::string& id_, const std::string& idToPosition_,
+	ActDrawableResizeToPositionY(const std::string_view id_, const std::string_view idToPosition_,
 		float offset_) : id(id_), idToPosition(idToPosition_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -752,7 +751,7 @@ private:
 	std::shared_ptr<Action> action;
 
 public:
-	ActDrawableSetAction(const std::string& id_,
+	ActDrawableSetAction(const std::string_view id_,
 		const std::string_view name, const std::shared_ptr<Action>& action_)
 		: id(id_), nameHash(str2int16(name)), action(action_) {}
 
@@ -773,7 +772,7 @@ private:
 	std::string id;
 
 public:
-	ActDrawableSendToBack(const std::string& id_) : id(id_) {}
+	ActDrawableSendToBack(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -791,7 +790,7 @@ private:
 	bool relativeCoords;
 
 public:
-	ActDrawableSetPosition(const std::string& id_, const sf::Vector2f& pos_,
+	ActDrawableSetPosition(const std::string_view id_, const sf::Vector2f& pos_,
 		const sf::Vector2f& offset_, bool relativeCoords_) : id(id_),
 		pos(pos_), offset(offset_), relativeCoords(relativeCoords_) {}
 
@@ -822,7 +821,7 @@ private:
 	bool applyToY;
 
 public:
-	ActDrawableSetPositionXY(const std::string& id_, float pos_,
+	ActDrawableSetPositionXY(const std::string_view id_, float pos_,
 		bool applyToY_) : id(id_), pos(pos_), applyToY(applyToY_) {}
 
 	bool execute(Game& game) override
@@ -852,7 +851,7 @@ private:
 	sf::Vector2f size;
 
 public:
-	ActDrawableSetSize(const std::string& id_, const sf::Vector2f& size_) : id(id_), size(size_) {}
+	ActDrawableSetSize(const std::string_view id_, const sf::Vector2f& size_) : id(id_), size(size_) {}
 
 	bool execute(Game& game) override
 	{
@@ -873,7 +872,7 @@ private:
 	bool applyToY;
 
 public:
-	ActDrawableSetSizeXY(const std::string& id_, float size_,
+	ActDrawableSetSizeXY(const std::string_view id_, float size_,
 		bool applyToY_) : id(id_), size(size_), applyToY(applyToY_) {}
 
 	bool execute(Game& game) override
@@ -903,7 +902,7 @@ private:
 	float offset;
 
 public:
-	ActDrawableVerticalAnchorToFocused(const std::string& id_, float offset_)
+	ActDrawableVerticalAnchorToFocused(const std::string_view id_, float offset_)
 		: id(id_), offset(offset_) {}
 
 	bool execute(Game& game) override

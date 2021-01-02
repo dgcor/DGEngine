@@ -7,13 +7,14 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	ClassifierValue parseClassifierValue(const Value& elem)
 	{
 		ClassifierValue classifierVal;
 		if (isValidString(elem, "text") == true)
 		{
-			classifierVal.compare = getStringVal(elem["text"]);
+			classifierVal.compare = getStringVal(elem["text"sv]);
 		}
 		else
 		{
@@ -32,9 +33,9 @@ namespace Parser
 	{
 		if (isValidString(elem, "property") == false)
 		{
-			if (elem.HasMember("value") == true)
+			if (elem.HasMember("value"sv) == true)
 			{
-				const auto& elemValues = elem["value"];
+				const auto& elemValues = elem["value"sv];
 				if (elemValues.IsObject() == true)
 				{
 					ClassifierValue classifierVal;
@@ -49,11 +50,11 @@ namespace Parser
 			}
 			return false;
 		}
-		if (elem.HasMember("value") == false)
+		if (elem.HasMember("value"sv) == false)
 		{
 			return false;
 		}
-		const auto& elemValues = elem["value"];
+		const auto& elemValues = elem["value"sv];
 		if (elemValues.IsObject() == true)
 		{
 			ClassifierValue classifierVal = parseClassifierValue(elemValues);
@@ -71,7 +72,7 @@ namespace Parser
 		{
 			return false;
 		}
-		valueInterval.property = elem["property"].GetStringStr();
+		valueInterval.property = elem["property"sv].GetStringView();
 		return true;
 	}
 
@@ -118,21 +119,21 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
 		}
-		if (elem.HasMember("values") == false)
+		if (elem.HasMember("values"sv) == false)
 		{
 			return;
 		}
-		auto classifier = parseClassifierValueIntervals(elem["values"]);
+		auto classifier = parseClassifierValueIntervals(elem["values"sv]);
 		if (classifier.empty() == true)
 		{
 			return;

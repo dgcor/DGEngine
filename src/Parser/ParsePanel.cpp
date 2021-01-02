@@ -8,6 +8,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parsePanel(Game& game, const Value& elem)
 	{
@@ -15,7 +16,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -38,14 +39,14 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "level") == true)
 		{
-			std::string levelId = getStringVal(elem["level"]);
+			auto levelId = getStringViewVal(elem["level"sv]);
 			auto level = game.Resources().getLevel(levelId);
 			if (level != nullptr)
 			{
 				LevelDrawable drawable;
 				drawable.id = id;
 				drawable.drawable = panel;
-				drawable.anchorTo = level->getLevelObjectPtr(getStringKey(elem, "anchorTo"));
+				drawable.anchorTo = level->getLevelObjectPtr(getStringViewKey(elem, "anchorTo"));
 				drawable.offset = getVector2fKey<sf::Vector2f>(elem, "offset");
 				drawable.visibleRectOffset = (float)std::clamp(
 					getNumberKey<int>(elem, "visibleRectOffset", -1), -1, 10

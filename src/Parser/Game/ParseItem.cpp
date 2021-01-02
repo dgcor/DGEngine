@@ -7,6 +7,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	std::shared_ptr<Item> parseItemObj(Game& game,
 		Level& level, const Value& elem)
@@ -16,7 +17,7 @@ namespace Parser
 			return nullptr;
 		}
 
-		auto class_ = level.getClass<ItemClass>(elem["class"].GetStringStr());
+		auto class_ = level.getClass<ItemClass>(elem["class"sv].GetStringView());
 		if (class_ == nullptr)
 		{
 			return nullptr;
@@ -24,9 +25,9 @@ namespace Parser
 
 		auto item = std::make_shared<Item>(class_);
 
-		if (elem.HasMember("properties") == true)
+		if (elem.HasMember("properties"sv) == true)
 		{
-			const auto& props = elem["properties"];
+			const auto& props = elem["properties"sv];
 			if (props.IsObject() == true)
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
@@ -53,7 +54,7 @@ namespace Parser
 
 	void parseItem(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;

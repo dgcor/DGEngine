@@ -4,11 +4,11 @@
 #include "Formula.h"
 #include "GameProperties.h"
 #include "LevelObjectClassDefaults.h"
-#include "PairXY.h"
 #include "Spell.h"
 #include <string>
 #include "TexturePacks/TexturePack.h"
 #include "Utils/FixedMap.h"
+#include "Utils/PairXY.h"
 
 class ItemClass : public LevelObjectClassDefaults<LevelObjValue>
 {

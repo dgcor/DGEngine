@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_dagger",
+    "file": "images/avatar/male/dagger.png"
+  },
   "texturePack": {
     "id": "m_dagger",
-    "texture": {
-      "id": "m_dagger",
-      "file": "images/avatar/male/dagger.png"
-    },
+    "texture": "m_dagger",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

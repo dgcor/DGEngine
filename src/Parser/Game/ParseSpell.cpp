@@ -8,13 +8,14 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseDescriptionValue(Spell& spell,
 		const Level& level, const Value& elem)
 	{
 		spell.setDescription(
 			getUIntKey(elem, "index"),
-			level.getClassifier(getStringKey(elem, "name")),
+			level.getClassifier(getStringViewKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
@@ -25,7 +26,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = elem["id"].GetStringStr();
+		id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -39,7 +40,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			auto fromId = elem["fromId"].GetStringStr();
+			auto fromId = elem["fromId"sv].GetStringView();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<Spell>(fromId);
@@ -52,9 +53,9 @@ namespace Parser
 		}
 
 		auto texturePack1 = game.Resources().getTexturePack(
-			getStringKey(elem, "texturePack1"));
+			getStringViewKey(elem, "texturePack1"));
 		auto texturePack2 = game.Resources().getTexturePack(
-			getStringKey(elem, "texturePack2"));
+			getStringViewKey(elem, "texturePack2"));
 
 		auto textureIndex1 = getUIntKey(elem, "textureIndex1");
 		auto textureIndex2 = getUIntKey(elem, "textureIndex2");
@@ -78,11 +79,11 @@ namespace Parser
 			{
 				spell->setTexturePack2(texturePack2);
 			}
-			if (elem.HasMember("textureIndex1") == true)
+			if (elem.HasMember("textureIndex1"sv) == true)
 			{
 				spell->setTextureIndex1(textureIndex1);
 			}
-			if (elem.HasMember("textureIndex2") == true)
+			if (elem.HasMember("textureIndex2"sv) == true)
 			{
 				spell->setTextureIndex2(textureIndex2);
 			}
@@ -92,7 +93,7 @@ namespace Parser
 
 	void parseSpell(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -106,18 +107,18 @@ namespace Parser
 
 		spell->Id(id);
 
-		if (elem.HasMember("name") == true)
+		if (elem.HasMember("name"sv) == true)
 		{
-			spell->Name(getStringVal(elem["name"]));
+			spell->Name(getStringViewVal(elem["name"sv]));
 		}
-		if (elem.HasMember("type") == true)
+		if (elem.HasMember("type"sv) == true)
 		{
-			spell->SpellType(getStringVal(elem["type"]));
+			spell->SpellType(getStringViewVal(elem["type"sv]));
 		}
 
-		if (elem.HasMember("properties") == true)
+		if (elem.HasMember("properties"sv) == true)
 		{
-			const auto& props = elem["properties"];
+			const auto& props = elem["properties"sv];
 			if (props.IsObject() == true)
 			{
 				for (auto it = props.MemberBegin(); it != props.MemberEnd(); ++it)
@@ -134,9 +135,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("descriptions") == true)
+		if (elem.HasMember("descriptions"sv) == true)
 		{
-			const auto& descriptions = elem["descriptions"];
+			const auto& descriptions = elem["descriptions"sv];
 			if (descriptions.IsObject() == true)
 			{
 				parseDescriptionValue(*spell, *level, descriptions);
@@ -150,9 +151,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("formulas") == true)
+		if (elem.HasMember("formulas"sv) == true)
 		{
-			const auto& formulas = elem["formulas"];
+			const auto& formulas = elem["formulas"sv];
 			if (formulas.IsObject() == true)
 			{
 				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
@@ -160,7 +161,7 @@ namespace Parser
 					auto nameHash = str2int16(getStringViewVal(it->name));
 					if (nameHash != str2int16(""))
 					{
-						spell->setFormula(nameHash, getStringVal(it->value));
+						spell->setFormula(nameHash, getStringViewVal(it->value));
 					}
 				}
 			}

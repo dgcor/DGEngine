@@ -3,7 +3,7 @@
     { "name": "resource.add", "id": "singlePlayer", "ignorePrevious": true },
     { "name": "game.fadeIn" }
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "esc",
       "action": { "name": "button.click", "id": "cancel" }

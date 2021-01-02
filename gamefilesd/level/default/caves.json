@@ -22,14 +22,34 @@
     "id": "colorCycle",
     "fromId": "level"
   },
+  "imageContainer": {
+    "file": "levels/l3data/l3.cel"
+  },
+  "texturePack": [
+    {
+      "id": "l3",
+      "imageContainer": "l3",
+      "palette": "level",
+      "min": "levels/l3data/l3.min",
+      "minBlocks": 10
+    },
+    {
+      "id": "l3_top",
+      "imageContainer": "l3",
+      "palette": "level",
+      "min": "levels/l3data/l3.min",
+      "minBlocks": 10,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "levels/l3data/l3.cel",
+    "layers": [
+      { "index": 0, "texturePack": "l3" },
+      { "index": 0, "texturePack": "l3_top" }
+    ],
     "outOfBoundsTile": 7,
     "til": "levels/l3data/l3.til",
-    "min": "levels/l3data/l3.min",
-    "minBlocks": 10,
     "flags": "levels/l3data/l3.sol",
     "defaultLight": 255,
     "lightMap": "level/data/l3/lightMap.txt"

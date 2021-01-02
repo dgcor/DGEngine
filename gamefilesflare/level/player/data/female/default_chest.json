@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_default_chest",
+    "file": "images/avatar/female/default_chest.png"
+  },
   "texturePack": {
     "id": "f_default_chest",
-    "texture": {
-      "id": "f_default_chest",
-      "file": "images/avatar/female/default_chest.png"
-    },
+    "texture": "f_default_chest",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,16 +1,16 @@
 #pragma once
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <cstdint>
+#include "FileBytes.h"
 #include "ImageContainer.h"
-#include <string_view>
+#include <memory>
 
 // DC6 decoding code based on Worldstone by Lectem
 // https://github.com/Lectem/Worldstone
 class DC6ImageContainer : public ImageContainer
 {
 private:
-	std::vector<uint8_t> fileData;
+	std::shared_ptr<FileBytes> fileData;
 	uint32_t numberOfFrames{ 0 };
 	uint32_t directions{ 0 };
 
@@ -31,7 +31,7 @@ private:
 		const sf::Vector2u& size_, const PaletteArray* palette) const;
 
 public:
-	DC6ImageContainer(const std::string_view fileName, bool stitchFrames, bool useOffsets_);
+	DC6ImageContainer(const std::shared_ptr<FileBytes>& fileBytes, bool stitchFrames, bool useOffsets_);
 
 	BlendMode getBlendMode() const noexcept override { return blendMode; }
 	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
@@ -45,4 +45,3 @@ public:
 
 	uint32_t getDirections() const noexcept override { return directions; }
 };
-#endif

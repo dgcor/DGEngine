@@ -31,7 +31,9 @@ public:
 	IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
 		bool onlyUseIndexed_, bool translateAnimatedIndexes_);
 
-	bool get(uint32_t index, TextureInfo& ti) const  override;
+	bool get(uint32_t index, TextureInfo& ti) const override;
+
+	int32_t getWidth(uint32_t index) const override;
 
 	void update(int epoch, sf::Time elapsedTime) override;
 

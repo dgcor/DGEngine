@@ -8,6 +8,6 @@ class Player;
 
 namespace Save
 {
-	void serialize(void* serializeObj, Properties& props,
+	void serialize(void* serializeObj, const Properties& props,
 		const Game& game, const Level& level, const Player& player);
 }

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_default_hands",
+    "file": "images/avatar/female/default_hands.png"
+  },
   "texturePack": {
     "id": "f_default_hands",
-    "texture": {
-      "id": "f_default_hands",
-      "file": "images/avatar/female/default_hands.png"
-    },
+    "texture": "f_default_hands",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,9 +1,9 @@
 #pragma once
 
+#include <compare>
 #include <cstdint>
 #include <SFML/Window/Event.hpp>
 #include <type_traits>
-#include <vector>
 
 struct CompareEvent
 {
@@ -26,13 +26,8 @@ struct InputEvent
 	int32_t value;
 
 	bool isActive() const;
-};
 
-struct CompositeInputEvent
-{
-	std::vector<InputEvent> events;
-
-	bool isActive() const;
+	auto operator<=>(const InputEvent&) const = default;
 };
 
 enum class InputEventType : int32_t

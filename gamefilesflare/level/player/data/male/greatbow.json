@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_greatbow",
+    "file": "images/avatar/male/greatbow.png"
+  },
   "texturePack": {
     "id": "m_greatbow",
-    "texture": {
-      "id": "m_greatbow",
-      "file": "images/avatar/male/greatbow.png"
-    },
+    "texture": "m_greatbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

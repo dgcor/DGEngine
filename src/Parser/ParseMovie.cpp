@@ -6,10 +6,12 @@
 #include "Panel.h"
 #include "ParseAction.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseMovie(Game& game, const Value& elem)
 	{
@@ -18,12 +20,12 @@ namespace Parser
 			return;
 		}
 
-		auto file = getStringViewVal(elem["file"]);
+		auto file = getStringViewVal(elem["file"sv]);
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
@@ -35,9 +37,9 @@ namespace Parser
 		}
 
 		std::shared_ptr<Action> action;
-		if (elem.HasMember("onComplete"))
+		if (elem.HasMember("onComplete"sv))
 		{
-			action = parseAction(game, elem["onComplete"]);
+			action = getActionVal(game, elem["onComplete"sv]);
 		}
 		auto movie = std::make_shared<Movie>(file);
 		if (movie->load() == false)
@@ -81,7 +83,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

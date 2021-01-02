@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_default_chest",
+    "file": "images/avatar/male/default_chest.png"
+  },
   "texturePack": {
     "id": "m_default_chest",
-    "texture": {
-      "id": "m_default_chest",
-      "file": "images/avatar/male/default_chest.png"
-    },
+    "texture": "m_default_chest",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

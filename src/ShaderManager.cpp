@@ -1,4 +1,5 @@
 #include "ShaderManager.h"
+#include "Utils/Utils.h"
 
 const std::string ShaderManager::gameText{ R"(
 #version 110
@@ -22,37 +23,16 @@ void main()
 const std::string ShaderManager::levelText{ R"(
 #version 110
 uniform sampler2D texture;
-uniform vec4 visibleRect;
-uniform int numberOfLights;
-uniform float lights[512];
 uniform float defaultLight;
-uniform float lightRadius;
-uniform float elapsedTime;
 
 void main()
 {
-	float light = 1.0 - defaultLight;
-
-	if (numberOfLights > 0 && light > 0.0)
-	{
-		for(int i = 0; i < numberOfLights; i += 4)
-		{
-			vec2 coord = vec2(gl_TexCoord[0].x, 1.0 - gl_TexCoord[0].y);
-			vec2 pixelPos = visibleRect.xy + (visibleRect.zw * coord);
-			float dist = distance(pixelPos, vec2(lights[i], lights[i+1]));
-			dist = clamp(dist / lightRadius, 0.0, lights[i+3]) / lights[i+3];
-			light = clamp(dist, 0.0, light);
-			if (light == 0.0)
-			{
-				break;
-			}
-		}
-	}
-
 	vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);
-	pixel.r = pixel.r - light;
-	pixel.g = pixel.g - light;
-	pixel.b = pixel.b - light;
+	float light = min(pixel.a, defaultLight);
+	pixel.r = max(pixel.r - light, 0.0);
+	pixel.g = max(pixel.g - light, 0.0);
+	pixel.b = max(pixel.b - light, 0.0);
+	pixel.a = 1.0;
 	gl_FragColor = pixel;
 }
 )" };
@@ -104,71 +84,91 @@ void main()
 }
 )" };
 
-void ShaderManager::add(const std::string& id, const std::string& fragmentShaderText)
+std::unique_ptr<sf::Shader> ShaderManager::makeShader(const std::string& fragmentShaderText)
 {
-	if (shaders.find(id) == shaders.end())
+	auto shader = std::make_unique<sf::Shader>();
+	if (shader->isAvailable() == true &&
+		shader->loadFromMemory(fragmentShaderText, sf::Shader::Fragment) == true)
 	{
-		auto shader = std::make_shared<sf::Shader>();
-		if (shader->isAvailable() == true &&
-			shader->loadFromMemory(fragmentShaderText, sf::Shader::Fragment) == true)
-		{
-			shader->setUniform("texture", sf::Shader::CurrentTexture);
-			shaders[id] = std::move(shader);
-		}
+		shader->setUniform("texture", sf::Shader::CurrentTexture);
+		return shader;
 	}
+	return {};
 }
 
-void ShaderManager::add(const std::string& id, const std::string& fragmentShaderText,
+std::unique_ptr<sf::Shader> ShaderManager::makeShader(const std::string& fragmentShaderText,
 	const std::string& vertexShaderText)
 {
-	if (shaders.find(id) == shaders.end())
+	auto shader = std::make_unique<sf::Shader>();
+	if (shader->isAvailable() == true &&
+		shader->loadFromMemory(vertexShaderText, fragmentShaderText) == true)
 	{
-		auto shader = std::make_shared<sf::Shader>();
-		if (shader->isAvailable() == true &&
-			shader->loadFromMemory(vertexShaderText, fragmentShaderText) == true)
-		{
-			shader->setUniform("texture", sf::Shader::CurrentTexture);
-			shaders[id] = std::move(shader);
-		}
+		shader->setUniform("texture", sf::Shader::CurrentTexture);
+		return shader;
 	}
+	return {};
 }
 
-void ShaderManager::add(const std::string& id, const std::string& fragmentShaderText,
+std::unique_ptr<sf::Shader> ShaderManager::makeShader(const std::string& fragmentShaderText,
 	const std::string& vertexShaderText, const std::string& geometryShaderText)
 {
-	if (shaders.find(id) == shaders.end())
+	auto shader = std::make_unique<sf::Shader>();
+	if (shader->isAvailable() == true &&
+		shader->loadFromMemory(vertexShaderText,
+			geometryShaderText, fragmentShaderText) == true)
 	{
-		auto shader = std::make_shared<sf::Shader>();
-		if (shader->isAvailable() == true &&
-			shader->loadFromMemory(vertexShaderText,
-				geometryShaderText, fragmentShaderText) == true)
+		shader->setUniform("texture", sf::Shader::CurrentTexture);
+		return shader;
+	}
+	return {};
+}
+
+void ShaderManager::add(const std::string_view id, GameShader&& shader)
+{
+	if (shaders.find(sv2str(id)) == shaders.end())
+	{
+		auto it = shaders.insert(std::make_pair(id, std::move(shader)));
+		if (it.second == false)
 		{
-			shader->setUniform("texture", sf::Shader::CurrentTexture);
-			shaders[id] = std::move(shader);
+			it.first->second = std::move(shader);
 		}
 	}
 }
 
-sf::Shader* ShaderManager::get(const std::string& id) const
+GameShader* ShaderManager::get(const std::string_view id) const
 {
-	auto it = shaders.find(id);
+	auto it = shaders.find(sv2str(id));
 	if (it != shaders.end())
 	{
-		return it->second.get();
+		return &it->second;
 	}
 	return nullptr;
 }
 
-bool ShaderManager::has(const std::string& id) const
+bool ShaderManager::has(const std::string_view id) const
 {
-	return shaders.find(id) != shaders.end();
+	return shaders.find(sv2str(id)) != shaders.end();
 }
 
 void ShaderManager::init()
 {
-	add("game", gameText);
-	add("level", levelText);
-	add("sprite", spriteText);
+	GameShader gameShader;
+	gameShader.shader = makeShader(gameText);
+	gameShader.uniforms.push_back(str2int16("fade"));
+	gameShader.uniforms.push_back(str2int16("gamma"));
+	add("game", std::move(gameShader));
+
+	GameShader levelShader;
+	levelShader.shader = makeShader(levelText);
+	levelShader.uniforms.push_back(str2int16("defaultLight"));
+	add("level", std::move(levelShader));
+
+	GameShader spriteShader;
+	spriteShader.shader = makeShader(spriteText);
+	spriteShader.uniforms.push_back(str2int16("palette"));
+	spriteShader.uniforms.push_back(str2int16("pixelSize"));
+	spriteShader.uniforms.push_back(str2int16("outline"));
+	add("sprite", std::move(spriteShader));
 }
 
 void ShaderManager::init(GameShaders& gameShaders) const

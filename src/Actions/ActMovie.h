@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Game.h"
 #include "Movie2.h"
-#include <string>
 
 class ActMoviePause : public Action
 {
@@ -11,7 +10,7 @@ private:
 	std::string id;
 
 public:
-	ActMoviePause(const std::string& id_) : id(id_) {}
+	ActMoviePause(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -30,7 +29,7 @@ private:
 	std::string id;
 
 public:
-	ActMoviePlay(const std::string& id_) : id(id_) {}
+	ActMoviePlay(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{

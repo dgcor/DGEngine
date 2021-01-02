@@ -15,7 +15,7 @@
       "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right", "offset": [10, 0] }
     }
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"

@@ -10,7 +10,7 @@ private:
 	Variable value;
 
 public:
-	ActGameAddToProperty(const std::string& prop_, const Variable& value_)
+	ActGameAddToProperty(const std::string_view prop_, const Variable& value_)
 		: prop(prop_), value(value_) {}
 
 	bool execute(Game& game) override
@@ -105,7 +105,7 @@ private:
 	std::string mainFile;
 
 public:
-	ActGameLoad(const std::string& file_, const std::string& mainFile_)
+	ActGameLoad(const std::string_view file_, const std::string_view mainFile_)
 		: file(file_), mainFile(mainFile_) {}
 
 	bool execute(Game& game) override
@@ -173,7 +173,7 @@ private:
 	bool hasValueRange{ false };
 
 public:
-	ActGameSetProperty(const std::string& prop_, const Variable& value_)
+	ActGameSetProperty(const std::string_view prop_, const Variable& value_)
 		: prop(prop_), value(value_) {}
 
 	void setPropRange(const sf::Vector2i& propRange_) noexcept

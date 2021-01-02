@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mage_vest",
+    "file": "images/avatar/female/mage_vest.png"
+  },
   "texturePack": {
     "id": "f_mage_vest",
-    "texture": {
-      "id": "f_mage_vest",
-      "file": "images/avatar/female/mage_vest.png"
-    },
+    "texture": "f_mage_vest",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

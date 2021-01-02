@@ -8,7 +8,7 @@
       "param1": "%currentLevel.currentPlayer.hasItem.{2}.{3}%",
       "param2": true,
       "then": [
-        { "name": "image.setTexture", "id": "img{1}", "query": "currentLevel.currentPlayer.item.{2}.{3}", "resetRect": false },
+        { "name": "image.setTexture", "id": "img{1}", "query": "currentLevel.currentPlayer.item.{2}.{3}", "index": 1 },
         {
           "name": "if.equal",
           "param1": "%currentLevel.currentPlayer.canUseItem.{2}.{3}%",

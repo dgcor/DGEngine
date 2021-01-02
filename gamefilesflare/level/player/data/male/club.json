@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_club",
+    "file": "images/avatar/male/club.png"
+  },
   "texturePack": {
     "id": "m_club",
-    "texture": {
-      "id": "m_club",
-      "file": "images/avatar/male/club.png"
-    },
+    "texture": "m_club",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

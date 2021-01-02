@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_head_long",
+    "file": "images/avatar/female/head_long.png"
+  },
   "texturePack": {
     "id": "f_head_long",
-    "texture": {
-      "id": "f_head_long",
-      "file": "images/avatar/female/head_long.png"
-    },
+    "texture": "f_head_long",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

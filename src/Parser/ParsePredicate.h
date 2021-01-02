@@ -8,5 +8,5 @@ class Game;
 
 namespace Parser
 {
-	std::shared_ptr<Predicate> parsePredicateObj(Game& game, const rapidjson::Value& elem);
+	std::shared_ptr<Predicate> getPredicateObj(Game& game, const rapidjson::Value& elem);
 }

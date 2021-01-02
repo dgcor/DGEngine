@@ -2,6 +2,7 @@
 
 #include "Action.h"
 #include "Game.h"
+#include "GameUtils.h"
 #include "Game/Level.h"
 
 class ActLevelAddColorLayer : public Action
@@ -13,7 +14,7 @@ private:
 	bool automap;
 
 public:
-	ActLevelAddColorLayer(const std::string& id_, sf::Color color_,
+	ActLevelAddColorLayer(const std::string_view id_, sf::Color color_,
 		const sf::FloatRect& viewportOffset_, bool automap_) : id(id_),
 		color(color_), viewportOffset(viewportOffset_), automap(automap_) {}
 
@@ -38,7 +39,7 @@ private:
 	bool automap;
 
 public:
-	ActLevelAddTextureLayer(const std::string& id_, const std::string& idTexture_,
+	ActLevelAddTextureLayer(const std::string_view id_, const std::string_view idTexture_,
 		const sf::IntRect& textureRect_, const sf::FloatRect& viewportOffset_,
 		bool automap_) : id(id_), idTexture(idTexture_), textureRect(textureRect_),
 		viewportOffset(viewportOffset_), automap(automap_) {}
@@ -69,8 +70,8 @@ private:
 	sf::Vector2f offset;
 
 public:
-	ActLevelAnchorDrawable(const std::string& id_, const std::string& idDrawable_,
-		const std::string& idAnchor_, const sf::Vector2f& offset_) : id(id_),
+	ActLevelAnchorDrawable(const std::string_view id_, const std::string_view idDrawable_,
+		const std::string_view idAnchor_, const sf::Vector2f& offset_) : id(id_),
 		idDrawable(idDrawable_), idAnchor(idAnchor_), offset(offset_) {}
 
 	bool execute(Game& game) override
@@ -96,9 +97,9 @@ private:
 	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearAllObjects(const std::string& id_,
-		const std::vector<std::string>& excludeIds_)
-		: id(id_), excludeIds(excludeIds_) {}
+	ActLevelClearAllObjects(const std::string_view id_,
+		std::vector<std::string>&& excludeIds_)
+		: id(id_), excludeIds(std::move(excludeIds_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -118,9 +119,9 @@ private:
 	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearItems(const std::string& id_,
-		const std::vector<std::string>& excludeIds_)
-		: id(id_), excludeIds(excludeIds_) {}
+	ActLevelClearItems(const std::string_view id_,
+		std::vector<std::string>&& excludeIds_)
+		: id(id_), excludeIds(std::move(excludeIds_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -140,9 +141,9 @@ private:
 	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearLevelObjects(const std::string& id_,
-		const std::vector<std::string>& excludeIds_)
-		: id(id_), excludeIds(excludeIds_) {}
+	ActLevelClearLevelObjects(const std::string_view id_,
+		std::vector<std::string>&& excludeIds_)
+		: id(id_), excludeIds(std::move(excludeIds_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -161,7 +162,7 @@ private:
 	std::string id;
 
 public:
-	ActLevelClearPlayerClasses(const std::string& id_) : id(id_) {}
+	ActLevelClearPlayerClasses(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -181,9 +182,9 @@ private:
 	std::vector<std::string> excludeIds;
 
 public:
-	ActLevelClearPlayers(const std::string& id_,
-		const std::vector<std::string>& excludeIds_)
-		: id(id_), excludeIds(excludeIds_) {}
+	ActLevelClearPlayers(const std::string_view id_,
+		std::vector<std::string>&& excludeIds_)
+		: id(id_), excludeIds(std::move(excludeIds_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -202,7 +203,7 @@ private:
 	std::string id;
 
 public:
-	ActLevelClearPlayerTextures(const std::string& id_) : id(id_) {}
+	ActLevelClearPlayerTextures(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) noexcept override
 	{
@@ -221,7 +222,7 @@ private:
 	std::string id;
 
 public:
-	ActLevelClearQuests(const std::string& id_) : id(id_) {}
+	ActLevelClearQuests(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -241,7 +242,7 @@ private:
 	bool enableHover;
 
 public:
-	ActLevelEnableHover(const std::string& id_, bool enableHover_)
+	ActLevelEnableHover(const std::string_view id_, bool enableHover_)
 		: id(id_), enableHover(enableHover_) {}
 
 	bool execute(Game& game) noexcept override
@@ -263,7 +264,7 @@ private:
 	bool smooth;
 
 public:
-	ActLevelMove(const std::string& id_, const PairFloat& pos_, bool smooth_)
+	ActLevelMove(const std::string_view id_, const PairFloat& pos_, bool smooth_)
 		: id(id_), pos(pos_), smooth(smooth_) {}
 
 	bool execute(Game& game) override
@@ -284,7 +285,7 @@ private:
 	bool smooth;
 
 public:
-	ActLevelMoveToClick(const std::string& id_, bool smooth_)
+	ActLevelMoveToClick(const std::string_view id_, bool smooth_)
 		: id(id_), smooth(smooth_) {}
 
 	bool execute(Game& game) override
@@ -306,7 +307,7 @@ private:
 	bool smooth;
 
 public:
-	ActLevelMoveToPlayer(const std::string& id_, const std::string& idPlayer_,
+	ActLevelMoveToPlayer(const std::string_view id_, const std::string_view idPlayer_,
 		bool smooth_) : id(id_), idPlayer(idPlayer_), smooth(smooth_) {}
 
 	bool execute(Game& game) override
@@ -331,7 +332,7 @@ private:
 	bool pause;
 
 public:
-	ActLevelPause(const std::string& id_, bool pause_) : id(id_), pause(pause_) {}
+	ActLevelPause(const std::string_view id_, bool pause_) : id(id_), pause(pause_) {}
 
 	bool execute(Game& game) noexcept override
 	{
@@ -349,28 +350,18 @@ class ActLevelSave : public Action
 private:
 	std::string id;
 	std::string file;
-	bool saveDefaults;
-	bool saveCurrentPlayer;
-	bool saveQuests;
+	Save::Properties props;
 
 public:
-	ActLevelSave(const std::string& id_, const std::string& file_,
-		bool saveDefaults_, bool saveCurrentPlayer_, bool saveQuests_)
-		: id(id_), file(file_), saveDefaults(saveDefaults_),
-		saveCurrentPlayer(saveCurrentPlayer_), saveQuests(saveQuests_) {}
+	ActLevelSave(const std::string_view id_, const std::string_view file_,
+		Save::Properties&& props_) : id(id_), file(file_), props(std::move(props_)) {}
 
 	bool execute(Game& game) noexcept override
 	{
 		auto level = game.Resources().getLevel(id);
 		if (level != nullptr)
 		{
-			Save::Properties props;
-			props.saveDefaults = saveDefaults;
-			props.saveCurrentPlayer = saveCurrentPlayer;
-			props.saveQuests = saveQuests;
-
-			level->save(GameUtils::replaceStringWithVarOrProp(file, game).c_str(),
-				props, game);
+			level->save(GameUtils::replaceStringWithVarOrProp(file, game), props, game);
 		}
 		return true;
 	}
@@ -386,7 +377,7 @@ private:
 	sf::FloatRect viewportOffset;
 
 public:
-	ActLevelSetAutomap(const std::string& id_, const std::string& idTexturePack_,
+	ActLevelSetAutomap(const std::string_view id_, const std::string_view idTexturePack_,
 		const std::pair<uint32_t, uint32_t>& tileSize_, uint16_t layerIdx_,
 		const sf::FloatRect& viewportOffset_) : id(id_), idTexturePack(idTexturePack_),
 		tileSize(tileSize_), layerIdx(layerIdx_), viewportOffset(viewportOffset_) {}
@@ -419,7 +410,7 @@ private:
 	sf::Vector2f position;
 
 public:
-	ActLevelSetAutomapPosition(const std::string& id_, const sf::Vector2f& position_)
+	ActLevelSetAutomapPosition(const std::string_view id_, const sf::Vector2f& position_)
 		: id(id_), position(position_) {}
 
 	bool execute(Game& game) override
@@ -448,7 +439,7 @@ private:
 	sf::Vector2f size;
 
 public:
-	ActLevelSetAutomapSize(const std::string& id_, const sf::Vector2f& size_)
+	ActLevelSetAutomapSize(const std::string_view id_, const sf::Vector2f& size_)
 		: id(id_), size(size_) {}
 
 	bool execute(Game& game) override
@@ -469,7 +460,7 @@ private:
 	std::string idShader;
 
 public:
-	ActLevelSetShader(const std::string& id_, const std::string& idShader_)
+	ActLevelSetShader(const std::string_view id_, const std::string_view idShader_)
 		: id(id_), idShader(idShader_) {}
 
 	bool execute(Game& game) override
@@ -491,7 +482,7 @@ private:
 	bool smooth;
 
 public:
-	ActLevelSetSmoothMovement(const std::string& id_, bool smooth_)
+	ActLevelSetSmoothMovement(const std::string_view id_, bool smooth_)
 		: id(id_), smooth(smooth_) {}
 
 	bool execute(Game& game) override
@@ -512,7 +503,7 @@ private:
 	bool show;
 
 public:
-	ActLevelShowAutomap(const std::string& id_, bool show_)
+	ActLevelShowAutomap(const std::string_view id_, bool show_)
 		: id(id_), show(show_) {}
 
 	bool execute(Game& game) override
@@ -535,7 +526,7 @@ private:
 	bool smooth;
 
 public:
-	ActLevelZoom(const std::string& id_, int percentage_, bool relative_, bool smooth_)
+	ActLevelZoom(const std::string_view id_, int percentage_, bool relative_, bool smooth_)
 		: id(id_), percentage(percentage_), relative(relative_), smooth(smooth_) {}
 
 	bool execute(Game& game) noexcept override

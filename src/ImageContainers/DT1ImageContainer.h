@@ -1,10 +1,10 @@
 #pragma once
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <cstdint>
+#include "FileBytes.h"
 #include "ImageContainer.h"
+#include <memory>
 #include "StreamReader.h"
-#include <string_view>
 #include <unordered_map>
 
 // DT1 decoding code based on Diablo 2 Engine Riiablo by Collin Smith
@@ -172,7 +172,7 @@ private:
 	BlendMode blendMode{ BlendMode::Alpha };
 
 public:
-	DT1ImageContainer(const std::string_view fileName);
+	DT1ImageContainer(const std::shared_ptr<FileBytes>& fileBytes);
 
 	BlendMode getBlendMode() const noexcept override { return blendMode; }
 	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
@@ -193,4 +193,3 @@ public:
 
 	int32_t getFlags(uint32_t index, uint32_t subIndex) const override;
 };
-#endif

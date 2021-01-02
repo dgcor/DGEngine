@@ -2,8 +2,61 @@
 #include "SFML/CompositeSprite.h"
 #include "TextureInfo.h"
 
+BaseAnimation::BaseAnimation(TexturePackVariant texturePackVar_, bool pause_)
+	: texturePackVar(std::move(texturePackVar_)), pause(pause_)
+{
+	setAnimation(-1, -1);
+}
+
+BaseAnimation::BaseAnimation(TexturePackVariant texturePackVar_,
+	const AnimationInfo& animInfo, bool pause_)
+	: texturePackVar(std::move(texturePackVar_)), textureIndexRange(animInfo.indexRange),
+	currentTextureIdx(animInfo.indexRange.first), elapsedTime(animInfo.refresh),
+	animType(animInfo.animType), pause(pause_) {}
+
+void BaseAnimation::clear() noexcept
+{
+	textureIndexRange.first = 0;
+	textureIndexRange.second = 0;
+	elapsedTime.reset();
+	backDirection = false;
+}
+
+void BaseAnimation::reset() noexcept
+{
+	currentTextureIdx = textureIndexRange.first;
+	elapsedTime.reset();
+	backDirection = false;
+}
+
+void BaseAnimation::setTexturePack(TexturePackVariant texturePackVar_) noexcept
+{
+	texturePackVar = std::move(texturePackVar_);
+}
+
+void BaseAnimation::setAnimation(const AnimationInfo& animInfo) noexcept
+{
+	textureIndexRange = animInfo.indexRange;
+	currentTextureIdx = textureIndexRange.first;
+	elapsedTime = animInfo.refresh;
+	animType = animInfo.animType;
+	backDirection = false;
+}
+
+void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx) noexcept
+{
+	if (texturePackVar.holdsTexturePack() == true)
+	{
+		setAnimation(texturePackVar.getTexturePack()->getAnimation(groupIdx, directionIdx));
+	}
+	else if (texturePackVar.holdsCompositeTexture() == true)
+	{
+		setAnimation(texturePackVar.getCompositeTexture()->getAnimation(groupIdx, directionIdx));
+	}
+}
+
 void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx,
-	bool resetAnimation, bool updateAnimationType)
+	bool resetAnimation, AnimationType animationType)
 {
 	AnimationType at = {};
 	uint32_t currentRelativeIndex = 0;
@@ -18,26 +71,40 @@ void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx,
 	}
 	else if (texturePackVar.holdsTexturePack() == true)
 	{
-		textureIndexRange = texturePackVar.getTexturePack()->getRange(
-			groupIdx, directionIdx, at
+		auto animInfo = texturePackVar.getTexturePack()->getAnimation(
+			groupIdx, directionIdx
 		);
+		textureIndexRange = animInfo.indexRange;
+		at = animInfo.animType;
 	}
 	else
 	{
-		textureIndexRange = texturePackVar.getCompositeTexture()->getRange(
-			groupIdx, directionIdx, at
+		auto animInfo = texturePackVar.getCompositeTexture()->getAnimation(
+			groupIdx, directionIdx
 		);
+		textureIndexRange = animInfo.indexRange;
+		at = animInfo.animType;
 	}
 	currentTextureIdx = textureIndexRange.first + currentRelativeIndex;
-	if (updateAnimationType == true)
-	{
-		animType = at;
-	}
+	animType = animationType != AnimationType::Size ? animationType : at;
 	if (resetAnimation == true ||
 		(resetAnimation == false && animType != AnimationType::BackAndForth))
 	{
 		backDirection = false;
 	}
+}
+
+void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx,
+	bool resetAnimation, bool updateAnimationType)
+{
+	auto animationType = updateAnimationType ? AnimationType::Size : animType;
+	setAnimation(groupIdx, directionIdx, true, animationType);
+}
+
+void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx,
+	AnimationType animationType)
+{
+	setAnimation(groupIdx, directionIdx, true, animationType);
 }
 
 void BaseAnimation::updateFrameIndex() noexcept
@@ -96,6 +163,51 @@ bool BaseAnimation::hasPlayOnceAnimationFinished() const noexcept
 		currentTextureIdx >= textureIndexRange.second;
 }
 
+bool BaseAnimation::holdsNullTexturePack() const noexcept
+{
+	return texturePackVar.holdsNullTexturePack();
+}
+
+bool BaseAnimation::holdsTexturePack() const noexcept
+{
+	return texturePackVar.holdsTexturePack();
+}
+
+bool BaseAnimation::holdsTexturePack(const std::shared_ptr<TexturePack>& obj) const noexcept
+{
+	return texturePackVar.holdsTexturePack();
+}
+
+bool BaseAnimation::holdsCompositeTexture() const noexcept
+{
+	return texturePackVar.holdsCompositeTexture();
+}
+
+bool BaseAnimation::holdsCompositeTexture(const std::shared_ptr<CompositeTexture>& obj) const noexcept
+{
+	return texturePackVar.holdsCompositeTexture();
+}
+
+const std::shared_ptr<TexturePack>& BaseAnimation::getTexturePack() const
+{
+	return texturePackVar.getTexturePack();
+}
+
+std::shared_ptr<TexturePack>& BaseAnimation::getTexturePack()
+{
+	return texturePackVar.getTexturePack();
+}
+
+const std::shared_ptr<CompositeTexture>& BaseAnimation::getCompositeTexture() const
+{
+	return texturePackVar.getCompositeTexture();
+}
+
+std::shared_ptr<CompositeTexture>& BaseAnimation::getCompositeTexture()
+{
+	return texturePackVar.getCompositeTexture();
+}
+
 bool BaseAnimation::update(sf::Time elapsedTime_) noexcept
 {
 	if (pause == true ||
@@ -104,6 +216,10 @@ bool BaseAnimation::update(sf::Time elapsedTime_) noexcept
 		return false;
 	}
 	if (hasPlayOnceAnimationFinished() == true)
+	{
+		return false;
+	}
+	if (elapsedTime.timeout == sf::Time::Zero)
 	{
 		return false;
 	}

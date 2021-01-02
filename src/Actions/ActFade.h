@@ -17,7 +17,7 @@ private:
 
 public:
 	ActGameFade(const sf::Color& color_, bool isFadeOut_, bool enableInput_,
-		uint8_t fadeOffset_, const sf::Time& refresh_) noexcept : color(color_),
+		uint8_t fadeOffset_, sf::Time refresh_) noexcept : color(color_),
 		isFadeOut(isFadeOut_), enableInput(enableInput_), fadeOffset(fadeOffset_),
 		refresh(refresh_), action(nullptr) {}
 

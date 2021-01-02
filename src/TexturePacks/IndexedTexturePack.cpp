@@ -44,6 +44,15 @@ bool IndexedTexturePack::get(uint32_t index, TextureInfo& ti) const
 	return false;
 }
 
+int32_t IndexedTexturePack::getWidth(uint32_t index) const
+{
+	if (translateIndex(index) == true)
+	{
+		return texturePack->getWidth(index);
+	}
+	return 0;
+}
+
 void IndexedTexturePack::update(int epoch, sf::Time elapsedTime)
 {
 	if (lastEpoch == epoch)

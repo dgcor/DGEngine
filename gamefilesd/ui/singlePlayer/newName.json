@@ -37,7 +37,7 @@
   "animation": {
     "id": "caret",
     "texturePack": "caret",
-    "position": [310, 318],
+    "position": [308, 318],
     "anchor": "none",
     "refresh": 0.5
   },

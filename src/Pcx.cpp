@@ -7,12 +7,7 @@
 #include "Pcx.h"
 #include <cstdint>
 #include "endian/little_endian.hpp"
-#include "PhysFSStream.h"
 #include <vector>
-
-// --------------------------------------------
-// PCXHeader - PCX header structure.
-// --------------------------------------------
 
 #pragma pack(push)
 #pragma pack(1)
@@ -41,29 +36,19 @@ struct PCXHeader
 
 #pragma pack(pop)
 
-// --------------------------------------------------
-// LoadImagePCX() - load a Zsoft PCX image [.pcx]
-//
-// parameters :
-//    - fileName [in]  : image source file
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-// accepted image formats :
-//     # RLE 8 bits / version 5
-// -------------------------------------------------
-sf::Image ImageUtils::LoadImagePCX(const char* fileName)
+bool ImageUtils::LoadImagePCX(sf::InputStream& file, sf::Image& image)
 {
-	sf::PhysFSStream stream(fileName);
-
-	if (stream.hasError() == true ||
-		stream.getSize() < 900)
+	if (file.getSize() < 900)
 	{
-		return {};
+		return false;
 	}
 
-	auto fileSize = (size_t)stream.getSize();
+	file.seek(0);
+
+	auto fileSize = (size_t)file.getSize();
 
 	std::vector<uint8_t> buffer(fileSize + 1);
-	stream.read(buffer.data(), stream.getSize());
+	file.read(buffer.data(), file.getSize());
 
 	/////////////////////////////////////////////////////
 
@@ -74,7 +59,7 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 		(header->encoding != 1) ||
 		(header->bitsPerPixel != 8))
 	{
-		return {};
+		return false;
 	}
 
 	// the palette is located at the 769th last byte of the file
@@ -83,7 +68,7 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 	// verify the palette; first byte must be equal to 12
 	if (buffer[paletteStartPos] != 12)
 	{
-		return {};
+		return false;
 	}
 
 	// little endian handling
@@ -97,9 +82,8 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 	auto height = header->height - header->y + 1u;
 	auto imageSize = width * height;
 
-	sf::Image img;
-	img.create(width, height);
-	auto data = (sf::Uint8*)img.getPixelsPtr();
+	image.create(width, height);
+	auto data = (sf::Uint8*)image.getPixelsPtr();
 
 	// decode compressed image (RLE)
 	for (size_t idx = 0, buffIdx = 128;
@@ -133,5 +117,5 @@ sf::Image ImageUtils::LoadImagePCX(const char* fileName)
 			idx++;
 		}
 	}
-	return img;
+	return true;
 }

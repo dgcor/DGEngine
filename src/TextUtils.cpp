@@ -1,36 +1,47 @@
 #include "TextUtils.h"
 #include "Game.h"
 #include "GameUtils.h"
+#include "Utils/Utils.h"
 
 namespace TextUtils
 {
-	std::string getFormatString(const Game& game, const std::string_view format,
-		const std::vector<std::string>& bindings)
+	bool getFormatString(const Game& game, const std::string_view format,
+		const std::vector<std::string>& bindings, std::string& outStr)
 	{
 		if (bindings.size() > 0)
 		{
 			if (format == "[1]")
 			{
-				return game.getVarOrPropStringS(bindings[0]);
+				return game.getVarOrPropStringS(bindings[0], outStr);
 			}
 			else
 			{
-				std::string displayText(format);
+				bool hasBinding = true;
+				outStr = format;
 				if (format.size() > 2)
 				{
 					for (size_t i = 0; i < bindings.size(); i++)
 					{
-						auto str = game.getVarOrPropStringS(bindings[i]);
+						std::string str;
+						hasBinding &= game.getVarOrPropStringS(bindings[i], str);
 						Utils::replaceStringInPlace(
-							displayText,
+							outStr,
 							"[" + Utils::toString(i + 1) + "]",
 							str);
 					}
 				}
-				return displayText;
+				return hasBinding;
 			}
 		}
-		return "";
+		return false;
+	}
+
+	std::string getFormatString(const Game& game, const std::string_view format,
+		const std::vector<std::string>& bindings)
+	{
+		std::string str;
+		getFormatString(game, format, bindings, str);
+		return str;
 	}
 
 	std::string getTextQueryable(const Game& game, const std::string_view format,

@@ -1,7 +1,5 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
 #include <cassert>
-#include "gsl/gsl"
 #include "PhysFSStream.h"
 #include <sstream>
 #include "StreamReader.h"
@@ -308,4 +306,3 @@ namespace DS1
 			numPaths = 0;
 	}
 }
-#endif

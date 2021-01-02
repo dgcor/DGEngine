@@ -12,8 +12,8 @@ private:
 	sf::Color color;
 
 public:
-	ActFontSetPaletteOrColor(const std::string& id_,
-		const std::string& idPalette_, const sf::Color& color_)
+	ActFontSetPaletteOrColor(const std::string_view id_,
+		const std::string_view idPalette_, const sf::Color& color_)
 		: id(id_), idPalette(idPalette_), color(color_) {}
 
 	bool execute(Game& game) override

@@ -31,6 +31,8 @@ protected:
 	bool wasRightClicked{ false };
 	InputEventType captureInputEvents{ InputEventType::None };
 
+	bool click(Game& game, bool playSound, const std::shared_ptr<Action>& action);
+
 	void onHover(Game& game, bool contains);
 	void onMouseButtonPressed(Game& game, bool contains);
 	void onMouseButtonReleased(Game& game, bool contains);
@@ -48,6 +50,7 @@ public:
 	bool setAction(uint16_t nameHash16, const std::shared_ptr<Action>& action) noexcept override;
 
 	bool click(Game& game, bool playSound);
+	bool rightClick(Game& game, bool playSound);
 	void enable(bool enable) noexcept { enabled = enable; }
 	void focus(Game& game) const;
 	void focusEnabled(bool focusOnClick_) noexcept { focusEnable = true; focusOnClick = focusOnClick_; }

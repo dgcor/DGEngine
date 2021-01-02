@@ -3,6 +3,6 @@
     "class": "scavenger",
     "mapPosition": [80, 70],
     "direction": "front",
-    "AI": true
+    "AI": 5
   }
 }

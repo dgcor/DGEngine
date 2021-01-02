@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_chain_boots",
+    "file": "images/avatar/female/chain_boots.png"
+  },
   "texturePack": {
     "id": "f_chain_boots",
-    "texture": {
-      "id": "f_chain_boots",
-      "file": "images/avatar/female/chain_boots.png"
-    },
+    "texture": "f_chain_boots",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

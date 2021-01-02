@@ -1,0 +1,8 @@
+{
+  "shader": {
+    "id": "highlight",
+    "fragmentFile": "res/shaders/sprite/highlight.frag",
+    "uniforms": ["palette", "outline"],
+    "setShader": "sprite"
+  }
+}

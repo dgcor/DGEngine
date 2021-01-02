@@ -1,0 +1,8 @@
+{
+  "shader": {
+    "id": "swirl",
+    "fragmentFile": "res/shaders/game/swirl.frag",
+    "uniforms": ["fade", "gamma", "textureSize"],
+    "setShader": "game"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "load": "ui/level/panel/big/upperSeparator.json",
   "load": "ui/level/panel/big/lowerSeparator.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "tab",
       "shift": true,

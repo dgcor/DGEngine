@@ -11,10 +11,6 @@ int main(int argc, char* argv[])
 	{
 		Game game;
 
-#ifdef __ANDROID__
-		game.load("/sdcard/gamefiles.zip", "main.json");
-		game.play();
-#else
 		if (CmdLineUtils::processCmdLine(argc, (const char **)argv) == false)
 		{
 			if (argc == 2)
@@ -31,7 +27,6 @@ int main(int argc, char* argv[])
 			}
 			game.play();
 		}
-#endif
 	}
 	catch (std::exception& ex)
 	{

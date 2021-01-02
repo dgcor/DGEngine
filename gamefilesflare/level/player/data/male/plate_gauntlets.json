@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_plate_gauntlets",
+    "file": "images/avatar/male/plate_gauntlets.png"
+  },
   "texturePack": {
     "id": "m_plate_gauntlets",
-    "texture": {
-      "id": "m_plate_gauntlets",
-      "file": "images/avatar/male/plate_gauntlets.png"
-    },
+    "texture": "m_plate_gauntlets",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

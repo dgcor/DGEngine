@@ -1,0 +1,8 @@
+{
+  "shader": {
+    "id": "diablo2",
+    "fragmentFile": "res/shaders/sprite/diablo2.frag",
+    "uniforms": ["palette", "outline"],
+    "setShader": "sprite"
+  }
+}

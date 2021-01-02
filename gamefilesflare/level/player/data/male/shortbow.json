@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_shortbow",
+    "file": "images/avatar/male/shortbow.png"
+  },
   "texturePack": {
     "id": "m_shortbow",
-    "texture": {
-      "id": "m_shortbow",
-      "file": "images/avatar/male/shortbow.png"
-    },
+    "texture": "m_shortbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

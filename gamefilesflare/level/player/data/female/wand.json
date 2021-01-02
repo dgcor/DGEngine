@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_wand",
+    "file": "images/avatar/female/wand.png"
+  },
   "texturePack": {
     "id": "f_wand",
-    "texture": {
-      "id": "f_wand",
-      "file": "images/avatar/female/wand.png"
-    },
+    "texture": "f_wand",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,22 +1,42 @@
 #pragma once
 
 #include <cmath>
-#include "Game/Number.h"
-#include "Game/PairXY.h"
 #include "Json/JsonParser.h"
+#include "SaveProperties.h"
 #include <string>
 #include <string_view>
+#include "Utils/Number.h"
+#include "Utils/PairXY.h"
 
 namespace SaveUtils
 {
+	bool hasProperty(const Save::Properties& properties, const std::string_view key);
+
+	bool getBoolProperty(const Save::Properties& properties, const std::string_view key);
+
+	int64_t getInt64Property(const Save::Properties& properties, const std::string_view key);
+
+	double getDoubleProperty(const Save::Properties& properties, const std::string_view key);
+
+	std::string getStringProperty(const Save::Properties& properties, const std::string_view key);
+
 	void writeBool(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, bool val);
 
 	void writeInt(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, int val);
 
+	void writeInt64(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, int64_t val);
+
 	void writeUInt(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, unsigned val);
+
+	void writeUInt64(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, uint64_t val);
+
+	void writeDouble(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, double val);
 
 	void writeNumber32(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, const Number32& val);

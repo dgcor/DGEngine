@@ -1,4 +1,5 @@
 #include "ParseImageContainer.h"
+#include "FileUtils.h"
 #include "Game.h"
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "ImageContainers/CELImageContainer.h"
@@ -14,52 +15,121 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
-	std::shared_ptr<ImageContainer> parseImageContainerObj(Game& game,
-		const Value& elem, const char* fileElem)
+	enum class ImageContainerType
 	{
-		if (isValidString(elem, fileElem) == false)
+		Simple,
+		CEL,
+		CL2,
+		DC6,
+		DCC,
+		DT1
+	};
+
+	ImageContainerType getImageContainerType(const std::string_view fileName, const Value& elem)
+	{
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+		std::string fileType;
+
+		if (isValidString(elem, "type") == true)
+		{
+			fileType = Utils::toLower(getStringViewVal(elem["type"sv]));
+		}
+		else
+		{
+			fileType = Utils::toLower(FileUtils::getFileExtension(fileName));
+		}
+
+		if (fileType.empty() == false && fileType.front() == '.')
+		{
+			fileType = fileType.substr(1);
+		}
+
+		if (fileType == "cel")
+		{
+			return ImageContainerType::CEL;
+		}
+		else if (fileType == "cl2")
+		{
+			return ImageContainerType::CL2;
+		}
+		else if (fileType == "dc6")
+		{
+			return ImageContainerType::DC6;
+		}
+		else if (fileType == "dcc")
+		{
+			return ImageContainerType::DCC;
+		}
+		else if (fileType == "dt1")
+		{
+			return ImageContainerType::DT1;
+		}
+#endif
+		return ImageContainerType::Simple;
+	}
+
+	std::shared_ptr<ImageContainer> getImageContainerObj(Game& game, const Value& elem)
+	{
+		std::shared_ptr<FileBytes> fileBytes;
+		std::string_view fileName;
+		if (isValidString(elem, "fileBytes") == true)
+		{
+			fileBytes = game.Resources().getFileBytes(getStringViewVal(elem["fileBytes"sv]));
+		}
+		else if (isValidString(elem, "file") == true)
+		{
+			fileName = getStringViewVal(elem["file"sv]);
+			fileBytes = std::make_shared<FileBytes>(FileUtils::readChar(fileName));
+		}
+		if (fileBytes == nullptr || fileBytes->empty() == true)
 		{
 			return nullptr;
 		}
 
 		std::shared_ptr<ImageContainer> imgContainer;
 
-		auto fileName = getStringViewVal(elem[fileElem]);
-		auto fileNameLower = Utils::toLower(fileName);
-
+		switch (getImageContainerType(fileName, elem))
+		{
 #ifndef NO_DIABLO_FORMAT_SUPPORT
-		if (Utils::endsWith(fileNameLower, ".cel") == true)
+		case ImageContainerType::CEL:
 		{
-			imgContainer = std::make_shared<CELImageContainer>(fileName);
+			imgContainer = std::make_shared<CELImageContainer>(fileBytes);
+			break;
 		}
-		else if (Utils::endsWith(fileNameLower, ".cl2") == true)
+		case ImageContainerType::CL2:
 		{
-			imgContainer = std::make_shared<CL2ImageContainer>(fileName);
+			imgContainer = std::make_shared<CL2ImageContainer>(fileBytes);
+			break;
 		}
-		else if (Utils::endsWith(fileNameLower, ".dc6") == true)
+		case ImageContainerType::DC6:
 		{
 			auto stitch = getBoolKey(elem, "stitch", true);
 			auto useOffsets = getBoolKey(elem, "useOffsets");
-			imgContainer = std::make_shared<DC6ImageContainer>(fileName, stitch, useOffsets);
+			imgContainer = std::make_shared<DC6ImageContainer>(fileBytes, stitch, useOffsets);
+			break;
 		}
-		else if (Utils::endsWith(fileNameLower, ".dcc") == true)
+		case ImageContainerType::DCC:
 		{
-			imgContainer = std::make_shared<DCCImageContainer>(fileName);
+			imgContainer = std::make_shared<DCCImageContainer>(fileBytes);
+			break;
 		}
-		else if (Utils::endsWith(fileNameLower, ".dt1") == true)
+		case ImageContainerType::DT1:
 		{
-			imgContainer = std::make_shared<DT1ImageContainer>(fileName);
+			imgContainer = std::make_shared<DT1ImageContainer>(fileBytes);
+			break;
 		}
-#else
-		if (false) {}
 #endif
-		else
+		case ImageContainerType::Simple:
+		default:
 		{
 			auto frames = getFramesKey(elem, "frames");
 			auto directions = getUIntKey(elem, "directions");
 			imgContainer = std::make_shared<SimpleImageContainer>(
 				fileName, frames.first, frames.second, directions, false);
+			break;
+		}
 		}
 
 		if (imgContainer->size() == 0)
@@ -76,8 +146,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getImageContainer(fromId);
@@ -101,7 +171,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else
 		{
@@ -109,7 +179,7 @@ namespace Parser
 			{
 				return;
 			}
-			auto file = getStringViewVal(elem["file"]);
+			auto file = getStringViewVal(elem["file"sv]);
 			if (getIdFromFile(file, id) == false)
 			{
 				return;
@@ -123,38 +193,11 @@ namespace Parser
 		{
 			return;
 		}
-		auto imgRes = parseImageContainerObj(game, elem);
+		auto imgRes = getImageContainerObj(game, elem);
 		if (imgRes == nullptr)
 		{
 			return;
 		}
 		game.Resources().addImageContainer(id, imgRes, getStringViewKey(elem, "resource"));
-	}
-
-	bool getOrParseImageContainer(Game& game, const Value& elem,
-		const char* idKey, std::shared_ptr<ImageContainer>& imgContainer,
-		const char* fileElem)
-	{
-		if (isValidString(elem, idKey) == true)
-		{
-			auto id = elem[idKey].GetStringStr();
-			imgContainer = game.Resources().getImageContainer(id);
-			if (imgContainer != nullptr)
-			{
-				return true;
-			}
-			imgContainer = parseImageContainerObj(game, elem, fileElem);
-			if (isValidId(id) == true &&
-				imgContainer != nullptr)
-			{
-				game.Resources().addImageContainer(id, imgContainer, getStringViewKey(elem, "resource"));
-				return true;
-			}
-		}
-		else
-		{
-			imgContainer = parseImageContainerObj(game, elem, fileElem);
-		}
-		return false;
 	}
 }

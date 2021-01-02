@@ -7,10 +7,12 @@
 #include "StringButton.h"
 #include "StringText.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseMenuButton(
 		Game& game,
@@ -73,33 +75,33 @@ namespace Parser
 		}
 		button->Position(pos2);
 
-		if (val.HasMember("onClick"))
+		if (val.HasMember("onClick"sv))
 		{
-			button->setAction(str2int16("click"), parseAction(game, val["onClick"]));
+			button->setAction(str2int16("click"), getActionVal(game, val["onClick"sv]));
 		}
-		if (val.HasMember("onDoubleClick"))
+		if (val.HasMember("onDoubleClick"sv))
 		{
-			button->setAction(str2int16("doubleClick"), parseAction(game, val["onDoubleClick"]));
+			button->setAction(str2int16("doubleClick"), getActionVal(game, val["onDoubleClick"sv]));
 		}
-		if (val.HasMember("onClickIn"))
+		if (val.HasMember("onClickIn"sv))
 		{
-			button->setAction(str2int16("clickIn"), parseAction(game, val["onClickIn"]));
+			button->setAction(str2int16("clickIn"), getActionVal(game, val["onClickIn"sv]));
 		}
-		if (val.HasMember("onClickOut"))
+		if (val.HasMember("onClickOut"sv))
 		{
-			button->setAction(str2int16("clickOut"), parseAction(game, val["onClickOut"]));
+			button->setAction(str2int16("clickOut"), getActionVal(game, val["onClickOut"sv]));
 		}
-		if (val.HasMember("onFocus"))
+		if (val.HasMember("onFocus"sv))
 		{
-			button->setAction(str2int16("focus"), parseAction(game, val["onFocus"]));
+			button->setAction(str2int16("focus"), getActionVal(game, val["onFocus"sv]));
 		}
-		if (val.HasMember("onHoverEnter"))
+		if (val.HasMember("onHoverEnter"sv))
 		{
-			button->setAction(str2int16("hoverEnter"), parseAction(game, val["onHoverEnter"]));
+			button->setAction(str2int16("hoverEnter"), getActionVal(game, val["onHoverEnter"sv]));
 		}
-		if (val.HasMember("onHoverLeave"))
+		if (val.HasMember("onHoverLeave"sv))
 		{
-			button->setAction(str2int16("hoverLeave"), parseAction(game, val["onHoverLeave"]));
+			button->setAction(str2int16("hoverLeave"), getActionVal(game, val["onHoverLeave"sv]));
 		}
 
 		menu.addItem(button);

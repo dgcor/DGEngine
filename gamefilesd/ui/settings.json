@@ -5,7 +5,7 @@
     "loadMainMenuImg",
     "loadLogoImg"
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"

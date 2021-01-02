@@ -123,8 +123,8 @@ public:
 	const std::string& Name() const noexcept { return name; }
 	const std::string& SpellType() const noexcept { return spellType; }
 
-	void Name(const std::string name_) { name = name_; }
-	void SpellType(const std::string type_)
+	void Name(const std::string_view name_) { name = name_; }
+	void SpellType(const std::string_view type_)
 	{
 		spellType = type_;
 	}

@@ -7,8 +7,11 @@
 #include "SFML/VertexArray2.h"
 #include "SFML/View2.h"
 
+class LevelObject;
 class Panel;
+class Sprite2;
 struct SpriteShaderCache;
+class UIObject;
 
 class LevelSurface
 {
@@ -29,43 +32,39 @@ public:
 	static constexpr float ZoomMin = 0.5f;
 	static constexpr float ZoomMax = 2.0f;
 
-	sf::FloatRect visibleRect;
 	int32_t tileWidth{ 0 };
 	int32_t tileHeight{ 0 };
 	int32_t blockWidth{ 0 };	// a tile is 4 blocks
 	int32_t blockHeight{ 0 };
 	uint32_t subTiles{ 0 };
-	bool visible{ false };
+
+	sf::FloatRect visibleRect;
+	bool visible{ true };
 
 	Anchor getAnchor() const noexcept;
 	void setAnchor(const Anchor anchor_) noexcept;
 
-	const sf::Vector2f& Position() const;
+	const sf::Vector2f& Position() const noexcept;
 	void Position(const sf::Vector2f& position);
-	const sf::Vector2f& Size() const;
+	const sf::Vector2f& Size() const noexcept;
 	void Size(const sf::Vector2f& size_);
-
-	float getLightZoomFactor() const noexcept;
 
 	const sf::Vector2f& getCenter() const;
 
 	void setCenter(float newViewCenterX, float newViewCenterY);
 	void setCenter(const sf::Vector2f& center);
+	void setCenter();
 
 	sf::Vector2f getPosition(const sf::Vector2f& point) const;
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
 	bool draw(const Game& game, const Panel& obj) const;
-	void draw(const sf::Drawable& obj) const;
+	void draw(const Game& game, const UIObject& obj) const;
+	void draw(const sf::Drawable& obj, sf::RenderStates states = sf::RenderStates::Default) const;
+	void draw(const LevelObject& obj, GameShader* spriteShader, SpriteShaderCache& cache) const;
+	void draw(const Sprite2& obj, GameShader* spriteShader, SpriteShaderCache& cache) const;
 	void draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
-		const Palette* palette, sf::Shader* spriteShader) const;
-
-	template <class T>
-	void draw(const T& obj, sf::Shader* spriteShader,
-		SpriteShaderCache& cache) const
-	{
-		obj.draw(texture, spriteShader, cache);
-	}
+		const Palette* palette, GameShader* spriteShader) const;
 
 	void init(const Game& game);
 

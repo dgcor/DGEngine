@@ -9,11 +9,13 @@
 using namespace rapidjson;
 using namespace SaveUtils;
 
-void Save::serialize(void* serializeObj, Properties& props,
+void Save::serialize(void* serializeObj, const Properties& props,
 	const Game& game, const Level& level, const Player& player)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
 	const auto& playerClass = *player.Class();
+
+	bool saveDefaults = getBoolProperty(props, "saveDefaults");
 
 	writer.StartObject();
 
@@ -27,7 +29,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	{
 		nameFromClass = player.SimpleName();
 	}
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		nameFromClass != player.Name())
 	{
 		writeString(writer, "name", player.Name());
@@ -145,16 +147,16 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 	writeVector2fi(writer, "mapPosition", player.MapPosition());
 
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		player.enableHover == false)
 	{
 		writeBool(writer, "enableHover", player.enableHover);
 	}
 
-	if (props.saveDefaults == true ||
-		player.useAI == true)
+	if (saveDefaults == true ||
+		player.aiType != 0)
 	{
-		writeBool(writer, "AI", player.useAI);
+		writeInt(writer, "AI", player.aiType);
 	}
 
 	writeKeyStringView(writer, "properties");
@@ -166,7 +168,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 			uint16_t propHash = str2int16(prop);
 			if (player.getNumberByHash(propHash, {}, numVal) == true)
 			{
-				if (props.saveDefaults == false &&
+				if (saveDefaults == false &&
 					(playerClass.isDefault(propHash, numVal) == true ||
 						numVal.getInt32() == 0))
 				{
@@ -209,7 +211,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 		for (const auto& prop : player.customProperties)
 		{
-			if (props.saveDefaults == false && playerClass.isDefault(prop) == true)
+			if (saveDefaults == false && playerClass.isDefault(prop) == true)
 			{
 				continue;
 			}
@@ -270,13 +272,12 @@ void Save::serialize(void* serializeObj, Properties& props,
 			{
 				writeKeyStringView(writer, "item");
 				writer.StartArray();
-				auto oldCustomProp = props.customProperty;
+				auto itemProps = props;
 				for (auto it = inv.begin(); it != inv.end(); ++it)
 				{
-					props.customProperty = &it.state.idx;
-					serialize(serializeObj, props, game, level, *it);
+					itemProps["index"] = (int64_t)it.state.idx;
+					serialize(serializeObj, itemProps, game, level, *it);
 				}
-				props.customProperty = oldCustomProp;
 				writer.EndArray();
 			}
 

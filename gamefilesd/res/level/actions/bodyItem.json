@@ -4,7 +4,7 @@
     "id": "update{1}Item",
     "replaceVars": true,
     "action": [
-      { "name": "image.setTexture", "id": "img{1}", "query": "currentLevel.currentPlayer.item.body.{1}" },
+      { "name": "image.setTexture", "id": "img{1}", "query": "currentLevel.currentPlayer.item.body.{1}", "index": 1 },
       {
         "name": "if.equal",
         "param1": "%currentLevel.currentPlayer.canUseItem.body.{1}%",

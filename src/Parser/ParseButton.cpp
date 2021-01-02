@@ -9,34 +9,29 @@
 #include "StringButton.h"
 #include "StringText.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	std::shared_ptr<Button> parseBitmapButton(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "texture") == false &&
-			isValidString(elem, "texturePack") == false)
-		{
-			return nullptr;
-		}
-
 		auto button = std::make_shared<BitmapButton>();
 
-		if (elem.HasMember("texture") == true)
+		if (elem.HasMember("texture"sv) == true)
 		{
-			auto tex = game.Resources().getTexture(getStringVal(elem["texture"]));
+			auto tex = game.Resources().getTexture(elem["texture"sv].GetStringView());
 			if (tex == nullptr)
 			{
 				return nullptr;
 			}
-
 			button->setTexture(*tex.get(), true);
 		}
-		else
+		else if (isValidString(elem, "texturePack"))
 		{
-			auto tex = game.Resources().getTexturePack(getStringVal(elem["texturePack"]));
+			auto tex = game.Resources().getTexturePack(elem["texturePack"sv].GetStringView());
 			if (tex == nullptr)
 			{
 				return nullptr;
@@ -46,10 +41,28 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			button->setTexture(ti, true);
+			button->setTexture(ti);
+		}
+		else if (isValidString(elem, "compositeTexture"))
+		{
+			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
+			if (compTex == nullptr)
+			{
+				return nullptr;
+			}
+			std::vector<TextureInfo> ti;
+			if (compTex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			{
+				return nullptr;
+			}
+			button->setTexture(ti);
+		}
+		else
+		{
+			return nullptr;
 		}
 
-		if (elem.HasMember("textureRect"))
+		if (elem.HasMember("textureRect"sv))
 		{
 			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			button->setTextureRect(getIntRectKey(elem, "textureRect", rect));
@@ -67,7 +80,7 @@ namespace Parser
 
 	std::shared_ptr<Button> parseStringButton(Game& game, const Value& elem)
 	{
-		auto drawableText = parseDrawableTextObj(game, elem);
+		auto drawableText = getDrawableTextObj(game, elem);
 		if (drawableText == nullptr)
 		{
 			return nullptr;
@@ -83,7 +96,7 @@ namespace Parser
 		{
 			return;
 		}
-		std::string id(elem["id"].GetStringStr());
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -91,8 +104,7 @@ namespace Parser
 
 		std::shared_ptr<Button> button;
 
-		if (elem.HasMember("texture") == true ||
-			elem.HasMember("texturePack") == true)
+		if (elem.HasMember("font"sv) == false)
 		{
 			button = parseBitmapButton(game, elem);
 			if (button != nullptr)
@@ -114,72 +126,72 @@ namespace Parser
 				button->setColor(getColorKey(elem, "color", sf::Color::White));
 			}
 		}
-		if (button == nullptr)
+		else
 		{
 			button = parseStringButton(game, elem);
-			if (button == nullptr)
-			{
-				return;
-			}
+		}
+		if (button == nullptr)
+		{
+			return;
 		}
 
 		button->enable(getBoolKey(elem, "enable", true));
 		button->setClickUp(getBoolKey(elem, "clickUp"));
 		button->setCaptureInputEvents(getInputEventTypeKey(elem, "captureInputEvents"));
 
-		if (elem.HasMember("onChange"))
+		if (elem.HasMember("onChange"sv))
 		{
-			button->setAction(str2int16("change"), parseAction(game, elem["onChange"]));
+			button->setAction(str2int16("change"), getActionVal(game, elem["onChange"sv]));
 		}
-		if (elem.HasMember("onClick"))
+		if (elem.HasMember("onClick"sv))
 		{
-			button->setAction(str2int16("click"), parseAction(game, elem["onClick"]));
+			button->setAction(str2int16("click"), getActionVal(game, elem["onClick"sv]));
 		}
-		if (elem.HasMember("onRightClick"))
+		if (elem.HasMember("onRightClick"sv))
 		{
-			button->setAction(str2int16("rightClick"), parseAction(game, elem["onRightClick"]));
+			button->setAction(str2int16("rightClick"), getActionVal(game, elem["onRightClick"sv]));
 		}
-		if (elem.HasMember("onDoubleClick"))
+		if (elem.HasMember("onDoubleClick"sv))
 		{
-			button->setAction(str2int16("doubleClick"), parseAction(game, elem["onDoubleClick"]));
+			button->setAction(str2int16("doubleClick"), getActionVal(game, elem["onDoubleClick"sv]));
 		}
-		if (elem.HasMember("onClickDrag"))
+		if (elem.HasMember("onClickDrag"sv))
 		{
-			button->setAction(str2int16("clickDrag"), parseAction(game, elem["onClickDrag"]));
+			button->setAction(str2int16("clickDrag"), getActionVal(game, elem["onClickDrag"sv]));
 		}
-		if (elem.HasMember("onClickIn"))
+		if (elem.HasMember("onClickIn"sv))
 		{
-			button->setAction(str2int16("clickIn"), parseAction(game, elem["onClickIn"]));
+			button->setAction(str2int16("clickIn"), getActionVal(game, elem["onClickIn"sv]));
 		}
-		if (elem.HasMember("onClickOut"))
+		if (elem.HasMember("onClickOut"sv))
 		{
-			button->setAction(str2int16("clickOut"), parseAction(game, elem["onClickOut"]));
+			button->setAction(str2int16("clickOut"), getActionVal(game, elem["onClickOut"sv]));
 		}
-		if (elem.HasMember("onFocus"))
+		if (elem.HasMember("onFocus"sv))
 		{
-			button->setAction(str2int16("focus"), parseAction(game, elem["onFocus"]));
+			button->setAction(str2int16("focus"), getActionVal(game, elem["onFocus"sv]));
 		}
-		if (elem.HasMember("onHoverEnter"))
+		if (elem.HasMember("onHoverEnter"sv))
 		{
-			button->setAction(str2int16("hoverEnter"), parseAction(game, elem["onHoverEnter"]));
+			button->setAction(str2int16("hoverEnter"), getActionVal(game, elem["onHoverEnter"sv]));
 		}
-		if (elem.HasMember("onHoverLeave"))
+		if (elem.HasMember("onHoverLeave"sv))
 		{
-			button->setAction(str2int16("hoverLeave"), parseAction(game, elem["onHoverLeave"]));
+			button->setAction(str2int16("hoverLeave"), getActionVal(game, elem["onHoverLeave"sv]));
 		}
 		if (isValidString(elem, "sound"))
 		{
-			button->setClickSound(game.Resources().getSoundBuffer(elem["sound"].GetStringStr()));
+			button->setClickSound(game.Resources().getSoundBuffer(elem["sound"sv].GetStringView()));
 		}
 		if (isValidString(elem, "focusSound"))
 		{
-			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"].GetStringStr()));
+			button->setFocusSound(game.Resources().getSoundBuffer(elem["focusSound"sv].GetStringView()));
 		}
 
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

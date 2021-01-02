@@ -101,7 +101,7 @@ bool InputText::isValidMax(const std::string& str) const noexcept
 
 void InputText::click(Game& game)
 {
-	if (isValidMin(text->getText()) == false)
+	if (isValidMin(getText()) == false)
 	{
 		if (minLengthAction != nullptr)
 		{
@@ -117,7 +117,7 @@ void InputText::click(Game& game)
 
 void InputText::update(Game& game)
 {
-	if (text->Visible() == false)
+	if (Visible() == false)
 	{
 		return;
 	}
@@ -128,12 +128,12 @@ void InputText::update(Game& game)
 		while (true)
 		{
 			auto ch = static_cast<char>(game.TextEntered().unicode);
-			auto txt = text->getText();
+			auto txt = getText();
 
 			if (ch == 8 && txt.size() > 0) // backspace
 			{
 				txt.pop_back();
-				text->setText(txt);
+				setText(txt);
 			}
 			else if (ch < 0 || ch >= 32)
 			{
@@ -148,7 +148,7 @@ void InputText::update(Game& game)
 				{
 					break;
 				}
-				text->setText(txt);
+				setText(txt);
 			}
 			triggerOnChange = true;
 			break;
@@ -168,13 +168,13 @@ bool InputText::getProperty(const std::string_view prop, Variable& var) const
 	switch (propHash)
 	{
 	case str2int16("number"):
-		var = Variable((int64_t)std::strtoll(text->getText().c_str(), nullptr, 10));
+		var = Variable((int64_t)std::strtoll(getText().c_str(), nullptr, 10));
 		break;
 	case str2int16("double"):
-		var = Variable((int64_t)std::strtod(text->getText().c_str(), nullptr));
+		var = Variable((int64_t)std::strtod(getText().c_str(), nullptr));
 		break;
 	default:
-		return text->getProperty(prop, var);
+		return Text::getProperty(prop, var);
 	}
 	return true;
 }

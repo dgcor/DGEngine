@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_infantry_axe",
+    "file": "images/avatar/male/infantry_axe.png"
+  },
   "texturePack": {
     "id": "m_infantry_axe",
-    "texture": {
-      "id": "m_infantry_axe",
-      "file": "images/avatar/male/infantry_axe.png"
-    },
+    "texture": "m_infantry_axe",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

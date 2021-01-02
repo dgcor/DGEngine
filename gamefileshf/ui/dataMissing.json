@@ -1,5 +1,5 @@
 {
-  "keyboard": {
+  "inputEvent": {
     "key": ["enter", " ", "esc"],
     "action": { "name": "game.close" }
   },

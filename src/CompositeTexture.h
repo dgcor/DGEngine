@@ -62,12 +62,7 @@ public:
 	bool get(uint32_t index, std::vector<TextureInfo>& tiVec) const;
 
 	// uses first texturePack of each group
-	std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const;
-
-	// uses first texturePack of each group
-	std::pair<uint32_t, uint32_t> getRange(
-		int32_t groupIdx, int32_t directionIdx) const;
+	AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const;
 };
 
 typedef std::variant<
@@ -80,32 +75,47 @@ struct TexturePackVariant : public TexturePackVariant_t
 {
 	using TexturePackVariant_t::TexturePackVariant_t;
 
-	constexpr bool holdsNullTexturePack() const noexcept
+	bool holdsNullTexturePack() const noexcept
 	{
 		return std::holds_alternative<std::nullptr_t>(*this);
 	}
-	constexpr bool holdsTexturePack() const noexcept
+
+	bool holdsTexturePack() const noexcept
 	{
 		return std::holds_alternative<std::shared_ptr<TexturePack>>(*((const TexturePackVariant_t* const)this));
 	}
-	constexpr bool holdsCompositeTexture() const noexcept
+
+	bool holdsTexturePack(const std::shared_ptr<TexturePack>& obj) const noexcept
+	{
+		return (holdsTexturePack() == true ? getTexturePack() == obj : false);
+	}
+
+	bool holdsCompositeTexture() const noexcept
 	{
 		return std::holds_alternative<std::shared_ptr<CompositeTexture>>(*((const TexturePackVariant_t* const)this));
 	}
 
-	constexpr const std::shared_ptr<TexturePack>& getTexturePack() const
+	bool holdsCompositeTexture(const std::shared_ptr<CompositeTexture>& obj) const noexcept
+	{
+		return (holdsCompositeTexture() == true ? getCompositeTexture() == obj : false);
+	}
+
+	const std::shared_ptr<TexturePack>& getTexturePack() const
 	{
 		return std::get<std::shared_ptr<TexturePack>>(*((const TexturePackVariant_t* const)this));
 	}
-	constexpr std::shared_ptr<TexturePack>& getTexturePack()
+
+	std::shared_ptr<TexturePack>& getTexturePack()
 	{
 		return std::get<std::shared_ptr<TexturePack>>(*((TexturePackVariant_t* const)this));
 	}
-	constexpr const std::shared_ptr<CompositeTexture>& getCompositeTexture() const
+
+	const std::shared_ptr<CompositeTexture>& getCompositeTexture() const
 	{
 		return std::get<std::shared_ptr<CompositeTexture>>(*((const TexturePackVariant_t* const)this));
 	}
-	constexpr std::shared_ptr<CompositeTexture>& getCompositeTexture()
+
+	std::shared_ptr<CompositeTexture>& getCompositeTexture()
 	{
 		return std::get<std::shared_ptr<CompositeTexture>>(*((TexturePackVariant_t* const)this));
 	}

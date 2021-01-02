@@ -160,19 +160,6 @@ void LevelMap::updateLights(const std::vector<std::shared_ptr<LevelObject>>& lev
 	{
 		allLights.resize(maxLights);
 	}
-
-	lightArray.clear();
-	for (const auto& light : allLights)
-	{
-		if (lightArray.full() == true)
-		{
-			break;
-		}
-		lightArray.push_back(light.drawPos.x);
-		lightArray.push_back(light.drawPos.y);
-		lightArray.push_back((float)light.lightSource.light / 255.f);
-		lightArray.push_back((float)light.lightSource.radius);
-	}
 }
 
 void LevelMap::MaxLights(size_t maxLights_) noexcept

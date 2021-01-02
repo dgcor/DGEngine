@@ -4,11 +4,11 @@
 #include "LevelObjectClass.h"
 #include <list>
 #include <memory>
-#include "PairXY.h"
 #include "Queryable.h"
 #include "Save/SaveProperties.h"
 #include "SFML/CompositeSprite.h"
 #include <string_view>
+#include "Utils/PairXY.h"
 #include "Variable.h"
 
 class Game;
@@ -127,7 +127,7 @@ public:
 	virtual void serialize(void* serializeObj, Save::Properties& props,
 		const Game& game, const Level& level) const = 0;
 
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+	void draw(sf::RenderTarget& target, GameShader* spriteShader,
 		SpriteShaderCache& cache) const
 	{
 		sprite.draw(target, spriteShader, cache);

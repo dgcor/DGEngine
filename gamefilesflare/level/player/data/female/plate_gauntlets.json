@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_plate_gauntlets",
+    "file": "images/avatar/female/plate_gauntlets.png"
+  },
   "texturePack": {
     "id": "f_plate_gauntlets",
-    "texture": {
-      "id": "f_plate_gauntlets",
-      "file": "images/avatar/female/plate_gauntlets.png"
-    },
+    "texture": "f_plate_gauntlets",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

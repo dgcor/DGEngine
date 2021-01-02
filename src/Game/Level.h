@@ -10,10 +10,11 @@
 #include "LevelSurface.h"
 #include "Quest.h"
 #include "Save/SaveLevel.h"
+#include "SFML/GradientCircle.h"
 #include "UIObject.h"
-#include <unordered_map>
 #include "Utils/EasedValue.h"
 #include "Utils/FixedArray.h"
+#include "Utils/UnorderedStringMap.h"
 
 class Panel;
 class Player;
@@ -38,7 +39,7 @@ private:
 	uint16_t indexToDrawLevelObjects{ 0 };
 	int16_t automapPlayerDirectionBaseIndex{ -1 };
 
-	sf::Shader* shader{ nullptr };
+	GameShader* gameShader{ nullptr };
 	float lightRadius{ 64.f };
 	sf::Vector2f automapPosition{ 0.f, 0.f };
 	sf::Vector2f automapSize{ 1.f, 1.f };
@@ -49,6 +50,7 @@ private:
 	LevelMap map;
 
 	std::vector<LevelDrawable> drawables;
+	std::vector<GradientCircle> lights;
 
 	sf::Vector2f mousePositionf;
 	bool hasMouseInside{ false };
@@ -76,14 +78,14 @@ private:
 	PairFloat clickedMapPosition;
 
 	std::vector<std::shared_ptr<LevelObject>> levelObjects;
-	std::unordered_map<std::string, std::shared_ptr<LevelObject>> levelObjectIds;
+	UnorderedStringMap<std::shared_ptr<LevelObject>> levelObjectIds;
 
 	std::weak_ptr<LevelObject> clickedObject;
 	std::weak_ptr<LevelObject> hoverObject;
 	std::weak_ptr<Player> currentPlayer;
 
-	std::unordered_map<std::string, std::unique_ptr<Classifier>> classifiers;
-	std::unordered_map<std::string, std::unique_ptr<LevelObjectClass>> levelObjectClasses;
+	UnorderedStringMap<std::unique_ptr<Classifier>> classifiers;
+	UnorderedStringMap<std::unique_ptr<LevelObjectClass>> levelObjectClasses;
 
 	bool followCurrentPlayer{ true };
 
@@ -97,6 +99,12 @@ private:
 	std::unordered_map<uint16_t, std::string> propertyNames;
 
 	int epoch{ 0 };
+
+	uint16_t moveUpEventHash{ 0 };
+	uint16_t moveDownEventHash{ 0 };
+	uint16_t moveLeftEventHash{ 0 };
+	uint16_t moveRightEventHash{ 0 };
+	uint16_t doActionEventHash{ 0 };
 
 	static const LevelCell& get(int32_t x, int32_t y, const Level& level) noexcept
 	{
@@ -144,6 +152,7 @@ private:
 	void setLevelDrawablePosition(LevelDrawable& obj, Panel& panelObj);
 	void updateDrawables(Game& game);
 	void updateLevelObjectPositions();
+	void updateLights();
 	void updateMouse(const Game& game);
 	void updateTilesetLayersVisibleArea();
 	void updateZoom(const Game& game);
@@ -151,11 +160,12 @@ private:
 	void onMouseButtonPressed(Game& game);
 	void onMouseScrolled(Game& game);
 	void onTouchBegan(Game& game);
+	void processInputEvents(Game& game);
 
 	friend void Save::save(const std::string_view filePath,
-		Save::Properties& props, const Game& game, const Level& level);
+		const Save::Properties& props, const Game& game, const Level& level);
 	friend void Save::serialize(void* serializeObj,
-		Save::Properties& props, const Game& game, const Level& level);
+		const Save::Properties& props, const Game& game, const Level& level);
 
 public:
 	void Init(const Game& game, LevelMap map_,
@@ -163,7 +173,7 @@ public:
 		int32_t tileHeight, uint32_t subTiles, int32_t indexToDrawObjects);
 	void Init();
 
-	void setShader(sf::Shader* shader_) noexcept { shader = shader_; }
+	void setShader(GameShader* shader) noexcept { gameShader = shader; }
 
 	void addLayer(const ColorLevelLayer& layer,
 		const sf::FloatRect& viewportOffset, bool automap);
@@ -176,7 +186,7 @@ public:
 
 	void addDrawable(LevelDrawable obj);
 	Panel* getDrawable(size_t idx) const;
-	LevelDrawable* getLevelDrawable(const std::string& id);
+	LevelDrawable* getLevelDrawable(const std::string_view id);
 	size_t getItemCount() const noexcept { return drawables.size(); }
 
 	Misc::Helper2D<const Level, const LevelCell&, int32_t> operator[] (int32_t x) const noexcept
@@ -202,7 +212,7 @@ public:
 		return currentAutomapViewCenter;
 	}
 
-	void Id(const std::string_view id_) { id = id_; }
+	void Id(const std::string_view id_);
 	void Name(const std::string_view name_) { name = name_; }
 	void Path(const std::string_view path_) { path = path_; }
 
@@ -264,23 +274,23 @@ public:
 	}
 
 	template <class T>
-	T* getLevelObject(const std::string id) const
+	T* getLevelObject(const std::string_view id) const
 	{
 		return dynamic_cast<T*>(getLevelObject(id));
 	}
 
-	LevelObject* getLevelObject(const std::string id) const;
+	LevelObject* getLevelObject(const std::string_view id) const;
 	LevelObject* getLevelObjectByClass(const std::string_view classId) const noexcept;
-	std::weak_ptr<LevelObject> getLevelObjectPtr(const std::string id) const;
+	std::weak_ptr<LevelObject> getLevelObjectPtr(const std::string_view id) const;
 
-	void addClassifier(const std::string key, std::unique_ptr<Classifier> obj)
+	void addClassifier(const std::string_view key, std::unique_ptr<Classifier> obj)
 	{
 		classifiers.insert(std::make_pair(key, std::move(obj)));
 	}
 
-	Classifier* getClassifier(const std::string& key) const
+	Classifier* getClassifier(const std::string_view key) const
 	{
-		auto it = classifiers.find(key);
+		auto it = classifiers.find(sv2str(key));
 		if (it != classifiers.end())
 		{
 			return it->second.get();
@@ -288,20 +298,20 @@ public:
 		return nullptr;
 	}
 
-	bool hasClass(const std::string& key) const
+	bool hasClass(const std::string_view key) const
 	{
-		return levelObjectClasses.find(key) != levelObjectClasses.end();
+		return levelObjectClasses.find(sv2str(key)) != levelObjectClasses.end();
 	}
 
-	void addClass(const std::string key, std::unique_ptr<LevelObjectClass> obj)
+	void addClass(const std::string_view key, std::unique_ptr<LevelObjectClass> obj)
 	{
 		levelObjectClasses.insert(std::make_pair(key, std::move(obj)));
 	}
 
 	template <class T>
-	T* getClass(const std::string& key) const
+	T* getClass(const std::string_view key) const
 	{
-		auto it = levelObjectClasses.find(key);
+		auto it = levelObjectClasses.find(sv2str(key));
 		if (it != levelObjectClasses.end())
 		{
 			return dynamic_cast<T*>(it->second.get());
@@ -309,7 +319,7 @@ public:
 		return nullptr;
 	}
 
-	Player* getPlayerOrCurrent(const std::string id) const noexcept;
+	Player* getPlayerOrCurrent(const std::string_view id) const noexcept;
 
 	// doesn't clear currently used player classes
 	void clearPlayerClasses();
@@ -405,10 +415,10 @@ public:
 	void Pause(bool pause_) noexcept { pause = pause_; }
 
 	bool Visible() const noexcept override { return visible; }
-	void Visible(bool visible_) noexcept override { visible = visible_; }
+	void Visible(bool visible) noexcept override { visible = visible; }
 
 	bool EnableHover() const noexcept { return enableHover; }
-	void EnableHover(bool enable_) noexcept { enableHover = enable_; }
+	void EnableHover(bool enable) noexcept { enableHover = enable; }
 
 	int16_t getAutomapPlayerDirectionBaseIndex() const noexcept
 	{
@@ -424,17 +434,17 @@ public:
 	bool hasAutomap() const noexcept;
 
 	bool ShowAutomap() const noexcept { return automapSurface.visible; }
-	void ShowAutomap(bool show_) noexcept { automapSurface.visible = show_; }
+	void ShowAutomap(bool show) noexcept { automapSurface.visible = show; }
 
 	InputEventType getCaptureInputEvents() const noexcept { return captureInputEvents; }
 	void setCaptureInputEvents(InputEventType e) noexcept { captureInputEvents = e; }
 
 	void save(const std::string_view filePath,
-		Save::Properties& props, const Game& game) const
+		const Save::Properties& props, const Game& game) const
 	{
 		Save::save(filePath, props, game, *this);
 	}
-	void serialize(void* serializeObj, Save::Properties& props,
+	void serialize(void* serializeObj, const Save::Properties& props,
 		const Game& game, const Level& level)
 	{
 		Save::serialize(serializeObj, props, game, *this);
@@ -483,8 +493,8 @@ public:
 		experiencePoints = experiencePoints_;
 	}
 
-	bool hasSpell(const std::string& id) const;
-	Spell* getSpell(const std::string& id) const;
+	bool hasSpell(const std::string_view id) const;
+	Spell* getSpell(const std::string_view id) const;
 
 	uint32_t getExperienceFromLevel(uint32_t level) const;
 	uint32_t getLevelFromExperience(uint32_t experience) const;

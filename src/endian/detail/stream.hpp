@@ -20,11 +20,6 @@ namespace detail
 template<typename DataPointerType>
 class stream
 {
-public:
-
-    /// Type for holding the size of the data.
-    using size_type = uint64_t;
-
 private:
 
     using data_type = typename std::remove_pointer<DataPointerType>::type;
@@ -37,24 +32,19 @@ private:
     static_assert(std::is_pointer<DataPointerType>::value,
                   "The template type must be a pointer type");
 
-    static_assert(
-        std::numeric_limits<size_type>::max() >=
-        std::numeric_limits<std::vector<uint8_t>::size_type>::max(),
-        "std::vector::size() can return a value we cannot hold in size_type");
-
 public:
 
     /// Creates an endian stream used to track a buffer of the specified size.
     ///
     /// @param size the size of the buffer in bytes
-    stream(DataPointerType data, size_type size) noexcept :
+    stream(DataPointerType data, std::size_t size) noexcept :
         m_data(data), m_size(size)
     { }
 
     /// Gets the size of the underlying buffer in bytes.
     ///
     /// @return the size of the buffer
-    size_type size() const noexcept
+    std::size_t size() const noexcept
     {
         return m_size;
     }
@@ -62,7 +52,7 @@ public:
     /// Gets the current read/write position in the stream
     ///
     /// @return the current position.
-    size_type position() const noexcept
+    std::size_t position() const noexcept
     {
         return m_position;
     }
@@ -70,7 +60,7 @@ public:
     /// The remaining number of bytes in the stream
     ///
     /// @return the remaining number of bytes.
-    size_type remaining_size() const noexcept
+    std::size_t remaining_size() const noexcept
     {
         return m_size - m_position;
     }
@@ -80,7 +70,7 @@ public:
     /// beginning of the buffer which is position 0.
     ///
     /// @param new_position the new position
-    void seek(size_type new_position) noexcept
+    void seek(std::size_t new_position) noexcept
     {
         assert(new_position <= m_size);
 
@@ -90,7 +80,7 @@ public:
     /// Skips over a given number of bytes in the stream
     ///
     /// @param bytes_to_skip the bytes to skip
-    void skip(size_type bytes_to_skip) noexcept
+    void skip(std::size_t bytes_to_skip) noexcept
     {
         assert(bytes_to_skip <= m_size - m_position);
 
@@ -119,10 +109,10 @@ private:
     DataPointerType m_data;
 
     /// The size of the buffer in bytes
-    size_type m_size;
+    std::size_t m_size;
 
     /// The current position
-    size_type m_position = 0;
+    std::size_t m_position = 0;
 };
 }
 }

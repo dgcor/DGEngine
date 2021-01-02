@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_longsword",
+    "file": "images/avatar/female/longsword.png"
+  },
   "texturePack": {
     "id": "f_longsword",
-    "texture": {
-      "id": "f_longsword",
-      "file": "images/avatar/female/longsword.png"
-    },
+    "texture": "f_longsword",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

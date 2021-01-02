@@ -1,17 +1,16 @@
 #pragma once
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <cstdint>
+#include "FileBytes.h"
 #include "ImageContainer.h"
-#include <string_view>
-#include <vector>
+#include <memory>
 
 // DCC decoding code based on Worldstone by Lectem
 // https://github.com/Lectem/Worldstone
 class DCCImageContainer : public ImageContainer
 {
 private:
-	std::vector<uint8_t> fileData;
+	std::shared_ptr<FileBytes> fileData;
 	uint32_t numberOfFrames{ 0 };
 	uint32_t directions{ 0 };
 	uint32_t framesPerDir{ 0 };
@@ -23,7 +22,7 @@ private:
 	std::vector<uint32_t> framePointers;
 
 public:
-	DCCImageContainer(const std::string_view fileName);
+	DCCImageContainer(const std::shared_ptr<FileBytes>& fileBytes);
 
 	BlendMode getBlendMode() const noexcept override { return blendMode; }
 	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
@@ -34,4 +33,3 @@ public:
 
 	uint32_t getDirections() const noexcept override { return directions; }
 };
-#endif

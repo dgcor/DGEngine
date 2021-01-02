@@ -11,6 +11,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseScrollable(Game& game, const Value& elem)
 	{
@@ -19,13 +20,13 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
 		}
 
-		auto uiObj = game.Resources().getDrawableSharedPtr<UIObject>(getStringVal(elem["drawable"]));
+		auto uiObj = game.Resources().getDrawableSharedPtr<UIObject>(getStringViewVal(elem["drawable"sv]));
 		if (uiObj == nullptr)
 		{
 			return;
@@ -57,15 +58,15 @@ namespace Parser
 		scrollable->reset();
 		scrollable->updateView(game);
 
-		if (elem.HasMember("onComplete"))
+		if (elem.HasMember("onComplete"sv))
 		{
-			scrollable->setAction(str2int16("complete"), parseAction(game, elem["onComplete"]));
+			scrollable->setAction(str2int16("complete"), getActionVal(game, elem["onComplete"sv]));
 		}
 
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr &&
 				panel != uiObj.get())

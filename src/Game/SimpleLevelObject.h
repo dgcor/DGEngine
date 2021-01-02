@@ -24,7 +24,7 @@ private:
 
 	void updateNameAndDescriptions() const;
 
-	friend void Save::serialize(void* serializeObj, Save::Properties& props,
+	friend void Save::serialize(void* serializeObj, const Save::Properties& props,
 		const Game& game, const Level& level, const SimpleLevelObject& obj);
 
 public:

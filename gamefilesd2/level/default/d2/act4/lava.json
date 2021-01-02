@@ -13,46 +13,69 @@
       }
     }
   },
+  "imageContainer": [
+    {
+      "id": "floor",
+      "file": "data/global/tiles/ACT4/Lava/floor.dt1"
+    },
+    {
+      "id": "floornew",
+      "file": "data/global/tiles/ACT4/Lava/floornew.dt1"
+    },
+    {
+      "id": "walls",
+      "file": "data/global/tiles/ACT4/Lava/walls.dt1"
+    },
+    {
+      "id": "intwalls",
+      "file": "data/global/tiles/ACT4/Lava/intwalls.dt1"
+    },
+    {
+      "id": "extwalls",
+      "file": "data/global/tiles/ACT4/Lava/extwalls.dt1"
+    },
+    {
+      "id": "specials",
+      "file": "data/global/tiles/ACT4/Lava/specials.dt1"
+    },
+    {
+      "id": "rocks",
+      "file": "data/global/tiles/ACT4/Lava/rocks.dt1"
+    }
+  ],
   "texturePack": [
     {
       "id": "floor",
-      "file": "data/global/tiles/ACT4/Lava/floor.dt1",
       "imageContainer": "floor",
       "palette": "level"
     },
     {
       "id": "floornew",
-      "file": "data/global/tiles/ACT4/Lava/floornew.dt1",
       "imageContainer": "floornew",
       "palette": "level"
     },
     {
       "id": "walls",
-      "file": "data/global/tiles/ACT4/Lava/walls.dt1",
       "imageContainer": "walls",
       "palette": "level"
     },
     {
       "id": "intwalls",
-      "file": "data/global/tiles/ACT4/Lava/intwalls.dt1",
       "imageContainer": "intwalls",
       "palette": "level"
     },
     {
       "id": "extwalls",
-      "file": "data/global/tiles/ACT4/Lava/extwalls.dt1",
       "imageContainer": "extwalls",
       "palette": "level"
     },
     {
       "id": "specials",
-      "file": "data/global/tiles/ACT4/Lava/specials.dt1",
       "imageContainer": "specials",
       "palette": "level"
     },
     {
       "id": "rocks",
-      "file": "data/global/tiles/ACT4/Lava/rocks.dt1",
       "imageContainer": "rocks",
       "palette": "level"
     },

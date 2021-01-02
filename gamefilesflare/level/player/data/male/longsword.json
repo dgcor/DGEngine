@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_longsword",
+    "file": "images/avatar/male/longsword.png"
+  },
   "texturePack": {
     "id": "m_longsword",
-    "texture": {
-      "id": "m_longsword",
-      "file": "images/avatar/male/longsword.png"
-    },
+    "texture": "m_longsword",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

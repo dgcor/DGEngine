@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Game.h"
 #include "Game/Quest.h"
-#include <string>
 
 class ActQuestAdd : public Action
 {
@@ -12,7 +11,7 @@ private:
 	Quest quest;
 
 public:
-	ActQuestAdd(const std::string& idLevel_, Quest quest_)
+	ActQuestAdd(const std::string_view idLevel_, Quest quest_)
 		: idLevel(idLevel_), quest(std::move(quest_)) {}
 
 	bool execute(Game& game) override
@@ -33,7 +32,7 @@ private:
 	std::string idQuest;
 
 public:
-	ActQuestDelete(const std::string& idLevel_, const std::string& idQuest_)
+	ActQuestDelete(const std::string_view idLevel_, const std::string_view idQuest_)
 		: idLevel(idLevel_), idQuest(idQuest_) {}
 
 	bool execute(Game& game) override
@@ -55,7 +54,7 @@ private:
 	int state;
 
 public:
-	ActQuestSetState(const std::string& idLevel_, const std::string& idQuest_, int state_)
+	ActQuestSetState(const std::string_view idLevel_, const std::string_view idQuest_, int state_)
 		: idLevel(idLevel_), idQuest(idQuest_), state(state_) {}
 
 	bool execute(Game& game) noexcept override

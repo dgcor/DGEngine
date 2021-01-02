@@ -10,7 +10,7 @@
 using namespace rapidjson;
 using namespace SaveUtils;
 
-void Save::save(const std::string_view filePath, Properties& props,
+void Save::save(const std::string_view filePath, const Properties& props,
 	const Game& game, const Level& level)
 {
 	StringBuffer buffer(0, std::numeric_limits<uint16_t>::max());
@@ -22,7 +22,7 @@ void Save::save(const std::string_view filePath, Properties& props,
 	FileUtils::saveText(filePath, { buffer.GetString(), buffer.GetSize() });
 }
 
-void Save::serialize(void* serializeObj, Properties& props,
+void Save::serialize(void* serializeObj, const Properties& props,
 	const Game& game, const Level& level)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
@@ -86,7 +86,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	// level
 	writer.EndObject();
 
-	if (props.saveQuests == true)
+	if (getBoolProperty(props, "saveQuests") == true)
 	{
 		writeKeyStringView(writer, "quest");
 		writer.StartArray();
@@ -132,7 +132,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 		auto player = dynamic_cast<Player*>(obj.get());
 		if (player != nullptr)
 		{
-			if (props.saveCurrentPlayer == false &&
+			if (getBoolProperty(props, "saveCurrentPlayer") == false &&
 				player == level.getCurrentPlayer())
 			{
 				continue;

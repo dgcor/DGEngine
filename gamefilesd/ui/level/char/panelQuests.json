@@ -12,7 +12,7 @@
       "action": { "name": "drawable.anchorToFocused", "id": "pent2", "anchor": "right", "offset": [6, 1] }
     }
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"
@@ -77,7 +77,7 @@
             { "name": "resource.bringToFront", "id": "removeGold" }
           ]
         },
-        { "name": "sound.play", "id": "titlslct" }
+        "selectSound"
       ],
       "onFocus": [
         "anchorLeftPentagram",

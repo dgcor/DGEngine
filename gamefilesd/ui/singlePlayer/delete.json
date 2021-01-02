@@ -5,7 +5,7 @@
     { "name": "text.setText", "id": "label1", "text": "Delete Single Player Hero" },
     { "name": "text.setText", "id": "label2", "text": "Select Hero" }
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "esc",
       "action": { "name": "button.click", "id": "no" }

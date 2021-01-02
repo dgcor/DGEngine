@@ -14,7 +14,7 @@
     }
   ],
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"

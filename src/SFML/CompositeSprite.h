@@ -13,10 +13,8 @@ public:
 	CompositeSprite() = default;
 	CompositeSprite(const sf::Texture& tex) : sprite(tex) {}
 	CompositeSprite(const sf::Texture& tex, const std::shared_ptr<Palette>& pal) : sprite(tex, pal) {}
-	CompositeSprite(const TextureInfo& ti)
-	{
-		setTexture(ti);
-	}
+	CompositeSprite(const TextureInfo& ti);
+	CompositeSprite(const std::vector<TextureInfo>& ti);
 
 	const sf::Vector2f& getDrawPosition() const { return sprite.getDrawPosition(); }
 	const sf::Vector2f& getPosition() const { return sprite.getPosition(); }
@@ -55,8 +53,8 @@ public:
 	void setTexture(const TextureInfo& ti);
 	void setTexture(const std::vector<TextureInfo>& ti);
 
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader) const;
+	void draw(sf::RenderTarget& target, GameShader* spriteShader) const;
 
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+	void draw(sf::RenderTarget& target, GameShader* spriteShader,
 		SpriteShaderCache& cache) const;
 };

@@ -11,6 +11,6 @@
         { "name": "load", "file": "{1}" }
       ]
     },
-    { "name": "sound.play", "id": "titlslct" }
+    "selectSound"
   ]
 }

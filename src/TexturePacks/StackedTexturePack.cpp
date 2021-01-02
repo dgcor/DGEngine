@@ -17,6 +17,19 @@ bool StackedTexturePack::get(uint32_t index, TextureInfo& ti) const
 	return false;
 }
 
+int32_t StackedTexturePack::getWidth(uint32_t index) const
+{
+	for (const auto& texturePack : texturePacks)
+	{
+		auto width = texturePack->getWidth(index);
+		if (width > 0)
+		{
+			return width;
+		}
+	}
+	return 0;
+}
+
 void StackedTexturePack::update(int epoch, sf::Time elapsedTime)
 {
 	return;

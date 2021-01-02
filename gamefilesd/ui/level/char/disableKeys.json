@@ -1,15 +1,8 @@
 {
-  "keyboard": [
+  "inputEvent": [
     { "key": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "action": null },
     { "key": ["enter", " ", "up", "w", "down", "s", "tab", "left", "a", "right", "d"], "action": null },
     { "key": ["b", "c", "f", "g", "i", "q", "z"], "action": null },
-    { "compositeKey": ["up", "left"], "action": null },
-    { "compositeKey": ["up", "right"], "action": null },
-    { "compositeKey": ["down", "left"], "action": null },
-    { "compositeKey": ["down", "right"], "action": null },
-    { "compositeKey": "up", "action": null },
-    { "compositeKey": "down", "action": null },
-    { "compositeKey": "left", "action": null },
-    { "compositeKey": "right", "action": null }
+    { "key": ["up", "down", "left", "right", "rshift"], "event": null }
   ]
 }

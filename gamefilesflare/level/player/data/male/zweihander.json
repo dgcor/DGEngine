@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_zweihander",
+    "file": "images/avatar/male/zweihander.png"
+  },
   "texturePack": {
     "id": "m_zweihander",
-    "texture": {
-      "id": "m_zweihander",
-      "file": "images/avatar/male/zweihander.png"
-    },
+    "texture": "m_zweihander",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

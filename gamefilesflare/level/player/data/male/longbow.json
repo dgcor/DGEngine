@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_longbow",
+    "file": "images/avatar/male/longbow.png"
+  },
   "texturePack": {
     "id": "m_longbow",
-    "texture": {
-      "id": "m_longbow",
-      "file": "images/avatar/male/longbow.png"
-    },
+    "texture": "m_longbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

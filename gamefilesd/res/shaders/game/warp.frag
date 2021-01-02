@@ -2,7 +2,6 @@
 uniform sampler2D texture;
 uniform vec4 fade;
 uniform float gamma;
-uniform float loading;
 
 vec3 Gamma(vec3 value, float param)
 {

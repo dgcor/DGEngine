@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "AnimationType.h"
+#include "AnimationInfo.h"
 #include "CompositeTexture.h"
 #include <cstddef>
 #include <utility>
@@ -31,43 +31,41 @@ private:
 
 public:
 	BaseAnimation() {}
+	BaseAnimation(TexturePackVariant texturePackVar_, bool pause_);
 
 	BaseAnimation(TexturePackVariant texturePackVar_,
-		const std::pair<uint32_t, uint32_t>& textureIndexRange_,
-		const sf::Time& frameTime_, AnimationType animType_, bool pause_)
-		: texturePackVar(texturePackVar_), textureIndexRange(textureIndexRange_),
-		currentTextureIdx(textureIndexRange_.first), elapsedTime(frameTime_),
-		animType(animType_), pause(pause_) {}
+		const AnimationInfo& animInfo, bool pause_);
 
-	void clear() noexcept
-	{
-		textureIndexRange.first = 0;
-		textureIndexRange.second = 0;
-		backDirection = false;
-	}
-	void reset() noexcept
-	{
-		currentTextureIdx = textureIndexRange.first;
-		backDirection = false;
-	}
+	void clear() noexcept;
+	void reset() noexcept;
 
-	void setTexturePack(TexturePackVariant texturePackVar_) noexcept
-	{
-		texturePackVar = std::move(texturePackVar_);
-	}
+	void setTexturePack(TexturePackVariant texturePackVar_) noexcept;
+
+	void setAnimation(const AnimationInfo& animInfo) noexcept;
+	void setAnimation(int32_t groupIdx, int32_t directionIdx) noexcept;
+
+	void setAnimation(int32_t groupIdx, int32_t directionIdx,
+		bool resetAnimation, AnimationType animationType);
 
 	void setAnimation(int32_t groupIdx, int32_t directionIdx,
 		bool resetAnimation, bool updateAnimationType);
 
-	constexpr bool holdsNullTexturePack() const noexcept
-	{
-		return texturePackVar.holdsNullTexturePack();
-	}
+	void setAnimation(int32_t groupIdx, int32_t directionIdx,
+		AnimationType animationType);
 
 	bool isAnimationAtBeginning() const noexcept;
 	bool isAnimationAtEnd() const noexcept;
-
 	bool hasPlayOnceAnimationFinished() const noexcept;
+
+	bool holdsNullTexturePack() const noexcept;
+	bool holdsTexturePack() const noexcept;
+	bool holdsTexturePack(const std::shared_ptr<TexturePack>& obj) const noexcept;
+	bool holdsCompositeTexture() const noexcept;
+	bool holdsCompositeTexture(const std::shared_ptr<CompositeTexture>& obj) const noexcept;
+	const std::shared_ptr<TexturePack>& getTexturePack() const;
+	std::shared_ptr<TexturePack>& getTexturePack();
+	const std::shared_ptr<CompositeTexture>& getCompositeTexture() const;
+	std::shared_ptr<CompositeTexture>& getCompositeTexture();
 
 	bool update(sf::Time elapsedTime_) noexcept;
 

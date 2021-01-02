@@ -7,17 +7,19 @@
 using namespace rapidjson;
 using namespace SaveUtils;
 
-void Save::serialize(void* serializeObj, Properties& props,
+void Save::serialize(void* serializeObj, const Properties& props,
 	const Game& game, const Level& level, const Item& item)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
 	const auto& itemClass = *item.Class();
 
+	bool saveDefaults = getBoolProperty(props, "saveDefaults");
+
 	writer.StartObject();
 
-	if (props.customProperty != nullptr)
+	if (hasProperty(props, "index") == true)
 	{
-		writeUInt(writer, "index", *((size_t*)props.customProperty));
+		writeUInt(writer, "index", (size_t)getInt64Property(props, "index"));
 	}
 
 	writeString(writer, "class", itemClass.Id());
@@ -31,14 +33,14 @@ void Save::serialize(void* serializeObj, Properties& props,
 	{
 		writeKeyStringView(writer, "properties");
 		writer.StartObject();
-		if (props.saveDefaults == true ||
+		if (saveDefaults == true ||
 			itemClass.isDefault({ ItemProp::Identified, item.Identified() }) == false)
 		{
 			writeBool(writer, "identified", item.Identified());
 		}
 		for (const auto& prop : item)
 		{
-			if (props.saveDefaults == false && itemClass.isDefault(prop) == true)
+			if (saveDefaults == false && itemClass.isDefault(prop) == true)
 			{
 				continue;
 			}
@@ -60,19 +62,19 @@ void Save::serialize(void* serializeObj, Properties& props,
 		writer.EndObject();
 	}
 
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		item.sprite.getOutline() != itemClass.Outline())
 	{
 		writeUInt(writer, "outline", item.sprite.getOutline().toInteger());
 	}
 
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		item.sprite.getOutlineIgnore() != itemClass.OutlineIgnore())
 	{
 		writeUInt(writer, "outlineIgnore", item.sprite.getOutlineIgnore().toInteger());
 	}
 
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		item.outlineOnHover != true)
 	{
 		writeBool(writer, "outlineOnHover", item.outlineOnHover);

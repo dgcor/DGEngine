@@ -59,9 +59,9 @@ private:
 	std::shared_ptr<Action> condElse;
 
 public:
-	ActInListCondition(VarOrPredicate var_, const std::vector<Variable>& list_,
+	ActInListCondition(const VarOrPredicate& var_, std::vector<Variable>&& list_,
 		const std::shared_ptr<Action>& then_, const std::shared_ptr<Action>& else_)
-		: var(var_), list(list_), condThen(then_), condElse(else_) {}
+		: var(var_), list(std::move(list_)), condThen(then_), condElse(else_) {}
 
 	bool execute(Game& game) override
 	{
@@ -130,10 +130,10 @@ private:
 	std::shared_ptr<Action> defaultAction;
 
 public:
-	ActSwitchCondition(VarOrPredicate var_,
-		const std::vector<std::pair<Variable, std::shared_ptr<Action>>>& conditions_,
+	ActSwitchCondition(const VarOrPredicate& var_,
+		std::vector<std::pair<Variable, std::shared_ptr<Action>>>&& conditions_,
 		const std::shared_ptr<Action>& defaultAction_)
-		: var(var_), conditions(conditions_), defaultAction(defaultAction_) {}
+		: var(var_), conditions(std::move(conditions_)), defaultAction(defaultAction_) {}
 
 	bool execute(Game& game) override
 	{

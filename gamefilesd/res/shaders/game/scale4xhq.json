@@ -1,0 +1,9 @@
+{
+  "shader": {
+    "id": "scale4xhq",
+    "fragmentFile": "res/shaders/game/scale4xhq.frag",
+    "vertexFile": "res/shaders/game/scale4xhq.vert",
+    "uniforms": ["fade", "gamma"],
+    "setShader": "game"
+  }
+}

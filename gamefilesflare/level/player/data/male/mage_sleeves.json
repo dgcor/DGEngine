@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_mage_sleeves",
+    "file": "images/avatar/male/mage_sleeves.png"
+  },
   "texturePack": {
     "id": "m_mage_sleeves",
-    "texture": {
-      "id": "m_mage_sleeves",
-      "file": "images/avatar/male/mage_sleeves.png"
-    },
+    "texture": "m_mage_sleeves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_plate_cuirass",
+    "file": "images/avatar/male/plate_cuirass.png"
+  },
   "texturePack": {
     "id": "m_plate_cuirass",
-    "texture": {
-      "id": "m_plate_cuirass",
-      "file": "images/avatar/male/plate_cuirass.png"
-    },
+    "texture": "m_plate_cuirass",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

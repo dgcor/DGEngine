@@ -13,88 +13,132 @@
       }
     }
   },
+  "imageContainer": [
+    {
+      "id": "warp",
+      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1"
+    },
+    {
+      "id": "mesa",
+      "file": "data/global/tiles/ACT2/Outdoors/mesa.dt1"
+    },
+    {
+      "id": "palm",
+      "file": "data/global/tiles/ACT2/Outdoors/palm.dt1"
+    },
+    {
+      "id": "palace",
+      "file": "data/global/tiles/ACT2/palace/palace.dt1"
+    },
+    {
+      "id": "build",
+      "file": "data/global/tiles/ACT2/Town/build.dt1"
+    },
+    {
+      "id": "canal",
+      "file": "data/global/tiles/ACT2/Town/canal.dt1"
+    },
+    {
+      "id": "curbs",
+      "file": "data/global/tiles/ACT2/Town/curbs.dt1"
+    },
+    {
+      "id": "gate",
+      "file": "data/global/tiles/ACT2/Town/gate.dt1"
+    },
+    {
+      "id": "ground",
+      "file": "data/global/tiles/ACT2/Town/ground.dt1"
+    },
+    {
+      "id": "guard",
+      "file": "data/global/tiles/ACT2/Town/guard.dt1"
+    },
+    {
+      "id": "shop",
+      "file": "data/global/tiles/ACT2/Town/shop.dt1"
+    },
+    {
+      "id": "tavern",
+      "file": "data/global/tiles/ACT2/Town/tavern.dt1"
+    },
+    {
+      "id": "wagon",
+      "file": "data/global/tiles/ACT2/Town/wagon.dt1"
+    },
+    {
+      "id": "walls",
+      "file": "data/global/tiles/ACT2/Town/walls.dt1"
+    }
+  ],
   "texturePack": [
     {
       "id": "warp",
-      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1",
       "imageContainer": "warp",
       "palette": "level"
     },
     {
       "id": "mesa",
-      "file": "data/global/tiles/ACT2/Outdoors/mesa.dt1",
       "imageContainer": "mesa",
       "palette": "level"
     },
     {
       "id": "palm",
-      "file": "data/global/tiles/ACT2/Outdoors/palm.dt1",
       "imageContainer": "palm",
       "palette": "level"
     },
     {
       "id": "palace",
-      "file": "data/global/tiles/ACT2/palace/palace.dt1",
       "imageContainer": "palace",
       "palette": "level"
     },
     {
       "id": "build",
-      "file": "data/global/tiles/ACT2/Town/build.dt1",
       "imageContainer": "build",
       "palette": "level"
     },
     {
       "id": "canal",
-      "file": "data/global/tiles/ACT2/Town/canal.dt1",
       "imageContainer": "canal",
       "palette": "level"
     },
     {
       "id": "curbs",
-      "file": "data/global/tiles/ACT2/Town/curbs.dt1",
       "imageContainer": "curbs",
       "palette": "level"
     },
     {
       "id": "gate",
-      "file": "data/global/tiles/ACT2/Town/gate.dt1",
       "imageContainer": "gate",
       "palette": "level"
     },
     {
       "id": "ground",
-      "file": "data/global/tiles/ACT2/Town/ground.dt1",
       "imageContainer": "ground",
       "palette": "level"
     },
     {
       "id": "guard",
-      "file": "data/global/tiles/ACT2/Town/guard.dt1",
       "imageContainer": "guard",
       "palette": "level"
     },
     {
       "id": "shop",
-      "file": "data/global/tiles/ACT2/Town/shop.dt1",
       "imageContainer": "shop",
       "palette": "level"
     },
     {
       "id": "tavern",
-      "file": "data/global/tiles/ACT2/Town/tavern.dt1",
       "imageContainer": "tavern",
       "palette": "level"
     },
     {
       "id": "wagon",
-      "file": "data/global/tiles/ACT2/Town/wagon.dt1",
       "imageContainer": "wagon",
       "palette": "level"
     },
     {
       "id": "walls",
-      "file": "data/global/tiles/ACT2/Town/walls.dt1",
       "imageContainer": "walls",
       "palette": "level"
     },

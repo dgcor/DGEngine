@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_club",
+    "file": "images/avatar/female/club.png"
+  },
   "texturePack": {
     "id": "f_club",
-    "texture": {
-      "id": "f_club",
-      "file": "images/avatar/female/club.png"
-    },
+    "texture": "f_club",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

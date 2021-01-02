@@ -5,7 +5,7 @@
     "ignorePrevious": true
   },
   "cursor": null,
-  "keyboard": {
+  "inputEvent": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "back" }
   },

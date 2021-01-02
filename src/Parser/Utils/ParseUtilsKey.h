@@ -1,14 +1,10 @@
 #pragma once
 
-#include "Anchor.h"
 #include "AnimationType.h"
-#include "Game/GameProperties.h"
 #include "Json/JsonParser.h"
-#include "Parser/ParserProperties.h"
+#include "ParseUtilsGameKey.h"
 #include "ParseUtilsVal.h"
-#include <string>
-#include "Variable.h"
-#include <vector>
+#include <SFML/Graphics/PrimitiveType.hpp>
 
 namespace Parser
 {
@@ -35,7 +31,7 @@ namespace Parser
 		const std::string_view key, const char* val = "");
 
 	std::string getStringKey(const rapidjson::Value& elem,
-		const std::string_view key, const std::string& val = {});
+		const std::string_view key, const std::string_view val = {});
 
 	std::string_view getStringViewKey(const rapidjson::Value& elem,
 		const std::string_view key, const std::string_view val = "");
@@ -149,6 +145,46 @@ namespace Parser
 		return getVector4NumberKey<T, float>(elem, key, val);
 	}
 
+	template <class T, class NumType>
+	T getRangeOrValueKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getRangeOrValueVal<T, NumType>(elem[key], val);
+		}
+		return val;
+	}
+
+	template <class T, class NumType, NumType minVal>
+	T getRangeNKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getRangeNVal<T, NumType, minVal>(elem[key], val);
+		}
+		return val;
+	}
+
+	template <class T, class NumType>
+	T getRange0Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getRange0Val<T, NumType>(elem[key], val);
+		}
+		return val;
+	}
+
+	template <class T, class NumType>
+	T getRange1Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getRange1Val<T, NumType>(elem[key], val);
+		}
+		return val;
+	}
+
 	std::pair<uint32_t, uint32_t> getFramesKey(const rapidjson::Value& elem,
 		const std::string_view key, const std::pair<uint32_t, uint32_t>& val = {});
 
@@ -175,15 +211,6 @@ namespace Parser
 	InputEventType getInputEventTypeKey(const rapidjson::Value& elem,
 		const std::string_view key, InputEventType val = InputEventType::None);
 
-	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerInventory inv);
-
-	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
-		const std::string_view key, InventoryPosition val = InventoryPosition::TopLeft);
-
-	LightSource getLightSourceKey(const rapidjson::Value& elem,
-		const std::string_view key, LightSource val = {});
-
 	template <class T>
 	T getMinMaxIntKey(const rapidjson::Value& elem, const std::string_view key, T val = {})
 	{
@@ -194,26 +221,8 @@ namespace Parser
 		return val;
 	}
 
-	ItemCoordInventory getItemCoordInventoryKey(const rapidjson::Value& elem, const std::string_view key);
-
-	ItemLocation getItemLocationKey(const rapidjson::Value& elem, const std::string_view key);
-
-	PairUInt8 getItemXYKey(const rapidjson::Value& elem, const std::string_view key, const PairUInt8& val = {});
-
-	PlayerDirection getPlayerDirectionKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerDirection val = PlayerDirection::All);
-
-	PlayerInventory getPlayerInventoryKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerInventory val = PlayerInventory::Body);
-
-	PlayerItemMount getPlayerItemMountKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerItemMount val = PlayerItemMount::LeftHand);
-
-	PlayerAnimation getPlayerAnimationKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerAnimation val = PlayerAnimation::Stand1);
-
-	PlayerStatus getPlayerStatusKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerStatus val = PlayerStatus::Stand);
+	sf::PrimitiveType getPrimitiveTypeKey(const rapidjson::Value& elem,
+		const std::string_view key, sf::PrimitiveType val = sf::PrimitiveType::TrianglesStrip);
 
 	const rapidjson::Value& getQueryKey(const rapidjson::Value* elem,
 		const rapidjson::Value& query, const std::string_view key);
@@ -225,6 +234,12 @@ namespace Parser
 		const std::string_view key, ReplaceVars val = ReplaceVars::None);
 
 	Variable getVariableKey(const rapidjson::Value& elem, const std::string_view key);
+
+	std::vector<std::pair<std::string, Variable>> getVariablesKey(
+		const rapidjson::Value& elem, const std::string_view key);
+
+	UnorderedStringMap<Variable> getVariablesMapKey(
+		const rapidjson::Value& elem, const std::string_view key);
 
 	VarOrPredicate getVarOrPredicateKey(Game& game,
 		const rapidjson::Value& elem, const std::string_view key);
