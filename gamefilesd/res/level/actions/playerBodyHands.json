@@ -5,7 +5,7 @@
       "id": "updateLeftHandItem",
       "replaceVars": true,
       "action": [
-        { "name": "image.setTexture", "id": "imgLeftHand", "query": "currentLevel.currentPlayer.item.body.LeftHand" },
+        { "name": "image.setTexture", "id": "imgLeftHand", "query": "currentLevel.currentPlayer.item.body.LeftHand", "index": 1 },
         {
           "name": "if.equal",
           "param1": "%currentLevel.currentPlayer.canUseItem.body.LeftHand%",
@@ -46,7 +46,7 @@
       "id": "updateRightHandItem",
       "replaceVars": true,
       "action": [
-        { "name": "image.setTexture", "id": "imgRightHand", "query": "currentLevel.currentPlayer.item.body.RightHand" },
+        { "name": "image.setTexture", "id": "imgRightHand", "query": "currentLevel.currentPlayer.item.body.RightHand", "index": 1 },
         {
           "name": "if.equal",
           "param1": "%currentLevel.currentPlayer.canUseItem.body.RightHand%",

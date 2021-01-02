@@ -5,7 +5,6 @@
 #include "Game/GameProperties.h"
 #include "Game/Level.h"
 #include "Game/Player.h"
-#include <string>
 
 class ActPlayerAddItemQuantity : public Action
 {
@@ -18,8 +17,8 @@ private:
 	bool remove;
 
 public:
-	ActPlayerAddItemQuantity(const std::string& idPlayer_, const std::string& idLevel_,
-		const std::string& itemClass_, InventoryPosition invPos_, const Variable& quantity_,
+	ActPlayerAddItemQuantity(const std::string_view idPlayer_, const std::string_view idLevel_,
+		const std::string_view itemClass_, InventoryPosition invPos_, const Variable& quantity_,
 		bool remove_) : idPlayer(idPlayer_), idLevel(idLevel_), itemClass(itemClass_),
 		invPos(invPos_), quantity(quantity_), remove(remove_) {}
 
@@ -34,7 +33,7 @@ public:
 				auto player = level->getPlayerOrCurrent(idPlayer);
 				if (player != nullptr)
 				{
-					auto quantVal = (LevelObjValue)game.getVarOrPropLongV(quantity);
+					auto quantVal = (LevelObjValue)game.getVarOrPropInt64V(quantity);
 					if (quantVal != 0)
 					{
 						if (remove == true)
@@ -63,8 +62,8 @@ private:
 	bool remove;
 
 public:
-	ActPlayerAddToProperty(const std::string& idPlayer_, const std::string& idLevel_,
-		const std::string& prop_, const Variable& value_, bool remove_) : idPlayer(idPlayer_),
+	ActPlayerAddToProperty(const std::string_view idPlayer_, const std::string_view idLevel_,
+		const std::string_view prop_, const Variable& value_, bool remove_) : idPlayer(idPlayer_),
 		idLevel(idLevel_), prop(prop_), value(value_), remove(remove_) {}
 
 	bool execute(Game& game) override
@@ -130,7 +129,7 @@ private:
 	bool smooth;
 
 public:
-	ActPlayerMove(const std::string& idPlayer_, const std::string& idLevel_,
+	ActPlayerMove(const std::string_view idPlayer_, const std::string_view idLevel_,
 		const PairFloat& pos_, bool resetDirection_, bool smooth_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), position(pos_),
 		resetDirection(resetDirection_), smooth(smooth_) {}
@@ -163,8 +162,8 @@ private:
 	std::string spell;
 
 public:
-	ActPlayerSelectSpell(const std::string& idPlayer_,
-		const std::string& idLevel_, const std::string& spell_)
+	ActPlayerSelectSpell(const std::string_view idPlayer_,
+		const std::string_view idLevel_, const std::string_view spell_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), spell(spell_) {}
 
 	bool execute(Game& game) override
@@ -190,8 +189,8 @@ private:
 	AnimationSpeed speed;
 
 public:
-	ActPlayerSetDefaultSpeed(const std::string& idPlayer_,
-		const std::string& idLevel_, const AnimationSpeed& speed_)
+	ActPlayerSetDefaultSpeed(const std::string_view idPlayer_,
+		const std::string_view idLevel_, const AnimationSpeed& speed_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), speed(speed_) {}
 
 	bool execute(Game& game) override
@@ -217,8 +216,8 @@ private:
 	PlayerDirection direction;
 
 public:
-	ActPlayerSetDirection(const std::string& idPlayer_,
-		const std::string& idLevel_, PlayerDirection direction_)
+	ActPlayerSetDirection(const std::string_view idPlayer_,
+		const std::string_view idLevel_, PlayerDirection direction_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), direction(direction_) {}
 
 	bool execute(Game& game) override
@@ -245,8 +244,8 @@ private:
 	Variable value;
 
 public:
-	ActPlayerSetProperty(const std::string& idPlayer_, const std::string& idLevel_,
-		const std::string& prop_, const Variable& value_)
+	ActPlayerSetProperty(const std::string_view idPlayer_, const std::string_view idLevel_,
+		const std::string_view prop_, const Variable& value_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), prop(prop_), value(value_) {}
 
 	bool execute(Game& game) override
@@ -277,7 +276,7 @@ private:
 	uint8_t status;
 
 public:
-	ActPlayerSetRestStatus(const std::string& idPlayer_, const std::string& idLevel_,
+	ActPlayerSetRestStatus(const std::string_view idPlayer_, const std::string_view idLevel_,
 		uint8_t status_) : idPlayer(idPlayer_), idLevel(idLevel_), status(status_) {}
 
 	bool execute(Game& game) override
@@ -304,8 +303,8 @@ private:
 	size_t idx;
 
 public:
-	ActPlayerSetTextureIndex(const std::string& idPlayer_,
-		const std::string& idLevel_, size_t idx_)
+	ActPlayerSetTextureIndex(const std::string_view idPlayer_,
+		const std::string_view idLevel_, size_t idx_)
 		: idPlayer(idPlayer_), idLevel(idLevel_), idx(idx_) {}
 
 	bool execute(Game& game) override
@@ -333,7 +332,7 @@ private:
 	bool executeAction;
 
 public:
-	ActPlayerWalk(const std::string& idPlayer_, const std::string& idLevel_,
+	ActPlayerWalk(const std::string_view idPlayer_, const std::string_view idLevel_,
 		PlayerDirection direction_, bool executeAction_) : idPlayer(idPlayer_),
 		idLevel(idLevel_), direction(direction_), executeAction(executeAction_) {}
 
@@ -360,7 +359,7 @@ private:
 	bool executeAction;
 
 public:
-	ActPlayerWalkToClick(const std::string& idPlayer_, const std::string& idLevel_,
+	ActPlayerWalkToClick(const std::string_view idPlayer_, const std::string_view idLevel_,
 		bool executeAction_) : idPlayer(idPlayer_), idLevel(idLevel_),
 		executeAction(executeAction_) {}
 

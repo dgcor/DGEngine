@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mage_boots",
+    "file": "images/avatar/female/mage_boots.png"
+  },
   "texturePack": {
     "id": "f_mage_boots",
-    "texture": {
-      "id": "f_mage_boots",
-      "file": "images/avatar/female/mage_boots.png"
-    },
+    "texture": "f_mage_boots",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -11,7 +11,7 @@ private:
 	Variable value;
 
 public:
-	ActVariableAdd(const std::string& key_, const Variable& value_)
+	ActVariableAdd(const std::string_view key_, const Variable& value_)
 		: key(key_), value(value_) {}
 
 	bool execute(Game& game) override
@@ -44,7 +44,7 @@ private:
 	std::string key;
 
 public:
-	ActVariableClear(const std::string& key_) : key(key_) {}
+	ActVariableClear(const std::string_view key_) : key(key_) {}
 
 	bool execute(Game& game) override
 	{
@@ -63,8 +63,8 @@ private:
 	std::vector<std::string> vars;
 
 public:
-	ActVariableSave(const std::string& filePath_, const std::vector<std::string>& vars_)
-		: filePath(filePath_), vars(vars_) {}
+	ActVariableSave(const std::string_view filePath_, std::vector<std::string>&& vars_)
+		: filePath(filePath_), vars(std::move(vars_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -84,7 +84,7 @@ private:
 	bool resolveValue;
 
 public:
-	ActVariableSet(const std::string& key_, const Variable& val_,
+	ActVariableSet(const std::string_view key_, const Variable& val_,
 		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
 	bool execute(Game& game) override
@@ -113,7 +113,7 @@ private:
 	bool resolveValue;
 
 public:
-	ActVariableSetIfNull(const std::string& key_, const Variable& val_,
+	ActVariableSetIfNull(const std::string_view key_, const Variable& val_,
 		bool resolveValue_) : key(key_), val(val_), resolveValue(resolveValue_) {}
 
 	bool execute(Game& game) override
@@ -145,8 +145,8 @@ private:
 	bool resolveValue;
 
 public:
-	ActVariablesSet(const std::vector<std::pair<std::string, Variable>>& variables_,
-		bool resolveValue_) : variables(variables_), resolveValue(resolveValue_) {}
+	ActVariablesSet(std::vector<std::pair<std::string, Variable>>&& variables_,
+		bool resolveValue_) : variables(std::move(variables_)), resolveValue(resolveValue_) {}
 
 	bool execute(Game& game) override
 	{

@@ -8,7 +8,7 @@ class BitmapText : public DrawableText
 {
 private:
 	VertexArray2 vertexText;
-	std::string text;
+	std::string text;	// utf8
 	std::shared_ptr<BitmapFont> font;
 	sf::Vector2f pos;
 	sf::Vector2f drawPos;
@@ -27,7 +27,7 @@ private:
 	void updateVertexText();
 
 public:
-	BitmapText(const std::shared_ptr<BitmapFont>& font_) : font(font_) {}
+	BitmapText(const std::shared_ptr<BitmapFont>& font_);
 
 	void setFont(const std::shared_ptr<BitmapFont>& font_);
 
@@ -38,7 +38,7 @@ public:
 
 	void updateSize(const Game& game) noexcept override;
 
-	bool setText(const std::string& str) override;
+	bool setText(const std::string& utf8Str) override;
 
 	unsigned getLineCount() const noexcept override { return lineCount; }
 

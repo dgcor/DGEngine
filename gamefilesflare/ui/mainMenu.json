@@ -58,7 +58,7 @@
     "loop": true,
     "play": true
   },
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_shield",
+    "file": "images/avatar/female/shield.png"
+  },
   "texturePack": {
     "id": "f_shield",
-    "texture": {
-      "id": "f_shield",
-      "file": "images/avatar/female/shield.png"
-    },
+    "texture": "f_shield",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

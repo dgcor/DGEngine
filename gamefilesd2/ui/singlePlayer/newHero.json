@@ -304,261 +304,339 @@
       "palette": "fechar"
     }
   ],
-  "texturePack": [
+  "imageContainer": [
     {
-      "id": "fire",
       "file": "data/global/ui/FrontEnd/fire.DC6",
-      "imageContainer": "fire",
-      "palette": "fechar",
       "useOffsets": true,
       "blendMode": "add"
     },
     {
-      "id": "AMBW",
       "file": "data/global/ui/FrontEnd/amazon/AMBW.DC6",
-      "imageContainer": "AMBW",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
-      "id": "AMFW",
       "file": "data/global/ui/FrontEnd/amazon/AMFW.DC6",
-      "imageContainer": "AMFW",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
-      "id": "AMFWs",
       "file": "data/global/ui/FrontEnd/amazon/AMFWs.DC6",
-      "imageContainer": "AMFWs",
-      "palette": "fechar",
       "useOffsets": true,
       "blendMode": "add"
     },
     {
-      "id": "AMNU1",
       "file": "data/global/ui/FrontEnd/amazon/AMNU1.DC6",
-      "imageContainer": "AMNU1",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
-      "id": "AMNU2",
       "file": "data/global/ui/FrontEnd/amazon/AMNU2.DC6",
-      "imageContainer": "AMNU2",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
-      "id": "AMNU3",
       "file": "data/global/ui/FrontEnd/amazon/AMNU3.DC6",
-      "imageContainer": "AMNU3",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
       "id": "BABW",
       "file": "data/global/ui/FrontEnd/barbarian/babw.DC6",
-      "imageContainer": "BABW",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
       "id": "BAFW",
       "file": "data/global/ui/FrontEnd/barbarian/bafw.DC6",
-      "imageContainer": "BAFW",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
       "id": "BAFWs",
       "file": "data/global/ui/FrontEnd/barbarian/BAFWs.DC6",
-      "imageContainer": "BAFWs",
-      "palette": "fechar",
       "useOffsets": true,
       "blendMode": "add"
     },
     {
       "id": "BANU1",
       "file": "data/global/ui/FrontEnd/barbarian/banu1.DC6",
-      "imageContainer": "BANU1",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
       "id": "BANU2",
       "file": "data/global/ui/FrontEnd/barbarian/banu2.DC6",
-      "imageContainer": "BANU2",
-      "palette": "fechar",
       "useOffsets": true
     },
     {
       "id": "BANU3",
       "file": "data/global/ui/FrontEnd/barbarian/banu3.DC6",
-      "imageContainer": "BANU3",
-      "palette": "fechar",
       "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NEBW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NEBWs.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NEFW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NEFWs.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NENU1.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NENU2.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NENU3.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/necromancer/NENU3s.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PABW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PAFW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PAFWs.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PANU1.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PANU2.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/paladin/PANU3.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SOBW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SOBWs.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SOFW.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SOFWs.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SONU1.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SONU2.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SONU3.DC6",
+      "useOffsets": true
+    },
+    {
+      "file": "data/global/ui/FrontEnd/sorceress/SONU3s.DC6",
+      "useOffsets": true,
+      "blendMode": "add"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "fire",
+      "imageContainer": "fire",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMBW",
+      "imageContainer": "AMBW",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMFW",
+      "imageContainer": "AMFW",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMFWs",
+      "imageContainer": "AMFWs",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMNU1",
+      "imageContainer": "AMNU1",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMNU2",
+      "imageContainer": "AMNU2",
+      "palette": "fechar"
+    },
+    {
+      "id": "AMNU3",
+      "imageContainer": "AMNU3",
+      "palette": "fechar"
+    },
+    {
+      "id": "BABW",
+      "imageContainer": "BABW",
+      "palette": "fechar"
+    },
+    {
+      "id": "BAFW",
+      "imageContainer": "BAFW",
+      "palette": "fechar"
+    },
+    {
+      "id": "BAFWs",
+      "imageContainer": "BAFWs",
+      "palette": "fechar"
+    },
+    {
+      "id": "BANU1",
+      "imageContainer": "BANU1",
+      "palette": "fechar"
+    },
+    {
+      "id": "BANU2",
+      "imageContainer": "BANU2",
+      "palette": "fechar"
+    },
+    {
+      "id": "BANU3",
+      "imageContainer": "BANU3",
+      "palette": "fechar"
     },
     {
       "id": "NEBW",
-      "file": "data/global/ui/FrontEnd/necromancer/NEBW.DC6",
       "imageContainer": "NEBW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "NEBWs",
-      "file": "data/global/ui/FrontEnd/necromancer/NEBWs.DC6",
       "imageContainer": "NEBWs",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "NEFW",
-      "file": "data/global/ui/FrontEnd/necromancer/NEFW.DC6",
       "imageContainer": "NEFW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "NEFWs",
-      "file": "data/global/ui/FrontEnd/necromancer/NEFWs.DC6",
       "imageContainer": "NEFWs",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "NENU1",
-      "file": "data/global/ui/FrontEnd/necromancer/NENU1.DC6",
       "imageContainer": "NENU1",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "NENU2",
-      "file": "data/global/ui/FrontEnd/necromancer/NENU2.DC6",
       "imageContainer": "NENU2",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "NENU3",
-      "file": "data/global/ui/FrontEnd/necromancer/NENU3.DC6",
       "imageContainer": "NENU3",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "NENU3s",
-      "file": "data/global/ui/FrontEnd/necromancer/NENU3s.DC6",
       "imageContainer": "NENU3s",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "PABW",
-      "file": "data/global/ui/FrontEnd/paladin/PABW.DC6",
       "imageContainer": "PABW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "PAFW",
-      "file": "data/global/ui/FrontEnd/paladin/PAFW.DC6",
       "imageContainer": "PAFW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "PAFWs",
-      "file": "data/global/ui/FrontEnd/paladin/PAFWs.DC6",
       "imageContainer": "PAFWs",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "PANU1",
-      "file": "data/global/ui/FrontEnd/paladin/PANU1.DC6",
       "imageContainer": "PANU1",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "PANU2",
-      "file": "data/global/ui/FrontEnd/paladin/PANU2.DC6",
       "imageContainer": "PANU2",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "PANU3",
-      "file": "data/global/ui/FrontEnd/paladin/PANU3.DC6",
       "imageContainer": "PANU3",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SOBW",
-      "file": "data/global/ui/FrontEnd/sorceress/SOBW.DC6",
       "imageContainer": "SOBW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SOBWs",
-      "file": "data/global/ui/FrontEnd/sorceress/SOBWs.DC6",
       "imageContainer": "SOBWs",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "SOFW",
-      "file": "data/global/ui/FrontEnd/sorceress/SOFW.DC6",
       "imageContainer": "SOFW",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SOFWs",
-      "file": "data/global/ui/FrontEnd/sorceress/SOFWs.DC6",
       "imageContainer": "SOFWs",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     },
     {
       "id": "SONU1",
-      "file": "data/global/ui/FrontEnd/sorceress/SONU1.DC6",
       "imageContainer": "SONU1",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SONU2",
-      "file": "data/global/ui/FrontEnd/sorceress/SONU2.DC6",
       "imageContainer": "SONU2",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SONU3",
-      "file": "data/global/ui/FrontEnd/sorceress/SONU3.DC6",
       "imageContainer": "SONU3",
-      "palette": "fechar",
-      "useOffsets": true
+      "palette": "fechar"
     },
     {
       "id": "SONU3s",
-      "file": "data/global/ui/FrontEnd/sorceress/SONU3s.DC6",
       "imageContainer": "SONU3s",
-      "palette": "fechar",
-      "useOffsets": true,
-      "blendMode": "add"
+      "palette": "fechar"
     }
   ],
   "compositeTexture": [

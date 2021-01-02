@@ -67,11 +67,11 @@ bool Button::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& actio
 	return true;
 }
 
-bool Button::click(Game& game, bool playSound)
+bool Button::click(Game& game, bool playSound, const std::shared_ptr<Action>& action)
 {
 	if (enabled == true)
 	{
-		if (clickAction != nullptr)
+		if (action != nullptr)
 		{
 			if (focusEnable == true)
 			{
@@ -85,11 +85,21 @@ bool Button::click(Game& game, bool playSound)
 			{
 				game.addPlayingSound(clickSound);
 			}
-			game.Events().addBack(clickAction);
+			game.Events().addBack(action);
 			return true;
 		}
 	}
 	return false;
+}
+
+bool Button::click(Game& game, bool playSound)
+{
+	return click(game, playSound, clickAction);
+}
+
+bool Button::rightClick(Game& game, bool playSound)
+{
+	return click(game, playSound, rightClickAction);
 }
 
 void Button::focus(Game& game) const
@@ -164,10 +174,9 @@ void Button::onMouseButtonPressed(Game& game, bool contains)
 		wasRightClicked = true;
 		if (clickUp == false)
 		{
-			if (rightClickAction != nullptr)
+			if (rightClick(game, true) == true)
 			{
 				game.clearMousePressed();
-				game.Events().addBack(rightClickAction);
 			}
 		}
 	}
@@ -213,10 +222,9 @@ void Button::onMouseButtonReleased(Game& game, bool contains)
 		if (clickUp == true &&
 			contains == true)
 		{
-			if (rightClickAction != nullptr)
+			if (rightClick(game, true) == true)
 			{
 				game.clearMouseReleased();
-				game.Events().addBack(rightClickAction);
 			}
 		}
 	}
@@ -309,10 +317,9 @@ void Button::onTouchEnded(Game& game, bool contains)
 		wasRightClicked = false;
 		if (contains == true)
 		{
-			if (rightClickAction != nullptr)
+			if (rightClick(game, true) == true)
 			{
 				game.clearTouchEnded();
-				game.Events().addBack(rightClickAction);
 			}
 		}
 	}

@@ -4,7 +4,6 @@
 #include "BitmapText.h"
 #include "Game.h"
 #include "Menu.h"
-#include <string>
 #include "StringText.h"
 #include "TextUtils.h"
 #include "Variable.h"
@@ -19,23 +18,23 @@ private:
 	TextUtils::TextOp textOp;
 
 public:
-	ActMenuAppendText(const std::string& id_, size_t idx_,
-		const std::string& text_, TextUtils::TextOp textOp_)
+	ActMenuAppendText(const std::string_view id_, size_t idx_,
+		const std::string_view text_, TextUtils::TextOp textOp_)
 		: id(id_), idx(idx_), textFormat(text_), textOp(textOp_) {}
 
-	ActMenuAppendText(const std::string& id_, size_t idx_,
-		const std::string& text_, const std::string& query_)
+	ActMenuAppendText(const std::string_view id_, size_t idx_,
+		const std::string_view text_, const std::string_view query_)
 		: id(id_), idx(idx_), textFormat(text_),
 		textOp(TextUtils::TextOp::Query)
 	{
-		bindings.push_back(query_);
+		bindings.push_back(std::string(query_));
 	}
 
-	ActMenuAppendText(const std::string& id_,
-		size_t idx_, const std::string& format_,
-		const std::vector<std::string>& bindings_)
+	ActMenuAppendText(const std::string_view id_,
+		size_t idx_, const std::string_view format_,
+		std::vector<std::string>&& bindings_)
 		: id(id_), idx(idx_), textFormat(format_),
-		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
+		bindings(std::move(bindings_)), textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }
@@ -65,7 +64,7 @@ private:
 	bool playSound;
 
 public:
-	ActMenuClick(const std::string& id_, size_t idx_, bool playSound_)
+	ActMenuClick(const std::string_view id_, size_t idx_, bool playSound_)
 		: id(id_), idx(idx_), playSound(playSound_) {}
 
 	bool execute(Game& game) override
@@ -91,7 +90,7 @@ private:
 	bool playSound;
 
 public:
-	ActMenuClickVisible(const std::string& id_, size_t idx_, bool playSound_)
+	ActMenuClickVisible(const std::string_view id_, size_t idx_, bool playSound_)
 		: id(id_), idx(idx_), playSound(playSound_) {}
 
 	bool execute(Game& game) override
@@ -119,8 +118,8 @@ private:
 	bool focus;
 
 public:
-	ActMenuMoveScrollbar(const std::string& idMenu_, const std::string& idScrollbar_,
-		const std::string& idAnchorTo_, unsigned range_, bool focus_)
+	ActMenuMoveScrollbar(const std::string_view idMenu_, const std::string_view idScrollbar_,
+		const std::string_view idAnchorTo_, unsigned range_, bool focus_)
 		: idMenu(idMenu_), idScrollbar(idScrollbar_), idAnchorTo(idAnchorTo_),
 		range(range_), focus(focus_) {}
 
@@ -134,7 +133,7 @@ public:
 			auto pos = anchorTo->DrawPosition();
 			auto newRange = std::min(range - (unsigned)scrollBar->Size().y, range);
 			auto itemCount = menu->getItemCount();
-			if (focus == true)
+			if (focus == true && menu->isFocusEnabled() == true)
 			{
 				auto offset = scrollBar->DrawPosition().y - pos.y;
 				auto menuIdx = (size_t)std::round((offset * (float)(itemCount - 1)) / (float)newRange);
@@ -160,6 +159,58 @@ public:
 	}
 };
 
+class ActMenuRightClick : public Action
+{
+private:
+	std::string id;
+	size_t idx;
+	bool playSound;
+
+public:
+	ActMenuRightClick(const std::string_view id_, size_t idx_, bool playSound_)
+		: id(id_), idx(idx_), playSound(playSound_) {}
+
+	bool execute(Game& game) override
+	{
+		auto menu = game.Resources().getDrawable<Menu>(id);
+		if (menu != nullptr)
+		{
+			auto button = menu->getItem(idx);
+			if (button != nullptr)
+			{
+				button->rightClick(game, playSound);
+			}
+		}
+		return true;
+	}
+};
+
+class ActMenuRightClickVisible : public Action
+{
+private:
+	std::string id;
+	size_t idx;
+	bool playSound;
+
+public:
+	ActMenuRightClickVisible(const std::string_view id_, size_t idx_, bool playSound_)
+		: id(id_), idx(idx_), playSound(playSound_) {}
+
+	bool execute(Game& game) override
+	{
+		auto menu = game.Resources().getDrawable<Menu>(id);
+		if (menu != nullptr)
+		{
+			auto button = menu->getVisibleItem(idx);
+			if (button != nullptr)
+			{
+				button->rightClick(game, playSound);
+			}
+		}
+		return true;
+	}
+};
+
 class ActMenuSetColor : public Action
 {
 private:
@@ -168,7 +219,7 @@ private:
 	sf::Color color;
 
 public:
-	ActMenuSetColor(const std::string& id_, size_t idx_, const sf::Color& color_)
+	ActMenuSetColor(const std::string_view id_, size_t idx_, const sf::Color& color_)
 		: id(id_), idx(idx_), color(color_) {}
 
 	bool execute(Game& game) override
@@ -194,7 +245,7 @@ private:
 	std::string idFont;
 
 public:
-	ActMenuSetFont(const std::string& id_, size_t idx_, const std::string& idFont_)
+	ActMenuSetFont(const std::string_view id_, size_t idx_, const std::string_view idFont_)
 		: id(id_), idx(idx_), idFont(idFont_) {}
 
 	bool execute(Game& game) override
@@ -235,18 +286,29 @@ class ActMenuSetIndex : public Action
 private:
 	std::string id;
 	Variable idxVar;
+	bool focus;
 
 public:
-	ActMenuSetIndex(const std::string& id_, const Variable& idxVar_)
-		: id(id_), idxVar(idxVar_) {}
+	ActMenuSetIndex(const std::string_view id_, const Variable& idxVar_, bool focus_)
+		: id(id_), idxVar(idxVar_), focus(focus_) {}
 
 	bool execute(Game& game) override
 	{
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
-			auto idx = (size_t)game.getVarOrPropLongV(idxVar);
+			auto idx = (size_t)game.getVarOrPropInt64V(idxVar);
 			menu->setCurrentIdx(idx);
+			if (focus == true && menu->isFocusEnabled() == true)
+			{
+				auto btn = menu->getItem();
+				auto focused = game.Resources().getFocused();
+				if (btn != focused)
+				{
+					game.Resources().setFocused(btn);
+					btn->focus(game);
+				}
+			}
 		}
 		return true;
 	}
@@ -262,23 +324,23 @@ private:
 	TextUtils::TextOp textOp;
 
 public:
-	ActMenuSetText(const std::string& id_, size_t idx_,
-		const std::string& text_, TextUtils::TextOp textOp_)
+	ActMenuSetText(const std::string_view id_, size_t idx_,
+		const std::string_view text_, TextUtils::TextOp textOp_)
 		: id(id_), idx(idx_), textFormat(text_), textOp(textOp_) {}
 
-	ActMenuSetText(const std::string& id_, size_t idx_,
-		const std::string& text_, const std::string& query_)
+	ActMenuSetText(const std::string_view id_, size_t idx_,
+		const std::string_view text_, const std::string_view query_)
 		: id(id_), idx(idx_), textFormat(text_),
 		textOp(TextUtils::TextOp::Query)
 	{
-		bindings.push_back(query_);
+		bindings.push_back(std::string(query_));
 	}
 
-	ActMenuSetText(const std::string& id_,
-		size_t idx_, const std::string& format_,
-		const std::vector<std::string>& bindings_)
+	ActMenuSetText(const std::string_view id_,
+		size_t idx_, const std::string_view format_,
+		std::vector<std::string>&& bindings_)
 		: id(id_), idx(idx_), textFormat(format_),
-		bindings(bindings_), textOp(TextUtils::TextOp::FormatString) {}
+		bindings(std::move(bindings_)), textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
 	void Trim() noexcept { textOp |= TextUtils::TextOp::Trim; }

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_shortbow",
+    "file": "images/avatar/female/shortbow.png"
+  },
   "texturePack": {
     "id": "f_shortbow",
-    "texture": {
-      "id": "f_shortbow",
-      "file": "images/avatar/female/shortbow.png"
-    },
+    "texture": "f_shortbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

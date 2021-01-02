@@ -29,6 +29,9 @@ namespace TextUtils
 	constexpr TextOp& operator&= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) & static_cast<T>(b)); return a; }
 	constexpr TextOp& operator^= (TextOp& a, TextOp b) noexcept { a = (TextOp)(static_cast<T>(a) ^ static_cast<T>(b)); return a; }
 
+	bool getFormatString(const Game& game, const std::string_view format,
+		const std::vector<std::string>& bindings, std::string& outStr);
+
 	std::string getFormatString(const Game& game, const std::string_view format,
 		const std::vector<std::string>& bindings);
 

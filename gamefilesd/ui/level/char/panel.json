@@ -412,7 +412,7 @@
     "horizontalSpaceOffset": 2,
     "verticalAlign": "center"
   },
-  "keyboard": [
+  "inputEvent": [
     { "key": "+", "action": "automapZoomIn" },
     { "key": "-", "action": "automapZoomOut" },
     { "key": "1", "action": "useBelt1Item" },

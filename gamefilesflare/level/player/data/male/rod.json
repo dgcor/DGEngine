@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_rod",
+    "file": "images/avatar/male/rod.png"
+  },
   "texturePack": {
     "id": "m_rod",
-    "texture": {
-      "id": "m_rod",
-      "file": "images/avatar/male/rod.png"
-    },
+    "texture": "m_rod",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

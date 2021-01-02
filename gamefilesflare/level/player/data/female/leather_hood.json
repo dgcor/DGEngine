@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_leather_hood",
+    "file": "images/avatar/female/leather_hood.png"
+  },
   "texturePack": {
     "id": "f_leather_hood",
-    "texture": {
-      "id": "f_leather_hood",
-      "file": "images/avatar/female/leather_hood.png"
-    },
+    "texture": "f_leather_hood",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

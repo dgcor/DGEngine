@@ -4,7 +4,7 @@
     "name": "resource.add",
     "id": "splashScreen"
   },
-  "keyboard": {
+  "inputEvent": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "skip" }
   },

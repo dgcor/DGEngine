@@ -1,50 +1,7 @@
 #pragma once
 
 #include "Action.h"
-#include "FileUtils.h"
 #include "Game.h"
-
-class ActShaderLoad : public Action
-{
-private:
-	std::string id;
-	std::string fragmentShaderFile;
-	std::string vertexShaderFile;
-	std::string geometryShaderFile;
-
-public:
-	ActShaderLoad(const std::string& id_, const std::string& fragmentShaderFile_,
-		const std::string& vertexShaderFile_, const std::string& geometryShaderFile_)
-		: id(id_), fragmentShaderFile(fragmentShaderFile_),
-		vertexShaderFile(vertexShaderFile_), geometryShaderFile(geometryShaderFile_) {}
-
-	bool execute(Game& game) override
-	{
-		if (fragmentShaderFile.empty() == false)
-		{
-			auto fragmentShaderText = FileUtils::readText(fragmentShaderFile.c_str());
-			if (vertexShaderFile.empty() == false)
-			{
-				auto vertexShaderText = FileUtils::readText(vertexShaderFile.c_str());
-				if (geometryShaderFile.empty() == false)
-				{
-					auto geometryShaderText = FileUtils::readText(geometryShaderFile.c_str());
-					game.Resources().Shaders().add(id,
-						fragmentShaderText, vertexShaderText, geometryShaderText);
-				}
-				else
-				{
-					game.Resources().Shaders().add(id, fragmentShaderText, vertexShaderText);
-				}
-			}
-			else
-			{
-				game.Resources().Shaders().add(id, fragmentShaderText);
-			}
-		}
-		return true;
-	}
-};
 
 class ActShaderSetGameShader : public Action
 {
@@ -53,7 +10,7 @@ private:
 	std::string gameShaderId;
 
 public:
-	ActShaderSetGameShader(const std::string& id_, const std::string& gameShaderId_)
+	ActShaderSetGameShader(const std::string_view id_, const std::string_view gameShaderId_)
 		: id(id_), gameShaderId(gameShaderId_) {}
 
 	bool execute(Game& game) override
@@ -73,15 +30,15 @@ private:
 	T value;
 
 public:
-	ActShaderSetUniform(const std::string& id_, const std::string& key_,
+	ActShaderSetUniform(const std::string_view id_, const std::string_view key_,
 		const T& value_) : id(id_), key(key_), value(value_) {}
 
 	bool execute(Game& game) override
 	{
-		auto shader = game.Resources().Shaders().get(id);
-		if (shader != nullptr)
+		auto gameShader = game.Resources().Shaders().get(id);
+		if (gameShader != nullptr)
 		{
-			shader->setUniform(key, value);
+			gameShader->shader->setUniform(key, value);
 		}
 		return true;
 	}

@@ -8,11 +8,13 @@
 using namespace rapidjson;
 using namespace SaveUtils;
 
-void Save::serialize(void* serializeObj, Properties& props,
+void Save::serialize(void* serializeObj, const Properties& props,
 	const Game& game, const Level& level, const SimpleLevelObject& obj)
 {
 	auto& writer = *((PrettyWriter<StringBuffer>*)serializeObj);
 	const auto& objClass = *obj.Class();
+
+	bool saveDefaults = getBoolProperty(props, "saveDefaults");
 
 	writer.StartObject();
 
@@ -26,7 +28,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 	{
 		nameFromClass = obj.SimpleName();
 	}
-	if (props.saveDefaults == true ||
+	if (saveDefaults == true ||
 		nameFromClass != obj.Name())
 	{
 		writeString(writer, "name", obj.Name());
@@ -34,18 +36,18 @@ void Save::serialize(void* serializeObj, Properties& props,
 
 	writeVector2fi(writer, "mapPosition", obj.MapPosition());
 
-	if (props.saveDefaults == true ||
-		(props.saveDefaults == false && obj.getCellSize() != objClass.getCellSize()))
+	if (saveDefaults == true ||
+		(saveDefaults == false && obj.getCellSize() != objClass.getCellSize()))
 	{
 		writeVector2i(writer, "size", obj.getCellSize());
 	}
-	if (props.saveDefaults == true ||
-		(props.saveDefaults == false && obj.Text1() != objClass.Text1()))
+	if (saveDefaults == true ||
+		(saveDefaults == false && obj.Text1() != objClass.Text1()))
 	{
 		writeString(writer, "text1", obj.Text1());
 	}
-	if (props.saveDefaults == true ||
-		(props.saveDefaults == false && obj.Text2() != objClass.Text2()))
+	if (saveDefaults == true ||
+		(saveDefaults == false && obj.Text2() != objClass.Text2()))
 	{
 		writeString(writer, "text2", obj.Text2());
 	}
@@ -56,7 +58,7 @@ void Save::serialize(void* serializeObj, Properties& props,
 		writer.StartObject();
 		for (const auto& prop : obj.properties)
 		{
-			if (props.saveDefaults == false && objClass.isDefault(prop) == true)
+			if (saveDefaults == false && objClass.isDefault(prop) == true)
 			{
 				continue;
 			}

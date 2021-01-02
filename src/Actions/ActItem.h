@@ -15,7 +15,7 @@ static void updateCursorWithItemImage(Game& game, const Item& item)
 	if (item.getTexture(1, ti) == true)
 	{
 		auto image = std::make_shared<Image>();
-		image->setTexture(ti, true);
+		image->setTexture(ti);
 		image->setOrigin();
 		game.Resources().addCursor(image);
 		game.updateCursorPosition();
@@ -29,7 +29,7 @@ private:
 	ItemLocation itemLocation;
 
 public:
-	ActItemAddCursor(const std::string& idLevel_, const ItemLocation& itemLocation_)
+	ActItemAddCursor(const std::string_view idLevel_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), itemLocation(itemLocation_) {}
 
 	bool execute(Game& game) override
@@ -56,7 +56,7 @@ private:
 	bool remove;
 
 public:
-	ActItemAddQuantity(const std::string& idLevel_, const ItemLocation& itemLocation_,
+	ActItemAddQuantity(const std::string_view idLevel_, const ItemLocation& itemLocation_,
 		const Variable& quantity_, bool remove_) : idLevel(idLevel_),
 		itemLocation(itemLocation_), quantity(quantity_), remove(remove_) {}
 
@@ -65,7 +65,7 @@ public:
 		auto level = game.Resources().getLevel(idLevel);
 		if (level != nullptr)
 		{
-			auto quantVal = (LevelObjValue)game.getVarOrPropLongV(quantity);
+			auto quantVal = (LevelObjValue)game.getVarOrPropInt64V(quantity);
 			if (quantVal != 0)
 			{
 				if (remove == true)
@@ -86,7 +86,7 @@ private:
 	ItemLocation itemLocation;
 
 public:
-	ActItemDelete(const std::string& idLevel_, const ItemLocation& itemLocation_)
+	ActItemDelete(const std::string_view idLevel_, const ItemLocation& itemLocation_)
 		: idLevel(idLevel_), itemLocation(itemLocation_) {}
 
 	bool execute(Game& game) override
@@ -107,7 +107,7 @@ private:
 	ItemCoordInventory itemCoord;
 
 public:
-	ActItemDrop(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+	ActItemDrop(const std::string_view idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
 	bool execute(Game& game) override
@@ -146,7 +146,7 @@ private:
 	uint16_t actionHash16;
 
 public:
-	ActItemExecuteAction(const std::string& idLevel_,
+	ActItemExecuteAction(const std::string_view idLevel_,
 		const ItemLocation& itemLocation_, uint16_t actionHash16_)
 		: idLevel(idLevel_), itemLocation(itemLocation_), actionHash16(actionHash16_) {}
 
@@ -189,7 +189,7 @@ private:
 	std::shared_ptr<Action> inventoryFullAction;
 
 public:
-	ActItemLoadFromLevel(const std::string& idLevel_,
+	ActItemLoadFromLevel(const std::string_view idLevel_,
 		const ItemCoordInventory& itemCoord_, bool splitIntoMultiple_)
 		: idLevel(idLevel_), itemCoord(itemCoord_), splitIntoMultiple(splitIntoMultiple_) {}
 
@@ -266,7 +266,7 @@ private:
 	ItemLocation to;
 
 public:
-	ActItemMove(const std::string& idLevel_, const ItemLocation& from_,
+	ActItemMove(const std::string_view idLevel_, const ItemLocation& from_,
 		const ItemLocation& to_) : idLevel(idLevel_), from(from_), to(to_) {}
 
 	bool execute(Game& game) override
@@ -290,8 +290,8 @@ private:
 	Variable value;
 
 public:
-	ActItemSetProperty(const ItemLocation& itemLocation_, const std::string& idLevel_,
-		const std::string& prop_, const Variable& value_) : itemLocation(itemLocation_),
+	ActItemSetProperty(const ItemLocation& itemLocation_, const std::string_view idLevel_,
+		const std::string_view prop_, const Variable& value_) : itemLocation(itemLocation_),
 		idLevel(idLevel_), prop(prop_), value(value_) {}
 
 	bool execute(Game& game) override
@@ -330,7 +330,7 @@ private:
 	std::shared_ptr<Action> inventoryFullAction;
 
 public:
-	ActItemTrade(const std::string& idLevel_, const std::string& idPlayer_,
+	ActItemTrade(const std::string_view idLevel_, const std::string_view idPlayer_,
 		const ItemCoordInventory& itemCoord_, InventoryPosition invPos_)
 		: idLevel(idLevel_), idPlayer(idPlayer_), itemCoord(itemCoord_),
 		invPos(invPos_) {}
@@ -382,7 +382,7 @@ private:
 	ItemCoordInventory itemCoord;
 
 public:
-	ActItemUpdate(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+	ActItemUpdate(const std::string_view idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
 	bool execute(Game& game) override
@@ -460,7 +460,7 @@ private:
 	ItemCoordInventory itemCoord;
 
 public:
-	ActItemUse(const std::string& idLevel_, const ItemCoordInventory& itemCoord_)
+	ActItemUse(const std::string_view idLevel_, const ItemCoordInventory& itemCoord_)
 		: idLevel(idLevel_), itemCoord(itemCoord_) {}
 
 	bool execute(Game& game) override

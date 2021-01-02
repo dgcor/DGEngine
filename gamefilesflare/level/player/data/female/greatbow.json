@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_greatbow",
+    "file": "images/avatar/female/greatbow.png"
+  },
   "texturePack": {
     "id": "f_greatbow",
-    "texture": {
-      "id": "f_greatbow",
-      "file": "images/avatar/female/greatbow.png"
-    },
+    "texture": "f_greatbow",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

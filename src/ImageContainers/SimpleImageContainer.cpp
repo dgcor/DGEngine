@@ -34,6 +34,10 @@ SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, uint
 	{
 		directions = directions_;
 	}
+	else
+	{
+		directions = 1;
+	}
 }
 
 sf::Image2 SimpleImageContainer::get(uint32_t index,

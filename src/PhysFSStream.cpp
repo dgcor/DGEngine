@@ -28,12 +28,7 @@ static constexpr bool FALLBACK_TO_LOWERCASE = true;
 static constexpr bool FALLBACK_TO_LOWERCASE = false;
 #endif
 
-sf::PhysFSStream::PhysFSStream(const std::string& fileName)
-{
-	load(fileName);
-}
-
-sf::PhysFSStream::PhysFSStream(const char* fileName)
+sf::PhysFSStream::PhysFSStream(const std::string_view fileName)
 {
 	load(fileName);
 }
@@ -46,28 +41,11 @@ sf::PhysFSStream::~PhysFSStream()
 	}
 }
 
-bool sf::PhysFSStream::load(const std::string& fileName)
+bool sf::PhysFSStream::load(const std::string_view fileName)
 {
 	if (file == nullptr)
 	{
-		file = PHYSFS_openRead(fileName.c_str());
-	}
-	if constexpr (FALLBACK_TO_LOWERCASE == true)
-	{
-		if (file == nullptr)
-		{
-			auto lowerCaseFileName = Utils::toLower(fileName);
-			file = PHYSFS_openRead(lowerCaseFileName.c_str());
-		}
-	}
-	return (file != nullptr);
-}
-
-bool sf::PhysFSStream::load(const char* fileName)
-{
-	if (file == nullptr)
-	{
-		file = PHYSFS_openRead(fileName);
+		file = PHYSFS_openRead(fileName.data());
 	}
 	if constexpr (FALLBACK_TO_LOWERCASE == true)
 	{

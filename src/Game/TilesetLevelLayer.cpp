@@ -83,7 +83,7 @@ static void addTile(std::vector<sf::Vertex>& vertices,
 }
 
 void TilesetLevelLayer::draw(const LevelSurface& surface,
-	SpriteShaderCache& spriteCache, sf::Shader* spriteShader,
+	SpriteShaderCache& spriteCache, GameShader* spriteShader,
 	const Level& level, bool drawLevelObjects, bool isAutomap) const
 {
 	VertexArray2 vertexLayer;

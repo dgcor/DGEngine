@@ -1,7 +1,7 @@
 #pragma once
 
-#include "PairXY.h"
 #include <string>
+#include "Utils/PairXY.h"
 #include <variant>
 
 class ItemCoordInventory

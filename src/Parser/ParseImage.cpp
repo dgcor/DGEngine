@@ -3,22 +3,20 @@
 #include "GameUtils.h"
 #include "Image.h"
 #include "Panel.h"
-#include "ParseTexture.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseImage(Game& game, const Value& elem)
 	{
-		if (isValidString(elem, "id") == false ||
-			(isValidString(elem, "texture") == false &&
-				isValidString(elem, "texturePack") == false))
+		if (isValidString(elem, "id") == false)
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -26,32 +24,49 @@ namespace Parser
 
 		std::shared_ptr<Image> image;
 
-		if (elem.HasMember("texture") == true)
+		if (isValidString(elem, "texture"))
 		{
-			std::shared_ptr<sf::Texture> texture;
-			if (getOrParseTexture(game, elem, "texture", texture) == false ||
-				texture == nullptr)
+			auto texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
+			if (texture == nullptr)
 			{
 				return;
 			}
 			image = std::make_shared<Image>(*texture);
 		}
-		else
+		else if (isValidString(elem, "texturePack"))
 		{
-			auto tex = game.Resources().getTexturePack(getStringVal(elem["texturePack"]));
-			if (tex == nullptr)
+			auto texPack = game.Resources().getTexturePack(elem["texturePack"sv].GetStringView());
+			if (texPack == nullptr)
 			{
 				return;
 			}
 			TextureInfo ti;
-			if (tex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			if (texPack->get(getUIntKey(elem, "textureIndex"), ti) == false)
 			{
 				return;
 			}
 			image = std::make_shared<Image>(ti);
 		}
+		else if (isValidString(elem, "compositeTexture"))
+		{
+			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
+			if (compTex == nullptr)
+			{
+				return;
+			}
+			std::vector<TextureInfo> ti;
+			if (compTex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			{
+				return;
+			}
+			image = std::make_shared<Image>(ti);
+		}
+		else
+		{
+			return;
+		}
 
-		if (elem.HasMember("textureRect"))
+		if (elem.HasMember("textureRect"sv))
 		{
 			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			image->setTextureRect(getIntRectKey(elem, "textureRect", rect));
@@ -92,7 +107,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

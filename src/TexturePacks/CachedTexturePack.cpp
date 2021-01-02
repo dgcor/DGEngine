@@ -1,4 +1,5 @@
 #include "CachedTexturePack.h"
+#include "AnimationInfo.h"
 #include "TextureInfo.h"
 
 static uint32_t getNormalizedDirection(uint32_t direction, uint32_t numberOfDirections)
@@ -39,7 +40,7 @@ CachedTexturePack::CachedTexturePack(const std::shared_ptr<ImageContainer>& imgP
 	cache.resize(imgPack_->size());
 }
 
-bool CachedTexturePack::get(uint32_t index, TextureInfo& ti) const
+bool CachedTexturePack::fetchTexture(uint32_t index) const
 {
 	if (index >= imgPack->size())
 	{
@@ -58,6 +59,15 @@ bool CachedTexturePack::get(uint32_t index, TextureInfo& ti) const
 			cache[index].second
 		);
 	}
+	return true;
+}
+
+bool CachedTexturePack::get(uint32_t index, TextureInfo& ti) const
+{
+	if (fetchTexture(index) == false)
+	{
+		return false;
+	}
 	ti.texture = &cache[index].first;
 	updateTextureRect(ti);
 	ti.palette = palette;
@@ -66,6 +76,15 @@ bool CachedTexturePack::get(uint32_t index, TextureInfo& ti) const
 	ti.blendMode = cache[index].second.blendMode;
 	ti.nextIndex = cache[index].second.nextIndex;
 	return true;
+}
+
+int32_t CachedTexturePack::getWidth(uint32_t index) const
+{
+	if (fetchTexture(index) == false)
+	{
+		return 0;
+	}
+	return (int32_t)getTextureWidth(cache[index].first);
 }
 
 uint32_t CachedTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
@@ -99,21 +118,21 @@ uint32_t CachedTexturePack::getDirection(uint32_t frameIdx) const noexcept
 	return 0;
 }
 
-std::pair<uint32_t, uint32_t> CachedTexturePack::getRange(
-	int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const
+AnimationInfo CachedTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
-	animType = {};
 	auto directions = imgPack->getDirections();
 	if (normalizeDirections == true && directions > 1)
 	{
 		directionIdx = (int32_t)getNormalizedDirection(directionIdx, directions);
 	}
-	return TexturePack::getRange(
+	AnimationInfo animInfo;
+	animInfo.indexRange = TexturePack::getRange(
 		0,
 		cache.size(),
 		directionIdx,
 		directions
 	);
+	return animInfo;
 }
 
 int32_t CachedTexturePack::getFlags(uint32_t index, uint32_t subIndex) const
@@ -134,7 +153,7 @@ CachedMultiTexturePack::CachedMultiTexturePack(
 	cache.resize(textureCount);
 }
 
-bool CachedMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
+bool CachedMultiTexturePack::fetchTexture(uint32_t index) const
 {
 	if (imgVec.empty() == true ||
 		index >= textureCount)
@@ -165,6 +184,15 @@ bool CachedMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 			cache[index].second
 		);
 	}
+	return true;
+}
+
+bool CachedMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
+{
+	if (fetchTexture(index) == false)
+	{
+		return false;
+	}
 	ti.texture = &cache[index].first;
 	updateTextureRect(ti);
 	ti.palette = palette;
@@ -173,6 +201,15 @@ bool CachedMultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 	ti.blendMode = cache[index].second.blendMode;
 	ti.nextIndex = -1;
 	return true;
+}
+
+int32_t CachedMultiTexturePack::getWidth(uint32_t index) const
+{
+	if (fetchTexture(index) == false)
+	{
+		return 0;
+	}
+	return (int32_t)getTextureWidth(cache[index].first);
 }
 
 uint32_t CachedMultiTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
@@ -215,10 +252,9 @@ uint32_t CachedMultiTexturePack::getDirection(uint32_t frameIdx) const noexcept
 	return 0;
 }
 
-std::pair<uint32_t, uint32_t> CachedMultiTexturePack::getRange(
-	int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const
+AnimationInfo CachedMultiTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
-	animType = {};
+	AnimationInfo animInfo;
 	if (groupIdx >= 0 && (uint32_t)groupIdx < imgVec.size())
 	{
 		uint32_t startIdx = 0;
@@ -233,15 +269,17 @@ std::pair<uint32_t, uint32_t> CachedMultiTexturePack::getRange(
 				{
 					directionIdx = (int32_t)getNormalizedDirection(directionIdx, directions);
 				}
-				return TexturePack::getRange(
+				animInfo.indexRange = TexturePack::getRange(
 					startIdx,
 					stopIdx,
 					directionIdx,
 					directions
 				);
+				return animInfo;
 			}
 			startIdx = stopIdx;
 		}
 	}
-	return std::make_pair((uint32_t)0, textureCount - 1);
+	animInfo.indexRange = std::make_pair((uint32_t)0, textureCount - 1);
+	return animInfo;
 }

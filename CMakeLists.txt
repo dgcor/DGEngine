@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12.4 FATAL_ERROR)
 
 project(DGEngine)
 
@@ -31,6 +31,7 @@ set(SOURCE_FILES
     src/Anchor.h
     src/Animation.cpp
     src/Animation.h
+    src/AnimationInfo.h
     src/AnimationType.h
     src/AudioSource.h
     src/BaseAnimation.cpp
@@ -62,14 +63,21 @@ set(SOURCE_FILES
     src/EventManager.h
     src/FadeInOut.cpp
     src/FadeInOut.h
+    src/FileBytes.h
     src/FileUtils.cpp
     src/FileUtils.h
     src/Font.h
+    src/Formula.cpp
+    src/Formula.h
+    src/Formulas.h
     src/FreeTypeFont.h
     src/Game.cpp
     src/Game.h
+    src/GameConstants.h
     src/GameUtils.cpp
     src/GameUtils.h
+    src/GameUtilsGame.cpp
+    src/GameUtilsGame.h
     src/IfCondition.cpp
     src/IfCondition.h
     src/IgnoreResource.h
@@ -85,8 +93,6 @@ set(SOURCE_FILES
     src/LoadingScreen.h
     src/Menu.cpp
     src/Menu.h
-    src/Min.cpp
-    src/Min.h
     src/Movie2.cpp
     src/Movie2.h
     src/Palette.cpp
@@ -104,8 +110,11 @@ set(SOURCE_FILES
     src/ResourceManager.h
     src/Scrollable.cpp
     src/Scrollable.h
+    src/Shader.h
     src/ShaderManager.cpp
     src/ShaderManager.h
+    src/Shape.cpp
+    src/Shape.h
     src/StreamReader.h
     src/StringButton.cpp
     src/StringButton.h
@@ -165,9 +174,6 @@ set(SOURCE_FILES
     src/Game/ColorLevelLayer.cpp
     src/Game/ColorLevelLayer.h
     src/Game/FlagsVector.h
-    src/Game/Formula.cpp
-    src/Game/Formula.h
-    src/Game/Formulas.h
     src/Game/fsa.h
     src/Game/GameHashes.h
     src/Game/GameProperties.cpp
@@ -197,12 +203,12 @@ set(SOURCE_FILES
     src/Game/LevelSurface.h
     src/Game/LightMap.h
     src/Game/LightSource.h
-    src/Game/Number.h
-    src/Game/PairXY.h
     src/Game/PathFinder.cpp
     src/Game/PathFinder.h
     src/Game/Player.cpp
     src/Game/Player.h
+    src/Game/PlayerAI.cpp
+    src/Game/PlayerAI.h
     src/Game/PlayerClass.cpp
     src/Game/PlayerClass.h
     src/Game/Quest.cpp
@@ -236,6 +242,8 @@ set(SOURCE_FILES
     src/Json/JsonUtils.h
     src/Parser/ParseAction.cpp
     src/Parser/ParseAction.h
+    src/Parser/ParseActionGame.cpp
+    src/Parser/ParseActionGame.h
     src/Parser/ParseAnimation.cpp
     src/Parser/ParseAnimation.h
     src/Parser/ParseAudio.cpp
@@ -256,6 +264,10 @@ set(SOURCE_FILES
     src/Parser/ParseEvent.h
     src/Parser/ParseFile.cpp
     src/Parser/ParseFile.h
+    src/Parser/ParseFileBytes.cpp
+    src/Parser/ParseFileBytes.h
+    src/Parser/ParseFileGame.cpp
+    src/Parser/ParseFileGame.h
     src/Parser/ParseFont.cpp
     src/Parser/ParseFont.h
     src/Parser/ParseIcon.cpp
@@ -264,10 +276,10 @@ set(SOURCE_FILES
     src/Parser/ParseImage.h
     src/Parser/ParseImageContainer.cpp
     src/Parser/ParseImageContainer.h
+    src/Parser/ParseInputEvent.cpp
+    src/Parser/ParseInputEvent.h
     src/Parser/ParseInputText.cpp
     src/Parser/ParseInputText.h
-    src/Parser/ParseKeyboard.cpp
-    src/Parser/ParseKeyboard.h
     src/Parser/ParseLoadingScreen.cpp
     src/Parser/ParseLoadingScreen.h
     src/Parser/ParseMenu.cpp
@@ -284,6 +296,8 @@ set(SOURCE_FILES
     src/Parser/ParsePanel.h
     src/Parser/ParsePredicate.cpp
     src/Parser/ParsePredicate.h
+    src/Parser/ParsePredicateGame.cpp
+    src/Parser/ParsePredicateGame.h
     src/Parser/Parser.cpp
     src/Parser/Parser.h
     src/Parser/ParseRectangle.cpp
@@ -291,6 +305,10 @@ set(SOURCE_FILES
     src/Parser/ParserProperties.h
     src/Parser/ParseScrollable.cpp
     src/Parser/ParseScrollable.h
+    src/Parser/ParseShader.cpp
+    src/Parser/ParseShader.h
+    src/Parser/ParseShape.cpp
+    src/Parser/ParseShape.h
     src/Parser/ParseSound.cpp
     src/Parser/ParseSound.h
     src/Parser/ParseText.cpp
@@ -323,6 +341,10 @@ set(SOURCE_FILES
     src/Parser/Game/ParseSpell.h
     src/Parser/Utils/ParseUtils.cpp
     src/Parser/Utils/ParseUtils.h
+    src/Parser/Utils/ParseUtilsGameKey.cpp
+    src/Parser/Utils/ParseUtilsGameKey.h
+    src/Parser/Utils/ParseUtilsGameVal.cpp
+    src/Parser/Utils/ParseUtilsGameVal.h
     src/Parser/Utils/ParseUtilsIdx.cpp
     src/Parser/Utils/ParseUtilsIdx.h
     src/Parser/Utils/ParseUtilsKey.cpp
@@ -336,6 +358,9 @@ set(SOURCE_FILES
     src/Predicates/PredPlayer.h
     src/SFML/CompositeSprite.cpp
     src/SFML/CompositeSprite.h
+    src/SFML/dr_wav.h
+    src/SFML/GradientCircle.cpp
+    src/SFML/GradientCircle.h
     src/SFML/Image2.h
     src/SFML/Music2.cpp
     src/SFML/Music2.h
@@ -349,8 +374,12 @@ set(SOURCE_FILES
     src/SFML/Text2.h
     src/SFML/VertexArray2.cpp
     src/SFML/VertexArray2.h
+    src/SFML/VertexShape.cpp
+    src/SFML/VertexShape.h
     src/SFML/View2.cpp
     src/SFML/View2.h
+    src/SFML/Wave2.cpp
+    src/SFML/Wave2.h
     src/TexturePacks/BitmapFontTexturePack.cpp
     src/TexturePacks/BitmapFontTexturePack.h
     src/TexturePacks/CachedTexturePack.cpp
@@ -373,8 +402,11 @@ set(SOURCE_FILES
     src/Utils/Helper2D.h
     src/Utils/iterator_tpl.h
     src/Utils/LRUCache.h
+    src/Utils/Number.h
     src/Utils/NumberVector.h
+    src/Utils/PairXY.h
     src/Utils/ReverseIterable.h
+    src/Utils/UnorderedStringMap.h
     src/Utils/Utils.cpp
     src/Utils/Utils.h
 )
@@ -406,6 +438,8 @@ if(DGENGINE_DIABLO_FORMAT_SUPPORT)
     SET(SOURCE_FILES ${SOURCE_FILES}
         src/DS1.cpp
         src/DS1.h
+        src/Min.cpp
+        src/Min.h
         src/Game/LevelHelper.cpp
         src/Game/LevelHelper.h
         src/ImageContainers/CELImageContainer.cpp
@@ -429,22 +463,13 @@ endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_link_libraries(${PROJECT_NAME} stdc++fs)
-
 if(FFmpeg_FOUND)
     include_directories(${FFmpeg_INCLUDES})
     target_link_libraries(${PROJECT_NAME} ${FFmpeg_LIBRARIES})
 endif()
 
-if(PHYSFS_FOUND)
-    include_directories(${PHYSFS_INCLUDE_DIRS})
-    target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY})
-endif()
+include_directories(${PHYSFS_INCLUDE_DIRS} ${SFML_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY} ${SFML_LIBRARIES})
 
-if(SFML_FOUND)
-    include_directories(${SFML_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES})
-endif()
-
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)

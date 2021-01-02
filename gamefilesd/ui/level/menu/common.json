@@ -14,7 +14,7 @@
     }
   ],
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"
@@ -42,10 +42,12 @@
     "file": "data/diabsmal.cel",
     "palette": "town"
   },
+  "imageContainer": {
+    "file": "data/PentSpin.cel"
+  },
   "texturePack": {
     "id": "PentSpin",
     "imageContainer": "PentSpin",
-    "file": "data/PentSpin.cel",
     "palette": "town"
   },
   "image": {

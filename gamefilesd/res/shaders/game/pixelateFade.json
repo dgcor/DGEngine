@@ -1,0 +1,8 @@
+{
+  "shader": {
+    "id": "pixelateFade",
+    "fragmentFile": "res/shaders/game/pixelateFade.frag",
+    "uniforms": ["fade", "gamma"],
+    "setShader": "game"
+  }
+}

@@ -4,7 +4,7 @@
     "id": "{1}"
   },
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": {
+  "inputEvent": {
     "key": ["enter", "esc", " "],
     "action": { "name": "button.click", "id": "textWallButton" }
   },

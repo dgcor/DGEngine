@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_leather_armor",
+    "file": "images/avatar/male/leather_armor.png"
+  },
   "texturePack": {
     "id": "m_leather_armor",
-    "texture": {
-      "id": "m_leather_armor",
-      "file": "images/avatar/male/leather_armor.png"
-    },
+    "texture": "m_leather_armor",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

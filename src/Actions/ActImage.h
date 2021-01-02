@@ -12,7 +12,7 @@ private:
 	bool enable;
 
 public:
-	ActImageEnableOutline(const std::string& id_, bool enable_)
+	ActImageEnableOutline(const std::string_view id_, bool enable_)
 		: id(id_), enable(enable_) {}
 
 	bool execute(Game& game) noexcept override
@@ -37,7 +37,7 @@ private:
 	bool applyToY;
 
 public:
-	ActImageInverseResizeXY(const std::string& id_, const Variable& size_,
+	ActImageInverseResizeXY(const std::string_view id_, const Variable& size_,
 		const Variable& inputRangeMin_, const Variable& inputRangeMax_,
 		const sf::Vector2i& sizeRange_, bool applyToY_) : id(id_), size(size_),
 		inputRangeMin(inputRangeMin_), inputRangeMax(inputRangeMax_),
@@ -51,12 +51,12 @@ public:
 			if (image != nullptr)
 			{
 				sf::Vector2i inputRange(
-					(int)game.getVarOrPropLongV(inputRangeMin),
-					(int)game.getVarOrPropLongV(inputRangeMax));
+					(int)game.getVarOrPropInt64V(inputRangeMin),
+					(int)game.getVarOrPropInt64V(inputRangeMax));
 
 				if (inputRange.y > inputRange.x)
 				{
-					auto newSize = (int)game.getVarOrPropLongV(size);
+					auto newSize = (int)game.getVarOrPropInt64V(size);
 					newSize = (int)Utils::normalizeNumber<sf::Vector2i>(
 						(long)newSize, inputRange, sizeRange);
 
@@ -101,7 +101,7 @@ private:
 	sf::Color ignore;
 
 public:
-	ActImageSetOutline(const std::string& id_,
+	ActImageSetOutline(const std::string_view id_,
 		const sf::Color& outline_, const sf::Color& ignore_)
 		: id(id_), outline(outline_), ignore(ignore_) {}
 
@@ -124,8 +124,8 @@ private:
 	sf::Color color;
 
 public:
-	ActImageSetPalette(const std::string& id_,
-		const std::string& idPalette_, const sf::Color& color_)
+	ActImageSetPalette(const std::string_view id_,
+		const std::string_view idPalette_, const sf::Color& color_)
 		: id(id_), idPalette(idPalette_), color(color_) {}
 
 	bool execute(Game& game) override
@@ -158,8 +158,8 @@ private:
 	bool resetRect;
 
 public:
-	ActImageSetTexture(const std::string& id_,
-		const std::string& idTexture_, bool resetRect_)
+	ActImageSetTexture(const std::string_view id_,
+		const std::string_view idTexture_, bool resetRect_)
 		: id(id_), idTexture(idTexture_), resetRect(resetRect_) {}
 
 	bool execute(Game& game) override
@@ -178,52 +178,17 @@ public:
 	}
 };
 
-class ActImageSetTextureFromQueryable : public Action
-{
-private:
-	std::string id;
-	std::string query;
-	size_t textureIdx;
-	bool resetRect;
-
-public:
-	ActImageSetTextureFromQueryable(const std::string& id_,
-		const std::string& query_, size_t textureIdx_,
-		bool resetRect_) : id(id_), query(query_),
-		textureIdx(textureIdx_), resetRect(resetRect_) {}
-
-	bool execute(Game& game) override
-	{
-		auto image = game.Resources().getDrawable<Image>(id);
-		if (image != nullptr)
-		{
-			auto queryable = game.getQueryable(query);
-			if (queryable != nullptr)
-			{
-				TextureInfo ti;
-				if (queryable->getTexture(textureIdx, ti) == true)
-				{
-					image->setTexture(ti, resetRect);
-				}
-			}
-		}
-		return true;
-	}
-};
-
 class ActImageSetTextureFromPack : public Action
 {
 private:
 	std::string id;
 	std::string idTexturePack;
 	size_t textureIdx;
-	bool resetRect;
 
 public:
-	ActImageSetTextureFromPack(const std::string& id_,
-		const std::string& idTexturePack_, size_t textureIdx_,
-		bool resetRect_) : id(id_), idTexturePack(idTexturePack_),
-		textureIdx(textureIdx_), resetRect(resetRect_) {}
+	ActImageSetTextureFromPack(const std::string_view id_,
+		const std::string_view idTexturePack_, size_t textureIdx_)
+		: id(id_), idTexturePack(idTexturePack_), textureIdx(textureIdx_) {}
 
 	bool execute(Game& game) override
 	{
@@ -236,7 +201,38 @@ public:
 				TextureInfo ti;
 				if (tex->get(textureIdx, ti) == true)
 				{
-					image->setTexture(ti, resetRect);
+					image->setTexture(ti);
+				}
+			}
+		}
+		return true;
+	}
+};
+
+class ActImageSetTextureFromQueryable : public Action
+{
+private:
+	std::string id;
+	std::string query;
+	size_t textureIdx;
+
+public:
+	ActImageSetTextureFromQueryable(const std::string_view id_,
+		const std::string_view query_, size_t textureIdx_)
+		: id(id_), query(query_), textureIdx(textureIdx_) {}
+
+	bool execute(Game& game) override
+	{
+		auto image = game.Resources().getDrawable<Image>(id);
+		if (image != nullptr)
+		{
+			auto queryable = game.getQueryable(query);
+			if (queryable != nullptr)
+			{
+				TextureInfo ti;
+				if (queryable->getTexture(textureIdx, ti) == true)
+				{
+					image->setTexture(ti);
 				}
 			}
 		}
@@ -251,7 +247,7 @@ private:
 	sf::IntRect rect;
 
 public:
-	ActImageSetTextureRect(const std::string& id_,
+	ActImageSetTextureRect(const std::string_view id_,
 		const sf::IntRect& rect_) : id(id_), rect(rect_) {}
 
 	bool execute(Game& game) override

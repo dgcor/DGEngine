@@ -13,19 +13,86 @@
       }
     }
   },
-  "load": ["level/data/l2/l2s.json", "level"],
+  "imageContainer": [
+    { "file": "levels/l2data/l2.cel" },
+    { "file": "levels/l2data/l2s.cel" }
+  ],
+  "texturePack": [
+    {
+      "id": "l2",
+      "imageContainer": "l2",
+      "palette": "level",
+      "min": "levels/l2data/l2.min",
+      "minBlocks": 10
+    },
+    {
+      "id": "l2_top",
+      "imageContainer": "l2",
+      "palette": "level",
+      "min": "levels/l2data/l2.min",
+      "minBlocks": 10,
+      "topTiles": true
+    },
+    {
+      "id": "l2s",
+      "imageContainer": "l2s",
+      "palette": "level",
+      "offset": [0, -128],
+      "rects": [
+        { "index": 0, "rect": [0, 0, 64, 160], "offset": [32, 16] },
+        { "index": 1, "rect": [0, 0, 64, 160], "offset": [32, 16] },
+        { "index": 2, "rect": [0, 0, 64, 160] },
+        { "index": 3, "rect": [0, 0, 64, 160] },
+        { "index": 4, "rect": [0, 0, 64, 160] },
+        { "index": 5, "rect": [0, 0, 64, 160] },
+        { "index": 0, "rect": [0, 0, 64, 160], "offset": [-64, 32] },
+        { "index": 1, "rect": [0, 0, 64, 160], "offset": [-64, 32] },
+        { "index": 2, "rect": [0, 0, 64, 160], "offset": [64, 32] },
+        { "index": 3, "rect": [0, 0, 64, 160], "offset": [64, 32] },
+        { "index": 1, "rect": [0, 0, 64, 160], "offset": [0, 32] }
+      ],
+      "textureIndexes": [
+        [12, 4],
+        [16, 5],
+        [130, 7],
+        [131, 6],
+        [133, 8],
+        [134, 9],
+        [137, 8],
+        [138, 9],
+        [140, 8],
+        [142, 8],
+        [145, 2],
+        [146, 3],
+        [153, 1],
+        [155, 0],
+        [516, 10],
+        [550, 4]
+      ]
+    },
+    {
+      "id": "l2s_2",
+      "imageContainer": "l2s",
+      "palette": "level",
+      "offset": [0, -128],
+      "rects": [
+        { "index": 1, "rect": [0, 0, 64, 160], "offset": [-64, 32] }
+      ],
+      "textureIndexes": [
+        [137, 0]
+      ]
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "levels/l2data/l2.cel",
     "layers": [
+      { "index": 0, "texturePack": "l2" },
+      { "index": 0, "texturePack": "l2_top" },
       { "index": 0, "texturePack": "l2s" },
       { "index": 0, "texturePack": "l2s_2" }
     ],
     "outOfBoundsTile": 11,
     "til": "levels/l2data/l2.til",
-    "min": "levels/l2data/l2.min",
-    "minBlocks": 10,
     "flags": "levels/l2data/l2.sol",
     "defaultLight": 255
   }

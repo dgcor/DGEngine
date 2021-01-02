@@ -1,7 +1,7 @@
 DGEngine is dual licensed.
 
 if you use diablo file formats support (CEL/CL2/COF/DC6/DCC)
-the license is GPL3. if you don't use these formats, the license if zLib.
+the license is GPL3. if you don't use these formats, the license is zLib.
 
 DGEngine used parts of another project called freeablo (CEL decoding)
 licensed under GPL3. The project's author has granted permission to use
@@ -46,10 +46,6 @@ endian uses the BSD license.
 
 https://github.com/steinwurf/endian
 
-GSL: Guideline Support Library uses the MIT license.
-
-https://github.com/Microsoft/GSL
-
 The Liberation Serif Regular font uses the SIL Open Font License.
 
 http://scripts.sil.org/OFL
@@ -65,11 +61,7 @@ https://icculus.org/physfs/
 
 RapidJSON uses the MIT license.
 
-https://github.com/miloyip/rapidjson/
-
-rectpack2D uses the MIT license.
-
-https://github.com/TeamHypersomnia/rectpack2D
+https://github.com/Tencent/rapidjson
 
 Simple Iterator Template implementation by Vinícius Garcia uses the MIT license.
 
@@ -90,6 +82,10 @@ https://github.com/Yalir/sfeMovie
 SFML uses the zlib/png license.
 
 https://github.com/SFML/SFML
+
+dr_wav uses the MIT-0 license.
+
+https://github.com/mackron/dr_libs
 
 Other SFML code snippets were taken from the wiki
 and should have a permissive license.

@@ -7,6 +7,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	bool openMusicFromBuffer(Game& game, std::shared_ptr<sf::Music2>& music,
 		sf::SoundBuffer& buffer, const std::string& id, const std::string_view resource)
@@ -40,10 +41,10 @@ namespace Parser
 	sf::Music2* parseAudioFileObjHelper(Game& game, const Value& elem,
 		const std::string& id, const std::string& file)
 	{
-		bool hasLoopNames = elem.HasMember("loopNames");
+		bool hasLoopNames = elem.HasMember("loopNames"sv);
 
 		if (hasLoopNames == false &&
-			elem.HasMember("loopPoints") == false)
+			elem.HasMember("loopPoints"sv) == false)
 		{
 			auto stream = std::make_shared<sf::PhysFSStream>(file);
 			if (stream->hasError() == true)
@@ -77,7 +78,7 @@ namespace Parser
 			{
 				parseAudioLoopNamesVal(elem, "loopNames", sndFile->loops);
 			}
-			if (isValidString(elem, "loopPoints") == true)
+			if (elem.HasMember("loopPoints"sv) == true)
 			{
 				parseAudioLoopPointsVal(
 					elem,
@@ -87,7 +88,7 @@ namespace Parser
 			else if (isValidString(elem, "playText") == true)
 			{
 				updateAudioLoopString(
-					getStringViewVal(elem["playText"]),
+					getStringViewVal(elem["playText"sv]),
 					sndFile->loops,
 					*music);
 			}
@@ -102,14 +103,14 @@ namespace Parser
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		bool validId = isValidId(id);
 
 		if (isValidString(elem, "sourceId") == true &&
 			validId == true)
 		{
-			auto source = game.Resources().getAudioSource(elem["sourceId"].GetStringStr());
+			auto source = game.Resources().getAudioSource(elem["sourceId"sv].GetStringView());
 
 			if (std::holds_alternative<std::shared_ptr<sf::SoundBuffer>>(source) == true)
 			{
@@ -122,7 +123,7 @@ namespace Parser
 
 				std::shared_ptr<sf::Music2> music;
 
-				if (isValidString(elem, "loopPoints") == true)
+				if (elem.HasMember("loopPoints"sv) == true)
 				{
 					music = std::make_shared<sf::MusicLoops>();
 
@@ -157,7 +158,7 @@ namespace Parser
 				if (openMusicFromBuffer(game, music2,
 					sndBuffer->soundBuffer, id, resource) == true)
 				{
-					if (isValidString(elem, "loopPoints") == true)
+					if (elem.HasMember("loopPoints"sv) == true)
 					{
 						parseAudioLoopPointsVal(
 							elem,
@@ -167,7 +168,7 @@ namespace Parser
 					else if (isValidString(elem, "playText") == true)
 					{
 						updateAudioLoopString(
-							getStringViewVal(elem["playText"]),
+							getStringViewVal(elem["playText"sv]),
 							sndBuffer->loops,
 							*music);
 					}
@@ -177,7 +178,7 @@ namespace Parser
 		}
 		else if (isValidString(elem, "file") == true)
 		{
-			std::string file(elem["file"].GetStringStr());
+			std::string file(elem["file"sv].GetStringView());
 
 			if (validId == false)
 			{
@@ -201,8 +202,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				std::string fromId(elem["fromId"].GetStringStr());
-				std::string id(elem["id"].GetStringStr());
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getSong(fromId);

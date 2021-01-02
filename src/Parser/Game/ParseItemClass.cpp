@@ -10,13 +10,14 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseDescriptionValue(ItemClass& itemClass,
 		const Level& level, const Value& elem)
 	{
 		itemClass.setDescription(
 			getUIntKey(elem, "index"),
-			level.getClassifier(getStringKey(elem, "name")),
+			level.getClassifier(getStringViewKey(elem, "name")),
 			(uint16_t)getUIntKey(elem, "skip"));
 	}
 
@@ -27,7 +28,7 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		id = elem["id"].GetStringStr();
+		id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return nullptr;
@@ -41,7 +42,7 @@ namespace Parser
 
 		if (isValidString(elem, "fromId") == true)
 		{
-			auto fromId = elem["fromId"].GetStringStr();
+			auto fromId = elem["fromId"sv].GetStringView();
 			if (fromId != id)
 			{
 				auto obj = level.getClass<ItemClass>(fromId);
@@ -54,9 +55,9 @@ namespace Parser
 		}
 
 		auto dropTexture = game.Resources().getTexturePack(
-			getStringKey(elem, "dropTexturePack"));
+			getStringViewKey(elem, "dropTexturePack"));
 		auto InvTexture = game.Resources().getTexturePack(
-			getStringKey(elem, "inventoryTexturePack"));
+			getStringViewKey(elem, "inventoryTexturePack"));
 
 		auto InvTextureIdx = getUIntKey(elem, "inventoryTextureIndex");
 
@@ -78,7 +79,7 @@ namespace Parser
 			{
 				itemClass->setInventoryTexturePack(InvTexture);
 			}
-			if (elem.HasMember("inventoryTextureIndex") == true)
+			if (elem.HasMember("inventoryTextureIndex"sv) == true)
 			{
 				itemClass->setInventoryTextureIndex(InvTextureIdx);
 			}
@@ -88,7 +89,7 @@ namespace Parser
 
 	void parseItemClass(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;
@@ -102,54 +103,54 @@ namespace Parser
 
 		itemClass->Id(id);
 
-		if (elem.HasMember("anchorOffset") == true)
+		if (elem.HasMember("anchorOffset"sv) == true)
 		{
 			itemClass->setAnchorOffset(
-				getVector2fVal<sf::Vector2f>(elem["anchorOffset"])
+				getVector2fVal<sf::Vector2f>(elem["anchorOffset"sv])
 			);
 		}
-		if (elem.HasMember("dropTextureIndexRange") == true)
+		if (elem.HasMember("dropTextureIndexRange"sv) == true)
 		{
 			itemClass->setDropTextureIndexRange(
-				getVector2uVal<std::pair<uint32_t, uint32_t>>(elem["dropTextureIndexRange"])
+				getVector2uVal<std::pair<uint32_t, uint32_t>>(elem["dropTextureIndexRange"sv])
 			);
 		}
-		if (elem.HasMember("name") == true)
+		if (elem.HasMember("name"sv) == true)
 		{
-			itemClass->Name(getStringViewVal(elem["name"]));
+			itemClass->Name(getStringViewVal(elem["name"sv]));
 		}
-		if (elem.HasMember("shortName") == true)
+		if (elem.HasMember("shortName"sv) == true)
 		{
-			itemClass->ShortName(getStringViewVal(elem["shortName"]));
+			itemClass->ShortName(getStringViewVal(elem["shortName"sv]));
 		}
-		if (elem.HasMember("type") == true)
+		if (elem.HasMember("type"sv) == true)
 		{
-			itemClass->Type(getStringViewVal(elem["type"]));
+			itemClass->Type(getStringViewVal(elem["type"sv]));
 		}
-		if (elem.HasMember("subType") == true)
+		if (elem.HasMember("subType"sv) == true)
 		{
-			itemClass->SubType(getStringViewVal(elem["subType"]));
+			itemClass->SubType(getStringViewVal(elem["subType"sv]));
 		}
-		if (elem.HasMember("inventorySize") == true)
+		if (elem.HasMember("inventorySize"sv) == true)
 		{
-			itemClass->InventorySize(getItemXYVal(elem["inventorySize"], PairUInt8(1, 1)));
+			itemClass->InventorySize(getItemXYVal(elem["inventorySize"sv], PairUInt8(1, 1)));
 		}
-		if (elem.HasMember("animationSpeed") == true)
+		if (elem.HasMember("animationSpeed"sv) == true)
 		{
-			itemClass->AnimationSpeed(getTimeVal(elem["animationSpeed"], sf::milliseconds(40)));
+			itemClass->AnimationSpeed(getTimeVal(elem["animationSpeed"sv], sf::milliseconds(40)));
 		}
-		if (elem.HasMember("outline") == true)
+		if (elem.HasMember("outline"sv) == true)
 		{
-			itemClass->Outline(getColorVal(elem["outline"], sf::Color::Transparent));
+			itemClass->Outline(getColorVal(elem["outline"sv], sf::Color::Transparent));
 		}
-		if (elem.HasMember("outlineIgnore") == true)
+		if (elem.HasMember("outlineIgnore"sv) == true)
 		{
-			itemClass->OutlineIgnore(getColorVal(elem["outlineIgnore"], sf::Color::Transparent));
+			itemClass->OutlineIgnore(getColorVal(elem["outlineIgnore"sv], sf::Color::Transparent));
 		}
 
-		if (elem.HasMember("defaults") == true)
+		if (elem.HasMember("defaults"sv) == true)
 		{
-			const auto& defaults = elem["defaults"];
+			const auto& defaults = elem["defaults"sv];
 			if (defaults.IsObject() == true)
 			{
 				for (auto it = defaults.MemberBegin(); it != defaults.MemberEnd(); ++it)
@@ -180,9 +181,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("actions") == true)
+		if (elem.HasMember("actions"sv) == true)
 		{
-			const auto& actions = elem["actions"];
+			const auto& actions = elem["actions"sv];
 			if (actions.IsObject() == true)
 			{
 				for (auto it = actions.MemberBegin(); it != actions.MemberEnd(); ++it)
@@ -196,7 +197,7 @@ namespace Parser
 						}
 						if (action == nullptr)
 						{
-							action = parseAction(game, it->value);
+							action = getActionVal(game, it->value);
 						}
 						itemClass->setAction(str2int16(getStringViewVal(it->name)), action);
 					}
@@ -204,9 +205,9 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("formulas") == true)
+		if (elem.HasMember("formulas"sv) == true)
 		{
-			const auto& formulas = elem["formulas"];
+			const auto& formulas = elem["formulas"sv];
 			if (formulas.IsObject() == true)
 			{
 				for (auto it = formulas.MemberBegin(); it != formulas.MemberEnd(); ++it)
@@ -220,16 +221,16 @@ namespace Parser
 						}
 						else
 						{
-							itemClass->setFormula(nameHash, getStringVal(it->value));
+							itemClass->setFormula(nameHash, getStringViewVal(it->value));
 						}
 					}
 				}
 			}
 		}
 
-		if (elem.HasMember("descriptions") == true)
+		if (elem.HasMember("descriptions"sv) == true)
 		{
-			const auto& descriptions = elem["descriptions"];
+			const auto& descriptions = elem["descriptions"sv];
 			if (descriptions.IsObject() == true)
 			{
 				parseDescriptionValue(*itemClass, *level, descriptions);
@@ -243,44 +244,44 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("inventoryTexture") == true)
+		if (elem.HasMember("inventoryTexture"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["inventoryTexture"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["inventoryTexture"sv]));
 			itemClass->setInventoryTexture(classifier);
 		}
-		if (elem.HasMember("prefix") == true)
+		if (elem.HasMember("prefix"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["prefix"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["prefix"sv]));
 			itemClass->setPrefix(classifier);
 		}
-		if (elem.HasMember("suffix") == true)
+		if (elem.HasMember("suffix"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["suffix"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["suffix"sv]));
 			itemClass->setSuffix(classifier);
 		}
-		if (elem.HasMember("pricePrefix1") == true)
+		if (elem.HasMember("pricePrefix1"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["pricePrefix1"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["pricePrefix1"sv]));
 			itemClass->setPricePrefix1(classifier);
 		}
-		if (elem.HasMember("pricePrefix2") == true)
+		if (elem.HasMember("pricePrefix2"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["pricePrefix2"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["pricePrefix2"sv]));
 			itemClass->setPricePrefix2(classifier);
 		}
-		if (elem.HasMember("priceSuffix1") == true)
+		if (elem.HasMember("priceSuffix1"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["priceSuffix1"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["priceSuffix1"sv]));
 			itemClass->setPriceSuffix1(classifier);
 		}
-		if (elem.HasMember("priceSuffix2") == true)
+		if (elem.HasMember("priceSuffix2"sv) == true)
 		{
-			auto classifier = level->getClassifier(getStringVal(elem["priceSuffix2"]));
+			auto classifier = level->getClassifier(getStringViewVal(elem["priceSuffix2"sv]));
 			itemClass->setPriceSuffix2(classifier);
 		}
-		if (elem.HasMember("spell") == true)
+		if (elem.HasMember("spell"sv) == true)
 		{
-			auto spell = level->getClass<Spell>(getStringVal(elem["spell"]));
+			auto spell = level->getClass<Spell>(getStringViewVal(elem["spell"sv]));
 			itemClass->setSpell(spell);
 		}
 

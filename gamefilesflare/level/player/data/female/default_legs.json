@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_default_legs",
+    "file": "images/avatar/female/default_legs.png"
+  },
   "texturePack": {
     "id": "f_default_legs",
-    "texture": {
-      "id": "f_default_legs",
-      "file": "images/avatar/female/default_legs.png"
-    },
+    "texture": "f_default_legs",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

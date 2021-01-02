@@ -6,7 +6,7 @@
     "loadMainMenuImg",
     "loadLogoImg"
   ],
-  "keyboard": {
+  "inputEvent": {
     "key": "esc",
     "action": { "name": "button.click", "id": "back" }
   },

@@ -1,48 +1,59 @@
 {
+  "imageContainer": [
+    { "file": "towners/animals/cow.cel" },
+    { "file": "towners/strytell/strytell.cel" },
+    { "file": "towners/butch/deadguy.cel" },
+    { "file": "towners/healer/healer.cel" },
+    { "file": "towners/twnf/twnfn.cel" },
+    { "file": "towners/smith/smithn.cel" },
+    { "file": "towners/townboy/pegkid1.cel" },
+    { "file": "towners/drunk/twndrunk.cel" },
+    { "file": "towners/townwmn1/wmnn.cel" }
+  ],
   "texturePack": [
     {
+      "id": "cow",
       "imageContainer": "cow",
-      "file": "towners/animals/cow.cel",
       "palette": "town"
     },
     {
+      "id": "strytell",
       "imageContainer": "strytell",
-      "file": "towners/strytell/strytell.cel",
       "palette": "town"
     },
     {
-      "imageContainer": "butch",
-      "file": "towners/butch/deadguy.cel",
+      "id": "deadguy",
+      "imageContainer": "deadguy",
       "palette": "town"
     },
     {
+      "id": "healer",
       "imageContainer": "healer",
-      "file": "towners/healer/healer.cel",
       "palette": "town"
     },
     {
+      "id": "twnfn",
       "imageContainer": "twnfn",
-      "file": "towners/twnf/twnfn.cel",
       "palette": "town"
     },
     {
+      "id": "smithn",
       "imageContainer": "smithn",
-      "file": "towners/smith/smithn.cel",
       "palette": "town"
     },
     {
+      "id": "pegkid1",
       "imageContainer": "pegkid1",
-      "file": "towners/townboy/pegkid1.cel",
       "palette": "town"
     },
     {
+      "id": "twndrunk",
       "imageContainer": "twndrunk",
-      "file": "towners/drunk/twndrunk.cel",
       "palette": "town"
     },
     {
+      "id": "wmnn",
       "imageContainer": "wmnn",
-      "file": "towners/townwmn1/wmnn.cel",
       "palette": "town"
     },
     {

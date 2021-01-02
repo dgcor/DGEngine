@@ -23,7 +23,7 @@
 
 #include <physfs.h>
 #include <SFML/System.hpp>
-#include <string>
+#include <string_view>
 
 namespace sf
 {
@@ -33,12 +33,10 @@ namespace sf
 		PHYSFS_File* file{ nullptr };
 
 	public:
-		PhysFSStream(const std::string& fileName);
-		PhysFSStream(const char* fileName);
+		PhysFSStream(const std::string_view fileName);
 		~PhysFSStream() override;
 
-		bool load(const std::string& fileName);
-		bool load(const char* fileName);
+		bool load(const std::string_view fileName);
 
 		sf::Int64 read(void* data, sf::Int64 size) noexcept override;
 		sf::Int64 seek(sf::Int64 position) noexcept override;

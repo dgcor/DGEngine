@@ -25,7 +25,7 @@ public:
     ///
     /// @param data a data pointer to the buffer
     /// @param size the size of the buffer in bytes
-    stream_reader(const uint8_t* data, size_type size) noexcept :
+    stream_reader(const uint8_t* data, std::size_t size) noexcept :
         stream(data, size)
     { }
 
@@ -78,12 +78,12 @@ public:
     ///
     /// @param data The data pointer to fill into
     /// @param size The number of bytes to fill.
-    void read(uint8_t* data, size_type size) noexcept
+    void read(uint8_t* data, std::size_t size) noexcept
     {
         assert(size <= remaining_size() &&
                "Reading over the end of the underlying buffer");
 
-        std::copy_n(remaining_data(), (std::size_t)size, data);
+        std::copy_n(remaining_data(), size, data);
         skip(size);
     }
 
@@ -93,7 +93,7 @@ public:
     /// @param value reference to the value to be read
     /// @param offset number of bytes to offset the peeking with
     template<uint8_t Bytes, class ValueType>
-    void peek_bytes(ValueType& value, size_type offset=0) const noexcept
+    void peek_bytes(ValueType& value, std::size_t offset=0) const noexcept
     {
         assert(remaining_size() >= offset && "Offset too large");
         assert(Bytes <= remaining_size() - offset &&
@@ -109,7 +109,7 @@ public:
     /// @param value reference to the value to be read
     /// @param offset number of bytes to offset the peeking with
     template<class ValueType>
-    void peek(ValueType& value, size_type offset=0) const noexcept
+    void peek(ValueType& value, std::size_t offset=0) const noexcept
     {
         assert(remaining_size() >= offset && "Offset too large");
         assert(sizeof(ValueType) <= remaining_size() - offset &&
@@ -124,7 +124,7 @@ public:
     /// @param offset number of bytes to offset the peeking with
     /// @return the peeked value
     template<class ValueType>
-    ValueType peek(size_type offset=0) const noexcept
+    ValueType peek(std::size_t offset=0) const noexcept
     {
         assert(remaining_size() >= offset && "Offset too large");
         assert(sizeof(ValueType) <= remaining_size() - offset &&

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_leather_gloves",
+    "file": "images/avatar/male/leather_gloves.png"
+  },
   "texturePack": {
     "id": "m_leather_gloves",
-    "texture": {
-      "id": "m_leather_gloves",
-      "file": "images/avatar/male/leather_gloves.png"
-    },
+    "texture": "m_leather_gloves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

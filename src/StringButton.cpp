@@ -22,11 +22,11 @@ bool StringButton::setAction(uint16_t nameHash16, const std::shared_ptr<Action>&
 
 void StringButton::update(Game& game)
 {
+	BindableText::update(game);
 	if (BindableText::Visible() == false)
 	{
 		return;
 	}
-	BindableText::update(game);
 	auto contains = BindableText::getGlobalBounds().contains(game.MousePositionf());
 	Button::updateEvents(game, contains);
 }

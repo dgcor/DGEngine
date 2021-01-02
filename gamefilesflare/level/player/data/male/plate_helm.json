@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_plate_helm",
+    "file": "images/avatar/male/plate_helm.png"
+  },
   "texturePack": {
     "id": "m_plate_helm",
-    "texture": {
-      "id": "m_plate_helm",
-      "file": "images/avatar/male/plate_helm.png"
-    },
+    "texture": "m_plate_helm",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -10,7 +10,7 @@ private:
 	std::string id;
 
 public:
-	ActInputTextClick(const std::string& id_) : id(id_) {}
+	ActInputTextClick(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{

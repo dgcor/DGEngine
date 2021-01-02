@@ -34,7 +34,8 @@ namespace FileUtils
 	{
 		try
 		{
-			std::filesystem::path path(filePath);
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			std::filesystem::path path(utf8FilePath);
 
 			if (std::filesystem::exists(path) == true)
 			{
@@ -74,32 +75,33 @@ namespace FileUtils
 		int append = appendToSearchPath == true ? 1 : 0;
 		try
 		{
-			std::filesystem::path path(file);
+			std::u8string_view utf8File((const char8_t*)file.data(), file.size());
+			std::filesystem::path path(utf8File);
 
-			if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
+			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
 			}
 			if (path.has_extension() == true)
 			{
 				path = path.replace_extension();
-				if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
+				if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 				{
 					return true;
 				}
 			}
 			path = path.replace_extension(".mpq");
-			if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
+			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
 			}
 			path = path.replace_extension(".zip");
-			if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
+			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
 			}
 			path = path.replace_extension(".7z");
-			if (PHYSFS_mount(path.u8string().c_str(), mountPoint.data(), append) != 0)
+			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
 			}
@@ -116,28 +118,29 @@ namespace FileUtils
 		}
 		try
 		{
-			std::filesystem::path path(file);
+			std::u8string_view utf8File((const char8_t*)file.data(), file.size());
+			std::filesystem::path path(utf8File);
 
 			if (path.has_extension() == true)
 			{
 				path = path.replace_extension();
-				if (PHYSFS_unmount(path.u8string().c_str()) != 0)
+				if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 				{
 					return true;
 				}
 			}
 			path = path.replace_extension(".mpq");
-			if (PHYSFS_unmount(path.u8string().c_str()) != 0)
+			if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 			{
 				return true;
 			}
 			path = path.replace_extension(".zip");
-			if (PHYSFS_unmount(path.u8string().c_str()) != 0)
+			if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 			{
 				return true;
 			}
 			path = path.replace_extension(".7z");
-			if (PHYSFS_unmount(path.u8string().c_str()) != 0)
+			if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 			{
 				return true;
 			}
@@ -331,7 +334,9 @@ namespace FileUtils
 	{
 		try
 		{
-			return std::filesystem::path(filePath).filename().u8string();
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			auto utf8Str = std::filesystem::path(utf8FilePath).filename().u8string();
+			return std::string((const char*)utf8Str.data(), utf8Str.size());
 		}
 		catch (std::exception&) {}
 		return {};
@@ -341,7 +346,21 @@ namespace FileUtils
 	{
 		try
 		{
-			return std::filesystem::path(filePath).stem().u8string();
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			auto utf8Str = std::filesystem::path(utf8FilePath).stem().u8string();
+			return std::string((const char*)utf8Str.data(), utf8Str.size());
+		}
+		catch (std::exception&) {}
+		return {};
+	}
+
+	std::string getFileExtension(const std::string_view filePath)
+	{
+		try
+		{
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			auto utf8Str = std::filesystem::path(utf8FilePath).extension().u8string();
+			return std::string((const char*)utf8Str.data(), utf8Str.size());
 		}
 		catch (std::exception&) {}
 		return {};
@@ -351,7 +370,9 @@ namespace FileUtils
 	{
 		try
 		{
-			return std::filesystem::path(filePath).parent_path().u8string();
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			auto utf8Str = std::filesystem::path(utf8FilePath).parent_path().u8string();
+			return std::string((const char*)utf8Str.data(), utf8Str.size());
 		}
 		catch (std::exception&) {}
 		return {};
@@ -407,7 +428,7 @@ namespace FileUtils
 		return {};
 	}
 
-	std::string readText(const char* fileName)
+	std::string readText(const std::string_view fileName)
 	{
 		sf::PhysFSStream ifs(fileName);
 		if (ifs.hasError() == true)
@@ -419,12 +440,12 @@ namespace FileUtils
 		return data;
 	}
 
-	std::vector<uint8_t> readChar(const char* fileName)
+	std::vector<uint8_t> readChar(const std::string_view fileName)
 	{
 		return readChar(fileName, std::numeric_limits<size_t>::max());
 	}
 
-	std::vector<uint8_t> readChar(const char* fileName, size_t maxNumBytes)
+	std::vector<uint8_t> readChar(const std::string_view fileName, size_t maxNumBytes)
 	{
 		sf::PhysFSStream ifs(fileName);
 		if (ifs.hasError() == true)
@@ -450,11 +471,28 @@ namespace FileUtils
 
 	bool setSaveDir(const char* dirName) noexcept
 	{
-#ifdef __ANDROID__
-		auto userDir = "data/data/com.dgengine/files/";
-#else
-		auto userDir = PHYSFS_getPrefDir("DGEngine", dirName);
-#endif
+		std::u8string userDirStr;
+		const char* userDir = nullptr;
+		try
+		{
+			std::u8string_view utf8BaseDir((const char8_t*)PHYSFS_getBaseDir());
+			std::filesystem::path portablePath(utf8BaseDir);
+			portablePath /= u8"portable";
+			if (std::filesystem::exists(portablePath) == true &&
+				std::filesystem::is_directory(portablePath) == true)
+			{
+				portablePath /= (const char8_t*)dirName;
+				userDirStr = portablePath.u8string();
+				userDir = (const char*)userDirStr.c_str();
+				std::filesystem::create_directories(portablePath);
+			}
+		}
+		catch (std::exception&) {}
+
+		if (userDir == nullptr)
+		{
+			userDir = PHYSFS_getPrefDir("DGEngine", dirName);
+		}
 		if (userDir == nullptr)
 		{
 			return false;
@@ -466,10 +504,11 @@ namespace FileUtils
 	{
 		try
 		{
-			std::filesystem::path path(filePath);
+			std::u8string_view utf8FilePath((const char8_t*)filePath.data(), filePath.size());
+			std::filesystem::path path(utf8FilePath);
 			if (path.has_parent_path() == true)
 			{
-				createDir(path.parent_path().u8string().c_str());
+				createDir((const char*)path.parent_path().u8string().c_str());
 			}
 			auto file = PHYSFS_openWrite(filePath.data());
 			if (file != nullptr)
@@ -482,12 +521,14 @@ namespace FileUtils
 		return false;
 	}
 
-	bool exportFile(const char* inFile, const char* outFile)
+	bool exportFile(const std::string_view inFile, const std::string_view outFile)
 	{
 		try
 		{
-			std::filesystem::path inPath(inFile);
-			std::filesystem::path outPath(outFile);
+			std::u8string_view utf8InFile((const char8_t*)inFile.data(), inFile.size());
+			std::filesystem::path inPath(utf8InFile);
+			std::u8string_view utf8OutFile((const char8_t*)outFile.data(), outFile.size());
+			std::filesystem::path outPath(utf8OutFile);
 
 			if (std::filesystem::is_directory(outPath) == true &&
 				inPath.has_filename() == true)

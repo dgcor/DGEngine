@@ -22,14 +22,35 @@
     "id": "colorCycle",
     "fromId": "level"
   },
+  "imageContainer": {
+    "id": "l6",
+    "file": "Nlevels/L6Data/L6.CEL"
+  },
+  "texturePack": [
+    {
+      "id": "l6",
+      "imageContainer": "l6",
+      "palette": "level",
+      "min": "Nlevels/L6Data/L6.MIN",
+      "minBlocks": 10
+    },
+    {
+      "id": "l6_top",
+      "imageContainer": "l6",
+      "palette": "level",
+      "min": "Nlevels/L6Data/L6.MIN",
+      "minBlocks": 10,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "Nlevels/L6Data/L6.CEL",
+    "layers": [
+      { "index": 0, "texturePack": "l6" },
+      { "index": 0, "texturePack": "l6_top" }
+    ],
     "outOfBoundsTile": 7,
     "til": "Nlevels/L6Data/L6.TIL",
-    "min": "Nlevels/L6Data/L6.MIN",
-    "minBlocks": 10,
     "flags": "Nlevels/L6Data/L6.SOL",
     "defaultLight": 255
   }

@@ -28,7 +28,7 @@ USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.
 
 Linux
 
-To compile in Linux (Ubuntu), you need gcc or clang with C++17 support
+To compile in Linux (Ubuntu), you need gcc or clang with C++20 support
 and to have both PhysicsFS >= 2.1 and SFML >= 2.5 installed.
 
 sudo apt install libphysfs-dev

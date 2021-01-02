@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AnimationType.h"
 #include <SFML/Graphics/Rect.hpp>
 #include "TexturePack.h"
 #include <vector>
@@ -42,6 +43,8 @@ public:
 
 	bool get(uint32_t index, TextureInfo& ti) const override;
 
+	int32_t getWidth(uint32_t index) const override;
+
 	const sf::Texture* getTexture() const noexcept override { return texturePack->getTexture(); }
 
 	const std::shared_ptr<Palette>& getPalette() const noexcept override { return texturePack->getPalette(); }
@@ -50,11 +53,5 @@ public:
 	uint32_t getGroupCount() const noexcept override;
 	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
 	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
-	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
-		int32_t directionIdx, AnimationType& animType) const override;
-
-	int32_t getFlags(uint32_t index, uint32_t subIndex) const override
-	{
-		return texturePack->getFlags(index, subIndex);
-	}
+	AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const override;
 };

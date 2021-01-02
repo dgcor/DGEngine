@@ -1,14 +1,15 @@
 #include "BitmapFont.h"
 #include <cmath>
+#include <SFML/System/Utf.hpp>
 #include "TextureInfo.h"
-#include "TexturePacks/BitmapFontTexturePack.h"
+#include "TexturePacks/TexturePack.h"
 
-BitmapFont::BitmapFont(const std::shared_ptr<BitmapFontTexturePack>& charTextures_, int padding_)
-	: charTextures(charTextures_), padding(padding_)
+BitmapFont::BitmapFont(const std::shared_ptr<TexturePack>& texturePack_,
+	int16_t newLine_, int16_t space_, int16_t tab_) : texturePack(texturePack_)
 {
-	newLine = charTextures_->getCharWidth('\n');
-	space = charTextures_->getCharWidth(' ');
-	tab = charTextures_->getCharWidth('\t');
+	newLine = newLine_ < 0 ? texturePack_->getWidth('\n') : newLine_;
+	space = space_ < 0 ? texturePack_->getWidth(' ') : space_;
+	tab = tab_ < 0 ? texturePack_->getWidth('\t') : tab_;
 }
 
 const Palette* BitmapFont::getPalette() const noexcept
@@ -17,34 +18,46 @@ const Palette* BitmapFont::getPalette() const noexcept
 	{
 		return palette.get();
 	}
-	else if (charTextures->getPalette() != nullptr)
+	else if (texturePack->getPalette() != nullptr)
 	{
-		return charTextures->getPalette().get();
+		return texturePack->getPalette().get();
 	}
 	return nullptr;
 }
 
-float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) const noexcept
+int BitmapFont::getHorizontalSpaceOffset(int horizSpaceOffset) const noexcept
 {
-	auto ch = text[0];
-	if (ch == 0 || ch == '\n')
-	{
-		return 0.f;
-	}
+	return horizSpaceOffset != 0 ? horizSpaceOffset : defaultHorizSpaceOffset;
+}
+
+int BitmapFont::getVerticalSpaceOffset(int vertSpaceOffset) const noexcept
+{
+	return vertSpaceOffset != 0 ? vertSpaceOffset : defaultVertSpaceOffset;
+}
+
+float BitmapFont::calculateLineLength(std::string_view::const_iterator itBegin,
+	std::string_view::const_iterator itEnd, int horizSpaceOffset) const
+{
+	horizSpaceOffset = getHorizontalSpaceOffset(horizSpaceOffset);
 
 	//Temp offsets
 	float curX = 0.f;
-	bool wasSpace = false;
 
-	//Go through the text
-	while (true)
+	for (auto it = itBegin; it < itEnd;)
 	{
+		sf::Uint32 ch;
+		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+
+		//If the current character is a newline
+		if (ch == '\n')
+		{
+			return curX;
+		}
 		//If the current character is a space
 		if (ch == ' ')
 		{
 			//Move over
 			curX += (float)space;
-			wasSpace = true;
 		}
 		//If the current character is a tab
 		else if (ch == '\t')
@@ -54,45 +67,44 @@ float BitmapFont::calculateLineLength(const char* text, int horizSpaceOffset) co
 		}
 		else
 		{
-			//Move over the width of the character + padding
-			curX += (float)charTextures->getCharWidth(ch) + (float)(wasSpace ? 0 : padding);
-			wasSpace = false;
+			//Move over the width of the character
+			curX += (float)texturePack->getWidth(ch);
 		}
-		text++;
-		ch = text[0];
-		if (ch == 0 || ch == '\n')
-		{
-			return curX;
-		}
-		else
+		if (it < itEnd)
 		{
 			curX += (float)horizSpaceOffset;
 		}
 	}
+	return curX;
 }
 
-sf::Vector2f BitmapFont::calculateSize(const std::string& text) const
+sf::Vector2f BitmapFont::calculateSize(const std::string_view text) const
 {
 	return calculateSize(text, 0, 0);
 }
 
-sf::Vector2f BitmapFont::calculateSize(const std::string& text,
+sf::Vector2f BitmapFont::calculateSize(const std::string_view text,
 	int horizSpaceOffset, int vertSpaceOffset, unsigned* lineCount) const
 {
+	horizSpaceOffset = getHorizontalSpaceOffset(horizSpaceOffset);
+	vertSpaceOffset = getHorizontalSpaceOffset(vertSpaceOffset);
+
 	//Temp offsets
 	float maxX = 0, curX = 0, curY = 0;
 	unsigned numLines = 0;
-	bool wasSpace = false;
 
-	auto textPtr = text.c_str();
-	auto ch = textPtr[0];
-	if (ch != 0)
+	auto itBegin = text.begin();
+	auto itEnd = text.end();
+	for (auto it = itBegin; it < itEnd;)
 	{
-		numLines++;
-	}
-	//Go through the text
-	while (ch != 0)
-	{
+		if (it == itBegin)
+		{
+			numLines++;
+		}
+
+		sf::Uint32 ch;
+		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+
 		//If the current character is a newline
 		if (ch == '\n')
 		{
@@ -105,7 +117,6 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 				maxX = curX;
 			}
 			curX = 0;
-			wasSpace = false;
 			numLines++;
 		}
 		else
@@ -115,7 +126,6 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 			{
 				//Move over
 				curX += (float)space;
-				wasSpace = true;
 			}
 			//If the current character is a tab
 			else if (ch == '\t')
@@ -125,17 +135,14 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 			}
 			else
 			{
-				//Move over the width of the character + padding
-				curX += (float)charTextures->getCharWidth(ch) + (float)(wasSpace ? 0 : padding);
-				wasSpace = false;
+				//Move over the width of the character
+				curX += (float)texturePack->getWidth(ch);
 			}
-			if (textPtr[1] != 0)
+			if (it < itEnd)
 			{
 				curX += (float)horizSpaceOffset;
 			}
 		}
-		textPtr++;
-		ch = textPtr[0];
 	}
 	if (lineCount != nullptr)
 	{
@@ -145,11 +152,11 @@ sf::Vector2f BitmapFont::calculateSize(const std::string& text,
 }
 
 void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
-	const std::string& text, sf::Color color, int horizSpaceOffset,
+	const std::string_view text, sf::Color color, int horizSpaceOffset,
 	int vertSpaceOffset, float sizeX, HorizontalAlign align) const
 {
-	vertexText.clear();
-	vertexText.resize(text.size() * 6);
+	horizSpaceOffset = getHorizontalSpaceOffset(horizSpaceOffset);
+	vertSpaceOffset = getHorizontalSpaceOffset(vertSpaceOffset);
 
 	if (hasPalette() == true)
 	{
@@ -160,26 +167,30 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 		color = defaultColor;
 	}
 
+	vertexText.clear();
+	vertexText.reserve(text.size() * 6);
+
 	//Temp offsets
 	float curX = 0.f;
 	float curY = 0.f;
-	bool wasSpace = false;
 
 	if (align == HorizontalAlign::Center)
 	{
-		curX += std::round((sizeX / 2.f) - (calculateLineLength(text.data(), horizSpaceOffset) / 2.f));
+		auto textLength = calculateLineLength(text.begin(), text.end(), horizSpaceOffset);
+		curX += std::round((sizeX / 2.f) - (textLength / 2.f));
 	}
 	else if (align == HorizontalAlign::Right)
 	{
-		curX += (sizeX - calculateLineLength(text.data(), horizSpaceOffset));
+		auto textLength = calculateLineLength(text.begin(), text.end(), horizSpaceOffset);
+		curX += (sizeX - textLength);
 	}
 
-	size_t vertIdx = 0;
-
-	//Go through the text
-	for (size_t i = 0; i < text.size(); i++)
+	//Iterate the utf8 encoded text
+	for (auto it = text.begin(), itEnd = text.end(); it < itEnd;)
 	{
-		auto ch = text[i];
+		sf::Uint32 ch;
+		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+
 		//If the current character is a newline
 		if (ch == '\n')
 		{
@@ -190,13 +201,14 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 			curX = 0;
 			if (align == HorizontalAlign::Center)
 			{
-				curX += std::round((sizeX / 2.f) - (calculateLineLength(text.data() + i + 1, horizSpaceOffset) / 2.f));
+				auto textLengh = calculateLineLength(it, itEnd, horizSpaceOffset);
+				curX += std::round((sizeX / 2.f) - (textLengh / 2.f));
 			}
 			else if (align == HorizontalAlign::Right)
 			{
-				curX += (sizeX - calculateLineLength(text.data() + i + 1, horizSpaceOffset));
+				auto textLengh = calculateLineLength(it, itEnd, horizSpaceOffset);
+				curX += (sizeX - textLengh);
 			}
-			wasSpace = false;
 		}
 		else
 		{
@@ -205,7 +217,6 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 			{
 				//Move over
 				curX += (float)space;
-				wasSpace = true;
 			}
 			//If the current character is a tab
 			else if (ch == '\t')
@@ -217,69 +228,63 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 			{
 				//create the character vertex
 				TextureInfo ti;
-				charTextures->get((size_t)ch, ti);
+				texturePack->get(ch, ti);
 
 				// triangle 1
 
 				// top left
-				vertexText[vertIdx].position.x = curX;
-				vertexText[vertIdx].position.y = curY;
-				vertexText[vertIdx].color = color;
-				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left;
-				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top;
-				vertIdx++;
+				vertexText.push_back(sf::Vertex(
+					{ curX, curY },
+					color,
+					{ (float)ti.textureRect.left, (float)ti.textureRect.top }
+				));
 
 				// top right
-				vertexText[vertIdx].position.x = curX + (float)ti.textureRect.width;
-				vertexText[vertIdx].position.y = curY;
-				vertexText[vertIdx].color = color;
-				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left + (float)ti.textureRect.width;
-				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top;
-				vertIdx++;
+				vertexText.push_back(sf::Vertex(
+					{ curX + (float)ti.textureRect.width, curY },
+					color,
+					{ (float)ti.textureRect.left + (float)ti.textureRect.width, (float)ti.textureRect.top }
+				));
 
 				// bottom left
-				vertexText[vertIdx].position.x = curX;
-				vertexText[vertIdx].position.y = curY + (float)ti.textureRect.height;
-				vertexText[vertIdx].color = color;
-				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left;
-				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top + (float)ti.textureRect.height;
-				vertIdx++;
+				vertexText.push_back(sf::Vertex(
+					{ curX, curY + (float)ti.textureRect.height },
+					color,
+					{ (float)ti.textureRect.left, (float)ti.textureRect.top + (float)ti.textureRect.height }
+				));
 
 				// triangle 2
 
 				// top right
-				vertexText[vertIdx] = vertexText[vertIdx - 2];
-				vertIdx++;
+				vertexText.push_back(*(vertexText.end() - 2));
 
 				// bottom left
-				vertexText[vertIdx] = vertexText[vertIdx - 2];
-				vertIdx++;
+				vertexText.push_back(*(vertexText.end() - 2));
 
 				// bottom right
-				vertexText[vertIdx].position.x = curX + (float)ti.textureRect.width;
-				vertexText[vertIdx].position.y = curY + (float)ti.textureRect.height;
-				vertexText[vertIdx].color = color;
-				vertexText[vertIdx].texCoords.x = (float)ti.textureRect.left + (float)ti.textureRect.width;
-				vertexText[vertIdx].texCoords.y = (float)ti.textureRect.top + (float)ti.textureRect.height;
-				vertIdx++;
+				vertexText.push_back(sf::Vertex(
+					{ curX + (float)ti.textureRect.width, curY + (float)ti.textureRect.height },
+					color,
+					{ (float)ti.textureRect.left + (float)ti.textureRect.width, (float)ti.textureRect.top + (float)ti.textureRect.height }
+				));
 
-				//Move over the width of the character + padding
-				curX += (float)ti.textureRect.width + (float)(wasSpace ? 0 : padding);
-				wasSpace = false;
+				//Move over the width of the character
+				curX += (float)ti.textureRect.width;
 			}
-			curX += (float)horizSpaceOffset;
+			if (it < itEnd)
+			{
+				curX += (float)horizSpaceOffset;
+			}
 		}
 	}
-
-	vertexText.resize(vertIdx);
 }
 
 void BitmapFont::draw(const VertexArray2& vertexText,
 	const sf::Vector2f& pos, const sf::Vector2f& size,
-	sf::Shader* spriteShader, sf::RenderTarget& target) const
+	GameShader* spriteShader, sf::RenderTarget& target) const
 {
 	vertexText.draw(
-		charTextures->getTexture(), pos, size,
+		texturePack->getTexture(), pos, size,
 		getPalette(), spriteShader, target
 	);
 }

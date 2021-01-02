@@ -23,15 +23,36 @@
     "fromId": "level"
   },
   "load": ["level/data/l5/l5s.json", "level"],
+  "imageContainer": {
+    "id": "l5",
+    "file": "Nlevels/L5Data/L5.CEL"
+  },
+  "texturePack": [
+    {
+      "id": "l5",
+      "imageContainer": "l5",
+      "palette": "level",
+      "min": "Nlevels/L5Data/L5.MIN",
+      "minBlocks": 10
+    },
+    {
+      "id": "l5_top",
+      "imageContainer": "l5",
+      "palette": "level",
+      "min": "Nlevels/L5Data/L5.MIN",
+      "minBlocks": 10,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "Nlevels/L5Data/L5.CEL",
-    "layers": { "index": 0, "texturePack": "l5s" },
+    "layers": [
+      { "index": 0, "texturePack": "l5" },
+      { "index": 0, "texturePack": "l5_top" },
+      { "index": 0, "texturePack": "l5s" }
+    ],
     "outOfBoundsTile": 21,
     "til": "Nlevels/L5Data/L5.TIL",
-    "min": "Nlevels/L5Data/L5.MIN",
-    "minBlocks": 10,
     "flags": "Nlevels/L5Data/L5.SOL",
     "defaultLight": 255
   }

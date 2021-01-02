@@ -6,6 +6,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	std::shared_ptr<Action> getIfCondition(uint16_t conditionHash16,
 		Game& game, const Value& elem)
@@ -21,16 +22,16 @@ namespace Parser
 	std::shared_ptr<Action> getInListCondition(Game& game, const Value& elem)
 	{
 		std::vector<Variable> list;
-		if (elem.HasMember("list"))
+		if (elem.HasMember("list"sv))
 		{
-			for (const auto& val : elem["list"])
+			for (const auto& val : elem["list"sv])
 			{
 				list.push_back(getVariableVal(val));
 			}
 		}
 		return std::make_shared<ActInListCondition>(
 			getVarOrPredicateKey(game, elem, "param"),
-			list,
+			std::move(list),
 			getActionKey(game, elem, "then"),
 			getActionKey(game, elem, "else"));
 	}
@@ -104,7 +105,7 @@ namespace Parser
 			getActionKey(game, elem, "then"),
 			getActionKey(game, elem, "else"));
 
-		parseMultiIfCondition(game, action->Conditions(), elem["params"]);
+		parseMultiIfCondition(game, action->Conditions(), elem["params"sv]);
 		return action;
 	}
 
@@ -130,12 +131,12 @@ namespace Parser
 	std::shared_ptr<Action> getSwitchCondition(Game& game, const Value& elem)
 	{
 		std::vector<std::pair<Variable, std::shared_ptr<Action>>> cases;
-		if (elem.HasMember("case"))
+		if (elem.HasMember("case"sv))
 		{
-			for (const auto& val : elem["case"])
+			for (const auto& val : elem["case"sv])
 			{
 				if (val.IsObject() == true &&
-					val.HasMember("value") == true)
+					val.HasMember("value"sv) == true)
 				{
 					cases.push_back(
 						std::make_pair(
@@ -148,7 +149,7 @@ namespace Parser
 		}
 		return std::make_shared<ActSwitchCondition>(
 			getVarOrPredicateKey(game, elem, "param"),
-			cases,
+			std::move(cases),
 			getSwitchConditionHelper(game, elem, "default", cases));
 	}
 }

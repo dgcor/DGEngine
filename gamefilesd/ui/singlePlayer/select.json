@@ -14,7 +14,7 @@
       "action": { "name": "menu.moveScrollbar", "idMenu": "menuLoadGame", "idScrollbar": "sb_thumb", "idAnchorTo": "btnDrag", "range": 133 }
     }
   ],
-  "keyboard": {
+  "inputEvent": {
     "key": "delete",
     "action": { "name": "button.click", "id": "delete" }
   },
@@ -228,7 +228,7 @@
         { "name": "button.enable", "id": "btnDown" },
         { "name": "loadJson",
           "json": {
-            "keyboard": [
+            "inputEvent": [
               {
                 "key": ["up", "w"],
                 "action": [

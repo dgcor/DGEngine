@@ -1,5 +1,15 @@
 #include "CompositeSprite.h"
 
+CompositeSprite::CompositeSprite(const TextureInfo& ti)
+{
+	setTexture(ti);
+}
+
+CompositeSprite::CompositeSprite(const std::vector<TextureInfo>& ti)
+{
+	setTexture(ti);
+}
+
 void CompositeSprite::setPosition(const sf::Vector2f& position_)
 {
 	sprite.setPosition(position_);
@@ -85,22 +95,22 @@ void CompositeSprite::setTexture(const std::vector<TextureInfo>& ti)
 	}
 }
 
-void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader) const
+void CompositeSprite::draw(sf::RenderTarget& target, GameShader* spriteShader) const
 {
 	SpriteShaderCache cache;
-	sprite.draw(target, spriteShader, cache);
+	sprite.draw(target, spriteShader, &cache);
 	for (const auto& s : extraSprites)
 	{
-		s.draw(target, spriteShader, cache);
+		s.draw(target, spriteShader, &cache);
 	}
 }
 
-void CompositeSprite::draw(sf::RenderTarget& target, sf::Shader* spriteShader,
+void CompositeSprite::draw(sf::RenderTarget& target, GameShader* spriteShader,
 	SpriteShaderCache& cache) const
 {
-	sprite.draw(target, spriteShader, cache);
+	sprite.draw(target, spriteShader, &cache);
 	for (const auto& s : extraSprites)
 	{
-		s.draw(target, spriteShader, cache);
+		s.draw(target, spriteShader, &cache);
 	}
 }

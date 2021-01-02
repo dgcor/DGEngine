@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "GameUtils.h"
 #include "Level.h"
+#include "PlayerAI.h"
 #include "Utils/Utils.h"
 
 Player::Player(const PlayerClass* class__, const Level& level) : LevelObject(class__)
@@ -89,12 +90,16 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 						{
 							levelObj->executeAction(game);
 						}
-						walkPath.pop_back();
+						if (executeActionOnDestination == true ||
+							levelObj->Passable() == false)
+						{
+							walkPath.pop_back();
 
-						setStandAnimation();
-						resetAnimationTime();
-						playerStatus = PlayerStatus::Stand;
-						return;
+							setStandAnimation();
+							resetAnimationTime();
+							playerStatus = PlayerStatus::Stand;
+							return;
+						}
 					}
 				}
 				if (nextMapPos == mapPosition)
@@ -102,7 +107,7 @@ void Player::updateWalkPath(Game& game, LevelMap& map)
 					walkPath.pop_back();
 					continue;
 				}
-				playSound(walkSound);
+				playSound("walk");
 				setWalkAnimation();
 				setDirection(getPlayerDirection(mapPosition, nextMapPos));
 				MapPosition(map, nextMapPos);
@@ -180,7 +185,7 @@ void Player::Walk(const LevelMap& map, const PlayerDirection direction, bool doA
 	}
 	if (a != b &&
 		map.isMapCoordValid(b) == true &&
-		map[b].Passable() == true)
+		map[b].PassableIgnoreObject() == true)
 	{
 		std::vector<PairFloat> path;
 		path.push_back(b);
@@ -308,6 +313,8 @@ bool Player::move(LevelMap& map, const PairFloat& pos)
 
 void Player::updateAI(Level& level)
 {
+	PlayerAI::ProcessMonsters(*this);
+
 	switch (playerStatus)
 	{
 	case PlayerStatus::Walk:
@@ -363,7 +370,7 @@ void Player::update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr
 	{
 		return;
 	}
-	if (useAI == true)
+	if (aiType != 0)
 	{
 		updateAI(level);
 	}
@@ -372,7 +379,7 @@ void Player::update(Game& game, Level& level, std::weak_ptr<LevelObject> thisPtr
 		LifeNow() <= 0)
 	{
 		playerStatus = PlayerStatus::Dead;
-		playSound(dieSound);
+		playSound("die");
 	}
 
 	switch (playerStatus)
@@ -522,7 +529,7 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 		break;
 	case str2int16("hasSpell"):
 	{
-		var = Variable(getSpell(std::string(props.second)) != nullptr);
+		var = Variable(getSpell(props.second) != nullptr);
 		break;
 	}
 	case str2int16("hasSelectedSpell"):
@@ -614,7 +621,7 @@ bool Player::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("spell"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
-		auto spell = getSpellInstance(std::string(props2.first));
+		auto spell = getSpellInstance(props2.first);
 		if (spell != nullptr)
 		{
 			return spell->getProperty(props2.second, var);
@@ -696,7 +703,7 @@ const Queryable* Player::getQueryable(const std::string_view prop) const
 		queryable = selectedSpell;
 		break;
 	case str2int16("spell"):
-		return getSpellInstance(std::string(props.second));
+		return getSpellInstance(props.second);
 	default:
 		break;
 	}
@@ -773,7 +780,7 @@ bool Player::getNumberByHash(uint16_t propHash,
 	case str2int16("spell"):
 	{
 		auto props2 = Utils::splitStringIn2(props, '.');
-		auto spell = getSpellInstance(std::string(props2.first));
+		auto spell = getSpellInstance(props2.first);
 		if (spell != nullptr)
 		{
 			return spell->getNumberProp(props2.second, value);
@@ -1195,14 +1202,14 @@ std::shared_ptr<Item> Player::SelectedItem(std::shared_ptr<Item> item) noexcept
 	return old;
 }
 
-bool Player::hasSpell(const std::string& key) const
+bool Player::hasSpell(const std::string_view key) const
 {
-	return spells.find(key) != spells.end();
+	return spells.find(sv2str(key)) != spells.end();
 }
 
-void Player::addSpell(const std::string key, Spell* obj, LevelObjValue spellLevel)
+void Player::addSpell(const std::string_view key, Spell* obj, LevelObjValue spellLevel)
 {
-	auto it = spells.find(key);
+	auto it = spells.find(sv2str(key));
 	if (it != spells.end())
 	{
 		it->second.spellLevel++;
@@ -1212,9 +1219,9 @@ void Player::addSpell(const std::string key, Spell* obj, LevelObjValue spellLeve
 	spells.insert(std::make_pair(key, spellInstance));
 }
 
-Spell* Player::getSpell(const std::string& key) const
+Spell* Player::getSpell(const std::string_view key) const
 {
-	auto it = spells.find(key);
+	auto it = spells.find(sv2str(key));
 	if (it != spells.end())
 	{
 		return it->second.spell;
@@ -1222,9 +1229,9 @@ Spell* Player::getSpell(const std::string& key) const
 	return nullptr;
 }
 
-const SpellInstance* Player::getSpellInstance(const std::string& key) const
+const SpellInstance* Player::getSpellInstance(const std::string_view key) const
 {
-	auto it = spells.find(key);
+	auto it = spells.find(sv2str(key));
 	if (it != spells.end())
 	{
 		return &it->second;
@@ -1232,7 +1239,7 @@ const SpellInstance* Player::getSpellInstance(const std::string& key) const
 	return nullptr;
 }
 
-void Player::SelectedSpell(const std::string& id) noexcept
+void Player::SelectedSpell(const std::string_view id) noexcept
 {
 	selectedSpell = getSpellInstance(id);
 }
@@ -1482,11 +1489,6 @@ void Player::applyDefaults(const Level& level) noexcept
 	{
 		setNumberByHash(prop.first, prop.second, &level);
 	}
-	attackSound = Class()->getAttackSound();
-	defendSound = Class()->getDefendSound();
-	dieSound = Class()->getDieSound();
-	hitSound = Class()->getHitSound();
-	walkSound = Class()->getWalkSound();
 }
 
 bool Player::hasEquipedItemType(const std::string_view type) const
@@ -1519,13 +1521,9 @@ bool Player::hasEquipedItemSubType(const std::string_view type) const
 	return false;
 }
 
-void Player::playSound(int16_t soundIdx)
+void Player::playSound(const std::string_view key, size_t soundNum)
 {
-	if (soundIdx < 0)
-	{
-		return;
-	}
-	auto sndBuffer = Class()->getSound((size_t)soundIdx);
+	auto sndBuffer = Class()->getSound(key, soundNum);
 	if (sndBuffer == nullptr)
 	{
 		return;

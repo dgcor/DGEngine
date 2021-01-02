@@ -3,7 +3,6 @@ uniform sampler2D texture;
 uniform vec2 textureSize;
 uniform vec4 fade;
 uniform float gamma;
-uniform float loading;
 
 vec3 Gamma(vec3 value, float param)
 {
@@ -19,7 +18,7 @@ vec4 swirl()
 	vec2 center = textureSize / 2.0;
 	tc -= textureSize / 2.0;
 	float dist = length(tc);
-	if (dist < radius) 
+	if (dist < radius)
 	{
 		float percent = (radius - dist) / radius;
 		float theta = percent * percent * angle * 25.0;

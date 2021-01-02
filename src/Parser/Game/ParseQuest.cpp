@@ -15,7 +15,7 @@ namespace Parser
 
 	void parseQuest(Game& game, const Value& elem)
 	{
-		auto level = game.Resources().getLevel(getStringKey(elem, "level"));
+		auto level = game.Resources().getLevel(getStringViewKey(elem, "level"));
 		if (level == nullptr)
 		{
 			return;

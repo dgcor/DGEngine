@@ -1,35 +1,55 @@
 {
   "action": {
     "name": "if.equal",
-    "param1": "%game.hasPalette.town%",
+    "param1": "%game.hasPalette.level%",
     "param2": false,
     "then": {
       "name": "loadJson",
       "json": {
         "palette": {
-          "id": "town",
+          "id": "level",
           "file": "levels/towndata/town.pal"
         }
       }
     }
   },
+  "imageContainer": {
+    "id": "town",
+    "file": "Nlevels/TownData/Town.CEL"
+  },
   "texture": {
-    "id": "fog",
     "file": "images/parallax/fog.png"
   },
+  "texturePack": [
+    {
+      "id": "town",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "Nlevels/TownData/Town.MIN",
+      "minBlocks": 16
+    },
+    {
+      "id": "town_top",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "Nlevels/TownData/Town.MIN",
+      "minBlocks": 16,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "town",
-    "file": "Nlevels/TownData/Town.CEL",
-    "layers": {
-      "texture": "fog",
-      "parallaxSpeed": 0.01,
-      "parallaxFixedSpeed": [0.2, -0.25],
-      "parallaxUpdate": 30
-    },
+    "layers": [
+      { "index": 0, "texturePack": "town" },
+      { "index": 0, "texturePack": "town_top" },
+      {
+        "texture": "fog",
+        "parallaxSpeed": 0.01,
+        "parallaxFixedSpeed": [0.2, -0.25],
+        "parallaxUpdate": 30
+      }
+    ],
     "til": "Nlevels/TownData/Town.TIL",
-    "min": "Nlevels/TownData/Town.MIN",
-    "minBlocks": 16,
     "flags": "Nlevels/TownData/Town.SOL",
     "defaultLight": 220
   }

@@ -1,12 +1,9 @@
 #pragma once
 
+#include "Utils/UnorderedStringMap.h"
+#include "Variable.h"
+
 namespace Save
 {
-	struct Properties
-	{
-		bool saveDefaults{ false };
-		bool saveCurrentPlayer{ false };
-		bool saveQuests{ false };
-		void* customProperty{ nullptr };
-	};
+	typedef UnorderedStringMap<Variable> Properties;
 }

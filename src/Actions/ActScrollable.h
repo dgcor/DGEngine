@@ -11,7 +11,7 @@ private:
 	sf::Time speed;
 
 public:
-	ActScrollableSetSpeed(const std::string& id_, const sf::Time& speed_)
+	ActScrollableSetSpeed(const std::string_view id_, sf::Time speed_)
 		: id(id_), speed(speed_) {}
 
 	bool execute(Game& game) override

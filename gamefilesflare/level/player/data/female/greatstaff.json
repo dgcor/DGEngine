@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_greatstaff",
+    "file": "images/avatar/female/greatstaff.png"
+  },
   "texturePack": {
     "id": "f_greatstaff",
-    "texture": {
-      "id": "f_greatstaff",
-      "file": "images/avatar/female/greatstaff.png"
-    },
+    "texture": "f_greatstaff",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

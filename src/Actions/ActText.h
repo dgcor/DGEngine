@@ -16,19 +16,19 @@ private:
 	TextUtils::TextOp textOp;
 
 public:
-	ActTextAppendText(const std::string& id_, const std::string& text_,
+	ActTextAppendText(const std::string_view id_, const std::string_view text_,
 		TextUtils::TextOp textOp_) : id(id_), textFormat(text_), textOp(textOp_) {}
 
-	ActTextAppendText(const std::string& id_, const std::string& text_,
-		const std::string& query_) : id(id_), textFormat(text_),
+	ActTextAppendText(const std::string_view id_, const std::string_view text_,
+		const std::string_view query_) : id(id_), textFormat(text_),
 		textOp(TextUtils::TextOp::Query)
 	{
-		bindings.push_back(query_);
+		bindings.push_back(std::string(query_));
 	}
 
-	ActTextAppendText(const std::string& id_, const std::string& format_,
-		const std::vector<std::string>& bindings_) : id(id_),
-		textFormat(format_), bindings(bindings_),
+	ActTextAppendText(const std::string_view id_, const std::string_view format_,
+		std::vector<std::string>&& bindings_) : id(id_),
+		textFormat(format_), bindings(std::move(bindings_)),
 		textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }
@@ -55,7 +55,7 @@ private:
 	sf::Color color;
 
 public:
-	ActTextSetColor(const std::string& id_, const sf::Color& color_) : id(id_), color(color_) {}
+	ActTextSetColor(const std::string_view id_, const sf::Color& color_) : id(id_), color(color_) {}
 
 	bool execute(Game& game) override
 	{
@@ -75,7 +75,7 @@ private:
 	std::string idFont;
 
 public:
-	ActTextSetFont(const std::string& id_, const std::string& idFont_)
+	ActTextSetFont(const std::string_view id_, const std::string_view idFont_)
 		: id(id_), idFont(idFont_) {}
 
 	bool execute(Game& game) override
@@ -117,7 +117,7 @@ private:
 	bool hasVertSpaceOffset{ false };
 
 public:
-	ActTextSetSpacing(const std::string& id_) : id(id_) {}
+	ActTextSetSpacing(const std::string_view id_) : id(id_) {}
 
 	void setHorizontalSpaceOffset(int offset) noexcept
 	{
@@ -158,19 +158,19 @@ private:
 	TextUtils::TextOp textOp;
 
 public:
-	ActTextSetText(const std::string& id_, const std::string& text_,
+	ActTextSetText(const std::string_view id_, const std::string_view text_,
 		TextUtils::TextOp textOp_) : id(id_), textFormat(text_), textOp(textOp_) {}
 
-	ActTextSetText(const std::string& id_, const std::string& text_,
-		const std::string& query_) : id(id_), textFormat(text_),
+	ActTextSetText(const std::string_view id_, const std::string_view text_,
+		const std::string_view query_) : id(id_), textFormat(text_),
 		textOp(TextUtils::TextOp::Query)
 	{
-		bindings.push_back(query_);
+		bindings.push_back(std::string(query_));
 	}
 
-	ActTextSetText(const std::string& id_, const std::string& format_,
-		const std::vector<std::string>& bindings_) : id(id_),
-		textFormat(format_), bindings(bindings_),
+	ActTextSetText(const std::string_view id_, const std::string_view format_,
+		std::vector<std::string>&& bindings_) : id(id_),
+		textFormat(format_), bindings(std::move(bindings_)),
 		textOp(TextUtils::TextOp::FormatString) {}
 
 	void RemoveEmptyLines() noexcept { textOp |= TextUtils::TextOp::RemoveEmptyLines; }

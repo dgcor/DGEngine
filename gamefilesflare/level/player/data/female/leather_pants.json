@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_leather_pants",
+    "file": "images/avatar/female/leather_pants.png"
+  },
   "texturePack": {
     "id": "f_leather_pants",
-    "texture": {
-      "id": "f_leather_pants",
-      "file": "images/avatar/female/leather_pants.png"
-    },
+    "texture": "f_leather_pants",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

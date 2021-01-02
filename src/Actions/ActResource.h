@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Game.h"
 #include "Parser/Parser.h"
-#include <string>
 
 class ActResourceAdd : public Action
 {
@@ -13,7 +12,7 @@ private:
 	bool hasIgnore{ false };
 
 public:
-	ActResourceAdd(const std::string& id_) : id(id_) {}
+	ActResourceAdd(const std::string_view id_) : id(id_) {}
 
 	void setIgnorePrevious(IgnoreResource ignore) noexcept
 	{
@@ -39,7 +38,7 @@ private:
 	IgnoreResource ignore;
 
 public:
-	ActResourceIgnore(const std::string& id_, IgnoreResource ignorePrevious_)
+	ActResourceIgnore(const std::string_view id_, IgnoreResource ignorePrevious_)
 		: id(id_), ignore(ignorePrevious_) {}
 
 	bool execute(Game& game) noexcept override
@@ -55,7 +54,7 @@ private:
 	std::string id;
 
 public:
-	ActResourceBringToFront(const std::string& id_) : id(id_) {}
+	ActResourceBringToFront(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -74,7 +73,7 @@ private:
 	IgnoreResource ignorePrevious;
 
 public:
-	ActResourcePop(const std::string& id_, IgnoreResource ignorePrevious_)
+	ActResourcePop(const std::string_view id_, IgnoreResource ignorePrevious_)
 		: id(id_), ignorePrevious(ignorePrevious_) {}
 
 	bool execute(Game& game) override
@@ -100,7 +99,7 @@ private:
 	IgnoreResource ignorePrevious;
 
 public:
-	ActResourcePopAll(const std::string& id_, bool popBaseResources_, IgnoreResource ignorePrevious_)
+	ActResourcePopAll(const std::string_view id_, bool popBaseResources_, IgnoreResource ignorePrevious_)
 		: id(id_), popBaseResources(popBaseResources_), ignorePrevious(ignorePrevious_) {}
 
 	bool execute(Game& game) override

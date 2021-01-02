@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Game.h"
 #include "Parser/ParseFile.h"
-#include <string>
 #include <vector>
 
 class ActLoad : public Action
@@ -12,8 +11,8 @@ private:
 	std::vector<std::string> args;
 
 public:
-	ActLoad(const std::vector<std::string>& args_) : args(args_) {}
-	ActLoad(const std::string& file_) { args.push_back(file_); }
+	ActLoad(std::vector<std::string>&& args_) : args(std::move(args_)) {}
+	ActLoad(const std::string_view file_) { args.push_back(std::string(file_)); }
 
 	bool execute(Game& game) override
 	{
@@ -39,10 +38,10 @@ private:
 	std::vector<std::string> args;
 
 public:
-	ActLoadJson(const std::string& json_) : json(json_) {}
+	ActLoadJson(const std::string_view json_) : json(json_) {}
 
-	ActLoadJson(const std::string& json_, const std::vector<std::string>& args_)
-		: json(json_), args(args_) {}
+	ActLoadJson(const std::string_view json_, std::vector<std::string>&& args_)
+		: json(json_), args(std::move(args_)) {}
 
 	bool execute(Game& game) override
 	{
@@ -65,13 +64,13 @@ private:
 	std::string endsWith;
 
 public:
-	ActLoadRandom(const std::vector<std::string>& args_, const std::string endsWith_)
-		: args(args_), endsWith(endsWith_) {}
+	ActLoadRandom(std::vector<std::string>&& args_, const std::string_view endsWith_)
+		: args(std::move(args_)), endsWith(endsWith_) {}
 
-	ActLoadRandom(const std::string& file_, const std::string endsWith_)
+	ActLoadRandom(const std::string_view file_, const std::string_view endsWith_)
 		: args(), endsWith(endsWith_)
 	{
-		args.push_back(file_);
+		args.push_back(std::string(file_));
 	}
 
 	bool execute(Game& game) override

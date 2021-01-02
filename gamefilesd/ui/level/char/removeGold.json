@@ -4,7 +4,7 @@
     { "name": "resource.add", "id": "removeGold" }
   ],
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "enter",
       "action": { "name": "inputText.click", "id": "goldQuantity" }

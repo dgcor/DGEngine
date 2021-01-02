@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_dagger",
+    "file": "images/avatar/female/dagger.png"
+  },
   "texturePack": {
     "id": "f_dagger",
-    "texture": {
-      "id": "f_dagger",
-      "file": "images/avatar/female/dagger.png"
-    },
+    "texture": "f_dagger",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

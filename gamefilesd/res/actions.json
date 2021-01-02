@@ -2,6 +2,16 @@
   "action": [
     {
       "name": "action.set",
+      "id": "focusSound",
+      "action": { "name": "sound.play", "id": "titlemov" }
+    },
+    {
+      "name": "action.set",
+      "id": "selectSound",
+      "action": { "name": "sound.play", "id": "titlslct" }
+    },
+    {
+      "name": "action.set",
       "id": "focus.click",
       "action": { "name": "focus.click" }
     },

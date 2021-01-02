@@ -14,6 +14,8 @@ public:
 
 	bool get(uint32_t index, TextureInfo& ti) const override;
 
+	int32_t getWidth(uint32_t index) const override;
+
 	void update(int epoch, sf::Time elapsedTime) override;
 
 	const sf::Texture* getTexture() const noexcept override;

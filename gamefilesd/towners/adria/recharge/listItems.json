@@ -3,7 +3,7 @@
   "load": "ui/level/panel/big/lowerSeparator.json",
   "load": "ui/level/panel/big/scrollbar.json",
   "load": "towners/common/loadMenuButtons.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "tab",
       "shift": true,

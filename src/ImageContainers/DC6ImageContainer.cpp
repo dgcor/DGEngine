@@ -1,7 +1,5 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DC6ImageContainer.h"
-#include "gsl/gsl"
-#include "PhysFSStream.h"
+#include <span>
 #include "StreamReader.h"
 
 namespace
@@ -22,7 +20,7 @@ namespace
 	};
 
 	bool decodeFrameHeader(uint32_t index, const std::vector<uint8_t>& fileData,
-		DC6FrameHeader& frameHeader, gsl::span<const uint8_t>& frameData)
+		DC6FrameHeader& frameHeader, std::span<const uint8_t>& frameData)
 	{
 		// get frame position
 		auto framePosIdx = 0x18 + (index * sizeof(uint32_t));
@@ -60,14 +58,14 @@ namespace
 			return false;
 		}
 
-		frameData = gsl::span<const uint8_t>(
+		frameData = std::span<const uint8_t>(
 			&fileData[frameHeaderPos] + DC6FrameHeaderSize, frameHeader.length
 		);
 		return true;
 	}
 
 	void decodeFrameData(sf::Image2& img,
-		const DC6FrameHeader& header, const gsl::span<const uint8_t>& frameData,
+		const DC6FrameHeader& header, const std::span<const uint8_t>& frameData,
 		uint32_t destX, uint32_t destY, const PaletteArray* palette)
 	{
 		// We're reading it bottom to top, but save data with the y axis from top to bottom
@@ -111,20 +109,10 @@ namespace
 	}
 }
 
-DC6ImageContainer::DC6ImageContainer(const std::string_view fileName,
-	bool stitchFrames, bool useOffsets_) : useOffsets(useOffsets_)
+DC6ImageContainer::DC6ImageContainer(const std::shared_ptr<FileBytes>& fileBytes, bool stitchFrames, bool useOffsets_)
+	: fileData(fileBytes), useOffsets(useOffsets_)
 {
-	{
-		sf::PhysFSStream file(fileName.data());
-		if (file.hasError() == true)
-		{
-			return;
-		}
-		fileData.resize((size_t)file.getSize());
-		file.read(fileData.data(), file.getSize());
-	}
-
-	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
+	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
 
 	// DC6 HEADER CHECKS
 
@@ -181,8 +169,8 @@ void DC6ImageContainer::calculateStitchData()
 	for (uint32_t i = 0; i < numberOfFrames; i++)
 	{
 		DC6FrameHeader frameHeader;
-		gsl::span<const uint8_t> frameData;
-		if (decodeFrameHeader(i, fileData, frameHeader, frameData) == false)
+		std::span<const uint8_t> frameData;
+		if (decodeFrameHeader(i, *fileData, frameHeader, frameData) == false)
 		{
 			return;
 		}
@@ -214,7 +202,7 @@ void DC6ImageContainer::calculateStitchData()
 					i += stitchedFrame.stitch.x;
 					stitchedFrame.stitch.y++;
 					stitchedFrame.size.y += frameHeader.height;
-					if (decodeFrameHeader(i, fileData, frameHeader, frameData) == false)
+					if (decodeFrameHeader(i, *fileData, frameHeader, frameData) == false)
 					{
 						return;
 					}
@@ -250,9 +238,9 @@ sf::Image2 DC6ImageContainer::get(uint32_t startIndex, const sf::Vector2u& stitc
 			for (uint32_t i = 0; i < stitch_.x; i++)
 			{
 				DC6FrameHeader frameHeader;
-				gsl::span<const uint8_t> frameData;
+				std::span<const uint8_t> frameData;
 				auto frameIdx = startIndex + i + (j * stitch_.x);
-				if (decodeFrameHeader(frameIdx, fileData, frameHeader, frameData) == false)
+				if (decodeFrameHeader(frameIdx, *fileData, frameHeader, frameData) == false)
 				{
 					return img;
 				}
@@ -296,8 +284,8 @@ sf::Image2 DC6ImageContainer::get(uint32_t index,
 	}
 
 	DC6FrameHeader frameHeader;
-	gsl::span<const uint8_t> frameData;
-	if (decodeFrameHeader(index, fileData, frameHeader, frameData) == false)
+	std::span<const uint8_t> frameData;
+	if (decodeFrameHeader(index, *fileData, frameHeader, frameData) == false)
 	{
 		return {};
 	}
@@ -332,4 +320,3 @@ uint32_t DC6ImageContainer::size() const noexcept
 {
 	return stitchedFrames.empty() == true ? numberOfFrames : stitchedFrames.size();
 }
-#endif

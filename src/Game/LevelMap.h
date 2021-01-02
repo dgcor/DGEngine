@@ -8,18 +8,15 @@
 #include "FlagsVector.h"
 #include "LevelCell.h"
 #include "LightMap.h"
-#include "PairXY.h"
 #include "TileSet.h"
-#include "Utils/FixedArray.h"
 #include "Utils/Helper2D.h"
+#include "Utils/PairXY.h"
 #include <vector>
 
 class LevelMap
 {
-public:
-	static constexpr auto MaxNumberOfLightsToUse = 128u;
-
 private:
+	static constexpr auto MaxNumberOfLightsToUse = 512u;
 
 	struct LightStruct
 	{
@@ -51,11 +48,6 @@ private:
 	std::vector<LightStruct> allLights;
 	static size_t maxLights;
 	bool lightsNeedUpdate{ false };
-
-public:
-	FixedArray<float, MaxNumberOfLightsToUse * 4> lightArray;
-
-private:
 
 	static const LevelCell& get(int32_t x, int32_t y, const LevelMap& map)
 	{
@@ -128,6 +120,8 @@ public:
 
 	void updateLights(const std::vector<std::shared_ptr<LevelObject>>& levelObjects,
 		const sf::Vector2f& drawCenter);
+
+	const std::vector<LightStruct>& AllLights() const noexcept { return allLights; }
 
 	static size_t MaxLights() noexcept { return maxLights; }
 	static void MaxLights(size_t maxLights_) noexcept;

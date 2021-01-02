@@ -1,7 +1,5 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "CELImageContainer.h"
-#include "gsl/gsl"
-#include "PhysFSStream.h"
+#include <span>
 #include "StreamReader.h"
 
 namespace
@@ -197,7 +195,7 @@ namespace
 		LevelType5	// 0x320 right transparency
 	};
 
-	CelFrameType getLevelFrame220Type(const gsl::span<const uint8_t> frameData)
+	CelFrameType getLevelFrame220Type(const std::span<const uint8_t> frameData)
 	{
 		auto type = CelFrameType::Regular;
 		for (size_t i = 0; i < 32; i++)
@@ -225,7 +223,7 @@ namespace
 		return type;
 	}
 
-	CelFrameType getLevelFrame320Type(const gsl::span<const uint8_t> frameData)
+	CelFrameType getLevelFrame320Type(const std::span<const uint8_t> frameData)
 	{
 		auto type = CelFrameType::Regular;
 		for (size_t i = 0; i < 16; i++)
@@ -253,13 +251,13 @@ namespace
 		return type;
 	}
 
-	CelFrameType getLevelFrame400Type(const gsl::span<const uint8_t> frameData)
+	CelFrameType getLevelFrame400Type(const std::span<const uint8_t> frameData)
 	{
 		uint32_t globalPixelCount = 0;
 		uint16_t pixelCount = 0;
 
 		// Going through the frame data to find pixel groups
-		for (ptrdiff_t i = 0; i < frameData.size(); i++)
+		for (size_t i = 0; i < frameData.size(); i++)
 		{
 			auto readByte = frameData[i];
 
@@ -311,7 +309,7 @@ namespace
 		return CelFrameType::LevelType0;
 	}
 
-	uint16_t computeWidthFromHeader(const gsl::span<const uint8_t> frameData)
+	uint16_t computeWidthFromHeader(const std::span<const uint8_t> frameData)
 	{
 		std::array<uint16_t, 5> celFrameHeader;
 		std::array<uint16_t, 4> celFrameWidth = { 0, 0, 0, 0 };
@@ -333,7 +331,7 @@ namespace
 			}
 			for (size_t j = celFrameHeader[i]; j < celFrameHeader[i + 1]; j++)
 			{
-				auto readByte = frameData[(ptrdiff_t)j];
+				auto readByte = frameData[j];
 
 				if (readByte > 0x7F)
 				{
@@ -362,7 +360,7 @@ namespace
 		return celFrameWidth[0];
 	}
 
-	uint16_t computeWidthFromData(const gsl::span<const uint8_t> frameData)
+	uint16_t computeWidthFromData(const std::span<const uint8_t> frameData)
 	{
 		int32_t frameDataStartOffset = 0;
 		uint32_t globalPixelCount = 0;
@@ -377,7 +375,7 @@ namespace
 		}
 
 		// Going through the frame data to find pixel groups
-		for (ptrdiff_t i = frameDataStartOffset; i < frameData.size(); i++)
+		for (size_t i = frameDataStartOffset; i < frameData.size(); i++)
 		{
 			auto readByte = frameData[i];
 
@@ -478,7 +476,7 @@ namespace
 		}
 	}
 
-	sf::Image2 decode(const gsl::span<const uint8_t> frameData,
+	sf::Image2 decode(const std::span<const uint8_t> frameData,
 		unsigned width, unsigned height, CelFrameType frameType, const PaletteArray* palette)
 	{
 		uint32_t frameDataStartOffset = 0;
@@ -610,7 +608,7 @@ namespace
 			std::vector<sf::Color> pixels;
 			pixels.reserve(width * width);
 			unsigned currWidth = 0;
-			for (ptrdiff_t i = frameDataStartOffset; i < frameData.size(); i++)
+			for (size_t i = frameDataStartOffset; i < frameData.size(); i++)
 			{
 				auto readByte = frameData[i];
 
@@ -661,7 +659,7 @@ namespace
 	}
 }
 
-CELImageContainer::CELImageContainer(const std::string_view fileName)
+CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
 {
 	type = CelType::V1Regular;
 
@@ -677,17 +675,7 @@ CELImageContainer::CELImageContainer(const std::string_view fileName)
 	uint32_t celFrameEndOffset = 0;
 	uint32_t celFrameSize = 0;
 
-	{
-		sf::PhysFSStream file(fileName.data());
-		if (file.hasError() == true)
-		{
-			return;
-		}
-		fileData.resize((size_t)file.getSize());
-		file.read(fileData.data(), file.getSize());
-	}
-
-	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
+	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
 
 	// CEL HEADER CHECKS
 
@@ -695,7 +683,7 @@ CELImageContainer::CELImageContainer(const std::string_view fileName)
 	fileStream.read(firstDword);
 
 	// Trying to find file size in CEL header
-	if (fileData.size() < ((uint64_t)firstDword * 4 + 4 + 4))
+	if (fileStream.size() < ((uint64_t)firstDword * 4 + 4 + 4))
 	{
 		return;
 	}
@@ -705,14 +693,14 @@ CELImageContainer::CELImageContainer(const std::string_view fileName)
 
 	// If the dword is not equal to the file size then
 	// check if it's a CEL compilation
-	if (fileData.size() != fileSizeDword)
+	if (fileStream.size() != fileSizeDword)
 	{
 		// Read offset of the last CEL of the CEL compilation
 		fileStream.seek(firstDword - 4);
 		fileStream.read(lastCelOffset);
 
 		// Go to last CEL of the CEL compilation
-		if (fileData.size() < (lastCelOffset + 8))
+		if (fileStream.size() < (lastCelOffset + 8))
 		{
 			return;
 		}
@@ -723,7 +711,7 @@ CELImageContainer::CELImageContainer(const std::string_view fileName)
 		fileStream.read(lastCelFrameCount);
 
 		// Read the last CEL size
-		if (fileData.size() < ((uint64_t)lastCelOffset + 4 + (uint64_t)lastCelFrameCount * 4 + 4))
+		if (fileStream.size() < ((uint64_t)lastCelOffset + 4 + (uint64_t)lastCelFrameCount * 4 + 4))
 		{
 			return;
 		}
@@ -733,7 +721,7 @@ CELImageContainer::CELImageContainer(const std::string_view fileName)
 
 		// If the last CEL size plus the last CEL offset is equal to
 		// the file size then it's a CEL compilation
-		if (fileData.size() == (lastCelOffset + lastCelSize))
+		if (fileStream.size() == (lastCelOffset + lastCelSize))
 		{
 			type = CelType::V1Compilation;
 			directions = firstDword / 4;
@@ -834,7 +822,7 @@ sf::Image2 CELImageContainer::get(uint32_t index,
 	imgInfo.nextIndex = -1;
 
 	auto frameSize = frameOffsets[index].second - frameOffsets[index].first;
-	gsl::span<const uint8_t> frameData(&fileData[frameOffsets[index].first], frameSize);
+	std::span<const uint8_t> frameData(&(*fileData)[frameOffsets[index].first], frameSize);
 
 	// If it's not a level CEL
 	if (type != CelType::V1Level)
@@ -862,4 +850,3 @@ sf::Image2 CELImageContainer::get(uint32_t index,
 		return decode(frameData, 32, 32, frameType, palette);
 	}
 }
-#endif

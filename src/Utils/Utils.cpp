@@ -1,12 +1,8 @@
 #include "Utils.h"
 #include <algorithm>
 #include <array>
-#if (_MSC_VER >= 1914)
 #include <charconv>
-#elif (__GNUC__ >= 8)
-#include <charconv>
-#include <cstdlib>
-#else
+#if __GNUC__
 #include <cstdlib>
 #endif
 #include <iostream>
@@ -115,7 +111,7 @@ namespace Utils
 		return std::make_pair(str, "");
 	}
 
-#if (_MSC_VER >= 1914)
+#ifndef __GNUC__
 	float strtof(std::string_view str) noexcept
 	{
 		float val = 0;
@@ -153,7 +149,6 @@ namespace Utils
 	}
 #endif
 
-#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
 	int strtoi(std::string_view str) noexcept
 	{
 		int val = 0;
@@ -195,37 +190,6 @@ namespace Utils
 		std::from_chars(str.data(), str.data() + str.size(), val);
 		return val;
 	}
-#else
-	int strtoi(std::string_view str) noexcept
-	{
-		return (int)std::strtol(str.data(), nullptr, 10);
-	}
-
-	long strtol(std::string_view str) noexcept
-	{
-		return std::strtol(str.data(), nullptr, 10);
-	}
-
-	long long strtoll(std::string_view str) noexcept
-	{
-		return std::strtoll(str.data(), nullptr, 10);
-	}
-
-	unsigned strtou(std::string_view str) noexcept
-	{
-		return (unsigned)std::strtoul(str.data(), nullptr, 10);
-	}
-
-	unsigned long strtoul(std::string_view str) noexcept
-	{
-		return std::strtoul(str.data(), nullptr, 10);
-	}
-
-	unsigned long long strtoull(std::string_view str) noexcept
-	{
-		return std::strtoull(str.data(), nullptr, 10);
-	}
-#endif
 
 	std::string toLower(const std::string_view str)
 	{
@@ -241,7 +205,7 @@ namespace Utils
 		return ret;
 	}
 
-#if (_MSC_VER >= 1916)
+#ifndef __GNUC__
 	std::string toString(double num)
 	{
 		std::array<char, 24> str;
@@ -270,7 +234,7 @@ namespace Utils
 		return str;
 	}
 #endif
-#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
+
 	std::string toString(int num)
 	{
 		if constexpr (sizeof(int) == 8)
@@ -355,37 +319,6 @@ namespace Utils
 		}
 		return { "0" };
 	}
-#else
-	std::string toString(int num)
-	{
-		return std::to_string(num);
-	}
-
-	std::string toString(long num)
-	{
-		return std::to_string(num);
-	}
-
-	std::string toString(long long num)
-	{
-		return std::to_string(num);
-	}
-
-	std::string toString(unsigned int num)
-	{
-		return std::to_string(num);
-	}
-
-	std::string toString(unsigned long num)
-	{
-		return std::to_string(num);
-	}
-
-	std::string toString(unsigned long long num)
-	{
-		return std::to_string(num);
-	}
-#endif
 
 	std::string trimStart(const std::string_view str, const std::string_view chars)
 	{

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_war_hammer",
+    "file": "images/avatar/male/war_hammer.png"
+  },
   "texturePack": {
     "id": "m_war_hammer",
-    "texture": {
-      "id": "m_war_hammer",
-      "file": "images/avatar/male/war_hammer.png"
-    },
+    "texture": "m_war_hammer",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

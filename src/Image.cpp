@@ -4,20 +4,50 @@
 #include "SFML/SFMLUtils.h"
 #include "Utils/Utils.h"
 
+Image::Image() noexcept
+{
+	sprite.setOutlineEnabled(true);
+}
+
+Image::Image(const sf::Texture& tex) : sprite(tex)
+{
+	sprite.setOutlineEnabled(true);
+}
+
+Image::Image(const sf::Texture& tex, const std::shared_ptr<Palette>& pal) : sprite(tex, pal)
+{
+	sprite.setOutlineEnabled(true);
+}
+
+Image::Image(const TextureInfo& ti) : sprite(ti)
+{
+	sprite.setOutlineEnabled(true);
+}
+
+Image::Image(const std::vector<TextureInfo>& ti) : sprite(ti)
+{
+	sprite.setOutlineEnabled(true);
+}
+
 void Image::setOrigin()
 {
 	setOrigin(sf::Vector2f(std::round((float)sprite.getTextureRect().width / 2.f),
 		std::round((float)sprite.getTextureRect().height / 2.f)));
 }
 
-void Image::setTexture(const TextureInfo& ti, bool resetRect)
+void Image::setTexture(const sf::Texture& texture, bool resetRect)
+{
+	sprite.setTexture(texture, resetRect);
+}
+
+void Image::setTexture(const TextureInfo& ti)
 {
 	sprite.setTexture(ti);
 }
 
-void Image::setTexture(const sf::Texture& texture, bool resetRect)
+void Image::setTexture(const std::vector<TextureInfo>& ti)
 {
-	sprite.setTexture(texture, resetRect);
+	sprite.setTexture(ti);
 }
 
 void Image::updateSize(const Game& game)

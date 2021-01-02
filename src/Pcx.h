@@ -1,8 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/System/InputStream.hpp>
 
 namespace ImageUtils
 {
-	sf::Image LoadImagePCX(const char* fileName);
+	bool LoadImagePCX(sf::InputStream& file, sf::Image& image);
 }

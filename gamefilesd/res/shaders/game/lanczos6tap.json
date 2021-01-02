@@ -1,0 +1,9 @@
+{
+  "shader": {
+    "id": "lanczos6tap",
+    "fragmentFile": "res/shaders/game/lanczos6tap.frag",
+    "vertexFile": "res/shaders/game/lanczos6tap.vert",
+    "uniforms": ["fade", "gamma", "textureSize"],
+    "setShader": "game"
+  }
+}

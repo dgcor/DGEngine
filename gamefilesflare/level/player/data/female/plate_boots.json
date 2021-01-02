@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_plate_boots",
+    "file": "images/avatar/female/plate_boots.png"
+  },
   "texturePack": {
     "id": "f_plate_boots",
-    "texture": {
-      "id": "f_plate_boots",
-      "file": "images/avatar/female/plate_boots.png"
-    },
+    "texture": "f_plate_boots",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

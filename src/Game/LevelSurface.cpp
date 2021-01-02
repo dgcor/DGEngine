@@ -1,6 +1,6 @@
 #include "LevelSurface.h"
-#include <cmath>
 #include "Game.h"
+#include "LevelObject.h"
 #include "Panel.h"
 #include "Utils/Utils.h"
 
@@ -15,7 +15,7 @@ void LevelSurface::setAnchor(const Anchor anchor_) noexcept
 	drawView.setAnchor(anchor_);
 }
 
-const sf::Vector2f& LevelSurface::Position() const
+const sf::Vector2f& LevelSurface::Position() const noexcept
 {
 	return mapView.getPosition();
 }
@@ -27,7 +27,7 @@ void LevelSurface::Position(const sf::Vector2f& position)
 	sprite.setPosition(position);
 }
 
-const sf::Vector2f& LevelSurface::Size() const
+const sf::Vector2f& LevelSurface::Size() const noexcept
 {
 	return mapView.getSize();
 }
@@ -37,16 +37,6 @@ void LevelSurface::Size(const sf::Vector2f& size_)
 	mapView.setSize(size_);
 	drawView.setSize(size_);
 	sprite.setSize(drawView.getRoundedSize());
-}
-
-float LevelSurface::getLightZoomFactor() const noexcept
-{
-	auto zoom = mapView.getZoom();
-	if (supportsBigTextures == true && zoom > 1.f)
-	{
-		zoom *= 0.5;
-	}
-	return zoom;
 }
 
 const sf::Vector2f& LevelSurface::getCenter() const
@@ -64,6 +54,14 @@ void LevelSurface::setCenter(float newViewCenterX, float newViewCenterY)
 void LevelSurface::setCenter(const sf::Vector2f& center)
 {
 	setCenter(center.x, center.y);
+}
+
+void LevelSurface::setCenter()
+{
+	setCenter(
+		std::round(mapView.getRoundedSize().x / 2.f),
+		std::round(mapView.getRoundedSize().y / 2.f)
+	);
 }
 
 sf::Vector2f LevelSurface::getPosition(const sf::Vector2f& point) const
@@ -94,7 +92,8 @@ void LevelSurface::recreateRenderTexture(bool smoothTexture)
 void LevelSurface::recreateRenderTexture(unsigned newWidth, unsigned newHeight, bool smoothTexture)
 {
 	auto texSize = texture.getSize();
-	if (texSize.x != newWidth || texSize.y != newHeight)
+	if ((texSize.x != newWidth || texSize.y != newHeight) &&
+		newWidth > 0 && newHeight > 0)
 	{
 		texture.create(newWidth, newHeight);
 		texture.setSmooth(smoothTexture);
@@ -127,13 +126,30 @@ bool LevelSurface::draw(const Game& game, const Panel& obj) const
 	return obj.draw(game, texture, visibleRect);
 }
 
-void LevelSurface::draw(const sf::Drawable& obj) const
+void LevelSurface::draw(const Game& game, const UIObject& obj) const
 {
-	texture.draw(obj);
+	return obj.draw(game, texture);
+}
+
+void LevelSurface::draw(const sf::Drawable& obj, sf::RenderStates states) const
+{
+	texture.draw(obj, states);
+}
+
+void LevelSurface::draw(const LevelObject& obj, GameShader* spriteShader,
+	SpriteShaderCache& cache) const
+{
+	obj.draw(texture, spriteShader, cache);
+}
+
+void LevelSurface::draw(const Sprite2& obj, GameShader* spriteShader,
+	SpriteShaderCache& cache) const
+{
+	obj.draw(texture, spriteShader, &cache);
 }
 
 void LevelSurface::draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
-	const Palette* palette, sf::Shader* spriteShader) const
+	const Palette* palette, GameShader* spriteShader) const
 {
 	obj.draw(vertexTexture, palette, spriteShader, texture);
 }

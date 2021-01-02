@@ -1,9 +1,5 @@
 #include "GameUtils.h"
-#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
-#include <charconv>
-#else
-#include <cstdlib>
-#endif
+#include <cstdio>
 #include "Game.h"
 #include "Utils/Utils.h"
 
@@ -342,6 +338,24 @@ namespace GameUtils
 				case str2int16("esc"):
 				case str2int16("escape"):
 					return sf::Keyboard::Escape;
+				case str2int16("lcontrol"):
+					return sf::Keyboard::LControl;
+				case str2int16("lshift"):
+					return sf::Keyboard::LShift;
+				case str2int16("lalt"):
+					return sf::Keyboard::LAlt;
+				case str2int16("lsystem"):
+					return sf::Keyboard::LSystem;
+				case str2int16("rcontrol"):
+					return sf::Keyboard::RControl;
+				case str2int16("rshift"):
+					return sf::Keyboard::RShift;
+				case str2int16("ralt"):
+					return sf::Keyboard::RAlt;
+				case str2int16("rsystem"):
+					return sf::Keyboard::RSystem;
+				case str2int16("menu"):
+					return sf::Keyboard::Menu;
 				case str2int16("leftbracket"):
 					return sf::Keyboard::LBracket;
 				case str2int16("rightbracket"):
@@ -401,6 +415,26 @@ namespace GameUtils
 					return sf::Keyboard::Up;
 				case str2int16("down"):
 					return sf::Keyboard::Down;
+				case str2int16("numpad0"):
+					return sf::Keyboard::Numpad0;
+				case str2int16("numpad1"):
+					return sf::Keyboard::Numpad1;
+				case str2int16("numpad2"):
+					return sf::Keyboard::Numpad2;
+				case str2int16("numpad3"):
+					return sf::Keyboard::Numpad3;
+				case str2int16("numpad4"):
+					return sf::Keyboard::Numpad4;
+				case str2int16("numpad5"):
+					return sf::Keyboard::Numpad5;
+				case str2int16("numpad6"):
+					return sf::Keyboard::Numpad6;
+				case str2int16("numpad7"):
+					return sf::Keyboard::Numpad7;
+				case str2int16("numpad8"):
+					return sf::Keyboard::Numpad8;
+				case str2int16("numpad9"):
+					return sf::Keyboard::Numpad9;
 				case str2int16("f1"):
 					return sf::Keyboard::F1;
 				case str2int16("f2"):
@@ -505,206 +539,22 @@ namespace GameUtils
 		return val;
 	}
 
-	InventoryPosition getInventoryPosition(const std::string_view str, InventoryPosition val)
+	sf::PrimitiveType getPrimitiveType(const std::string_view str, sf::PrimitiveType val)
 	{
 		switch (str2int16(Utils::toLower(str)))
 		{
-		case str2int16("topleft"):
-			return InventoryPosition::TopLeft;
-		case str2int16("topright"):
-			return InventoryPosition::TopRight;
-		case str2int16("bottomleft"):
-			return InventoryPosition::BottomLeft;
-		case str2int16("bottomright"):
-			return InventoryPosition::BottomRight;
-		}
-		return val;
-	}
-
-	PlayerDirection getPlayerDirection(const std::string_view str, PlayerDirection val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("all"):
-			return PlayerDirection::All;
-		case str2int16("front"):
-			return PlayerDirection::Front;
-		case str2int16("frontleft"):
-			return PlayerDirection::FrontLeft;
-		case str2int16("left"):
-			return PlayerDirection::Left;
-		case str2int16("backleft"):
-			return PlayerDirection::BackLeft;
-		case str2int16("back"):
-			return PlayerDirection::Back;
-		case str2int16("backright"):
-			return PlayerDirection::BackRight;
-		case str2int16("right"):
-			return PlayerDirection::Right;
-		case str2int16("frontright"):
-			return PlayerDirection::FrontRight;
-		default:
-			return val;
-		}
-	}
-
-	PlayerInventory getPlayerInventory(const std::string_view str, PlayerInventory val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("body"):
-			return PlayerInventory::Body;
-		case str2int16("belt"):
-			return PlayerInventory::Belt;
-		case str2int16("stash"):
-			return PlayerInventory::Stash;
-		default:
-			return val;
-		}
-	}
-
-	size_t getPlayerInventoryIndex(const std::string_view str, PlayerInventory val)
-	{
-#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
-		size_t num = (size_t)val;
-		auto err = std::from_chars(str.data(), str.data() + str.size(), num);
-		if (err.ec == std::errc() ||
-			err.ec == std::errc::result_out_of_range)
-		{
-			return num;
-		}
-		return (size_t)getPlayerInventory(str, val);
-#else
-		int& errno_ref = errno;
-		const char* sPtr = str.data();
-		char* ePtr;
-		errno_ref = 0;
-		size_t val2 = (size_t)std::strtoul(sPtr, &ePtr, 10);
-
-		if (errno_ref == ERANGE) // out of range
-		{
-			return (size_t)val;
-		}
-		else if (sPtr == ePtr) // invalid argument
-		{
-			return (size_t)getPlayerInventory(str, val);
-		}
-		else
-		{
-			return val2;
-		}
-#endif
-	}
-
-	PlayerItemMount getPlayerItemMount(const std::string_view str, PlayerItemMount val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("lefthand"):
-			return PlayerItemMount::LeftHand;
-		case str2int16("righthand"):
-			return PlayerItemMount::RightHand;
-		case str2int16("armor"):
-			return PlayerItemMount::Armor;
-		case str2int16("helmet"):
-			return PlayerItemMount::Helmet;
-		case str2int16("amulet"):
-			return PlayerItemMount::Amulet;
-		case str2int16("leftring"):
-			return PlayerItemMount::LeftRing;
-		case str2int16("rightring"):
-			return PlayerItemMount::RightRing;
-		default:
-			return val;
-		}
-	}
-
-	size_t getPlayerItemMountIndex(const std::string_view str, PlayerItemMount val)
-	{
-#if ((_MSC_VER >= 1914) || (__GNUC__ >= 8))
-		size_t num = (size_t)val;
-		auto err = std::from_chars(str.data(), str.data() + str.size(), num);
-		if (err.ec == std::errc() ||
-			err.ec == std::errc::result_out_of_range)
-		{
-			return num;
-		}
-		return (size_t)getPlayerItemMount(str, val);
-#else
-		int& errno_ref = errno;
-		const char* sPtr = str.data();
-		char* ePtr;
-		errno_ref = 0;
-		size_t val2 = (size_t)std::strtoul(sPtr, &ePtr, 10);
-
-		if (errno_ref == ERANGE) // out of range
-		{
-			return (size_t)val;
-		}
-		else if (sPtr == ePtr) // invalid argument
-		{
-			return (size_t)getPlayerItemMount(str, val);
-		}
-		else
-		{
-			return val2;
-		}
-#endif
-	}
-
-	PlayerAnimation getPlayerAnimation(const std::string_view str, PlayerAnimation val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("stand1"):
-			return PlayerAnimation::Stand1;
-		case str2int16("stand2"):
-			return PlayerAnimation::Stand2;
-		case str2int16("walk1"):
-			return PlayerAnimation::Walk1;
-		case str2int16("walk2"):
-			return PlayerAnimation::Walk2;
-		case str2int16("attack1"):
-			return PlayerAnimation::Attack1;
-		case str2int16("attack2"):
-			return PlayerAnimation::Attack2;
-		case str2int16("attack3"):
-			return PlayerAnimation::Attack3;
-		case str2int16("attack4"):
-			return PlayerAnimation::Attack4;
-		case str2int16("defend1"):
-			return PlayerAnimation::Defend1;
-		case str2int16("defend2"):
-			return PlayerAnimation::Defend2;
-		case str2int16("defend3"):
-			return PlayerAnimation::Defend3;
-		case str2int16("defend4"):
-			return PlayerAnimation::Defend4;
-		case str2int16("hit1"):
-			return PlayerAnimation::Hit1;
-		case str2int16("hit2"):
-			return PlayerAnimation::Hit2;
-		case str2int16("die1"):
-			return PlayerAnimation::Die1;
-		case str2int16("die2"):
-			return PlayerAnimation::Die2;
-		default:
-			return val;
-		}
-	}
-
-	PlayerStatus getPlayerStatus(const std::string_view str, PlayerStatus val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("stand"):
-			return PlayerStatus::Stand;
-		case str2int16("walk"):
-			return PlayerStatus::Walk;
-		case str2int16("attack"):
-			return PlayerStatus::Attack;
-		case str2int16("dead"):
-			return PlayerStatus::Dead;
+		case str2int16("points"):
+			return sf::PrimitiveType::Points;
+		case str2int16("lines"):
+			return sf::PrimitiveType::Lines;
+		case str2int16("linestrip"):
+			return sf::PrimitiveType::LineStrip;
+		case str2int16("triangles"):
+			return sf::PrimitiveType::Triangles;
+		case str2int16("trianglestrip"):
+			return sf::PrimitiveType::TriangleStrip;
+		case str2int16("trianglefan"):
+			return sf::PrimitiveType::TriangleFan;
 		default:
 			return val;
 		}
@@ -714,6 +564,119 @@ namespace GameUtils
 	{
 		fps = std::clamp(fps, 1, 1000);
 		return sf::seconds(1.f / (float)fps);
+	}
+
+	Variable getTime(sf::Time time, std::string_view format, bool roundUp)
+	{
+		auto formatHash = str2int16(format);
+		if (formatHash == str2int16("ms"))
+		{
+			return Variable(time.asMicroseconds() / 1000);
+		}
+
+		static constexpr size_t buffSize = 12;
+		char buffer[buffSize];
+		buffer[0] = 0;
+		bool showHours = false;
+		bool showMinutes = false;
+		bool trailingZero = false;
+		int32_t sec = 0, h = 0, m = 0, s = 0;
+
+		if (roundUp == false)
+		{
+			sec = (int32_t)std::ceil(time.asSeconds());
+		}
+		else
+		{
+			sec = (int32_t)std::floor(time.asSeconds());
+		}
+
+		switch (formatHash)
+		{
+		case str2int16("s"):
+		default:
+			return Variable((int64_t)sec);
+		case str2int16("SS"):
+		{
+			trailingZero = true;
+			[[fallthrough]];
+		}
+		case str2int16("S"):
+		{
+			s = sec;
+			break;
+		}
+		case str2int16("MMSS"):
+		{
+			trailingZero = true;
+			[[fallthrough]];
+		}
+		case str2int16("MSS"):
+		{
+			showMinutes = true;
+			if (sec < 60)
+			{
+				s = sec;
+			}
+			else if (sec < 3600)
+			{
+				sec = sec % 3600;
+				m = sec / 60;
+				s = sec % 60;
+			}
+			else
+			{
+				h = sec / 3600;
+				sec = sec % 3600;
+				m = (sec / 60) + (h * 60);
+				s = sec % 60;
+			}
+			break;
+		}
+		case str2int16("HHMMSS"):
+		{
+			trailingZero = true;
+			[[fallthrough]];
+		}
+		case str2int16("HMMSS"):
+		{
+			showHours = true;
+			if (sec < 60)
+			{
+				s = sec;
+			}
+			else if (sec < 3600)
+			{
+				sec = sec % 3600;
+				m = sec / 60;
+				s = sec % 60;
+			}
+			else
+			{
+				h = sec / 3600;
+				sec = sec % 3600;
+				m = sec / 60;
+				s = sec % 60;
+			}
+			break;
+		}
+		}
+		if (showHours == true)
+		{
+			auto fmt = trailingZero == true ? "%02i:%02i:%02i" : "%2i:%02i:%02i";
+			snprintf(buffer, buffSize, fmt, h, m, s);
+		}
+		else if (showMinutes == true)
+		{
+			auto fmt = trailingZero == true ? "%02i:%02i" : "%2i:%02i";
+			snprintf(buffer, buffSize, fmt, m, s);
+		}
+		else
+		{
+			auto fmt = trailingZero == true ? "%02i" : "%2i";
+			snprintf(buffer, buffSize, fmt, s);
+		}
+		return Variable(std::string(buffer));
 	}
 
 	std::string replaceStringWithQueryable(const std::string_view str,

@@ -1,7 +1,5 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "CL2ImageContainer.h"
-#include "gsl/gsl"
-#include "PhysFSStream.h"
+#include <span>
 #include "StreamReader.h"
 
 namespace
@@ -13,7 +11,7 @@ namespace
 		V2MultipleGroups
 	};
 
-	uint16_t computeWidthFromHeader(const gsl::span<const uint8_t> frameData)
+	uint16_t computeWidthFromHeader(const std::span<const uint8_t> frameData)
 	{
 		std::array<uint16_t, 5> celFrameHeader;
 		std::array<uint16_t, 4> celFrameWidth = { 0, 0, 0, 0 };
@@ -35,7 +33,7 @@ namespace
 			}
 			for (size_t j = celFrameHeader[i]; j < celFrameHeader[i + 1]; j++)
 			{
-				auto readByte = frameData[(ptrdiff_t)j];
+				auto readByte = frameData[j];
 
 				if (readByte > 0x00 && readByte < 0x80)
 				{
@@ -69,7 +67,7 @@ namespace
 		return celFrameWidth[0];
 	}
 
-	sf::Image2 decode(const gsl::span<const uint8_t> frameData, const PaletteArray* palette)
+	sf::Image2 decode(const std::span<const uint8_t> frameData, const PaletteArray* palette)
 	{
 		unsigned width;
 		int32_t frameDataStartOffset = 0;
@@ -100,7 +98,7 @@ namespace
 
 		// READ {CL2 FRAME DATA}
 
-		for (ptrdiff_t i = frameDataStartOffset; i < frameData.size(); i++)
+		for (size_t i = frameDataStartOffset; i < frameData.size(); i++)
 		{
 			auto readByte = frameData[i];
 
@@ -151,23 +149,13 @@ namespace
 	}
 }
 
-CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
+CL2ImageContainer::CL2ImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
 {
 	CelType type = CelType::V2MultipleGroups;
 	uint32_t firstDword = 0;
 	uint32_t fileSizeDword = 0;
 
-	{
-		sf::PhysFSStream file(fileName.data());
-		if (file.hasError() == true)
-		{
-			return;
-		}
-		fileData.resize((size_t)file.getSize());
-		file.read(fileData.data(), file.getSize());
-	}
-
-	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
+	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
 
 	// CL2 HEADER CHECKS
 
@@ -175,7 +163,7 @@ CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
 	fileStream.read(firstDword);
 
 	// Trying to find file size in CL2 header
-	if (fileData.size() < ((uint64_t)firstDword * 4 + 4 + 4))
+	if (fileStream.size() < ((uint64_t)firstDword * 4 + 4 + 4))
 	{
 		return;
 	}
@@ -185,7 +173,7 @@ CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
 
 	// If the dword is not equal to the file size then
 	// check if it's a CL2 with multiple groups
-	if (fileData.size() != fileSizeDword)
+	if (fileStream.size() != fileSizeDword)
 	{
 		// Read offset of the last CL2 group header
 		uint32_t lastGroupHeaderOffset;
@@ -193,7 +181,7 @@ CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
 		fileStream.read(lastGroupHeaderOffset);
 
 		// Read the number of frames of the last CL2 group
-		if (fileData.size() < lastGroupHeaderOffset)
+		if (fileStream.size() < lastGroupHeaderOffset)
 		{
 			return;
 		}
@@ -203,7 +191,7 @@ CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
 		fileStream.read(lastGroupFrameCount);
 
 		// Read the last frame offset corresponding to the file size
-		if (fileData.size() < lastGroupHeaderOffset + lastGroupFrameCount * 4 + 4 + 4)
+		if (fileStream.size() < lastGroupHeaderOffset + lastGroupFrameCount * 4 + 4 + 4)
 		{
 			return;
 		}
@@ -215,7 +203,7 @@ CL2ImageContainer::CL2ImageContainer(const std::string_view fileName)
 		// to have an offset from the beginning of the file
 		fileSizeDword += lastGroupHeaderOffset;
 
-		if (fileData.size() == fileSizeDword)
+		if (fileStream.size() == fileSizeDword)
 		{
 			type = CelType::V2MultipleGroups;
 			directions = firstDword / 4;
@@ -295,7 +283,6 @@ sf::Image2 CL2ImageContainer::get(uint32_t index,
 	imgInfo.nextIndex = -1;
 
 	uint32_t frameSize = frameOffsets[index].second - frameOffsets[index].first;
-	gsl::span<const uint8_t> frameData(&fileData[frameOffsets[index].first], frameSize);
+	std::span<const uint8_t> frameData(&(*fileData)[frameOffsets[index].first], frameSize);
 	return decode(frameData, palette);
 }
-#endif

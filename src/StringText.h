@@ -14,9 +14,11 @@ private:
 	HorizontalAlign horizAlign{ HorizontalAlign::Left };
 	VerticalAlign vertAlign{ VerticalAlign::Bottom };
 	sf::Color color{ sf::Color::White };
+	unsigned int charSize{ 0 };
 	bool visible{ true };
 
 	void calculateDrawPosition();
+	void updateCharSize();
 	void updateColor();
 
 public:
@@ -26,22 +28,22 @@ public:
 	void setAnchor(const Anchor anchor_) override;
 	void updateSize(const Game& game) override;
 
-	bool setText(const std::string& str) override;
+	bool setText(const std::string& utf8Str) override;
 
 	unsigned getLineCount() const noexcept override { return text.getLineCount(); }
 
 	void setFont(const std::shared_ptr<FreeTypeFont>& font_);
-	void setCharacterSize(unsigned int size) { text.setCharacterSize(size); }
+	void setCharacterSize(unsigned int size);
 	void setStyle(sf::Uint32 style) { text.setStyle(style); }
 	void setColor(const sf::Color& color_) override;
 	void setOutlineColor(const sf::Color& color_) { text.setOutlineColor(color_); }
 	void setOutlineThickness(float thickness) { text.setOutlineThickness(thickness); }
 
-	std::string getText() const override { return text.getString().toAnsiString(); }
+	std::string getText() const override;
 	const sf::Font* getFont() const { return text.getFont(); }
 	unsigned int getCharacterSize() const { return text.getCharacterSize(); }
 	sf::Uint32 getStyle() const { return text.getStyle(); }
-	const sf::Color& getColor() const { return color; }
+	const sf::Color& getColor() const { return text.getFillColor(); }
 	const sf::Color& getOutlineColor() const { return text.getOutlineColor(); }
 	float getOutlineThickness() const { return text.getOutlineThickness(); }
 	sf::Vector2f findCharacterPos(std::size_t index) const { return text.findCharacterPos(index); }

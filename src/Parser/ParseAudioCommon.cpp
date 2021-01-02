@@ -5,6 +5,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	sf::Music::TimeSpan parseAudioTimeSpan(const Value& elem)
 	{
@@ -19,7 +20,7 @@ namespace Parser
 	{
 		if (isValidString(elem, "name") == true)
 		{
-			loopNames[elem["name"].GetStringStr()] = parseAudioTimeSpan(elem);
+			loopNames[elem["name"sv].GetStringStr()] = parseAudioTimeSpan(elem);
 		}
 	}
 

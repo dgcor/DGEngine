@@ -1,0 +1,57 @@
+{
+  "action": {
+    "name": "resource.add",
+    "id": "splashScreen"
+  },
+  "inputEvent": {
+    "key": ["enter", "esc", " "],
+    "action": { "name": "button.click", "id": "skip" }
+  },
+  "imageContainer": {
+    "file": "ui_art/hf_logo1.pcx",
+    "frames": 16
+  },
+  "texturePack": {
+    "id": "hf_logo1",
+    "imageContainer": "hf_logo1"
+  },
+  "animation": {
+    "id": "title",
+    "texturePack": "hf_logo1",
+    "anchor": "none",
+    "refresh": 55
+  },
+  "button": {
+    "id": "skip",
+    "texture": "empty",
+    "textureRect": [640, 480],
+    "resizable": true,
+    "anchor": "all",
+    "onClick": [
+      { "name": "event.delete", "id": "load" },
+      {
+        "name": "game.fadeOut",
+        "action": [
+          { "name": "resource.pop" },
+          { "name": "load", "file": "ui/mainMenu.json" },
+          { "name": "game.fadeIn" }
+        ]
+      }
+    ]
+  },
+  "event": {
+    "id": "load",
+    "action": {
+      "name": "game.fadeOut",
+      "action": [
+        { "name": "resource.pop" },
+        { "name": "load", "file": "ui/mainMenu.json" },
+        { "name": "game.fadeIn" }
+      ]
+    },
+    "time": 7.0
+  },
+  "action": {
+    "name": "game.fadeIn"
+  }
+}

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "AnimationType.h"
 #include "Game/LevelFlags.h"
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Time.hpp>
 #include <utility>
 
+struct AnimationInfo;
 class Palette;
 struct TextureInfo;
 
@@ -14,6 +14,7 @@ class TexturePack : public LevelFlags
 {
 protected:
 	static void updateTextureRect(TextureInfo& ti);
+	static uint32_t getTextureWidth(const sf::Texture& texture);
 
 	static std::pair<uint32_t, uint32_t> getRange(uint32_t startIdx,
 		uint32_t stopIdx, int32_t directionIdx, uint32_t directions);
@@ -28,6 +29,8 @@ public:
 	// if texture is an index texture, sets the palette in TextureInfo
 	virtual bool get(uint32_t index, TextureInfo& ti) const = 0;
 
+	virtual int32_t getWidth(uint32_t index) const = 0;
+
 	virtual void update(int epoch, sf::Time elapsedTime) {}
 
 	// returns a texture only if the same texture is used for all calls to get
@@ -41,12 +44,5 @@ public:
 	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept { return 1; }
 	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept { return 0; }
 
-	virtual std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx,
-		int32_t directionIdx, AnimationType& animType) const;
-
-	std::pair<uint32_t, uint32_t> getRange(int32_t groupIdx, int32_t directionIdx) const
-	{
-		AnimationType animType;
-		return getRange(groupIdx, directionIdx, animType);
-	}
+	virtual AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const;
 };

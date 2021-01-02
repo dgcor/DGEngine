@@ -28,7 +28,6 @@
 /Debug NoDiabloFormatSupport
 /Debug NoMovie
 /DGEngine
-/DGEngine.dir
 /DIABDAT
 /DIABDAT.*
 /FFMPEG*
@@ -47,10 +46,12 @@
 /Makefile
 /obj
 /PhysicsFS
+/portable
+/Project.dir
 /Release
 /Release NoMovie
 /Release Static
 /Release Static NoMovie
 /sfeMovie
 /SFML
-/Win32
+/x64

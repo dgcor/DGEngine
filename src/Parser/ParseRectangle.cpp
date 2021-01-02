@@ -8,6 +8,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseRectangle(Game& game, const Value& elem)
 	{
@@ -15,7 +16,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -25,14 +26,14 @@ namespace Parser
 
 		if (isValidString(elem, "texture"))
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
+			auto texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
 			if (texture != nullptr)
 			{
 				rectangle->setTexture(texture.get());
 			}
 		}
 
-		if (elem.HasMember("textureRect"))
+		if (elem.HasMember("textureRect"sv))
 		{
 			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
 			rectangle->setTextureRect(getIntRectKey(elem, "textureRect", rect));
@@ -58,7 +59,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

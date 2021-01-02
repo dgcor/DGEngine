@@ -71,36 +71,28 @@ void PlayerClass::setSpeed(PlayerAnimation animation, const AnimationSpeed& spee
 	animationSpeeds.push_back(std::make_pair(animation, speed));
 }
 
-const sf::SoundBuffer* PlayerClass::getSound(size_t idx) const noexcept
+const sf::SoundBuffer* PlayerClass::getSound(const std::string_view key, size_t soundNum) const
 {
-	if (idx < sounds.size())
+	auto range = sounds.equal_range(sv2str(key));
+	const sf::SoundBuffer* firstSnd = nullptr;
+	for (; range.first != range.second; ++range.first)
 	{
-		return sounds[idx];
+		if (soundNum == 0)
+		{
+			return range.first->second;
+		}
+		else if (firstSnd == nullptr)
+		{
+			firstSnd = range.first->second;
+		}
+		soundNum--;
 	}
-	return nullptr;
+	return firstSnd;
 }
 
-const sf::SoundBuffer* PlayerClass::getSound(size_t idx, size_t size) const
+void PlayerClass::addSound(const std::string_view key, const sf::SoundBuffer& snd)
 {
-	if (size <= 1)
-	{
-		return getSound(idx);
-	}
-	auto maxIdx = idx + size - 1;
-	if (maxIdx >= sounds.size() || maxIdx <= idx)
-	{
-		return getSound(idx);
-	}
-	auto rndIdx = Utils::Random::get<size_t>(idx, maxIdx);
-	return sounds[rndIdx];
-}
-
-void PlayerClass::setSound(size_t idx, const sf::SoundBuffer& snd) noexcept
-{
-	if (idx < sounds.size())
-	{
-		sounds[idx] = &snd;
-	}
+	sounds.insert(std::make_pair(key, &snd));
 }
 
 void PlayerClass::setFormula(uint16_t nameHash, const std::string_view formula)

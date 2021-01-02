@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_iron_buckler",
+    "file": "images/avatar/female/iron_buckler.png"
+  },
   "texturePack": {
     "id": "f_iron_buckler",
-    "texture": {
-      "id": "f_iron_buckler",
-      "file": "images/avatar/female/iron_buckler.png"
-    },
+    "texture": "f_iron_buckler",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

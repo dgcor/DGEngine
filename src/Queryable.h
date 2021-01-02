@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Game/Number.h"
 #include <string_view>
+#include "Utils/Number.h"
 #include "Variable.h"
 
 struct TextureInfo;

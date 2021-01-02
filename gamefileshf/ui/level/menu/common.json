@@ -14,7 +14,7 @@
     }
   ],
   "load": "ui/level/char/disableKeys.json",
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"
@@ -37,17 +37,24 @@
       "action": { "name": "button.click", "id": "menu" }
     }
   ],
+  "imageContainer": [
+    {
+      "id": "hf_logo3",
+      "file": "data/hf_logo3.CEL"
+    },
+    {
+      "file": "data/PentSpin.cel"
+    }
+  ],
   "texturePack": [
     {
       "id": "hf_logo3",
       "imageContainer": "hf_logo3",
-      "file": "data/hf_logo3.CEL",
       "palette": "town"
     },
     {
       "id": "PentSpin",
       "imageContainer": "PentSpin",
-      "file": "data/PentSpin.cel",
       "palette": "town"
     }
   ],

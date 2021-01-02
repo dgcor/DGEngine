@@ -3,7 +3,7 @@
     "name": "resource.add",
     "id": "singlePlayerNameExists"
   },
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "esc",
       "action": { "name": "button.click", "id": "no" }

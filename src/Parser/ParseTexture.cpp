@@ -5,28 +5,23 @@
 #endif
 #include "ImageUtils.h"
 #include "ParseImageContainer.h"
+#include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Texture.hpp>
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	sf::Image parseTextureImg(Game& game, const Value& elem)
 	{
 		sf::Image img;
-		parseTextureImg(game, elem, img, nullptr);
-		return img;
-	}
 
-	bool parseTextureImg(Game& game, const Value& elem,
-		sf::Image& img, ImageCache* cache)
-	{
-		sf::Image* imgPtr = &img;
-
-		if (elem.HasMember("color") == true)
+		if (elem.HasMember("color"sv) == true)
 		{
-			const auto& colorElem = elem["color"];
+			const auto& colorElem = elem["color"sv];
 			auto size = getVector2uKey(elem, "size", game.DrawRegionSize());
 
 			if (colorElem.IsArray() == true &&
@@ -45,14 +40,14 @@ namespace Parser
 			{
 				img.create(size.x, size.y, getColorVal(colorElem));
 			}
-			return false;
+			return img;
 		}
-		else if (elem.HasMember("file") == false)
+		else if (elem.HasMember("file"sv) == false)
 		{
-			return false;
+			return img;
 		}
 
-		auto path = getStringViewVal(elem["file"]);
+		auto path = getStringViewVal(elem["file"sv]);
 		auto pathLower = Utils::toLower(path);
 
 		if (Utils::endsWith(pathLower, ".cel") == true ||
@@ -70,29 +65,29 @@ namespace Parser
 			{
 				palArray = &pal->palette;
 			}
-			auto imgContainer = parseImageContainerObj(game, elem);
+			auto imgContainer = getImageContainerObj(game, elem);
 			if (imgContainer == nullptr)
 			{
-				return false;
+				return img;
 			}
-			if (elem.HasMember("charMapFile") == true)
+			if (elem.HasMember("charMapFile"sv) == true)
 			{
 				img = ImageUtils::loadBitmapFontImage(
-					*imgContainer, getStringViewVal(elem["charMapFile"]), pal);
+					*imgContainer, getStringViewVal(elem["charMapFile"sv]), pal);
 			}
-			else if (elem.HasMember("frame") == true)
+			else if (elem.HasMember("frame"sv) == true)
 			{
-				auto frameIdx = getUIntVal(elem["frame"]);
+				auto frameIdx = getUIntVal(elem["frame"sv]);
 				img = ImageUtils::loadImageFrame(*imgContainer, palArray, frameIdx);
 			}
 #ifndef NO_DIABLO_FORMAT_SUPPORT
-			else if (elem.HasMember("stitch") == true &&
-				elem.HasMember("size") == true &&
+			else if (elem.HasMember("stitch"sv) == true &&
+				elem.HasMember("size"sv) == true &&
 				dynamic_cast<DC6ImageContainer*>(imgContainer.get()) != nullptr)
 			{
 				auto dc6ImgCont = dynamic_cast<DC6ImageContainer*>(imgContainer.get());
-				auto stitch = getVector2uVal<sf::Vector2u>(elem["stitch"]);
-				auto size = getVector2uVal<sf::Vector2u>(elem["size"]);
+				auto stitch = getVector2uVal<sf::Vector2u>(elem["stitch"sv]);
+				auto size = getVector2uVal<sf::Vector2u>(elem["size"sv]);
 				img = dc6ImgCont->get(stitch, size, palArray);
 			}
 #endif
@@ -104,40 +99,26 @@ namespace Parser
 		else
 		{
 			auto mask = getColorKey(elem, "mask", sf::Color::Transparent);
-			if (cache != nullptr)
-			{
-				if (cache->path != path)
-				{
-					cache->image = ImageUtils::loadImage(path, mask);
-					cache->path = path;
-				}
-				imgPtr = &cache->image;
-			}
-			else
-			{
-				img = ImageUtils::loadImage(path, mask);
-			}
+			img = ImageUtils::loadImage(path, mask);
 			if (isValidString(elem, "split") == true)
 			{
-				auto split = getStringViewVal(elem["split"]);
+				auto split = getStringViewVal(elem["split"sv]);
 				auto piecesX = getUIntKey(elem, "pieces", 1);
 
 				if (split == "horizontal")
 				{
-					img = ImageUtils::splitImageHorizontal(*imgPtr, piecesX);
-					imgPtr = &img;
+					img = ImageUtils::splitImageHorizontal(img, piecesX);
 				}
 				else if (split == "vertical")
 				{
-					img = ImageUtils::splitImageVertical(*imgPtr, piecesX);
-					imgPtr = &img;
+					img = ImageUtils::splitImageVertical(img, piecesX);
 				}
 			}
 		}
 		if (isValidArray(elem, "trim") == true)
 		{
-			auto trimRect = getIntRectVal(elem["trim"]);
-			auto imgSize = imgPtr->getSize();
+			auto trimRect = getIntRectVal(elem["trim"sv]);
+			auto imgSize = img.getSize();
 
 			if (trimRect.left >= 0 &&
 				trimRect.top >= 0 &&
@@ -148,16 +129,11 @@ namespace Parser
 			{
 				sf::Image img2;
 				img2.create((unsigned)trimRect.width, (unsigned)trimRect.height);
-				img2.copy(*imgPtr, 0, 0, trimRect);
-				img = img2;
-				return false;
+				img2.copy(img, 0, 0, trimRect);
+				img = std::move(img2);
 			}
 		}
-		if (imgPtr != &img)
-		{
-			return true;
-		}
-		return false;
+		return img;
 	}
 
 	bool parseTextureFromId(Game& game, const Value& elem)
@@ -166,8 +142,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getTexture(fromId);
@@ -182,19 +158,7 @@ namespace Parser
 		return false;
 	}
 
-	std::shared_ptr<sf::Texture> parseTextureObj(Game& game,
-		const Value& elem, const sf::Image& image)
-	{
-		auto texture = std::make_shared<sf::Texture>();
-		if (texture->loadFromImage(image) == false)
-		{
-			return nullptr;
-		}
-		texture->setRepeated(getBoolKey(elem, "repeat", true));
-		return texture;
-	}
-
-	std::shared_ptr<sf::Texture> parseTextureObj(Game& game, const Value& elem)
+	std::shared_ptr<sf::Texture> getTextureObj(Game& game, const Value& elem)
 	{
 		auto img = parseTextureImg(game, elem);
 		auto imgSize = img.getSize();
@@ -202,32 +166,17 @@ namespace Parser
 		{
 			return nullptr;
 		}
-		return parseTextureObj(game, elem, img);
-	}
-
-	std::shared_ptr<sf::Texture> parseTextureObj(Game& game,
-		const Value& elem, ImageCache* cache)
-	{
-		sf::Image img;
-		sf::Image* imgPtr = &img;
-		if (parseTextureImg(game, elem, img, cache) == true)
-		{
-			imgPtr = &cache->image;
-		}
-		auto imgSize = imgPtr->getSize();
-		if (imgSize.x == 0 || imgSize.y == 0)
+		auto texture = std::make_shared<sf::Texture>();
+		if (texture->loadFromImage(img) == false)
 		{
 			return nullptr;
 		}
-		return parseTextureObj(game, elem, *imgPtr);
+		texture->setRepeated(getBoolKey(elem, "repeat", true));
+		texture->setSmooth(getBoolKey(elem, "smooth", true));
+		return texture;
 	}
 
 	void parseTexture(Game& game, const Value& elem)
-	{
-		return parseTexture(game, elem, nullptr);
-	}
-
-	void parseTexture(Game& game, const Value& elem, ImageCache* cache)
 	{
 		if (parseTextureFromId(game, elem) == true)
 		{
@@ -236,7 +185,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else
 		{
@@ -244,7 +193,7 @@ namespace Parser
 			{
 				return;
 			}
-			auto file = getStringViewVal(elem["file"]);
+			auto file = getStringViewVal(elem["file"sv]);
 			if (getIdFromFile(file, id) == false)
 			{
 				return;
@@ -254,43 +203,11 @@ namespace Parser
 		{
 			return;
 		}
-		auto texture = parseTextureObj(game, elem, cache);
+		auto texture = getTextureObj(game, elem);
 		if (texture == nullptr)
 		{
 			return;
 		}
 		game.Resources().addTexture(id, texture, getStringViewKey(elem, "resource"));
-	}
-
-	bool getOrParseTexture(Game& game, const Value& elem, const char* idKey,
-		std::shared_ptr<sf::Texture>& texture)
-	{
-		return getOrParseTexture(game, elem, idKey, texture, nullptr);
-	}
-
-	bool getOrParseTexture(Game& game, const Value& elem, const char* idKey,
-		std::shared_ptr<sf::Texture>& texture, ImageCache* cache)
-	{
-		if (isValidString(elem, idKey) == true)
-		{
-			auto id = elem[idKey].GetStringStr();
-			texture = game.Resources().getTexture(id);
-			if (texture != nullptr)
-			{
-				return true;
-			}
-			texture = parseTextureObj(game, elem, cache);
-			if (isValidId(id) == true &&
-				texture != nullptr)
-			{
-				game.Resources().addTexture(id, texture, getStringViewKey(elem, "resource"));
-				return true;
-			}
-		}
-		else
-		{
-			texture = parseTextureObj(game, elem, cache);
-		}
-		return false;
 	}
 }

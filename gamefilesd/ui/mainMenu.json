@@ -42,7 +42,7 @@
     "loop": true,
     "play": true
   },
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"
@@ -75,23 +75,31 @@
       }
     }
   ],
-  "texture": {
-    "id": "mainmenu",
-    "file": "ui_art/mainmenu.pcx"
-  },
+  "texture": [
+    {
+      "id": "mainmenu",
+      "file": "ui_art/mainmenu.pcx"
+    },
+    {
+      "id": "smlogo",
+      "file": "ui_art/smlogo.pcx",
+      "mask": "0x00FF00"
+    },
+    {
+      "id": "focus42",
+      "file": "ui_art/focus42.pcx",
+      "mask": "0x00FF00"
+    }
+  ],
   "texturePack": [
     {
       "id": "smlogo",
       "texture": "smlogo",
-      "file": "ui_art/smlogo.pcx",
-      "mask": "0x00FF00",
       "frames": 15
     },
     {
       "id": "focus42",
       "texture": "focus42",
-      "file": "ui_art/focus42.pcx",
-      "mask": "0x00FF00",
       "frames": 8
     }
   ],

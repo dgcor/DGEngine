@@ -5,7 +5,6 @@
 #include "Game.h"
 #include "Parser/ParseSound.h"
 #include "Parser/Utils/ParseUtils.h"
-#include <string>
 
 class ActSoundLoadPlay : public Action
 {
@@ -13,11 +12,13 @@ private:
 	std::string file;
 	std::string id;
 	Variable volume;
+	sf::Time seek;
 	bool unique;
 
 public:
-	ActSoundLoadPlay(const std::string& file_, const Variable& volume_,
-		bool unique_) : file(file_), volume(volume_), unique(unique_)
+	ActSoundLoadPlay(const std::string_view file_, const Variable& volume_,
+		sf::Time seek_, bool unique_) : file(file_), volume(volume_),
+		seek(seek_), unique(unique_)
 	{
 		Parser::getIdFromFile(file_, id);
 	}
@@ -41,7 +42,7 @@ public:
 					vol = 100;
 				}
 				sound.setVolume((float)vol);
-				game.Resources().addPlayingSound(sound, unique);
+				game.Resources().addPlayingSound(sound, unique, seek);
 			}
 		}
 		return true;
@@ -53,11 +54,13 @@ class ActSoundPlay : public Action
 private:
 	std::string id;
 	Variable volume;
+	sf::Time seek;
 	bool unique;
 
 public:
-	ActSoundPlay(const std::string& id_, const Variable& volume_,
-		bool unique_) : id(id_), volume(volume_), unique(unique_) {}
+	ActSoundPlay(const std::string_view id_, const Variable& volume_,
+		sf::Time seek_, bool unique_) : id(id_), volume(volume_),
+		seek(seek_), unique(unique_) {}
 
 	bool execute(Game& game) override
 	{
@@ -73,7 +76,7 @@ public:
 					vol = 100;
 				}
 				sound.setVolume((float)vol);
-				game.Resources().addPlayingSound(sound, unique);
+				game.Resources().addPlayingSound(sound, unique, seek);
 			}
 		}
 		return true;

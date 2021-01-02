@@ -11,18 +11,18 @@
 #include "Utils/Utils.h"
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
-#include "Game/LevelHelper.h"
 #endif
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	uint16_t getLayerIndex(const Value& elem)
 	{
 		if (isValidString(elem, "index") == true)
 		{
-			auto str = getStringViewVal(elem["index"]);
+			auto str = getStringViewVal(elem["index"sv]);
 			if (str == "flags")
 			{
 				return LevelCell::FlagsLayer;
@@ -38,14 +38,14 @@ namespace Parser
 	{
 		bool automap = getBoolKey(elem, "automap");
 		auto viewportOffset = getFloatRectKey(elem, "offset");
-		if (elem.HasMember("texturePack") == true)
+		if (elem.HasMember("texturePack"sv) == true)
 		{
 			auto index = getLayerIndex(elem);
 			if (index >= LevelCell::NumberOfLayers)
 			{
 				return;
 			}
-			auto texturePack = game.Resources().getTexturePack(getStringVal(elem["texturePack"]));
+			auto texturePack = game.Resources().getTexturePack(getStringViewVal(elem["texturePack"sv]));
 			if (texturePack == nullptr)
 			{
 				return;
@@ -61,15 +61,15 @@ namespace Parser
 			);
 			levelLayers.push_back(LevelLayer(layer, viewportOffset, automap));
 		}
-		else if (elem.HasMember("color") == true)
+		else if (elem.HasMember("color"sv) == true)
 		{
-			ColorLevelLayer layer(getColorVal(elem["color"], sf::Color::Transparent));
+			ColorLevelLayer layer(getColorVal(elem["color"sv], sf::Color::Transparent));
 			levelLayers.push_back(LevelLayer(layer, viewportOffset, automap));
 		}
-		else if (elem.HasMember("texture") == true)
+		else if (elem.HasMember("texture"sv) == true)
 		{
 			TextureLevelLayer layer(
-				game.Resources().getTexture(getStringVal(elem["texture"]))
+				game.Resources().getTexture(getStringViewVal(elem["texture"sv]))
 			);
 			layer.textureRect = getIntRectKey(elem, "textureRect");
 			layer.parallaxSpeed = getFloatKey(elem, "parallaxSpeed");
@@ -77,91 +77,6 @@ namespace Parser
 			layer.parallaxElapsedTime = getTimeKey(elem, "parallaxUpdate");
 			levelLayers.push_back(LevelLayer(layer, viewportOffset, automap));
 		}
-	}
-
-	bool getOrParseLevelTexturePack(Game& game, const Value& elem,
-		const LevelMap& map, std::vector<LevelLayer>& levelLayers,
-		std::pair<int32_t, int32_t>& tileSize, int32_t& indexToDrawObjects)
-	{
-		bool success = false;
-		indexToDrawObjects = -1;
-
-		if (isValidString(elem, "min") == true)
-		{
-#ifndef NO_DIABLO_FORMAT_SUPPORT
-			// l4.min and town.min contain 16 blocks, all others 10.
-			auto minBlocks = getUIntKey(elem, "minBlocks", 10);
-			if (minBlocks != 10 && minBlocks != 16)
-			{
-				minBlocks = 10;
-			}
-			Min min(getStringViewVal(elem["min"]), minBlocks);
-			if (min.size() == 0)
-			{
-				return false;
-			}
-
-			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
-			if (pal == nullptr)
-			{
-				return false;
-			}
-
-			std::shared_ptr<ImageContainer> imgCont;
-			getOrParseImageContainer(game, elem, "imageContainer", imgCont);
-			if (imgCont == nullptr)
-			{
-				return false;
-			}
-
-			bool useIndexedImages = game.Shaders().hasSpriteShader();
-			CachedImagePack imgPack(imgCont.get(), pal, useIndexedImages);
-
-			auto defaultTile = map.getTileBlock((int16_t)getIntKey(elem, "outOfBoundsTile", -1));
-
-			TilesetLevelLayer layer1(
-				LevelHelper::loadTilesetSprite(imgPack, min, false, false),
-				0,
-				defaultTile
-			);
-			levelLayers.push_back({ layer1, {}, false });
-
-			TilesetLevelLayer layer2(
-				LevelHelper::loadTilesetSprite(imgPack, min, true, true),
-				0,
-				defaultTile
-			);
-			levelLayers.push_back({ layer2, {}, false });
-
-			tileSize.first = 64;
-			tileSize.second = 32;
-			success = true;
-#else
-			return false;
-#endif
-		}
-		else
-		{
-			tileSize = getVector2uKey(elem, "tileSize", tileSize);
-		}
-
-		if (elem.HasMember("layers") == true)
-		{
-			const auto& layersElem = elem["layers"];
-			if (layersElem.IsArray() == true)
-			{
-				for (const auto& val : layersElem)
-				{
-					parseLevelLayer(game, val, map, levelLayers, indexToDrawObjects);
-				}
-			}
-			else if (layersElem.IsObject() == true)
-			{
-				parseLevelLayer(game, layersElem, map, levelLayers, indexToDrawObjects);
-			}
-			success = true;
-		}
-		return success;
 	}
 
 	Dun getDunFromLayer(const Value* queryDoc, const Value& elem,
@@ -201,7 +116,7 @@ namespace Parser
 		pos.y += mapPos.y;
 		bool wasResized = false;
 
-		const auto& elemLayers = elem["layers"];
+		const auto& elemLayers = elem["layers"sv];
 		for (const auto& elemLayer : elemLayers)
 		{
 			Dun dun = getDunFromLayer(queryDoc, elemLayer, indexOffset, defaultTile);
@@ -239,13 +154,13 @@ namespace Parser
 	{
 		std::string file;
 
-		if (elem.HasMember("file") == true)
+		if (elem.HasMember("file"sv) == true)
 		{
-			file = getStringVal(elem["file"]);
+			file = getStringVal(elem["file"sv]);
 
-			if (elem.HasMember("random") == true)
+			if (elem.HasMember("random"sv) == true)
 			{
-				auto rndMax = getUIntVal(elem["random"]);
+				auto rndMax = getUIntVal(elem["random"sv]);
 				if (rndMax > 0)
 				{
 					auto rnd = Utils::Random::get(rndMax);
@@ -276,7 +191,7 @@ namespace Parser
 
 		defaultTile = getIntKey(elem, "defaultTile", defaultTile);
 
-		if (elem.HasMember("layers") == true)
+		if (elem.HasMember("layers"sv) == true)
 		{
 			parseMapLayers(queryDoc, elem, map, mapPos, defaultTile, resizeToFit);
 		}
@@ -304,20 +219,20 @@ namespace Parser
 		const PairInt32& mapPos, int32_t defaultTile,
 		bool resizeToFit, int recursionLevel)
 	{
-		if (elem.HasMember("map") == false ||
+		if (elem.HasMember("map"sv) == false ||
 			recursionLevel < 0 || recursionLevel > 255)
 		{
 			return;
 		}
 		PairInt32 currentMapPos = mapPos;
 		if (recursionLevel > 0 &&
-			elem.HasMember("position") == true)
+			elem.HasMember("position"sv) == true)
 		{
-			auto pos = getVector2uVal<PairInt32>(elem["position"]);
+			auto pos = getVector2uVal<PairInt32>(elem["position"sv]);
 			currentMapPos.x += pos.x;
 			currentMapPos.y += pos.y;
 		}
-		const auto& mapElem = elem["map"];
+		const auto& mapElem = elem["map"sv];
 		if (mapElem.IsArray() == true)
 		{
 			for (const auto& val : mapElem)
@@ -328,7 +243,7 @@ namespace Parser
 		else if (mapElem.IsObject() == true)
 		{
 			parseMapObj(queryDoc, mapElem, map, currentMapPos, defaultTile, resizeToFit);
-			if (mapElem.HasMember("map") == true)
+			if (mapElem.HasMember("map"sv) == true)
 			{
 				parseMap(queryDoc, mapElem, map, currentMapPos,
 					defaultTile, false, recursionLevel + 1);
@@ -378,7 +293,7 @@ namespace Parser
 		else if (isValidString(elemFlags) == true &&
 			isValidId(elemFlags.GetStringView()) == true)
 		{
-			auto flags = elemFlags.GetStringStr();
+			auto flags = elemFlags.GetStringView();
 			auto texPack = game.Resources().getTexturePack(flags);
 			if (texPack != nullptr)
 			{
@@ -388,8 +303,8 @@ namespace Parser
 		}
 		else
 		{
-			if (elem.HasMember("flags") == true &&
-				elem["flags"].IsNull() == true)
+			if (elem.HasMember("flags"sv) == true &&
+				elem["flags"sv].IsNull() == true)
 			{
 				mapPtr->setFlags({});
 			}
@@ -399,15 +314,15 @@ namespace Parser
 			}
 		}
 
-		if (elem.HasMember("map") == true)
+		if (elem.HasMember("map"sv) == true)
 		{
 			parseMap(queryDoc, elem, *mapPtr, defaultTile);
 		}
-		if (elem.HasMember("lightMap") == true)
+		if (elem.HasMember("lightMap"sv) == true)
 		{
 			mapPtr->loadLightMap(getStringViewVal(getQueryKey(queryDoc, elem, "lightMap")));
 		}
-		if (elem.HasMember("defaultLight") == true)
+		if (elem.HasMember("defaultLight"sv) == true)
 		{
 			mapPtr->setDefaultLightSource(getLightSourceVal(
 				getQueryKey(queryDoc, elem, "defaultLight"),
@@ -421,11 +336,29 @@ namespace Parser
 		{
 			tileSize = std::make_pair(64, 32);
 		}
+		tileSize = getVector2uKey(elem, "tileSize", tileSize);
 		auto subTiles = getUIntKey(elem, "subTiles", level.SubTiles());
-		int32_t indexToDrawObjects;
+		int32_t indexToDrawObjects = -1;
 
-		if (getOrParseLevelTexturePack(game, elem, *mapPtr,
-			levelLayers, tileSize, indexToDrawObjects) == true)
+		bool parsedLayers = false;
+		if (elem.HasMember("layers"sv) == true)
+		{
+			const auto& layersElem = elem["layers"sv];
+			if (layersElem.IsArray() == true)
+			{
+				for (const auto& val : layersElem)
+				{
+					parseLevelLayer(game, val, *mapPtr, levelLayers, indexToDrawObjects);
+				}
+				parsedLayers = true;
+			}
+			else if (layersElem.IsObject() == true)
+			{
+				parseLevelLayer(game, layersElem, *mapPtr, levelLayers, indexToDrawObjects);
+				parsedLayers = true;
+			}
+		}
+		if (parsedLayers == true)
 		{
 			level.Init(game, std::move(*mapPtr), levelLayers,
 				tileSize.first, tileSize.second, subTiles, indexToDrawObjects);
@@ -440,7 +373,7 @@ namespace Parser
 	{
 		if (isValidString(elem, "automap") == true)
 		{
-			auto automap = game.Resources().getTexturePack(elem["automap"].GetStringStr());
+			auto automap = game.Resources().getTexturePack(elem["automap"sv].GetStringView());
 			if (automap != nullptr)
 			{
 				auto index = getLayerIndex(elem);
@@ -456,24 +389,24 @@ namespace Parser
 				);
 			}
 		}
-		if (elem.HasMember("automapRelativeCoords") == true)
+		if (elem.HasMember("automapRelativeCoords"sv) == true)
 		{
-			level.setAutomapRelativeCoords(getBoolVal(elem["automapRelativeCoords"]));
+			level.setAutomapRelativeCoords(getBoolVal(elem["automapRelativeCoords"sv]));
 		}
-		if (elem.HasMember("automapAnchor") == true)
+		if (elem.HasMember("automapAnchor"sv) == true)
 		{
-			level.setAutomapAnchor(getAnchorVal(elem["automapAnchor"]));
+			level.setAutomapAnchor(getAnchorVal(elem["automapAnchor"sv]));
 		}
-		if (elem.HasMember("automapSize") == true)
+		if (elem.HasMember("automapSize"sv) == true)
 		{
-			auto size = getVector2fVal<sf::Vector2f>(elem["automapSize"], { 100.f, 100.f });
+			auto size = getVector2fVal<sf::Vector2f>(elem["automapSize"sv], { 100.f, 100.f });
 			level.setAutomapSize(size);
 		}
-		if (elem.HasMember("automapPosition") == true)
+		if (elem.HasMember("automapPosition"sv) == true)
 		{
 			auto anchor = level.getAutomapAnchor();
 			auto size = level.getAutomapSize();
-			auto pos = getVector2fVal<sf::Vector2f>(elem["automapPosition"]);
+			auto pos = getVector2fVal<sf::Vector2f>(elem["automapPosition"sv]);
 			if (level.getAutomapRelativeCoords() == false &&
 				game.RefSize() != game.DrawRegionSize())
 			{
@@ -481,33 +414,15 @@ namespace Parser
 			}
 			level.setAutomapPosition(pos);
 		}
-		if (elem.HasMember("automapPlayerDirectionIndex") == true)
+		if (elem.HasMember("automapPlayerDirectionIndex"sv) == true)
 		{
-			auto index = (int16_t)getIntVal(elem["automapPlayerDirectionIndex"], -1);
+			auto index = (int16_t)getIntVal(elem["automapPlayerDirectionIndex"sv], -1);
 			level.setAutomapPlayerDirectionBaseIndex(index);
 		}
-		if (elem.HasMember("showAutomap") == true)
+		if (elem.HasMember("showAutomap"sv) == true)
 		{
-			level.ShowAutomap(getBoolVal(elem["showAutomap"]));
+			level.ShowAutomap(getBoolVal(elem["showAutomap"sv]));
 		}
-	}
-
-	void parsePosSize(const Game& game, const Value* queryObj,
-		const Value& elem, Level& level)
-	{
-		auto anchor = getAnchorKey(elem, "anchor");
-		level.setAnchor(anchor);
-		auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.DrawRegionSizef());
-		auto pos = getPositionKey(elem, "position", size, game.RefSize());
-		if (getBoolKey(elem, "relativeCoords", true) == true &&
-			game.RefSize() != game.DrawRegionSize())
-		{
-			GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
-		}
-		level.Position(pos);
-		level.Size(size);
-		level.Zoom(((float)getIntVal(getQueryKey(queryObj, elem, "zoom"), 100)) / 100.f);
-		level.Visible(getBoolVal(getQueryKey(queryObj, elem, "visible"), true));
 	}
 
 	void parseLevel(Game& game, const Value& elem)
@@ -516,15 +431,14 @@ namespace Parser
 		const Value* queryObj = nullptr;
 		if (isValidString(elem, "load") == true)
 		{
-			if (JsonUtils::loadFile(getStringViewVal(elem["load"]), queryDoc) == true)
+			if (JsonUtils::loadFile(getStringViewVal(elem["load"sv]), queryDoc) == true)
 			{
 				queryObj = &queryDoc;
 			}
 		}
 
-		auto id = getStringVal(getQueryKey(queryObj, elem, "id"));
-		Level* level = game.Resources().getDrawable<Level>(id);
-		bool existingLevel = (level != nullptr);
+		auto id = getStringViewVal(getQueryKey(queryObj, elem, "id"));
+		Level* level = game.Resources().getLevel(id);
 		if (level == nullptr)
 		{
 			if (isValidId(id) == false)
@@ -537,96 +451,105 @@ namespace Parser
 			game.Resources().setCurrentLevel(level);
 			level->Id(id);
 			level->setShader(game.Shaders().Level);
-		}
 
-		if (existingLevel == false)
-		{
-			parsePosSize(game, queryObj, elem, *level);
+			auto anchor = getAnchorKey(elem, "anchor");
+			level->setAnchor(anchor);
+			auto size = getVector2fKey<sf::Vector2f>(elem, "size", game.DrawRegionSizef());
+			auto pos = getPositionKey(elem, "position", size, game.RefSize());
+			if (getBoolKey(elem, "relativeCoords", true) == true &&
+				game.RefSize() != game.DrawRegionSize())
+			{
+				GameUtils::setAnchorPosSize(anchor, pos, size, game.RefSize(), game.DrawRegionSize());
+			}
+			level->Position(pos);
+			level->Size(size);
+			level->Zoom(((float)getIntVal(getQueryKey(queryObj, elem, "zoom"), 100)) / 100.f);
+			level->Visible(getBoolVal(getQueryKey(queryObj, elem, "visible"), true));
 		}
 
 		parseLevelMap(game, queryObj, elem, *level);
 		parseLevelAutomap(game, elem, *level);
 
-		if (elem.HasMember("name") == true)
+		if (elem.HasMember("name"sv) == true)
 		{
-			level->Name(getStringVal(getQueryVal(queryObj, elem["name"])));
+			level->Name(getStringViewVal(getQueryVal(queryObj, elem["name"sv])));
 		}
-		if (elem.HasMember("path") == true)
+		if (elem.HasMember("path"sv) == true)
 		{
-			level->Path(getStringVal(getQueryVal(queryObj, elem["path"])));
+			level->Path(getStringViewVal(getQueryVal(queryObj, elem["path"sv])));
 		}
-		if (elem.HasMember("followCurrentPlayer") == true)
+		if (elem.HasMember("followCurrentPlayer"sv) == true)
 		{
-			auto followCurrentPlayer = getBoolVal(getQueryVal(queryObj, elem["followCurrentPlayer"]));
+			auto followCurrentPlayer = getBoolVal(getQueryVal(queryObj, elem["followCurrentPlayer"sv]));
 			level->FollowCurrentPlayer(followCurrentPlayer);
 		}
-		if (elem.HasMember("smoothMovement") == true)
+		if (elem.HasMember("smoothMovement"sv) == true)
 		{
-			auto smoothMovement = getBoolVal(getQueryVal(queryObj, elem["smoothMovement"]));
+			auto smoothMovement = getBoolVal(getQueryVal(queryObj, elem["smoothMovement"sv]));
 			level->setSmoothMovement(smoothMovement);
 		}
-		if (elem.HasMember("lightRadius") == true)
+		if (elem.HasMember("lightRadius"sv) == true)
 		{
-			level->LightRadius((float)getUIntVal(getQueryVal(queryObj, elem["lightRadius"]), 64));
+			level->LightRadius((float)getUIntVal(getQueryVal(queryObj, elem["lightRadius"sv]), 64));
 		}
 
 		level->updateView();
 
-		if (elem.HasMember("enableHover"))
+		if (elem.HasMember("enableHover"sv))
 		{
-			bool enableHover = getBoolVal(getQueryVal(queryObj, elem["enableHover"]), true);
+			bool enableHover = getBoolVal(getQueryVal(queryObj, elem["enableHover"sv]), true);
 			level->EnableHover(enableHover);
 		}
-		if (elem.HasMember("captureInputEvents"))
+		if (elem.HasMember("captureInputEvents"sv))
 		{
-			auto captureInputEvents = getInputEventTypeVal(getQueryVal(queryObj, elem["captureInputEvents"]));
+			auto captureInputEvents = getInputEventTypeVal(getQueryVal(queryObj, elem["captureInputEvents"sv]));
 			level->setCaptureInputEvents(captureInputEvents);
 		}
-		if (elem.HasMember("onLeftClick"))
+		if (elem.HasMember("onLeftClick"sv))
 		{
 			level->setAction(
 				str2int16("leftClick"),
-				parseAction(game, getQueryVal(queryObj, elem["onLeftClick"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onLeftClick"sv]))
 			);
 		}
-		if (elem.HasMember("onRightClick"))
+		if (elem.HasMember("onRightClick"sv))
 		{
 			level->setAction(
 				str2int16("rightClick"),
-				parseAction(game, getQueryVal(queryObj, elem["onRightClick"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onRightClick"sv]))
 			);
 		}
-		if (elem.HasMember("onHoverEnter"))
+		if (elem.HasMember("onHoverEnter"sv))
 		{
 			level->setAction(
 				str2int16("hoverEnter"),
-				parseAction(game, getQueryVal(queryObj, elem["onHoverEnter"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onHoverEnter"sv]))
 			);
 		}
-		if (elem.HasMember("onHoverLeave"))
+		if (elem.HasMember("onHoverLeave"sv))
 		{
 			level->setAction(
 				str2int16("hoverLeave"),
-				parseAction(game, getQueryVal(queryObj, elem["onHoverLeave"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onHoverLeave"sv]))
 			);
 		}
-		if (elem.HasMember("onScrollDown"))
+		if (elem.HasMember("onScrollDown"sv))
 		{
 			level->setAction(
 				str2int16("scrollDown"),
-				parseAction(game, getQueryVal(queryObj, elem["onScrollDown"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onScrollDown"sv]))
 			);
 		}
-		if (elem.HasMember("onScrollUp"))
+		if (elem.HasMember("onScrollUp"sv))
 		{
 			level->setAction(
 				str2int16("scrollUp"),
-				parseAction(game, getQueryVal(queryObj, elem["onScrollUp"]))
+				getActionVal(game, getQueryVal(queryObj, elem["onScrollUp"sv]))
 			);
 		}
-		if (elem.HasMember("experiencePoints"))
+		if (elem.HasMember("experiencePoints"sv))
 		{
-			const auto& expElem = getQueryVal(queryObj, elem["experiencePoints"]);
+			const auto& expElem = getQueryVal(queryObj, elem["experiencePoints"sv]);
 			if (expElem.IsArray() == true)
 			{
 				std::vector<uint32_t> expPoints;

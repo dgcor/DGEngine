@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mace",
+    "file": "images/avatar/female/mace.png"
+  },
   "texturePack": {
     "id": "f_mace",
-    "texture": {
-      "id": "f_mace",
-      "file": "images/avatar/female/mace.png"
-    },
+    "texture": "f_mace",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

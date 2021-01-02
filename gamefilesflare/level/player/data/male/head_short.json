@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_head_short",
+    "file": "images/avatar/male/head_short.png"
+  },
   "texturePack": {
     "id": "m_head_short",
-    "texture": {
-      "id": "m_head_short",
-      "file": "images/avatar/male/head_short.png"
-    },
+    "texture": "m_head_short",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

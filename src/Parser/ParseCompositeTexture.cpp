@@ -6,6 +6,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	bool parseCompositeTextureFromId(Game& game, const Value& elem)
 	{
@@ -13,8 +14,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getCompositeTexture(fromId);
@@ -36,7 +37,7 @@ namespace Parser
 		{
 			return false;
 		}
-		auto texturePack = game.Resources().getTexturePack(getStringVal(elem));
+		auto texturePack = game.Resources().getTexturePack(getStringViewVal(elem));
 		if (texturePack == nullptr)
 		{
 			return false;
@@ -50,9 +51,9 @@ namespace Parser
 	{
 		uint32_t TexturePackCount = 0;
 
-		if (elem.HasMember("texturePacks") == true)
+		if (elem.HasMember("texturePacks"sv) == true)
 		{
-			const auto& texturePacksElem = elem["texturePacks"];
+			const auto& texturePacksElem = elem["texturePacks"sv];
 			if (isValidString(texturePacksElem) == true)
 			{
 				if (parseCompositeTexturePack(compTexture, game, texturePacksElem) == true)
@@ -81,7 +82,7 @@ namespace Parser
 		if (isValidString(elem, "file") == true)
 		{
 			bool fixLayerOrdering = getBoolKey(elem, "fixLayerOrdering", true);
-			compTexture.addGroup(elem["file"].GetStringView(), fixLayerOrdering);
+			compTexture.addGroup(elem["file"sv].GetStringView(), fixLayerOrdering);
 			return;
 		}
 #endif
@@ -92,7 +93,7 @@ namespace Parser
 			std::vector<int8_t> layerOrder;
 			size_t numLayers = compTexture.getLayerCount(groupIdx);
 			size_t orderIdx = 0;
-			for (const auto& layerOrderElem : elem["directionLayerOrders"])
+			for (const auto& layerOrderElem : elem["directionLayerOrders"sv])
 			{
 				if (layerOrderElem.IsArray() == true)
 				{
@@ -123,7 +124,7 @@ namespace Parser
 		}
 	}
 
-	std::shared_ptr<CompositeTexture> parseCompositeTextureObj(Game& game, const Value& elem)
+	std::shared_ptr<CompositeTexture> getCompositeTextureObj(Game& game, const Value& elem)
 	{
 		auto compTexture = std::make_shared<CompositeTexture>();
 
@@ -133,7 +134,7 @@ namespace Parser
 		}
 		else
 		{
-			for (const auto& val : elem["groups"])
+			for (const auto& val : elem["groups"sv])
 			{
 				if (val.IsObject() == true)
 				{
@@ -157,7 +158,7 @@ namespace Parser
 		std::string id;
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else
 		{
@@ -165,7 +166,7 @@ namespace Parser
 			{
 				return;
 			}
-			auto file = elem["file"].GetStringView();
+			auto file = elem["file"sv].GetStringView();
 			if (getIdFromFile(file, id) == false)
 			{
 				return;
@@ -179,7 +180,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto compTexture = parseCompositeTextureObj(game, elem);
+		auto compTexture = getCompositeTextureObj(game, elem);
 		if (compTexture == nullptr)
 		{
 			return;

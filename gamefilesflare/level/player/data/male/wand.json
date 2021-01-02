@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_wand",
+    "file": "images/avatar/male/wand.png"
+  },
   "texturePack": {
     "id": "m_wand",
-    "texture": {
-      "id": "m_wand",
-      "file": "images/avatar/male/wand.png"
-    },
+    "texture": "m_wand",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

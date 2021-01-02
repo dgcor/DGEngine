@@ -29,6 +29,7 @@
       "param2": 0,
       "then": { "name": "audio.stop", "id": "main" },
       "else": { "name": "audio.play", "id": "main" }
-    }
+    },
+    { "name": "drawable.visible", "id": "txtZoom", "visible": false }
   ]
 }

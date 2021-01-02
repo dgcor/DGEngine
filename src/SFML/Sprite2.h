@@ -1,12 +1,10 @@
 #pragma once
 
-#include <memory>
 #include "Palette.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include "Shader.h"
 #include "TextureInfo.h"
-
-struct GameShaders;
 
 struct SpriteShaderCache
 {
@@ -15,6 +13,7 @@ struct SpriteShaderCache
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color ignore{ sf::Color::Transparent };
 	sf::Vector2i textureSize;
+	bool hasPalette{ false };
 };
 
 class Sprite2 : private sf::Sprite
@@ -69,8 +68,6 @@ public:
 	using sf::Sprite::setScale;
 	using sf::Sprite::setOrigin;
 
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader) const;
-
-	void draw(sf::RenderTarget& target, sf::Shader* spriteShader,
-		SpriteShaderCache& cache) const;
+	void draw(sf::RenderTarget& target, GameShader* spriteShader,
+		SpriteShaderCache* cache = nullptr) const;
 };

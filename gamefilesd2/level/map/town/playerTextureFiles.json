@@ -1,69 +1,119 @@
 {
-  "texturePack": [
+  "imageContainer": [
     {
       "imageContainer": "cow",
-      "file": "towners/animals/cow.cel",
-      "palette": "town"
+      "file": "towners/animals/cow.cel"
     },
     {
       "imageContainer": "MPLALITNUHTH",
-      "file": "data/global/monsters/MP/LA/MPLALITNUHTH.DC6",
-      "palette": "units",
-      "useOffsets": true,
-      "normalizeDirections": true
+      "file": "data/global/monsters/MP/LA/MPLALITNUHTH.DC6"
     },
     {
       "imageContainer": "MPRALITNUHTH",
-      "file": "data/global/monsters/MP/RA/MPRALITNUHTH.DC6",
-      "palette": "units",
-      "useOffsets": true,
-      "normalizeDirections": true
+      "file": "data/global/monsters/MP/RA/MPRALITNUHTH.DC6"
     },
     {
       "imageContainer": "MPTRLITNUHTH",
-      "file": "data/global/monsters/MP/TR/MPTRLITNUHTH.DC6",
+      "file": "data/global/monsters/MP/TR/MPTRLITNUHTH.DC6"
+    },
+    {
+      "imageContainer": "deadguy",
+      "file": "towners/butch/deadguy.cel"
+    },
+    {
+      "imageContainer": "healer",
+      "file": "towners/healer/healer.cel"
+    },
+    {
+      "imageContainer": "twnfn",
+      "file": "towners/twnf/twnfn.cel"
+    },
+    {
+      "imageContainer": "smithn",
+      "file": "towners/smith/smithn.cel"
+    },
+    {
+      "imageContainer": "pegkid1",
+      "file": "towners/townboy/pegkid1.cel"
+    },
+    {
+      "imageContainer": "twndrunk",
+      "file": "towners/drunk/twndrunk.cel"
+    },
+    {
+      "imageContainer": "witch",
+      "file": "towners/townwmn1/witch.cel"
+    },
+    {
+      "imageContainer": "wmnn",
+      "file": "towners/townwmn1/wmnn.cel"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "cow",
+      "imageContainer": "cow",
+      "palette": "town"
+    },
+    {
+      "id": "MPLALITNUHTH",
+      "imageContainer": "MPLALITNUHTH",
       "palette": "units",
       "useOffsets": true,
       "normalizeDirections": true
     },
     {
+      "id": "MPRALITNUHTH",
+      "imageContainer": "MPRALITNUHTH",
+      "palette": "units",
+      "useOffsets": true,
+      "normalizeDirections": true
+    },
+    {
+      "id": "MPTRLITNUHTH",
+      "imageContainer": "MPTRLITNUHTH",
+      "palette": "units",
+      "useOffsets": true,
+      "normalizeDirections": true
+    },
+    {
+      "id": "deadguy",
       "imageContainer": "deadguy",
-      "file": "towners/butch/deadguy.cel",
       "palette": "town"
     },
     {
+      "id": "healer",
       "imageContainer": "healer",
-      "file": "towners/healer/healer.cel",
       "palette": "town"
     },
     {
+      "id": "twnfn",
       "imageContainer": "twnfn",
-      "file": "towners/twnf/twnfn.cel",
       "palette": "town"
     },
     {
+      "id": "smithn",
       "imageContainer": "smithn",
-      "file": "towners/smith/smithn.cel",
       "palette": "town"
     },
     {
+      "id": "pegkid1",
       "imageContainer": "pegkid1",
-      "file": "towners/townboy/pegkid1.cel",
       "palette": "town"
     },
     {
+      "id": "twndrunk",
       "imageContainer": "twndrunk",
-      "file": "towners/drunk/twndrunk.cel",
       "palette": "town"
     },
     {
+      "id": "witch",
       "imageContainer": "witch",
-      "file": "towners/townwmn1/witch.cel",
       "palette": "town"
     },
     {
+      "id": "wmnn",
       "imageContainer": "wmnn",
-      "file": "towners/townwmn1/wmnn.cel",
       "palette": "town"
     }
   ],

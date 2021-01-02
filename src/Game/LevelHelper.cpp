@@ -1,6 +1,6 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "LevelHelper.h"
 #include <filesystem>
+#include "FileUtils.h"
 #include "ImageContainers/CELImageContainer.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
@@ -120,11 +120,11 @@ namespace LevelHelper
 
 	// creates spritesheets for level sprites based on the maximum supported texture size
 	// and tries to fit as many tiles into the smallest number of textures.
-	std::shared_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
+	std::unique_ptr<TexturePack> loadTilesetSprite(CachedImagePack& imgPack,
 		const Min& min, bool top, bool skipBlankTiles)
 	{
-		std::shared_ptr<TexturePack> texturePack;
-		SimpleMultiTexturePack* multiTexturePack = nullptr;
+		std::unique_ptr<TexturePack> texturePack;
+		MultiTexturePack* multiTexturePack = nullptr;
 		IndexedTexturePack* indexedTexturePack = nullptr;
 		uint32_t numTexturesToFit;
 
@@ -136,15 +136,15 @@ namespace LevelHelper
 
 		if (skipBlankTiles == false)
 		{
-			texturePack = std::make_shared<SimpleMultiTexturePack>(palette);
-			multiTexturePack = (SimpleMultiTexturePack*)texturePack.get();
+			texturePack = std::make_unique<MultiTexturePack>(palette);
+			multiTexturePack = (MultiTexturePack*)texturePack.get();
 			numTexturesToFit = min.size();
 		}
 		else
 		{
-			auto texturePack2 = std::make_unique<SimpleMultiTexturePack>(palette);
+			auto texturePack2 = std::make_unique<MultiTexturePack>(palette);
 			multiTexturePack = texturePack2.get();
-			texturePack = std::make_shared<IndexedTexturePack>(std::move(texturePack2), true, false);
+			texturePack = std::make_unique<IndexedTexturePack>(std::move(texturePack2), true, false);
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 			numTexturesToFit = min.size() - min.blankTopPillars();
 		}
@@ -212,8 +212,11 @@ namespace LevelHelper
 					mainLoop = false;
 				}
 			}
-			multiTexturePack->addTexturePack(std::make_shared<sf::Texture>(newPillar),
-				std::make_pair(xMax, yMax), offset, 0, 0, true, AnimationType::Looped);
+			MultiTexture t;
+			t.texture = std::make_shared<sf::Texture>(newPillar);
+			t.offset = offset;
+			t.horizontalDirection = true;
+			multiTexturePack->addTexturePack(std::move(t), std::make_pair(xMax, yMax));
 
 			// calculate new sheet size for the remaining tiles.
 			if (mainLoop == true)
@@ -382,7 +385,8 @@ namespace LevelHelper
 			}
 
 			auto pal = std::make_shared<Palette>(palPath.string(), colorFormat);
-			CELImageContainer celImgContainer(celPath.string());
+			auto fileBytes = std::make_shared<FileBytes>(FileUtils::readChar(celPath.string()));
+			CELImageContainer celImgContainer(fileBytes);
 			CachedImagePack imgPack(&celImgContainer, pal, false);
 			Min min(minPath.string(), minBlock);
 
@@ -394,4 +398,3 @@ namespace LevelHelper
 		catch (std::exception&) {}
 	}
 }
-#endif

@@ -4,8 +4,8 @@
 #include "Item.h"
 #include <iterator>
 #include <memory>
-#include "PairXY.h"
 #include "Utils/iterator_tpl.h"
+#include "Utils/PairXY.h"
 #include <vector>
 
 class Inventory

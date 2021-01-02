@@ -1,4 +1,5 @@
 #include "ItemClass.h"
+#include "AnimationInfo.h"
 #include "GameUtils.h"
 
 ItemClass::ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
@@ -8,7 +9,7 @@ ItemClass::ItemClass(const std::shared_ptr<TexturePack>& textureDrop_,
 {
 	if (textureDrop_ != nullptr)
 	{
-		dropTextureIndexRange = textureDrop_->getRange(-1, -1);
+		dropTextureIndexRange = textureDrop_->getAnimation(-1, -1).indexRange;
 	}
 }
 
@@ -17,7 +18,7 @@ void ItemClass::setDropTexturePack(const std::shared_ptr<TexturePack>& textureDr
 	textureDrop = textureDrop_;
 	if (textureDrop_ != nullptr)
 	{
-		dropTextureIndexRange = textureDrop_->getRange(-1, -1);
+		dropTextureIndexRange = textureDrop_->getAnimation(-1, -1).indexRange;
 	}
 }
 

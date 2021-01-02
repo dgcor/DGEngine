@@ -2,34 +2,31 @@
 #include "TextureInfo.h"
 
 // This piece of code was originally from Lazy Foo' Productions (http://lazyfoo.net/)
-void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool verticalDirection)
+void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, int columns,
+	int16_t newLine, int16_t space, int16_t tab, bool verticalDirection)
 {
-	//Set the background color
-	auto bgColor = img.getPixel(0, 0);
-
 	//Set the cell dimensions
 	int cellW = img.getSize().x / columns;
 	int cellH = img.getSize().y / rows;
+
+	charRects.resize(rows * columns);
 
 	//New line variables
 	int top = cellH;
 	int baseA = cellH;
 
-	//The current character we're setting
-	int currentChar = 0;
-
 	//Go through the cell rows
 	int iRow = 0;
 	int iCol = 0;
-	while (currentChar < 256)
+	for (auto& charRect : charRects)
 	{
 		//Set the character offset
-		chars[currentChar].left = cellW * iCol;
-		chars[currentChar].top = cellH * iRow;
+		charRect.left = cellW * iCol;
+		charRect.top = cellH * iRow;
 
 		//Set the dimensions of the character
-		chars[currentChar].width = cellW;
-		chars[currentChar].height = cellH;
+		charRect.width = cellW;
+		charRect.height = cellH;
 
 		//Find Left Side
 		//Go through pixel columns
@@ -43,10 +40,10 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 				int pY = (cellH * iRow) + pRow;
 
 				//If a non colorkey pixel is found
-				if (img.getPixel(pX, pY) != bgColor)
+				if (img.getPixel(pX, pY).a != 0)
 				{
 					//Set the x offset
-					chars[currentChar].left = pX;
+					charRect.left = pX;
 
 					//Break the loops
 					pCol = cellW;
@@ -67,10 +64,10 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 				int pY = (cellH * iRow) + pRowW;
 
 				//If a non colorkey pixel is found
-				if (img.getPixel(pX, pY) != bgColor)
+				if (img.getPixel(pX, pY).a != 0)
 				{
 					//Set the width
-					chars[currentChar].width = (pX - chars[currentChar].left) + 1;
+					charRect.width = (pX - charRect.left) + 1;
 
 					//Break the loops
 					pColW = -1;
@@ -91,7 +88,7 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 				int pY = (cellH * iRow) + pRow;
 
 				//If a non colorkey pixel is found
-				if (img.getPixel(pX, pY) != bgColor)
+				if (img.getPixel(pX, pY).a != 0)
 				{
 					//If new top is found
 					if (pRow < top)
@@ -106,36 +103,6 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 			}
 		}
 
-		//Find Bottom of A
-		if (currentChar == 'A')
-		{
-			//Go through pixel rows
-			for (int pRow = cellH - 1; pRow >= 0; pRow--)
-			{
-				//Go through pixel columns
-				for (int pCol = 0; pCol < cellW; pCol++)
-				{
-					//Get the pixel offsets
-					int pX = (cellW * iCol) + pCol;
-					int pY = (cellH * iRow) + pRow;
-
-					//If a non colorkey pixel is found
-					if (img.getPixel(pX, pY) != bgColor)
-					{
-						//Bottom of a is found
-						baseA = pRow;
-
-						//Break the loops
-						pCol = cellW;
-						pRow = -1;
-					}
-				}
-			}
-		}
-
-		//Go to the next character
-		currentChar++;
-
 		if (verticalDirection == false)
 		{
 			iCol++;
@@ -156,33 +123,82 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, bool vertic
 		}
 	}
 
-	//Calculate space
-	chars[' '].width = cellW / 2;
-
 	//Calculate new line
-	chars['\n'].width = baseA - top;
-
-	//Lop off excess top pixels
-	for (auto& chrRect : chars)
+	if (newLine < 0 && charRects.size() > 'A')
 	{
-		chrRect.top += top;
-		chrRect.height -= top;
+		//Find Bottom of A
+		auto& charRect = charRects['A'];
+
+		//Go through pixel rows
+		for (int pRow = charRect.height - 1; pRow >= 0; pRow--)
+		{
+			//Go through pixel columns
+			for (int pCol = 0; pCol < charRect.width; pCol++)
+			{
+				//Get the pixel offsets
+				int pX = charRect.left + pCol;
+				int pY = charRect.top + pRow;
+
+				//If a non colorkey pixel is found
+				if (img.getPixel(pX, pY).a != 0)
+				{
+					//Bottom of a is found
+					baseA = pRow;
+
+					//Break the loops
+					pCol = charRect.width;
+					pRow = -1;
+				}
+			}
+		}
+		charRects['\n'].width = baseA - top;
+	}
+	else if (newLine > 0)
+	{
+		charRects['\n'].width = newLine;
+	}
+
+	//Calculate space
+	if (space < 0)
+	{
+		charRects[' '].width = cellW / 2;
+	}
+	else if (space > 0)
+	{
+		charRects[' '].width = space;
+	}
+
+	//Calculate tab
+	if (tab < 0)
+	{
+		charRects['\t'].width = cellW * 2;
+	}
+	else if (space > 0)
+	{
+		charRects['\t'].width = tab;
+	}
+
+	//Loop off excess top pixels
+	for (auto& charRect : charRects)
+	{
+		charRect.top += top;
+		charRect.height -= top;
 	}
 }
 
 BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex,
-	const std::shared_ptr<Palette>& palette_, int rows_, int columns_,
-	bool verticalDirection, const sf::Image& img)
-	: texture(tex), palette(palette_), rows(rows_), columns(columns_)
+	const std::shared_ptr<Palette>& palette_, int rows, int columns,
+	int16_t newLine, int16_t space, int16_t tab, bool verticalDirection)
+	: texture(tex), palette(palette_)
 {
-	this->calculateCharSizes(img, verticalDirection);
+	calculateCharSizes(tex->copyToImage(), rows, columns, newLine, space, tab, verticalDirection);
 }
 
 BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>& tex,
-	const std::shared_ptr<Palette>& palette_, int rows_, int columns_,
-	bool verticalDirection, const std::vector<uint8_t>& charSizes,
-	size_t startPos, size_t skipNBytes, uint8_t spaceSize, uint8_t newLineSize)
-	: texture(tex), palette(palette_), rows(rows_), columns(columns_)
+	const std::shared_ptr<Palette>& palette_, int rows, int columns,
+	int16_t newLine, int16_t space, int16_t tab, bool verticalDirection,
+	const std::vector<uint8_t>& charSizes, size_t startPos, size_t skipNBytes)
+	: texture(tex), palette(palette_)
 {
 	size_t charStartIdx = 0;
 	if (charSizes.size() == 130 || charSizes.size() == 258)
@@ -192,7 +208,7 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 	else if ((charSizes.size() == 128 || charSizes.size() == 256) == false &&
 		charSizes.size() <= 256)
 	{
-		this->calculateCharSizes(tex->copyToImage(), verticalDirection);
+		calculateCharSizes(tex->copyToImage(), rows, columns, newLine, space, tab, verticalDirection);
 		return;
 	}
 	else
@@ -204,24 +220,26 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 		skipNBytes = 1;
 	}
 
+	charRects.resize(rows * columns);
+
 	int cellW = tex->getSize().x / columns;
 	int cellH = tex->getSize().y / rows;
 	int iRow = 0;
 	int iCol = 0;
 	for (size_t i = 0; i < 256; i++)
 	{
-		chars[i].left = cellW * iCol;
-		chars[i].top = cellH * iRow;
+		charRects[i].left = cellW * iCol;
+		charRects[i].top = cellH * iRow;
 		auto charSizeIdx = (i * skipNBytes) + charStartIdx;
 		if (charSizeIdx < charSizes.size())
 		{
-			chars[i].width = charSizes[charSizeIdx];
+			charRects[i].width = charSizes[charSizeIdx];
 		}
 		else
 		{
-			chars[i].width = 0;
+			charRects[i].width = 0;
 		}
-		chars[i].height = cellH;
+		charRects[i].height = cellH;
 
 		if (verticalDirection == false)
 		{
@@ -243,33 +261,39 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 		}
 	}
 
-	if (spaceSize > 0)
+
+	if (newLine > 0)
 	{
-		chars[' '].width = spaceSize;
+		charRects['\n'].width = newLine;
 	}
 	else if (charStartIdx == 2 &&
 		(charSizes.size() == 130 || charSizes.size() == 258))
 	{
-		chars[' '].width = charSizes[0];
+		charRects['\n'].width = charSizes[1];
 	}
 
-	if (newLineSize > 0)
+	if (space > 0)
 	{
-		chars['\n'].width = newLineSize;
+		charRects[' '].width = space;
 	}
 	else if (charStartIdx == 2 &&
 		(charSizes.size() == 130 || charSizes.size() == 258))
 	{
-		chars['\n'].width = charSizes[1];
+		charRects[' '].width = charSizes[0];
+	}
+
+	if (tab > 0)
+	{
+		charRects['\t'].width = tab;
 	}
 }
 
 bool BitmapFontTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
-	if (index < chars.size())
+	if (index < charRects.size())
 	{
 		ti.texture = texture.get();
-		ti.textureRect = chars[index];
+		ti.textureRect = charRects[index];
 		ti.palette = palette;
 		ti.offset = {};
 		ti.absoluteOffset = false;
@@ -278,4 +302,9 @@ bool BitmapFontTexturePack::get(uint32_t index, TextureInfo& ti) const
 		return true;
 	}
 	return false;
+}
+
+int32_t BitmapFontTexturePack::getWidth(uint32_t index) const noexcept
+{
+	return index < charRects.size() ? charRects[index].width : 0;
 }

@@ -3,7 +3,6 @@
 #include "Action.h"
 #include "Game.h"
 #include "Parser/Parser.h"
-#include <string>
 
 class ActEventAdd : public Action
 {
@@ -14,8 +13,8 @@ private:
 	bool addToFront;
 
 public:
-	ActEventAdd(const std::string& id_, const std::shared_ptr<Action>& action_,
-		const sf::Time& time_, bool addToFront_) : id(id_), action(action_),
+	ActEventAdd(const std::string_view id_, const std::shared_ptr<Action>& action_,
+		sf::Time time_, bool addToFront_) : id(id_), action(action_),
 		time(time_), addToFront(addToFront_) {}
 
 	bool execute(Game& game) override
@@ -43,7 +42,7 @@ private:
 	std::string id;
 
 public:
-	ActEventDelete(const std::string& id_) : id(id_) {}
+	ActEventDelete(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -70,7 +69,7 @@ private:
 	std::string id;
 
 public:
-	ActEventResetTime(const std::string& id_) : id(id_) {}
+	ActEventResetTime(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{

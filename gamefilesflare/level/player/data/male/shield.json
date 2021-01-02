@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_shield",
+    "file": "images/avatar/male/shield.png"
+  },
   "texturePack": {
     "id": "m_shield",
-    "texture": {
-      "id": "m_shield",
-      "file": "images/avatar/male/shield.png"
-    },
+    "texture": "m_shield",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

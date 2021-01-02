@@ -3,8 +3,10 @@
     {
       "name": "level.save",
       "file": "%tempDir%/level/map/%currentLevel.path%/level2.json",
-      "saveCurrentPlayer": true,
-      "saveQuests": true
+      "properties": {
+        "saveCurrentPlayer": true,
+        "saveQuests": true
+      }
     },
     {
       "name": "file.copy",

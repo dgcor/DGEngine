@@ -4,7 +4,7 @@
     "id": "singlePlayerNameExists",
     "ignorePrevious": "update"
   },
-  "keyboard": [
+  "inputEvent": [
     {
       "key": "esc",
       "action": { "name": "button.click", "id": "no" }

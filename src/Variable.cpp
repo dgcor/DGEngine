@@ -37,7 +37,7 @@ namespace VarUtils
 		return Utils::strtod(std::get<std::string>(var));
 	}
 
-	int64_t toLong(const Variable& var) noexcept
+	int64_t toInt64(const Variable& var) noexcept
 	{
 		if (std::holds_alternative<int64_t>(var))
 		{

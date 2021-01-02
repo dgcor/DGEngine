@@ -6,6 +6,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseIcon(Game& game, const Value& elem)
 	{
@@ -14,7 +15,7 @@ namespace Parser
 			return;
 		}
 
-		auto icon = ImageUtils::loadImage(getStringViewVal(elem["file"]));
+		auto icon = ImageUtils::loadImage(getStringViewVal(elem["file"sv]));
 		auto iconSize = icon.getSize();
 		if (iconSize.x == 0 || iconSize.y == 0)
 		{

@@ -1,11 +1,9 @@
 {
   "texturePack": {
     "id": "itemIcons",
-    "texture": {
-      "id": "icons",
-      "frames": [8, 32],
-      "direction": "horizontal"
-    },
+    "texture": "icons",
+    "frames": [8, 32],
+    "direction": "horizontal",
     "textureIndexes": [
       [11, 65],
       [12, 72],

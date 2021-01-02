@@ -1,12 +1,11 @@
 #include "ParseFont.h"
 #include "Game.h"
-#include "ParseTexturePack.h"
-#include "TexturePacks/BitmapFontTexturePack.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	bool parseFontFromId(Game& game, const Value& elem)
 	{
@@ -14,8 +13,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto fromId = elem["fromId"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto fromId = elem["fromId"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (fromId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getFont(fromId);
@@ -36,8 +35,8 @@ namespace Parser
 		{
 			if (isValidString(elem, "id") == true)
 			{
-				auto cloneId = elem["clone"].GetStringStr();
-				auto id = elem["id"].GetStringStr();
+				auto cloneId = elem["clone"sv].GetStringView();
+				auto id = elem["id"sv].GetStringView();
 				if (cloneId != id && isValidId(id) == true)
 				{
 					auto obj = game.Resources().getFont(cloneId);
@@ -48,15 +47,15 @@ namespace Parser
 					else if (holdsBitmapFont(obj) == true)
 					{
 						auto font = std::make_shared<BitmapFont>(*std::get<std::shared_ptr<BitmapFont>>(obj));
-						if (elem.HasMember("fontPalette") == true &&
+						if (elem.HasMember("fontPalette"sv) == true &&
 							game.Shaders().hasSpriteShader() == true)
 						{
-							auto palette = game.Resources().getPalette(getStringVal(elem["fontPalette"]));
+							auto palette = game.Resources().getPalette(getStringViewVal(elem["fontPalette"sv]));
 							font->setPalette(palette);
 						}
-						if (elem.HasMember("fontColor") == true)
+						if (elem.HasMember("fontColor"sv) == true)
 						{
-							font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+							font->setColor(getColorVal(elem["fontColor"sv], sf::Color::White));
 						}
 						game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
 						return true;
@@ -64,9 +63,13 @@ namespace Parser
 					else
 					{
 						auto font = std::make_shared<FreeTypeFont>(*std::get<std::shared_ptr<FreeTypeFont>>(obj));
-						if (elem.HasMember("fontColor") == true)
+						if (elem.HasMember("fontColor"sv) == true)
 						{
-							font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+							font->setColor(getColorVal(elem["fontColor"sv], sf::Color::White));
+						}
+						if (elem.HasMember("fontSize"sv) == true)
+						{
+							font->setCharacterSize(getUIntVal(elem["fontSize"sv]));
 						}
 						game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
 						return true;
@@ -84,43 +87,38 @@ namespace Parser
 		{
 			return false;
 		}
-		std::string id(elem["id"].GetStringStr());
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return false;
 		}
-		auto resource = getStringViewKey(elem, "resource");
-		auto texturePackId = getStringKey(elem, "texturePack");
-		auto texturePack_ = game.Resources().getTexturePack(texturePackId);
-		auto texturePack = std::dynamic_pointer_cast<BitmapFontTexturePack>(texturePack_);
+		auto texturePack = game.Resources().getTexturePack(getStringViewKey(elem, "texturePack"));
 		if (texturePack == nullptr)
 		{
-			texturePack = parseBitmapFontTexturePackObj(game, elem);
-			if (texturePack == nullptr)
-			{
-				return false;
-			}
-			if (isValidId(texturePackId) == true)
-			{
-				game.Resources().addTexturePack(texturePackId, texturePack, resource);
-			}
+			return false;
 		}
 
-		auto padding = getIntKey(elem, "padding");
-		auto font = std::make_shared<BitmapFont>(texturePack, padding);
+		auto newLine = (int16_t)getIntKey(elem, "newLine", -1);
+		auto space = (int16_t)getIntKey(elem, "space", -1);
+		auto tab = (int16_t)getIntKey(elem, "tab", -1);
 
-		if (elem.HasMember("fontPalette") == true &&
+		auto font = std::make_shared<BitmapFont>(texturePack, newLine, space, tab);
+
+		if (elem.HasMember("fontPalette"sv) == true &&
 			game.Shaders().hasSpriteShader() == true)
 		{
-			auto palette = game.Resources().getPalette(getStringVal(elem["fontPalette"]));
+			auto palette = game.Resources().getPalette(getStringViewVal(elem["fontPalette"sv]));
 			font->setPalette(palette);
 		}
-		if (elem.HasMember("fontColor") == true)
+		if (elem.HasMember("fontColor"sv) == true)
 		{
-			font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+			font->setColor(getColorVal(elem["fontColor"sv], sf::Color::White));
 		}
 
-		game.Resources().addFont(id, font, resource);
+		font->setHorizontalSpaceOffset(getIntKey(elem, "horizontalSpaceOffset"));
+		font->setVerticalSpaceOffset(getIntKey(elem, "verticalSpaceOffset"));
+
+		game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));
 		return true;
 	}
 
@@ -131,12 +129,12 @@ namespace Parser
 			return false;
 		}
 
-		auto file = elem["file"].GetStringStr();
+		auto file = elem["file"sv].GetStringStr();
 		std::string id;
 
 		if (isValidString(elem, "id") == true)
 		{
-			id = elem["id"].GetStringStr();
+			id = elem["id"sv].GetStringView();
 		}
 		else if (getIdFromFile(file, id) == false)
 		{
@@ -152,9 +150,13 @@ namespace Parser
 		{
 			return false;
 		}
-		if (elem.HasMember("fontColor") == true)
+		if (elem.HasMember("fontColor"sv) == true)
 		{
-			font->setColor(getColorVal(elem["fontColor"], sf::Color::White));
+			font->setColor(getColorVal(elem["fontColor"sv], sf::Color::White));
+		}
+		if (elem.HasMember("fontSize"sv) == true)
+		{
+			font->setCharacterSize(getUIntVal(elem["fontSize"sv]));
 		}
 
 		game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));

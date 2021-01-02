@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_cloth_gloves",
+    "file": "images/avatar/male/cloth_gloves.png"
+  },
   "texturePack": {
     "id": "m_cloth_gloves",
-    "texture": {
-      "id": "m_cloth_gloves",
-      "file": "images/avatar/male/cloth_gloves.png"
-    },
+    "texture": "m_cloth_gloves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

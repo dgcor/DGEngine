@@ -1,0 +1,8 @@
+{
+  "shader": {
+    "id": "warp",
+    "fragmentFile": "res/shaders/game/warp.frag",
+    "uniforms": ["fade", "gamma"],
+    "setShader": "game"
+  }
+}

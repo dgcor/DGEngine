@@ -4,9 +4,7 @@
 #include "Anchor.h"
 #include "AnimationType.h"
 #include "BlendMode.h"
-#include <cstddef>
-#include "Game/GameProperties.h"
-#include "Game/LevelObject.h"
+#include "GameUtilsGame.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
 #include "Palette.h"
@@ -15,8 +13,8 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <string>
 #include <string_view>
-#include <vector>
 #include "UIObject.h"
+#include <vector>
 
 class Game;
 
@@ -57,28 +55,12 @@ namespace GameUtils
 
 	InputEventType getInputEventType(const std::string_view str, InputEventType val);
 
-	InventoryPosition getInventoryPosition(const std::string_view str,
-		InventoryPosition val = InventoryPosition::TopLeft);
-
-	PlayerDirection getPlayerDirection(const std::string_view str, PlayerDirection val);
-
-	PlayerInventory getPlayerInventory(const std::string_view str,
-		PlayerInventory val = PlayerInventory::Body);
-
-	size_t getPlayerInventoryIndex(const std::string_view str,
-		PlayerInventory val = PlayerInventory::Body);
-
-	PlayerItemMount getPlayerItemMount(const std::string_view str,
-		PlayerItemMount val = PlayerItemMount::LeftHand);
-
-	size_t getPlayerItemMountIndex(const std::string_view str,
-		PlayerItemMount val = PlayerItemMount::LeftHand);
-
-	PlayerAnimation getPlayerAnimation(const std::string_view str, PlayerAnimation val);
-
-	PlayerStatus getPlayerStatus(const std::string_view str, PlayerStatus val);
+	sf::PrimitiveType getPrimitiveType(const std::string_view str,
+		sf::PrimitiveType val = sf::PrimitiveType::TriangleFan);
 
 	sf::Time getTime(int fps);
+
+	Variable getTime(sf::Time time, std::string_view format, bool roundUp = false);
 
 	// replaces "%str%" with obj.getProperty("str")
 	std::string replaceStringWithQueryable(const std::string_view str,

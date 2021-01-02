@@ -13,52 +13,78 @@
       }
     }
   },
+  "imageContainer": [
+    {
+      "id": "treegroups",
+      "file": "data/global/tiles/ACT1/OUTDOORS/treegroups.dt1"
+    },
+    {
+      "id": "stonewall",
+      "file": "data/global/tiles/ACT1/OUTDOORS/stonewall.dt1"
+    },
+    {
+      "id": "floor",
+      "file": "data/global/tiles/ACT1/TOWN/floor.dt1"
+    },
+    {
+      "id": "warp",
+      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1"
+    },
+    {
+      "id": "river",
+      "file": "data/global/tiles/ACT1/OUTDOORS/river.dt1"
+    },
+    {
+      "id": "objects",
+      "file": "data/global/tiles/ACT1/TOWN/objects.dt1"
+    },
+    {
+      "id": "fence",
+      "file": "data/global/tiles/ACT1/TOWN/fence.dt1"
+    },
+    {
+      "id": "objects2",
+      "file": "data/global/tiles/ACT1/OUTDOORS/objects.dt1"
+    }
+  ],
   "texturePack": [
     {
       "id": "treegroups",
-      "file": "data/global/tiles/ACT1/OUTDOORS/treegroups.dt1",
       "imageContainer": "treegroups",
       "palette": "level"
     },
     {
       "id": "stonewall",
-      "file": "data/global/tiles/ACT1/OUTDOORS/stonewall.dt1",
       "imageContainer": "stonewall",
       "palette": "level"
     },
     {
       "id": "floor",
-      "file": "data/global/tiles/ACT1/TOWN/floor.dt1",
       "imageContainer": "floor",
       "palette": "level"
     },
     {
       "id": "warp",
-      "file": "data/global/tiles/ACT1/BARRACKS/warp.dt1",
       "imageContainer": "warp",
       "palette": "level"
     },
     {
       "id": "river",
-      "file": "data/global/tiles/ACT1/OUTDOORS/river.dt1",
       "imageContainer": "river",
       "palette": "level"
     },
     {
       "id": "objects",
-      "file": "data/global/tiles/ACT1/TOWN/objects.dt1",
       "imageContainer": "objects",
       "palette": "level"
     },
     {
       "id": "fence",
-      "file": "data/global/tiles/ACT1/TOWN/fence.dt1",
       "imageContainer": "fence",
       "palette": "level"
     },
     {
       "id": "objects2",
-      "file": "data/global/tiles/ACT1/OUTDOORS/objects.dt1",
       "imageContainer": "objects2",
       "palette": "level"
     },

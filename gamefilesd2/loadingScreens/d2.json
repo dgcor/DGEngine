@@ -1,10 +1,13 @@
 {
   "action": { "name": "resource.add", "id": "loadingScreen" },
-  "texturePack": {
+  "imageContainer": {
     "id": "loadingscreen",
     "file": "data/global/ui/Loading/loadingscreen.dc6",
+    "stitch": false
+  },
+  "texturePack": {
+    "id": "loadingscreen",
     "imageContainer": "loadingscreen",
-    "stitch": false,
     "palette": "loading"
   },
   "loadingScreen": {

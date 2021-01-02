@@ -8,6 +8,7 @@
 namespace Parser
 {
 	using namespace rapidjson;
+	using namespace std::literals;
 
 	void parseCircle(Game& game, const Value& elem)
 	{
@@ -15,7 +16,7 @@ namespace Parser
 		{
 			return;
 		}
-		auto id = elem["id"].GetStringStr();
+		auto id = elem["id"sv].GetStringView();
 		if (isValidId(id) == false)
 		{
 			return;
@@ -25,7 +26,7 @@ namespace Parser
 
 		if (isValidString(elem, "texture"))
 		{
-			auto texture = game.Resources().getTexture(elem["texture"].GetStringStr());
+			auto texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
 			if (texture != nullptr)
 			{
 				circle->setTexture(texture.get());
@@ -35,7 +36,7 @@ namespace Parser
 		if (isValidString(elem, "textureRect"))
 		{
 			sf::IntRect rect(0, 0, game.DrawRegionSize().x, game.DrawRegionSize().y);
-			circle->setTextureRect(getIntRectVal(elem["textureRect"], rect));
+			circle->setTextureRect(getIntRectVal(elem["textureRect"sv], rect));
 		}
 
 		auto anchor = getAnchorKey(elem, "anchor");
@@ -57,7 +58,7 @@ namespace Parser
 		bool manageObjDrawing = true;
 		if (isValidString(elem, "panel") == true)
 		{
-			std::string panelId = getStringVal(elem["panel"]);
+			auto panelId = getStringViewVal(elem["panel"sv]);
 			auto panel = game.Resources().getDrawable<Panel>(panelId);
 			if (panel != nullptr)
 			{

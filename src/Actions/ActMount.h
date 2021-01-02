@@ -12,7 +12,7 @@ private:
 	bool useSaveDir;
 
 public:
-	ActMount(const std::string& file_, const std::string& mountPoint_,
+	ActMount(const std::string_view file_, const std::string_view mountPoint_,
 		bool appendToSearchPath_, bool useSaveDir_) : file(file_),
 		mountPoint(mountPoint_), appendToSearchPath(appendToSearchPath_),
 		useSaveDir(useSaveDir_) {}
@@ -40,7 +40,7 @@ private:
 	bool useSaveDir;
 
 public:
-	ActUnmount(const std::string& file_, bool useSaveDir_)
+	ActUnmount(const std::string_view file_, bool useSaveDir_)
 		: file(file_), useSaveDir(useSaveDir_) {}
 
 	bool execute(Game& game) override

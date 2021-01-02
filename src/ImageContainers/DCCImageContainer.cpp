@@ -1,10 +1,8 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DCCImageContainer.h"
 #include <algorithm>
 #include <array>
 #include <bitset>
 #include <cassert>
-#include "PhysFSStream.h"
 #include "StreamReader.h"
 
 namespace
@@ -935,19 +933,9 @@ namespace
 	}
 }
 
-DCCImageContainer::DCCImageContainer(const std::string_view fileName)
+DCCImageContainer::DCCImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
 {
-	{
-		sf::PhysFSStream file(fileName.data());
-		if (file.hasError() == true)
-		{
-			return;
-		}
-		fileData.resize((size_t)file.getSize());
-		file.read(fileData.data(), file.getSize());
-	}
-
-	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
+	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
 
 	// DCC header decode
 
@@ -991,7 +979,7 @@ sf::Image2 DCCImageContainer::get(uint32_t index,
 
 	DCCDirection d;
 	SimpleImageProvider imgProvider;
-	if (readDirection(fileData, directionsOffsets, directions, framesPerDir,
+	if (readDirection(*fileData, directionsOffsets, directions, framesPerDir,
 		d, directionIdx, imgProvider) == true)
 	{
 		if (frameIdx < imgProvider.getImagesNumber())
@@ -1022,4 +1010,3 @@ sf::Image2 DCCImageContainer::get(uint32_t index,
 	}
 	return {};
 }
-#endif

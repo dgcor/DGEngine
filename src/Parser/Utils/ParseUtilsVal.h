@@ -2,19 +2,19 @@
 
 #include "Anchor.h"
 #include "BlendMode.h"
-#include "Game/GameProperties.h"
-#include "Game/ItemLocation.h"
-#include "Game/LightSource.h"
-#include "Game/Number.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
+#include "Parser/Utils/ParseUtilsGameVal.h"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <string>
+#include "Utils/Number.h"
+#include "Utils/PairXY.h"
+#include "Utils/UnorderedStringMap.h"
 #include "Variable.h"
 #include "VarOrPredicate.h"
 
@@ -37,7 +37,7 @@ namespace Parser
 
 	const char* getStringCharVal(const rapidjson::Value& elem, const char* val = "");
 
-	std::string getStringVal(const rapidjson::Value& elem, const std::string& val = {});
+	std::string getStringVal(const rapidjson::Value& elem, const std::string_view val = {});
 
 	std::string_view getStringViewVal(const rapidjson::Value& elem, const std::string_view val = "");
 
@@ -345,6 +345,53 @@ namespace Parser
 		return val;
 	}
 
+	template <class T, class NumType>
+	T getRangeOrValueVal(const rapidjson::Value& elem, const T& val = {})
+	{
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
+		{
+			return T(getNumberVal<NumType>(elem[0]), getNumberVal<NumType>(elem[1]));
+		}
+		else if (elem.IsNumber() == true)
+		{
+			auto v = getNumberVal<NumType>(elem);
+			return T(v, v);
+		}
+		return val;
+	}
+
+	template <class T, class NumType, NumType minVal>
+	T getRangeNVal(const rapidjson::Value& elem, const T& val = {})
+	{
+		if (elem.IsArray() == true
+			&& elem.Size() > 1
+			&& elem[0].IsNumber() == true
+			&& elem[1].IsNumber() == true)
+		{
+			return T(getNumberVal<NumType>(elem[0]), getNumberVal<NumType>(elem[1]));
+		}
+		else if (elem.IsNumber() == true)
+		{
+			return T((NumType)minVal, getNumberVal<NumType>(elem));
+		}
+		return val;
+	}
+
+	template <class T, class NumType>
+	T getRange0Val(const rapidjson::Value& elem, const T& val = {})
+	{
+		return getRangeNVal<T, NumType, 0>(elem, val);
+	}
+
+	template <class T, class NumType>
+	T getRange1Val(const rapidjson::Value& elem, const T& val = {})
+	{
+		return getRangeNVal<T, NumType, 1>(elem, val);
+	}
+
 	std::pair<uint32_t, uint32_t> getFramesVal(const rapidjson::Value& elem,
 		const std::pair<uint32_t, uint32_t>& val = {});
 
@@ -372,14 +419,6 @@ namespace Parser
 	InputEventType getInputEventTypeVal(const rapidjson::Value& elem,
 		InputEventType val = InputEventType::None);
 
-	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
-		PlayerInventory inv);
-
-	InventoryPosition getInventoryPositionVal(const rapidjson::Value& elem,
-		InventoryPosition val = InventoryPosition::TopLeft);
-
-	LightSource getLightSourceVal(const rapidjson::Value& elem, LightSource val = {});
-
 	template <class T>
 	T getMinMaxIntVal(const rapidjson::Value& elem, T val = {})
 	{
@@ -397,11 +436,11 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			if (elem.GetString() == std::string("min"))
+			if (elem.GetString() == std::string_view("min"))
 			{
 				return std::numeric_limits<T>::min();
 			}
-			else if (elem.GetString() == std::string("max"))
+			else if (elem.GetString() == std::string_view("max"))
 			{
 				return std::numeric_limits<T>::max();
 			}
@@ -410,17 +449,6 @@ namespace Parser
 	}
 
 	Number32 getMinMaxNumber32Val(const rapidjson::Value& elem);
-
-	PairUInt8 getItemXYVal(const rapidjson::Value& elem, const PairUInt8& val = {});
-
-	ItemCoordInventory getItemCoordInventoryVal(const rapidjson::Value& elem);
-
-	ItemLocation getItemLocationVal(const rapidjson::Value& elem);
-
-	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem);
-
-	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
-		PlayerInventory val = PlayerInventory::Body);
 
 	const rapidjson::Value& getQueryVal(const rapidjson::Value* elem,
 		const rapidjson::Value& query);
@@ -431,7 +459,13 @@ namespace Parser
 	ReplaceVars getReplaceVarsVal(const rapidjson::Value& elem,
 		ReplaceVars val = ReplaceVars::None);
 
+	bool getVariableVal(const rapidjson::Value& elem, Variable& var);
+
 	Variable getVariableVal(const rapidjson::Value& elem);
+
+	std::vector<std::pair<std::string, Variable>> getVariables(const rapidjson::Value& elem);
+
+	UnorderedStringMap<Variable> getVariablesMap(const rapidjson::Value& elem);
 
 	VarOrPredicate getVarOrPredicateVal(Game& game, const rapidjson::Value& elem);
 }

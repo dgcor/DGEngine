@@ -1,20 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <SFML/Graphics/Shader.hpp>
-#include <string>
-#include <unordered_map>
-
-struct GameShaders
-{
-	sf::Shader* Game{ nullptr };
-	sf::Shader* Level{ nullptr };
-	sf::Shader* Sprite{ nullptr };
-
-	bool hasGameShader() const noexcept { return Game != nullptr; }
-	bool hasLevelShader() const noexcept { return Level != nullptr; }
-	bool hasSpriteShader() const noexcept { return Sprite != nullptr; }
-};
+#include "Shader.h"
+#include "Utils/UnorderedStringMap.h"
 
 class ShaderManager
 {
@@ -23,17 +10,19 @@ private:
 	static const std::string levelText;
 	static const std::string spriteText;
 
-	std::unordered_map<std::string, std::shared_ptr<sf::Shader>> shaders;
+	mutable UnorderedStringMap<GameShader> shaders;
 
 public:
-	void add(const std::string& id, const std::string& fragmentShaderText);
-	void add(const std::string& id, const std::string& fragmentShaderText,
+	static std::unique_ptr<sf::Shader> makeShader(const std::string& fragmentShaderText);
+	static std::unique_ptr<sf::Shader> makeShader(const std::string& fragmentShaderText,
 		const std::string& vertexShaderText);
-	void add(const std::string& id, const std::string& fragmentShaderText,
+	static std::unique_ptr<sf::Shader> makeShader(const std::string& fragmentShaderText,
 		const std::string& vertexShaderText, const std::string& geometryShaderText);
 
-	sf::Shader* get(const std::string& id) const;
-	bool has(const std::string& id) const;
+	void add(const std::string_view id, GameShader&& shader);
+
+	GameShader* get(const std::string_view id) const;
+	bool has(const std::string_view id) const;
 
 	void init();
 	void init(GameShaders& gameShaders) const;

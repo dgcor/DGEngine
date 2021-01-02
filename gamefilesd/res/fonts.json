@@ -1,93 +1,168 @@
 {
-  "font": [
+  "texture": [
     {
       "id": "font16g",
       "file": "ui_art/font16g.pcx",
-      "charSizeFile": "ui_art/font16.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font16s",
       "file": "ui_art/font16s.pcx",
-      "charSizeFile": "ui_art/font16.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font24g",
-      "texture": "font24g",
       "file": "ui_art/font24g.pcx",
-      "charSizeFile": "ui_art/font24.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font24s",
       "file": "ui_art/font24s.pcx",
-      "charSizeFile": "ui_art/font24.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font30g",
       "file": "ui_art/font30g.pcx",
-      "charSizeFile": "ui_art/font30.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font30s",
       "file": "ui_art/font30s.pcx",
-      "charSizeFile": "ui_art/font30.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font42g",
       "file": "ui_art/font42g.pcx",
-      "charSizeFile": "ui_art/font42.bin",
-      "rows": 16,
-      "cols": 16,
       "split": "vertical",
       "pieces": 16,
-      "direction": "vertical",
       "mask": "0x00FF00"
     },
     {
       "id": "font42y",
       "file": "ui_art/font42y.pcx",
+      "split": "vertical",
+      "pieces": 16,
+      "mask": "0x00FF00"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "font16g",
+      "font": true,
+      "texture": "font16g",
+      "charSizeFile": "ui_art/font16.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font16s",
+      "font": true,
+      "texture": "font16s",
+      "charSizeFile": "ui_art/font16.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font24g",
+      "font": true,
+      "texture": "font24g",
+      "charSizeFile": "ui_art/font24.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font24s",
+      "font": true,
+      "texture": "font24s",
+      "charSizeFile": "ui_art/font24.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font30g",
+      "font": true,
+      "texture": "font30g",
+      "charSizeFile": "ui_art/font30.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font30s",
+      "font": true,
+      "texture": "font30s",
+      "charSizeFile": "ui_art/font30.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    },
+    {
+      "id": "font42g",
+      "font": true,
+      "texture": "font42g",
       "charSizeFile": "ui_art/font42.bin",
       "rows": 16,
       "cols": 16,
-      "split": "vertical",
-      "pieces": 16,
-      "direction": "vertical",
-      "mask": "0x00FF00"
+      "direction": "vertical"
+    },
+    {
+      "id": "font42y",
+      "font": true,
+      "texture": "font42y",
+      "charSizeFile": "ui_art/font42.bin",
+      "rows": 16,
+      "cols": 16,
+      "direction": "vertical"
+    }
+  ],
+  "font": [
+    {
+      "id": "font16g",
+      "texturePack": "font16g"
+    },
+    {
+      "id": "font16s",
+      "texturePack": "font16s"
+    },
+    {
+      "id": "font24g",
+      "texturePack": "font24g"
+    },
+    {
+      "id": "font24s",
+      "texturePack": "font24s"
+    },
+    {
+      "id": "font30g",
+      "texturePack": "font30g"
+    },
+    {
+      "id": "font30s",
+      "texturePack": "font30s"
+    },
+    {
+      "id": "font42g",
+      "texturePack": "font42g"
+    },
+    {
+      "id": "font42y",
+      "texturePack": "font42y"
     }
   ]
 }

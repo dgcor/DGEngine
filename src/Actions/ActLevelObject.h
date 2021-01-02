@@ -11,7 +11,7 @@ private:
 	std::string idObject;
 
 public:
-	ActLevelObjDelete(const std::string& idLevel_, const std::string& idObject_)
+	ActLevelObjDelete(const std::string_view idLevel_, const std::string_view idObject_)
 		: idLevel(idLevel_), idObject(idObject_) {}
 
 	bool execute(Game& game) override
@@ -32,7 +32,7 @@ private:
 	std::string idClass;
 
 public:
-	ActLevelObjDeleteByClass(const std::string& idLevel_, const std::string& idClass_)
+	ActLevelObjDeleteByClass(const std::string_view idLevel_, const std::string_view idClass_)
 		: idLevel(idLevel_), idClass(idClass_) {}
 
 	bool execute(Game& game) override
@@ -53,8 +53,8 @@ private:
 	std::string idObject;
 
 public:
-	ActLevelObjExecuteAction(const std::string& idLevel_,
-		const std::string& idObject_) : idLevel(idLevel_), idObject(idObject_) {}
+	ActLevelObjExecuteAction(const std::string_view idLevel_,
+		const std::string_view idObject_) : idLevel(idLevel_), idObject(idObject_) {}
 
 	bool execute(Game& game) noexcept override
 	{
@@ -79,7 +79,7 @@ private:
 	sf::Color ignore;
 
 public:
-	ActLevelObjSetOutline(const std::string& idLevel_,
+	ActLevelObjSetOutline(const std::string_view idLevel_,
 		const sf::Color& outline_, const sf::Color& ignore_)
 		: idLevel(idLevel_), outline(outline_), ignore(ignore_) {}
 
@@ -106,8 +106,8 @@ private:
 	sf::Color color;
 
 public:
-	ActLevelObjSetPalette(const std::string& idLevel_,
-		const std::string& idPalette_, const sf::Color& color_)
+	ActLevelObjSetPalette(const std::string_view idLevel_,
+		const std::string_view idPalette_, const sf::Color& color_)
 		: idLevel(idLevel_), idPalette(idPalette_), color(color_) {}
 
 	bool execute(Game& game) override

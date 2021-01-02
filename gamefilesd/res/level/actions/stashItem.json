@@ -24,7 +24,8 @@
           {
             "name": "image.setTexture",
             "id": "img{1}",
-            "query": "currentLevel.currentPlayer.item.{2}.{3}"
+            "query": "currentLevel.currentPlayer.item.{2}.{3}",
+            "index": 1
           },
           {
             "name": "if.equal",

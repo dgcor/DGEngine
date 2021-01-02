@@ -1,7 +1,7 @@
 #include "CompositeTexture.h"
+#include "AnimationInfo.h"
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <algorithm>
-#include "gsl/gsl"
 #include "PhysFSStream.h"
 #include "StreamReader.h"
 #endif
@@ -202,7 +202,7 @@ bool CompositeTexture::addGroup(uint32_t texturePackCount)
 			}
 			totalTexturePackGroups += group.texturePackGroups;
 			group.directions = texturePacks.front()->getDirectionCount(0);
-			group.range = texturePacks.front()->getRange(-1, -1);
+			group.range = texturePacks.front()->getAnimation(-1, -1).indexRange;
 			compositeTextureGroups.push_back(group);
 			numberOfFrames += texturePacks.front()->size();
 			return true;
@@ -228,7 +228,7 @@ bool CompositeTexture::addGroup(uint32_t texturePackCount)
 				totalTexturePackGroups += group.texturePackGroups;
 				group.directions = texturePacks.front()->getDirectionCount(0);
 				group.rangeStartIdx = compositeTextureGroups.back().range.second + 1;
-				group.range = texturePacks[texturePackStartIdx]->getRange(-1, -1);
+				group.range = texturePacks[texturePackStartIdx]->getAnimation(-1, -1).indexRange;
 				group.range.first += group.rangeStartIdx;
 				group.range.second += group.rangeStartIdx;
 				compositeTextureGroups.push_back(group);
@@ -406,31 +406,29 @@ bool CompositeTexture::get(uint32_t index, std::vector<TextureInfo>& tiVec) cons
 	return tiVec.empty() == false;
 }
 
-std::pair<uint32_t, uint32_t> CompositeTexture::getRange(
-	int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const
+AnimationInfo CompositeTexture::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
 	if (compositeTextureGroups.empty() == true)
 	{
-		animType = {};
 		return {};
 	}
 	else if (groupIdx >= 0)
 	{
 		if (compositeTextureGroups.size() == 1)
 		{
-			return texturePacks.front()->getRange(groupIdx, directionIdx, animType);
+			return texturePacks.front()->getAnimation(groupIdx, directionIdx);
 		}
 		else if (hasMultipleGroupsPerTexturePack == false)
 		{
 			if ((size_t)groupIdx < compositeTextureGroups.size())
 			{
 				const auto& group = compositeTextureGroups[groupIdx];
-				auto range = texturePacks[group.texturePackStartIdx]->getRange(
-					0, directionIdx, animType
+				auto animInfo = texturePacks[group.texturePackStartIdx]->getAnimation(
+					0, directionIdx
 				);
-				range.first += group.rangeStartIdx;
-				range.second += group.rangeStartIdx;
-				return range;
+				animInfo.indexRange.first += group.rangeStartIdx;
+				animInfo.indexRange.second += group.rangeStartIdx;
+				return animInfo;
 			}
 		}
 		else
@@ -440,12 +438,12 @@ std::pair<uint32_t, uint32_t> CompositeTexture::getRange(
 			{
 				if ((uint32_t)normalizedGroupIdx < group.texturePackGroups)
 				{
-					auto range = texturePacks[group.texturePackStartIdx]->getRange(
-						normalizedGroupIdx, directionIdx, animType
+					auto animInfo = texturePacks[group.texturePackStartIdx]->getAnimation(
+						normalizedGroupIdx, directionIdx
 					);
-					range.first += group.rangeStartIdx;
-					range.second += group.rangeStartIdx;
-					return range;
+					animInfo.indexRange.first += group.rangeStartIdx;
+					animInfo.indexRange.second += group.rangeStartIdx;
+					return animInfo;
 				}
 				else
 				{
@@ -454,16 +452,10 @@ std::pair<uint32_t, uint32_t> CompositeTexture::getRange(
 			}
 		}
 	}
-	animType = {};
-	return std::make_pair(
+	AnimationInfo animInfo;
+	animInfo.indexRange = std::make_pair(
 		compositeTextureGroups.front().range.first,
 		compositeTextureGroups.back().range.second
 	);
-}
-
-std::pair<uint32_t, uint32_t> CompositeTexture::getRange(
-	int32_t groupIdx, int32_t directionIdx) const
-{
-	AnimationType animType;
-	return getRange(groupIdx, directionIdx, animType);
+	return animInfo;
 }

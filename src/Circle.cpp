@@ -6,7 +6,7 @@
 void Circle::updateSize(const Game& game)
 {
 	auto pos = getPosition();
-	auto size = sf::Vector2f(this->getLocalBounds().width, this->getLocalBounds().height);
+	auto size = Size();
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
 	setPosition(pos);
 }

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_mage_hood_alt2",
+    "file": "images/avatar/male/mage_hood_alt2.png"
+  },
   "texturePack": {
     "id": "m_mage_hood_alt2",
-    "texture": {
-      "id": "m_mage_hood_alt2",
-      "file": "images/avatar/male/mage_hood_alt2.png"
-    },
+    "texture": "m_mage_hood_alt2",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

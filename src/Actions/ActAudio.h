@@ -2,7 +2,21 @@
 
 #include "Action.h"
 #include "Game.h"
-#include <string>
+
+class ActAudioDelete : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActAudioDelete(const std::string_view id_) : id(id_) {}
+
+	bool execute(Game& game) override
+	{
+		game.Resources().deleteSong(id);
+		return true;
+	}
+};
 
 class ActAudioPause : public Action
 {
@@ -10,7 +24,7 @@ private:
 	std::string id;
 
 public:
-	ActAudioPause(const std::string& id_) : id(id_) {}
+	ActAudioPause(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{
@@ -43,7 +57,7 @@ private:
 	bool hasLoop{ false };
 
 public:
-	ActAudioPlay(const std::string& id_, const Variable& volume_,
+	ActAudioPlay(const std::string_view id_, const Variable& volume_,
 		bool clear_) : id(id_), volume(volume_), clear(clear_) {}
 
 	void setLoop(bool loop_) noexcept
@@ -71,7 +85,7 @@ public:
 					song->setLoop(true);
 				}
 			}
-			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.SoundVolume());
+			auto vol = game.getVarOrProp<int64_t, unsigned>(volume, game.MusicVolume());
 			song->setVolume((float)vol);
 
 			if (song->getStatus() != sf::Music::Playing ||
@@ -108,7 +122,7 @@ private:
 	sf::Time time;
 
 public:
-	ActAudioSeek(const std::string& id_, const sf::Time& time_) : id(id_), time(time_) {}
+	ActAudioSeek(const std::string_view id_, sf::Time time_) : id(id_), time(time_) {}
 
 	bool execute(Game& game) override
 	{
@@ -128,7 +142,7 @@ private:
 	Variable volume;
 
 public:
-	ActAudioSetVolume(const std::string& id_, const Variable& volume_)
+	ActAudioSetVolume(const std::string_view id_, const Variable& volume_)
 		: id(id_), volume(volume_) {}
 
 	bool execute(Game& game) override
@@ -153,7 +167,7 @@ private:
 	std::string id;
 
 public:
-	ActAudioStop(const std::string& id_) : id(id_) {}
+	ActAudioStop(const std::string_view id_) : id(id_) {}
 
 	bool execute(Game& game) override
 	{

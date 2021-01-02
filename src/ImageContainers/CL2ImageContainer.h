@@ -1,22 +1,22 @@
 #pragma once
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <cstdint>
+#include "FileBytes.h"
 #include "ImageContainer.h"
-#include <string_view>
+#include <memory>
 
 // CL2 decoding code based on Diablo 1 Graphics Tool by savagesteel
 // https://github.com/savagesteel/d1-graphics-tool
 class CL2ImageContainer : public ImageContainer
 {
 private:
-	std::vector<uint8_t> fileData;
+	std::shared_ptr<FileBytes> fileData;
 	std::vector<std::pair<uint32_t, uint32_t>> frameOffsets;
 	uint32_t directions{ 0 };
 	BlendMode blendMode{ BlendMode::Alpha };
 
 public:
-	CL2ImageContainer(const std::string_view fileName);
+	CL2ImageContainer(const std::shared_ptr<FileBytes>& fileBytes);
 
 	BlendMode getBlendMode() const noexcept override { return blendMode; }
 	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
@@ -27,4 +27,3 @@ public:
 
 	uint32_t getDirections() const noexcept override { return directions; }
 };
-#endif

@@ -5,7 +5,7 @@
     "loadMainMenuImg",
     "loadLogoImg"
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["enter", " "],
       "action": "focus.click"
@@ -61,22 +61,62 @@
         "case": [
           {
             "value": "Game Shader: Default",
-            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Grain" }
+            "action": [
+              { "name": "load", "file": "res/shaders/game/grayscale.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Grayscale" }
+            ]
+          },
+          {
+            "value": "Game Shader: Grayscale",
+            "action": [
+              { "name": "load", "file": "res/shaders/game/grain.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Grain" }
+            ]
           },
           {
             "value": "Game Shader: Grain",
-            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Warp" }
+            "action": [
+              { "name": "load", "file": "res/shaders/game/warp.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Warp" }
+            ]
           },
           {
             "value": "Game Shader: Warp",
-            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Swirl" }
+            "action": [
+              { "name": "load", "file": "res/shaders/game/swirl.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Swirl" }
+            ]
           },
           {
             "value": "Game Shader: Swirl",
-            "action": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
+            "action": [
+              { "name": "load", "file": "res/shaders/game/lanczos6tap.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: lanczos" }
+            ]
+          },
+          {
+            "value": "Game Shader: lanczos",
+            "action": [
+              { "name": "load", "file": "res/shaders/game/scale4xhq.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: scale4xhq" }
+            ]
+          },
+          {
+            "value": "Game Shader: scale4xhq",
+            "action": [
+              { "name": "load", "file": "res/shaders/game/xbrz4x.json" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: xbrz4x" }
+            ]
+          },
+          {
+            "value": "Game Shader: xbrz4x",
+            "action": [
+              { "name": "game.setShader", "shader": "game", "gameShader": "game" },
+              { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
+            ]
           }
         ],
-        "default": { "name": "text.setText", "id": "gameShader", "text": "Game Shader: Default" }
+        "default": "Game Shader: xbrz4x"
       },
       "onFocus": "anchorPentagrams"
     },
@@ -96,10 +136,16 @@
         "case": [
           {
             "value": "Sprite Shader: Default",
-            "action": { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Highlight" }
+            "action": [
+              { "name": "load", "file": "res/shaders/sptite/highlight.json" },
+              { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Highlight" }
+            ]
           }
         ],
-        "default": { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Default" }
+        "default": [
+          { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" },
+          { "name": "text.setText", "id": "spriteShader", "text": "Sprite Shader: Default" }
+        ]
       },
       "onFocus": "anchorPentagrams"
     },
@@ -119,30 +165,48 @@
         "case": [
           {
             "value": "Max Lights: 128",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 0" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 0 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 0" }
+            ]
           },
           {
             "value": "Max Lights: 0",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 2" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 2 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 2" }
+            ]
           },
           {
             "value": "Max Lights: 2",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 4" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 4 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 4" }
+            ]
           },
           {
             "value": "Max Lights: 4",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 16" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 16 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 16" }
+            ]
           },
           {
             "value": "Max Lights: 16",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 64 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 64" }
+            ]
           },
           {
             "value": "Max Lights: 64",
-            "action": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 128" }
+            "action": [
+              { "name": "game.setProperty", "property": "maxLights", "value": 128 },
+              { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 128" }
+            ]
           }
         ],
-        "default": { "name": "text.setText", "id": "maxLights", "text": "Max Lights: 128" }
+        "default": "Max Lights: 64"
       },
       "onFocus": "anchorPentagrams"
     },
@@ -159,107 +223,6 @@
       "onClick": {
         "name": "game.fadeOut",
         "action": [
-          {
-            "name": "switch",
-            "param": "%gameShader.text%",
-            "case": [
-              {
-                "value": "Game Shader: Grain",
-                "action": [
-                  {
-                    "name": "if.equal",
-                    "param1": "%game.hasShader.grain%",
-                    "param2": false,
-                    "then": {
-                      "name": "shader.load",
-                      "id": "grain",
-                      "fragmentFile": "res/shaders/game/grain.frag"
-                    }
-                  },
-                  { "name": "game.setShader", "shader": "grain", "gameShader": "game" }
-                ]
-              },
-              {
-                "value": "Game Shader: Swirl",
-                "action": [
-                  {
-                    "name": "if.equal",
-                    "param1": "%game.hasShader.swirl%",
-                    "param2": false,
-                    "then": {
-                      "name": "shader.load",
-                      "id": "swirl",
-                      "fragmentFile": "res/shaders/game/swirl.frag"
-                    }
-                  },
-                  { "name": "game.setShader", "shader": "swirl", "gameShader": "game" }
-                ]
-              },
-              {
-                "value": "Game Shader: Warp",
-                "action": [
-                  {
-                    "name": "if.equal",
-                    "param1": "%game.hasShader.warp%",
-                    "param2": false,
-                    "then": {
-                      "name": "shader.load",
-                      "id": "warp",
-                      "fragmentFile": "res/shaders/game/warp.frag"
-                    }
-                  },
-                  { "name": "game.setShader", "shader": "warp", "gameShader": "game" }
-                ]
-              }
-            ],
-            "default": { "name": "game.setShader", "shader": "game", "gameShader": "game" }
-          },
-          {
-            "name": "switch",
-            "param": "%spriteShader.text%",
-            "case": [
-              {
-                "value": "Sprite Shader: Highlight",
-                "action": [
-                  {
-                    "name": "if.equal",
-                    "param1": "%game.hasShader.highlight%",
-                    "param2": false,
-                    "then": {
-                      "name": "shader.load",
-                      "id": "highlight",
-                      "fragmentFile": "res/shaders/sprite/highlight.frag"
-                    }
-                  },
-                  { "name": "game.setShader", "shader": "highlight", "gameShader": "sprite" }
-                ]
-              }
-            ],
-            "default": { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" }
-          },
-          {
-            "name": "switch",
-            "param": "%maxLights.text%",
-            "case": [
-              {
-                "value": "Max Lights: 0",
-                "action": { "name": "game.setProperty", "property": "maxLights", "value": 0 }
-              },
-              {
-                "value": "Max Lights: 2",
-                "action": { "name": "game.setProperty", "property": "maxLights", "value": 2 }
-              },
-              {
-                "value": "Max Lights: 4",
-                "action": { "name": "game.setProperty", "property": "maxLights", "value": 4 }
-              },
-              {
-                "value": "Max Lights: 16",
-                "action": { "name": "game.setProperty", "property": "maxLights", "value": 16 }
-              }
-            ],
-            "default": { "name": "game.setProperty", "property": "maxLights", "value": 64 }
-          },
           { "name": "resource.pop" },
           { "name": "game.fadeIn" }
         ]
@@ -267,5 +230,10 @@
       "onFocus": "anchorPentagrams"
     }
   ],
-  "action": "anchorPentagrams"
+  "action": [
+    { "name": "game.setShader", "shader": "game", "gameShader": "game" },
+    { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" },
+    { "name": "game.setProperty", "property": "maxLights", "value": 128 },
+    "anchorPentagrams"
+  ]
 }

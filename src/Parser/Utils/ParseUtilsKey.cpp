@@ -1,16 +1,10 @@
 #include "ParseUtilsKey.h"
-#include <cctype>
-#include "FileUtils.h"
 #include "Json/JsonUtils.h"
-#include "Game.h"
 #include "GameUtils.h"
-#include "SFML/SFMLUtils.h"
-#include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
-	using namespace Utils;
 
 	AnimationType getAnimationTypeKey(const rapidjson::Value& elem,
 		const std::string_view key, AnimationType val)
@@ -106,13 +100,13 @@ namespace Parser
 	}
 
 	std::string getStringKey(const Value& elem,
-		const std::string_view key, const std::string& val)
+		const std::string_view key, const std::string_view val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			return getStringVal(elem[key], val);
 		}
-		return val;
+		return std::string(val);
 	}
 
 	std::string_view getStringViewKey(const Value& elem,
@@ -148,11 +142,7 @@ namespace Parser
 	std::pair<uint32_t, uint32_t> getFramesKey(const Value& elem,
 		const std::string_view key, const std::pair<uint32_t, uint32_t>& val)
 	{
-		if (elem.HasMember(key) == true)
-		{
-			return getFramesVal(elem[key], val);
-		}
-		return val;
+		return getRange1Key<std::pair<uint32_t, uint32_t>, uint32_t>(elem, key, val);
 	}
 
 	sf::Vector2f getPositionKey(const Value& elem, const std::string_view key,
@@ -244,124 +234,15 @@ namespace Parser
 		return val;
 	}
 
-	size_t getInventoryItemIndexKey(const Value& elem,
-		const std::string_view key, PlayerInventory inv)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getInventoryItemIndexVal(elem[key], inv);
-		}
-		return 0;
-	}
-
-	InventoryPosition getInventoryPositionKey(const Value& elem,
-		const std::string_view key, InventoryPosition val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getInventoryPositionVal(elem[key], val);
-		}
-		return val;
-	}
-
-	LightSource getLightSourceKey(const rapidjson::Value& elem,
-		const std::string_view key, LightSource val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getLightSourceVal(elem[key], val);
-		}
-		return val;
-	}
-
-	ItemCoordInventory getItemCoordInventoryKey(const Value& elem, const std::string_view key)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getItemCoordInventoryVal(elem[key]);
-		}
-		return{};
-	}
-
-	ItemLocation getItemLocationKey(const Value& elem, const std::string_view key)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getItemLocationVal(elem[key]);
-		}
-		return{};
-	}
-
-	PairUInt8 getItemXYKey(const Value& elem, const std::string_view key, const PairUInt8& val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getItemXYVal(elem[key], val);
-		}
-		return val;
-	}
-
-	PlayerDirection getPlayerDirectionKey(const Value& elem,
-		const std::string_view key, PlayerDirection val)
+	sf::PrimitiveType getPrimitiveTypeKey(const Value& elem,
+		const std::string_view key, sf::PrimitiveType val)
 	{
 		if (elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
 			{
-				return GameUtils::getPlayerDirection(keyElem.GetStringView(), val);
-			}
-		}
-		return val;
-	}
-
-	PlayerInventory getPlayerInventoryKey(const Value& elem,
-		const std::string_view key, PlayerInventory val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			return getPlayerInventoryVal(elem[key], val);
-		}
-		return val;
-	}
-
-	PlayerItemMount getPlayerItemMountKey(const Value& elem,
-		const std::string_view key, PlayerItemMount val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			const auto& keyElem = elem[key];
-			if (keyElem.IsString() == true)
-			{
-				return GameUtils::getPlayerItemMount(keyElem.GetStringView(), val);
-			}
-		}
-		return val;
-	}
-
-	PlayerAnimation getPlayerAnimationKey(const Value& elem,
-		const std::string_view key, PlayerAnimation val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			const auto& keyElem = elem[key];
-			if (keyElem.IsString() == true)
-			{
-				return GameUtils::getPlayerAnimation(keyElem.GetStringView(), val);
-			}
-		}
-		return val;
-	}
-
-	PlayerStatus getPlayerStatusKey(const Value& elem,
-		const std::string_view key, PlayerStatus val)
-	{
-		if (elem.HasMember(key) == true)
-		{
-			const auto& keyElem = elem[key];
-			if (keyElem.IsString() == true)
-			{
-				return GameUtils::getPlayerStatus(keyElem.GetStringView(), val);
+				return GameUtils::getPrimitiveType(keyElem.GetStringView(), val);
 			}
 		}
 		return val;
@@ -407,6 +288,28 @@ namespace Parser
 			return getVariableVal(elem[key]);
 		}
 		return Variable();
+	}
+
+	std::vector<std::pair<std::string, Variable>> getVariablesKey(
+		const rapidjson::Value& elem, const std::string_view key)
+	{
+		if (elem.HasMember(key) == true &&
+			elem[key].IsObject() == true)
+		{
+			return getVariables(elem[key]);
+		}
+		return {};
+	}
+
+	UnorderedStringMap<Variable> getVariablesMapKey(
+		const rapidjson::Value& elem, const std::string_view key)
+	{
+		if (elem.HasMember(key) == true &&
+			elem[key].IsObject() == true)
+		{
+			return getVariablesMap(elem[key]);
+		}
+		return {};
 	}
 
 	VarOrPredicate getVarOrPredicateKey(Game& game, const Value& elem, const std::string_view key)

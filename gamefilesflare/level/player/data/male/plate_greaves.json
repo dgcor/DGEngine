@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "m_plate_greaves",
+    "file": "images/avatar/male/plate_greaves.png"
+  },
   "texturePack": {
     "id": "m_plate_greaves",
-    "texture": {
-      "id": "m_plate_greaves",
-      "file": "images/avatar/male/plate_greaves.png"
-    },
+    "texture": "m_plate_greaves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

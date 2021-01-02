@@ -1,4 +1,5 @@
 #include "RectTexturePack.h"
+#include "AnimationInfo.h"
 #include "TextureInfo.h"
 
 void RectTexturePack::addRect(uint32_t index,
@@ -16,7 +17,8 @@ void RectTexturePack::addGroup(uint32_t startIdx,
 	uint32_t stopIdx, uint32_t directions, AnimationType animType)
 {
 	auto numFrames = stopIdx - startIdx;
-	if (directions > 0 && (numFrames % directions) != 0)
+	if (directions == 0 ||
+		(directions > 0 && (numFrames % directions) != 0))
 	{
 		directions = 1;
 	}
@@ -34,6 +36,11 @@ bool RectTexturePack::get(uint32_t index, TextureInfo& ti) const
 		return true;
 	}
 	return false;
+}
+
+int32_t RectTexturePack::getWidth(uint32_t index) const
+{
+	return index < rects.size() ? rects[index].rect.width : 0;
 }
 
 uint32_t RectTexturePack::getGroupCount() const noexcept
@@ -56,35 +63,39 @@ uint32_t RectTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
 
 uint32_t RectTexturePack::getDirection(uint32_t frameIdx) const noexcept
 {
-	for (const auto& group : groups)
+	if (groups.empty() == false)
 	{
-		if (frameIdx >= group.startIdx && frameIdx < group.stopIdx)
+		for (const auto& group : groups)
 		{
-			if (group.directions <= 1)
+			if (frameIdx >= group.startIdx && frameIdx < group.stopIdx)
 			{
-				return 0;
+				if (group.directions <= 1)
+				{
+					return 0;
+				}
+				auto numFrames = group.stopIdx - group.startIdx;
+				auto framesPerDirection = numFrames / group.directions;
+				return (frameIdx - group.startIdx) / framesPerDirection;
 			}
-			auto numFrames = group.stopIdx - group.startIdx;
-			auto framesPerDirection = numFrames / group.directions;
-			return (frameIdx - group.startIdx) / framesPerDirection;
 		}
+		return 0;
 	}
-	return 0;
+	return texturePack->getDirection(frameIdx);
 }
 
-std::pair<uint32_t, uint32_t> RectTexturePack::getRange(
-	int32_t groupIdx, int32_t directionIdx, AnimationType& animType) const
+AnimationInfo RectTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
 	if (groupIdx >= 0 && (size_t)groupIdx < groups.size())
 	{
-		animType = groups[groupIdx].animType;
-		return TexturePack::getRange(
+		AnimationInfo animInfo;
+		animInfo.indexRange = TexturePack::getRange(
 			groups[groupIdx].startIdx,
 			groups[groupIdx].stopIdx,
 			directionIdx,
 			groups[groupIdx].directions
 		);
+		animInfo.animType = groups[groupIdx].animType;
+		return animInfo;
 	}
-	animType = {};
-	return std::make_pair((uint32_t)0, (uint32_t)(rects.size() - 1));
+	return texturePack->getAnimation(groupIdx, directionIdx);
 }

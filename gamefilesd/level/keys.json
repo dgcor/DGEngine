@@ -1,36 +1,24 @@
 {
-  "keyboard": [
+  "inputEvent": [
     {
-      "compositeKey": ["up", "left"],
-      "action": { "name": "player.walk", "player": "hero", "direction": "BackLeft" }
+      "key": "up",
+      "event": "level.up"
     },
     {
-      "compositeKey": ["up", "right"],
-      "action": { "name": "player.walk", "player": "hero", "direction": "BackRight" }
+      "key": "down",
+      "event": "level.down"
     },
     {
-      "compositeKey": ["down", "left"],
-      "action": { "name": "player.walk", "player": "hero", "direction": "FrontLeft" }
+      "key": "left",
+      "event": "level.left"
     },
     {
-      "compositeKey": ["down", "right"],
-      "action": { "name": "player.walk", "player": "hero", "direction": "FrontRight" }
+      "key": "right",
+      "event": "level.right"
     },
     {
-      "compositeKey": "up",
-      "action": { "name": "player.walk", "player": "hero", "direction": "back" }
-    },
-    {
-      "compositeKey": "down",
-      "action": { "name": "player.walk", "player": "hero", "direction": "front" }
-    },
-    {
-      "compositeKey": "left",
-      "action": { "name": "player.walk", "player": "hero", "direction": "left" }
-    },
-    {
-      "compositeKey": "right",
-      "action": { "name": "player.walk", "player": "hero", "direction": "right" }
+      "key": "rshift",
+      "event": "level.doAction"
     }
   ]
 }

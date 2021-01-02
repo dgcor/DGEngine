@@ -87,6 +87,16 @@ void Level::Init()
 	viewNeedsUpdate = true;
 }
 
+void Level::Id(const std::string_view id_)
+{
+	id = id_;
+	moveUpEventHash = str2int16(id + ".up");
+	moveDownEventHash = str2int16(id + ".down");
+	moveLeftEventHash = str2int16(id + ".left");
+	moveRightEventHash = str2int16(id + ".right");
+	doActionEventHash = str2int16(id + ".doAction");
+}
+
 void Level::addLayer(const ColorLevelLayer& layer,
 	const sf::FloatRect& viewportOffset, bool automap)
 {
@@ -154,7 +164,7 @@ Panel* Level::getDrawable(size_t idx) const
 	return nullptr;
 }
 
-LevelDrawable* Level::getLevelDrawable(const std::string& id)
+LevelDrawable* Level::getLevelDrawable(const std::string_view id)
 {
 	for (auto& obj : drawables)
 	{
@@ -470,6 +480,8 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 
 	auto origView = target.getView();
 
+	// layers
+
 	surface.clear(sf::Color::Black);
 	automapSurface.clear(sf::Color::Transparent);
 
@@ -498,14 +510,14 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 			}
 		}
 
-		auto& layerInfo = (levelLayer.automap == false ? surface : automapSurface);
+		auto& layerSurface = (levelLayer.automap == false ? surface : automapSurface);
 
-		layerInfo.updateDrawView(levelLayer.viewportOffset);
+		layerSurface.updateDrawView(levelLayer.viewportOffset);
 
 		if (holdsTilesetLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<TilesetLevelLayer>(levelLayer.layer);
-			layer.draw(layerInfo, spriteCache,
+			layer.draw(layerSurface, spriteCache,
 				game.Shaders().Sprite, *this,
 				i == indexToDrawLevelObjects,
 				levelLayer.automap
@@ -514,61 +526,117 @@ void Level::draw(const Game& game, sf::RenderTarget& target) const
 		else if (holdsTextureLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<TextureLevelLayer>(levelLayer.layer);
-			layer.draw(layerInfo);
+			layer.draw(layerSurface);
 		}
 		else if (holdsColorLevelLayer(levelLayer.layer) == true)
 		{
 			const auto& layer = std::get<ColorLevelLayer>(levelLayer.layer);
-			layer.draw(layerInfo);
+			layer.draw(layerSurface);
 		}
 	}
 
-	sf::RenderStates states(sf::RenderStates::Default);
-	if (shader != nullptr)
+	// lighting
+
+	if (lights.empty() == false && map.getDefaultLight() < 255)
 	{
-		states.shader = shader;
-		shader->setUniform("elapsedTime", game.getTotalElapsedTime().asSeconds());
-		if (hasMouseInside == true)
+#if defined(SFML_BLENDMODE_MIN_MAX)
+		const static sf::BlendMode lightBlend(
+			sf::BlendMode::Zero, sf::BlendMode::One, sf::BlendMode::Add,
+			sf::BlendMode::One, sf::BlendMode::Zero, sf::BlendMode::Min
+		);
+#else
+		const static sf::BlendMode lightBlend(
+			sf::BlendMode::Zero, sf::BlendMode::One, sf::BlendMode::Add,
+			sf::BlendMode::DstAlpha, sf::BlendMode::Zero, sf::BlendMode::Add
+		);
+#endif
+
+		sf::RenderStates lightStates;
+		lightStates.blendMode = lightBlend;
+
+		for (const auto& light : lights)
 		{
-			shader->setUniform("mousePosition", sf::Glsl::Vec2(
-				(game.MousePositionf().x - surface.Position().x) /
-				surface.Size().x,
-				(game.MousePositionf().y - surface.Position().y) /
-				surface.Size().y
-			));
+			surface.draw(light, lightStates);
 		}
-		shader->setUniform("textureSize", sf::Glsl::Vec2(
-			surface.Size().x,
-			surface.Size().y
-		));
-
-		shader->setUniform("visibleRect", sf::Glsl::Vec4(
-			surface.visibleRect.left,
-			surface.visibleRect.top,
-			surface.visibleRect.width,
-			surface.visibleRect.height
-		));
-
-		shader->setUniform("numberOfLights", (int)map.lightArray.size());
-		shader->setUniformArray("lights", map.lightArray.data(), map.lightArray.size());
-		shader->setUniform("defaultLight", ((float)map.getDefaultLight() / 255.f));
-		shader->setUniform("lightRadius", lightRadius * surface.getLightZoomFactor());
 	}
-	surface.draw(target, states);
 
-	surface.clear(sf::Color::Transparent);
-	bool hasDrawn = false;
-	for (const auto& item : drawables)
+	auto surfaceStates(sf::RenderStates::Default);
+	if (gameShader != nullptr)
 	{
-		if (auto obj = item.drawable.lock())
+		auto shader = gameShader->shader.get();
+		surfaceStates.shader = shader;
+		for (auto uniformHash : gameShader->uniforms)
 		{
-			hasDrawn |= surface.draw(game, *obj);
+			switch (uniformHash)
+			{
+			case str2int16("elapsedTime"):
+			{
+				shader->setUniform("elapsedTime",game.getTotalElapsedTime().asSeconds());
+				break;
+			}
+			case str2int16("mousePosition"):
+			{
+				if (hasMouseInside == true)
+				{
+					shader->setUniform("mousePosition", sf::Glsl::Vec2(
+						(game.MousePositionf().x - surface.Position().x) /
+						surface.Size().x,
+						(game.MousePositionf().y - surface.Position().y) /
+						surface.Size().y
+					));
+				}
+				break;
+			}
+			case str2int16("textureSize"):
+			{
+				shader->setUniform("textureSize", sf::Glsl::Vec2(
+					surface.Size().x,
+					surface.Size().y
+				));
+				break;
+			}
+			case str2int16("visibleRect"):
+			{
+				shader->setUniform("visibleRect", sf::Glsl::Vec4(
+					surface.visibleRect.left,
+					surface.visibleRect.top,
+					surface.visibleRect.width,
+					surface.visibleRect.height
+				));
+				break;
+			}
+			case str2int16("defaultLight"):
+			{
+				shader->setUniform("defaultLight",(float)(255 - map.getDefaultLight()) / 255);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
-	if (hasDrawn == true)
+	surface.draw(target, surfaceStates);
+
+	// level drawables
+
+	if (drawables.empty() == false)
 	{
-		surface.draw(target, sf::RenderStates::Default);
+		surface.clear(sf::Color::Transparent);
+		bool hasDrawn = false;
+		for (const auto& item : drawables)
+		{
+			if (auto obj = item.drawable.lock())
+			{
+				hasDrawn |= surface.draw(game, *obj);
+			}
+		}
+		if (hasDrawn == true)
+		{
+			surface.draw(target);
+		}
 	}
+
+	// automap
 
 	automapSurface.draw(target, sf::RenderStates::Default);
 
@@ -682,6 +750,72 @@ void Level::onTouchBegan(Game& game)
 	}
 }
 
+void Level::processInputEvents(Game& game)
+{
+	if (game.Resources().hasActiveInputEvents() == false)
+	{
+		return;
+	}
+	if (auto player = currentPlayer.lock())
+	{
+		if (player->blockWalk() == true)
+		{
+			return;
+		}
+		PlayerDirection direction(PlayerDirection::All);
+		if (game.Resources().hasActiveInputEvents({ moveUpEventHash, moveLeftEventHash }) == true)
+		{
+			direction = PlayerDirection::BackLeft;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveUpEventHash, moveRightEventHash }) == true)
+		{
+			direction = PlayerDirection::BackRight;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveDownEventHash, moveLeftEventHash }) == true)
+		{
+			direction = PlayerDirection::FrontLeft;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveDownEventHash, moveRightEventHash }) == true)
+		{
+			direction = PlayerDirection::FrontRight;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveUpEventHash }) == true)
+		{
+			direction = PlayerDirection::Back;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveDownEventHash }) == true)
+		{
+			direction = PlayerDirection::Front;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveLeftEventHash }) == true)
+		{
+			direction = PlayerDirection::Left;
+		}
+		else if (game.Resources().hasActiveInputEvents({ moveRightEventHash }) == true)
+		{
+			direction = PlayerDirection::Right;
+		}
+		bool doAction = game.Resources().hasActiveInputEvents({ doActionEventHash });
+		player->Walk(map, direction, doAction);
+	}
+}
+
+void Level::updateLights()
+{
+	map.updateLights(levelObjects, currentMapViewCenter);
+	lights.clear();
+	for (const auto& light : map.AllLights())
+	{
+		auto radius = (float)light.lightSource.radius * lightRadius;
+		GradientCircle circle(radius, 9);
+		circle.setInnerColor(sf::Color(0, 0, 0, 0));
+		circle.setOuterColor(sf::Color(0, 0, 0, light.lightSource.light));
+		circle.setOrigin(radius, radius);
+		circle.setPosition(light.drawPos);
+		lights.push_back(std::move(circle));
+	}
+}
+
 void Level::update(Game& game)
 {
 	if (visible == false)
@@ -701,7 +835,8 @@ void Level::update(Game& game)
 
 	updateZoom(game);
 	updateMouse(game);
-	map.updateLights(levelObjects, currentMapViewCenter);
+	updateLights();
+	processInputEvents(game);
 
 	epoch++;
 
@@ -909,7 +1044,7 @@ bool Level::getProperty(const std::string_view prop, Variable& var) const
 	case str2int16("player"):
 	{
 		auto props2 = Utils::splitStringIn2(props.second, '.');
-		auto player = getLevelObject<Player>(std::string(props2.first));
+		auto player = getLevelObject<Player>(props2.first);
 		if (player != nullptr)
 		{
 			return player->getProperty(props2.second, var);
@@ -996,7 +1131,7 @@ const Queryable* Level::getQueryable(const std::string_view prop) const
 	case str2int16("player"):
 	{
 		props = Utils::splitStringIn2(props.second, '.');
-		queryable = getLevelObject<Player>(std::string(props.first));
+		queryable = getLevelObject<Player>(props.first);
 	}
 	break;
 	case str2int16("quest"):
@@ -1040,7 +1175,7 @@ std::vector<std::variant<const Queryable*, Variable>> Level::getQueryableList(
 		}
 		else
 		{
-			auto player = getPlayerOrCurrent(std::string(props.first));
+			auto player = getPlayerOrCurrent(props.first);
 			if (player == nullptr)
 			{
 				player = getCurrentPlayer();
@@ -1070,7 +1205,7 @@ LevelObject* Level::parseLevelObjectIdOrMapPosition(
 	}
 	else
 	{
-		auto simpleObj = getLevelObject<SimpleLevelObject>(std::string(strPair2.first));
+		auto simpleObj = getLevelObject<SimpleLevelObject>(strPair2.first);
 		if (simpleObj != nullptr)
 		{
 			props = strPair.second;
@@ -1094,13 +1229,13 @@ void Level::clearAllLevelObjects()
 	levelObjectIds.clear();
 }
 
-LevelObject* Level::getLevelObject(const std::string id) const
+LevelObject* Level::getLevelObject(const std::string_view id) const
 {
 	if (id.empty() == true)
 	{
 		return nullptr;
 	}
-	auto it = levelObjectIds.find(id);
+	auto it = levelObjectIds.find(sv2str(id));
 	if (it != levelObjectIds.cend())
 	{
 		return it->second.get();
@@ -1124,7 +1259,7 @@ LevelObject* Level::getLevelObjectByClass(const std::string_view classId) const 
 	return nullptr;
 }
 
-std::weak_ptr<LevelObject> Level::getLevelObjectPtr(const std::string id) const
+std::weak_ptr<LevelObject> Level::getLevelObjectPtr(const std::string_view id) const
 {
 	if (id.empty() == true)
 	{
@@ -1141,7 +1276,7 @@ std::weak_ptr<LevelObject> Level::getLevelObjectPtr(const std::string id) const
 	default:
 		break;
 	}
-	auto it = levelObjectIds.find(id);
+	auto it = levelObjectIds.find(sv2str(id));
 	if (it != levelObjectIds.cend())
 	{
 		return it->second;
@@ -1149,7 +1284,7 @@ std::weak_ptr<LevelObject> Level::getLevelObjectPtr(const std::string id) const
 	return {};
 }
 
-Player* Level::getPlayerOrCurrent(const std::string id) const noexcept
+Player* Level::getPlayerOrCurrent(const std::string_view id) const noexcept
 {
 	if (id.empty() == true)
 	{
@@ -1511,12 +1646,12 @@ uint32_t Level::getExperienceFromLevel(uint32_t level) const
 	return 0;
 }
 
-bool Level::hasSpell(const std::string& id) const
+bool Level::hasSpell(const std::string_view id) const
 {
 	return getClass<Spell>(id) != nullptr;
 }
 
-Spell* Level::getSpell(const std::string& id) const
+Spell* Level::getSpell(const std::string_view id) const
 {
 	return getClass<Spell>(id);
 }

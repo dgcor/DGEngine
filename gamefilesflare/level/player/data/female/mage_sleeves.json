@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mage_sleeves",
+    "file": "images/avatar/female/mage_sleeves.png"
+  },
   "texturePack": {
     "id": "f_mage_sleeves",
-    "texture": {
-      "id": "f_mage_sleeves",
-      "file": "images/avatar/female/mage_sleeves.png"
-    },
+    "texture": "f_mage_sleeves",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

@@ -1,16 +1,16 @@
 #pragma once
 
 #include <cstdint>
-#include "gsl/gsl"
+#include <span>
 #include <string_view>
 #include <vector>
 
 // a read only view of a min pillar. Pillar data is referenced, not copied.
-class MinPillar : public gsl::span<const std::pair<uint16_t, uint16_t>>
+class MinPillar : public std::span<const std::pair<uint16_t, uint16_t>>
 {
 public:
 	MinPillar(const std::pair<uint16_t, uint16_t>* dataPtr, size_t size_)
-		: gsl::span<const std::pair<uint16_t, uint16_t>>(dataPtr, size_) {}
+		: std::span<const std::pair<uint16_t, uint16_t>>(dataPtr, size_) {}
 
 	int16_t getLeftTile(size_t index) const noexcept
 	{

@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_infantry_axe",
+    "file": "images/avatar/female/infantry_axe.png"
+  },
   "texturePack": {
     "id": "f_infantry_axe",
-    "texture": {
-      "id": "f_infantry_axe",
-      "file": "images/avatar/female/infantry_axe.png"
-    },
+    "texture": "f_infantry_axe",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

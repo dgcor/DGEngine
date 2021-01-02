@@ -1,7 +1,7 @@
 {
   "action": [
     { "name": "game.clearPlayingSounds" },
-    { "name": "sound.play", "id": "titlslct" },
+    "selectSound",
     { "name": "resource.ignore", "id": "userPanel", "ignore": true },
     { "name": "resource.ignore", "id": "userPanelTalk", "ignore": true },
     { "name": "loadRandom", "file": "texts/{1}/gossip" }

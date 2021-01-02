@@ -5,9 +5,11 @@
 #include "Utils/Utils.h"
 
 StringText::StringText(const std::shared_ptr<FreeTypeFont>& font_, unsigned int characterSize)
-	: text({}, *font_, characterSize)
+	: text({}, *font_)
 {
 	font = font_;
+	charSize = characterSize;
+	updateCharSize();
 	updateColor();
 }
 
@@ -37,13 +39,22 @@ void StringText::updateSize(const Game& game)
 	calculateDrawPosition();
 }
 
-bool StringText::setText(const std::string& str)
+std::string StringText::getText() const
 {
-	if (text.getString() == str)
+	std::string utf8Str;
+	utf8Str.reserve(text.getString().getSize());
+	sf::Utf32::toUtf8(text.getString().begin(), text.getString().end(), std::back_inserter(utf8Str));
+	return utf8Str;
+}
+
+bool StringText::setText(const std::string& utf8Str)
+{
+	auto utf32Str = sf::String::fromUtf8(utf8Str.begin(), utf8Str.end());
+	if (text.getString() == utf32Str)
 	{
 		return false;
 	}
-	text.setString(str);
+	text.setString(utf32Str);
 	calculateDrawPosition();
 	return true;
 }
@@ -52,7 +63,26 @@ void StringText::setFont(const std::shared_ptr<FreeTypeFont>& font_)
 {
 	font = font_;
 	text.setFont(*font_);
+	updateCharSize();
 	updateColor();
+}
+
+void StringText::updateCharSize()
+{
+	if (charSize == 0)
+	{
+		text.setCharacterSize(font->getCharacterSize());
+	}
+	else
+	{
+		text.setCharacterSize(charSize);
+	}
+}
+
+void StringText::setCharacterSize(unsigned int size)
+{
+	charSize = size;
+	updateCharSize();
 }
 
 void StringText::setColor(const sf::Color& color_)
@@ -158,6 +188,7 @@ bool StringText::getProperty(const std::string_view prop, Variable& var) const
 	auto propHash = str2int16(props.first);
 	switch (propHash)
 	{
+	case str2int16("charCount"):
 	case str2int16("length"):
 		var = Variable((int64_t)text.getString().getSize());
 		break;
@@ -165,7 +196,7 @@ bool StringText::getProperty(const std::string_view prop, Variable& var) const
 		var = Variable((int64_t)text.getLineCount());
 		break;
 	case str2int16("text"):
-		var = Variable(text.getString().toAnsiString());
+		var = Variable(getText());
 		break;
 	default:
 		return getUIObjProp(propHash, props.second, var);

@@ -13,13 +13,34 @@
       }
     }
   },
+  "imageContainer": {
+    "id": "town",
+    "file": "Nlevels/TownData/Town.CEL"
+  },
+  "texturePack": [
+    {
+      "id": "town",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "Nlevels/TownData/Town.MIN",
+      "minBlocks": 16
+    },
+    {
+      "id": "town_top",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "Nlevels/TownData/Town.MIN",
+      "minBlocks": 16,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "Nlevels/TownData/Town.CEL",
+    "layers": [
+      { "index": 0, "texturePack": "town" },
+      { "index": 0, "texturePack": "town_top" }
+    ],
     "til": "Nlevels/TownData/Town.TIL",
-    "min": "Nlevels/TownData/Town.MIN",
-    "minBlocks": 16,
     "flags": "Nlevels/TownData/Town.SOL",
     "defaultLight": 255
   }

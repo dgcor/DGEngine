@@ -1,11 +1,11 @@
 #pragma once
 
 #include <memory>
-#include "PairXY.h"
 #include <SFML/Graphics/Shader.hpp>
 #include "SFML/Sprite2.h"
 #include "TexturePacks/TexturePack.h"
 #include "TileSet.h"
+#include "Utils/PairXY.h"
 
 class Level;
 class LevelMap;
@@ -27,6 +27,6 @@ struct TilesetLevelLayer
 	void updateVisibleArea(const LevelSurface& surface, const LevelMap& map);
 
 	void draw(const LevelSurface& surface,
-		SpriteShaderCache& spriteCache, sf::Shader* spriteShader,
+		SpriteShaderCache& spriteCache, GameShader* spriteShader,
 		const Level& level, bool drawLevelObjects, bool isAutomap) const;
 };

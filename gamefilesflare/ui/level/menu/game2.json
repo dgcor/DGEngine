@@ -93,7 +93,7 @@
       ]
     }
   ],
-  "keyboard": [
+  "inputEvent": [
     {
       "key": ["a", "left"],
       "action": "updateAudioDownKeyboardShortcut"
@@ -238,7 +238,7 @@
         { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },
         { "name": "loadJson",
           "json": {
-            "keyboard": [
+            "inputEvent": [
               {
                 "key": ["a", "left"],
                 "action": "updateAudioDownKeyboardShortcut"
@@ -268,7 +268,7 @@
         { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar2", "anchor": "right" },
         { "name": "loadJson",
           "json": {
-            "keyboard": [
+            "inputEvent": [
               {
                 "key": ["a", "left"],
                 "action": "updateSoundDownKeyboardShortcut"
@@ -298,7 +298,7 @@
         { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar3", "anchor": "right" },
         { "name": "loadJson",
           "json": {
-            "keyboard": [
+            "inputEvent": [
               {
                 "key": ["a", "left"],
                 "action": "updateGammaDownKeyboardShortcut"

@@ -1,0 +1,9 @@
+{
+  "shader": {
+    "id": "simplebloom",
+    "fragmentFile": "res/shaders/game/simplebloom.frag",
+    "vertexFile": "res/shaders/game/simplebloom.vert",
+    "uniforms": "textureSize",
+    "setShader": "game"
+  }
+}

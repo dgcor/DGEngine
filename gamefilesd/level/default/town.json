@@ -13,13 +13,33 @@
       }
     }
   },
+  "imageContainer": {
+    "file": "levels/towndata/town.cel"
+  },
+  "texturePack": [
+    {
+      "id": "town",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "levels/towndata/town.min",
+      "minBlocks": 16
+    },
+    {
+      "id": "town_top",
+      "imageContainer": "town",
+      "palette": "level",
+      "min": "levels/towndata/town.min",
+      "minBlocks": 16,
+      "topTiles": true
+    }
+  ],
   "level": {
     "id": "level",
-    "palette": "level",
-    "file": "levels/towndata/town.cel",
+    "layers": [
+      { "index": 0, "texturePack": "town" },
+      { "index": 0, "texturePack": "town_top" }
+    ],
     "til": "levels/towndata/town.til",
-    "min": "levels/towndata/town.min",
-    "minBlocks": 16,
     "flags": "levels/towndata/town.sol",
     "defaultLight": 255
   }

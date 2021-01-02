@@ -1,8 +1,6 @@
-#ifndef NO_DIABLO_FORMAT_SUPPORT
 #include "DT1ImageContainer.h"
 #include <assert.h>
-#include "gsl/gsl"
-#include "PhysFSStream.h"
+#include <span>
 #include <sstream>
 
 namespace DT1
@@ -306,16 +304,9 @@ namespace DT1
 	}
 }
 
-DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
+DT1ImageContainer::DT1ImageContainer(const std::shared_ptr<FileBytes>& fileBytes)
 {
-	std::vector<uint8_t> fileData;
-	sf::PhysFSStream file(fileName.data());
-	if (file.hasError())
-		return;
-	fileData.resize((size_t)file.getSize());
-	file.read(fileData.data(), file.getSize());
-
-	LittleEndianStreamReader fileStream(fileData.data(), fileData.size());
+	LittleEndianStreamReader fileStream(fileBytes->data(), fileBytes->size());
 
 	header = DT1::Header(fileStream);
 	assert(header.version1 == 0x7);
@@ -330,14 +321,14 @@ DT1ImageContainer::DT1ImageContainer(const std::string_view fileName)
 
 	for (auto& tile : tiles)
 	{
-		assert(tile.blockHeadersPointer == fileStream.position());
+		assert(tile.blockHeadersPointer == (int32_t)fileStream.position());
 		tile.blocks.reserve(tile.numBlocks);
 		for (int i = 0; i < tile.numBlocks; i++)
 			tile.blocks.emplace_back(fileStream);
 
 		for (auto& blockHeader : tile.blocks)
 		{
-			assert(tile.blockHeadersPointer + blockHeader.fileOffset == fileStream.position());
+			assert((uint64_t)(tile.blockHeadersPointer + blockHeader.fileOffset) == fileStream.position());
 			blockHeader.colormap.resize(blockHeader.length);
 			fileStream.read(blockHeader.colormap.data(), blockHeader.length);
 		}
@@ -397,4 +388,3 @@ int32_t DT1ImageContainer::getFlags(uint32_t index, uint32_t subIndex) const
 	}
 	return 0;
 }
-#endif

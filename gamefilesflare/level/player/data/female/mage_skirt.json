@@ -1,10 +1,11 @@
 {
+  "texture": {
+    "id": "f_mage_skirt",
+    "file": "images/avatar/female/mage_skirt.png"
+  },
   "texturePack": {
     "id": "f_mage_skirt",
-    "texture": {
-      "id": "f_mage_skirt",
-      "file": "images/avatar/female/mage_skirt.png"
-    },
+    "texture": "f_mage_skirt",
     "invertOffsets": true,
     "absoluteOffsets": true,
     "rects": [

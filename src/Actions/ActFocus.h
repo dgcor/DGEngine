@@ -12,7 +12,7 @@ private:
 	bool setFocus;
 
 public:
-	ActFocusAdd(const std::string& id_, const std::string& resource_, bool setFocus_)
+	ActFocusAdd(const std::string_view id_, const std::string_view resource_, bool setFocus_)
 		: id(id_), resource(resource_), setFocus(setFocus_) {}
 
 	bool execute(Game& game) override
@@ -65,6 +65,21 @@ public:
 	}
 };
 
+class ActFocusRightClick : public Action
+{
+private:
+	bool playSound;
+
+public:
+	ActFocusRightClick(bool playSound_) noexcept : playSound(playSound_) {}
+
+	bool execute(Game& game) override
+	{
+		game.Resources().rightClickFocused(game, playSound);
+		return true;
+	}
+};
+
 class ActFocusSet : public Action
 {
 private:
@@ -72,7 +87,7 @@ private:
 	bool focus;
 
 public:
-	ActFocusSet(const std::string& id_, bool focus_) : id(id_), focus(focus_) {}
+	ActFocusSet(const std::string_view id_, bool focus_) : id(id_), focus(focus_) {}
 
 	bool execute(Game& game) override
 	{
