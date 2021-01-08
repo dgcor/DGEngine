@@ -3,7 +3,6 @@
 #include "AnimationType.h"
 #include "BaseAnimation.h"
 #include "Classifiers.h"
-#include "CompositeTexture.h"
 #include "Formulas.h"
 #include "GameProperties.h"
 #include "LevelObject.h"
@@ -15,7 +14,7 @@
 class PlayerClass : public LevelObjectClassDefaults<Number32>
 {
 private:
-	std::vector<TexturePackVariant> textures;
+	std::vector<std::shared_ptr<TexturePack>> textures;
 	std::array<uint32_t, (uint32_t)PlayerAnimation::Size> animationIndexes;
 
 	std::string name;
@@ -49,14 +48,14 @@ public:
 	bool hasTextures() const noexcept { return textures.empty() == false; }
 	void clearTextures() noexcept { textures.clear(); }
 
-	TexturePackVariant getTexturePack(size_t idx) const;
+	std::shared_ptr<TexturePack> getTexturePack(size_t idx) const;
 
 	void getTextureAnimationRange(size_t textureIdx,
 		PlayerAnimation animation, uint32_t direction, BaseAnimation& baseAnim) const;
 
-	void addTexturePack(TexturePackVariant texture)
+	void addTexturePack(const std::shared_ptr<TexturePack>& texture)
 	{
-		textures.push_back(std::move(texture));
+		textures.push_back(texture);
 	}
 
 	void clearAnimationIndexes() { animationIndexes.fill(0); }

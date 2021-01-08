@@ -95,6 +95,18 @@ void CompositeSprite::setTexture(const std::vector<TextureInfo>& ti)
 	}
 }
 
+void CompositeSprite::setTexture(const TextureInfoVar& ti)
+{
+	if (std::holds_alternative<TextureInfo>(ti) == true)
+	{
+		setTexture(std::get<TextureInfo>(ti));
+	}
+	else
+	{
+		setTexture(std::get<std::vector<TextureInfo>>(ti));
+	}
+}
+
 void CompositeSprite::draw(sf::RenderTarget& target, GameShader* spriteShader) const
 {
 	SpriteShaderCache cache;

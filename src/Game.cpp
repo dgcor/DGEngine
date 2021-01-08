@@ -1188,9 +1188,6 @@ bool Game::getGameProperty(const std::string_view prop, Variable& var) const
 	case str2int16("hasAudio"):
 		var = Variable(resourceManager.hasAudioSource(props.second));
 		break;
-	case str2int16("hasCompositeTexture"):
-		var = Variable(resourceManager.hasCompositeTexture(props.second));
-		break;
 	case str2int16("hasDrawable"):
 		var = Variable(resourceManager.hasDrawable(props.second));
 		break;

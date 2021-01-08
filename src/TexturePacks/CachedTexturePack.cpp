@@ -1,6 +1,5 @@
 #include "CachedTexturePack.h"
 #include "AnimationInfo.h"
-#include "TextureInfo.h"
 
 static uint32_t getNormalizedDirection(uint32_t direction, uint32_t numberOfDirections)
 {

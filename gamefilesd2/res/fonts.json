@@ -102,7 +102,7 @@
   "texturePack": [
     {
       "id": "font6",
-      "font": true,
+      "type": "font",
       "texture": "font6",
       "charSizeFile": "data/local/font/LATIN/font6.tbl",
       "charSizeFileStart": 15,
@@ -112,7 +112,7 @@
     },
     {
       "id": "font8",
-      "font": true,
+      "type": "font",
       "texture": "font8",
       "charSizeFile": "data/local/font/LATIN/font8.tbl",
       "charSizeFileStart": 15,
@@ -122,7 +122,7 @@
     },
     {
       "id": "font16",
-      "font": true,
+      "type": "font",
       "texture": "font16",
       "charSizeFile": "data/local/font/LATIN/font16.tbl",
       "charSizeFileStart": 15,
@@ -132,7 +132,7 @@
     },
     {
       "id": "font24",
-      "font": true,
+      "type": "font",
       "texture": "font24",
       "charSizeFile": "data/local/font/LATIN/font24.tbl",
       "charSizeFileStart": 15,
@@ -142,7 +142,7 @@
     },
     {
       "id": "font30",
-      "font": true,
+      "type": "font",
       "texture": "font30",
       "charSizeFile": "data/local/font/LATIN/font30.tbl",
       "charSizeFileStart": 15,
@@ -152,7 +152,7 @@
     },
     {
       "id": "font42",
-      "font": true,
+      "type": "font",
       "texture": "font42",
       "charSizeFile": "data/local/font/LATIN/font42.tbl",
       "charSizeFileStart": 15,
@@ -162,7 +162,7 @@
     },
     {
       "id": "fontexocet8",
-      "font": true,
+      "type": "font",
       "texture": "fontexocet8",
       "charSizeFile": "data/local/font/LATIN/fontexocet8.tbl",
       "charSizeFileStart": 15,
@@ -172,7 +172,7 @@
     },
     {
       "id": "fontexocet10",
-      "font": true,
+      "type": "font",
       "texture": "fontexocet10",
       "charSizeFile": "data/local/font/LATIN/fontexocet10.tbl",
       "charSizeFileStart": 15,
@@ -182,7 +182,7 @@
     },
     {
       "id": "fontformal10",
-      "font": true,
+      "type": "font",
       "texture": "fontformal10",
       "charSizeFile": "data/local/font/LATIN/fontformal10.tbl",
       "charSizeFileStart": 15,
@@ -192,7 +192,7 @@
     },
     {
       "id": "fontformal11",
-      "font": true,
+      "type": "font",
       "texture": "fontformal11",
       "charSizeFile": "data/local/font/LATIN/fontformal11.tbl",
       "charSizeFileStart": 15,
@@ -202,7 +202,7 @@
     },
     {
       "id": "fontformal12",
-      "font": true,
+      "type": "font",
       "texture": "fontformal12",
       "charSizeFile": "data/local/font/LATIN/fontformal12.tbl",
       "charSizeFileStart": 15,
@@ -212,7 +212,7 @@
     },
     {
       "id": "fontingamechat",
-      "font": true,
+      "type": "font",
       "texture": "fontingamechat",
       "charSizeFile": "data/local/font/LATIN/fontingamechat.tbl",
       "charSizeFileStart": 15,
@@ -222,7 +222,7 @@
     },
     {
       "id": "fontridiculous",
-      "font": true,
+      "type": "font",
       "texture": "fontridiculous",
       "charSizeFile": "data/local/font/LATIN/fontridiculous.tbl",
       "charSizeFileStart": 15,
@@ -232,7 +232,7 @@
     },
     {
       "id": "ReallyTheLastSucker",
-      "font": true,
+      "type": "font",
       "texture": "ReallyTheLastSucker",
       "charSizeFile": "data/local/font/LATIN/ReallyTheLastSucker.tbl",
       "charSizeFileStart": 15,

@@ -1,6 +1,5 @@
 #include "RectTexturePack.h"
 #include "AnimationInfo.h"
-#include "TextureInfo.h"
 
 void RectTexturePack::addRect(uint32_t index,
 	const sf::IntRect& rect, const sf::Vector2f& offset)

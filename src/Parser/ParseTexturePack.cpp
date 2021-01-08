@@ -9,6 +9,7 @@
 #include <SFML/System/Utf.hpp>
 #include "TexturePacks/BitmapFontTexturePack.h"
 #include "TexturePacks/CachedTexturePack.h"
+#include "TexturePacks/CompositeTexturePack.h"
 #include "TexturePacks/IndexedTexturePack.h"
 #include "TexturePacks/RectTexturePack.h"
 #include "TexturePacks/SimpleTexturePack.h"
@@ -20,6 +21,38 @@ namespace Parser
 {
 	using namespace rapidjson;
 	using namespace std::literals;
+
+	enum class TexturePackType
+	{
+		Generic,
+		BitmapFont,
+		Stacked,
+		Composite
+	};
+
+	TexturePackType getTexturePackType(const Value& elem)
+	{
+		auto fileType = getStringViewKey(elem, "type");
+		if (fileType == "font")
+		{
+			return TexturePackType::BitmapFont;
+		}
+		else if (fileType == "composite")
+		{
+			return TexturePackType::Composite;
+		}
+		if (elem.HasMember("texturePacks"sv) == true)
+		{
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+			if (elem.HasMember("file"sv) == true)
+			{
+				return TexturePackType::Composite;
+			}
+#endif
+			return TexturePackType::Stacked;
+		}
+		return TexturePackType::Generic;
+	}
 
 	void parseDirectionVector(const Value& elem, uint32_t& directions,
 		std::vector<std::pair<uint32_t, uint32_t>>& directionsVec)
@@ -351,16 +384,146 @@ namespace Parser
 		return texturePack;
 	}
 
+	bool parseCompositeTexturePack(CompositeTexturePack& compTexture,
+		Game& game, const Value& elem)
+	{
+		if (elem.IsString() == false)
+		{
+			return false;
+		}
+		auto texturePack = game.Resources().getTexturePack(getStringViewVal(elem));
+		if (texturePack == nullptr)
+		{
+			return false;
+		}
+		compTexture.addTexturePack(texturePack);
+		return true;
+	}
+
+	void parseCompositeTexturePackGroup(CompositeTexturePack& compTexture,
+		Game& game, const Value& elem)
+	{
+		uint32_t TexturePackCount = 0;
+
+		if (elem.HasMember("texturePacks"sv) == true)
+		{
+			const auto& texturePacksElem = elem["texturePacks"sv];
+			if (isValidString(texturePacksElem) == true)
+			{
+				if (parseCompositeTexturePack(compTexture, game, texturePacksElem) == true)
+				{
+					TexturePackCount++;
+				}
+			}
+			else if (texturePacksElem.IsArray() == true)
+			{
+				for (const auto& val : texturePacksElem)
+				{
+					if (parseCompositeTexturePack(compTexture, game, val) == true)
+					{
+						TexturePackCount++;
+					}
+				}
+			}
+		}
+
+		if (TexturePackCount == 0)
+		{
+			return;
+		}
+
+#ifndef NO_DIABLO_FORMAT_SUPPORT
+		if (isValidString(elem, "file") == true)
+		{
+			bool fixLayerOrdering = getBoolKey(elem, "fixLayerOrdering", true);
+			compTexture.addGroup(elem["file"sv].GetStringView(), fixLayerOrdering);
+			return;
+		}
+#endif
+		auto groupIdx = compTexture.getCompositeTextureGroupSize();
+		if (compTexture.addGroup(TexturePackCount) == true &&
+			isValidArray(elem, "directionLayerOrders") == true)
+		{
+			std::vector<int8_t> layerOrder;
+			size_t numLayers = compTexture.getLayerCount(groupIdx);
+			size_t orderIdx = 0;
+			for (const auto& layerOrderElem : elem["directionLayerOrders"sv])
+			{
+				if (layerOrderElem.IsArray() == true)
+				{
+					layerOrder.resize(layerOrder.size() + numLayers, -1);
+					size_t subOrderIdx = orderIdx;
+					size_t layerIdx = 0;
+					for (const auto& val : layerOrderElem)
+					{
+						if (val.IsNumber() == true)
+						{
+							auto newIdx = (int8_t)std::clamp(getIntVal(val, -1), -1, 127);
+							if ((int32_t)newIdx < (int32_t)numLayers)
+							{
+								layerOrder[subOrderIdx] = newIdx;
+								subOrderIdx++;
+								layerIdx++;
+							}
+							if (layerIdx >= numLayers)
+							{
+								break;
+							}
+						}
+					}
+					orderIdx += numLayers;
+				}
+			}
+			compTexture.setLayersOrders(layerOrder);
+		}
+	}
+
+	std::shared_ptr<CompositeTexturePack> getCompositeTexturePackObj(
+		Game& game, const Value& elem)
+	{
+		auto compTexture = std::make_shared<CompositeTexturePack>();
+
+		if (isValidArray(elem, "groups") == false)
+		{
+			parseCompositeTexturePackGroup(*compTexture, game, elem);
+		}
+		else
+		{
+			for (const auto& val : elem["groups"sv])
+			{
+				if (val.IsObject() == true)
+				{
+					parseCompositeTexturePackGroup(*compTexture, game, val);
+				}
+			}
+		}
+		if (compTexture->size() == 0)
+		{
+			return nullptr;
+		}
+		return compTexture;
+	}
+
 	std::shared_ptr<TexturePack> getTexturePackObj(Game& game, const Value& elem)
 	{
-		if (isValidArray(elem, "texturePacks") == true)
+		auto type = getTexturePackType(elem);
+		switch (type)
+		{
+		case TexturePackType::Stacked:
 		{
 			return parseStackedTexturePack(game, elem);
+		}
+		case TexturePackType::Composite:
+		{
+			return getCompositeTexturePackObj(game, elem);
+		}
+		default:
+			break;
 		}
 
 		std::unique_ptr<TexturePack> texturePack;
 
-		if (getBoolKey(elem, "font") == true)
+		if (type == TexturePackType::BitmapFont)
 		{
 			texturePack = parseBitmapFontTexturePack(game, elem);
 		}

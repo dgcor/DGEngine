@@ -108,7 +108,7 @@
         "json": {
           "animation": {
             "id": "logo",
-            "compositeTexture": "D2logo",
+            "texturePack": "D2logo",
             "position": [320, 60],
             "anchor": "none",
             "refresh": 50
@@ -173,15 +173,16 @@
       "id": "focus42",
       "imageContainer": "focus42",
       "palette": "units"
+    },
+    {
+      "id": "D2logo",
+      "type": "composite",
+      "texturePacks": [
+        "D2logoBlackLeft",
+        "D2logoBlackRight",
+        "D2logoFireLeft",
+        "D2logoFireRight"
+      ]
     }
-  ],
-  "compositeTexture": {
-    "id": "D2logo",
-    "texturePacks": [
-      "D2logoBlackLeft",
-      "D2logoBlackRight",
-      "D2logoFireLeft",
-      "D2logoFireRight"
-    ]
-  }
+  ]
 }

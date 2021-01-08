@@ -36,26 +36,12 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			TextureInfo ti;
-			if (tex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			TextureInfoVar tiVar;
+			if (tex->get(getUIntKey(elem, "textureIndex"), tiVar) == false)
 			{
 				return nullptr;
 			}
-			button->setTexture(ti);
-		}
-		else if (isValidString(elem, "compositeTexture"))
-		{
-			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
-			if (compTex == nullptr)
-			{
-				return nullptr;
-			}
-			std::vector<TextureInfo> ti;
-			if (compTex->get(getUIntKey(elem, "textureIndex"), ti) == false)
-			{
-				return nullptr;
-			}
-			button->setTexture(ti);
+			button->setTexture(tiVar);
 		}
 		else
 		{

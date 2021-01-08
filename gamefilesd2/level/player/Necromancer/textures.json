@@ -1,8 +1,9 @@
 {
   "load": "level/player/Necromancer/textureFiles.json",
-  "compositeTexture": [
+  "texturePack": [
     {
       "id": "necromancerNormal",
+      "type": "composite",
       "groups": [
         {
           "file": "data/global/CHARS/NE/COF/NENUHTH.COF",

@@ -5,6 +5,7 @@
 #include <memory>
 #include "Palette.h"
 #include <SFML/Graphics/Texture.hpp>
+#include <variant>
 
 struct TextureInfo
 {
@@ -16,3 +17,5 @@ struct TextureInfo
 	BlendMode blendMode{ BlendMode::Alpha };
 	int32_t nextIndex{ -1 };
 };
+
+typedef class std::variant<TextureInfo, std::vector<TextureInfo>> TextureInfoVar;

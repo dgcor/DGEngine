@@ -186,12 +186,12 @@ void LevelMap::getSubIndex(int32_t x, int32_t y, uint32_t& subIndex)
 	subIndex = 0;
 }
 
-void LevelMap::setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun)
+void LevelMap::setTileSetAreaUseFlags(int32_t x, int32_t y, const Vector2D<int32_t>& vec)
 {
 	lightsNeedUpdate = true;
 	auto flags = getFlags();
-	auto dWidth = dun.Width() * 2;
-	auto dHeight = dun.Height() * 2;
+	auto dWidth = vec.Width() * 2;
+	auto dHeight = vec.Height() * 2;
 	for (size_t j = 0; j < dHeight; j++)
 	{
 		for (size_t i = 0; i < dWidth; i++)
@@ -214,7 +214,7 @@ void LevelMap::setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun)
 			}
 			yDunIndex /= 2;
 
-			int32_t dunIndex = dun[xDunIndex][yDunIndex];
+			int32_t dunIndex = vec[xDunIndex][yDunIndex];
 			if (dunIndex < 0 || (size_t)dunIndex >= tileSet.size())
 			{
 				continue;
@@ -253,16 +253,16 @@ void LevelMap::setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun)
 	}
 }
 
-void LevelMap::setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Dun& dun)
+void LevelMap::setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Vector2D<int32_t>& vec)
 {
 	if (layer == 0)
 	{
 		lightsNeedUpdate = true;
 	}
 	auto flags = getFlags();
-	for (size_t j = 0; j < dun.Height(); j++)
+	for (size_t j = 0; j < vec.Height(); j++)
 	{
-		for (size_t i = 0; i < dun.Width(); i++)
+		for (size_t i = 0; i < vec.Width(); i++)
 		{
 			auto cellX = x + (int32_t)i;
 			auto cellY = y + (int32_t)j;
@@ -275,7 +275,7 @@ void LevelMap::setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const D
 
 			auto& cell = cells[(size_t)(cellX + (cellY * mapSizei.x))];
 
-			auto tileIndex = dun[i][j];
+			auto tileIndex = vec[i][j];
 			cell.setTileIndex(layer, tileIndex);
 			cell.setTileIndex(
 				LevelCell::FlagsLayer,
@@ -286,7 +286,7 @@ void LevelMap::setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const D
 }
 
 void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
-	const Dun& dun, bool normalizeFlagsLayer)
+	const Vector2D<int32_t>& vec, bool normalizeFlagsLayer)
 {
 	if (layer > LevelCell::NumberOfLayers)
 	{
@@ -296,9 +296,9 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 	{
 		lightsNeedUpdate = true;
 	}
-	for (size_t j = 0; j < dun.Height(); j++)
+	for (size_t j = 0; j < vec.Height(); j++)
 	{
-		for (size_t i = 0; i < dun.Width(); i++)
+		for (size_t i = 0; i < vec.Width(); i++)
 		{
 			auto cellX = x + (int32_t)i;
 			auto cellY = y + (int32_t)j;
@@ -311,7 +311,7 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 
 			auto& cell = cells[(size_t)(cellX + (cellY * mapSizei.x))];
 
-			auto tileIndex = dun[i][j];
+			auto tileIndex = vec[i][j];
 			if (layer == LevelCell::FlagsLayer && normalizeFlagsLayer == true)
 			{
 				tileIndex = (tileIndex != 0 ? 1 : 0);

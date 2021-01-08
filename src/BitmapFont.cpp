@@ -1,7 +1,6 @@
 #include "BitmapFont.h"
 #include <cmath>
 #include <SFML/System/Utf.hpp>
-#include "TextureInfo.h"
 #include "TexturePacks/TexturePack.h"
 
 BitmapFont::BitmapFont(const std::shared_ptr<TexturePack>& texturePack_,

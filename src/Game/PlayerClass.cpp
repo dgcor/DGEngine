@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Utils/Utils.h"
 
-TexturePackVariant PlayerClass::getTexturePack(size_t idx) const
+std::shared_ptr<TexturePack> PlayerClass::getTexturePack(size_t idx) const
 {
 	if (idx < textures.size())
 	{

@@ -1,5 +1,4 @@
 #include "BitmapFontTexturePack.h"
-#include "TextureInfo.h"
 
 // This piece of code was originally from Lazy Foo' Productions (http://lazyfoo.net/)
 void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, int columns,
