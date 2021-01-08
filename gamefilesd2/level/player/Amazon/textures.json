@@ -1,8 +1,9 @@
 {
   "load": "level/player/Amazon/textureFiles.json",
-  "compositeTexture": [
+  "texturePack": [
     {
       "id": "amazonNormal",
+      "type": "composite",
       "groups": [
         {
           "file": "data/global/CHARS/AM/COF/amnuhth.cof",

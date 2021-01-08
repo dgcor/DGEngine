@@ -79,12 +79,12 @@ namespace Parser
 		}
 	}
 
-	Dun getDunFromLayer(const Value* queryDoc, const Value& elem,
+	Vector2D<int32_t> getDunFromLayer(const Value* queryDoc, const Value& elem,
 		int32_t indexOffset, int32_t defaultTile)
 	{
 		auto width = getUIntVal(getQueryKey(queryDoc, elem, "width"));
 		auto height = getUIntVal(getQueryKey(queryDoc, elem, "height"));
-		Dun dun(width, height, defaultTile);
+		Vector2D<int32_t> dun(width, height, defaultTile);
 
 		auto& elemData = getQueryKey(queryDoc, elem, "data");
 
@@ -119,7 +119,7 @@ namespace Parser
 		const auto& elemLayers = elem["layers"sv];
 		for (const auto& elemLayer : elemLayers)
 		{
-			Dun dun = getDunFromLayer(queryDoc, elemLayer, indexOffset, defaultTile);
+			auto dun = getDunFromLayer(queryDoc, elemLayer, indexOffset, defaultTile);
 
 			if (dun.Width() > 0 && dun.Height() > 0)
 			{
@@ -197,7 +197,7 @@ namespace Parser
 		}
 		if (hasJsonFile == false)
 		{
-			D1Dun dun(file, defaultTile);
+			Dun dun(file, defaultTile);
 			if (dun.Width() > 0 && dun.Height() > 0)
 			{
 				auto pos = getVector2uKey<PairInt32>(elem, "position");

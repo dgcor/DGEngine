@@ -50,6 +50,11 @@ void Image::setTexture(const std::vector<TextureInfo>& ti)
 	sprite.setTexture(ti);
 }
 
+void Image::setTexture(const TextureInfoVar& ti)
+{
+	sprite.setTexture(ti);
+}
+
 void Image::updateSize(const Game& game)
 {
 	if (background == false)

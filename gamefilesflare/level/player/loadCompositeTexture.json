@@ -1,6 +1,7 @@
 {
-  "compositeTexture": {
+  "texturePack": {
     "id": "{1}",
+    "type": "composite",
     "texturePacks": [
       "{2}",
       "{3}",

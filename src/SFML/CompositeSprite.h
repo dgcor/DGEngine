@@ -52,6 +52,7 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false);
 	void setTexture(const TextureInfo& ti);
 	void setTexture(const std::vector<TextureInfo>& ti);
+	void setTexture(const TextureInfoVar& ti);
 
 	void draw(sf::RenderTarget& target, GameShader* spriteShader) const;
 

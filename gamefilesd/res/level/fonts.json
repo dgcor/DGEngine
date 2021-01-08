@@ -22,21 +22,21 @@
   "texturePack": [
     {
       "id": "smaltext",
-      "font": true,
+      "type": "font",
       "texture": "smaltext",
       "palette": "town",
       "charSizeFile": "res/level/smaltextSize.bin"
     },
     {
       "id": "medtexts",
-      "font": true,
+      "type": "font",
       "texture": "medtexts",
       "palette": "town",
       "charSizeFile": "res/level/medtextsSize.bin"
     },
     {
       "id": "bigtgold",
-      "font": true,
+      "type": "font",
       "texture": "bigtgold",
       "palette": "town",
       "charSizeFile": "res/level/bigtgoldSize.bin"

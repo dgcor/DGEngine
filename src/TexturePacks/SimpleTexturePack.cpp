@@ -1,7 +1,6 @@
 #include "SimpleTexturePack.h"
 #include "AnimationInfo.h"
 #include <limits>
-#include "TextureInfo.h"
 
 static bool makeTexturePack(MultiTexture& t, const std::pair<uint32_t, uint32_t>& frames)
 {

@@ -244,12 +244,6 @@ bool ResourceManager::addTexturePack(const std::string_view key,
 	return addResource(key, obj, resourceId);
 }
 
-bool ResourceManager::addCompositeTexture(const std::string_view key,
-	const std::shared_ptr<CompositeTexture>& obj, const std::string_view resourceId)
-{
-	return addResource(key, obj, resourceId);
-}
-
 void ResourceManager::addDrawable(ResourceBundle& res, const std::string_view key,
 	const std::shared_ptr<UIObject>& obj, bool manageObjDrawing)
 {
@@ -412,11 +406,6 @@ std::shared_ptr<TexturePack> ResourceManager::getTexturePack(const std::string_v
 	return getResource<std::shared_ptr<TexturePack>>(key);
 }
 
-std::shared_ptr<CompositeTexture> ResourceManager::getCompositeTexture(const std::string_view key) const
-{
-	return getResource<std::shared_ptr<CompositeTexture>>(key);
-}
-
 bool ResourceManager::hasFileBytes(const std::string_view key) const
 {
 	return hasResource<std::shared_ptr<FileBytes>>(key, false);
@@ -466,11 +455,6 @@ bool ResourceManager::hasImageContainer(const std::string_view key) const
 bool ResourceManager::hasTexturePack(const std::string_view key) const
 {
 	return hasResource<std::shared_ptr<TexturePack>>(key, false);
-}
-
-bool ResourceManager::hasCompositeTexture(const std::string_view key) const
-{
-	return hasResource<std::shared_ptr<CompositeTexture>>(key, false);
 }
 
 bool ResourceManager::hasDrawable(const std::string_view key) const

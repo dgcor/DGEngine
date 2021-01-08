@@ -1,11 +1,10 @@
-#include "CompositeTexture.h"
+#include "CompositeTexturePack.h"
 #include "AnimationInfo.h"
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 #include <algorithm>
 #include "PhysFSStream.h"
 #include "StreamReader.h"
 #endif
-#include "TextureInfo.h"
 
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 namespace
@@ -50,7 +49,7 @@ namespace
 	// HD, TR, LG, RA, LA, RH, LH, SH, S1, S2, S3, S4, S5, S6, S7, S8
 }
 
-void CompositeTexture::addGroup(const std::string_view fileName, bool fixLayerOrdering)
+void CompositeTexturePack::addGroup(const std::string_view fileName, bool fixLayerOrdering)
 {
 	std::vector<uint8_t> fileData;
 
@@ -186,7 +185,7 @@ void CompositeTexture::addGroup(const std::string_view fileName, bool fixLayerOr
 }
 #endif
 
-bool CompositeTexture::addGroup(uint32_t texturePackCount)
+bool CompositeTexturePack::addGroup(uint32_t texturePackCount)
 {
 	if (compositeTextureGroups.empty() == true)
 	{
@@ -240,12 +239,12 @@ bool CompositeTexture::addGroup(uint32_t texturePackCount)
 	return false;
 }
 
-void CompositeTexture::addTexturePack(const std::shared_ptr<TexturePack>& texture)
+void CompositeTexturePack::addTexturePack(const std::shared_ptr<TexturePack>& texture)
 {
-	texturePacks.push_back(std::move(texture));
+	texturePacks.push_back(texture);
 }
 
-void CompositeTexture::setLayersOrders(const std::vector<int8_t>& groupLayersOrders)
+void CompositeTexturePack::setLayersOrders(const std::vector<int8_t>& groupLayersOrders)
 {
 	if (compositeTextureGroups.empty() == true ||
 		groupLayersOrders.empty() == true)
@@ -264,41 +263,7 @@ void CompositeTexture::setLayersOrders(const std::vector<int8_t>& groupLayersOrd
 	compositeTextureGroups.back().hasAllLayersOrdersDirections = false;
 }
 
-uint32_t CompositeTexture::getTextureCount() const noexcept
-{
-	return numberOfFrames;
-}
-
-uint32_t CompositeTexture::getGroupCount() const noexcept
-{
-	return totalTexturePackGroups;
-}
-
-uint32_t CompositeTexture::getDirectionCount(uint32_t groupIdx) const
-{
-	if (hasMultipleGroupsPerTexturePack == false)
-	{
-		if (groupIdx < compositeTextureGroups.size())
-		{
-			return compositeTextureGroups[groupIdx].directions;
-		}
-	}
-	else
-	{
-		uint32_t numGroups = 0;
-		for (const auto& group : compositeTextureGroups)
-		{
-			numGroups += group.texturePackGroups;
-			if (groupIdx < numGroups)
-			{
-				return group.directions;
-			}
-		}
-	}
-	return 1;
-}
-
-uint32_t CompositeTexture::getLayerCount(uint32_t groupIdx) const noexcept
+uint32_t CompositeTexturePack::getLayerCount(uint32_t groupIdx) const noexcept
 {
 	if (compositeTextureGroups.size() <= 1)
 	{
@@ -327,7 +292,29 @@ uint32_t CompositeTexture::getLayerCount(uint32_t groupIdx) const noexcept
 	return 0;
 }
 
-bool CompositeTexture::get(uint32_t index, std::vector<TextureInfo>& tiVec) const
+bool CompositeTexturePack::get(uint32_t index, TextureInfo& ti) const
+{
+	std::vector<TextureInfo> tiVec;
+	if (get(index, tiVec) == true)
+	{
+		ti = tiVec.front();
+		return true;
+	}
+	return false;
+}
+
+bool CompositeTexturePack::get(uint32_t index, TextureInfoVar& tiVar) const
+{
+	std::vector<TextureInfo> tiVec;
+	if (get(index, tiVec) == true)
+	{
+		tiVar.emplace<std::vector<TextureInfo>>(std::move(tiVec));
+		return true;
+	}
+	return false;
+}
+
+bool CompositeTexturePack::get(uint32_t index, std::vector<TextureInfo>& tiVec) const
 {
 	tiVec.clear();
 
@@ -406,7 +393,65 @@ bool CompositeTexture::get(uint32_t index, std::vector<TextureInfo>& tiVec) cons
 	return tiVec.empty() == false;
 }
 
-AnimationInfo CompositeTexture::getAnimation(int32_t groupIdx, int32_t directionIdx) const
+int32_t CompositeTexturePack::getWidth(uint32_t index) const
+{
+	if (texturePacks.empty() == false)
+	{
+		return texturePacks.front()->getWidth(index);
+	}
+	return 0;
+}
+
+const std::shared_ptr<Palette>& CompositeTexturePack::getPalette() const noexcept
+{
+	if (texturePacks.empty() == false)
+	{
+		return texturePacks.front()->getPalette();
+	}
+	return palette;
+}
+
+uint32_t CompositeTexturePack::size() const noexcept
+{
+	return numberOfFrames;
+}
+
+uint32_t CompositeTexturePack::getGroupCount() const noexcept
+{
+	return totalTexturePackGroups;
+}
+
+uint32_t CompositeTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
+{
+	if (hasMultipleGroupsPerTexturePack == false)
+	{
+		if (groupIdx < compositeTextureGroups.size())
+		{
+			return compositeTextureGroups[groupIdx].directions;
+		}
+	}
+	else
+	{
+		uint32_t numGroups = 0;
+		for (const auto& group : compositeTextureGroups)
+		{
+			numGroups += group.texturePackGroups;
+			if (groupIdx < numGroups)
+			{
+				return group.directions;
+			}
+		}
+	}
+	return 1;
+}
+
+uint32_t CompositeTexturePack::getDirection(uint32_t frameIdx) const noexcept
+{
+	// not implemented
+	return 0;
+}
+
+AnimationInfo CompositeTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
 	if (compositeTextureGroups.empty() == true)
 	{

@@ -1,6 +1,5 @@
 #include "TexturePack.h"
 #include "AnimationInfo.h"
-#include "TextureInfo.h"
 
 void TexturePack::updateTextureRect(TextureInfo& ti)
 {
@@ -32,6 +31,17 @@ std::pair<uint32_t, uint32_t> TexturePack::getRange(uint32_t startIdx,
 		}
 	}
 	return std::make_pair(startIdx, stopIdx - 1);
+}
+
+bool TexturePack::get(uint32_t index, TextureInfoVar& tiVar) const
+{
+	TextureInfo ti;
+	if (get(index, ti) == true)
+	{
+		tiVar.emplace<TextureInfo>(std::move(ti));
+		return true;
+	}
+	return false;
 }
 
 AnimationInfo TexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const

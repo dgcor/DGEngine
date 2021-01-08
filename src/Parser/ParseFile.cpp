@@ -10,7 +10,6 @@
 #include "ParseAudio.h"
 #include "ParseButton.h"
 #include "ParseCircle.h"
-#include "ParseCompositeTexture.h"
 #include "ParseCursor.h"
 #include "ParseEvent.h"
 #include "ParseFileBytes.h"
@@ -219,17 +218,6 @@ namespace Parser
 		case str2int16("circle"): {
 			if (elem.IsArray() == false) {
 				parseCircle(game, elem);
-			}
-			else {
-				for (const auto& val : elem) {
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("compositeTexture"): {
-			if (elem.IsArray() == false) {
-				parseCompositeTexture(game, elem);
 			}
 			else {
 				for (const auto& val : elem) {

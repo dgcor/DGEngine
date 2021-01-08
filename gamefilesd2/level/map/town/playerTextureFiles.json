@@ -115,15 +115,15 @@
       "id": "wmnn",
       "imageContainer": "wmnn",
       "palette": "town"
+    },
+    {
+      "id": "strytell",
+      "file": "data/global/monsters/MP/cof/MPNUHTH.COF",
+      "texturePacks": [
+        "MPTRLITNUHTH",
+        "MPLALITNUHTH",
+        "MPRALITNUHTH"
+      ]
     }
-  ],
-  "compositeTexture": {
-    "id": "strytell",
-    "file": "data/global/monsters/MP/cof/MPNUHTH.COF",
-    "texturePacks": [
-      "MPTRLITNUHTH",
-      "MPLALITNUHTH",
-      "MPRALITNUHTH"
-    ]
-  }
+  ]
 }

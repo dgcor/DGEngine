@@ -1,8 +1,9 @@
 {
   "load": "level/player/Sorceress/textureFiles.json",
-  "compositeTexture": [
+  "texturePack": [
     {
       "id": "sorceressNormal",
+      "type": "composite",
       "groups": [
         {
           "file": "data/global/CHARS/SO/COF/SONUHTH.COF",

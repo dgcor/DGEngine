@@ -57,18 +57,6 @@ namespace Parser
 			animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
 			animation = std::make_shared<Animation>(texPack, animInfo);
 		}
-		else if (isValidString(elem, "compositeTexture"))
-		{
-			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
-			if (compTex == nullptr)
-			{
-				return nullptr;
-			}
-			auto animInfo = compTex->getAnimation(-1, -1);
-			animInfo.indexRange = getFramesKey(elem, "frames", animInfo.indexRange);
-			animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
-			animation = std::make_shared<Animation>(compTex, animInfo);
-		}
 		else
 		{
 			return nullptr;

@@ -56,6 +56,7 @@ public:
 	void setTexture(const sf::Texture& texture, bool resetRect = false);
 	void setTexture(const TextureInfo& ti);
 	void setTexture(const std::vector<TextureInfo>& ti);
+	void setTexture(const TextureInfoVar& ti);
 	void setTextureRect(const sf::IntRect& rectangle) { sprite.setTextureRect(rectangle); }
 
 	Anchor getAnchor() const noexcept override { return anchor; }

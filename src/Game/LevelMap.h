@@ -126,15 +126,15 @@ public:
 	static size_t MaxLights() noexcept { return maxLights; }
 	static void MaxLights(size_t maxLights_) noexcept;
 
-	// sets area (tileBlock Dun file) for layer 0 and uses the Flags file to set the Flags layer.
-	void setTileSetAreaUseFlags(int32_t x, int32_t y, const Dun& dun);
+	// sets area (tileBlock Vector2D file) for layer 0 and uses the Flags file to set the Flags layer.
+	void setTileSetAreaUseFlags(int32_t x, int32_t y, const Vector2D<int32_t>& vec);
 
-	// sets area (indexes Dun file) for layer n and uses the Flags file to set the Flags layer.
-	void setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Dun& dun);
+	// sets area (indexes Vector2D file) for layer n and uses the Flags file to set the Flags layer.
+	void setSimpleAreaUseFlags(size_t layer, int32_t x, int32_t y, const Vector2D<int32_t>& vec);
 
-	// sets area (indexes Dun file)
+	// sets area (indexes Vector2D file)
 	void setSimpleArea(size_t layer, int32_t x, int32_t y,
-		const Dun& dun, bool normalizeFlagsLayer = true);
+		const Vector2D<int32_t>& vec, bool normalizeFlagsLayer = true);
 
 #ifndef NO_DIABLO_FORMAT_SUPPORT
 	void setD2Area(int32_t x, int32_t y, DS1::Decoder& dun);

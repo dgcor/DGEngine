@@ -2,7 +2,6 @@
 
 #include "Actions/Action.h"
 #include "AudioSource.h"
-#include "CompositeTexture.h"
 #include "FileBytes.h"
 #include "Font.h"
 #include "IgnoreResource.h"
@@ -37,8 +36,7 @@ struct ResourceBundle
 		AudioSource,
 		std::shared_ptr<Palette>,
 		std::shared_ptr<ImageContainer>,
-		std::shared_ptr<TexturePack>,
-		std::shared_ptr<CompositeTexture>>
+		std::shared_ptr<TexturePack>>
 		Resource;
 
 	IgnoreResource ignore{ IgnoreResource::None };
@@ -246,8 +244,6 @@ public:
 		const std::string_view resourceId = {});
 	bool addTexturePack(const std::string_view key, const std::shared_ptr<TexturePack>& obj,
 		const std::string_view resourceId = {});
-	bool addCompositeTexture(const std::string_view key, const std::shared_ptr<CompositeTexture>& obj,
-		const std::string_view resourceId = {});
 
 	void addDrawable(const std::string_view key, const std::shared_ptr<UIObject>& obj,
 		bool manageObjDrawing, const std::string_view resourceId = {});
@@ -269,7 +265,6 @@ public:
 	std::shared_ptr<Palette> getPalette(const std::string_view key) const;
 	std::shared_ptr<ImageContainer> getImageContainer(const std::string_view key) const;
 	std::shared_ptr<TexturePack> getTexturePack(const std::string_view key) const;
-	std::shared_ptr<CompositeTexture> getCompositeTexture(const std::string_view key) const;
 
 	bool hasFileBytes(const std::string_view key) const;
 	bool hasFont(const std::string_view key) const;
@@ -279,7 +274,6 @@ public:
 	bool hasPalette(const std::string_view key) const;
 	bool hasImageContainer(const std::string_view key) const;
 	bool hasTexturePack(const std::string_view key) const;
-	bool hasCompositeTexture(const std::string_view key) const;
 
 	bool hasDrawable(const std::string_view key) const;
 

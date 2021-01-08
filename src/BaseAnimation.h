@@ -4,18 +4,18 @@
 #pragma once
 
 #include "AnimationInfo.h"
-#include "CompositeTexture.h"
 #include <cstddef>
+#include "TexturePacks/CompositeTexturePack.h"
 #include <utility>
 #include "Utils/ElapsedTime.h"
-#include <variant>
 
 class CompositeSprite;
 
 class BaseAnimation
 {
 private:
-	TexturePackVariant texturePackVar;
+	std::shared_ptr<TexturePack> texturePack;
+	const CompositeTexturePack* compositeTexturePack{ nullptr };
 
 public:
 	std::pair<uint32_t, uint32_t> textureIndexRange;
@@ -31,15 +31,15 @@ private:
 
 public:
 	BaseAnimation() {}
-	BaseAnimation(TexturePackVariant texturePackVar_, bool pause_);
+	BaseAnimation(const std::shared_ptr<TexturePack>& texturePack_, bool pause_);
 
-	BaseAnimation(TexturePackVariant texturePackVar_,
+	BaseAnimation(const std::shared_ptr<TexturePack>& texturePack_,
 		const AnimationInfo& animInfo, bool pause_);
 
 	void clear() noexcept;
 	void reset() noexcept;
 
-	void setTexturePack(TexturePackVariant texturePackVar_) noexcept;
+	void setTexturePack(const std::shared_ptr<TexturePack>& texturePack_) noexcept;
 
 	void setAnimation(const AnimationInfo& animInfo) noexcept;
 	void setAnimation(int32_t groupIdx, int32_t directionIdx) noexcept;
@@ -58,14 +58,9 @@ public:
 	bool hasPlayOnceAnimationFinished() const noexcept;
 
 	bool holdsNullTexturePack() const noexcept;
-	bool holdsTexturePack() const noexcept;
-	bool holdsTexturePack(const std::shared_ptr<TexturePack>& obj) const noexcept;
-	bool holdsCompositeTexture() const noexcept;
-	bool holdsCompositeTexture(const std::shared_ptr<CompositeTexture>& obj) const noexcept;
+	bool holdsCompositeTexturePack() const noexcept;
 	const std::shared_ptr<TexturePack>& getTexturePack() const;
 	std::shared_ptr<TexturePack>& getTexturePack();
-	const std::shared_ptr<CompositeTexture>& getCompositeTexture() const;
-	std::shared_ptr<CompositeTexture>& getCompositeTexture();
 
 	bool update(sf::Time elapsedTime_) noexcept;
 

@@ -181,30 +181,14 @@ namespace Parser
 		}
 		case str2int16("animation.set"):
 		{
-			if (isValidString(elem, "texturePack") == true)
-			{
-				return std::make_shared<ActAnimationSetAnimation>(
-					getStringViewKey(elem, "id"),
-					getStringViewKey(elem, "texturePack"),
-					getIntKey(elem, "group", -1),
-					getIntKey(elem, "direction", -1),
-					getTimeKey(elem, "refresh"),
-					getBoolKey(elem, "reset", true),
-					getBoolKey(elem, "updateAnimationType"),
-					false);
-			}
-			else
-			{
-				return std::make_shared<ActAnimationSetAnimation>(
-					getStringViewKey(elem, "id"),
-					getStringViewKey(elem, "compositeTexture"),
-					getIntKey(elem, "group", -1),
-					getIntKey(elem, "direction", -1),
-					getTimeKey(elem, "refresh"),
-					getBoolKey(elem, "reset", true),
-					getBoolKey(elem, "updateAnimationType"),
-					true);
-			}
+			return std::make_shared<ActAnimationSetAnimation>(
+				getStringViewKey(elem, "id"),
+				getStringViewKey(elem, "texturePack"),
+				getIntKey(elem, "group", -1),
+				getIntKey(elem, "direction", -1),
+				getTimeKey(elem, "refresh"),
+				getBoolKey(elem, "reset", true),
+				getBoolKey(elem, "updateAnimationType"));
 		}
 		case str2int16("animation.setRefresh"):
 		{

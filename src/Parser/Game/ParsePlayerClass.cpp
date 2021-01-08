@@ -24,13 +24,7 @@ namespace Parser
 		auto texturePack = game.Resources().getTexturePack(id);
 		if (texturePack != nullptr)
 		{
-			playerClass.addTexturePack(std::move(texturePack));
-			return;
-		}
-		auto compTex = game.Resources().getCompositeTexture(id);
-		if (compTex != nullptr)
-		{
-			playerClass.addTexturePack(std::move(compTex));
+			playerClass.addTexturePack(texturePack);
 			return;
 		}
 	}

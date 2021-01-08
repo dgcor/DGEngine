@@ -1,8 +1,9 @@
 {
   "load": "level/player/Paladin/textureFiles.json",
-  "compositeTexture": [
+  "texturePack": [
     {
       "id": "paladinNormal",
+      "type": "composite",
       "groups": [
         {
           "file": "data/global/CHARS/PA/COF/PANUHTH.COF",

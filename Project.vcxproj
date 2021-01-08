@@ -85,7 +85,6 @@
     <ClCompile Include="src\CachedImagePack.cpp" />
     <ClCompile Include="src\Circle.cpp" />
     <ClCompile Include="src\CmdLineUtils.cpp" />
-    <ClCompile Include="src\CompositeTexture.cpp" />
     <ClCompile Include="src\DS1.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
     </ClCompile>
@@ -174,7 +173,6 @@
     <ClCompile Include="src\Parser\ParseAudioCommon.cpp" />
     <ClCompile Include="src\Parser\ParseButton.cpp" />
     <ClCompile Include="src\Parser\ParseCircle.cpp" />
-    <ClCompile Include="src\Parser\ParseCompositeTexture.cpp" />
     <ClCompile Include="src\Parser\ParseCondition.cpp" />
     <ClCompile Include="src\Parser\ParseCursor.cpp" />
     <ClCompile Include="src\Parser\ParseEvent.cpp" />
@@ -270,6 +268,7 @@
     <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\TexturePacks\BitmapFontTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\CachedTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\CompositeTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\IndexedTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\RectTexturePack.cpp" />
     <ClCompile Include="src\TexturePacks\SimpleTexturePack.cpp" />
@@ -330,7 +329,6 @@
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
     <ClInclude Include="src\CmdLineUtils.h" />
-    <ClInclude Include="src\CompositeTexture.h" />
     <ClInclude Include="src\DS1.h">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
     </ClInclude>
@@ -429,7 +427,6 @@
     <ClInclude Include="src\Parser\ParseAudioCommon.h" />
     <ClInclude Include="src\Parser\ParseButton.h" />
     <ClInclude Include="src\Parser\ParseCircle.h" />
-    <ClInclude Include="src\Parser\ParseCompositeTexture.h" />
     <ClInclude Include="src\Parser\ParseCondition.h" />
     <ClInclude Include="src\Parser\ParseCursor.h" />
     <ClInclude Include="src\Parser\ParseEvent.h" />
@@ -562,6 +559,7 @@
     <ClInclude Include="src\TextureInfo.h" />
     <ClInclude Include="src\TexturePacks\BitmapFontTexturePack.h" />
     <ClInclude Include="src\TexturePacks\CachedTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\CompositeTexturePack.h" />
     <ClInclude Include="src\TexturePacks\IndexedTexturePack.h" />
     <ClInclude Include="src\TexturePacks\RectTexturePack.h" />
     <ClInclude Include="src\TexturePacks\SimpleTexturePack.h" />
@@ -584,6 +582,7 @@
     <ClInclude Include="src\Utils\ReverseIterable.h" />
     <ClInclude Include="src\Utils\UnorderedStringMap.h" />
     <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Utils\Vector2D.h" />
     <ClInclude Include="src\Variable.h" />
     <ClInclude Include="src\VarOrPredicate.h" />
   </ItemGroup>

@@ -1,5 +1,4 @@
 #include "IndexedTexturePack.h"
-#include "TextureInfo.h"
 
 IndexedTexturePack::IndexedTexturePack(std::unique_ptr<TexturePack> texturePack_,
 	bool onlyUseIndexed_, bool translateAnimatedIndexes_) : texturePack(std::move(texturePack_)),

@@ -40,26 +40,19 @@ namespace Parser
 			{
 				return;
 			}
-			TextureInfo ti;
-			if (texPack->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			TextureInfoVar tiVar;
+			if (texPack->get(getUIntKey(elem, "textureIndex"), tiVar) == false)
 			{
 				return;
 			}
-			image = std::make_shared<Image>(ti);
-		}
-		else if (isValidString(elem, "compositeTexture"))
-		{
-			auto compTex = game.Resources().getCompositeTexture(elem["compositeTexture"sv].GetStringView());
-			if (compTex == nullptr)
+			if (std::holds_alternative<TextureInfo>(tiVar) == true)
 			{
-				return;
+				image = std::make_shared<Image>(std::get<TextureInfo>(tiVar));
 			}
-			std::vector<TextureInfo> ti;
-			if (compTex->get(getUIntKey(elem, "textureIndex"), ti) == false)
+			else
 			{
-				return;
+				image = std::make_shared<Image>(std::get<std::vector<TextureInfo>>(tiVar));
 			}
-			image = std::make_shared<Image>(ti);
 		}
 		else
 		{

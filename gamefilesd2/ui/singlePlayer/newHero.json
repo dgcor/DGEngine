@@ -178,7 +178,7 @@
             "value": "Necromancer",
             "action": [
               { "name": "variable.set", "key": "blockInput", "value": true },
-              { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NEBW", "refresh": 42 },
+              { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NEBWc", "refresh": 42 },
               { "name": "drawable.visible", "id": "newName", "visible": false },
               { "name": "audio.pause", "id": "necromancer_select" },
               { "name": "audio.play", "id": "necromancer_deselect" },
@@ -246,7 +246,7 @@
             "value": "Sorceress",
             "action": [
               { "name": "variable.set", "key": "blockInput", "value": true },
-              { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SOBW" },
+              { "name": "animation.set", "id": "imgSorceress", "texturePack": "SOBWc" },
               { "name": "drawable.visible", "id": "newName", "visible": false },
               { "name": "audio.pause", "id": "sorceress_select" },
               { "name": "audio.play", "id": "sorceress_deselect" },
@@ -637,67 +637,74 @@
       "id": "SONU3s",
       "imageContainer": "SONU3s",
       "palette": "fechar"
-    }
-  ],
-  "compositeTexture": [
+    },
     {
-      "id": "AMFW",
+      "id": "AMFWc",
+      "type": "composite",
       "texturePacks": [
         "AMFW",
         "AMFWs"
       ]
     },
     {
-      "id": "BAFW",
+      "id": "BAFWc",
+      "type": "composite",
       "texturePacks": [
         "BAFW",
         "BAFWs"
       ]
     },
     {
-      "id": "NEBW",
+      "id": "NEBWc",
+      "type": "composite",
       "texturePacks": [
         "NEBW",
         "NEBWs"
       ]
     },
     {
-      "id": "NEFW",
+      "id": "NEFWc",
+      "type": "composite",
       "texturePacks": [
         "NEFW",
         "NEFWs"
       ]
     },
     {
-      "id": "NENU3",
+      "id": "NENU3c",
+      "type": "composite",
       "texturePacks": [
         "NENU3",
         "NENU3s"
       ]
     },
     {
-      "id": "PAFW",
+      "id": "PAFWc",
+      "type": "composite",
       "texturePacks": [
         "PAFW",
         "PAFWs"
       ]
     },
     {
-      "id": "SOBW",
+      "id": "SOBWc",
+      "type": "composite",
       "texturePacks": [
         "SOBW",
         "SOBWs"
       ]
     },
     {
-      "id": "SOFW",
+      "id": "SOFWc",
+      "type": "composite",
       "texturePacks": [
         "SOFW",
         "SOFWs"
       ]
     },
     {
-      "id": "SONU3",
+      "id": "SONU3c",
+      "type": "composite",
       "texturePacks": [
         "SONU3",
         "SONU3s"
@@ -891,7 +898,7 @@
               { "name": "variable.set", "key": "blockInput", "value": true },
               { "name": "variable.set", "key": "charClass", "value": "Necromancer" },
               "setNecromancerText",
-              { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NEFW", "refresh": 42 },
+              { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NEFWc", "refresh": 42 },
               { "name": "drawable.visible", "id": "newName", "visible": true },
               { "name": "audio.play", "id": "necromancer_select" },
               {
@@ -903,7 +910,7 @@
                   "param1": "%imgNecromancer.isAtEnd%",
                   "param2": true,
                   "then": [
-                    { "name": "animation.set", "id": "imgNecromancer", "compositeTexture": "NENU3", "refresh": 75 },
+                    { "name": "animation.set", "id": "imgNecromancer", "texturePack": "NENU3c", "refresh": 75 },
                     { "name": "event.delete", "id": "forward" },
                     { "name": "variable.set", "key": "blockInput", "value": false }
                   ]
@@ -962,7 +969,7 @@
               { "name": "variable.set", "key": "blockInput", "value": true },
               { "name": "variable.set", "key": "charClass", "value": "Barbarian" },
               "setBarbarianText",
-              { "name": "animation.set", "id": "imgBarbarian", "compositeTexture": "BAFW", "refresh": 40 },
+              { "name": "animation.set", "id": "imgBarbarian", "texturePack": "BAFWc", "refresh": 40 },
               { "name": "drawable.visible", "id": "newName", "visible": true },
               { "name": "audio.play", "id": "barbarian_select" },
               {
@@ -1033,7 +1040,7 @@
               { "name": "variable.set", "key": "blockInput", "value": true },
               { "name": "variable.set", "key": "charClass", "value": "Sorceress" },
               "setSorceressText",
-              { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SOFW", "refresh": 40 },
+              { "name": "animation.set", "id": "imgSorceress", "texturePack": "SOFWc", "refresh": 40 },
               { "name": "drawable.visible", "id": "newName", "visible": true },
               { "name": "audio.play", "id": "sorceress_select" },
               {
@@ -1045,7 +1052,7 @@
                   "param1": "%imgSorceress.isAtEnd%",
                   "param2": true,
                   "then": [
-                    { "name": "animation.set", "id": "imgSorceress", "compositeTexture": "SONU3" },
+                    { "name": "animation.set", "id": "imgSorceress", "texturePack": "SONU3c" },
                     { "name": "event.delete", "id": "forward" },
                     { "name": "variable.set", "key": "blockInput", "value": false }
                   ]
@@ -1104,7 +1111,7 @@
               { "name": "variable.set", "key": "blockInput", "value": true },
               { "name": "variable.set", "key": "charClass", "value": "Paladin" },
               "setPaladinText",
-              { "name": "animation.set", "id": "imgPaladin", "compositeTexture": "PAFW", "refresh": 40 },
+              { "name": "animation.set", "id": "imgPaladin", "texturePack": "PAFWc", "refresh": 40 },
               { "name": "drawable.visible", "id": "newName", "visible": true },
               { "name": "audio.play", "id": "paladin_select" },
               {

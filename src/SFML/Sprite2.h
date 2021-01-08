@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Palette.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include "Shader.h"
@@ -13,7 +12,6 @@ struct SpriteShaderCache
 	sf::Color outline{ sf::Color::Transparent };
 	sf::Color ignore{ sf::Color::Transparent };
 	sf::Vector2i textureSize;
-	bool hasPalette{ false };
 };
 
 class Sprite2 : private sf::Sprite

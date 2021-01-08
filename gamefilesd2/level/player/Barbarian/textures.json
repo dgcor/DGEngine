@@ -1,8 +1,9 @@
 {
   "load": "level/player/Barbarian/textureFiles.json",
-  "compositeTexture": [
+  "texturePack": [
     {
       "id": "barbarianNormal",
+      "type": "composite",
       "groups": [
         {
           "file": "data/global/CHARS/BA/COF/BANUHTH.COF",

@@ -41,46 +41,24 @@ private:
 	sf::Time refresh;
 	bool resetAnimation;
 	bool updateAnimationType;
-	bool setCompositeTexture;
 
 public:
 	ActAnimationSetAnimation(const std::string_view id_,
 		const std::string_view idTexturePack_, int32_t groupIdx_, int32_t directionIdx_,
-		sf::Time refresh_, bool resetAnimation_, bool updateAnimationType_,
-		bool setCompositeTexture_) : id(id_), idTexturePack(idTexturePack_),
-		groupIdx(groupIdx_), directionIdx(directionIdx_), refresh(refresh_),
-		resetAnimation(resetAnimation_), updateAnimationType(updateAnimationType_),
-		setCompositeTexture(setCompositeTexture_) {}
+		sf::Time refresh_, bool resetAnimation_, bool updateAnimationType_) : id(id_),
+		idTexturePack(idTexturePack_), groupIdx(groupIdx_), directionIdx(directionIdx_),
+		refresh(refresh_), resetAnimation(resetAnimation_), updateAnimationType(updateAnimationType_) {}
 
 	bool execute(Game& game) override
 	{
 		auto animation = game.Resources().getDrawable<Animation>(id);
 		if (animation != nullptr)
 		{
-			TexturePackVariant texVar;
-			if (idTexturePack.empty() == false)
-			{
-				if (setCompositeTexture == false)
-				{
-					auto tex = game.Resources().getTexturePack(idTexturePack);
-					if (tex != nullptr)
-					{
-						texVar = std::move(tex);
-					}
-				}
-				else
-				{
-					auto tex = game.Resources().getCompositeTexture(idTexturePack);
-					if (tex != nullptr)
-					{
-						texVar = std::move(tex);
-					}
-				}
-			}
-			if (texVar.holdsNullTexturePack() == false)
+			auto texPack = game.Resources().getTexturePack(idTexturePack);
+			if (texPack != nullptr)
 			{
 				animation->setAnimation(
-					std::move(texVar), groupIdx, directionIdx,
+					texPack, groupIdx, directionIdx,
 					resetAnimation, updateAnimationType
 				);
 			}
