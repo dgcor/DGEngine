@@ -20,13 +20,13 @@ void Level::Init(const Game& game, LevelMap map_,
 	surface.blockWidth = surface.tileWidth / 2;
 	surface.blockHeight = surface.tileHeight / 2;
 	surface.subTiles = std::clamp(subTiles, 1u, 8u);
-	surface.visible = true;
 
 	automapSurface.tileWidth = surface.tileWidth;
 	automapSurface.tileHeight = surface.tileHeight;
 	automapSurface.blockWidth = surface.blockWidth;
 	automapSurface.blockHeight = surface.blockHeight;
 	automapSurface.subTiles = surface.subTiles;
+	automapSurface.visible = false;
 
 	levelLayers.clear();
 	for (const auto& layer : levelLayers_)
