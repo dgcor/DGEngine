@@ -431,7 +431,7 @@ namespace Parser
 		const Value* queryObj = nullptr;
 		if (isValidString(elem, "load") == true)
 		{
-			if (JsonUtils::loadFile(getStringViewVal(elem["load"sv]), queryDoc) == true)
+			if (JsonUtils::loadFile(elem["load"sv].GetStringView(), queryDoc) == true)
 			{
 				queryObj = &queryDoc;
 			}

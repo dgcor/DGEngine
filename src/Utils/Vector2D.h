@@ -28,17 +28,8 @@ protected:
 		elements.resize(width * height, defaultTile);
 	}
 
-	template<std::integral T>
-	static friend T& get(size_t x, size_t y, Vector2D<T>& vec)
-	{
-		return vec.elements[x + y * vec.Width()];
-	}
-
-	template<std::integral T>
-	static friend const T& get(size_t x, size_t y, const Vector2D<T>& vec)
-	{
-		return vec.elements[x + y * vec.Width()];
-	}
+	friend T& get<>(size_t x, size_t y, Vector2D<T>& vec);
+	friend const T& get<>(size_t x, size_t y, const Vector2D<T>& vec);
 
 public:
 	Vector2D() noexcept {}
@@ -74,3 +65,16 @@ public:
 	size_t Width() const noexcept { return width; }
 	size_t Height() const noexcept { return height; }
 };
+
+
+template<std::integral T>
+static T& get(size_t x, size_t y, Vector2D<T>& vec)
+{
+	return vec.elements[x + y * vec.Width()];
+}
+
+template<std::integral T>
+static const T& get(size_t x, size_t y, const Vector2D<T>& vec)
+{
+	return vec.elements[x + y * vec.Width()];
+}
