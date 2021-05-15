@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "16",
-    "texts/farnham/quests/arkainesValor.txt"
+    "lang/%lang%/texts/farnham/quests/arkainesValor.txt"
   ],
   "audio": {
     "file": "sfx/Towners/drunk06.wav",

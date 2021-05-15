@@ -517,6 +517,25 @@ public:
 	}
 };
 
+class ActLevelUpdateDrawables : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActLevelUpdateDrawables(const std::string_view id_): id(id_) {}
+
+	bool execute(Game& game) override
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->updateDrawables(game);
+		}
+		return true;
+	}
+};
+
 class ActLevelZoom : public Action
 {
 private:
@@ -540,6 +559,27 @@ public:
 				perc += level->Zoom();
 			}
 			level->Zoom(perc, smooth);
+		}
+		return true;
+	}
+};
+
+class ActLevelZoomDrawables : public Action
+{
+private:
+	std::string id;
+	bool zoomDrawables;
+
+public:
+	ActLevelZoomDrawables(const std::string_view id_, bool zoomDrawables_)
+		: id(id_), zoomDrawables(zoomDrawables_) {}
+
+	bool execute(Game& game) noexcept override
+	{
+		auto level = game.Resources().getLevel(id);
+		if (level != nullptr)
+		{
+			level->ZoomDrawables(zoomDrawables);
 		}
 		return true;
 	}

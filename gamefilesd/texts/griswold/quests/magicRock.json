@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/griswold/quests/magicRock.txt"
+    "lang/%lang%/texts/griswold/quests/magicRock.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bsmith10.wav",

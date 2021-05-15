@@ -58,7 +58,8 @@
         },
         "updateSelectedSpell",
         "updateSpellBook",
-        "updateCharPanel"
+        "updateCharPanel",
+        "updateCharPoints"
       ]
     }
   ]

@@ -5,7 +5,7 @@
 
 bool Movie::load()
 {
-#ifndef USE_SFML_MOVIE_STUB
+#ifndef DGENGINE_MOVIE_STUB
 	if (file == nullptr || file->hasError() == true)
 	{
 		return false;
@@ -56,7 +56,7 @@ void Movie::draw(const Game& game, sf::RenderTarget& target) const
 void Movie::updateSize(const Game& game)
 {
 	auto pos = movie.getPosition();
-#ifndef USE_SFML_MOVIE_STUB
+#ifndef DGENGINE_MOVIE_STUB
 	if (size.x <= 0 || size.y <= 0)
 	{
 		size = movie.getSize();
@@ -65,7 +65,7 @@ void Movie::updateSize(const Game& game)
 	auto size = movie.getSize();
 #endif
 	GameUtils::setAnchorPosSize(anchor, pos, size, game.OldDrawRegionSize(), game.DrawRegionSize());
-#ifndef USE_SFML_MOVIE_STUB
+#ifndef DGENGINE_MOVIE_STUB
 	movie.fit(sf::FloatRect(pos, size));
 #else
 	movie.setPosition(pos);
@@ -80,7 +80,7 @@ void Movie::update(Game& game)
 		return;
 	}
 
-#ifndef USE_SFML_MOVIE_STUB
+#ifndef DGENGINE_MOVIE_STUB
 	movie.update();
 
 	if (movie.getStatus() == sfe::Status::Stopped)

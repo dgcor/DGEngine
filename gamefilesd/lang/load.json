@@ -1,0 +1,13 @@
+{
+  "action": [
+    { "name": "variable.setIfNull", "key": "lang", "value": "en" },
+    {
+      "name": "if.equal",
+      "param1": { "name": "file.exists", "file": "lang/%lang%" },
+      "param2": false,
+      "then": { "name": "variable.set", "key": "lang", "value": "en" }
+    }
+  ],
+  "load": "lang/%lang%/main.json",
+  "load": "lang/%lang%/main2.json"
+}

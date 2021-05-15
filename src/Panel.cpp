@@ -186,7 +186,7 @@ bool Panel::getProperty(const std::string_view prop, Variable& var) const
 	switch (propHash)
 	{
 	case str2int16("itemCount"):
-		var = Variable((int64_t)getItemCount());
+		var = Variable((int64_t)getDrawableCount());
 		break;
 	case str2int16("item"):
 	{

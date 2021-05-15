@@ -93,6 +93,7 @@
       "horizontalAlign": "center"
     }
   ],
+  "replaceVars": true,
   "button": {
     "id": "back",
     "font": "font42g",
@@ -101,7 +102,7 @@
     "position": [319, 406],
     "anchor": "none",
     "horizontalAlign": "center",
-    "text": "OK",
+    "text": "|str_ok|",
     "onClick": {
       "name": "game.fadeOut",
       "action": [
@@ -115,29 +116,29 @@
       "name": "if.equal",
       "param1": "%game.openGL.hasShaders%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "hasShaders", "text": "Shaders: Yes" },
-      "else": { "name": "text.setText", "id": "hasShaders", "text": "Shaders: No" }
+      "then": { "name": "text.setText", "id": "hasShaders", "text": "|str_shaders|: |str_yes|" },
+      "else": { "name": "text.setText", "id": "hasShaders", "text": "|str_shaders|: |str_no|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.openGL.hasGeometryShaders%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "hasGeometryShaders", "text": "Geometry Shaders: Yes" },
-      "else": { "name": "text.setText", "id": "hasGeometryShaders", "text": "Geometry Shaders: No" }
+      "then": { "name": "text.setText", "id": "hasGeometryShaders", "text": "|str_geometryShaders|: |str_yes|" },
+      "else": { "name": "text.setText", "id": "hasGeometryShaders", "text": "|str_geometryShaders|: |str_no|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.hasGameShader%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "hasGameShader", "text": "Game Shader: Yes" },
-      "else": { "name": "text.setText", "id": "hasGameShader", "text": "Game Shader: No" }
+      "then": { "name": "text.setText", "id": "hasGameShader", "text": "|str_gameShader|: |str_yes|" },
+      "else": { "name": "text.setText", "id": "hasGameShader", "text": "|str_gameShader|: |str_no|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.hasSpriteShader%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "hasSpriteShader", "text": "Sprite Shader: Yes" },
-      "else": { "name": "text.setText", "id": "hasSpriteShader", "text": "Sprite Shader: No" }
+      "then": { "name": "text.setText", "id": "hasSpriteShader", "text": "|str_spriteShader|: |str_yes|" },
+      "else": { "name": "text.setText", "id": "hasSpriteShader", "text": "|str_spriteShader|: |str_no|" }
     },
     "anchorLeftPentagram",
     "anchorRightPentagram"

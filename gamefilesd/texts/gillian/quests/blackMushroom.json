@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "16",
-    "texts/gillian/quests/blackMushroom.txt"
+    "lang/%lang%/texts/gillian/quests/blackMushroom.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid19.wav",

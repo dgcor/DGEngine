@@ -1,0 +1,20 @@
+{
+  "variable": [
+    { "str_betaNotSupported": "The beta version of Diablo\ncan't be used with Hellfire." },
+    { "str_dataMissing":      "Error loading [1]\nMake sure Hellfire game data is present." },
+    { "str_playDiablo":       "Play Diablo" },
+
+    { "str_showCredits":      "Credits" },
+    { "str_support":          "Support" },
+    { "str_exitGame":         "Exit Hellfire" },
+
+    { "str_walk":             "Walk" },
+    { "str_jog":              "Jog" },
+
+    { "str_barbarian":        "Barbarian" },
+    { "str_bard":             "Bard" },
+    { "str_monk":             "Monk" },
+
+    { "str_quitGame":         "Quit Hellfire" }
+  ]
+}

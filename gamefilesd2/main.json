@@ -22,6 +22,7 @@
     { "file": "d2speech.mpq" },
     { "file": "d2video.mpq" }
   ],
+  "load": "lang/load.json",
   "action": {
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "data/global/ui/Logo/logo.DC6" },

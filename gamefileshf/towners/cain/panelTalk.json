@@ -27,6 +27,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -35,7 +36,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Cain"
+      "text": "|str_talkToCain|"
     }
   ],
   "menu": {
@@ -55,7 +56,7 @@
     "onScrollUp": "focus.moveUp",
     "items": [
       {
-        "text": "Gossip",
+        "text": "|str_gossip|",
         "onClick": {
           "name": "load",
           "file": ["towners/common/loadRandom.json", "cain"]
@@ -96,7 +97,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Back",
+    "text": "|str_back|",
     "onClick": { "name": "resource.pop" },
     "onFocus": [
       "anchorLeftPentagram",

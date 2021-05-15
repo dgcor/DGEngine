@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/pepin/quests/lachdanan.txt"
+    "lang/%lang%/texts/pepin/quests/lachdanan.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer11.wav",

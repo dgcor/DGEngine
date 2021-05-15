@@ -12,6 +12,7 @@
   "load": "settings.json",
   "init": true,
   "mountFile": { "file": "DIABDAT.MPQ" },
+  "load": "lang/load.json",
   "action": {
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "ui_art/title.pcx" },

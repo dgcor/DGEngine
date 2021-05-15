@@ -31,6 +31,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "thisItemIs",
@@ -39,7 +40,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "This item is:"
+      "text": "|str_itemInfo|"
     },
     {
       "id": "itemInfo",
@@ -60,7 +61,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Done",
+    "text": "|str_done|",
     "onClick": { "name": "resource.popAll", "id": "userPanelItem" },
     "onFocus": [
       "anchorLeftPentagram",

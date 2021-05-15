@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/griswold/gossip/gossip3.txt"
+    "lang/%lang%/texts/griswold/gossip/gossip3.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bsmith47.wav",

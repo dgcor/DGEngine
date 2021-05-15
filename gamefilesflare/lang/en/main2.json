@@ -1,0 +1,9 @@
+{
+  "variable": [
+    { "str_settings":       "Settings" },
+    { "str_showCredits":    "Credits" },
+    { "str_exitGame":       "Exit Flare" },
+    { "str_changeSettings": "Change Settings " },
+    { "str_dataMissing":    "Error loading [1]\nMake sure Flare game data is present." }
+  ]
+}

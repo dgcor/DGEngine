@@ -3,6 +3,7 @@
 #include "Alignment.h"
 #include "Anchor.h"
 #include "AnimationType.h"
+#include "BindingFlags.h"
 #include "BlendMode.h"
 #include "GameUtilsGame.h"
 #include "IgnoreResource.h"
@@ -35,6 +36,8 @@ namespace GameUtils
 		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize) noexcept;
 
 	Anchor getAnchor(const std::string_view str, Anchor val);
+
+	BindingFlags getBindingFlags(const std::string_view str, BindingFlags val);
 
 	BlendMode getBlendMode(const std::string_view str, BlendMode val);
 

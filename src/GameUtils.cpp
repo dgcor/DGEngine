@@ -128,16 +128,16 @@ namespace GameUtils
 	void setAnchorPosSize(Anchor anchor, sf::Vector2f& pos, sf::Vector2f& size,
 		const sf::Vector2u& oldWindowSize, const sf::Vector2u& newWindowSize) noexcept
 	{
-		if (((int)anchor & (int)Anchor::Top) != 0)
+		if ((int)(anchor & Anchor::Top) != 0)
 		{
-			if (((int)anchor & (int)Anchor::Bottom) != 0)
+			if ((int)(anchor & Anchor::Bottom) != 0)
 			{
 				size.y = std::round(size.y + (float)newWindowSize.y - (float)oldWindowSize.y);
 			}
 		}
 		else
 		{
-			if (((int)anchor & (int)Anchor::Bottom) != 0)
+			if ((int)(anchor & Anchor::Bottom) != 0)
 			{
 				pos.y = std::round(pos.y + (float)newWindowSize.y - (float)oldWindowSize.y);
 			}
@@ -146,16 +146,16 @@ namespace GameUtils
 				pos.y = std::round(pos.y + ((float)newWindowSize.y - (float)oldWindowSize.y) / 2.f);
 			}
 		}
-		if (((int)anchor & (int)Anchor::Left) != 0)
+		if ((int)(anchor & Anchor::Left) != 0)
 		{
-			if (((int)anchor & (int)Anchor::Right) != 0)
+			if ((int)(anchor & Anchor::Right) != 0)
 			{
 				size.x = std::round(size.x + (float)newWindowSize.x - (float)oldWindowSize.x);
 			}
 		}
 		else
 		{
-			if (((int)anchor & (int)Anchor::Right) != 0)
+			if ((int)(anchor & Anchor::Right) != 0)
 			{
 				pos.x = std::round(pos.x + (float)newWindowSize.x - (float)oldWindowSize.x);
 			}
@@ -190,6 +190,23 @@ namespace GameUtils
 			return Anchor::Right;
 		case str2int16("all"):
 			return Anchor::All;
+		default:
+			return val;
+		}
+	}
+
+	BindingFlags getBindingFlags(const std::string_view str, BindingFlags val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("onchange"):
+			return BindingFlags::OnChange;
+		case str2int16("once"):
+			return BindingFlags::Once;
+		case str2int16("always"):
+			return BindingFlags::Always;
+		case str2int16("whenhidden"):
+			return BindingFlags::WhenHidden;
 		default:
 			return val;
 		}

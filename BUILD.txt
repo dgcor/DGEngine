@@ -1,4 +1,4 @@
-Windows
+* Windows
 
 To compile in Windows, you can use CMake or the Visual Studio 2019 project.
 
@@ -26,7 +26,7 @@ vcpkg install physfs:x64-windows-static sfml:x64-windows-static ffmpeg:x64-windo
 If you want to skip movie playback support, use the preprocessor define
 USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.
 
-Linux
+* Linux
 
 To compile in Linux (Ubuntu), you need gcc or clang with C++20 support
 and to have both PhysicsFS >= 2.1 and SFML >= 2.5 installed.
@@ -39,20 +39,45 @@ Optional (for movie support) FFmpeg:
 sudo apt install libavdevice-dev libavformat-dev libavfilter-dev libavcodec-dev libswscale-dev libavutil-dev
 
 Movie support is enabled by default (CMake), unless FFmpeg isn't found.
-In CMake, set DGENGINE_MOVIE_SUPPORT to FALSE to skip movie support.
+In CMake, set MOVIE_SUPPORT to FALSE to skip movie support.
 
-CMake
+* CMake
 
 A CMake project file is provided. Movie support is enabled by default.
 It will generate a project to compile on the target platform.
 
 cmake CMakeLists.txt
-cmake CMakeLists.txt -DDGENGINE_MOVIE_SUPPORT:BOOL=FALSE
+cmake CMakeLists.txt -DMOVIE_SUPPORT:BOOL=FALSE
 
 Both PhysicsFS and SFML must be installed.
 FFmpeg is also required for movie support.
 
-Clang variant bug
+All the CMake properties and default values:
 
-There's a bug in clang which affects libstdc++'s <variant>.
-If you get errors with clang, use -stdlib=libc++ instead.
+MOVIE_SUPPORT         (TRUE)  Enable Movie support
+FALLBACK_TO_LOWERCASE (TRUE)  Enable falling back to all lowercase names if file is not found
+DIABLO_FORMAT_SUPPORT (TRUE)  Enable Diablo 1-2 file format support
+MPQ_SUPPORT           (TRUE)  Enable physfs MPQ support
+INTERNAL_STORMLIB     (TRUE)  Use internal StormLib for MPQ support
+EXTERNAL_STORMLIB     (FALSE) Use external StormLib for MPQ support
+DYNAMIC_STORMLIB      (TRUE)  Use external StormLib dll for MPQ support
+
+* PhysicsFS with MPQ file support
+
+A built-in MPQ v1 implementation is provided based on StormLib
+by Ladislav Zezula.
+
+https://github.com/ladislav-zezula/StormLib
+
+To use an external (full featured) StormLib when installing, run like this:
+
+cmake CMakeLists.txt -DEXTERNAL_STORMLIB:BOOL=TRUE
+
+The full featured StormLib is required to load Diablo 2 MPQ files.
+
+By default, DGEngine tries to use an external StormLib.dll/libstorm.so
+instead of the built-in implementation. To disable this behavior, run like this:
+
+cmake CMakeLists.txt -DDYNAMIC_STORMLIB:BOOL=FALSE
+
+If StormLib.dll/libstorm.so isn't found, the built-in implementation is used.

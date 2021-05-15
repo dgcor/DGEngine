@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/farnham/quests/lachdanan.txt"
+    "lang/%lang%/texts/farnham/quests/lachdanan.txt"
   ],
   "audio": {
     "file": "sfx/Towners/drunk13.wav",

@@ -7,6 +7,7 @@
     "id": "liberationSerif",
     "file": "res/LiberationSerif-Regular.ttf"
   },
+  "replaceVars": true,
   "button": {
     "id": "quit",
     "font": "liberationSerif",
@@ -16,7 +17,8 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "verticalAlign": "center",
-    "text": "Error loading {1}\nMake sure the game data is present.",
+    "binding": "{1}",
+    "text": "|str_dataMissing|",
     "onClick": { "name": "game.close" }
   }
 }

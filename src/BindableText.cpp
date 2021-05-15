@@ -12,14 +12,22 @@ void BindableText::setBinding(std::vector<std::string> bindings_)
 	bindings = std::move(bindings_);
 }
 
+void BindableText::updateText(Game& game)
+{
+	std::string str;
+	TextUtils::getFormatString(game, format, bindings, str);
+	setText(str);
+}
+
 void BindableText::update(Game& game)
 {
 	if (bindings.size() > 0 &&
-		(bindWhenHidden == true || Visible() == true))
+		(int)(flags & BindingFlags::Once) == 0 &&
+		((int)(flags & BindingFlags::WhenHidden) != 0 || Visible() == true))
 	{
 		std::string str;
 		bool hasText = TextUtils::getFormatString(game, format, bindings, str);
-		if (alwaysBind == true || hasText == true)
+		if ((int)(flags & BindingFlags::Always) != 0 || hasText == true)
 		{
 			setText(str);
 		}

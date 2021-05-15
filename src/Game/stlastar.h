@@ -37,8 +37,6 @@ given where due.
 #include <vector>
 #include <cfloat>
 
-using namespace std;
-
 // fast fixed size memory allocator, used for fast node memory management
 #include "fsa.h"
 
@@ -120,7 +118,7 @@ public: // methods
 	// constructor just initialises private data
 	AStarSearch() :
 		m_State( SEARCH_STATE_NOT_INITIALISED ),
-		m_CurrentSolutionNode( NULL ),
+		m_CurrentSolutionNode( nullptr ),
 #if USE_FSA_MEMORY
 		m_FixedSizeAllocator( 1000 ),
 #endif
@@ -131,7 +129,7 @@ public: // methods
 
 	AStarSearch( int MaxNodes ) :
 		m_State( SEARCH_STATE_NOT_INITIALISED ),
-		m_CurrentSolutionNode( NULL ),
+		m_CurrentSolutionNode( nullptr ),
 #if USE_FSA_MEMORY
 		m_FixedSizeAllocator( MaxNodes ),
 #endif
@@ -154,7 +152,7 @@ public: // methods
 		m_Start = AllocateNode();
 		m_Goal = AllocateNode();
 
-		assert((m_Start != NULL && m_Goal != NULL));
+		assert((m_Start != nullptr && m_Goal != nullptr));
 		
 		m_Start->m_UserState = Start;
 		m_Goal->m_UserState = Goal;
@@ -261,12 +259,12 @@ public: // methods
 
 			// User provides this functions and uses AddSuccessor to add each successor of
 			// node 'n' to m_Successors
-			bool ret = n->m_UserState.GetSuccessors( this, n->parent ? &n->parent->m_UserState : NULL ); 
+			bool ret = n->m_UserState.GetSuccessors( this, n->parent ? &n->parent->m_UserState : nullptr ); 
 
 			if( !ret )
 			{
 
-			    typename vector< Node * >::iterator successor;
+			    typename std::vector< Node * >::iterator successor;
 
 				// free the nodes that may previously have been added 
 				for( successor = m_Successors.begin(); successor != m_Successors.end(); successor ++ )
@@ -285,7 +283,7 @@ public: // methods
 			}
 			
 			// Now handle each successor to the current node ...
-			for( typename vector< Node * >::iterator successor = m_Successors.begin(); successor != m_Successors.end(); successor ++ )
+			for( typename std::vector< Node * >::iterator successor = m_Successors.begin(); successor != m_Successors.end(); successor ++ )
 			{
 
 				// 	The g value for this successor ...
@@ -297,7 +295,7 @@ public: // methods
 
 				// First linear search of open list to find node
 
-				typename vector< Node * >::iterator openlist_result;
+				typename std::vector< Node * >::iterator openlist_result;
 
 				for( openlist_result = m_OpenList.begin(); openlist_result != m_OpenList.end(); openlist_result ++ )
 				{
@@ -321,7 +319,7 @@ public: // methods
 					}
 				}
 
-				typename vector< Node * >::iterator closedlist_result;
+				typename std::vector< Node * >::iterator closedlist_result;
 
 				for( closedlist_result = m_ClosedList.begin(); closedlist_result != m_ClosedList.end(); closedlist_result ++ )
 				{
@@ -467,7 +465,7 @@ public: // methods
 				n = n->child;
 				FreeNode( del );
 
-				del = NULL;
+				del = nullptr;
 
 			} while( n != m_Goal );
 
@@ -496,7 +494,7 @@ public: // methods
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 	
@@ -516,7 +514,7 @@ public: // methods
 			}
 		}
 
-		return NULL;
+		return nullptr;
 	}
 	
 	// Get end node
@@ -529,7 +527,7 @@ public: // methods
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 	
@@ -549,7 +547,7 @@ public: // methods
 			}
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	// Get final cost of solution
@@ -586,7 +584,7 @@ public: // methods
 			return &(*iterDbgOpen)->m_UserState;
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	UserState *GetOpenListNext()
@@ -606,7 +604,7 @@ public: // methods
 			return &(*iterDbgOpen)->m_UserState;
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	UserState *GetClosedListStart()
@@ -627,7 +625,7 @@ public: // methods
 			return &(*iterDbgClosed)->m_UserState;
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	UserState *GetClosedListNext()
@@ -648,7 +646,7 @@ public: // methods
 			return &(*iterDbgClosed)->m_UserState;
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 	// Get the number of steps
@@ -670,7 +668,7 @@ private: // methods
 	void FreeAllNodes()
 	{
 		// iterate open list and delete all nodes
-		typename vector< Node * >::iterator iterOpen = m_OpenList.begin();
+		typename std::vector< Node * >::iterator iterOpen = m_OpenList.begin();
 
 		while( iterOpen != m_OpenList.end() )
 		{
@@ -683,7 +681,7 @@ private: // methods
 		m_OpenList.clear();
 
 		// iterate closed list and delete unused nodes
-		typename vector< Node * >::iterator iterClosed;
+		typename std::vector< Node * >::iterator iterClosed;
 
 		for( iterClosed = m_ClosedList.begin(); iterClosed != m_ClosedList.end(); iterClosed ++ )
 		{
@@ -705,7 +703,7 @@ private: // methods
 	void FreeUnusedNodes()
 	{
 		// iterate open list and delete unused nodes
-		typename vector< Node * >::iterator iterOpen = m_OpenList.begin();
+		typename std::vector< Node * >::iterator iterOpen = m_OpenList.begin();
 
 		while( iterOpen != m_OpenList.end() )
 		{
@@ -715,7 +713,7 @@ private: // methods
 			{
 				FreeNode( n );
 
-				n = NULL;
+				n = nullptr;
 			}
 
 			iterOpen ++;
@@ -724,7 +722,7 @@ private: // methods
 		m_OpenList.clear();
 
 		// iterate closed list and delete unused nodes
-		typename vector< Node * >::iterator iterClosed;
+		typename std::vector< Node * >::iterator iterClosed;
 
 		for( iterClosed = m_ClosedList.begin(); iterClosed != m_ClosedList.end(); iterClosed ++ )
 		{
@@ -733,7 +731,7 @@ private: // methods
 			if( !n->child )
 			{
 				FreeNode( n );
-				n = NULL;
+				n = nullptr;
 
 			}
 		}
@@ -755,7 +753,7 @@ private: // methods
 
 		if( !address )
 		{
-			return NULL;
+			return nullptr;
 		}
 		m_AllocateNodeCount ++;
 		Node *p = new (address) Node;
@@ -779,14 +777,14 @@ private: // methods
 private: // data
 
 	// Heap (simple vector but used as a heap, cf. Steve Rabin's game gems article)
-	vector< Node *> m_OpenList;
+	std::vector< Node *> m_OpenList;
 
 	// Closed list is a vector.
-	vector< Node * > m_ClosedList; 
+	std::vector< Node * > m_ClosedList;
 
 	// Successors is a vector filled out by the user each type successors to a node
 	// are generated
-	vector< Node * > m_Successors;
+	std::vector< Node * > m_Successors;
 
 	// State
 	unsigned int m_State;
@@ -807,8 +805,8 @@ private: // data
 	
 	//Debug : need to keep these two iterators around
 	// for the user Dbg functions
-	typename vector< Node * >::iterator iterDbgOpen;
-	typename vector< Node * >::iterator iterDbgClosed;
+	typename std::vector< Node * >::iterator iterDbgOpen;
+	typename std::vector< Node * >::iterator iterDbgClosed;
 
 	// debugging : count memory allocation and free's
 	int m_AllocateNodeCount;

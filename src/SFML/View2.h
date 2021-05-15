@@ -36,6 +36,7 @@ public:
 	void setCenter(const sf::Vector2f& center) { view.setCenter(center); }
 
 	sf::Vector2f getPosition(const sf::Vector2f& point) const;
+	sf::Vector2f getDrawPosition(const sf::Vector2f& point) const;
 
 	const sf::Vector2f& getPosition() const noexcept { return position; }
 	void setPosition(const sf::Vector2f& position_) noexcept { position = position_; }

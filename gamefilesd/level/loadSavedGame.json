@@ -1,6 +1,6 @@
 {
   "action": [
-    { "name": "text.setText", "id": "msgBoxText", "text": "loading..." },
+    { "name": "text.setText", "id": "msgBoxText", "replaceVars": true, "text": "|str_loading|" },
     "showMsgBox",
     { "name": "level.pause", "pause": true },
     { "name": "io.deleteAll", "file": "%tempDir%", "deleteRoot": false },

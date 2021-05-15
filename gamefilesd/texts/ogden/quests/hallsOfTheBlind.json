@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/ogden/quests/hallsOfTheBlind.txt"
+    "lang/%lang%/texts/ogden/quests/hallsOfTheBlind.txt"
   ],
   "audio": {
     "file": "sfx/Towners/tavown10.wav",

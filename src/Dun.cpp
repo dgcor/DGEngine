@@ -1,6 +1,6 @@
 #include "Dun.h"
 #include <algorithm>
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "StreamReader.h"
 
 Dun::Dun(const std::string_view fileName, int32_t defaultTile)

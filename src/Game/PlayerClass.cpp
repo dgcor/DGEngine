@@ -15,8 +15,8 @@ std::shared_ptr<TexturePack> PlayerClass::getTexturePack(size_t idx) const
 	return {};
 }
 
-void PlayerClass::getTextureAnimationRange(size_t textureIdx,
-	PlayerAnimation animation, uint32_t direction, BaseAnimation& baseAnim) const
+void PlayerClass::setAnimation(size_t textureIdx, PlayerAnimation animation,
+	uint32_t direction, BaseAnimation& baseAnim) const
 {
 	bool setAnim = false;
 	if (textureIdx < textures.size())

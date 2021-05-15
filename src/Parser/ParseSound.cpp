@@ -1,7 +1,7 @@
 #include "ParseSound.h"
 #include "Game.h"
 #include "ParseAudioCommon.h"
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser

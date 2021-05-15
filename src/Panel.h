@@ -23,7 +23,7 @@ public:
 
 	void addDrawable(const std::shared_ptr<UIObject>& obj);
 	UIObject* getDrawable(size_t idx) const;
-	size_t getItemCount() const noexcept { return drawables.size(); }
+	size_t getDrawableCount() const noexcept { return drawables.size(); }
 
 	Anchor getAnchor() const noexcept override { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }

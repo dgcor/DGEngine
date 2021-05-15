@@ -5,14 +5,20 @@
 
 sf::Vector2f View2::getPosition(const sf::Vector2f& point) const
 {
-	sf::Vector2f mousePosition =
-		view.getCenter() -
-		(view.getSize() / 2.f) +
-		(point * zoomFactor) -
-		(position * zoomFactor);
-	mousePosition.x = std::round(mousePosition.x);
-	mousePosition.y = std::round(mousePosition.y);
-	return mousePosition;
+	auto topLeft = view.getCenter() - (view.getSize() / 2.f);
+	sf::Vector2f pos = topLeft + (point * zoomFactor) - (position * zoomFactor);
+	pos.x = std::round(pos.x);
+	pos.y = std::round(pos.y);
+	return pos;
+}
+
+sf::Vector2f View2::getDrawPosition(const sf::Vector2f& point) const
+{
+	auto topLeft = view.getCenter() - (view.getSize() / 2.f);
+	sf::Vector2f pos = (point + position - topLeft) / zoomFactor;
+	pos.x = std::round(pos.x);
+	pos.y = std::round(pos.y);
+	return pos;
 }
 
 void View2::setSize(float width, float height)

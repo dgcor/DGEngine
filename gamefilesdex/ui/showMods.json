@@ -1,11 +1,12 @@
 {
   "button": {
+    "replaceVars": true,
     "id": "mods",
     "font": "font30s",
     "position": [560, 444],
     "sound": "titlslct",
     "anchor": "none",
-    "text": "Mods",
+    "text": "|str_mods|",
     "visible": true,
     "onClick": {
       "name": "game.fadeOut",

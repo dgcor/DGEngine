@@ -19,6 +19,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -27,7 +28,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Welcome to the"
+      "text": "|str_titlePepin|"
     },
     {
       "id": "panelTitle2",
@@ -36,7 +37,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Healer's Home"
+      "text": "|str_titlePepin2|"
     },
     {
       "id": "panelText",
@@ -45,7 +46,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Would you like to:"
+      "text": "|str_panelText|"
     }
   ],
   "button": [
@@ -59,7 +60,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Pepin",
+      "text": "|str_talkToPepin|",
       "onClick": { "name": "load", "file": "towners/pepin/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -76,7 +77,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Buy Items",
+      "text": "|str_itemBuy|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -100,7 +101,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Leave Healer's Home",
+      "text": "|str_leavePepin|",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [
         "anchorLeftPentagram",

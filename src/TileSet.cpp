@@ -1,5 +1,5 @@
 #include "TileSet.h"
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "StreamReader.h"
 
 TileSet::TileSet(const std::string_view fileName)

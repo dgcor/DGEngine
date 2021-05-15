@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/wirt/quests/archbishopLazarus.txt"
+    "lang/%lang%/texts/wirt/quests/archbishopLazarus.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy03.wav",

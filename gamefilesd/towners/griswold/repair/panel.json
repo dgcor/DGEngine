@@ -170,6 +170,7 @@
       }
     ]
   },
+  "replaceVars": true,
   "button": {
     "id": "back",
     "font": "smaltext",
@@ -178,7 +179,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Back",
+    "text": "|str_back|",
     "onClick": [
       { "name": "resource.popAll", "id": "userPanelBigFrame" },
       { "name": "resource.ignore", "id": "userPanel", "ignore": false }
@@ -197,7 +198,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "Repair which item?            Your gold : [1]"
+        "format": "|str_itemInfoRepair|"
       },
       { "name": "load", "file": "towners/griswold/repair/listItems.json" }
     ],
@@ -206,7 +207,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "You have nothing to repair.            Your gold : [1]"
+        "format": "|str_itemInfoNothingToRepair|"
       },
       { "name": "load", "file": "towners/griswold/repair/noItems.json" }
     ]

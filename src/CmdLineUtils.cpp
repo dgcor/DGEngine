@@ -1,6 +1,6 @@
 #include "CmdLineUtils.h"
 #include "GameUtils.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "Game/LevelHelper.h"
 #endif
 #include "FileUtils.h"
@@ -42,7 +42,7 @@ namespace CmdLineUtils
 			}
 		}
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		int bottomTopOrBoth = -2;	// invalid
 #endif
 
@@ -56,7 +56,7 @@ namespace CmdLineUtils
 			}
 			break;
 		}
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		case str2int16("--export-tileset-bottom"):
 		case str2int16("--export-tileset-back"):
 			bottomTopOrBoth = 0;
@@ -73,7 +73,7 @@ namespace CmdLineUtils
 			break;
 		}
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		if (bottomTopOrBoth != -2 &&
 			FileUtils::exists(argv[3]) == true)
 		{

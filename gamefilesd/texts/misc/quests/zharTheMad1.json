@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/misc/quests/zharTheMad1.txt"
+    "lang/%lang%/texts/misc/quests/zharTheMad1.txt"
   ],
   "audio": {
     "file": "sfx/monsters/zhar01.wav",

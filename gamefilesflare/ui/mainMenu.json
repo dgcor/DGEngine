@@ -137,6 +137,7 @@
     }
   ],
   "menu": {
+    "replaceVars": true,
     "id": "menu",
     "font": "font42g",
     "position": ["center", 192],
@@ -148,7 +149,7 @@
     "verticalPad": 28,
     "items": [
       {
-        "text": "Single Player",
+        "text": "|str_singlePlayer|",
         "onClick": {
           "name": "load",
           "file": "ui/singlePlayer/main.json"
@@ -156,7 +157,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Settings",
+        "text": "|str_settings|",
         "onClick": {
           "name": "game.fadeOut",
           "action": {
@@ -167,7 +168,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Replay Intro",
+        "text": "|str_replayIntro|",
         "onClick": {
           "name": "load",
           "file": ["ui/playIntro.json", "ui/fadeIn.json"]
@@ -175,7 +176,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Credits",
+        "text": "|str_showCredits|",
         "onClick": {
           "name": "game.fadeOut",
           "action": {
@@ -186,7 +187,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Exit Flare",
+        "text": "|str_exitGame|",
         "onClick": {
           "name": "game.fadeOut",
           "action": {
@@ -198,6 +199,7 @@
     ]
   },
   "button": {
+    "replaceVars": true,
     "id": "versionInfo",
     "font": "font16s",
     "position": [17, 444],
@@ -210,7 +212,7 @@
         "file": "ui/settings.json"
       }
     },
-    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "Change Settings" },
+    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "|str_changeSettings|" },
     "onHoverLeave": {
       "name": "text.setText",
       "id": "versionInfo",

@@ -1,6 +1,5 @@
 {
   "action": { "name": "variable.set", "key": "jog", "value": true },
-  "load": "res/shaders/game/warp.json",
   "load": "res/shaders/sprite/highlight.json",
   "load": "ui/loadMain.json"
 }

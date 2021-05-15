@@ -19,6 +19,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -27,7 +28,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Wirt the Peg-Legged Boy"
+      "text": "|str_titleWirt|"
     },
     {
       "id": "panelText1",
@@ -36,7 +37,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "I have something for sale,"
+      "text": "|str_wirtItemInfo|"
     },
     {
       "id": "panelText2",
@@ -46,7 +47,8 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "but it will cost |WirtSeePrice| gold"
+      "binding": "%WirtSeePrice%",
+      "text": "|str_wirtItemInfo2|"
     },
     {
       "id": "panelText3",
@@ -55,7 +57,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "just to take a look."
+      "text": "|str_wirtItemInfo3|"
     }
   ],
   "button": [
@@ -69,7 +71,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Wirt",
+      "text": "|str_talkToWirt|",
       "onClick": { "name": "load", "file": "towners/wirt/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -86,7 +88,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "What Have you Got?",
+      "text": "|str_wirtItemShow|",
       "onClick": { "name": "load", "file": "towners/wirt/buy/showItem.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -103,7 +105,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Say Goodbye",
+      "text": "|str_sayGoodbye|",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [
         "anchorLeftPentagram",

@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/gillian/quests/archbishopLazarus.txt"
+    "lang/%lang%/texts/gillian/quests/archbishopLazarus.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid03.wav",

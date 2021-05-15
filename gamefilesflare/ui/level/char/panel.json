@@ -33,6 +33,7 @@
     { "name": "resource.add", "id": "levelOverlay" }
   ],
   "text": {
+    "replaceVars": true,
     "id": "txtLevelUp",
     "font": "smaltext",
     "position": [60, 298],
@@ -41,7 +42,7 @@
     "horizontalSpaceOffset": 1,
     "verticalAlign": "center",
     "visible": false,
-    "text": "Level Up"
+    "text": "|str_levelUp|"
   },
   "button": {
     "id": "btnLevelUp",
@@ -242,13 +243,14 @@
     }
   ],
   "load": "ui/level/char/beltInventory.json",
+  "replaceVars": true,
   "button": [
     {
       "id": "char",
       "font": "smaltext",
       "anchor": "bottom",
       "position": [9, 361],
-      "text": "Char",
+      "text": "|str_char|",
       "clickUp": true,
       "onClick": [
         {
@@ -276,7 +278,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_charDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -288,7 +290,7 @@
       "font": "smaltext",
       "anchor": "bottom",
       "position": [9, 387],
-      "text": "Quests",
+      "text": "|str_quests|",
       "clickUp": true,
       "onClick": [
         {
@@ -315,7 +317,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_questDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -327,7 +329,7 @@
       "font": "smaltext",
       "anchor": "bottom",
       "position": [560, 361],
-      "text": "Inventory",
+      "text": "|str_inventory|",
       "clickUp": true,
       "onClick": [
         {
@@ -356,7 +358,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_inventoryDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -368,7 +370,7 @@
       "font": "smaltext",
       "anchor": "bottom",
       "position": [560, 387],
-      "text": "Spells",
+      "text": "|str_spells|",
       "clickUp": true,
       "onClick": [
         {
@@ -395,7 +397,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_spellBookDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -407,7 +409,7 @@
       "font": "smaltext",
       "anchor": "bottom",
       "position": [9, 427],
-      "text": "Map",
+      "text": "|str_map|",
       "clickUp": true,
       "onClick": "showMap",
       "onHoverEnter": {
@@ -415,7 +417,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_automapDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -428,7 +430,7 @@
       "anchor": "bottom",
       "position": [9, 453],
       "sound": "titlemov",
-      "text": "Menu",
+      "text": "|str_menu|",
       "clickUp": true,
       "onClick": {
         "name": "if.equal",
@@ -445,7 +447,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_menuDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -453,6 +455,7 @@
       "onHoverLeave": "clearPanelText"
     }
   ],
+  "replaceVars": false,
   "text": {
     "id": "txtPanel",
     "font": "smaltext",

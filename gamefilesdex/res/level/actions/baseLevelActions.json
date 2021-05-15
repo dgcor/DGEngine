@@ -57,7 +57,8 @@
               ]
             }
           },
-          { "name": "drawable.visible", "id": "levelTooltip", "visible": true }
+          { "name": "drawable.visible", "id": "levelTooltip", "visible": true },
+          { "name": "level.updateDrawables" }
         ]
       }
     },

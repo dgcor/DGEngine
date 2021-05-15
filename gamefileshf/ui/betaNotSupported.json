@@ -7,6 +7,7 @@
     "id": "liberationSerif",
     "file": "res/LiberationSerif-Regular.ttf"
   },
+  "replaceVars": true,
   "button": [
     {
       "id": "quit",
@@ -17,7 +18,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "verticalAlign": "center",
-      "text": "The beta version of Diablo\ncan't be used with Hellfire.",
+      "text": "|str_betaNotSupported|",
       "onClick": { "name": "game.close" }
     },
     {
@@ -29,7 +30,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "verticalAlign": "center",
-      "text": "Play Diablo",
+      "text": "|str_playDiablo|",
       "onClick": { "name": "game.load", "file": "gamefilesd" }
     }
   ]

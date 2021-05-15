@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/quests/anvilOfFury.txt"
+    "lang/%lang%/texts/quests/anvilOfFury.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bsmith21.wav",

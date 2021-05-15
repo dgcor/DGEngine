@@ -94,6 +94,7 @@
       ]
     }
   },
+  "replaceVars": true,
   "button": {
     "id": "back",
     "font": "smaltext",
@@ -102,7 +103,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Back",
+    "text": "|str_back|",
     "onClick": [
       { "name": "resource.popAll", "id": "userPanelBigFrame" },
       { "name": "resource.ignore", "id": "userPanel", "ignore": false }
@@ -121,7 +122,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "I have these premium items for sale :   Your gold : [1]"
+        "format": "|str_itemsInfoForSalePremium|"
       },
       { "name": "load", "file": "towners/griswold/buyPremium/listItems.json" }
     ],
@@ -130,7 +131,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "I have no more items for sale.          Your gold : [1]"
+        "format": "|str_itemsInfoForSaleNone|"
       },
       { "name": "load", "file": "towners/griswold/buyPremium/noItems.json" }
     ]

@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/adria/quests/blackMushroom3.txt"
+    "lang/%lang%/texts/adria/quests/blackMushroom3.txt"
   ],
   "audio": {
     "file": "sfx/Towners/witch26.wav",

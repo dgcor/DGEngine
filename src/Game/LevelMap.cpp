@@ -321,7 +321,7 @@ void LevelMap::setSimpleArea(size_t layer, int32_t x, int32_t y,
 	}
 }
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 {
 	resize(dun.width * defaultSubTiles, dun.height * defaultSubTiles);

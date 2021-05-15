@@ -13,6 +13,7 @@
     { "name": "resource.add", "id": "levelOverlay" }
   ],
   "text": {
+    "replaceVars": true,
     "id": "txtLevelUp",
     "font": "smaltext",
     "position": [60, 298],
@@ -21,7 +22,7 @@
     "horizontalSpaceOffset": 1,
     "verticalAlign": "center",
     "visible": false,
-    "text": "Level Up"
+    "text": "|str_levelUp|"
   },
   "button": {
     "id": "btnLevelUp",
@@ -95,6 +96,7 @@
       "visible": false
     },
     {
+      "replaceVars": true,
       "id": "txtZoom",
       "anchor": "topRight",
       "font": "smaltextGold",
@@ -102,22 +104,20 @@
       "horizontalAlign": "right",
       "horizontalSpaceOffset": 1,
       "binding": "%currentLevel.zoomPercentage%",
-      "format": "Zoom: [1]%",
+      "format": "|str_zoom|: [1]%",
       "visible": false
     }
   ],
-  "button": [
-    {
-      "id": "questPanel",
-      "texture": "quest",
-      "anchor": "left",
-      "captureInputEvents": true,
-      "visible": false,
-      "onHoverEnter": "clearLevelHoverActions",
-      "onHoverLeave": "setLevelHoverActions",
-      "onRightClick": "rightClickLevel"
-    }
-  ],
+  "button": {
+    "id": "questPanel",
+    "texture": "quest",
+    "anchor": "left",
+    "captureInputEvents": true,
+    "visible": false,
+    "onHoverEnter": "clearLevelHoverActions",
+    "onHoverLeave": "setLevelHoverActions",
+    "onRightClick": "rightClickLevel"
+  },
   "load": "ui/level/char/panelCharacter.json",
   "load": "ui/level/char/panelInventory.json",
   "load": "ui/level/char/panelSpellBook.json",
@@ -167,6 +167,7 @@
     }
   ],
   "load": "ui/level/char/beltInventory.json",
+  "replaceVars": true,
   "button": [
     {
       "id": "char",
@@ -203,7 +204,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Character Information\nHotkey : 'C'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_charDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -244,7 +245,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Quests Log\nHotkey : 'Q'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_questDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -287,7 +288,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Inventory\nHotkey : 'I'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_inventoryDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -328,7 +329,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Spell Book\nHotkey : 'B'" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_spellBookDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -343,7 +344,7 @@
       "textureRect": [0, 0, 56, 56],
       "onClick": "showAllSpells",
       "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "Select Current Spell Button\nHotkey : 'S'" },
+        { "name": "text.setText", "id": "txtPanel", "text": "|str_spellDescr|" },
         "updateSelectedSpellText"
       ],
       "onHoverLeave": "clearPanelText"
@@ -363,7 +364,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Automap\nHotkey : Tab" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_automapDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -395,7 +396,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "Main Menu\nHotkey : Esc" },
+          { "name": "text.setText", "id": "txtPanel", "text": "|str_menuDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -403,6 +404,7 @@
       "onHoverLeave": "clearPanelText"
     }
   ],
+  "replaceVars": false,
   "text": {
     "id": "txtPanel",
     "font": "smaltext",

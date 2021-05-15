@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "PhysFSStream.h"
 #include <SFML/Graphics/Font.hpp>
+#include "SFML/PhysFSStream.h"
 
 class FreeTypeFont : public sf::Font
 {

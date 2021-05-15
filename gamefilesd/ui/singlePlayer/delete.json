@@ -1,9 +1,10 @@
 {
+  "replaceVars": true,
   "action": [
     { "name": "resource.pop" },
     { "name": "resource.add", "id": "singlePlayerDelete" },
-    { "name": "text.setText", "id": "label1", "text": "Delete Single Player Hero" },
-    { "name": "text.setText", "id": "label2", "text": "Select Hero" }
+    { "name": "text.setText", "id": "label1", "text": "|str_deleteSinglePlayer|" },
+    { "name": "text.setText", "id": "label2", "text": "|str_selechHero|" }
   ],
   "inputEvent": [
     {
@@ -27,7 +28,8 @@
     "font": "font24s",
     "position": [120, 236],
     "anchor": "none",
-    "text": "Are you sure you want to\ndelete the character \"{1}\"?"
+    "binding": "{1}",
+    "text": "|str_confirmDeleteChar|"
   },
   "animation": [
     {
@@ -61,7 +63,7 @@
       ],
       "onFocus": "anchorPentagrams",
       "sound": "titlslct",
-      "text": "Yes"
+      "text": "|str_yes|"
     },
     {
       "id": "no",
@@ -77,7 +79,7 @@
       ],
       "onFocus": "anchorPentagrams",
       "sound": "titlslct",
-      "text": "No"
+      "text": "|str_no|"
     }
   ]
 }

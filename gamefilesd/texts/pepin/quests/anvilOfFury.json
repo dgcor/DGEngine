@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/pepin/quests/anvilOfFury.txt"
+    "lang/%lang%/texts/pepin/quests/anvilOfFury.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer12.wav",

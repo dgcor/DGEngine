@@ -45,7 +45,7 @@ float BitmapFont::calculateLineLength(std::string_view::const_iterator itBegin,
 	for (auto it = itBegin; it < itEnd;)
 	{
 		sf::Uint32 ch;
-		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+		it = sf::Utf8::decode(it, itEnd, ch);
 
 		//If the current character is a newline
 		if (ch == '\n')
@@ -102,7 +102,7 @@ sf::Vector2f BitmapFont::calculateSize(const std::string_view text,
 		}
 
 		sf::Uint32 ch;
-		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+		it = sf::Utf8::decode(it, itEnd, ch);
 
 		//If the current character is a newline
 		if (ch == '\n')
@@ -188,7 +188,7 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 	for (auto it = text.begin(), itEnd = text.end(); it < itEnd;)
 	{
 		sf::Uint32 ch;
-		it = std::move(sf::Utf8::decode(it, itEnd, ch));
+		it = sf::Utf8::decode(it, itEnd, ch);
 
 		//If the current character is a newline
 		if (ch == '\n')

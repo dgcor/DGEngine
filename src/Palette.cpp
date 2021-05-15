@@ -1,6 +1,6 @@
 #include "Palette.h"
 #include <algorithm>
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 
 Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 {

@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "16",
-    "texts/ogden/quests/anvilOfFury.txt"
+    "lang/%lang%/texts/ogden/quests/anvilOfFury.txt"
   ],
   "audio": {
     "file": "sfx/Towners/tavown12.wav",

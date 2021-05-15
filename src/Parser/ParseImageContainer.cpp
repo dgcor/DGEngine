@@ -1,7 +1,7 @@
 #include "ParseImageContainer.h"
 #include "FileUtils.h"
 #include "Game.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "ImageContainers/CELImageContainer.h"
 #include "ImageContainers/CL2ImageContainer.h"
 #include "ImageContainers/DC6ImageContainer.h"
@@ -29,7 +29,7 @@ namespace Parser
 
 	ImageContainerType getImageContainerType(const std::string_view fileName, const Value& elem)
 	{
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		std::string fileType;
 
 		if (isValidString(elem, "type") == true)
@@ -92,7 +92,7 @@ namespace Parser
 
 		switch (getImageContainerType(fileName, elem))
 		{
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		case ImageContainerType::CEL:
 		{
 			imgContainer = std::make_shared<CELImageContainer>(fileBytes);

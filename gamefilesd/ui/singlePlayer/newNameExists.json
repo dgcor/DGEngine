@@ -21,12 +21,14 @@
     "textureRect": [640, 272],
     "texture": "background"
   },
+  "replaceVars": true,
   "text": {
     "id": "characterExists",
     "font": "font24s",
     "position": [120, 236],
     "anchor": "none",
-    "text": "Character already exists. Do you\nwant to overwrite \"{1}\"?"
+    "binding": "{1}",
+    "text": "|str_confirmOverwriteChar|"
   },
   "animation": [
     {
@@ -59,7 +61,7 @@
       ],
       "onFocus": "anchorPentagrams",
       "sound": "titlslct",
-      "text": "Yes"
+      "text": "|str_yes|"
     },
     {
       "id": "no",
@@ -76,7 +78,7 @@
       ],
       "onFocus": "anchorPentagrams",
       "sound": "titlslct",
-      "text": "No"
+      "text": "|str_no|"
     }
   ]
 }

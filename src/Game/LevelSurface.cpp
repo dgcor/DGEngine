@@ -69,6 +69,16 @@ sf::Vector2f LevelSurface::getPosition(const sf::Vector2f& point) const
 	return mapView.getPosition(point);
 }
 
+sf::Vector2f LevelSurface::getDrawPosition(const sf::Vector2f& point) const
+{
+	return mapView.getDrawPosition(point);
+}
+
+float LevelSurface::getZoom() const
+{
+	return mapView.getZoom();
+}
+
 void LevelSurface::recreateRenderTexture(bool smoothTexture)
 {
 	if (supportsBigTextures == true && mapView.getZoom() > 1.f)

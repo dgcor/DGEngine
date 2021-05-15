@@ -1,8 +1,5 @@
 #include "Formula.h"
 #include <charconv>
-#if __GNUC__
-#include <cstdlib>
-#endif
 #include <cmath>
 #include "Utils/Utils.h"
 
@@ -222,7 +219,7 @@ Formula::FormulaElement Formula::parseToken(const std::string_view token, bool g
 			break;
 		}
 	}
-#ifndef __GNUC__
+
 	double val = 0.0;
 	auto err = std::from_chars(token.data(), token.data() + token.size(), val);
 	if (err.ec == std::errc() ||
@@ -234,26 +231,6 @@ Formula::FormulaElement Formula::parseToken(const std::string_view token, bool g
 	{
 		return getStringRefs ? FormulaElement(token) : FormulaElement(std::string(token));
 	}
-#else
-	int& errno_ref = errno;
-	const char* sPtr = token.data();
-	char* ePtr;
-	errno_ref = 0;
-	double val = std::strtod(sPtr, &ePtr);
-
-	if (errno_ref == ERANGE) // out of range
-	{
-		return 0.0;
-	}
-	else if (sPtr == ePtr) // invalid argument
-	{
-		return getStringRefs ? FormulaElement(token) : FormulaElement(std::string(token));
-	}
-	else
-	{
-		return val;
-	}
-#endif
 }
 
 void Formula::skipTokens(FormulaElementIterator& it)
@@ -706,7 +683,7 @@ std::string Formula::toString() const
 	std::string str;
 	int brackets = 0;
 
-	for (const auto elem : elements)
+	for (const auto& elem : elements)
 	{
 		if (std::holds_alternative<double>(elem) == true)
 		{

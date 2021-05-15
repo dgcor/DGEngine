@@ -12,12 +12,13 @@
     }
   ],
   "text": {
+    "replaceVars": true,
     "id": "panelTitle",
     "font": "smaltextGold",
     "position": [320, 58],
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Wirt the Peg-Legged Boy"
+    "text": "|str_titleWirt|"
   }
 }

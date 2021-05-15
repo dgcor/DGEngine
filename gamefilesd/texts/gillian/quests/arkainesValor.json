@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/gillian/quests/arkainesValor.txt"
+    "lang/%lang%/texts/gillian/quests/arkainesValor.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid13.wav",

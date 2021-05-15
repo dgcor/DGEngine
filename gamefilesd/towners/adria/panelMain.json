@@ -19,6 +19,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -27,7 +28,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Witch's Shack"
+      "text": "|str_titleAdria|"
     },
     {
       "id": "panelText",
@@ -36,7 +37,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Would you like to:"
+      "text": "|str_panelText|"
     }
   ],
   "button": [
@@ -50,7 +51,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Adria",
+      "text": "|str_talkToAdria|",
       "onClick": { "name": "load", "file": "towners/adria/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -67,7 +68,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Buy Items",
+      "text": "|str_itemBuy|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -91,7 +92,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Sell Items",
+      "text": "|str_itemSell|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -115,7 +116,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Recharge Staves",
+      "text": "|str_staffRecharge|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -139,7 +140,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Leave the Shack",
+      "text": "|str_leaveAdria|",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [
         "anchorLeftPentagram",

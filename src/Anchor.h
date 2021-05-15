@@ -1,8 +1,9 @@
 #pragma once
 
+#include <cstdint>
 #include <type_traits>
 
-enum class Anchor : int
+enum class Anchor : int32_t
 {
 	None = 0,
 	Top = 1,

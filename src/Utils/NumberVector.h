@@ -2,7 +2,7 @@
 
 #include "endian/little_endian.hpp"
 #include "FileUtils.h"
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include <string_view>
 #include "Utils.h"
 #include <vector>

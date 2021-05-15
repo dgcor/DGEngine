@@ -10,7 +10,7 @@ namespace Parser
 {
 	using namespace rapidjson;
 
-	Anchor getAnchorVal(const rapidjson::Value& elem, Anchor val)
+	Anchor getAnchorVal(const Value& elem, Anchor val)
 	{
 		if (elem.IsString() == true)
 		{
@@ -28,7 +28,25 @@ namespace Parser
 		return val;
 	}
 
-	BlendMode getBlendModeVal(const rapidjson::Value& elem, BlendMode val)
+	BindingFlags getBindingFlagsVal(const Value& elem, BindingFlags val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getBindingFlags(elem.GetStringView(), val);
+		}
+		else if (elem.IsArray() == true)
+		{
+			BindingFlags ret = BindingFlags::OnChange;
+			for (const auto& arrElem : elem)
+			{
+				ret |= GameUtils::getBindingFlags(getStringViewVal(arrElem), val);
+			}
+			return ret;
+		}
+		return val;
+	}
+
+	BlendMode getBlendModeVal(const Value& elem, BlendMode val)
 	{
 		if (elem.IsString() == true)
 		{
@@ -474,7 +492,7 @@ namespace Parser
 		return vars;
 	}
 
-	UnorderedStringMap<Variable> getVariablesMap(const rapidjson::Value& elem)
+	UnorderedStringMap<Variable> getVariablesMap(const Value& elem)
 	{
 		UnorderedStringMap<Variable> vars;
 		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)

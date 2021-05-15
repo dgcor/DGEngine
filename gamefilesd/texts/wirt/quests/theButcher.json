@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/wirt/quests/theButcher.txt"
+    "lang/%lang%/texts/wirt/quests/theButcher.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy10.wav",

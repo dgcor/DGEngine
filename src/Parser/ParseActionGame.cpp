@@ -255,6 +255,10 @@ namespace Parser
 				getStringViewKey(elem, "level"),
 				getBoolKey(elem, "show", true));
 		}
+		case str2int16("level.updateDrawables"):
+		{
+			return std::make_shared<ActLevelUpdateDrawables>(getStringViewKey(elem, "level"));
+		}
 		case str2int16("level.zoom"):
 		{
 			return std::make_shared<ActLevelZoom>(
@@ -262,6 +266,12 @@ namespace Parser
 				getIntKey(elem, "zoom", 100),
 				getBoolKey(elem, "relative"),
 				getBoolKey(elem, "smooth"));
+		}
+		case str2int16("level.zoomDrawables"):
+		{
+			return std::make_shared<ActLevelZoomDrawables>(
+				getStringViewKey(elem, "level"),
+				getBoolKey(elem, "zoomDrawables", true));
 		}
 		case str2int16("levelObject.delete"):
 		{

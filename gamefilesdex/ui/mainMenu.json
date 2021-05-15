@@ -138,6 +138,7 @@
     }
   ],
   "menu": {
+    "replaceVars": true,
     "id": "menu",
     "font": "font42g",
     "position": [319, 192],
@@ -147,7 +148,7 @@
     "anchor": "none",
     "items": [
       {
-        "text": "Single Player",
+        "text": "|str_singlePlayer|",
         "position": [170, 192],
         "onClick": {
           "name": "load",
@@ -156,13 +157,13 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Multi Player",
+        "text": "|str_multiPlayer|",
         "position": [172, 235],
         "enable": false,
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Replay Intro",
+        "text": "|str_replayIntro|",
         "position": [174, 277],
         "onClick": {
           "name": "load",
@@ -171,7 +172,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Show Credits",
+        "text": "|str_showCredits|",
         "position": [173, 320],
         "onClick": {
           "name": "game.fadeOut",
@@ -183,7 +184,7 @@
         "onFocus": "anchorPentagrams"
       },
       {
-        "text": "Exit Diablo",
+        "text": "|str_exitGame|",
         "position": [192, 363],
         "onClick": {
           "name": "game.fadeOut",
@@ -196,6 +197,7 @@
     ]
   },
   "button": {
+    "replaceVars": true,
     "id": "versionInfo",
     "font": "font16s",
     "position": [17, 444],
@@ -208,7 +210,7 @@
         "file": "ui/settings.json"
       }
     },
-    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "Change Settings     " },
+    "onHoverEnter": { "name": "text.setText", "id": "versionInfo", "text": "|str_changeSettings|" },
     "onHoverLeave": {
       "name": "text.setText",
       "id": "versionInfo",

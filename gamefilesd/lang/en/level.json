@@ -1,0 +1,12 @@
+{
+  "variable": [
+    { "str_done":           "Done" },
+    { "str_gossip":         "Gossip" },
+    { "str_max":            "Max" },
+    { "str_zoom":           "Zoom" },
+
+    { "str_noAutomap":      "No automap available in" },
+    { "str_noAutomapLevel": "No automap available in level" }
+  ],
+  "load": "lang/%lang%/level2.json"
+}

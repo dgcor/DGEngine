@@ -1,4 +1,5 @@
 {
+  "load": "lang/%lang%/town.json",
   "load": "level/default/d2/act1/town.json",
   "load": "res/towners/actions.json",
   "load": "level/map/town/levelObjects.json",

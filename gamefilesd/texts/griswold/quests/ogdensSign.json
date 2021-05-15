@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/griswold/quests/ogdensSign.txt"
+    "lang/%lang%/texts/griswold/quests/ogdensSign.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bsmith02.wav",

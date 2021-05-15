@@ -29,6 +29,15 @@ namespace Parser
 		return val;
 	}
 
+	BindingFlags getBindingFlagsKey(const Value& elem, const std::string_view key, BindingFlags val)
+	{
+		if (elem.HasMember(key) == true)
+		{
+			return getBindingFlagsVal(elem[key], val);
+		}
+		return val;
+	}
+
 	BlendMode getBlendModeKey(const Value& elem, const std::string_view key, BlendMode val)
 	{
 		if (elem.HasMember(key) == true)

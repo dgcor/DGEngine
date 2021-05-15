@@ -35,7 +35,6 @@
 #include "ParseTexture.h"
 #include "ParseTexturePack.h"
 #include "ParseVariable.h"
-#include "PhysFSStream.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/Utils.h"
 
@@ -49,12 +48,13 @@ namespace Parser
 
 	void parseFile(Game& game, const std::string_view fileName)
 	{
-		if (fileName == "null")
+		auto fileName2 = GameUtils::replaceStringWithVarOrProp(fileName, game);
+		if (fileName2 == "null")
 		{
 			return;
 		}
 
-		parseJson(game, FileUtils::readText(fileName.data()));
+		parseJson(game, FileUtils::readText(fileName2));
 	}
 
 	void parseFile(Game& game, const std::vector<std::string>& params)

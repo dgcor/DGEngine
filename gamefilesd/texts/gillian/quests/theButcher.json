@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/gillian/quests/theButcher.txt"
+    "lang/%lang%/texts/gillian/quests/theButcher.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid08.wav",

@@ -80,6 +80,7 @@
       "onFocus": "anchorPentagrams"
     },
     {
+      "replaceVars": true,
       "id": "back",
       "font": "font42g",
       "sound": "titlemov",
@@ -88,7 +89,7 @@
       "position": [319, 363],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "Back",
+      "text": "|str_back|",
       "onClick": {
         "name": "game.fadeOut",
         "action": [

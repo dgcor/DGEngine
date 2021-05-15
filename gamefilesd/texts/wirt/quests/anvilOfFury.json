@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/wirt/quests/anvilOfFury.txt"
+    "lang/%lang%/texts/wirt/quests/anvilOfFury.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy13.wav",

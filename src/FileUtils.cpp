@@ -3,23 +3,25 @@
 #include <filesystem>
 #include <memory>
 #include <fstream>
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "Utils/Utils.h"
+#ifdef PHYSFS_MPQ_SUPPORT
+#include "PhysFSArchiverMPQ.h"
+#endif
 
 namespace FileUtils
 {
-#ifdef FALLBACK_TO_LOWERCASE_FILENAME
-	static constexpr bool FALLBACK_TO_LOWERCASE = true;
-#else
-	static constexpr bool FALLBACK_TO_LOWERCASE = false;
-#endif
-
 	void initPhysFS(const char* argv0)
 	{
 		static const char* mainArgv0 = argv0;
 		deinitPhysFS();
-		PHYSFS_init(mainArgv0);
-		PHYSFS_permitSymbolicLinks(1);
+		if (PHYSFS_init(mainArgv0) != 0)
+		{
+#ifdef PHYSFS_MPQ_SUPPORT
+			PHYSFS_registerArchiver(&PHYSFS_Archiver_MPQ);
+#endif
+			PHYSFS_permitSymbolicLinks(1);
+		}
 	}
 
 	void deinitPhysFS()
@@ -49,11 +51,13 @@ namespace FileUtils
 					return true;
 				}
 			}
+#ifdef PHYSFS_MPQ_SUPPORT
 			path = path.replace_extension(".mpq");
 			if (std::filesystem::exists(path) == true)
 			{
 				return true;
 			}
+#endif
 			path = path.replace_extension(".zip");
 			if (std::filesystem::exists(path) == true)
 			{
@@ -90,11 +94,13 @@ namespace FileUtils
 					return true;
 				}
 			}
+#ifdef PHYSFS_MPQ_SUPPORT
 			path = path.replace_extension(".mpq");
 			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
 				return true;
 			}
+#endif
 			path = path.replace_extension(".zip");
 			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
 			{
@@ -129,11 +135,13 @@ namespace FileUtils
 					return true;
 				}
 			}
+#ifdef PHYSFS_MPQ_SUPPORT
 			path = path.replace_extension(".mpq");
 			if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 			{
 				return true;
 			}
+#endif
 			path = path.replace_extension(".zip");
 			if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
 			{
@@ -282,14 +290,13 @@ namespace FileUtils
 	bool exists(const char* filePath) noexcept
 	{
 		auto fileExists = PHYSFS_exists(filePath) != 0;
-		if constexpr (FALLBACK_TO_LOWERCASE == true)
+#ifdef DGENGINE_FALLBACK_TO_LOWERCASE
+		if (fileExists == false)
 		{
-			if (fileExists == false)
-			{
-				auto lowerCasefilePath = Utils::toLower(filePath);
-				fileExists = PHYSFS_exists(lowerCasefilePath.c_str()) != 0;
-			}
+			auto lowerCasefilePath = Utils::toLower(filePath);
+			fileExists = PHYSFS_exists(lowerCasefilePath.c_str()) != 0;
 		}
+#endif
 		return fileExists;
 	}
 

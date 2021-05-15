@@ -1,7 +1,8 @@
 {
+  "replaceVars": true,
   "action": [
     { "name": "resource.add", "id": "singlePlayerNew" },
-    { "name": "text.setText", "id": "label1", "text": "New Single Player Hero" }
+    { "name": "text.setText", "id": "label1", "text": "|str_newSinglePlayer|" }
   ],
   "load": "ui/singlePlayer/newHero.json"
 }

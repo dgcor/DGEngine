@@ -1,7 +1,8 @@
 {
+  "replaceVars": true,
   "action": [
     { "name": "resource.add", "id": "singlePlayerNewName" },
-    { "name": "text.setText", "id": "label2", "text": "Enter Name" }
+    { "name": "text.setText", "id": "label2", "text": "|str_enterName|" }
   ],
   "texturePack": {
     "id": "caret",
@@ -49,7 +50,7 @@
       "anchor": "none",
       "onClick": { "name": "inputText.click", "id": "heroName" },
       "sound": "titlslct",
-      "text": "OK"
+      "text": "|str_ok|"
     },
     {
       "id": "cancel",
@@ -61,7 +62,7 @@
         { "name": "load", "file": "ui/singlePlayer/newHero.json" }
       ],
       "sound": "titlslct",
-      "text": "Cancel"
+      "text": "|str_cancel|"
     }
   ]
 }

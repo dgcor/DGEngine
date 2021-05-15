@@ -3,6 +3,7 @@
     "closeMsgBox",
     { "name": "resource.add", "id": "gameMenu" }
   ],
+  "replaceVars": true,
   "button": [
     {
       "id": "saveGame",
@@ -10,14 +11,14 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Save Game",
+      "text": "|str_saveGame|",
       "position": [321, 116],
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 2,
       "onClick": [
         "menu.saveAndCloseAction",
-        { "name": "text.setText", "id": "msgBoxText", "text": "saving..." },
+        { "name": "text.setText", "id": "msgBoxText", "text": "|str_saving|" },
         "showMsgBox",
         { "name": "load", "file": "level/saveGame.json" },
         "closeMsgBox"
@@ -33,7 +34,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Options",
+      "text": "|str_options|",
       "position": [321, 161],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -53,7 +54,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "New Game",
+      "text": "|str_newGame|",
       "position": [321, 206],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -70,7 +71,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Load Game",
+      "text": "|str_loadGame|",
       "position": [320, 251],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -85,12 +86,12 @@
       ]
     },
     {
-      "id": "quitDiablo",
+      "id": "quitGame",
       "font": "bigtgold",
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Quit Diablo",
+      "text": "|str_quitGame|",
       "position": [321, 296],
       "anchor": "none",
       "horizontalAlign": "center",

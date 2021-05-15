@@ -1,6 +1,6 @@
 #include "DS1.h"
 #include <cassert>
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include <sstream>
 #include "StreamReader.h"
 

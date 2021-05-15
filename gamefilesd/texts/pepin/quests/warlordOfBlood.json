@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "16",
-    "texts/pepin/quests/warlordOfBlood.txt"
+    "lang/%lang%/texts/pepin/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer16.wav",

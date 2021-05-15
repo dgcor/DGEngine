@@ -34,6 +34,7 @@
       ]
     },
     {
+      "replaceVars": true,
       "name": "action.set",
       "id": "updateJog",
       "action": [
@@ -42,12 +43,12 @@
           "param1": "%jog%",
           "param2": true,
           "then": [
-            { "name": "text.setText", "id": "jog", "text": "Jog" },
+            { "name": "text.setText", "id": "jog", "text": "|str_jog|" },
             { "name": "drawable.setSizeX", "id": "progressBar4", "size": 270 },
             { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "right", "offset": [-29, 0] }
           ],
           "else": [
-            { "name": "text.setText", "id": "jog", "text": "Walk" },
+            { "name": "text.setText", "id": "jog", "text": "|str_walk|" },
             { "name": "drawable.setSizeX", "id": "progressBar4", "size": 14 },
             { "name": "drawable.anchor", "id": "option4", "idAnchor": "optbar4", "anchor": "left", "offset": [29, 0] }
           ]
@@ -222,6 +223,7 @@
       "texture": "option"
     }
   ],
+  "replaceVars": true,
   "button": [
     {
       "id": "btnOption1",
@@ -290,7 +292,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Music",
+      "text": "|str_music|",
       "position": [75, 116],
       "horizontalSpaceOffset": 2,
       "anchor": "none",
@@ -320,7 +322,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Sound",
+      "text": "|str_sound|",
       "position": [75, 161],
       "anchor": "none",
       "horizontalSpaceOffset": 2,
@@ -350,7 +352,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Gamma",
+      "text": "|str_gamma|",
       "position": [75, 206],
       "anchor": "none",
       "horizontalSpaceOffset": 2,
@@ -380,7 +382,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Walk",
+      "text": "|str_walk|",
       "position": [75, 251],
       "anchor": "none",
       "horizontalSpaceOffset": 2,
@@ -410,7 +412,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Previous Menu",
+      "text": "|str_prevMenu|",
       "position": [320, 296],
       "anchor": "none",
       "horizontalAlign": "center",

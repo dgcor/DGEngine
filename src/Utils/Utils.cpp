@@ -2,9 +2,6 @@
 #include <algorithm>
 #include <array>
 #include <charconv>
-#if __GNUC__
-#include <cstdlib>
-#endif
 #include <iostream>
 #include <iterator>
 #include <sstream>
@@ -111,7 +108,6 @@ namespace Utils
 		return std::make_pair(str, "");
 	}
 
-#ifndef __GNUC__
 	float strtof(std::string_view str) noexcept
 	{
 		float val = 0;
@@ -132,22 +128,6 @@ namespace Utils
 		std::from_chars(str.data(), str.data() + str.size(), val);
 		return val;
 	}
-#else
-	float strtof(std::string_view str) noexcept
-	{
-		return std::strtof(str.data(), nullptr);
-	}
-
-	double strtod(std::string_view str) noexcept
-	{
-		return std::strtod(str.data(), nullptr);
-	}
-
-	long double strtold(std::string_view str) noexcept
-	{
-		return std::strtold(str.data(), nullptr);
-	}
-#endif
 
 	int strtoi(std::string_view str) noexcept
 	{
@@ -205,7 +185,6 @@ namespace Utils
 		return ret;
 	}
 
-#ifndef __GNUC__
 	std::string toString(double num)
 	{
 		std::array<char, 24> str;
@@ -221,19 +200,6 @@ namespace Utils
 		}
 		return { "0.0" };
 	}
-#else
-	std::string toString(double num)
-	{
-		std::string str{ std::to_string(num) };
-		int offset{ 1 };
-		if (str.find_last_not_of('0') == str.find('.'))
-		{
-			offset = 2;
-		}
-		str.erase(str.find_last_not_of('0') + offset, std::string::npos);
-		return str;
-	}
-#endif
 
 	std::string toString(int num)
 	{

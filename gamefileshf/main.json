@@ -19,6 +19,7 @@
     { "file": "hfmonk.mpq" },
     { "file": "hfmusic.mpq" }
   ],
+  "load": "lang/load.json",
   "action": {
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "ui_art/hf_title.pcx" },

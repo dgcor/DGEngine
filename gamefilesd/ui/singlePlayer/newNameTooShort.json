@@ -29,12 +29,13 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": {
     "id": "tooShort",
     "font": "font24s",
     "position": [140, 236],
     "anchor": "none",
-    "text": "Invalid name. A name cannot\ncontain spaces, reserved\ncharacters, or reserved words."
+    "text": "|str_invalidName|"
   },
   "button": {
     "id": "ok",
@@ -47,6 +48,6 @@
       { "name": "load", "file": "ui/singlePlayer/newName.json" }
     ],
     "sound": "titlslct",
-    "text": "OK"
+    "text": "|str_ok|"
   }
 }

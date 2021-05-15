@@ -129,6 +129,7 @@
       }
     ]
   },
+  "replaceVars": true,
   "button": {
     "id": "back",
     "font": "smaltext",
@@ -137,7 +138,7 @@
     "anchor": "none",
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "Back",
+    "text": "|str_back|",
     "onClick": [
       { "name": "resource.popAll", "id": "userPanelBigFrame" },
       { "name": "resource.ignore", "id": "userPanel", "ignore": false }
@@ -156,7 +157,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "Which item is for sale?            Your gold : [1]"
+        "format": "|str_itemInfoSell|"
       },
       { "name": "load", "file": "towners/adria/sell/listItems.json" }
     ],
@@ -165,7 +166,7 @@
         "name": "text.setText",
         "id": "panelTitle",
         "binding": "%currentLevel.currentPlayer.itemQuantity.gold%",
-        "format": "You have nothing I want.            Your gold : [1]"
+        "format": "|str_itemInfoNothingToBuy|"
       },
       { "name": "load", "file": "towners/adria/sell/noItems.json" }
     ]

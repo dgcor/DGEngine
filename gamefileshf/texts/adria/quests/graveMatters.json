@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/adria/quests/graveMatters.txt"
+    "lang/%lang%/texts/adria/quests/graveMatters.txt"
   ],
   "audio": {
     "file": "sfx/Towners/witch19.wav",

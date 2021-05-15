@@ -38,17 +38,9 @@ bool InputText::setAction(uint16_t nameHash16, const std::shared_ptr<Action>& ac
 	return true;
 }
 
-void InputText::setRegex(const std::string& regex_)
+void InputText::setRegex(const std::string_view regex_)
 {
-	regex.reset();
-	if (regex_.size() > 0)
-	{
-		try
-		{
-			regex = std::make_optional<std::regex>(regex_, std::regex::ECMAScript);
-		}
-		catch (std::exception&) {}
-	}
+	regex = Regex(regex_);
 }
 
 bool InputText::isValidMin(const std::string& str) const noexcept
@@ -143,8 +135,7 @@ void InputText::update(Game& game)
 				{
 					break;
 				}
-				if (regex.has_value() == true &&
-					std::regex_match(txt, *regex) == false)
+				if (regex.match(txt) == false)
 				{
 					break;
 				}

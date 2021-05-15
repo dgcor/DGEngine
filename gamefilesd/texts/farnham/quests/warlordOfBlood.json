@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/farnham/quests/warlordOfBlood.txt"
+    "lang/%lang%/texts/farnham/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/drunk17.wav",

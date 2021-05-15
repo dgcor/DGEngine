@@ -9,7 +9,7 @@
 #include "Parser/ParseImageContainer.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "Utils/Utils.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
 #endif
 
@@ -180,7 +180,7 @@ namespace Parser
 				hasJsonFile = true;
 			}
 		}
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		else if (Utils::endsWith(Utils::toLower(file), ".ds1") == true)
 		{
 			auto ds1 = DS1::Decoder(file);
@@ -464,6 +464,7 @@ namespace Parser
 			level->Position(pos);
 			level->Size(size);
 			level->Zoom(((float)getIntVal(getQueryKey(queryObj, elem, "zoom"), 100)) / 100.f);
+			level->ZoomDrawables(getBoolVal(getQueryKey(queryObj, elem, "zoomDrawables")));
 			level->Visible(getBoolVal(getQueryKey(queryObj, elem, "visible"), true));
 		}
 

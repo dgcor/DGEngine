@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/wirt/quests/hallsOfTheBlind.txt"
+    "lang/%lang%/texts/wirt/quests/hallsOfTheBlind.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy11.wav",

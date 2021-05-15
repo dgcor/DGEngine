@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Anchor.h"
+#include "BindingFlags.h"
 #include "BlendMode.h"
 #include "IgnoreResource.h"
 #include "InputEvent.h"
@@ -20,8 +21,9 @@
 
 namespace Parser
 {
-	Anchor getAnchorVal(const rapidjson::Value& elem,
-		Anchor val = Anchor::Top | Anchor::Left);
+	Anchor getAnchorVal(const rapidjson::Value& elem, Anchor val = Anchor::Top | Anchor::Left);
+
+	BindingFlags getBindingFlagsVal(const rapidjson::Value& elem, BindingFlags val = BindingFlags::OnChange);
 
 	BlendMode getBlendModeVal(const rapidjson::Value& elem, BlendMode val = BlendMode::Alpha);
 

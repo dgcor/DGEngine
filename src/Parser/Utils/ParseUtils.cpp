@@ -48,7 +48,7 @@ namespace Parser
 		}
 		for (auto ch : id)
 		{
-			if (std::isalnum(ch) != 0 || ch == '_')
+			if (std::isalnum((unsigned char)ch) != 0 || ch == '_')
 			{
 				continue;
 			}

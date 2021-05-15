@@ -1,6 +1,6 @@
 #include "ParseTexture.h"
 #include "Game.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "ImageContainers/DC6ImageContainer.h"
 #endif
 #include "ImageUtils.h"
@@ -80,7 +80,7 @@ namespace Parser
 				auto frameIdx = getUIntVal(elem["frame"sv]);
 				img = ImageUtils::loadImageFrame(*imgContainer, palArray, frameIdx);
 			}
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 			else if (elem.HasMember("stitch"sv) == true &&
 				elem.HasMember("size"sv) == true &&
 				dynamic_cast<DC6ImageContainer*>(imgContainer.get()) != nullptr)

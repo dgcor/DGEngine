@@ -47,6 +47,7 @@ given where due.
 
 #include <string.h>
 #include <stdio.h>
+#include <vector>
 
 template <class USER_TYPE> class FixedSizeAllocator
 {
@@ -63,34 +64,27 @@ public:
 	// list class
 	struct FSA_ELEMENT
 	{
-		USER_TYPE UserType;
-		
-		FSA_ELEMENT *pPrev;
-		FSA_ELEMENT *pNext;
+		USER_TYPE UserType = {};
+
+		FSA_ELEMENT *pPrev = nullptr;
+		FSA_ELEMENT *pNext = nullptr;
 	};
 
 public: // methods
 	FixedSizeAllocator( unsigned int MaxElements = FSA_DEFAULT_SIZE ) :
-	m_pFirstUsed( NULL ),
-	m_MaxElements( MaxElements )
+	m_pFirstUsed( nullptr )
 	{
 		// Allocate enough memory for the maximum number of elements
-
-		char *pMem = new char[ m_MaxElements * sizeof(FSA_ELEMENT) ];
-
-		m_pMemory = (FSA_ELEMENT *) pMem; 
+		m_Memory.resize(MaxElements);
 
 		// Set the free list first pointer
-		m_pFirstFree = m_pMemory;
-
-		// Clear the memory
-		memset( m_pMemory, 0, sizeof( FSA_ELEMENT ) * m_MaxElements );
+		m_pFirstFree = &m_Memory.front();
 
 		// Point at first element
 		FSA_ELEMENT *pElement = m_pFirstFree;
 
 		// Set the double linked free list
-		for( unsigned int i=0; i<m_MaxElements; i++ )
+		for( size_t i=0; i< m_Memory.size(); i++ )
 		{
 			pElement->pPrev = pElement-1;
 			pElement->pNext = pElement+1;
@@ -99,28 +93,21 @@ public: // methods
 		}
 
 		// first element should have a null prev
-		m_pFirstFree->pPrev = NULL;
+		m_pFirstFree->pPrev = nullptr;
 		// last element should have a null next
-		(pElement-1)->pNext = NULL;
+		(pElement-1)->pNext = nullptr;
 
-	}
-
-
-	~FixedSizeAllocator()
-	{
-		// Free up the memory
-		delete [] (char *) m_pMemory;
 	}
 
 	// Allocate a new USER_TYPE and return a pointer to it 
 	USER_TYPE *alloc()
 	{
 
-		FSA_ELEMENT *pNewNode = NULL;
+		FSA_ELEMENT *pNewNode = nullptr;
 
 		if( !m_pFirstFree )
 		{
-			return NULL;
+			return nullptr;
 		}
 		else
 		{
@@ -131,16 +118,16 @@ public: // methods
 			// change that nodes prev free pointer...
 			if( pNewNode->pNext )
 			{
-				pNewNode->pNext->pPrev = NULL;
+				pNewNode->pNext->pPrev = nullptr;
 			}
 
 			// node is now on the used list
 
-			pNewNode->pPrev = NULL; // the allocated node is always first in the list
+			pNewNode->pPrev = nullptr; // the allocated node is always first in the list
 
-			if( m_pFirstUsed == NULL )
+			if( m_pFirstUsed == nullptr )
 			{
-				pNewNode->pNext = NULL; // no other nodes
+				pNewNode->pNext = nullptr; // no other nodes
 			}
 			else
 			{
@@ -180,12 +167,12 @@ public: // methods
 		}
 
 		// add to free list
-		if( m_pFirstFree == NULL ) 
+		if( m_pFirstFree == nullptr ) 
 		{
 			// free list was empty
 			m_pFirstFree = pNode;
-			pNode->pPrev = NULL;
-			pNode->pNext = NULL;
+			pNode->pPrev = nullptr;
+			pNode->pNext = nullptr;
 		}
 		else
 		{
@@ -244,8 +231,7 @@ private: // data
 
 	FSA_ELEMENT *m_pFirstFree;
 	FSA_ELEMENT *m_pFirstUsed;
-	unsigned int m_MaxElements;
-	FSA_ELEMENT *m_pMemory;
+	std::vector<FSA_ELEMENT> m_Memory;
 
 };
 

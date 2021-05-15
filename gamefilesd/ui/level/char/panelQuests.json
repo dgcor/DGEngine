@@ -86,6 +86,7 @@
     }
   },
   "button": {
+    "replaceVars": true,
     "id": "closeQuestLog",
     "anchor": "left",
     "font": "smaltext",
@@ -95,7 +96,7 @@
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
     "sound": "titlslct",
-    "text": "Close Quest Log",
+    "text": "|str_closeQuest|",
     "onClick": { "name": "button.click", "id": "quest" },
     "onFocus": [
       "anchorLeftPentagram",

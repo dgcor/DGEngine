@@ -71,6 +71,7 @@
       }
     },
     {
+      "replaceVars": true,
       "name": "action.set",
       "id": "updateCharPanel",
       "action": {
@@ -113,7 +114,7 @@
             "name": ">=",
             "param1": "%currentLevel.currentPlayer.resistMagic%",
             "param2": "%currentLevel.currentPlayer.maxResistMagic%",
-            "then": { "name": "text.setText", "id": "charResMagic", "text": "Max" },
+            "then": { "name": "text.setText", "id": "charResMagic", "text": "|str_max|" },
             "else": {
               "name": "text.setText",
               "id": "charResMagic",
@@ -125,7 +126,7 @@
             "name": ">=",
             "param1": "%currentLevel.currentPlayer.resistFire%",
             "param2": "%currentLevel.currentPlayer.maxResistFire%",
-            "then": { "name": "text.setText", "id": "charResFire", "text": "Max" },
+            "then": { "name": "text.setText", "id": "charResFire", "text": "|str_max|" },
             "else": {
               "name": "text.setText",
               "id": "charResFire",
@@ -137,7 +138,7 @@
             "name": ">=",
             "param1": "%currentLevel.currentPlayer.resistLightning%",
             "param2": "%currentLevel.currentPlayer.maxResistLightning%",
-            "then": { "name": "text.setText", "id": "charResLight", "text": "Max" },
+            "then": { "name": "text.setText", "id": "charResLight", "text": "|str_max|" },
             "else": {
               "name": "text.setText",
               "id": "charResLight",

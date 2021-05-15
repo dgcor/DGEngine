@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/wirt/gossip/gossip6.txt"
+    "lang/%lang%/texts/wirt/gossip/gossip6.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy38.wav",

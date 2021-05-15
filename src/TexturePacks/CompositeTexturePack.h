@@ -34,7 +34,7 @@ private:
 public:
 	CompositeTexturePack() = default;
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 	void addGroup(const std::string_view fileName, bool fixLayerOrdering);
 #endif
 	bool addGroup(uint32_t texturePackCount);

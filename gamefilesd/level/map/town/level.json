@@ -3,6 +3,7 @@
     "id": "level",
     "fromId": "town"
   },
+  "load": "lang/%lang%/town.json",
   "load": "level/default/town.json",
   "load": "res/towners/actions.json",
   "load": "level/map/town/levelObjects.json",

@@ -45,7 +45,7 @@ namespace Parser
 		}
 		if (isValidString(elem, "regex") == true)
 		{
-			inputText->setRegex(elem["regex"sv].GetStringStr());
+			inputText->setRegex(elem["regex"sv].GetStringView());
 		}
 
 		if (elem.HasMember("onClick"sv))

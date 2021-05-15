@@ -1,5 +1,5 @@
 #include "Min.h"
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "StreamReader.h"
 
 Min::Min(const std::string_view fileName, size_t minSize)

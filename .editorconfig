@@ -1,5 +1,12 @@
 root = true
 
+[CMakeLists.txt]
+charset                  = utf-8
+end_of_line              = lf
+indent_size              = 4
+indent_style             = space
+insert_final_newline     = true
+
 [gamefiles**.json]
 charset                  = utf-8
 end_of_line              = lf
@@ -35,7 +42,13 @@ indent_style             = unset
 insert_final_newline     = unset
 trim_trailing_whitespace = unset
 
-[src/Utils/iterator_tpl.h]
+[src/SFML/dr_wav.h]
+indent_size              = unset
+indent_style             = unset
+insert_final_newline     = unset
+trim_trailing_whitespace = unset
+
+[src/Utils/{iterator_tpl.h,re.*}]
 indent_size              = unset
 indent_style             = unset
 insert_final_newline     = unset

@@ -103,6 +103,7 @@
     <ClCompile Include="src\Game\Item.cpp" />
     <ClCompile Include="src\Game\ItemClass.cpp" />
     <ClCompile Include="src\Game\Level.cpp" />
+    <ClCompile Include="src\Game\LevelBase.cpp" />
     <ClCompile Include="src\Game\LevelCell.cpp" />
     <ClCompile Include="src\Game\LevelHelper.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
@@ -113,7 +114,7 @@
     <ClCompile Include="src\Game\LevelSurface.cpp" />
     <ClCompile Include="src\Game\PathFinder.cpp" />
     <ClCompile Include="src\Game\Player.cpp" />
-    <ClCompile Include="src\Game\PlayerAI.cpp" />
+    <ClCompile Include="src\Game\PlayerBase.cpp" />
     <ClCompile Include="src\Game\PlayerClass.cpp" />
     <ClCompile Include="src\Game\Quest.cpp" />
     <ClCompile Include="src\Game\Save\SaveItem.cpp" />
@@ -211,7 +212,9 @@
     <ClCompile Include="src\Parser\Utils\ParseUtilsKey.cpp" />
     <ClCompile Include="src\Parser\Utils\ParseUtilsVal.cpp" />
     <ClCompile Include="src\Pcx.cpp" />
-    <ClCompile Include="src\PhysFSStream.cpp" />
+    <ClCompile Include="src\PhysFSArchiverMPQ.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\Rectangle.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Scrollable.cpp" />
@@ -254,6 +257,7 @@
     <ClCompile Include="src\SFML\GradientCircle.cpp" />
     <ClCompile Include="src\SFML\Music2.cpp" />
     <ClCompile Include="src\SFML\MusicLoops.cpp" />
+    <ClCompile Include="src\SFML\PhysFSStream.cpp" />
     <ClCompile Include="src\SFML\SFMLUtils.cpp" />
     <ClCompile Include="src\SFML\Sprite2.cpp" />
     <ClCompile Include="src\SFML\Text2.cpp" />
@@ -263,6 +267,33 @@
     <ClCompile Include="src\SFML\Wave2.cpp" />
     <ClCompile Include="src\ShaderManager.cpp" />
     <ClCompile Include="src\Shape.cpp" />
+    <ClCompile Include="src\StormLib\FileStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\pklib\explode.c">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SBaseCommon.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SBaseFileTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SCompression.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SFileGetFileInfo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SFileOpenArchive.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SFileOpenFileEx.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\StormLib\SFileReadFile.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\StringButton.cpp" />
     <ClCompile Include="src\StringText.cpp" />
     <ClCompile Include="src\Text.cpp" />
@@ -277,6 +308,7 @@
     <ClCompile Include="src\TextUtils.cpp" />
     <ClCompile Include="src\TileSet.cpp" />
     <ClCompile Include="src\UIObject.cpp" />
+    <ClCompile Include="src\Utils\re.c" />
     <ClCompile Include="src\Utils\Utils.cpp" />
     <ClCompile Include="src\Variable.cpp" />
   </ItemGroup>
@@ -325,6 +357,7 @@
     <ClInclude Include="src\AudioSource.h" />
     <ClInclude Include="src\BaseAnimation.h" />
     <ClInclude Include="src\BindableText.h" />
+    <ClInclude Include="src\BindingFlags.h" />
     <ClInclude Include="src\BlendMode.h" />
     <ClInclude Include="src\CachedImagePack.h" />
     <ClInclude Include="src\Circle.h" />
@@ -354,6 +387,7 @@
     <ClInclude Include="src\Game\ItemClass.h" />
     <ClInclude Include="src\Game\ItemLocation.h" />
     <ClInclude Include="src\Game\Level.h" />
+    <ClInclude Include="src\Game\LevelBase.h" />
     <ClInclude Include="src\Game\LevelCell.h" />
     <ClInclude Include="src\Game\LevelFlags.h" />
     <ClInclude Include="src\Game\LevelHelper.h">
@@ -369,7 +403,7 @@
     <ClInclude Include="src\Game\LightSource.h" />
     <ClInclude Include="src\Game\PathFinder.h" />
     <ClInclude Include="src\Game\Player.h" />
-    <ClInclude Include="src\Game\PlayerAI.h" />
+    <ClInclude Include="src\Game\PlayerBase.h" />
     <ClInclude Include="src\Game\PlayerClass.h" />
     <ClInclude Include="src\Game\Quest.h" />
     <ClInclude Include="src\Game\Save\SaveItem.h" />
@@ -534,7 +568,9 @@
     </ClInclude>
     <ClInclude Include="src\Palette.h" />
     <ClInclude Include="src\Pcx.h" />
-    <ClInclude Include="src\PhysFSStream.h" />
+    <ClInclude Include="src\PhysFSArchiverMPQ.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\SFML\CompositeSprite.h" />
     <ClInclude Include="src\SFML\dr_wav.h" />
@@ -542,6 +578,7 @@
     <ClInclude Include="src\SFML\Image2.h" />
     <ClInclude Include="src\SFML\Music2.h" />
     <ClInclude Include="src\SFML\MusicLoops.h" />
+    <ClInclude Include="src\SFML\PhysFSStream.h" />
     <ClInclude Include="src\SFML\SFMLUtils.h" />
     <ClInclude Include="src\SFML\Sprite2.h" />
     <ClInclude Include="src\SFML\Text2.h" />
@@ -552,6 +589,21 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderManager.h" />
     <ClInclude Include="src\Shape.h" />
+    <ClInclude Include="src\StormLib\FileStream.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\StormLib\pklib\pklib.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\StormLib\StormCommon.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\StormLib\StormLib.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\StormLib\StormPort.h">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoDiabloFormatSupport'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="src\StreamReader.h" />
     <ClInclude Include="src\StringButton.h" />
     <ClInclude Include="src\StringText.h" />
@@ -579,6 +631,8 @@
     <ClInclude Include="src\Utils\Number.h" />
     <ClInclude Include="src\Utils\NumberVector.h" />
     <ClInclude Include="src\Utils\PairXY.h" />
+    <ClInclude Include="src\Utils\re.h" />
+    <ClInclude Include="src\Utils\Regex.h" />
     <ClInclude Include="src\Utils\ReverseIterable.h" />
     <ClInclude Include="src\Utils\UnorderedStringMap.h" />
     <ClInclude Include="src\Utils\Utils.h" />
@@ -839,17 +893,20 @@
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)'=='Release Static NoMovie'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)'=='Debug Clang'">
+    <VcpkgAutoLink>false</VcpkgAutoLink>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_HAS_CXX17;_HAS_CXX20;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -857,15 +914,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
-      <PreprocessorDefinitions>_HAS_CXX17;_HAS_CXX20;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -873,15 +930,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|Win32'">
     <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <PreprocessorDefinitions>NO_DIABLO_FORMAT_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -889,15 +945,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoDiabloFormatSupport|x64'">
     <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <PreprocessorDefinitions>NO_DIABLO_FORMAT_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -905,15 +960,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
       <EnablePREfast>true</EnablePREfast>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -921,15 +977,16 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|x64'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <WarningLevel>Level3</WarningLevel>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
       <EnablePREfast>true</EnablePREfast>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
-      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -937,15 +994,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -953,15 +1010,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
@@ -969,212 +1026,212 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>-Xclang "-std=c++17" %(AdditionalOptions)</AdditionalOptions>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>-Xclang "-std=c++17" %(AdditionalOptions)</AdditionalOptions>
-      <SupportJustMyCode>false</SupportJustMyCode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <PreprocessorDefinitions>USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>No</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>bcrypt.lib;opengl32.lib;secur32.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>No</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>bcrypt.lib;opengl32.lib;secur32.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>No</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SFML_STATIC;USE_SFML_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
-      <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_DIABLO_FORMAT_SUPPORT;DGENGINE_MOVIE_STUB;PHYSFS_DYNAMIC_STORMLIB;PHYSFS_INTERNAL_STORMLIB;PHYSFS_MPQ_SUPPORT;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
     </ClCompile>
     <Link>
-      <GenerateDebugInformation>No</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameProperties.h"
+#include <limits>
 #include "stlastar.h"
 
 class LevelMap;
@@ -11,7 +12,7 @@ class AStarMapSearch : public AStarSearch<T>
 public:
 	const LevelMap* map{ nullptr };
 
-	static constexpr int MaxNodes = 150;
+	static constexpr int MaxNodes = 256;
 
 	AStarMapSearch(const LevelMap* map_) : AStarSearch<T>(MaxNodes), map(map_) {}
 };

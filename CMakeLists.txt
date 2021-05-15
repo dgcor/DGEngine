@@ -5,7 +5,10 @@ project(DGEngine)
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
     add_definitions(-Wall -stdlib=libc++)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
+        message(FATAL_ERROR "GCC version must be at least 11!")
+    endif()
     if(NOT BEOS)
         add_definitions(-Wall)
     endif()
@@ -13,11 +16,15 @@ endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 
-option(DGENGINE_MOVIE_SUPPORT "Enable Movie support" TRUE)
-option(DGENGINE_DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
-option(DGENGINE_FALLBACK_TO_LOWERCASE_FILENAME "Enable falling back to all lowercase names if file is not found" TRUE)
+option(MOVIE_SUPPORT "Enable Movie support" TRUE)
+option(FALLBACK_TO_LOWERCASE "Enable falling back to all lowercase names if file is not found" TRUE)
+option(DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
+option(MPQ_SUPPORT "Enable physfs MPQ support" TRUE)
+option(INTERNAL_STORMLIB "Use internal StormLib for MPQ support" TRUE)
+option(EXTERNAL_STORMLIB "Use external StormLib for MPQ support" FALSE)
+option(DYNAMIC_STORMLIB "Use external StormLib dll for MPQ support" TRUE)
 
-if(DGENGINE_MOVIE_SUPPORT)
+if(MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
 find_package(PhysFS REQUIRED)
@@ -38,6 +45,7 @@ set(SOURCE_FILES
     src/BaseAnimation.h
     src/BindableText.cpp
     src/BindableText.h
+    src/BindingFlags.h
     src/BitmapButton.cpp
     src/BitmapButton.h
     src/BitmapFont.cpp
@@ -99,8 +107,6 @@ set(SOURCE_FILES
     src/Panel.h
     src/Pcx.cpp
     src/Pcx.h
-    src/PhysFSStream.cpp
-    src/PhysFSStream.h
     src/Queryable.h
     src/Rectangle.cpp
     src/Rectangle.h
@@ -186,6 +192,8 @@ set(SOURCE_FILES
     src/Game/ItemLocation.h
     src/Game/Level.cpp
     src/Game/Level.h
+    src/Game/LevelBase.cpp
+    src/Game/LevelBase.h
     src/Game/LevelCell.cpp
     src/Game/LevelCell.h
     src/Game/LevelFlags.h
@@ -205,8 +213,8 @@ set(SOURCE_FILES
     src/Game/PathFinder.h
     src/Game/Player.cpp
     src/Game/Player.h
-    src/Game/PlayerAI.cpp
-    src/Game/PlayerAI.h
+    src/Game/PlayerBase.cpp
+    src/Game/PlayerBase.h
     src/Game/PlayerClass.cpp
     src/Game/PlayerClass.h
     src/Game/Quest.cpp
@@ -362,6 +370,8 @@ set(SOURCE_FILES
     src/SFML/Music2.h
     src/SFML/MusicLoops.cpp
     src/SFML/MusicLoops.h
+    src/SFML/PhysFSStream.cpp
+    src/SFML/PhysFSStream.h
     src/SFML/SFMLUtils.cpp
     src/SFML/SFMLUtils.h
     src/SFML/Sprite2.cpp
@@ -403,6 +413,9 @@ set(SOURCE_FILES
     src/Utils/Number.h
     src/Utils/NumberVector.h
     src/Utils/PairXY.h
+    src/Utils/re.c
+    src/Utils/re.h
+    src/Utils/Regex.h
     src/Utils/ReverseIterable.h
     src/Utils/UnorderedStringMap.h
     src/Utils/Utils.cpp
@@ -430,10 +443,12 @@ if(FFmpeg_FOUND)
         src/sfeMovie/VideoStream.hpp
     )
 else()
-    add_definitions(-DUSE_SFML_MOVIE_STUB)
+    add_definitions(-DDGENGINE_MOVIE_STUB)
 endif()
 
-if(DGENGINE_DIABLO_FORMAT_SUPPORT)
+if(DIABLO_FORMAT_SUPPORT)
+    add_definitions(-DDGENGINE_DIABLO_FORMAT_SUPPORT)
+
     SET(SOURCE_FILES ${SOURCE_FILES}
         src/DS1.cpp
         src/DS1.h
@@ -452,15 +467,58 @@ if(DGENGINE_DIABLO_FORMAT_SUPPORT)
         src/ImageContainers/DT1ImageContainer.cpp
         src/ImageContainers/DT1ImageContainer.h
     )
-else()
-    add_definitions(-DNO_DIABLO_FORMAT_SUPPORT)
+
+    if(MPQ_SUPPORT)
+        add_definitions(-DPHYSFS_MPQ_SUPPORT)
+
+        SET(SOURCE_FILES ${SOURCE_FILES}
+            src/PhysFSArchiverMPQ.cpp
+            src/PhysFSArchiverMPQ.h
+        )
+
+        if(EXTERNAL_STORMLIB)
+            add_definitions(-DPHYSFS_EXTERNAL_STORMLIB)
+        elseif(INTERNAL_STORMLIB)
+            add_definitions(-DPHYSFS_INTERNAL_STORMLIB)
+
+            SET(SOURCE_FILES ${SOURCE_FILES}
+                src/StormLib/FileStream.cpp
+                src/StormLib/FileStream.h
+                src/StormLib/SBaseCommon.cpp
+                src/StormLib/SBaseFileTable.cpp
+                src/StormLib/SCompression.cpp
+                src/StormLib/SFileGetFileInfo.cpp
+                src/StormLib/SFileOpenArchive.cpp
+                src/StormLib/SFileOpenFileEx.cpp
+                src/StormLib/SFileReadFile.cpp
+                src/StormLib/StormCommon.h
+                src/StormLib/StormLib.h
+                src/StormLib/StormPort.h
+                src/StormLib/pklib/explode.c
+                src/StormLib/pklib/pklib.h
+            )
+        endif()
+
+        if(DYNAMIC_STORMLIB)
+            add_definitions(-DPHYSFS_DYNAMIC_STORMLIB)
+        endif()
+    endif()
 endif()
 
-if(DGENGINE_FALLBACK_TO_LOWERCASE_FILENAME)
-    add_definitions(-DFALLBACK_TO_LOWERCASE_FILENAME)
+if(FALLBACK_TO_LOWERCASE)
+    add_definitions(-DDGENGINE_FALLBACK_TO_LOWERCASE)
 endif()
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+if(DIABLO_FORMAT_SUPPORT AND MPQ_SUPPORT)
+    if(EXTERNAL_STORMLIB)
+        target_link_libraries(${PROJECT_NAME} storm)
+    endif()
+    if(DYNAMIC_STORMLIB AND UNIX)
+        target_link_libraries(${PROJECT_NAME} dl)
+    endif()
+endif()
 
 if(FFmpeg_FOUND)
     include_directories(${FFmpeg_INCLUDES})

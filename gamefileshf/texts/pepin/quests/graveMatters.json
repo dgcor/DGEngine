@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/pepin/quests/graveMatters.txt"
+    "lang/%lang%/texts/pepin/quests/graveMatters.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer17.wav",

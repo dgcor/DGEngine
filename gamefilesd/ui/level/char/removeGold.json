@@ -41,6 +41,7 @@
     "texture": "golddrop",
     "textureRect": [261, 136]
   },
+  "replaceVars": true,
   "text": [
     {
       "id": "goldInfo1",
@@ -49,7 +50,8 @@
       "anchor": "right",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "You have {2} gold"
+      "binding": "{2}",
+      "text": "|str_goldInfo|"
     },
     {
       "id": "goldInfo2",
@@ -66,7 +68,7 @@
       "anchor": "right",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "you want to remove?"
+      "text": "|str_goldRemove|"
     }
   ],
   "inputText": {
@@ -102,7 +104,7 @@
     "name": "if.equal",
     "param1": "{2}",
     "param2": "1",
-    "then": { "name": "text.setText", "id": "goldInfo2", "text": "piece.  How many do" },
-    "else": { "name": "text.setText", "id": "goldInfo2", "text": "pieces.  How many do" }
+    "then": { "name": "text.setText", "id": "goldInfo2", "text": "|str_goldPiece|" },
+    "else": { "name": "text.setText", "id": "goldInfo2", "text": "|str_goldPieces|" }
   }
 }

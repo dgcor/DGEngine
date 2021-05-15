@@ -1,9 +1,9 @@
 #pragma once
 
 #include <memory>
-#include "PhysFSStream.h"
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
+#include "SFML/PhysFSStream.h"
 #include <unordered_map>
 #include <variant>
 

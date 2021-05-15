@@ -1,8 +1,9 @@
 {
+  "replaceVars": true,
   "action": [
     { "name": "resource.add", "id": "singlePlayerSelect" },
-    { "name": "text.setText", "id": "label1", "text": "Single Player Characters" },
-    { "name": "text.setText", "id": "label2", "text": "Select Hero" },
+    { "name": "text.setText", "id": "label1", "text": "|str_singlePlayerChars|" },
+    { "name": "text.setText", "id": "label2", "text": "|str_selechHero|" },
     { "name": "text.setText", "id": "txtLevel", "text": "--" },
     { "name": "text.setText", "id": "txtStrength", "text": "--" },
     { "name": "text.setText", "id": "txtMagic", "text": "--" },
@@ -98,7 +99,7 @@
         "onFocus": "focus.clickNoSound"
       },
       {
-        "text": "New Hero",
+        "text": "|str_newHero|",
         "onClick": [
           { "name": "load", "file": "ui/charInfoDefault.json" },
           { "name": "load", "file": "ui/singlePlayer/setPlayerImage.json" },
@@ -129,7 +130,7 @@
         "else": { "name": "load", "file": ["level/loadGame.json", "%focus.text%"] }
       },
       "sound": "titlslct",
-      "text": "OK"
+      "text": "|str_ok|"
     },
     {
       "id": "delete",
@@ -140,7 +141,7 @@
         { "name": "load", "file": ["ui/singlePlayer/delete.json", "%focus.text%"] }
       ],
       "sound": "titlslct",
-      "text": "Delete"
+      "text": "|str_delete|"
     },
     {
       "id": "cancel",
@@ -156,7 +157,7 @@
         ]
       },
       "sound": "titlslct",
-      "text": "Cancel"
+      "text": "|str_cancel|"
     },
     {
       "id": "btnUp",

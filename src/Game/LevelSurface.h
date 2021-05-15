@@ -56,6 +56,8 @@ public:
 	void setCenter();
 
 	sf::Vector2f getPosition(const sf::Vector2f& point) const;
+	sf::Vector2f getDrawPosition(const sf::Vector2f& point) const;
+	float getZoom() const;
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
 	bool draw(const Game& game, const Panel& obj) const;

@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/ogden/quests/ogdensSign1.txt"
+    "lang/%lang%/texts/ogden/quests/ogdensSign1.txt"
   ],
   "audio": {
     "file": "sfx/Towners/tavown24.wav",

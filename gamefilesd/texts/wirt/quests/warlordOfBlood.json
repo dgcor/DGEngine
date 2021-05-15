@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/wirt/quests/warlordOfBlood.txt"
+    "lang/%lang%/texts/wirt/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/pegboy17.wav",

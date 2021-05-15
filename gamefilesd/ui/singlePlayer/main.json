@@ -80,6 +80,7 @@
     }
   ],
   "action": "loadLogoImg",
+  "replaceVars": true,
   "text": [
     {
       "id": "label1",
@@ -98,7 +99,7 @@
     {
       "id": "level",
       "font": "font16s",
-      "text": "Level:",
+      "text": "|str_level|:",
       "position": [149, 323],
       "anchor": "none",
       "horizontalAlign": "right"
@@ -106,7 +107,7 @@
     {
       "id": "strength",
       "font": "font16s",
-      "text": "Strength:",
+      "text": "|str_strength|:",
       "position": [149, 358],
       "anchor": "none",
       "horizontalAlign": "right"
@@ -114,7 +115,7 @@
     {
       "id": "magic",
       "font": "font16s",
-      "text": "Magic:",
+      "text": "|str_magic|:",
       "position": [149, 380],
       "anchor": "none",
       "horizontalAlign": "right"
@@ -122,7 +123,7 @@
     {
       "id": "dexterity",
       "font": "font16s",
-      "text": "Dexterity:",
+      "text": "|str_dexterity|:",
       "position": [149, 401],
       "anchor": "none",
       "horizontalAlign": "right"
@@ -130,7 +131,7 @@
     {
       "id": "vitality",
       "font": "font16s",
-      "text": "Vitality:",
+      "text": "|str_vitality|:",
       "position": [149, 422],
       "anchor": "none",
       "horizontalAlign": "right"

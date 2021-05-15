@@ -1,7 +1,7 @@
 #include "ParseTexturePack.h"
 #include "FileUtils.h"
 #include "Game.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "CachedImagePack.h"
 #include "Game/LevelHelper.h"
 #include "ImageContainers/DT1ImageContainer.h"
@@ -43,7 +43,7 @@ namespace Parser
 		}
 		if (elem.HasMember("texturePacks"sv) == true)
 		{
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 			if (elem.HasMember("file"sv) == true)
 			{
 				return TexturePackType::Composite;
@@ -97,7 +97,7 @@ namespace Parser
 		return false;
 	}
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 	void parseDT1ImageContainerTexturePack(Game& game, const Value& elem,
 		const DT1ImageContainer& imgCont, IndexedTexturePack& texturePack)
 	{
@@ -179,7 +179,7 @@ namespace Parser
 
 		bool useIndexedImages = pal != nullptr && game.Shaders().hasSpriteShader();
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		if (isValidString(elem, "min") == true)
 		{
 			return parseMinImageContainerTexturePack(
@@ -196,7 +196,7 @@ namespace Parser
 				imgVec.front(), offset, pal, useIndexedImages, normalizeDirections
 			);
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 			auto dt1ImgCont = dynamic_cast<DT1ImageContainer*>(imgVec.front().get());
 			if (dt1ImgCont == nullptr)
 			{
@@ -432,7 +432,7 @@ namespace Parser
 			return;
 		}
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 		if (isValidString(elem, "file") == true)
 		{
 			bool fixLayerOrdering = getBoolKey(elem, "fixLayerOrdering", true);
@@ -624,7 +624,7 @@ namespace Parser
 			for (auto it = strIndexes.begin(), itEnd = strIndexes.end(); it < itEnd;)
 			{
 				sf::Uint32 ch;
-				it = std::move(sf::Utf8::decode(it, itEnd, ch));
+				it = sf::Utf8::decode(it, itEnd, ch);
 				texturePack2->mapTextureIndex(ch);
 			}
 			if (isValidArray(elem, "textureIndexes") == true)

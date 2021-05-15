@@ -44,6 +44,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "button": [
     {
       "id": "windowSize",
@@ -84,7 +85,7 @@
       "focus": true,
       "focusSound": "titlemov",
       "binding": "%game.maxWindowHeight%",
-      "format": "Max Height: [1]",
+      "format": "|str_maxHeight|: [1]",
       "position": [320, 193],
       "anchor": "none",
       "horizontalAlign": "center",
@@ -124,11 +125,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "stretchToFit": true } },
-          { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" }
+          { "name": "text.setText", "id": "stretchToFit", "text": "|str_stretchToFit|: |str_on|" }
         ],
         "else": [
           { "name": "loadJson", "json": { "stretchToFit": false } },
-          { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
+          { "name": "text.setText", "id": "stretchToFit", "text": "|str_stretchToFit|: |str_off|" }
         ]
       },
       "onFocus": "anchorPentagrams"
@@ -148,11 +149,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "keepAR": true } },
-          { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: On" }
+          { "name": "text.setText", "id": "keepAR", "text": "|str_keepAR|: |str_on|" }
         ],
         "else": [
           { "name": "loadJson", "json": { "keepAR": false } },
-          { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
+          { "name": "text.setText", "id": "keepAR", "text": "|str_keepAR|: |str_off|" }
         ]
       },
       "onFocus": "anchorPentagrams"
@@ -172,11 +173,11 @@
         "param2": false,
         "then": [
           { "name": "loadJson", "json": { "smoothScreen": true } },
-          { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: On" }
+          { "name": "text.setText", "id": "smoothScreen", "text": "|str_smoothScreen|: |str_on|" }
         ],
         "else": [
           { "name": "loadJson", "json": { "smoothScreen": false } },
-          { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
+          { "name": "text.setText", "id": "smoothScreen", "text": "|str_smoothScreen|: |str_off|" }
         ]
       },
       "onFocus": "anchorPentagrams"
@@ -202,7 +203,7 @@
                 "name": "text.setText",
                 "id": "framerate",
                 "binding": "%game.framerate%",
-                "format": "Framerate Limit: [1]"
+                "format": "|str_framerateLimit|: [1]"
               }
             ]
           },
@@ -214,7 +215,7 @@
                 "name": "text.setText",
                 "id": "framerate",
                 "binding": "%game.framerate%",
-                "format": "Framerate Limit: [1]"
+                "format": "|str_framerateLimit|: [1]"
               }
             ]
           },
@@ -226,7 +227,7 @@
                 "name": "text.setText",
                 "id": "framerate",
                 "binding": "%game.framerate%",
-                "format": "Framerate Limit: [1]"
+                "format": "|str_framerateLimit|: [1]"
               }
             ]
           },
@@ -237,7 +238,7 @@
               {
                 "name": "text.setText",
                 "id": "framerate",
-                "text": "Framerate Limit: Off"
+                "text": "|str_framerateLimit|: |str_off|"
               }
             ]
           }
@@ -255,7 +256,7 @@
       "position": [320, 407],
       "anchor": "none",
       "horizontalAlign": "center",
-      "text": "OK",
+      "text": "|str_ok|",
       "onClick": {
         "name": "game.fadeOut",
         "action": [
@@ -272,7 +273,7 @@
       "position": [17, 444],
       "sound": "titlslct",
       "anchor": "none",
-      "text": "Shaders",
+      "text": "|str_shaders|",
       "onClick": {
         "name": "game.fadeOut",
         "action": {
@@ -287,29 +288,29 @@
       "name": "if.equal",
       "param1": "%game.stretchToFit%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: On" },
-      "else": { "name": "text.setText", "id": "stretchToFit", "text": "Stretch to Fit: Off" }
+      "then": { "name": "text.setText", "id": "stretchToFit", "text": "|str_stretchToFit|: |str_on|" },
+      "else": { "name": "text.setText", "id": "stretchToFit", "text": "|str_stretchToFit|: |str_off|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.keepAR%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: On" },
-      "else": { "name": "text.setText", "id": "keepAR", "text": "Keep Ratio: Off" }
+      "then": { "name": "text.setText", "id": "keepAR", "text": "|str_keepAR|: |str_on|" },
+      "else": { "name": "text.setText", "id": "keepAR", "text": "|str_keepAR|: |str_off|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.smoothScreen%",
       "param2": true,
-      "then": { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: On" },
-      "else": { "name": "text.setText", "id": "smoothScreen", "text": "Smooth Screen: Off" }
+      "then": { "name": "text.setText", "id": "smoothScreen", "text": "|str_smoothScreen|: |str_on|" },
+      "else": { "name": "text.setText", "id": "smoothScreen", "text": "|str_smoothScreen|: |str_off|" }
     },
     {
       "name": "if.equal",
       "param1": "%game.framerate%",
       "param2": 0,
-      "then": { "name": "text.setText", "id": "framerate", "text": "Framerate Limit: Off" },
-      "else": { "name": "text.setText", "id": "framerate", "binding": "%game.framerate%", "format": "Framerate Limit: [1]" }
+      "then": { "name": "text.setText", "id": "framerate", "text": "|str_framerateLimit|: |str_off|" },
+      "else": { "name": "text.setText", "id": "framerate", "binding": "%game.framerate%", "format": "|str_framerateLimit|: [1]" }
     },
     "anchorPentagrams"
   ]

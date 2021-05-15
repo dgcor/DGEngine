@@ -1,0 +1,15 @@
+{
+  "variable": [
+    { "str_done":      "Done" },
+    { "str_gossip":    "Gossip" },
+    { "str_max":       "Max" },
+    { "str_zoom":      "Zoom" },
+
+    { "str_char":      "Char" },
+    { "str_inventory": "Inventory" },
+    { "str_map":       "Map" },
+    { "str_menu":      "Menu" },
+    { "str_quests":    "Quests" },
+    { "str_spells":    "Spells" }
+  ]
+}

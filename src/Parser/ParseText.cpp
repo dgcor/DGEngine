@@ -97,9 +97,16 @@ namespace Parser
 		if (hasBinding == true)
 		{
 			text.setBinding(getStringVectorKey(elem, "binding"));
-			text.setFormat(getStringViewKey(elem, "format", "[1]"));
-			text.setAlwaysBind(getBoolKey(elem, "alwaysBind"));
-			text.setBindWhenHidden(getBoolKey(elem, "bindWhenHidden"));
+			if (elem.HasMember("text"sv) == false)
+			{
+				text.setFormat(getStringViewKey(elem, "format", "[1]"));
+				text.setBindingFlags(getBindingFlagsKey(elem, "bindingFlags"));
+			}
+			else
+			{
+				text.setFormat(getStringViewKey(elem, "text", "[1]"));
+				text.setBindingFlags(BindingFlags::Once);
+			}
 		}
 		if (elem.HasMember("onChange"sv))
 		{
@@ -107,7 +114,7 @@ namespace Parser
 		}
 		if (hasBinding == true)
 		{
-			text.update(game);
+			text.updateText(game);
 		}
 	}
 

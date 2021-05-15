@@ -29,6 +29,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "itemInfo",
@@ -53,7 +54,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Are you sure you want to buy this item?"
+      "text": "|str_confirmBuy|"
     }
   ],
   "button": [
@@ -67,7 +68,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Yes",
+      "text": "|str_yes|",
       "onClick": [
         {
           "name": "player.removeItemQuantity",
@@ -99,7 +100,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "No",
+      "text": "|str_no|",
       "onClick": { "name": "resource.popAll", "id": "userPanelConfirm" },
       "onFocus": [
         "anchorLeftPentagram",

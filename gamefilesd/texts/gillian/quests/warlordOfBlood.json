@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/gillian/quests/warlordOfBlood.txt"
+    "lang/%lang%/texts/gillian/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid16.wav",

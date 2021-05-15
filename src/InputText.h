@@ -1,8 +1,8 @@
 #pragma once
 
 #include <optional>
-#include <regex>
 #include "Text.h"
+#include "Utils/Regex.h"
 
 class InputText : public Text
 {
@@ -13,7 +13,7 @@ private:
 	size_t maxLength{ 0 };
 	std::optional<Variable> minValue;
 	std::optional<Variable> maxValue;
-	std::optional<std::regex> regex;
+	Regex regex;
 
 	bool isValidMin(const std::string& str) const noexcept;
 	bool isValidMax(const std::string& str) const noexcept;
@@ -28,7 +28,7 @@ public:
 	void setMaxLength(size_t length) noexcept { maxLength = length; }
 	void setMinValue(const Variable& var) { minValue = var; }
 	void setMaxValue(const Variable& var) { maxValue = var; }
-	void setRegex(const std::string& regex_);
+	void setRegex(const std::string_view regex_);
 
 	void click(Game& game);
 

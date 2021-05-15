@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include "DS1.h"
 #endif
 #include "Dun.h"
@@ -136,7 +136,7 @@ public:
 	void setSimpleArea(size_t layer, int32_t x, int32_t y,
 		const Vector2D<int32_t>& vec, bool normalizeFlagsLayer = true);
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 	void setD2Area(int32_t x, int32_t y, DS1::Decoder& dun);
 #endif
 

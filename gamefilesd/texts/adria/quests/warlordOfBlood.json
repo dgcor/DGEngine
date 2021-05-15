@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/adria/quests/warlordOfBlood.txt"
+    "lang/%lang%/texts/adria/quests/warlordOfBlood.txt"
   ],
   "audio": {
     "file": "sfx/Towners/witch18.wav",

@@ -1,12 +1,12 @@
 #include "CompositeTexturePack.h"
 #include "AnimationInfo.h"
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 #include <algorithm>
-#include "PhysFSStream.h"
+#include "SFML/PhysFSStream.h"
 #include "StreamReader.h"
 #endif
 
-#ifndef NO_DIABLO_FORMAT_SUPPORT
+#ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 namespace
 {
 	struct COFHeader

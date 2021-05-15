@@ -17,6 +17,7 @@
     { "file": "empyrean_campaign" },
     { "file": "fantasycore" }
   ],
+  "load": "lang/load.json",
   "action": {
     "name": "if.equal",
     "param1": { "name": "file.exists", "file": "images/logo/icon.png" },

@@ -19,6 +19,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -27,7 +28,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Welcome to the"
+      "text": "|str_titleGriswold|"
     },
     {
       "id": "panelTitle2",
@@ -36,7 +37,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Blacksmith's Shop"
+      "text": "|str_titleGriswold2|"
     },
     {
       "id": "panelText",
@@ -45,7 +46,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Would you like to:"
+      "text": "|str_panelText|"
     }
   ],
   "button": [
@@ -59,7 +60,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Griswold",
+      "text": "|str_talkToGriswold|",
       "onClick": { "name": "load", "file": "towners/griswold/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -76,7 +77,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Buy Basic Items",
+      "text": "|str_itemBuyBasic|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -100,7 +101,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Buy Premium Items",
+      "text": "|str_itemBuyPremium|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -124,7 +125,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Sell Items",
+      "text": "|str_itemSell|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -148,7 +149,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Repair Items",
+      "text": "|str_itemRepair|",
       "onClick": [
         { "name": "resource.ignore", "id": "userPanel", "ignore": true },
         { "name": "resource.ignore", "id": "userPanelMain", "ignore": true },
@@ -172,7 +173,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Leave the Shop",
+      "text": "|str_leaveGriswold|",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [
         "anchorLeftPentagram",

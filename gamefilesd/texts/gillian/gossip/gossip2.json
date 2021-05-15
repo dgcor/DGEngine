@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "25",
-    "texts/gillian/gossip/gossip2.txt"
+    "lang/%lang%/texts/gillian/gossip/gossip2.txt"
   ],
   "audio": {
     "file": "sfx/Towners/bmaid33.wav",

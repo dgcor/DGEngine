@@ -42,6 +42,10 @@ by Lazy Foo' Productions. The license is incompatible with GPL like licenses.
 
 http://lazyfoo.net
 
+dr_wav uses the MIT-0 license.
+
+https://github.com/mackron/dr_libs
+
 endian uses the BSD license.
 
 https://github.com/steinwurf/endian
@@ -83,9 +87,13 @@ SFML uses the zlib/png license.
 
 https://github.com/SFML/SFML
 
-dr_wav uses the MIT-0 license.
+StormLib uses the MIT license.
 
-https://github.com/mackron/dr_libs
+https://github.com/ladislav-zezula/StormLib
+
+tiny-regex-c is public domain.
+
+https://github.com/kokke/tiny-regex-c
 
 Other SFML code snippets were taken from the wiki
 and should have a permissive license.

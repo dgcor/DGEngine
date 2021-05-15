@@ -15,6 +15,7 @@
     }
   ],
   "button": {
+    "replaceVars": true,
     "id": "back",
     "font": "smaltext",
     "sound": "titlslct",
@@ -23,7 +24,7 @@
     "focus": true,
     "horizontalAlign": "center",
     "horizontalSpaceOffset": 1,
-    "text": "You do not have enough gold"
+    "text": "|str_notEnoughGold|"
   },
   "action": [
     {

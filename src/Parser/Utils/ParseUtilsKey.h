@@ -14,6 +14,9 @@ namespace Parser
 	Anchor getAnchorKey(const rapidjson::Value& elem,
 		const std::string_view key, Anchor val = Anchor::Top | Anchor::Left);
 
+	BindingFlags getBindingFlagsKey(const rapidjson::Value& elem,
+		const std::string_view key, BindingFlags val = BindingFlags::OnChange);
+
 	BlendMode getBlendModeKey(const rapidjson::Value& elem,
 		const std::string_view key, BlendMode val = BlendMode::Alpha);
 

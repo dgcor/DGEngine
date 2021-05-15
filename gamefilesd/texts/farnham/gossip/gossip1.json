@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/farnham/gossip/gossip1.txt"
+    "lang/%lang%/texts/farnham/gossip/gossip1.txt"
   ],
   "audio": {
     "file": "sfx/Towners/drunk23.wav",

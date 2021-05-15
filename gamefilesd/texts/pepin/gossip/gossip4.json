@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "50",
-    "texts/pepin/gossip/gossip4.txt"
+    "lang/%lang%/texts/pepin/gossip/gossip4.txt"
   ],
   "audio": {
     "file": "sfx/Towners/healer41.wav",

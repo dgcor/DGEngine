@@ -48,15 +48,15 @@ public:
 	bool hasTextures() const noexcept { return textures.empty() == false; }
 	void clearTextures() noexcept { textures.clear(); }
 
-	std::shared_ptr<TexturePack> getTexturePack(size_t idx) const;
-
-	void getTextureAnimationRange(size_t textureIdx,
-		PlayerAnimation animation, uint32_t direction, BaseAnimation& baseAnim) const;
-
 	void addTexturePack(const std::shared_ptr<TexturePack>& texture)
 	{
 		textures.push_back(texture);
 	}
+
+	std::shared_ptr<TexturePack> getTexturePack(size_t idx) const;
+
+	void setAnimation(size_t textureIdx, PlayerAnimation animation,
+		uint32_t direction, BaseAnimation& baseAnim) const;
 
 	void clearAnimationIndexes() { animationIndexes.fill(0); }
 

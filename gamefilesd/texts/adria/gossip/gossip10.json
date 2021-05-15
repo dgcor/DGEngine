@@ -3,7 +3,7 @@
     "ui/level/showText.json",
     "questText",
     "58",
-    "texts/adria/gossip/gossip10.txt"
+    "lang/%lang%/texts/adria/gossip/gossip10.txt"
   ],
   "audio": {
     "file": "sfx/Towners/witch49.wav",

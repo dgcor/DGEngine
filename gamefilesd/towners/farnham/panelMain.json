@@ -19,6 +19,7 @@
       "refresh": 50
     }
   ],
+  "replaceVars": true,
   "text": [
     {
       "id": "panelTitle1",
@@ -27,7 +28,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Farnham the Drunk"
+      "text": "|str_titleFarnham|"
     },
     {
       "id": "panelText",
@@ -36,7 +37,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Would you like to:"
+      "text": "|str_panelText|"
     }
   ],
   "button": [
@@ -50,7 +51,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Talk to Farnham",
+      "text": "|str_talkToFarnham|",
       "onClick": { "name": "load", "file": "towners/farnham/panelTalk.json" },
       "onFocus": [
         "anchorLeftPentagram",
@@ -67,7 +68,7 @@
       "anchor": "none",
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
-      "text": "Say Goodbye",
+      "text": "|str_sayGoodbye|",
       "onClick": { "name": "resource.popAll", "id": "userPanel" },
       "onFocus": [
         "anchorLeftPentagram",

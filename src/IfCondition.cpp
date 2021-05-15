@@ -1,7 +1,7 @@
 #include "IfCondition.h"
 #include "Game.h"
 #include "GameUtils.h"
-#include <regex>
+#include "Utils/Regex.h"
 #include "Utils/Utils.h"
 
 Variable IfCondition::getVariable(const Game& game, const VarOrPredicate& varOrPred)
@@ -63,17 +63,13 @@ bool IfCondition::evalCondition(uint16_t conditionHash16,
 	case str2int16("regex"):
 	{
 		bool regexMatch = false;
-		try
+		if (std::holds_alternative<std::string>(var1) == true)
 		{
-			if (std::holds_alternative<std::string>(var1) == true)
-			{
-				auto var2str = VarUtils::toString(var2);
-				std::smatch match;
-				std::regex regex(std::get<std::string>(var1));
-				regexMatch = std::regex_match(var2str, match, regex);
-			}
+			regexMatch = Regex::match(
+				std::get<std::string>(var1).c_str(),
+				VarUtils::toString(var2)
+			);
 		}
-		catch (std::exception&) {}
 		return regexMatch;
 	}
 	}

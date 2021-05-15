@@ -608,7 +608,7 @@ void Game::update()
 {
 	for (auto& res : reverse(resourceManager))
 	{
-		if (((int)res.ignore & (int)IgnoreResource::Update) == 0)
+		if ((int)(res.ignore & IgnoreResource::Update) == 0)
 		{
 			for (auto obj : reverse(res.drawables))
 			{
@@ -618,7 +618,7 @@ void Game::update()
 				}
 			}
 		}
-		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
+		else if ((int)(res.ignore & IgnoreResource::All) != 0)
 		{
 			break;
 		}
@@ -629,14 +629,14 @@ void Game::drawUI()
 {
 	for (auto& res : resourceManager)
 	{
-		if (((int)res.ignore & (int)IgnoreResource::Draw) == 0)
+		if ((int)(res.ignore & IgnoreResource::Draw) == 0)
 		{
 			for (auto obj : res.drawables)
 			{
 				obj->draw(*this, gameTexture);
 			}
 		}
-		else if (((int)res.ignore & (int)IgnoreResource::All) != 0)
+		else if ((int)(res.ignore & IgnoreResource::All) != 0)
 		{
 			break;
 		}
@@ -751,75 +751,75 @@ void Game::clearInputEvents(InputEventType e) noexcept
 		return;
 	}
 	if (mousePressed == true &&
-		((int)e & (int)InputEventType::MousePress) != 0)
+		(int)(e & InputEventType::MousePress) != 0)
 	{
-		if (((int)e & (int)InputEventType::LeftClick) != 0 &&
+		if ((int)(e & InputEventType::LeftClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Left)
 		{
 			mousePressed = false;
 		}
-		else if (((int)e & (int)InputEventType::MiddleClick) != 0 &&
+		else if ((int)(e & InputEventType::MiddleClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Middle)
 		{
 			mousePressed = false;
 		}
-		else if (((int)e & (int)InputEventType::RightClick) != 0 &&
+		else if ((int)(e & InputEventType::RightClick) != 0 &&
 			mousePressEvt.button == sf::Mouse::Button::Right)
 		{
 			mousePressed = false;
 		}
 	}
 	if (mouseReleased == true &&
-		((int)e & (int)InputEventType::MouseRelease) != 0)
+		(int)(e & InputEventType::MouseRelease) != 0)
 	{
-		if (((int)e & (int)InputEventType::LeftClick) != 0 &&
+		if ((int)(e & InputEventType::LeftClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Left)
 		{
 			mouseReleased = false;
 		}
-		else if (((int)e & (int)InputEventType::MiddleClick) != 0 &&
+		else if ((int)(e & InputEventType::MiddleClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Middle)
 		{
 			mouseReleased = false;
 		}
-		else if (((int)e & (int)InputEventType::RightClick) != 0 &&
+		else if ((int)(e & InputEventType::RightClick) != 0 &&
 			mouseReleaseEvt.button == sf::Mouse::Button::Right)
 		{
 			mouseReleased = false;
 		}
 	}
 	if (mouseMoved == true &&
-		((int)e & (int)InputEventType::MouseMove) != 0)
+		(int)(e & InputEventType::MouseMove) != 0)
 	{
 		mouseMoved = false;
 	}
 	if (mouseScrolled == true &&
-		((int)e & (int)InputEventType::MouseScroll) != 0)
+		(int)(e & InputEventType::MouseScroll) != 0)
 	{
 		mouseScrolled = false;
 	}
 	if (keyPressed == true &&
-		((int)e & (int)InputEventType::KeyPress) != 0)
+		(int)(e & InputEventType::KeyPress) != 0)
 	{
 		keyPressed = false;
 	}
 	if (textEntered == true &&
-		((int)e & (int)InputEventType::TextEnter) != 0)
+		(int)(e & InputEventType::TextEnter) != 0)
 	{
 		textEntered = false;
 	}
 	if (touchBegan == true &&
-		((int)e & (int)InputEventType::TouchBegin) != 0)
+		(int)(e & InputEventType::TouchBegin) != 0)
 	{
 		touchBegan = false;
 	}
 	if (touchMoved == true &&
-		((int)e & (int)InputEventType::TouchMove) != 0)
+		(int)(e & InputEventType::TouchMove) != 0)
 	{
 		touchMoved = false;
 	}
 	if (touchEnded == true &&
-		((int)e & (int)InputEventType::TouchEnd) != 0)
+		(int)(e & InputEventType::TouchEnd) != 0)
 	{
 		touchEnded = false;
 	}

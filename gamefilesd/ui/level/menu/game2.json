@@ -50,14 +50,15 @@
       ]
     },
     {
+      "replaceVars": true,
       "name": "action.set",
       "id": "updateColorCyclingLabel",
       "action": {
         "name": "if.equal",
         "param1": "%colorCycling%",
         "param2": true,
-        "then": { "name": "text.setText", "id": "colorCycling", "text": "Color Cycling On" },
-        "else": { "name": "text.setText", "id": "colorCycling", "text": "Color Cycling Off" }
+        "then": { "name": "text.setText", "id": "colorCycling", "text": "|str_colorCycling| |str_on|" },
+        "else": { "name": "text.setText", "id": "colorCycling", "text": "|str_colorCycling| |str_off|" }
       }
     },
     {
@@ -176,6 +177,7 @@
       "texture": "option"
     }
   ],
+  "replaceVars": true,
   "button": [
     {
       "id": "btnOption1",
@@ -225,7 +227,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Music",
+      "text": "|str_music|",
       "position": [75, 116],
       "horizontalSpaceOffset": 2,
       "anchor": "none",
@@ -255,7 +257,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Sound",
+      "text": "|str_sound|",
       "position": [75, 161],
       "anchor": "none",
       "horizontalSpaceOffset": 2,
@@ -285,7 +287,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusOnClick": false,
-      "text": "Gamma",
+      "text": "|str_gamma|",
       "position": [75, 206],
       "anchor": "none",
       "horizontalSpaceOffset": 2,
@@ -343,7 +345,7 @@
       "sound": "titlemov",
       "focus": true,
       "focusSound": "titlemov",
-      "text": "Previous Menu",
+      "text": "|str_prevMenu|",
       "position": [320, 296],
       "anchor": "none",
       "horizontalAlign": "center",
