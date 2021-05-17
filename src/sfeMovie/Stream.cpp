@@ -144,11 +144,7 @@ namespace sfe
 		{
 			if (m_codecCtx->codec->capabilities & AV_CODEC_CAP_DELAY)
 			{
-				AVPacket* flushPacket = (AVPacket*)av_malloc(sizeof(*flushPacket));
-				av_init_packet(flushPacket);
-				flushPacket->data = nullptr;
-				flushPacket->size = 0;
-				result = flushPacket;
+				result = av_packet_alloc();
 			}
 		}
 

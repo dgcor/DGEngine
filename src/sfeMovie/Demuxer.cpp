@@ -353,19 +353,13 @@ namespace sfe
 	{
 		sf::Lock l(m_synchronized);
 
-		AVPacket *pkt = nullptr;
-		int err = 0;
-
-		pkt = (AVPacket *)av_malloc(sizeof(*pkt));
+		AVPacket* pkt = av_packet_alloc();
 		if (pkt == nullptr)
 		{
 			return nullptr;
 		}
-		av_init_packet(pkt);
 
-		err = av_read_frame(m_formatCtx, pkt);
-
-		if (err < 0)
+		if (av_read_frame(m_formatCtx, pkt) < 0)
 		{
 			av_packet_unref(pkt);
 			av_free(pkt);
