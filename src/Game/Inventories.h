@@ -2,7 +2,7 @@
 
 #include <array>
 #include "GameHashes.h"
-#include "GameUtils.h"
+#include "GameUtils2.h"
 #include "Inventory.h"
 #include "Utils/Utils.h"
 

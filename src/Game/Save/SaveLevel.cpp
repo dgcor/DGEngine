@@ -2,10 +2,10 @@
 #include "FileUtils.h"
 #include "Game/Level.h"
 #include "Game/Player.h"
+#include "Game/Save/SaveUtils.h"
 #include "Game/SimpleLevelObject.h"
 #include "Json/JsonParser.h"
 #include "SaveItem.h"
-#include "SaveUtils.h"
 
 using namespace rapidjson;
 using namespace SaveUtils;
@@ -45,7 +45,7 @@ void Save::serialize(void* serializeObj, const Properties& props,
 	writer.StartObject();
 	writeKeyStringView(writer, "layers");
 	writer.StartArray();
-	for (size_t i = 0; i < LevelCell::NumberOfLayers; i++)
+	for (uint32_t i = 0; i < LevelCell::NumberOfLayers; i++)
 	{
 		if (level.map.isLayerUsed(i) == false)
 		{

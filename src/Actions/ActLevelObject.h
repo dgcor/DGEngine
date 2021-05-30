@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Actions/Action.h"
 #include "Game.h"
 #include "Game/LevelObject.h"
 
@@ -16,7 +16,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->deleteLevelObjectById(idObject);
@@ -37,7 +37,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->deleteLevelObjectByClass(idClass);
@@ -58,7 +58,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto obj = level->getLevelObject(idObject);
@@ -85,7 +85,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->getHoverObject();
@@ -112,7 +112,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->getHoverObject();

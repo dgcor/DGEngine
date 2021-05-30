@@ -1,0 +1,30 @@
+* text=auto
+*.bin           binary
+*.bmp           binary
+*.c             text
+*.c++           text
+*.cc            text
+*.cmake         text
+*.cpp           text
+*.cxx           text
+*.filters       text eol=crlf
+*.gif           binary
+*.h             text
+*.h++           text
+*.hh            text
+*.hpp           text
+*.ico           binary
+*.jpeg          binary
+*.jpg           binary
+*.json          text
+*.md            text
+*.mk            text
+*.png           binary
+*.props         text eol=crlf
+*.sln           text eol=crlf
+*.ttf           binary
+*.txt           text
+*.vcxitems      text eol=crlf
+*.vcxproj       text eol=crlf
+*.xml           text
+LICENSE         text

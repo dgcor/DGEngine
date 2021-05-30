@@ -1,8 +1,8 @@
 #include "SaveItem.h"
 #include "Game/GameHashes.h"
 #include "Game/Level.h"
+#include "Game/Save/SaveUtils.h"
 #include "Json/JsonParser.h"
-#include "SaveUtils.h"
 
 using namespace rapidjson;
 using namespace SaveUtils;
@@ -19,7 +19,7 @@ void Save::serialize(void* serializeObj, const Properties& props,
 
 	if (hasProperty(props, "index") == true)
 	{
-		writeUInt(writer, "index", (size_t)getInt64Property(props, "index"));
+		writeUInt(writer, "index", (unsigned)getInt64Property(props, "index"));
 	}
 
 	writeString(writer, "class", itemClass.Id());

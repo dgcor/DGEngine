@@ -28,7 +28,8 @@
     "position": [120, 236],
     "anchor": "none",
     "binding": "{1}",
-    "text": "|str_confirmOverwriteChar|"
+    "bindingFlags": "once",
+    "format": "|str_confirmOverwriteChar|"
   },
   "animation": [
     {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SaveProperties.h"
+#include "Game/Save/SaveProperties.h"
 
 class Game;
 class Level;

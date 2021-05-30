@@ -1,0 +1,30 @@
+/*.cbp
+/*.db
+/*.depend
+/*.dll
+/*.exe
+/*.layout
+/*.opendb
+/*.vcxproj.filters
+/*.vcxproj.user
+/*.zip
+/.svn
+/.vs
+/bin
+/CMakeCache.txt
+/CMakeFiles
+/cmake_install.cmake
+/Debug
+/Debug Clang
+/Debug Code Analysis
+/Debug NoMovie
+/DGEngine.core
+/DGEngine.core.dir
+/Makefile
+/obj
+/portable
+/Release
+/Release NoMovie
+/Release Static
+/Release Static NoMovie
+/x64

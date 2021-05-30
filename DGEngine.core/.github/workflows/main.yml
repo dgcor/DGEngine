@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build_linux:
+    name: linux build
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Checkout DGEngine.core
+      uses: actions/checkout@v2
+
+    - name: Restore cached dependencies
+      id: cache-linux
+      uses: actions/cache@v1
+      with:
+        path: /home/runner/work/sfml
+        key: cache-linux
+
+    - name: Install dependencies
+      run: sudo apt install -yq --no-install-suggests --no-install-recommends libx11-dev libxrandr-dev libxi-dev libudev-dev libgl1-mesa-dev libalut-dev libvorbis-dev libflac-dev libphysfs-dev > /dev/null
+
+    - name: CMake + make SFML
+      if: steps.cache-linux.outputs.cache-hit != 'true'
+      run: |
+        git clone -q --depth=1 --branch=2.5.x https://github.com/SFML/SFML.git /home/runner/work/sfml > /dev/null
+        git -C /home/runner/work/sfml pull > /dev/null
+        cd /home/runner/work/sfml
+        export CC=/usr/bin/gcc-11
+        export CXX=/usr/bin/g++-11
+        cmake /home/runner/work/sfml/CMakeLists.txt
+        sudo make install
+
+    - name: Install SFML
+      if: steps.cache-linux.outputs.cache-hit == 'true'
+      run: |
+        cd /home/runner/work/sfml
+        sudo make install
+
+    - name: CMake + make DGEngine.core
+      run: |
+        export CC=/usr/bin/gcc-11
+        export CXX=/usr/bin/g++-11
+        cmake CMakeLists.txt
+        make
+
+  build_windows:
+    name: windows build
+    runs-on: windows-2019
+    steps:
+    - name: Checkout DGEngine.core
+      uses: actions/checkout@v2
+
+    - name: Restore cached dependencies
+      id: cache-windows
+      uses: actions/cache@v1
+      with:
+        path: C:/vcpkg/installed
+        key: cache-windows
+
+    - name: Install dependencies
+      if: steps.cache-windows.outputs.cache-hit != 'true'
+      run: vcpkg install physfs:x86-windows-static sfml:x86-windows-static
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: MSBuild DGEngine.core
+      run: |
+        vcpkg integrate install
+        msbuild DGEngine.core.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32

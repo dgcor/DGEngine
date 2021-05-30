@@ -1,11 +1,11 @@
 #pragma once
 
 #include "BaseAnimation.h"
+#include "Game/Save/SaveProperties.h"
 #include "LevelObjectClass.h"
 #include <list>
 #include <memory>
 #include "Queryable.h"
-#include "Save/SaveProperties.h"
 #include "SFML/CompositeSprite.h"
 #include <string_view>
 #include "Utils/PairXY.h"

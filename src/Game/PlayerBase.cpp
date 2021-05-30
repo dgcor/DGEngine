@@ -625,7 +625,7 @@ const Queryable* PlayerBase::getQueryable(const std::string_view prop) const
 std::vector<std::variant<const Queryable*, Variable>> PlayerBase::getQueryableList(
 	const std::string_view prop) const
 {
-	std::vector<std::variant<const Queryable*, Variable>> queriableList;
+	std::vector<std::variant<const Queryable*, Variable>> queryableList;
 
 	auto props = Utils::splitStringIn2(prop, '.');
 	if (props.first.empty() == false)
@@ -638,16 +638,16 @@ std::vector<std::variant<const Queryable*, Variable>> PlayerBase::getQueryableLi
 			{
 				if (inventory.isSlotInUse(i) == false)
 				{
-					queriableList.push_back({ nullptr });
+					queryableList.push_back({ nullptr });
 				}
 				else
 				{
-					queriableList.push_back({ inventory.get(i) });
+					queryableList.push_back({ inventory.get(i) });
 				}
 			}
 		}
 	}
-	return queriableList;
+	return queryableList;
 }
 
 bool PlayerBase::hasIntByHash(uint16_t propHash) const noexcept

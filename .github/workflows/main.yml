@@ -72,7 +72,7 @@ jobs:
     - name: MSBuild DGEngine
       run: |
         vcpkg integrate install
-        msbuild Project.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32
+        msbuild DGEngine.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32
 
     - name: Create DGEngine.zip
       run: 7z a DGEngine.zip "./Release Static NoMovie/*.exe" LICENSE.* README.* main.json gamefiles*

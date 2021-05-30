@@ -29,7 +29,8 @@
     "position": [120, 236],
     "anchor": "none",
     "binding": "{1}",
-    "text": "|str_confirmDeleteChar|"
+    "bindingFlags": "once",
+    "format": "|str_confirmDeleteChar|"
   },
   "animation": [
     {

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Predicate.h"
 #include "Game.h"
 #include "Game/Level.h"
 #include "Game/Player.h"
+#include "Predicates/Predicate.h"
 
 class PredPlayerCanUseItem : public Predicate
 {
@@ -19,7 +19,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->getItem(itemLocation);
@@ -50,7 +50,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -81,7 +81,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto itemClassPtr = level->getClass<ItemClass>(itemClass);
@@ -112,7 +112,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->getItem(itemCoord);

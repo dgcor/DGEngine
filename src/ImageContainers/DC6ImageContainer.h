@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include "FileBytes.h"
-#include "ImageContainer.h"
+#include "ImageContainers/ImageContainer.h"
 #include <memory>
 
 // DC6 decoding code based on Worldstone by Lectem

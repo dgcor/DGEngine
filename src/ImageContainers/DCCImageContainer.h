@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include "FileBytes.h"
-#include "ImageContainer.h"
+#include "ImageContainers/ImageContainer.h"
 #include <memory>
 
 // DCC decoding code based on Worldstone by Lectem

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Actions/Action.h"
 #include "Game.h"
 #include "Game/GameProperties.h"
 #include "Game/ItemLocation.h"
@@ -34,7 +34,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->getItem(itemLocation);
@@ -62,7 +62,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto quantVal = (LevelObjValue)game.getVarOrPropInt64V(quantity);
@@ -91,7 +91,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->deleteItem(itemLocation);
@@ -112,7 +112,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item2 = level->removeItem(itemCoord);
@@ -152,7 +152,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			Player* player;
@@ -206,7 +206,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(itemCoord.getPlayerId());
@@ -271,7 +271,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto item = level->removeItem(from);
@@ -296,7 +296,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			Player* player = nullptr;
@@ -342,7 +342,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto buyer = level->getPlayerOrCurrent(idPlayer);
@@ -387,7 +387,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr &&
 			itemCoord.isSelectedItem() == false)
 		{
@@ -465,7 +465,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			Player* player;

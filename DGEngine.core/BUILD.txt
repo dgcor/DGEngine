@@ -1,0 +1,58 @@
+* Windows
+
+To compile in Windows, you can use CMake or the Visual Studio 2019 project.
+
+The easiest way to get the required dependencies is to use vcpkg.
+
+vcpkg install physfs:x86-windows sfml:x86-windows ffmpeg:x86-windows
+vcpkg install physfs:x86-windows-static sfml:x86-windows-static ffmpeg:x86-windows-static
+vcpkg install physfs:x64-windows sfml:x64-windows ffmpeg:x64-windows
+vcpkg install physfs:x64-windows-static sfml:x64-windows-static ffmpeg:x64-windows-static
+
+There is a custom vcpkg triplet that links ffmpeg dynamically.
+
+vcpkg install physfs:x86-windows-static sfml:x86-windows-static ffmpeg:x86-windows-static --overlay-triplets=vcpkg/triplets
+vcpkg install physfs:x64-windows-static sfml:x64-windows-static ffmpeg:x64-windows-static --overlay-triplets=vcpkg/triplets
+
+/PhysicsFS - https://icculus.org/physfs
+             version >= 2.1
+
+/SFML - https://www.sfml-dev.org/
+        SFML 2.5.0
+
+/FFmpeg - https://ffmpeg.zeranoe.com/builds/
+          Get both shared and dev packages (version 3.x or 4.x)
+
+If you want to skip movie playback support, use the preprocessor define
+USE_SFML_MOVIE_STUB which uses a stub class that does nothing instead.
+
+* Linux
+
+To compile in Linux (Ubuntu), you need gcc or clang with C++20 support
+and to have both PhysicsFS >= 2.1 and SFML >= 2.5 installed.
+
+sudo apt install libphysfs-dev
+sudo apt install libsfml-dev
+
+Optional (for movie support) FFmpeg:
+
+sudo apt install libavdevice-dev libavformat-dev libavfilter-dev libavcodec-dev libswscale-dev libavutil-dev
+
+Movie support is enabled by default (CMake), unless FFmpeg isn't found.
+In CMake, set MOVIE_SUPPORT to FALSE to skip movie support.
+
+* CMake
+
+A CMake project file is provided. Movie support is enabled by default.
+It will generate a project to compile on the target platform.
+
+cmake CMakeLists.txt
+cmake CMakeLists.txt -DMOVIE_SUPPORT:BOOL=FALSE
+
+Both PhysicsFS and SFML must be installed.
+FFmpeg is also required for movie support.
+
+All the CMake properties and default values:
+
+MOVIE_SUPPORT         (TRUE)  Enable Movie support
+FALLBACK_TO_LOWERCASE (TRUE)  Enable falling back to all lowercase names if file is not found

@@ -48,7 +48,8 @@
       "horizontalAlign": "center",
       "horizontalSpaceOffset": 1,
       "binding": "%WirtSeePrice%",
-      "text": "|str_wirtItemInfo2|"
+      "bindingFlags": "once",
+      "format": "|str_wirtItemInfo2|"
     },
     {
       "id": "panelText3",

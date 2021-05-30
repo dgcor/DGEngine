@@ -10,8 +10,8 @@ class LevelCell
 {
 public:
 	// number of layers including sol layer
-	static constexpr size_t NumberOfLayers = 12;
-	static constexpr size_t FlagsLayer = NumberOfLayers - 1;
+	static constexpr uint32_t NumberOfLayers = 12;
+	static constexpr uint32_t FlagsLayer = NumberOfLayers - 1;
 
 private:
 	std::array<int32_t, NumberOfLayers> tileIndexes{ -1, -1, -1, -1,- 1, -1, -1, -1, -1, -1, -1, 0 };

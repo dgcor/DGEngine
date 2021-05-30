@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Actions/Action.h"
 #include "Game.h"
 #include "GameUtils.h"
 #include "Game/Level.h"
@@ -20,7 +20,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->addLayer(color, viewportOffset, automap);
@@ -46,7 +46,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto texture = game.Resources().getTexture(idTexture);
@@ -76,7 +76,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto drawable = level->getLevelDrawable(idDrawable);
@@ -103,7 +103,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearLevelObjects<LevelObject>(excludeIds);
@@ -125,7 +125,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearLevelObjects<Item>(excludeIds);
@@ -147,7 +147,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearLevelObjects<LevelObject>(excludeIds);
@@ -166,7 +166,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearPlayerClasses();
@@ -188,7 +188,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearLevelObjects<Player>(excludeIds);
@@ -207,7 +207,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearPlayerTextures();
@@ -226,7 +226,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->clearQuests();
@@ -247,7 +247,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->EnableHover(enableHover);
@@ -269,7 +269,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->move(pos, smooth);
@@ -290,7 +290,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->move(smooth);
@@ -312,7 +312,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto player = level->getLevelObject<Player>(idPlayer);
@@ -336,7 +336,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->Pause(pause);
@@ -358,7 +358,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->save(GameUtils::replaceStringWithVarOrProp(file, game), props, game);
@@ -384,7 +384,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto automap = game.Resources().getTexturePack(idTexturePack);
@@ -415,7 +415,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto newPos = position;
@@ -444,7 +444,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->setAutomapSize(size);
@@ -465,7 +465,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			auto shader = game.Resources().Shaders().get(idShader);
@@ -487,7 +487,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->setSmoothMovement(smooth);
@@ -508,7 +508,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->ShowAutomap(show);
@@ -527,7 +527,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->updateDrawables(game);
@@ -550,7 +550,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			float perc = percentage / 100.f;
@@ -576,7 +576,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(id);
+		auto level = game.Resources().getLevel<Level>(id);
 		if (level != nullptr)
 		{
 			level->ZoomDrawables(zoomDrawables);

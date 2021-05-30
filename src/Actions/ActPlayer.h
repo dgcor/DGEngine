@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Actions/Action.h"
 #include "Game.h"
 #include "Game/GameProperties.h"
 #include "Game/Level.h"
@@ -24,7 +24,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto itemClassPtr = level->getClass<ItemClass>(itemClass);
@@ -68,7 +68,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -136,7 +136,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -168,7 +168,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -195,7 +195,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -222,7 +222,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -250,7 +250,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -281,7 +281,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -309,7 +309,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -338,7 +338,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);
@@ -365,7 +365,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto player = level->getPlayerOrCurrent(idPlayer);

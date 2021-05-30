@@ -189,7 +189,7 @@ const Queryable* Level::getQueryable(const std::string_view prop) const
 std::vector<std::variant<const Queryable*, Variable>> Level::getQueryableList(
 	const std::string_view prop) const
 {
-	std::vector<std::variant<const Queryable*, Variable>> queriableList;
+	std::vector<std::variant<const Queryable*, Variable>> queryableList;
 
 	auto props = Utils::splitStringIn2(prop, '.');
 	if (props.first.empty() == false)
@@ -198,7 +198,7 @@ std::vector<std::variant<const Queryable*, Variable>> Level::getQueryableList(
 		{
 			for (const auto& quest : quests)
 			{
-				queriableList.push_back({ &quest });
+				queryableList.push_back({ &quest });
 			}
 		}
 		else
@@ -214,7 +214,7 @@ std::vector<std::variant<const Queryable*, Variable>> Level::getQueryableList(
 			}
 		}
 	}
-	return queriableList;
+	return queryableList;
 }
 
 void Level::draw(const Game& game, sf::RenderTarget& target) const
@@ -959,5 +959,5 @@ uint32_t Level::getLevelFromExperience(uint32_t experience) const
 			return i;
 		}
 	}
-	return experiencePoints.size();
+	return (uint32_t)experiencePoints.size();
 }

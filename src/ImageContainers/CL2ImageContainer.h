@@ -2,7 +2,7 @@
 
 #include <cstdint>
 #include "FileBytes.h"
-#include "ImageContainer.h"
+#include "ImageContainers/ImageContainer.h"
 #include <memory>
 
 // CL2 decoding code based on Diablo 1 Graphics Tool by savagesteel
@@ -23,7 +23,7 @@ public:
 
 	sf::Image2 get(uint32_t index, const PaletteArray* palette, ImageInfo& imgInfo) const override;
 
-	uint32_t size() const noexcept override { return frameOffsets.size(); }
+	uint32_t size() const noexcept override { return (uint32_t)frameOffsets.size(); }
 
 	uint32_t getDirections() const noexcept override { return directions; }
 };

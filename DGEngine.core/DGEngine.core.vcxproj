@@ -1,0 +1,973 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Clang|Win32">
+      <Configuration>Debug Clang</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Clang|x64">
+      <Configuration>Debug Clang</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Code Analysis|Win32">
+      <Configuration>Debug Code Analysis</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug Code Analysis|x64">
+      <Configuration>Debug Code Analysis</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug NoMovie|Win32">
+      <Configuration>Debug NoMovie</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug NoMovie|x64">
+      <Configuration>Debug NoMovie</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release NoMovie|Win32">
+      <Configuration>Release NoMovie</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release NoMovie|x64">
+      <Configuration>Release NoMovie</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Static NoMovie|Win32">
+      <Configuration>Release Static NoMovie</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Static NoMovie|x64">
+      <Configuration>Release Static NoMovie</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Static|Win32">
+      <Configuration>Release Static</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Static|x64">
+      <Configuration>Release Static</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animation.cpp" />
+    <ClCompile Include="src\BaseAnimation.cpp" />
+    <ClCompile Include="src\BindableText.cpp" />
+    <ClCompile Include="src\BitmapButton.cpp" />
+    <ClCompile Include="src\BitmapFont.cpp" />
+    <ClCompile Include="src\BitmapText.cpp" />
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\CachedImagePack.cpp" />
+    <ClCompile Include="src\Circle.cpp" />
+    <ClCompile Include="src\CmdLineUtils.cpp" />
+    <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\FadeInOut.cpp" />
+    <ClCompile Include="src\FileUtils.cpp" />
+    <ClCompile Include="src\Formula.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GameUtils.cpp" />
+    <ClCompile Include="src\Game\Save\SaveUtils.cpp" />
+    <ClCompile Include="src\Hooks.cpp" />
+    <ClCompile Include="src\IfCondition.cpp" />
+    <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\ImageContainers\SimpleImageContainer.cpp" />
+    <ClCompile Include="src\ImageUtils.cpp" />
+    <ClCompile Include="src\InputEvent.cpp" />
+    <ClCompile Include="src\InputText.cpp" />
+    <ClCompile Include="src\Json\JsonUtils.cpp" />
+    <ClCompile Include="src\LoadingScreen.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\Movie2.cpp" />
+    <ClCompile Include="src\Palette.cpp" />
+    <ClCompile Include="src\Panel.cpp" />
+    <ClCompile Include="src\Parser\ParseAction.cpp" />
+    <ClCompile Include="src\Parser\ParseAnimation.cpp" />
+    <ClCompile Include="src\Parser\ParseAudio.cpp" />
+    <ClCompile Include="src\Parser\ParseAudioCommon.cpp" />
+    <ClCompile Include="src\Parser\ParseButton.cpp" />
+    <ClCompile Include="src\Parser\ParseCircle.cpp" />
+    <ClCompile Include="src\Parser\ParseCondition.cpp" />
+    <ClCompile Include="src\Parser\ParseCursor.cpp" />
+    <ClCompile Include="src\Parser\ParseEvent.cpp" />
+    <ClCompile Include="src\Parser\ParseFile.cpp" />
+    <ClCompile Include="src\Parser\ParseFileBytes.cpp" />
+    <ClCompile Include="src\Parser\ParseFont.cpp" />
+    <ClCompile Include="src\Parser\ParseIcon.cpp" />
+    <ClCompile Include="src\Parser\ParseImage.cpp" />
+    <ClCompile Include="src\Parser\ParseImageContainer.cpp" />
+    <ClCompile Include="src\Parser\ParseInputEvent.cpp" />
+    <ClCompile Include="src\Parser\ParseInputText.cpp" />
+    <ClCompile Include="src\Parser\ParseLoadingScreen.cpp" />
+    <ClCompile Include="src\Parser\ParseMenu.cpp" />
+    <ClCompile Include="src\Parser\ParseMenuButton.cpp" />
+    <ClCompile Include="src\Parser\ParseMountFile.cpp" />
+    <ClCompile Include="src\Parser\ParseMovie.cpp" />
+    <ClCompile Include="src\Parser\ParsePalette.cpp" />
+    <ClCompile Include="src\Parser\ParsePanel.cpp" />
+    <ClCompile Include="src\Parser\ParsePredicate.cpp" />
+    <ClCompile Include="src\Parser\Parser.cpp" />
+    <ClCompile Include="src\Parser\ParseRectangle.cpp" />
+    <ClCompile Include="src\Parser\ParseScrollable.cpp" />
+    <ClCompile Include="src\Parser\ParseShader.cpp" />
+    <ClCompile Include="src\Parser\ParseShape.cpp" />
+    <ClCompile Include="src\Parser\ParseSound.cpp" />
+    <ClCompile Include="src\Parser\ParseText.cpp" />
+    <ClCompile Include="src\Parser\ParseTexture.cpp" />
+    <ClCompile Include="src\Parser\ParseTexturePack.cpp" />
+    <ClCompile Include="src\Parser\ParseVariable.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtils.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsIdx.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsKey.cpp" />
+    <ClCompile Include="src\Parser\Utils\ParseUtilsVal.cpp" />
+    <ClCompile Include="src\Rectangle.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\Scrollable.cpp" />
+    <ClCompile Include="src\sfeMovie\AudioStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\Demuxer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\Movie.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\MovieImpl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\Stream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\Timer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\sfeMovie\VideoStream.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\SFML\CompositeSprite.cpp" />
+    <ClCompile Include="src\SFML\Music2.cpp" />
+    <ClCompile Include="src\SFML\MusicLoops.cpp" />
+    <ClCompile Include="src\SFML\PhysFSStream.cpp" />
+    <ClCompile Include="src\SFML\SFMLUtils.cpp" />
+    <ClCompile Include="src\SFML\Sprite2.cpp" />
+    <ClCompile Include="src\SFML\Surface.cpp" />
+    <ClCompile Include="src\SFML\Text2.cpp" />
+    <ClCompile Include="src\SFML\VertexArray2.cpp" />
+    <ClCompile Include="src\SFML\VertexShape.cpp" />
+    <ClCompile Include="src\SFML\View2.cpp" />
+    <ClCompile Include="src\SFML\Wave2.cpp" />
+    <ClCompile Include="src\ShaderManager.cpp" />
+    <ClCompile Include="src\Shape.cpp" />
+    <ClCompile Include="src\StringButton.cpp" />
+    <ClCompile Include="src\StringText.cpp" />
+    <ClCompile Include="src\Text.cpp" />
+    <ClCompile Include="src\TexturePacks\BitmapFontTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\CachedTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\CompositeTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\IndexedTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\RectTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\SimpleTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\StackedTexturePack.cpp" />
+    <ClCompile Include="src\TexturePacks\TexturePack.cpp" />
+    <ClCompile Include="src\TextUtils.cpp" />
+    <ClCompile Include="src\UIObject.cpp" />
+    <ClCompile Include="src\Utils\re.c" />
+    <ClCompile Include="src\Utils\Utils.cpp" />
+    <ClCompile Include="src\Variable.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Actions\ActAction.h" />
+    <ClInclude Include="src\Actions\ActAnimation.h" />
+    <ClInclude Include="src\Actions\ActAudio.h" />
+    <ClInclude Include="src\Actions\ActButton.h" />
+    <ClInclude Include="src\Actions\ActCondition.h" />
+    <ClInclude Include="src\Actions\ActCursor.h" />
+    <ClInclude Include="src\Actions\ActDrawable.h" />
+    <ClInclude Include="src\Actions\ActEvent.h" />
+    <ClInclude Include="src\Actions\ActFade.h" />
+    <ClInclude Include="src\Actions\ActFocus.h" />
+    <ClInclude Include="src\Actions\ActFont.h" />
+    <ClInclude Include="src\Actions\ActGame.h" />
+    <ClInclude Include="src\Actions\ActImage.h" />
+    <ClInclude Include="src\Actions\ActInputText.h" />
+    <ClInclude Include="src\Actions\ActIO.h" />
+    <ClInclude Include="src\Actions\Action.h" />
+    <ClInclude Include="src\Actions\ActiontList.h" />
+    <ClInclude Include="src\Actions\ActLoad.h" />
+    <ClInclude Include="src\Actions\ActLoadingScreen.h" />
+    <ClInclude Include="src\Actions\ActMenu.h" />
+    <ClInclude Include="src\Actions\ActMount.h" />
+    <ClInclude Include="src\Actions\ActMovie.h" />
+    <ClInclude Include="src\Actions\ActPalette.h" />
+    <ClInclude Include="src\Actions\ActRandom.h" />
+    <ClInclude Include="src\Actions\ActResource.h" />
+    <ClInclude Include="src\Actions\ActScrollable.h" />
+    <ClInclude Include="src\Actions\ActShader.h" />
+    <ClInclude Include="src\Actions\ActSound.h" />
+    <ClInclude Include="src\Actions\ActText.h" />
+    <ClInclude Include="src\Actions\ActVariable.h" />
+    <ClInclude Include="src\Actions\ActVisibility.h" />
+    <ClInclude Include="src\Alignment.h" />
+    <ClInclude Include="src\Anchor.h" />
+    <ClInclude Include="src\Animation.h" />
+    <ClInclude Include="src\AnimationInfo.h" />
+    <ClInclude Include="src\AnimationType.h" />
+    <ClInclude Include="src\AudioSource.h" />
+    <ClInclude Include="src\BaseAnimation.h" />
+    <ClInclude Include="src\BindableText.h" />
+    <ClInclude Include="src\BindingFlags.h" />
+    <ClInclude Include="src\BlendMode.h" />
+    <ClInclude Include="src\CachedImagePack.h" />
+    <ClInclude Include="src\Circle.h" />
+    <ClInclude Include="src\CmdLineUtils.h" />
+    <ClInclude Include="src\FadeInOut.h" />
+    <ClInclude Include="src\FileBytes.h" />
+    <ClInclude Include="src\FileUtils.h" />
+    <ClInclude Include="src\Font.h" />
+    <ClInclude Include="src\Formula.h" />
+    <ClInclude Include="src\Formulas.h" />
+    <ClInclude Include="src\FreeTypeFont.h" />
+    <ClInclude Include="src\GameUtils.h" />
+    <ClInclude Include="src\Game\Save\SaveProperties.h" />
+    <ClInclude Include="src\Game\Save\SaveUtils.h" />
+    <ClInclude Include="src\Hooks.h" />
+    <ClInclude Include="src\IfCondition.h" />
+    <ClInclude Include="src\IgnoreResource.h" />
+    <ClInclude Include="src\Image.h" />
+    <ClInclude Include="src\ImageContainers\ImageContainer.h" />
+    <ClInclude Include="src\ImageContainers\SimpleImageContainer.h" />
+    <ClInclude Include="src\ImageUtils.h" />
+    <ClInclude Include="src\InputEvent.h" />
+    <ClInclude Include="src\InputText.h" />
+    <ClInclude Include="src\Json\JsonParser.h" />
+    <ClInclude Include="src\Json\JsonUtils.h" />
+    <ClInclude Include="src\Movie2.h" />
+    <ClInclude Include="src\Panel.h" />
+    <ClInclude Include="src\Parser\ParseAction.h" />
+    <ClInclude Include="src\Parser\ParseAnimation.h" />
+    <ClInclude Include="src\Parser\ParseAudio.h" />
+    <ClInclude Include="src\Parser\ParseAudioCommon.h" />
+    <ClInclude Include="src\Parser\ParseButton.h" />
+    <ClInclude Include="src\Parser\ParseCircle.h" />
+    <ClInclude Include="src\Parser\ParseCondition.h" />
+    <ClInclude Include="src\Parser\ParseCursor.h" />
+    <ClInclude Include="src\Parser\ParseEvent.h" />
+    <ClInclude Include="src\Parser\ParseFile.h" />
+    <ClInclude Include="src\Parser\ParseFileBytes.h" />
+    <ClInclude Include="src\Parser\ParseFont.h" />
+    <ClInclude Include="src\Parser\ParseIcon.h" />
+    <ClInclude Include="src\Parser\ParseImage.h" />
+    <ClInclude Include="src\Parser\ParseImageContainer.h" />
+    <ClInclude Include="src\Parser\ParseInputEvent.h" />
+    <ClInclude Include="src\Parser\ParseInputText.h" />
+    <ClInclude Include="src\Parser\ParseLoadingScreen.h" />
+    <ClInclude Include="src\Parser\ParseMenu.h" />
+    <ClInclude Include="src\Parser\ParseMenuButton.h" />
+    <ClInclude Include="src\Parser\ParseMountFile.h" />
+    <ClInclude Include="src\Parser\ParseMovie.h" />
+    <ClInclude Include="src\Parser\ParsePalette.h" />
+    <ClInclude Include="src\Parser\ParsePanel.h" />
+    <ClInclude Include="src\Parser\ParsePredicate.h" />
+    <ClInclude Include="src\Parser\Parser.h" />
+    <ClInclude Include="src\Parser\ParseRectangle.h" />
+    <ClInclude Include="src\Parser\ParserProperties.h" />
+    <ClInclude Include="src\Parser\ParseScrollable.h" />
+    <ClInclude Include="src\Parser\ParseShader.h" />
+    <ClInclude Include="src\Parser\ParseShape.h" />
+    <ClInclude Include="src\Parser\ParseSound.h" />
+    <ClInclude Include="src\Parser\ParseText.h" />
+    <ClInclude Include="src\Parser\ParseTexture.h" />
+    <ClInclude Include="src\Parser\ParseTexturePack.h" />
+    <ClInclude Include="src\Parser\ParseVariable.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtils.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsIdx.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsKey.h" />
+    <ClInclude Include="src\Parser\Utils\ParseUtilsVal.h" />
+    <ClInclude Include="src\Predicates\Predicate.h" />
+    <ClInclude Include="src\Predicates\PredIO.h" />
+    <ClInclude Include="src\Queryable.h" />
+    <ClInclude Include="src\Rectangle.h" />
+    <ClInclude Include="src\Scrollable.h" />
+    <ClInclude Include="src\sfeMovie\AudioStream.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\Demuxer.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\Movie.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\MovieImpl.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\Stream.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\StreamSelection.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\Timer.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\TimerPriorities.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\sfeMovie\VideoStream.hpp">
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release Static NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Release NoMovie'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)'=='Debug NoMovie'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="src\BitmapButton.h" />
+    <ClInclude Include="src\BitmapFont.h" />
+    <ClInclude Include="src\BitmapText.h" />
+    <ClInclude Include="src\Button.h" />
+    <ClInclude Include="src\DrawableText.h" />
+    <ClInclude Include="src\Event.h" />
+    <ClInclude Include="src\EventManager.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\LoadingScreen.h" />
+    <ClInclude Include="src\Menu.h" />
+    <ClInclude Include="src\Palette.h" />
+    <ClInclude Include="src\ResourceManager.h" />
+    <ClInclude Include="src\SFML\CompositeSprite.h" />
+    <ClInclude Include="src\SFML\dr_wav.h" />
+    <ClInclude Include="src\SFML\Image2.h" />
+    <ClInclude Include="src\SFML\Music2.h" />
+    <ClInclude Include="src\SFML\MusicLoops.h" />
+    <ClInclude Include="src\SFML\PhysFSStream.h" />
+    <ClInclude Include="src\SFML\SFMLUtils.h" />
+    <ClInclude Include="src\SFML\Sprite2.h" />
+    <ClInclude Include="src\SFML\Surface.h" />
+    <ClInclude Include="src\SFML\Text2.h" />
+    <ClInclude Include="src\SFML\VertexArray2.h" />
+    <ClInclude Include="src\SFML\VertexShape.h" />
+    <ClInclude Include="src\SFML\View2.h" />
+    <ClInclude Include="src\SFML\Wave2.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderManager.h" />
+    <ClInclude Include="src\Shape.h" />
+    <ClInclude Include="src\StreamReader.h" />
+    <ClInclude Include="src\StringButton.h" />
+    <ClInclude Include="src\StringText.h" />
+    <ClInclude Include="src\Text.h" />
+    <ClInclude Include="src\TextureInfo.h" />
+    <ClInclude Include="src\TexturePacks\BitmapFontTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\CachedTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\CompositeTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\IndexedTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\RectTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\SimpleTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\StackedTexturePack.h" />
+    <ClInclude Include="src\TexturePacks\TexturePack.h" />
+    <ClInclude Include="src\TextUtils.h" />
+    <ClInclude Include="src\UIObject.h" />
+    <ClInclude Include="src\Utils\EasedValue.h" />
+    <ClInclude Include="src\Utils\EasingFunctions.h" />
+    <ClInclude Include="src\Utils\ElapsedTime.h" />
+    <ClInclude Include="src\Utils\FixedArray.h" />
+    <ClInclude Include="src\Utils\FixedMap.h" />
+    <ClInclude Include="src\Utils\Helper2D.h" />
+    <ClInclude Include="src\Utils\iterator_tpl.h" />
+    <ClInclude Include="src\Utils\LRUCache.h" />
+    <ClInclude Include="src\Utils\Number.h" />
+    <ClInclude Include="src\Utils\NumberVector.h" />
+    <ClInclude Include="src\Utils\PairXY.h" />
+    <ClInclude Include="src\Utils\re.h" />
+    <ClInclude Include="src\Utils\Regex.h" />
+    <ClInclude Include="src\Utils\ReverseIterable.h" />
+    <ClInclude Include="src\Utils\UnorderedStringMap.h" />
+    <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Utils\Vector2D.h" />
+    <ClInclude Include="src\Variable.h" />
+    <ClInclude Include="src\VarOrPredicate.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1B91743F-9C8A-4E06-9950-31D959E5622E}</ProjectGuid>
+    <RootNamespace>DGEngine</RootNamespace>
+    <ProjectName>DGEngine.core</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>ClangCL</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>ClangCL</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableCppCoreCheck>true</EnableCppCoreCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <EnableCppCoreCheck>true</EnableCppCoreCheck>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|Win32'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|x64'">
+    <IntDir>DGEngine.core.dir\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>true</VcpkgEnabled>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)'=='Release Static'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)'=='Release Static NoMovie'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)'=='Debug Clang'">
+    <VcpkgAutoLink>false</VcpkgAutoLink>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Code Analysis|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <EnablePREfast>true</EnablePREfast>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug NoMovie|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Clang|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-network-d.lib;sfml-system-d.lib;sfml-window-d.lib;physfs.lib;avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release NoMovie|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>bcrypt.lib;opengl32.lib;secur32.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>bcrypt.lib;opengl32.lib;secur32.lib;winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Static NoMovie|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ConformanceMode>true</ConformanceMode>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <DisableSpecificWarnings>4250;4996</DisableSpecificWarnings>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>DGENGINE_MOVIE_STUB;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <SDLCheck>true</SDLCheck>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

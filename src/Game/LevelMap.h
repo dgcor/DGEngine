@@ -16,7 +16,7 @@
 class LevelMap
 {
 private:
-	static constexpr auto MaxNumberOfLightsToUse = 512u;
+	static constexpr uint32_t MaxNumberOfLightsToUse = 512u;
 
 	struct LightStruct
 	{
@@ -46,7 +46,7 @@ private:
 
 	std::vector<LightStruct> mapLights;
 	std::vector<LightStruct> allLights;
-	static size_t maxLights;
+	static uint32_t maxLights;
 	bool lightsNeedUpdate{ false };
 
 	static const LevelCell& get(int32_t x, int32_t y, const LevelMap& map)
@@ -123,8 +123,8 @@ public:
 
 	const std::vector<LightStruct>& AllLights() const noexcept { return allLights; }
 
-	static size_t MaxLights() noexcept { return maxLights; }
-	static void MaxLights(size_t maxLights_) noexcept;
+	static uint32_t MaxLights() noexcept { return maxLights; }
+	static void MaxLights(uint32_t maxLights_) noexcept;
 
 	// sets area (tileBlock Vector2D file) for layer 0 and uses the Flags file to set the Flags layer.
 	void setTileSetAreaUseFlags(int32_t x, int32_t y, const Vector2D<int32_t>& vec);

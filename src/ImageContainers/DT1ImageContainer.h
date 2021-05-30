@@ -2,7 +2,8 @@
 
 #include <cstdint>
 #include "FileBytes.h"
-#include "ImageContainer.h"
+#include "Game/LevelFlags.h"
+#include "ImageContainers/ImageContainer.h"
 #include <memory>
 #include "StreamReader.h"
 #include <unordered_map>
@@ -163,7 +164,7 @@ namespace DT1
 	};
 }
 
-class DT1ImageContainer : public ImageContainer
+class DT1ImageContainer : public ImageContainer, public LevelFlags
 {
 private:
 	DT1::Header header;
@@ -187,7 +188,7 @@ public:
 		return tileIndexes;
 	}
 
-	uint32_t size() const noexcept override { return tiles.size(); }
+	uint32_t size() const noexcept override { return (uint32_t)tiles.size(); }
 
 	uint32_t getDirections() const noexcept override { return 1; }
 

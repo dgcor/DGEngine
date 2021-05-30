@@ -986,12 +986,12 @@ sf::Image2 DCCImageContainer::get(uint32_t index,
 		{
 			auto imgView = imgProvider.getImage(frameIdx);
 			sf::Image2 img;
-			img.create(imgView.width, imgView.height);
+			img.create((unsigned)imgView.width, (unsigned)imgView.height);
 			for (size_t j = 0; j < imgView.height; j++)
 			{
 				for (size_t i = 0; i < imgView.width; i++)
 				{
-					img.setPixel(i, j, ImageContainer::getColor(imgView(i, j), palette));
+					img.setPixel((unsigned)i, (unsigned)j, ImageContainer::getColor(imgView(i, j), palette));
 				}
 			}
 

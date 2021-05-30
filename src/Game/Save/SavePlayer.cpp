@@ -2,9 +2,9 @@
 #include "Game.h"
 #include "Game/Level.h"
 #include "Game/Player.h"
+#include "Game/Save/SaveUtils.h"
 #include "Json/JsonParser.h"
 #include "SaveItem.h"
-#include "SaveUtils.h"
 
 using namespace rapidjson;
 using namespace SaveUtils;
@@ -230,7 +230,7 @@ void Save::serialize(void* serializeObj, const Properties& props,
 
 			writer.StartObject();
 
-			writeUInt(writer, "index", i);
+			writeUInt(writer, "index", (uint32_t)i);
 
 			if (inv.getXYSize().y != 1)
 			{
@@ -238,7 +238,7 @@ void Save::serialize(void* serializeObj, const Properties& props,
 			}
 			else
 			{
-				writeUInt(writer, "size", inv.Size());
+				writeUInt(writer, "size", (uint32_t)inv.Size());
 			}
 
 			if (inv.AllowedTypes().empty() == false)

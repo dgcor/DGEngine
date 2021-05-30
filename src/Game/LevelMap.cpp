@@ -2,7 +2,7 @@
 #include "PathFinder.h"
 #include "Utils/EasingFunctions.h"
 
-size_t LevelMap::maxLights{ MaxNumberOfLightsToUse };
+uint32_t LevelMap::maxLights{ MaxNumberOfLightsToUse };
 
 LevelMap::LevelMap(const std::string_view tilFileName, const std::string_view flagsFileName,
 	int32_t width_, int32_t height_, int32_t defaultTile)
@@ -162,9 +162,9 @@ void LevelMap::updateLights(const std::vector<std::shared_ptr<LevelObject>>& lev
 	}
 }
 
-void LevelMap::MaxLights(size_t maxLights_) noexcept
+void LevelMap::MaxLights(uint32_t maxLights_) noexcept
 {
-	maxLights = std::min(maxLights_, (size_t)MaxNumberOfLightsToUse);
+	maxLights = std::min(maxLights_, MaxNumberOfLightsToUse);
 }
 
 const LevelFlags* LevelMap::getFlags()

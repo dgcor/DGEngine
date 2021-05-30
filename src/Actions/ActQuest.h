@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Action.h"
+#include "Actions/Action.h"
 #include "Game.h"
 #include "Game/Quest.h"
 
@@ -16,7 +16,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->addQuest(quest);
@@ -37,7 +37,7 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->deleteQuest(idQuest);
@@ -59,7 +59,7 @@ public:
 
 	bool execute(Game& game) noexcept override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			level->setQuestState(idQuest, state);

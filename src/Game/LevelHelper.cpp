@@ -13,12 +13,12 @@ namespace LevelHelper
 		auto size = s.getSize();
 		auto frameSize = frame.getSize();
 
-		for (size_t x = 0; x < frameSize.x; x++)
+		for (unsigned x = 0; x < frameSize.x; x++)
 		{
-			for (size_t y = 0; y < frameSize.y; y++)
+			for (unsigned y = 0; y < frameSize.y; y++)
 			{
-				size_t xx = start_x + x;
-				size_t yy = start_y + y;
+				unsigned xx = start_x + x;
+				unsigned yy = start_y + y;
 
 				if (xx < size.x && yy < size.y)
 				{
@@ -138,7 +138,7 @@ namespace LevelHelper
 		{
 			texturePack = std::make_unique<MultiTexturePack>(palette);
 			multiTexturePack = (MultiTexturePack*)texturePack.get();
-			numTexturesToFit = min.size();
+			numTexturesToFit = (uint32_t)min.size();
 		}
 		else
 		{
@@ -146,7 +146,7 @@ namespace LevelHelper
 			multiTexturePack = texturePack2.get();
 			texturePack = std::make_unique<IndexedTexturePack>(std::move(texturePack2), true, false);
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
-			numTexturesToFit = min.size() - min.blankTopPillars();
+			numTexturesToFit = (uint32_t)(min.size() - min.blankTopPillars());
 		}
 
 		uint32_t maxTextureSize = sf::Texture::getMaximumSize();
@@ -156,7 +156,7 @@ namespace LevelHelper
 			maxTextureSize = std::min(maxTextureSize, 2560u);
 		}
 		uint32_t pillarWidth = 64;
-		uint32_t pillarHeight = (top == true ? ((min[0].size() - 1) * 32) : 32);
+		uint32_t pillarHeight = (top == true ? (((uint32_t)min[0].size() - 1) * 32) : 32);
 		if (pillarHeight > maxTextureSize)
 		{
 			return texturePack;
@@ -244,14 +244,14 @@ namespace LevelHelper
 				return;
 			}
 
-			uint32_t numTexturesToFit = min.size();
+			uint32_t numTexturesToFit = (uint32_t)min.size();
 			if (bottomTopOrBoth == 1 &&
 				skipBlankTiles == true)
 			{
-				numTexturesToFit -= min.blankTopPillars();
+				numTexturesToFit -= (uint32_t)min.blankTopPillars();
 			}
 			uint32_t pillarWidth = 64;
-			uint32_t pillarHeight = (bottomTopOrBoth != 0 ? (min[0].size() * 32) : 32);
+			uint32_t pillarHeight = (bottomTopOrBoth != 0 ? ((uint32_t)min[0].size() * 32) : 32);
 			if (pillarHeight > maxTextureSize)
 			{
 				return;

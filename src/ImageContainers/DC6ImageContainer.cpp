@@ -318,5 +318,5 @@ sf::Image2 DC6ImageContainer::get(uint32_t index,
 
 uint32_t DC6ImageContainer::size() const noexcept
 {
-	return stitchedFrames.empty() == true ? numberOfFrames : stitchedFrames.size();
+	return stitchedFrames.empty() == true ? numberOfFrames : (uint32_t)stitchedFrames.size();
 }

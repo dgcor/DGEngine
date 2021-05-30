@@ -18,7 +18,8 @@
     "horizontalAlign": "center",
     "verticalAlign": "center",
     "binding": "{1}",
-    "text": "|str_dataMissing|",
+    "bindingFlags": "once",
+    "format": "|str_dataMissing|",
     "onClick": { "name": "game.close" }
   }
 }

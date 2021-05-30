@@ -28,6 +28,7 @@
 /Debug NoDiabloFormatSupport
 /Debug NoMovie
 /DGEngine
+/DGEngine.dir
 /DIABDAT
 /DIABDAT.*
 /FFMPEG*
@@ -47,7 +48,6 @@
 /obj
 /PhysicsFS
 /portable
-/Project.dir
 /Release
 /Release NoMovie
 /Release Static

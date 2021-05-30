@@ -1,0 +1,58 @@
+DGEngine uses the zLib license.
+
+A part of the BitmapFont class is based on a bitmap font implementation for SDL
+by Lazy Foo' Productions. The license is incompatible with GPL like licenses.
+
+http://lazyfoo.net
+
+dr_wav uses the MIT-0 license.
+
+https://github.com/mackron/dr_libs
+
+endian uses the BSD license.
+
+https://github.com/steinwurf/endian
+
+PhysFS uses the zlib license.
+
+https://icculus.org/physfs/
+
+RapidJSON uses the MIT license.
+
+https://github.com/Tencent/rapidjson
+
+Simple Iterator Template implementation by Vinícius Garcia uses the MIT license.
+
+https://github.com/VinGarcia/Simple-Iterator-Template
+
+SFML Animation class based on an implementation by Maximilian Wagenbach.
+It uses the zlib/png license.
+
+SFML PhysFS class based on an implementation by Oscar Triano.
+It uses the zlib/png license.
+
+https://github.com/SFML/SFML/wiki/Source:-SFML-PhysFS
+
+sfeMovie uses the LGPL v2.1 license.
+
+https://github.com/Yalir/sfeMovie
+
+SFML uses the zlib/png license.
+
+https://github.com/SFML/SFML
+
+tiny-regex-c is public domain.
+
+https://github.com/kokke/tiny-regex-c
+
+Other SFML code snippets were taken from the wiki
+and should have a permissive license.
+
+FindFFmpeg.cmake was taken from Dolphin that uses the GPL v2 license.
+https://github.com/dolphin-emu/dolphin
+
+Small utility functions (string manipulation, etc) were taken from stackoverflow
+which use the cc by-sa 3.0 license with attribution required. I will update
+those functions in the future and point out the original authors in the next commits.
+
+If you feel there is a problem with licensing, contact me.

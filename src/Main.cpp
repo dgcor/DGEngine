@@ -1,17 +1,20 @@
-#include "CmdLineUtils.h"
+#include "CmdLineUtils2.h"
 #include "FileUtils.h"
-#include "Game.h"
+#include "Game2.h"
 #include <iostream>
+#include "RegisterHooks.h"
 
 int main(int argc, char* argv[])
 {
+	Hooks::registerHooks();
+
 	FileUtils::initPhysFS(argv[0]);
 
 	try
 	{
-		Game game;
+		Game2 game;
 
-		if (CmdLineUtils::processCmdLine(argc, (const char **)argv) == false)
+		if (CmdLineUtils::processCmdLine2(argc, (const char**)argv) == false)
 		{
 			if (argc == 2)
 			{

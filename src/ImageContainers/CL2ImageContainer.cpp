@@ -139,7 +139,7 @@ namespace
 				// 0x00 found
 			}
 		}
-		unsigned height = pixels.size() / width;
+		unsigned height = (unsigned)pixels.size() / width;
 
 		sf::Image2 img;
 		img.create(width, height, (const sf::Uint8*)pixels.data());

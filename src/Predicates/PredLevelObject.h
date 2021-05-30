@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Predicate.h"
 #include "Game.h"
 #include "Game/GameHashes.h"
 #include "Game/Level.h"
+#include "Predicates/Predicate.h"
 
 class PredLevelObjIsInRange : public Predicate
 {
@@ -19,7 +19,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto obj = level->getLevelObject(idObject);
@@ -50,7 +50,7 @@ public:
 
 	Variable getResult(const Game& game) const override
 	{
-		auto level = game.Resources().getLevel(idLevel);
+		auto level = game.Resources().getLevel<Level>(idLevel);
 		if (level != nullptr)
 		{
 			auto obj = level->getLevelObjectByClass(idClass);

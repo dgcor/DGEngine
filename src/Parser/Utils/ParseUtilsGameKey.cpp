@@ -1,5 +1,5 @@
 #include "ParseUtilsGameKey.h"
-#include "GameUtils.h"
+#include "GameUtils2.h"
 
 namespace Parser
 {

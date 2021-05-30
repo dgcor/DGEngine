@@ -649,7 +649,7 @@ namespace
 			}
 			if (height == 0)
 			{
-				height = pixels.size() / width;
+				height = (unsigned)pixels.size() / width;
 			}
 
 			img.create(width, height, (const sf::Uint8*)pixels.data());
