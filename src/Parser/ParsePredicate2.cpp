@@ -1,9 +1,9 @@
 #include "ParsePredicate2.h"
+#include "Game/Predicates/PredItem.h"
+#include "Game/Predicates/PredLevelObject.h"
+#include "Game/Predicates/PredPlayer.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "Parser/Utils/ParseUtilsGameKey.h"
-#include "Predicates/PredItem.h"
-#include "Predicates/PredLevelObject.h"
-#include "Predicates/PredPlayer.h"
 #include "Utils/Utils.h"
 
 namespace Parser2

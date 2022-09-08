@@ -4,7 +4,7 @@
     "action": [
       { "name": "variable.set", "key": "charName", "value": "{3}" },
       { "name": "resource.popAll" },
-      { "name": "loadJson", "json": { "minWindowSize": [640, 480] } },
+      { "name": "game.setProperty", "property": "minSize", "value": [640, 480] },
       { "name": "event.deleteAll" },
       { "name": "load", "file": "loadingScreens/d2.json" },
       { "name": "load", "file": "gameSettings.json" },

@@ -1,19 +1,5 @@
 {
-  "load": "ui/level/panel/big/upperSeparator.json",
-  "load": "ui/level/panel/big/lowerSeparator.json",
-  "load": "ui/level/panel/big/scrollbar.json",
-  "load": "towners/common/loadMenuButtons.json",
-  "inputEvent": [
-    {
-      "key": "tab",
-      "shift": true,
-      "action": "focus.moveUp"
-    },
-    {
-      "key": "tab",
-      "action": "focus.moveDown"
-    }
-  ],
+  "load": "towners/common/loadScrollbarPanel.json",
   "menu": {
     "id": "menuPrices",
     "font": "smaltext",

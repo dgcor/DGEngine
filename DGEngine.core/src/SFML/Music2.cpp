@@ -2,31 +2,32 @@
 #include <SFML/System/Lock.hpp>
 #include <SFML/System/Err.hpp>
 #include <fstream>
+#include <variant>
 
 namespace sf
 {
 	Music2::~Music2()
 	{
 		stop();
-		if (m_type == 1)
-		{
-			m_file.~MusicFile();
-		}
+		m_data = nullptr;
 	}
 
 	bool Music2::openFromFile(const std::string& filename)
 	{
 		stop();
 
-		if (m_type == 2)
+		if (std::holds_alternative<std::nullptr_t>(m_data) == false)
 		{
 			return false;
 		}
+
+		m_data.emplace<MusicFile>();
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		if (m_file.file.openFromFile(filename) == false)
 		{
 			return false;
 		}
-		m_type = 1;
 
 		initializeFile();
 
@@ -37,15 +38,18 @@ namespace sf
 	{
 		stop();
 
-		if (m_type == 2)
+		if (std::holds_alternative<std::nullptr_t>(m_data) == false)
 		{
 			return false;
 		}
+
+		m_data.emplace<MusicFile>();
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		if (m_file.file.openFromMemory(data, sizeInBytes) == false)
 		{
 			return false;
 		}
-		m_type = 1;
 
 		initializeFile();
 
@@ -56,15 +60,18 @@ namespace sf
 	{
 		stop();
 
-		if (m_type == 2)
+		if (std::holds_alternative<std::nullptr_t>(m_data) == false)
 		{
 			return false;
 		}
+
+		m_data.emplace<MusicFile>();
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		if (m_file.file.openFromStream(stream) == false)
 		{
 			return false;
 		}
-		m_type = 1;
 
 		initializeFile();
 
@@ -75,11 +82,12 @@ namespace sf
 	{
 		stop();
 
-		if (m_type == 1)
+		if (std::holds_alternative<std::nullptr_t>(m_data) == false)
 		{
 			return false;
 		}
-		m_type = 2;
+
+		m_data.emplace<MusicBuffer>();
 
 		initializeBuffer(buffer);
 
@@ -88,11 +96,17 @@ namespace sf
 
 	Time Music2::getDuration() const
 	{
-		if (m_type == 2)
+		if (std::holds_alternative<MusicFile>(m_data) == true)
 		{
+			auto& m_file = std::get<MusicFile>(m_data);
+			return m_file.file.getDuration();
+		}
+		else if (std::holds_alternative<MusicBuffer>(m_data) == true)
+		{
+			auto& m_buffer = std::get<MusicBuffer>(m_data);
 			return m_buffer.duration;
 		}
-		return m_file.file.getDuration();
+		return {};
 	}
 
 	Music::TimeSpan Music2::getLoopPoints() const
@@ -102,7 +116,7 @@ namespace sf
 
 	void Music2::setLoopPoints(Music::TimeSpan timePoints)
 	{
-		if (m_type == 0)
+		if (std::holds_alternative<std::nullptr_t>(m_data) == true)
 		{
 			return;
 		}
@@ -111,13 +125,15 @@ namespace sf
 
 		// Check our state. This averts a divide-by-zero. GetChannelCount() is cheap enough to use often
 		Uint64 sampleCount = 0;
-		if (m_type == 2)
+		if (std::holds_alternative<MusicFile>(m_data) == true)
 		{
-			sampleCount = m_buffer.sampleCount;
+			auto& m_file = std::get<MusicFile>(m_data);
+			sampleCount = m_file.file.getSampleCount();
 		}
 		else
 		{
-			sampleCount = m_file.file.getSampleCount();
+			auto& m_buffer = std::get<MusicBuffer>(m_data);
+			sampleCount = m_buffer.sampleCount;
 		}
 
 		if (getChannelCount() == 0 || sampleCount == 0)
@@ -182,15 +198,22 @@ namespace sf
 	bool Music2::onGetData(SoundStream::Chunk& data)
 	{
 		Lock lock(m_mutex);
-		if (m_type == 2)
+
+		if (std::holds_alternative<MusicFile>(m_data) == true)
+		{
+			return onGetDataFile(data);
+		}
+		else if (std::holds_alternative<MusicBuffer>(m_data) == true)
 		{
 			return onGetDataBuffer(data);
 		}
-		return onGetDataFile(data);
+		return false;
 	}
 
 	bool Music2::onGetDataFile(SoundStream::Chunk& data)
 	{
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		Uint64 toFill = m_file.samples.size();
 		Uint64 currentOffset = m_file.file.getSampleOffset();
 		Uint64 loopEnd = m_loopSpan.offset + m_loopSpan.length;
@@ -220,6 +243,8 @@ namespace sf
 
 	bool Music2::onGetDataBuffer(SoundStream::Chunk& data)
 	{
+		auto& m_buffer = std::get<MusicBuffer>(m_data);
+
 		Uint64 toFill = m_buffer.sampleBufferSize;
 		Uint64 currentOffset = m_buffer.sampleBufferOffset;
 		Uint64 loopEnd = m_loopSpan.offset + m_loopSpan.length;
@@ -255,21 +280,16 @@ namespace sf
 	void Music2::onSeek(Time timeOffset)
 	{
 		Lock lock(m_mutex);
-		switch (m_type)
+
+		if (std::holds_alternative<MusicFile>(m_data) == true)
 		{
-		default:
-		case 0:
-			return;
-		case 1:
-		{
+			auto& m_file = std::get<MusicFile>(m_data);
 			m_file.file.seek(timeOffset);
-			break;
 		}
-		case 2:
+		else if (std::holds_alternative<MusicBuffer>(m_data) == true)
 		{
+			auto& m_buffer = std::get<MusicBuffer>(m_data);
 			m_buffer.sampleBufferOffset = std::min(timeToSamples(timeOffset), m_buffer.sampleCount);
-			break;
-		}
 		}
 	}
 
@@ -277,20 +297,22 @@ namespace sf
 	{
 		// Called by underlying SoundStream so we can determine where to loop.
 		Lock lock(m_mutex);
-		switch (m_type)
+
+		if (std::holds_alternative<MusicFile>(m_data) == true)
 		{
-		default:
-		case 0:
-			return 0;
-		case 1:
 			return onLoopFile();
-		case 2:
+		}
+		else if (std::holds_alternative<MusicBuffer>(m_data) == true)
+		{
 			return onLoopBuffer();
 		}
+		return 0;
 	}
 
 	Int64 Music2::onLoopFile()
 	{
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		Uint64 currentOffset = m_file.file.getSampleOffset();
 		if (getLoop() &&
 			(m_loopSpan.length != 0) &&
@@ -313,6 +335,8 @@ namespace sf
 
 	Int64 Music2::onLoopBuffer()
 	{
+		auto& m_buffer = std::get<MusicBuffer>(m_data);
+
 		Uint64 currentOffset = m_buffer.sampleBufferOffset;
 		if (getLoop() &&
 			(m_loopSpan.length != 0) &&
@@ -335,6 +359,8 @@ namespace sf
 
 	void Music2::initializeFile()
 	{
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		// Compute the music positions
 		m_loopSpan.offset = 0;
 		m_loopSpan.length = m_file.file.getSampleCount();
@@ -348,6 +374,8 @@ namespace sf
 
 	void Music2::initializeBuffer(const sf::SoundBuffer& buffer)
 	{
+		auto& m_buffer = std::get<MusicBuffer>(m_data);
+
 		m_buffer.samples = buffer.getSamples();
 		m_buffer.channelCount = buffer.getChannelCount();
 		m_buffer.sampleCount = buffer.getSampleCount();

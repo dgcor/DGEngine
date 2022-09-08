@@ -1,13 +1,13 @@
 #include "ParseMountFile.h"
-#include "FileUtils.h"
-#include "Game.h"
+#include "Game/Game.h"
+#include "Game/Utils/FileUtils.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseMountFile(const Game& game, const Value& elem)
+	void parseMountFile(Game& game, const Value& elem)
 	{
 		auto file = getStringKey(elem, "file");
 		if (file.empty() == true)
@@ -16,7 +16,7 @@ namespace Parser
 		}
 		if (getBoolKey(elem, "useSaveDir") == false)
 		{
-			file = game.getPath() + file;
+			file = game.Path() + file;
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 #include "Surface.h"
-#include "Game.h"
-#include "Panel.h"
+#include "Game/Drawables/Panel.h"
+#include "Game/Game.h"
 #include "Utils/Utils.h"
 
 Anchor Surface::getAnchor() const noexcept
@@ -145,14 +145,12 @@ void Surface::draw(const sf::Drawable& obj, sf::RenderStates states) const
 	texture.draw(obj, states);
 }
 
-void Surface::draw(const Sprite2& obj, GameShader* spriteShader,
-	SpriteShaderCache& cache) const
+void Surface::draw(const Sprite2& obj, GameShader* spriteShader, SpriteShaderCache& cache) const
 {
 	obj.draw(texture, spriteShader, &cache);
 }
 
-void Surface::draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
-	const Palette* palette, GameShader* spriteShader) const
+void Surface::draw(const VertexArray2& obj, const sf::Texture* vertexTexture, const Palette* palette, GameShader* spriteShader) const
 {
 	obj.draw(vertexTexture, palette, spriteShader, texture);
 }
@@ -204,9 +202,10 @@ void Surface::stretchSpriteToZoom(float zoom)
 			sprite.setTextureRect({ 0, 0, (int)size.x, (int)size.y });
 			return;
 		}
+		auto factor = isometricZoom == true ? 0.5f : 0.f;
 		sf::IntRect textureRect(
-			(int)std::round(((float)size.x / 2.f) - (drawView.getSize().x / 2.f) * zoom),
-			(int)std::round(((float)size.y / 2.f) - (drawView.getSize().y / 2.f) * zoom),
+			(int)std::round(((float)size.x * factor) - (drawView.getSize().x * factor) * zoom),
+			(int)std::round(((float)size.y * factor) - (drawView.getSize().y * factor) * zoom),
 			(int)std::round(drawView.getSize().x * zoom),
 			(int)std::round(drawView.getSize().y * zoom)
 		);
@@ -215,11 +214,12 @@ void Surface::stretchSpriteToZoom(float zoom)
 	else
 	{
 		auto size = texture.getSize();
-		auto sizeDiffX = (size.x - drawView.getSize().x) / 2.f * zoom;
-		auto sizeDiffY = (size.y - drawView.getSize().y) / 2.f * zoom;
+		auto factor = isometricZoom == true ? 0.5f : 0.f;
+		auto sizeDiffX = (size.x - drawView.getSize().x) * factor * zoom;
+		auto sizeDiffY = (size.y - drawView.getSize().y) * factor * zoom;
 		sf::IntRect textureRect(
-			(int)std::round(((size.x - visibleRect.width) / 2.f) - sizeDiffX),
-			(int)std::round(((size.y - visibleRect.height) / 2.f) - sizeDiffY),
+			(int)std::round(((size.x - visibleRect.width) * factor) - sizeDiffX),
+			(int)std::round(((size.y - visibleRect.height) * factor) - sizeDiffY),
 			(int)std::round(visibleRect.width * (size.x / drawView.getSize().x)),
 			(int)std::round(visibleRect.height * (size.y / drawView.getSize().y))
 		);

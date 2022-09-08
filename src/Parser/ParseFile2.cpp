@@ -1,20 +1,20 @@
 #include "ParseFile2.h"
 #include "Json/JsonUtils.h"
-#include "Parser/ParseClassifier.h"
+#include "Parser/Classifier/ParseClassifier.h"
+#include "Parser/Drawables/ParsePanel2.h"
+#include "Parser/Item/ParseItem.h"
+#include "Parser/Item/ParseItemClass.h"
+#include "Parser/Level/ParseLevel.h"
+#include "Parser/LevelObject/ParseLevelObject.h"
+#include "Parser/LevelObject/ParseLevelObjectClass.h"
 #include "Parser/ParseFile.h"
-#include "Parser/ParseItem.h"
-#include "Parser/ParseItemClass.h"
-#include "Parser/ParseLevel.h"
-#include "Parser/ParseLevelObject.h"
-#include "Parser/ParseLevelObjectClass.h"
-#include "Parser/ParsePanel2.h"
-#include "Parser/ParsePlayer.h"
-#include "Parser/ParsePlayerClass.h"
-#include "Parser/ParseQuest.h"
-#include "Parser/ParseSpell.h"
-#include "Parser/ParseTexturePack2.h"
+#include "Parser/Player/ParsePlayer.h"
+#include "Parser/Player/ParsePlayerClass.h"
+#include "Parser/Quest/ParseQuest.h"
+#include "Parser/Resources/ParseTexturePack2.h"
+#include "Parser/Spell/ParseSpell.h"
 #include "Parser/Utils/ParseUtils.h"
-#include "Utils/Utils.h"
+#include "Utils/StringHash.h"
 
 namespace Parser2
 {
@@ -28,182 +28,62 @@ namespace Parser2
 		{
 		case str2int16("classifier"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseClassifier(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseClassifier, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("item"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseItem(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseItem, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("itemClass"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseItemClass(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseItemClass, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("level"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseLevel(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseLevel, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("levelObject"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseLevelObject(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseLevelObject, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("levelObjectClass"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseLevelObjectClass(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseLevelObjectClass, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("panel"):
 		{
-			if (elem.IsArray() == false)
-			{
-				Parser2::parsePanel(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(Parser2::parsePanel, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("player"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parsePlayer(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parsePlayer, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("playerClass"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parsePlayerClass(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parsePlayerClass, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("quest"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseQuest(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseQuest, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("spell"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseSpell(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseSpell, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("texturePack"):
 		{
-			if (elem.IsArray() == false)
-			{
-				Parser2::parseTexturePack(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(Parser2::parseTexturePack, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		default:

@@ -1,7 +1,7 @@
 #include "ParseCursor.h"
 #include <cassert>
 #include <cmath>
-#include "Game.h"
+#include "Game/Game.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -23,8 +23,7 @@ namespace Parser
 		}
 	}
 
-	void parseCursor(Game& game, const Value& elem,
-		const getAnimationObjFuncPtr getAnimationObjFunc)
+	void parseCursorF(Game& game, const Value& elem, const getAnimationObjFuncPtr getAnimationObjFunc)
 	{
 		assert(getAnimationObjFunc != nullptr);
 
@@ -62,6 +61,6 @@ namespace Parser
 
 	void parseCursor(Game& game, const Value& elem)
 	{
-		parseCursor(game, elem, getAnimationObj);
+		parseCursorF(game, elem, getAnimationObj);
 	}
 }

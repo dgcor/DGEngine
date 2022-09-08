@@ -1,23 +1,23 @@
 {
   "inputEvent": [
     {
-      "key": "up",
+      "gameInputEvent": "up",
       "event": "level.up"
     },
     {
-      "key": "down",
+      "gameInputEvent": "down",
       "event": "level.down"
     },
     {
-      "key": "left",
+      "gameInputEvent": "left",
       "event": "level.left"
     },
     {
-      "key": "right",
+      "gameInputEvent": "right",
       "event": "level.right"
     },
     {
-      "key": "rshift",
+      "gameInputEvent": "action",
       "event": "level.doAction"
     }
   ]

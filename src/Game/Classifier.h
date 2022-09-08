@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GameProperties.h"
-#include "Queryable.h"
+#include "Game/Properties/LevelObjValue.h"
+#include "Game/Queryable.h"
 #include <string>
 #include <vector>
 
 struct ClassifierValue
 {
-	typedef std::pair<LevelObjValue, LevelObjValue> ValuePair;
+	using ValuePair = std::pair<LevelObjValue, LevelObjValue>;
 
 	// std::pair of min / max or std::string
 	std::variant<ValuePair, std::string> compare;

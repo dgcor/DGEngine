@@ -106,7 +106,7 @@
       "texture": "font6",
       "charSizeFile": "data/local/font/LATIN/font6.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 7,
       "direction": "horizontal"
     },
@@ -116,7 +116,7 @@
       "texture": "font8",
       "charSizeFile": "data/local/font/LATIN/font8.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 14,
       "direction": "horizontal"
     },
@@ -126,8 +126,8 @@
       "texture": "font16",
       "charSizeFile": "data/local/font/LATIN/font16.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
-      "newLine": 10,
+      "charSizeFileStep": 14,
+      "newLine": 16,
       "direction": "horizontal"
     },
     {
@@ -136,7 +136,7 @@
       "texture": "font24",
       "charSizeFile": "data/local/font/LATIN/font24.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 24,
       "direction": "horizontal"
     },
@@ -146,7 +146,7 @@
       "texture": "font30",
       "charSizeFile": "data/local/font/LATIN/font30.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 30,
       "direction": "horizontal"
     },
@@ -156,7 +156,7 @@
       "texture": "font42",
       "charSizeFile": "data/local/font/LATIN/font42.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 42,
       "direction": "horizontal"
     },
@@ -166,7 +166,7 @@
       "texture": "fontexocet8",
       "charSizeFile": "data/local/font/LATIN/fontexocet8.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 13,
       "direction": "horizontal"
     },
@@ -176,7 +176,7 @@
       "texture": "fontexocet10",
       "charSizeFile": "data/local/font/LATIN/fontexocet10.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 10,
       "direction": "horizontal"
     },
@@ -186,7 +186,7 @@
       "texture": "fontformal10",
       "charSizeFile": "data/local/font/LATIN/fontformal10.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 15,
       "direction": "horizontal"
     },
@@ -196,7 +196,7 @@
       "texture": "fontformal11",
       "charSizeFile": "data/local/font/LATIN/fontformal11.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 16,
       "direction": "horizontal"
     },
@@ -206,7 +206,7 @@
       "texture": "fontformal12",
       "charSizeFile": "data/local/font/LATIN/fontformal12.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 20,
       "direction": "horizontal"
     },
@@ -216,7 +216,7 @@
       "texture": "fontingamechat",
       "charSizeFile": "data/local/font/LATIN/fontingamechat.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 15,
       "direction": "horizontal"
     },
@@ -226,7 +226,7 @@
       "texture": "fontridiculous",
       "charSizeFile": "data/local/font/LATIN/fontridiculous.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 7,
       "direction": "horizontal"
     },
@@ -236,7 +236,7 @@
       "texture": "ReallyTheLastSucker",
       "charSizeFile": "data/local/font/LATIN/ReallyTheLastSucker.tbl",
       "charSizeFileStart": 15,
-      "charSizeFileSkip": 14,
+      "charSizeFileStep": 14,
       "newLine": 7,
       "direction": "horizontal"
     }

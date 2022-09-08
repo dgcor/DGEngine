@@ -1,7 +1,7 @@
 #include "View2.h"
 #include <cmath>
-#include "Game.h"
-#include "GameUtils.h"
+#include "Game/Game.h"
+#include "Game/Utils/GameUtils.h"
 
 sf::Vector2f View2::getPosition(const sf::Vector2f& point) const
 {
@@ -45,7 +45,7 @@ void View2::setSize(const sf::Vector2f& size_)
 void View2::setViewport(const Game& game)
 {
 	const auto& drawRegionSize = game.DrawRegionSize();
-	const auto& gameWindowSize = game.WindowSize();
+	const auto& gameWindowSize = game.Size();
 	auto x = position.x;
 	if (drawRegionSize.x > gameWindowSize.x)
 	{

@@ -13,7 +13,7 @@
     "font": "liberationSerif",
     "fontSize": 28,
     "color": "0xFFFFFF",
-    "position": [320, 240],
+    "position": ["center", "center"],
     "anchor": "none",
     "horizontalAlign": "center",
     "verticalAlign": "center",

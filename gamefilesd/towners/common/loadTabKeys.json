@@ -1,0 +1,12 @@
+{
+  "inputEvent": [
+    {
+      "gameInputEvent": "tabUp",
+      "action": "focus.moveUp"
+    },
+    {
+      "gameInputEvent": "tabDown",
+      "action": "focus.moveDown"
+    }
+  ]
+}

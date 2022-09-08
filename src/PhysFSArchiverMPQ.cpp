@@ -11,13 +11,8 @@
 #include "StormLib/StormLib.h"
 #endif
 
-#if defined(PHYSFS_DYNAMIC_STORMLIB) && defined(_WIN32)
-const auto& PHYSFS_LoadLibrary = LoadLibraryA;
-const auto& PHYSFS_GetProcAddress = GetProcAddress;
-#elif defined(PHYSFS_DYNAMIC_STORMLIB) && defined(__unix__)
-#include <dlfcn.h>
-const auto& PHYSFS_LoadLibrary = dlopen;
-const auto& PHYSFS_GetProcAddress = dlsym;
+#if defined(PHYSFS_DYNAMIC_STORMLIB)
+#include "Utils/LoadLibrary.h"
 #endif
 
 typedef bool (WINAPI* StormFileOpenArchive)(const TCHAR*, DWORD, DWORD, HANDLE*);
@@ -172,23 +167,23 @@ static void MPQ_LoadExternalStormLib()
 	}
 
 #if defined(_WIN32)
-	auto hStormDLL = PHYSFS_LoadLibrary("StormLib.dll");
+	auto hStormLib = Utils::LoadExternalLibrary("StormLib.dll");
 #else
-	auto hStormDLL = PHYSFS_LoadLibrary("./libstorm.so", RTLD_LAZY | RTLD_LOCAL);
+	auto hStormLib = Utils::LoadExternalLibrary("./libstorm.so");
 #endif
-	if (hStormDLL == nullptr)
+	if (hStormLib == nullptr)
 	{
 		return;
 	}
 
-	PHYSFS_SFileOpenArchive = (StormFileOpenArchive)PHYSFS_GetProcAddress(hStormDLL, "SFileOpenArchive");
-	PHYSFS_SFileCloseArchive = (StormFileCloseArchive)PHYSFS_GetProcAddress(hStormDLL, "SFileCloseArchive");
-	PHYSFS_SFileOpenFileEx = (StormFileOpenFileEx)PHYSFS_GetProcAddress(hStormDLL, "SFileOpenFileEx");
-	PHYSFS_SFileGetFileSize = (StormFileGetFileSize)PHYSFS_GetProcAddress(hStormDLL, "SFileGetFileSize");
-	PHYSFS_SFileSetFilePointer = (StormFileSetFilePointer)PHYSFS_GetProcAddress(hStormDLL, "SFileSetFilePointer");
-	PHYSFS_SFileReadFile = (StormFileReadFile)PHYSFS_GetProcAddress(hStormDLL, "SFileReadFile");
-	PHYSFS_SFileCloseFile = (StormFileCloseFile)PHYSFS_GetProcAddress(hStormDLL, "SFileCloseFile");
-	PHYSFS_SFileGetFileInfo = (StormFileGetFileInfo)PHYSFS_GetProcAddress(hStormDLL, "SFileGetFileInfo");
+	PHYSFS_SFileOpenArchive = (StormFileOpenArchive)Utils::GetFunctionAddress(hStormLib, "SFileOpenArchive");
+	PHYSFS_SFileCloseArchive = (StormFileCloseArchive)Utils::GetFunctionAddress(hStormLib, "SFileCloseArchive");
+	PHYSFS_SFileOpenFileEx = (StormFileOpenFileEx)Utils::GetFunctionAddress(hStormLib, "SFileOpenFileEx");
+	PHYSFS_SFileGetFileSize = (StormFileGetFileSize)Utils::GetFunctionAddress(hStormLib, "SFileGetFileSize");
+	PHYSFS_SFileSetFilePointer = (StormFileSetFilePointer)Utils::GetFunctionAddress(hStormLib, "SFileSetFilePointer");
+	PHYSFS_SFileReadFile = (StormFileReadFile)Utils::GetFunctionAddress(hStormLib, "SFileReadFile");
+	PHYSFS_SFileCloseFile = (StormFileCloseFile)Utils::GetFunctionAddress(hStormLib, "SFileCloseFile");
+	PHYSFS_SFileGetFileInfo = (StormFileGetFileInfo)Utils::GetFunctionAddress(hStormLib, "SFileGetFileInfo");
 
 #if defined(PHYSFS_EXTERNAL_STORMLIB) || defined(PHYSFS_INTERNAL_STORMLIB)
 	if (PHYSFS_SFileOpenArchive == nullptr ||

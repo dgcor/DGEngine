@@ -1,12 +1,13 @@
 #include "MusicLoops.h"
 #include <SFML/System/Lock.hpp>
 #include <SFML/System/Err.hpp>
+#include <variant>
 
 namespace sf
 {
 	void MusicLoops::setMultiLoopPoints(const std::vector<Music::TimeSpan>& timePoints_)
 	{
-		if (m_type == 0 ||
+		if (std::holds_alternative<std::nullptr_t>(m_data) == true ||
 			timePoints_.empty() == true)
 		{
 			return;
@@ -19,13 +20,15 @@ namespace sf
 
 			// Check our state. This averts a divide-by-zero. GetChannelCount() is cheap enough to use often
 			Uint64 sampleCount = 0;
-			if (m_type == 2)
+			if (std::holds_alternative<MusicFile>(m_data) == true)
 			{
-				sampleCount = m_buffer.sampleCount;
+				auto& m_file = std::get<MusicFile>(m_data);
+				sampleCount = m_file.file.getSampleCount();
 			}
 			else
 			{
-				sampleCount = m_file.file.getSampleCount();
+				auto& m_buffer = std::get<MusicBuffer>(m_data);
+				sampleCount = m_buffer.sampleCount;
 			}
 
 			if (getChannelCount() == 0 || sampleCount == 0)
@@ -99,6 +102,8 @@ namespace sf
 
 	Int64 MusicLoops::onLoopFile()
 	{
+		auto& m_file = std::get<MusicFile>(m_data);
+
 		Uint64 currentOffset = m_file.file.getSampleOffset();
 		if ((m_loopSpan.length != 0) &&
 			(currentOffset == m_loopSpan.offset + m_loopSpan.length))
@@ -124,6 +129,8 @@ namespace sf
 
 	Int64 MusicLoops::onLoopBuffer()
 	{
+		auto& m_buffer = std::get<MusicBuffer>(m_data);
+
 		Uint64 currentOffset = m_buffer.sampleBufferOffset;
 		if ((m_loopSpan.length != 0) &&
 			(currentOffset == m_loopSpan.offset + m_loopSpan.length))
@@ -151,17 +158,15 @@ namespace sf
 	{
 		// Called by underlying SoundStream so we can determine where to loop.
 		Lock lock(m_mutex);
-		switch (m_type)
+
+		if (std::holds_alternative<MusicFile>(m_data) == true)
 		{
-		default:
-		case 0:
-			return NoLoop;
-		case 1:
 			return onLoopFile();
-			break;
-		case 2:
-			return onLoopBuffer();
-			break;
 		}
+		else if (std::holds_alternative<MusicBuffer>(m_data) == true)
+		{
+			return onLoopBuffer();
+		}
+		return NoLoop;
 	}
 }

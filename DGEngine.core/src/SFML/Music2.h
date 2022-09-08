@@ -8,6 +8,7 @@
 #include <SFML/System/Mutex.hpp>
 #include <SFML/System/Time.hpp>
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace sf
@@ -23,6 +24,7 @@ namespace sf
 			InputSoundFile file;
 			std::vector<Int16> samples;
 
+			MusicFile() = default;
 			~MusicFile() = default;
 		};
 
@@ -37,13 +39,7 @@ namespace sf
 			Time duration;
 		};
 
-		union
-		{
-			MusicFile m_file;
-			MusicBuffer m_buffer;
-		};
-		// 0 - not initialized, 1 - InputSoundFile, 2 - SoundBuffer
-		uint8_t m_type{ 0 };
+		std::variant<std::nullptr_t, MusicFile, MusicBuffer> m_data;
 		Mutex m_mutex;
 		Music::Span<Uint64> m_loopSpan;
 
@@ -70,7 +66,7 @@ namespace sf
 		Int64 onLoop() override;
 
 	public:
-		Music2() : m_file(), m_loopSpan(0, 0) { }
+		Music2() : m_loopSpan(0, 0) { }
 		~Music2();
 
 		bool openFromFile(const std::string& filename);

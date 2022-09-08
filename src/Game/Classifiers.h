@@ -2,7 +2,8 @@
 
 #include <array>
 #include "Classifier.h"
-#include "GameUtils.h"
+#include "Game/Utils/GameUtils.h"
+#include "Game/Utils/VarUtils.h"
 
 class Queryable;
 

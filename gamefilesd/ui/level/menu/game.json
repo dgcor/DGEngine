@@ -99,9 +99,7 @@
       "onClick": [
         {
           "name": "game.fadeOut",
-          "action": {
-            "name": "game.close"
-          }
+          "action": "saveSettingsAndClose"
         }
       ],
       "onFocus": [

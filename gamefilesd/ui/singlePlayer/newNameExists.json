@@ -6,11 +6,11 @@
   },
   "inputEvent": [
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": { "name": "button.click", "id": "no" }
     },
     {
-      "key": ["enter", " "],
+      "gameInputEvent": "enter",
       "action": "focus.click"
     }
   ],

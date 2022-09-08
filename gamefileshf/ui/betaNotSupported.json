@@ -1,6 +1,6 @@
 {
   "inputEvent": {
-    "key": ["enter", " ", "esc"],
+    "gameInputEvent": ["enter", "esc"],
     "action": { "name": "game.close" }
   },
   "font": {

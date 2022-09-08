@@ -2,14 +2,18 @@
 
 DGEngine core is a 2D game engine.
 
+### Documentation
+
+Documentation on DGEngine core under [docs](docs/readme.md).
+
 ### Example
 
 Here is a simple example on how to use DGEngine core:
 
 ```cpp
-#include "CmdLineUtils.h"
-#include "FileUtils.h"
-#include "Game.h"
+#include "Game/Game.h"
+#include "Game/Utils/CmdLineUtils.h"
+#include "Game/Utils/FileUtils.h"
 #include <iostream>
 
 int main(int argc, char* argv[])

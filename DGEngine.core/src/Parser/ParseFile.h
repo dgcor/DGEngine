@@ -14,14 +14,22 @@ namespace Parser
 
 	void parseFile(Game& game, const std::vector<std::string>& params);
 
-	void parseDocument(Game& game, const rapidjson::Document& doc,
-		ReplaceVars replaceVars_ = ReplaceVars::None);
-
-	void parseDocumentElemHelper(Game& game, uint16_t nameHash16, const rapidjson::Value& elem,
-		ReplaceVars& replaceVars, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>& allocator);
-
 	void parseJson(Game& game, const std::string_view json,
 		const std::vector<std::string>& params);
 
 	void parseJson(Game& game, const std::string_view json);
+
+	void parseDocument(Game& game, rapidjson::Document& doc,
+		ReplaceVars replaceVars_ = ReplaceVars::None);
+
+	void parseLoad(Game& game, const rapidjson::Value& elem);
+
+	typedef void(*parseDocumentElemFuncPtr)(Game& game, const rapidjson::Value& elem);
+
+	void parseDocumentElemArray(const parseDocumentElemFuncPtr parseFunc, Game& game,
+		uint16_t nameHash16, const rapidjson::Value& elem, ReplaceVars& replaceVars,
+		rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>& allocator);
+
+	void parseDocumentElemHelper(Game& game, uint16_t nameHash16, const rapidjson::Value& elem,
+		ReplaceVars& replaceVars, rapidjson::MemoryPoolAllocator<rapidjson::CrtAllocator>& allocator);
 }

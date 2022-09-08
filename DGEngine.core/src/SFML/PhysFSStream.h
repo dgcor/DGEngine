@@ -27,7 +27,7 @@
 
 namespace sf
 {
-	class PhysFSStream : public sf::InputStream, public sf::NonCopyable
+	class PhysFSStream : public sf::InputStream
 	{
 	protected:
 		PHYSFS_File* file{ nullptr };
@@ -36,6 +36,9 @@ namespace sf
 		PhysFSStream() {}
 		PhysFSStream(const std::string_view fileName);
 		~PhysFSStream() override;
+
+		PhysFSStream(PhysFSStream const&) = delete;
+		PhysFSStream& operator=(PhysFSStream const&) = delete;
 
 		bool load(const std::string_view fileName);
 
@@ -46,7 +49,7 @@ namespace sf
 
 		bool hasError() const noexcept { return file == nullptr; }
 
-		const char* getLastError() const noexcept
+		auto getLastError() const noexcept
 		{
 			return PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode());
 		}

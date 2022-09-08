@@ -1,0 +1,141 @@
+{
+  "item": [
+    {
+      "class": "shortSword",
+      "properties": {
+        "requiredStrength": 5,
+        "strength": 5,
+        "toDamage": 120,
+        "identified": false,
+        "magical": true
+      },
+      "mapPosition": [56, 73]
+    },
+    {
+      "class": "smallShield",
+      "mapPosition": [57, 73]
+    },
+    {
+      "class": "ring",
+      "mapPosition": [58, 73],
+      "properties": {
+        "strength": 5
+      }
+    },
+    {
+      "class": "potionOfMana",
+      "mapPosition": [59, 73]
+    },
+    {
+      "class": "potionOfRejuvenation",
+      "mapPosition": [56, 70]
+    },
+    {
+      "class": "potionOfFullRejuvenation",
+      "mapPosition": [57, 70]
+    },
+    {
+      "class": "potionOfMana",
+      "mapPosition": [58, 70]
+    },
+    {
+      "class": "spectralElixir",
+      "mapPosition": [56, 71]
+    },
+    {
+      "class": "amulet",
+      "mapPosition": [60, 73],
+      "properties": {
+        "resistAll": 10
+      }
+    },
+    {
+      "class": "gothicPlate",
+      "mapPosition": [61, 73]
+    },
+    {
+      "class": "cap",
+      "mapPosition": [62, 73],
+      "properties": {
+        "durability": 12
+      }
+    },
+    {
+      "class": "leatherArmor",
+      "mapPosition": [63, 73]
+    },
+    {
+      "class": "valorArmor",
+      "mapPosition": [56, 74]
+    },
+    {
+      "class": "largeAxe",
+      "properties": {
+        "toDamage": 120,
+        "identified": false,
+        "magical": true
+      },
+      "mapPosition": [57, 74]
+    },
+    {
+      "class": "bookOfHealing",
+      "mapPosition": [58, 74]
+    },
+    {
+      "class": "bookOfHealing",
+      "mapPosition": [58, 75]
+    },
+    {
+      "class": "bookOfFirebolt",
+      "mapPosition": [58, 76]
+    },
+    {
+      "class": "club",
+      "mapPosition": [59, 74],
+      "properties": {
+        "toLightRadius": 20,
+        "magical": true
+      }
+    },
+    {
+      "class": "compositeBow",
+      "mapPosition": [60, 74]
+    },
+    {
+      "class": "potionOfFullHealing",
+      "mapPosition": [61, 74],
+      "properties": {
+        "quantity": 80
+      }
+    },
+    {
+      "class": "potionOfFullHealing",
+      "mapPosition": [62, 74],
+      "properties": {
+        "quantity": 80
+      }
+    },
+    {
+      "class": "scroll",
+      "mapPosition": [63, 74],
+      "properties": {
+        "quantity": 5
+      }
+    },
+    {
+      "class": "quarterStaffOfHealing",
+      "mapPosition": [59, 75],
+      "properties": {
+        "charges": 35,
+        "chargesMax": 36
+      }
+    },
+    {
+      "class": "gold",
+      "mapPosition": [60, 75],
+      "properties": {
+        "quantity": 4999
+      }
+    }
+  ]
+}

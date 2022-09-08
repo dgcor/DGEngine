@@ -15,7 +15,7 @@
     }
   ],
   "inputEvent": {
-    "key": "delete",
+    "gameInputEvent": "delete",
     "action": { "name": "button.click", "id": "delete" }
   },
   "animation": [
@@ -230,22 +230,14 @@
           "json": {
             "inputEvent": [
               {
-                "key": ["up", "w"],
+                "gameInputEvent": ["up", "tabUp"],
                 "action": [
                   "focus.moveUp",
                   "saveMenu.moveScrollbar"
                 ]
               },
               {
-                "key": "tab",
-                "shift": true,
-                "action": [
-                  "focus.moveUp",
-                  "saveMenu.moveScrollbar"
-                ]
-              },
-              {
-                "key": ["down", "s", "tab"],
+                "gameInputEvent": ["down", "tabDown"],
                 "action": [
                   "focus.moveDown",
                   "saveMenu.moveScrollbar"

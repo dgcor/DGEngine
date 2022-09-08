@@ -1,24 +1,24 @@
 #include "ParseUtilsGameKey.h"
-#include "GameUtils2.h"
+#include "Game/Utils/GameUtils2.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	size_t getInventoryItemIndexKey(const Value& elem,
-		const std::string_view key, PlayerInventory inv)
+	size_t getInventoryItemIndexKey(const Value& elem, const std::string_view key, PlayerInventory inv)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getInventoryItemIndexVal(elem[key], inv);
 		}
 		return 0;
 	}
 
-	InventoryPosition getInventoryPositionKey(const Value& elem,
-		const std::string_view key, InventoryPosition val)
+	InventoryPosition getInventoryPositionKey(const Value& elem, const std::string_view key, InventoryPosition val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getInventoryPositionVal(elem[key], val);
 		}
@@ -27,7 +27,8 @@ namespace Parser
 
 	ItemCoordInventory getItemCoordInventoryKey(const Value& elem, const std::string_view key)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getItemCoordInventoryVal(elem[key]);
 		}
@@ -36,7 +37,8 @@ namespace Parser
 
 	ItemLocation getItemLocationKey(const Value& elem, const std::string_view key)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getItemLocationVal(elem[key]);
 		}
@@ -45,27 +47,28 @@ namespace Parser
 
 	PairUInt8 getItemXYKey(const Value& elem, const std::string_view key, const PairUInt8& val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getItemXYVal(elem[key], val);
 		}
 		return val;
 	}
 
-	LightSource getLightSourceKey(const rapidjson::Value& elem,
-		const std::string_view key, LightSource val)
+	LightSource getLightSourceKey(const Value& elem, const std::string_view key, LightSource val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getLightSourceVal(elem[key], val);
 		}
 		return val;
 	}
 
-	PlayerAnimation getPlayerAnimationKey(const Value& elem,
-		const std::string_view key, PlayerAnimation val)
+	PlayerAnimation getPlayerAnimationKey(const Value& elem, const std::string_view key, PlayerAnimation val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
@@ -76,10 +79,10 @@ namespace Parser
 		return val;
 	}
 
-	PlayerDirection getPlayerDirectionKey(const Value& elem,
-		const std::string_view key, PlayerDirection val)
+	PlayerDirection getPlayerDirectionKey(const Value& elem, const std::string_view key, PlayerDirection val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
@@ -90,20 +93,20 @@ namespace Parser
 		return val;
 	}
 
-	PlayerInventory getPlayerInventoryKey(const Value& elem,
-		const std::string_view key, PlayerInventory val)
+	PlayerInventory getPlayerInventoryKey(const Value& elem, const std::string_view key, PlayerInventory val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getPlayerInventoryVal(elem[key], val);
 		}
 		return val;
 	}
 
-	PlayerItemMount getPlayerItemMountKey(const Value& elem,
-		const std::string_view key, PlayerItemMount val)
+	PlayerItemMount getPlayerItemMountKey(const Value& elem, const std::string_view key, PlayerItemMount val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)
@@ -114,10 +117,10 @@ namespace Parser
 		return val;
 	}
 
-	PlayerStatus getPlayerStatusKey(const Value& elem,
-		const std::string_view key, PlayerStatus val)
+	PlayerStatus getPlayerStatusKey(const Value& elem, const std::string_view key, PlayerStatus val)
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			const auto& keyElem = elem[key];
 			if (keyElem.IsString() == true)

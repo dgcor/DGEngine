@@ -96,11 +96,11 @@
   ],
   "inputEvent": [
     {
-      "key": ["a", "left"],
+      "gameInputEvent": "left",
       "action": "updateAudioDownKeyboardShortcut"
     },
     {
-      "key": ["d", "right"],
+      "gameInputEvent": "right",
       "action": "updateAudioUpKeyboardShortcut"
     }
   ],
@@ -238,11 +238,11 @@
           "json": {
             "inputEvent": [
               {
-                "key": ["a", "left"],
+                "gameInputEvent": "left",
                 "action": "updateAudioDownKeyboardShortcut"
               },
               {
-                "key": ["d", "right"],
+                "gameInputEvent": "right",
                 "action": "updateAudioUpKeyboardShortcut"
               }
             ]
@@ -268,11 +268,11 @@
           "json": {
             "inputEvent": [
               {
-                "key": ["a", "left"],
+                "gameInputEvent": "left",
                 "action": "updateSoundDownKeyboardShortcut"
               },
               {
-                "key": ["d", "right"],
+                "gameInputEvent": "right",
                 "action": "updateSoundUpKeyboardShortcut"
               }
             ]
@@ -298,11 +298,11 @@
           "json": {
             "inputEvent": [
               {
-                "key": ["a", "left"],
+                "gameInputEvent": "left",
                 "action": "updateGammaDownKeyboardShortcut"
               },
               {
-                "key": ["d", "right"],
+                "gameInputEvent": "right",
                 "action": "updateGammaUpKeyboardShortcut"
               }
             ]
@@ -352,7 +352,7 @@
       "horizontalSpaceOffset": 2,
       "onClick": [
         { "name": "resource.pop" },
-        "saveSettings",
+        "saveGameSettings",
         { "name": "load", "file": "ui/level/menu/game.json" }
       ],
       "onFocus": [

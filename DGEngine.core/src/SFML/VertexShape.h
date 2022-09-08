@@ -19,7 +19,7 @@ public:
 
 	void addVertex(const sf::Vertex& v);
 
-	sf::FloatRect getLocalBounds() const noexcept { return bounds; }
+	auto getLocalBounds() const noexcept { return bounds; }
 	sf::FloatRect getGlobalBounds() const;
 	size_t getPointCount() const { return vertices.getVertexCount(); }
 };

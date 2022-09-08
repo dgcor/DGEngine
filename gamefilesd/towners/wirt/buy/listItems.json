@@ -1,17 +1,7 @@
 {
   "load": "ui/level/panel/big/upperSeparator.json",
   "load": "ui/level/panel/big/lowerSeparator.json",
-  "inputEvent": [
-    {
-      "key": "tab",
-      "shift": true,
-      "action": "focus.moveUp"
-    },
-    {
-      "key": "tab",
-      "action": "focus.moveDown"
-    }
-  ],
+  "load": "ui/level/panel/big/loadTabKeys.json",
   "button": {
     "id": "btnItem1",
     "texture": "empty",

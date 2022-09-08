@@ -1,0 +1,52 @@
+{
+  "player": {
+    "id": "hero",
+    "class": "Sorceror",
+    "name": "{1}",
+    "currentPlayer": true,
+    "direction": "Front",
+    "mapPosition": [64, 73],
+    "enableHover": false,
+    "inventory": [
+      {
+        "index": "Body",
+        "bodyInventory": true,
+        "allowedClassTypes": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Staff", "Sword"],
+        "item": [
+          {
+            "index": "LeftHand",
+            "class": "shortStaff"
+          }
+        ]
+      },
+      {
+        "index": "Belt",
+        "size": 8,
+        "allowedClassTypes": ["Potion", "Scroll"],
+        "item": {
+          "index": 0,
+          "class": "potionOfMana",
+          "properties": {
+            "quantity": 2
+          }
+        }
+      },
+      {
+        "index": "Stash",
+        "enforceItemSize": true,
+        "size": [10, 4],
+        "item": {
+          "index": [0, 3],
+          "class": "gold",
+          "properties": {
+            "quantity": 100
+          }
+        }
+      }
+    ],
+    "spell": [
+      { "class": "staffRecharge" },
+      { "class": "firebolt", "level": 2 }
+    ]
+  }
+}

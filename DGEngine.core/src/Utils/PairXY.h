@@ -77,10 +77,10 @@ inline PairXY<T>& operator/=(PairXY<T>& left, T right)
 	return left;
 }
 
-typedef PairXY<float> PairFloat;
-typedef PairXY<int8_t> PairInt8;
-typedef PairXY<int16_t> PairInt16;
-typedef PairXY<int32_t> PairInt32;
-typedef PairXY<uint8_t> PairUInt8;
-typedef PairXY<uint16_t> PairUInt16;
-typedef PairXY<uint32_t> PairUInt32;
+using PairFloat = PairXY<float>;
+using PairInt8 = PairXY<int8_t>;
+using PairInt16 = PairXY<int16_t>;
+using PairInt32 = PairXY<int32_t>;
+using PairUInt8 = PairXY<uint8_t>;
+using PairUInt16 = PairXY<uint16_t>;
+using PairUInt32 = PairXY<uint32_t>;

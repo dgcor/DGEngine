@@ -1,0 +1,129 @@
+{
+  "itemClass": [
+    {
+      "id": "potionOfHealing",
+      "fromId": "baseItem",
+      "dropTexturePack": "fbttle",
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 43,
+      "name": "Potion of Healing",
+      "shortName": "Potion",
+      "type": "Potion",
+      "defaults": {
+        "basePrice": 50,
+        "quantity": 1,
+        "capacity": 99,
+        "useOn": "lifeDamage",
+        "useOp": "-"
+      },
+      "formulas": {
+        "value": "$bonusLife * :rnd(4) * $life * 0.125"
+      },
+      "descriptions": [
+        { "index": 0, "name": "potionOfHealing" },
+        { "index": 1, "name": "rightClickToUse" }
+      ],
+      "actions": {
+        "levelDrop": { "name": "sound.play", "id": "flippot" },
+        "inventoryDrop": { "name": "sound.play", "id": "invpot" },
+        "use": "inventoryDrop"
+      }
+    },
+    {
+      "id": "potionOfMana",
+      "fromId": "potionOfHealing",
+      "inventoryTextureIndex": 50,
+      "name": "Potion of Mana",
+      "defaults": {
+        "basePrice": 50,
+        "useOn": "manaDamage",
+        "useOp": "-"
+      },
+      "formulas": {
+        "value": "$bonusMana * :rnd(4) * $mana * 0.125"
+      },
+      "descriptions": { "index": 0, "name": "potionOfMana" }
+    },
+    {
+      "id": "potionOfFullHealing",
+      "fromId": "potionOfHealing",
+      "dropTexturePack": "fbttlebr",
+      "inventoryTextureIndex": 46,
+      "name": "Potion of Full Healing",
+      "defaults": {
+        "basePrice": 150,
+        "useOn": "lifeDamage",
+        "useOp": "="
+      },
+      "formulas": {
+        "value": 0
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullHealing" }
+    },
+    {
+      "id": "potionOfFullMana",
+      "fromId": "potionOfFullHealing",
+      "dropTexturePack": "fbttlebb",
+      "inventoryTextureIndex": 11,
+      "name": "Potion of Full Mana",
+      "defaults": {
+        "basePrice": 150,
+        "useOn": "manaDamage",
+        "useOp": "="
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullMana" }
+    },
+    {
+      "id": "potionOfRejuvenation",
+      "fromId": "potionOfHealing",
+      "dropTexturePack": "fbttleby",
+      "inventoryTextureIndex": 48,
+      "name": "Potion of Rejuvenation",
+      "defaults": {
+        "basePrice": 120,
+        "useOn": "lifeAndManaDamage"
+      },
+      "formulas": {
+        "value": "$bonusLife * :rnd(4) * $life * 0.125",
+        "value2": "$bonusMana * :rnd(4) * $mana * 0.125"
+      },
+      "descriptions": { "index": 0, "name": "potionOfRejuvenation" }
+    },
+    {
+      "id": "potionOfFullRejuvenation",
+      "fromId": "potionOfRejuvenation",
+      "inventoryTextureIndex": 44,
+      "name": "Potion of Full Rejuvenation",
+      "defaults": {
+        "basePrice": 600,
+        "useOn": "lifeAndManaDamage",
+        "useOp": "="
+      },
+      "formulas": {
+        "value": 0,
+        "value2": 0
+      },
+      "descriptions": { "index": 0, "name": "potionOfFullRejuvenation" }
+    },
+    {
+      "id": "spectralElixir",
+      "fromId": "potionOfFullHealing",
+      "dropTexturePack": "fbttledy",
+      "inventoryTextureIndex": 26,
+      "name": "Spectral Elixir",
+      "defaults": {
+        "basePrice": 10000,
+        "useOn": "allAttributes",
+        "useOp": "+"
+      },
+      "formulas": {
+        "value": 3
+      },
+      "descriptions": [
+        { "index": 0, "name": "" },
+        { "index": 1, "name": "" },
+        { "index": 3, "name": "" }
+      ]
+    }
+  ]
+}

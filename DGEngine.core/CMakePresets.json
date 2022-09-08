@@ -1,0 +1,368 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "linux-base",
+      "description": "Target Linux.",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      }
+    },
+    {
+      "name": "linux-base-clang",
+      "description": "Target Linux (clang).",
+      "hidden": true,
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "linux-base-gcc",
+      "description": "Target Linux (gcc).",
+      "hidden": true,
+      "inherits": "linux-base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "linux-base-x64",
+      "hidden": true,
+      "inherits": "linux-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "linux-base-x64-clang",
+      "hidden": true,
+      "inherits": "linux-base-clang",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "linux-base-x64-gcc",
+      "hidden": true,
+      "inherits": "linux-base-gcc",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "linux-x64-debug",
+      "displayName": "x64 Debug",
+      "description": "Target Linux (64-bit). (Debug)",
+      "inherits": "linux-base-x64",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-x64-debug-clang",
+      "displayName": "x64 Debug Clang",
+      "description": "Target Linux Clang (64-bit). (Debug)",
+      "inherits": "linux-base-x64-clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-x64-debug-gcc",
+      "displayName": "x64 Debug GCC",
+      "description": "Target Linux GCC (64-bit). (Debug)",
+      "inherits": "linux-base-x64-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie",
+      "inherits": "linux-x64-debug",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "linux-x64-release",
+      "displayName": "x64 Release",
+      "description": "Target Linux (64-bit). (Release)",
+      "inherits": "linux-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "linux-x64-release-clang",
+      "displayName": "x64 Release Clang",
+      "description": "Target Linux Clang (64-bit). (Release)",
+      "inherits": "linux-x64-debug-clang",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "linux-x64-release-gcc",
+      "displayName": "x64 Release GCC",
+      "description": "Target Linux GCC (64-bit). (Release)",
+      "inherits": "linux-x64-debug-gcc",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "linux-x64-release-nomovie",
+      "displayName": "x64 Release NoMovie",
+      "inherits": "linux-x64-release",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-base",
+      "description": "Target Windows with the Visual Studio development environment.",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe",
+        "CMAKE_TOOLCHAIN_FILE": {
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+          "type": "FILEPATH"
+        }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "displayName": "x64 Debug",
+      "description": "Target Windows (64-bit) with the Visual Studio development environment. (Debug)",
+      "inherits": "windows-base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCPKG_TARGET_TRIPLET": "x64-windows"
+      }
+    },
+    {
+      "name": "windows-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie",
+      "inherits": "windows-x64-debug",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x64-release",
+      "displayName": "x64 Release",
+      "description": "Target Windows (64-bit) with the Visual Studio development environment. (Release)",
+      "inherits": "windows-x64-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x64-release-nomovie",
+      "displayName": "x64 Release NoMovie",
+      "inherits": "windows-x64-release",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x64-release-nomovie-static",
+      "displayName": "x64 Release NoMovie Static",
+      "inherits": "windows-x64-release-static",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x64-release-static",
+      "displayName": "x64 Release Static",
+      "inherits": "windows-x64-release",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+      }
+    },
+    {
+      "name": "windows-x86-debug",
+      "displayName": "x86 Debug",
+      "description": "Target Windows (32-bit) with the Visual Studio development environment. (Debug)",
+      "inherits": "windows-base",
+      "architecture": {
+        "value": "x86",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCPKG_TARGET_TRIPLET": "x86-windows"
+      }
+    },
+    {
+      "name": "windows-x86-debug-nomovie",
+      "displayName": "x86 Debug NoMovie",
+      "inherits": "windows-x86-debug",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x86-release",
+      "displayName": "x86 Release",
+      "description": "Target Windows (32-bit) with the Visual Studio development environment. (Release)",
+      "inherits": "windows-x86-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x86-release-nomovie",
+      "displayName": "x86 Release NoMovie",
+      "inherits": "windows-x86-release",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x86-release-nomovie-static",
+      "displayName": "x86 Release NoMovie Static",
+      "inherits": "windows-x86-release-static",
+      "cacheVariables": {
+        "MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x86-release-static",
+      "displayName": "x86 Release Static",
+      "inherits": "windows-x86-release",
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "linux-x64-debug",
+      "configurePreset": "linux-x64-debug",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-clang",
+      "configurePreset": "linux-x64-debug-clang",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-gcc",
+      "configurePreset": "linux-x64-debug-gcc",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-nomovie",
+      "configurePreset": "linux-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie"
+    },
+    {
+      "name": "linux-x64-release",
+      "configurePreset": "linux-x64-release",
+      "displayName": "x64 Release"
+    },
+    {
+      "name": "linux-x64-release-clang",
+      "configurePreset": "linux-x64-release-clang",
+      "displayName": "x64 Release"
+    },
+    {
+      "name": "linux-x64-release-gcc",
+      "configurePreset": "linux-x64-release-gcc",
+      "displayName": "x64 Release"
+    },
+    {
+      "name": "linux-x64-release-nomovie",
+      "configurePreset": "linux-x64-release-nomovie",
+      "displayName": "x64 Release NoMovie"
+    },
+    {
+      "name": "windows-x64-debug",
+      "configurePreset": "windows-x64-debug",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "windows-x64-debug-nomovie",
+      "configurePreset": "windows-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie"
+    },
+    {
+      "name": "windows-x64-release",
+      "configurePreset": "windows-x64-release",
+      "displayName": "x64 Release"
+    },
+    {
+      "name": "windows-x64-release-nomovie",
+      "configurePreset": "windows-x64-release-nomovie",
+      "displayName": "x64 Release NoMovie"
+    },
+    {
+      "name": "windows-x64-release-nomovie-static",
+      "configurePreset": "windows-x64-release-nomovie-static",
+      "displayName": "x64 Release NoMovie Static"
+    },
+    {
+      "name": "windows-x64-release-static",
+      "configurePreset": "windows-x64-release-static",
+      "displayName": "x64 Release Static"
+    },
+    {
+      "name": "windows-x86-debug",
+      "configurePreset": "windows-x86-debug",
+      "displayName": "x86 Debug"
+    },
+    {
+      "name": "windows-x86-debug-nomovie",
+      "configurePreset": "windows-x86-debug-nomovie",
+      "displayName": "x86 Debug NoMovie"
+    },
+    {
+      "name": "windows-x86-release",
+      "configurePreset": "windows-x86-release",
+      "displayName": "x86 Release"
+    },
+    {
+      "name": "windows-x86-release-nomovie",
+      "configurePreset": "windows-x86-release-nomovie",
+      "displayName": "x86 Release NoMovie"
+    },
+    {
+      "name": "windows-x86-release-nomovie-static",
+      "configurePreset": "windows-x86-release-nomovie-static",
+      "displayName": "x86 Release NoMovie Static"
+    },
+    {
+      "name": "windows-x86-release-static",
+      "configurePreset": "windows-x86-release-static",
+      "displayName": "x86 Release Static"
+    }
+  ]
+}

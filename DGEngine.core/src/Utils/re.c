@@ -44,7 +44,7 @@ typedef struct regex_t
 {
   unsigned char type;    /* CHAR, STAR, etc.                      */
   unsigned char data_len;
-  unsigned char data[0];
+  unsigned char data[1];
 } regex_t;
 
 static re_t getnext(regex_t* pattern)

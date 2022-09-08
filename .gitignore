@@ -1,3 +1,6 @@
+!.vscode/launch.json
+.vscode/*
+/*.AppImage
 /*.cbp
 /*.db
 /*.depend
@@ -31,11 +34,6 @@
 /DGEngine.dir
 /DIABDAT
 /DIABDAT.*
-/FFMPEG*
-/FFmpeg*
-/gamefilesd/res/icon.png
-/gamefilesd2/res/icon.png
-/gamefileshf/res/icon.png
 /hellfire
 /hellfire.*
 /hfmonk
@@ -46,12 +44,10 @@
 /hfvoice.*
 /Makefile
 /obj
-/PhysicsFS
+/out
 /portable
 /Release
 /Release NoMovie
 /Release Static
 /Release Static NoMovie
-/sfeMovie
-/SFML
 /x64

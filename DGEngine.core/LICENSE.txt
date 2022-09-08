@@ -15,15 +15,11 @@ https://github.com/steinwurf/endian
 
 PhysFS uses the zlib license.
 
-https://icculus.org/physfs/
+https://github.com/icculus/physfs
 
 RapidJSON uses the MIT license.
 
 https://github.com/Tencent/rapidjson
-
-Simple Iterator Template implementation by Vinícius Garcia uses the MIT license.
-
-https://github.com/VinGarcia/Simple-Iterator-Template
 
 SFML Animation class based on an implementation by Maximilian Wagenbach.
 It uses the zlib/png license.

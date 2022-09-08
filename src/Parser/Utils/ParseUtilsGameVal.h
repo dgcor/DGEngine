@@ -1,18 +1,18 @@
 #pragma once
 
-#include "Game/GameProperties.h"
-#include "Game/ItemLocation.h"
+#include "Game/Properties/AnimationSpeed.h"
+#include "Game/Properties/InventoryPosition.h"
+#include "Game/Properties/PlayerInventory.h"
+#include "Game/Item/ItemLocation.h"
 #include "Game/LightSource.h"
 #include "Json/JsonParser.h"
 #include "Utils/PairXY.h"
 
 namespace Parser
 {
-	size_t getInventoryItemIndexVal(const rapidjson::Value& elem,
-		PlayerInventory inv);
+	size_t getInventoryItemIndexVal(const rapidjson::Value& elem, PlayerInventory inv);
 
-	InventoryPosition getInventoryPositionVal(const rapidjson::Value& elem,
-		InventoryPosition val = InventoryPosition::TopLeft);
+	InventoryPosition getInventoryPositionVal(const rapidjson::Value& elem, InventoryPosition val = InventoryPosition::TopLeft);
 
 	ItemCoordInventory getItemCoordInventoryVal(const rapidjson::Value& elem);
 
@@ -24,6 +24,5 @@ namespace Parser
 
 	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem);
 
-	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem,
-		PlayerInventory val = PlayerInventory::Body);
+	PlayerInventory getPlayerInventoryVal(const rapidjson::Value& elem, PlayerInventory val = PlayerInventory::Body);
 }

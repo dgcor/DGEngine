@@ -105,5 +105,5 @@ public:
 	}
 };
 
-#define EasedValuef EasedValue<float>
-#define EasedValued EasedValue<double>
+using EasedValuef = EasedValue<float>;
+using EasedValued = EasedValue<double>;

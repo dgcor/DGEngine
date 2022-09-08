@@ -23,13 +23,13 @@ private:
 public:
 	explicit GradientCircle(float radius_ = 0, size_t pointCount = 30);
 
-	const sf::Color& getInnerColor() const { return innerColor; }
-	const sf::Color& getOuterColor() const { return outerColor; }
-	float getRadius() const { return radius; }
-	size_t getPointCount() const { return pointCount; }
+	auto& getInnerColor() const { return innerColor; }
+	auto& getOuterColor() const { return outerColor; }
+	auto getRadius() const { return radius; }
+	auto getPointCount() const { return pointCount; }
 	sf::Vector2f getPoint(size_t index) const;
 
-	sf::FloatRect getLocalBounds() const { return bounds; }
+	auto getLocalBounds() const { return bounds; }
 	sf::FloatRect getGlobalBounds() const;
 
 	void setInnerColor(const sf::Color& color);

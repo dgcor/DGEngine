@@ -5,7 +5,7 @@
     "loadLogoImg"
   ],
   "inputEvent": {
-    "key": "esc",
+    "gameInputEvent": "esc",
     "action": { "name": "button.click", "id": "back" }
   },
   "texture": {

@@ -12,7 +12,7 @@
           "name": "loadJson",
           "json": {
             "action": { "name": "resource.add", "id": "msgBox" },
-            "inputEvent": { "key": "esc", "action": "closeMsgBox" },
+            "inputEvent": { "gameInputEvent": "esc", "action": "closeMsgBox" },
             "action": [
               { "name": "drawable.visible", "id": "msgBox", "visible": true },
               { "name": "game.draw" }

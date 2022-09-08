@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ParseAnimation.h"
+#include "Parser/Drawables/ParseAnimation.h"
 
 namespace Parser
 {
-	void parseCursor(Game& game, const rapidjson::Value& elem,
+	void parseCursorF(Game& game, const rapidjson::Value& elem,
 		const getAnimationObjFuncPtr getAnimationObjFunc);
 
 	void parseCursor(Game& game, const rapidjson::Value& elem);

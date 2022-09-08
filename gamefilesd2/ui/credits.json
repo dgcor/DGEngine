@@ -6,17 +6,16 @@
   },
   "inputEvent": [
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": { "name": "button.click", "id": "back" }
     },
     {
-      "key": ["enter", " "],
+      "gameInputEvent": "enter",
       "action": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 5 }
     },
     {
-      "key": ["enter", " "],
-      "action": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 35 },
-      "keyUp": true
+      "gameInputEvent": "enterKeyUp",
+      "action": { "name": "scrollable.setSpeed", "id": "creditsScroll", "speed": 35 }
     }
   ],
   "texture": {

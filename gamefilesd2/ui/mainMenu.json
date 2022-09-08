@@ -7,28 +7,23 @@
   },
   "inputEvent": [
     {
-      "key": ["enter", " "],
+      "gameInputEvent": "enter",
       "action": { "name": "button.click", "id": "btnSinglePlayer" }
     },
     {
-      "key": ["up", "w"],
+      "gameInputEvent": ["up", "tabUp"],
       "action": "focus.moveUp"
     },
     {
-      "key": "tab",
-      "shift": true,
-      "action": "focus.moveUp"
-    },
-    {
-      "key": ["down", "s", "tab"],
+      "gameInputEvent": ["down", "tabDown"],
       "action": "focus.moveDown"
     },
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": { "name": "button.click", "id": "btnExit" }
     },
     {
-      "key": "f1",
+      "gameInputEvent": "info",
       "action": {
         "name": "game.fadeOut",
         "action": {
@@ -330,7 +325,7 @@
       "sound": "titlslct",
       "anchor": "none",
       "clickUp": true,
-      "onClick": { "name": "game.close" },
+      "onClick": "saveSettingsAndClose",
       "onClickIn": [
         {
           "name": "image.setTexture",

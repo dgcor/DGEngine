@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnimationType.h"
+#include "Game/AnimationType.h"
 #include "Json/JsonParser.h"
 #include "ParseUtilsVal.h"
 #include <SFML/Graphics/PrimitiveType.hpp>
@@ -47,7 +47,8 @@ namespace Parser
 	template<class T>
 	T getNumberKey(const rapidjson::Value& elem, const std::string_view key, T val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getNumberVal<T>(elem[key], val);
 		}
@@ -57,7 +58,8 @@ namespace Parser
 	template<class T>
 	T getUnsignedNumberKey(const rapidjson::Value& elem, const std::string_view key, T val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getUnsignedNumberVal<T>(elem[key], val);
 		}
@@ -67,7 +69,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getVector2NumberKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getVector2NumberVal<T, NumType>(elem[key], val);
 		}
@@ -78,7 +81,8 @@ namespace Parser
 	T getVector2UnsignedNumberKey(const rapidjson::Value& elem,
 		const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getVector2UnsignedNumberVal<T, NumType>(elem[key], val);
 		}
@@ -106,7 +110,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getVector3NumberKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getVector3NumberVal<T, NumType>(elem[key], val);
 		}
@@ -128,7 +133,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getVector4NumberKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getVector4NumberVal<T, NumType>(elem[key], val);
 		}
@@ -150,7 +156,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getRangeOrValueKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getRangeOrValueVal<T, NumType>(elem[key], val);
 		}
@@ -160,7 +167,8 @@ namespace Parser
 	template <class T, class NumType, NumType minVal>
 	T getRangeNKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getRangeNVal<T, NumType, minVal>(elem[key], val);
 		}
@@ -170,7 +178,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getRange0Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getRange0Val<T, NumType>(elem[key], val);
 		}
@@ -180,7 +189,8 @@ namespace Parser
 	template <class T, class NumType>
 	T getRange1Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getRange1Val<T, NumType>(elem[key], val);
 		}
@@ -216,7 +226,8 @@ namespace Parser
 	template <class T>
 	T getMinMaxIntKey(const rapidjson::Value& elem, const std::string_view key, T val = {})
 	{
-		if (elem.HasMember(key) == true)
+		if (elem.IsObject() == true &&
+			elem.HasMember(key) == true)
 		{
 			return getMinMaxIntVal<T>(elem[key], val);
 		}

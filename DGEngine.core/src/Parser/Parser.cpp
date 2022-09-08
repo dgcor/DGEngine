@@ -1,6 +1,6 @@
 #include "Parser.h"
-#include "Game.h"
-#include "FileUtils.h"
+#include "Game/Game.h"
+#include "Game/Utils/FileUtils.h"
 #include "ParseFile.h"
 
 namespace Parser
@@ -32,7 +32,7 @@ namespace Parser
 			filePath2 = std::string(".") + PHYSFS_getDirSeparator();
 		}
 
-		game.setPath(filePath2);
+		game.Path(filePath2);
 
 		parseDocument(game, doc);
 	}

@@ -5,7 +5,7 @@
       "name": "action.set",
       "id": "menu.saveAndCloseAction",
       "action": [
-        "saveSettings",
+        "saveGameSettings",
         { "name": "resource.popAll", "id": "gameMenuCommon" },
         { "name": "resource.ignore", "id": "level", "ignore": "none" },
         { "name": "level.pause", "pause": false }
@@ -219,7 +219,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|str_charDescr|" },
+          { "name": "text.setText", "id": "txtPanel", "binding": "%game.scancodeKey.c%", "format": "|str_charDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -260,7 +260,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|str_questDescr|" },
+          { "name": "text.setText", "id": "txtPanel", "binding": "%game.scancodeKey.q%", "format": "|str_questDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -303,7 +303,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|str_inventoryDescr|" },
+          { "name": "text.setText", "id": "txtPanel", "binding": "%game.scancodeKey.i%", "format": "|str_inventoryDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -344,7 +344,7 @@
         "param1": "%currentLevel.currentPlayer.hasSelectedItem%",
         "param2": true,
         "then": [
-          { "name": "text.setText", "id": "txtPanel", "text": "|str_spellBookDescr|" },
+          { "name": "text.setText", "id": "txtPanel", "binding": "%game.scancodeKey.b%", "format": "|str_spellBookDescr|" },
           "setPanelTextColorWhite",
           "updatePanelTextSpacing"
         ]
@@ -359,7 +359,7 @@
       "textureRect": [0, 0, 56, 56],
       "onClick": "showAllSpells",
       "onHoverEnter": [
-        { "name": "text.setText", "id": "txtPanel", "text": "|str_spellDescr|" },
+        { "name": "text.setText", "id": "txtPanel", "binding": "%game.scancodeKey.s%", "format": "|str_spellDescr|" },
         "updateSelectedSpellText"
       ],
       "onHoverLeave": "clearPanelText"
@@ -430,36 +430,36 @@
     "verticalAlign": "center"
   },
   "inputEvent": [
-    { "key": "+", "action": "automapZoomIn" },
-    { "key": "-", "action": "automapZoomOut" },
-    { "key": "1", "action": "useBelt1Item" },
-    { "key": "2", "action": "useBelt2Item" },
-    { "key": "3", "action": "useBelt3Item" },
-    { "key": "4", "action": "useBelt4Item" },
-    { "key": "5", "action": "useBelt5Item" },
-    { "key": "6", "action": "useBelt6Item" },
-    { "key": "7", "action": "useBelt7Item" },
-    { "key": "8", "action": "useBelt8Item" },
-    { "key": "b", "action": { "name": "button.click", "id": "spellBook" } },
-    { "key": "c", "action": { "name": "button.click", "id": "char" } },
-    { "key": "esc", "action": { "name": "button.click", "id": "menu" } },
-    { "key": "i", "action": { "name": "button.click", "id": "inv" } },
-    { "key": "q", "action": { "name": "button.click", "id": "quest" } },
-    { "key": "s", "action": { "name": "button.click", "id": "spell" } },
-    { "key": "z", "action": "zoomLevel" },
-    { "key": "tab", "action": { "name": "button.click", "id": "map" } },
+    { "gameInputEvent": "automapZoomIn", "action": "automapZoomIn" },
+    { "gameInputEvent": "automapZoomOut", "action": "automapZoomOut" },
+    { "gameInputEvent": "useItem1", "action": "useBelt1Item" },
+    { "gameInputEvent": "useItem2", "action": "useBelt2Item" },
+    { "gameInputEvent": "useItem3", "action": "useBelt3Item" },
+    { "gameInputEvent": "useItem4", "action": "useBelt4Item" },
+    { "gameInputEvent": "useItem5", "action": "useBelt5Item" },
+    { "gameInputEvent": "useItem6", "action": "useBelt6Item" },
+    { "gameInputEvent": "useItem7", "action": "useBelt7Item" },
+    { "gameInputEvent": "useItem8", "action": "useBelt8Item" },
+    { "gameInputEvent": "spellBook", "action": { "name": "button.click", "id": "spellBook" } },
+    { "gameInputEvent": "charInfo", "action": { "name": "button.click", "id": "char" } },
+    { "gameInputEvent": "esc", "action": { "name": "button.click", "id": "menu" } },
+    { "gameInputEvent": "inventory", "action": { "name": "button.click", "id": "inv" } },
+    { "gameInputEvent": "quests", "action": { "name": "button.click", "id": "quest" } },
+    { "gameInputEvent": "spells", "action": { "name": "button.click", "id": "spell" } },
+    { "gameInputEvent": "levelZoom", "action": "zoomLevel" },
+    { "gameInputEvent": "automap", "action": { "name": "button.click", "id": "map" } },
     {
-      "key": "f",
+      "gameInputEvent": "gammaDown",
       "action": [
         { "name": "game.addToProperty", "property": "gamma", "value": 7.14 },
-        "saveSettings"
+        "saveGameSettings"
       ]
     },
     {
-      "key": "g",
+      "gameInputEvent": "gammaUp",
       "action": [
         { "name": "game.addToProperty", "property": "gamma", "value": -7.14 },
-        "saveSettings"
+        "saveGameSettings"
       ]
     },
     {
@@ -521,11 +521,11 @@
       ]
     },
     {
-      "key": "l",
+      "scancode": "l",
       "action": { "name": "levelObject.executeAction", "object": "down" }
     },
     {
-      "key": "k",
+      "scancode": "k",
       "action": { "name": "levelObject.executeAction", "object": "up" }
     }
   ]

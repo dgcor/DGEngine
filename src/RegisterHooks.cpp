@@ -1,15 +1,15 @@
 #include "RegisterHooks.h"
+#include "Game/ShaderManager2.h"
 #include "Hooks.h"
 #include "Parser/ParseAction2.h"
 #include "Parser/ParseFile2.h"
-#include "Parser/ParseImageContainer2.h"
 #include "Parser/ParsePredicate2.h"
-#include "Parser/ParseTexture2.h"
-#include "Pcx.h"
+#include "Parser/Resources/ParseImageContainer2.h"
+#include "Parser/Resources/ParseTexture2.h"
 #ifdef PHYSFS_MPQ_SUPPORT
 #include "PhysFSArchiverMPQ.h"
 #endif
-#include "ShaderManager2.h"
+#include "Resources/Pcx.h"
 
 namespace Hooks
 {

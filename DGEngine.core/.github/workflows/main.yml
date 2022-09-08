@@ -9,25 +9,28 @@ on:
 jobs:
   build_linux:
     name: linux build
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout DGEngine.core
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Restore cached dependencies
-      id: cache-linux
-      uses: actions/cache@v1
+      id: cache-linux-x64
+      uses: actions/cache@v3
       with:
         path: /home/runner/work/sfml
-        key: cache-linux
+        key: cache-linux-x64
 
     - name: Install dependencies
-      run: sudo apt install -yq --no-install-suggests --no-install-recommends libx11-dev libxrandr-dev libxi-dev libudev-dev libgl1-mesa-dev libalut-dev libvorbis-dev libflac-dev libphysfs-dev > /dev/null
+      run: |
+        sudo apt install -yq --no-install-suggests --no-install-recommends libphysfs-dev > /dev/null
+        sudo apt install -yq --no-install-suggests --no-install-recommends libalut-dev libflac-dev libgl1-mesa-dev libudev-dev libvorbis-dev libxcursor-dev libxrandr-dev > /dev/null
+        sudo apt install -yq --no-install-suggests --no-install-recommends libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswscale-dev > /dev/null
 
     - name: CMake + make SFML
-      if: steps.cache-linux.outputs.cache-hit != 'true'
+      if: steps.cache-linux-x64.outputs.cache-hit != 'true'
       run: |
-        git clone -q --depth=1 --branch=2.5.x https://github.com/SFML/SFML.git /home/runner/work/sfml > /dev/null
+        git clone -q --depth=1 --branch=feature/scancode https://github.com/dgcor/SFML.git /home/runner/work/sfml > /dev/null
         git -C /home/runner/work/sfml pull > /dev/null
         cd /home/runner/work/sfml
         export CC=/usr/bin/gcc-11
@@ -36,40 +39,48 @@ jobs:
         sudo make install
 
     - name: Install SFML
-      if: steps.cache-linux.outputs.cache-hit == 'true'
+      if: steps.cache-linux-x64.outputs.cache-hit == 'true'
       run: |
         cd /home/runner/work/sfml
         sudo make install
 
-    - name: CMake + make DGEngine.core
+    - name: Setup Ninja Build
+      uses: turtlesec-no/get-ninja@main
+
+    - name: CMake build DGEngine.core
       run: |
         export CC=/usr/bin/gcc-11
         export CXX=/usr/bin/g++-11
-        cmake CMakeLists.txt
-        make
+        cmake CMakeLists.txt -G "Ninja"
+        cmake --build .
 
   build_windows:
     name: windows build
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Checkout DGEngine.core
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Restore cached dependencies
-      id: cache-windows
-      uses: actions/cache@v1
+      id: cache-windows-x64
+      uses: actions/cache@v3
       with:
         path: C:/vcpkg/installed
-        key: cache-windows
+        key: cache-windows-x64
 
     - name: Install dependencies
-      if: steps.cache-windows.outputs.cache-hit != 'true'
-      run: vcpkg install physfs:x86-windows-static sfml:x86-windows-static
+      if: steps.cache-windows-x64.outputs.cache-hit != 'true'
+      run: vcpkg install physfs sfml --overlay-ports=vcpkg/ports --overlay-triplets=vcpkg/triplets --triplet=x64-windows
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Setup MSVC
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+      with:
+        arch: x64
 
-    - name: MSBuild DGEngine.core
+    - name: Setup Ninja Build
+      uses: turtlesec-no/get-ninja@main
+
+    - name: CMake build DGEngine.core
       run: |
-        vcpkg integrate install
-        msbuild DGEngine.core.vcxproj /p:Configuration="Release Static NoMovie" /p:Platform=Win32
+        cmake --preset windows-x64-release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+        cmake --build --preset windows-x64-release

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "FileBytes.h"
+#include "Game/Variable.h"
 #include "Json/JsonParser.h"
 #include <memory>
 #include "Parser/ParserProperties.h"
+#include "Resources/FileBytes.h"
 #include <string_view>
-#include "Variable.h"
 #include <vector>
 
 class Action;

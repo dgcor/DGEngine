@@ -1,5 +1,7 @@
 {
-  "minWindowSize": [800, 600],
+  "game": {
+    "minSize": [800, 600]
+  },
   "action": [
     {
       "name": "resource.add",

@@ -1,6 +1,6 @@
-#include "CmdLineUtils2.h"
-#include "FileUtils.h"
-#include "Game2.h"
+#include "Game/Game2.h"
+#include "Game/Utils/CmdLineUtils2.h"
+#include "Game/Utils/FileUtils.h"
 #include <iostream>
 #include "RegisterHooks.h"
 

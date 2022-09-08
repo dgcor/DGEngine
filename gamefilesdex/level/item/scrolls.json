@@ -1,0 +1,201 @@
+{
+  "itemClass": [
+    {
+      "id": "scroll",
+      "fromId": "baseItem",
+      "dropTexturePack": "scroll",
+      "inventoryTexturePack": "itemIcons",
+      "inventoryTextureIndex": 12,
+      "name": "Scroll",
+      "type": "Scroll",
+      "defaults": {
+        "basePrice": 50,
+        "quantity": 1,
+        "capacity": 99
+      },
+      "descriptions": [
+        { "index": 0, "name": "rightClickToRead2" },
+        { "index": 1, "name": "required" }
+      ],
+      "actions": {
+        "levelDrop": { "name": "sound.play", "id": "flipscrl" },
+        "inventoryDrop": { "name": "sound.play", "id": "invscrol" }
+      },
+      "suffix": "spellSuffixes"
+    },
+    {
+      "id": "scrollOfApocalypse",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 2000,
+        "requiredMagic": 117
+      },
+      "spell": "apocalypse"
+    },
+    {
+      "id": "scrollOfChainLightning",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 750,
+        "requiredMagic": 35
+      },
+      "spell": "chainLightning"
+    },
+    {
+      "id": "scrollOfFireball",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 300,
+        "requiredMagic": 31
+      },
+      "spell": "fireball"
+    },
+    {
+      "id": "scrollOfFirewall",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 400,
+        "requiredMagic": 17
+      },
+      "spell": "firewall"
+    },
+    {
+      "id": "scrollOfFlameWave",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 650,
+        "requiredMagic": 29
+      },
+      "spell": "flameWave"
+    },
+    {
+      "id": "scrollOfFlash",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 500,
+        "requiredMagic": 21
+      },
+      "spell": "flash"
+    },
+    {
+      "id": "scrollOfGolem",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 1100,
+        "requiredMagic": 51
+      },
+      "spell": "golem"
+    },
+    {
+      "id": "scrollOfGuardian",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 950,
+        "requiredMagic": 47
+      },
+      "spell": "guardian"
+    },
+    {
+      "id": "scrollOfHealing",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 50
+      },
+      "spell": "healing"
+    },
+    {
+      "id": "scrollOfIdentify",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 100
+      },
+      "spell": "identify"
+    },
+    {
+      "id": "scrollOfInferno",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 100,
+        "requiredMagic": 19
+      },
+      "spell": "inferno"
+    },
+    {
+      "id": "scrollOfInfravision",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 100,
+        "requiredMagic": 19
+      },
+      "spell": "infravision"
+    },
+    {
+      "id": "scrollOfLightning",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 150
+      },
+      "spell": "lightning"
+    },
+    {
+      "id": "scrollOfManaShield",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 1200
+      },
+      "spell": "manaShield"
+    },
+    {
+      "id": "scrollOfNova",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 1300,
+        "requiredMagic": 57
+      },
+      "spell": "nova"
+    },
+    {
+      "id": "scrollOfPhasing",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 200,
+        "requiredMagic": 25
+      },
+      "spell": "phasing"
+    },
+    {
+      "id": "scrollOfResurrect",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 250
+      },
+      "spell": "resurrect"
+    },
+    {
+      "id": "scrollOfStoneCurse",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 800,
+        "requiredMagic": 33
+      },
+      "spell": "stoneCurse"
+    },
+    {
+      "id": "scrollOfTeleport",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 3000,
+        "requiredMagic": 81
+      },
+      "spell": "teleport"
+    },
+    {
+      "id": "scrollOfTownPortal",
+      "fromId": "scroll",
+      "defaults": {
+        "basePrice": 200
+      },
+      "spell": "townPortal"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "name": "DGEngine",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": "."
+    },
+    {
+      "name": "Diablo",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": ".",
+      "args": [ "gamefilesd" ]
+    },
+    {
+      "name": "Hellfire",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": ".",
+      "args": [ "gamefileshf" ]
+    },
+    {
+      "name": "Diablo Extended",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": ".",
+      "args": [ "gamefilesdex" ]
+    },
+    {
+      "name": "Diablo Flare",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": ".",
+      "args": [ "gamefilesflare" ]
+    },
+    {
+      "name": "Diablo 2",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": ".",
+      "args": [ "gamefilesd2" ]
+    }
+  ]
+}

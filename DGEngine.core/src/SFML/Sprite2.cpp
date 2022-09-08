@@ -1,6 +1,6 @@
 #include "Sprite2.h"
 #include "SFMLUtils.h"
-#include "Utils/Utils.h"
+#include "Utils/StringHash.h"
 
 void Sprite2::setPosition(const sf::Vector2f& position_)
 {

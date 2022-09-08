@@ -1,29 +1,5 @@
 {
-  "load": "ui/level/char/closePanels.json",
-  "action": [
-    { "name": "resource.add", "id": "userPanel" },
-    { "name": "game.clearPlayingSounds" }
-  ],
-  "load": "ui/level/char/disableKeys.json",
-  "inputEvent": [
-    {
-      "key": "esc",
-      "action": { "name": "button.click", "id": "back", "playSound": false }
-    },
-    {
-      "key": "enter",
-      "action": "focus.click"
-    },
-    {
-      "key": ["up", "w"],
-      "action": "focus.moveUp"
-    },
-    {
-      "key": ["down", "s"],
-      "action": "focus.moveDown"
-    }
-  ],
-  "load": "ui/level/panel/small.json",
+  "load": "towners/common/loadPanel.json",
   "load": "towners/ogden/panelMain.json",
   "action": { "name": "sound.play", "id": "tavownWelcome" }
 }

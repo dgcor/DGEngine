@@ -1,8 +1,0 @@
-{
-  "action": {
-    "name": "file.copy",
-    "file": "ui/settingsFile.json",
-    "writeFile": "settings.json",
-    "replace": "value"
-  }
-}

@@ -5,7 +5,7 @@
       { "name": "variable.set", "key": "charName", "value": "%heroName.text%" },
       { "name": "variable.set", "key": "automapZoom", "value": 0 },
       { "name": "resource.popAll" },
-      { "name": "loadJson", "json": { "minWindowSize": [640, 480] } },
+      { "name": "game.setProperty", "property": "minSize", "value": [640, 480] },
       { "name": "load", "file": "loadingScreens/d2.json" },
       { "name": "io.deleteAll", "file": "%tempDir%", "deleteRoot": false },
       { "name": "dir.create", "file": "%charName%" },

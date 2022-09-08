@@ -4,8 +4,6 @@
 #include <string_view>
 #include <unordered_map>
 
-#if __cpp_lib_generic_unordered_lookup
-
 struct StringViewHashEq
 {
 	using is_transparent = void;
@@ -27,19 +25,3 @@ using UnorderedStringMap = std::unordered_map<std::string, T, StringViewHashEq, 
 // std::unordered_multimap<std::string, T> with std::string_view support
 template <class T>
 using UnorderedStringMultiMap = std::unordered_multimap<std::string, T, StringViewHashEq, StringViewHashEq>;
-
-#define sv2str
-
-#else
-
-// std::unordered_map<std::string, T>
-template <class T>
-using UnorderedStringMap = std::unordered_map<std::string, T>;
-
-// std::unordered_multimap<std::string, T>
-template <class T>
-using UnorderedStringMultiMap = std::unordered_multimap<std::string, T>;
-
-#define sv2str std::string
-
-#endif

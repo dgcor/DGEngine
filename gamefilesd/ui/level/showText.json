@@ -5,7 +5,7 @@
   },
   "load": "ui/level/char/disableKeys.json",
   "inputEvent": {
-    "key": ["enter", "esc", " "],
+    "gameInputEvent": ["enter", "esc"],
     "action": { "name": "button.click", "id": "textWallButton" }
   },
   "image": [

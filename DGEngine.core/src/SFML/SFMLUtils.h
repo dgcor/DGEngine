@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BlendMode.h"
+#include "Game/BlendMode.h"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/Keyboard.hpp>

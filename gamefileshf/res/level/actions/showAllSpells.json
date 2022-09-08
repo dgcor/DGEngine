@@ -2,334 +2,345 @@
   "action": {
     "name": "action.set",
     "id": "showAllSpells",
-    "action": [
-      "clearPanelText",
-      { "name": "resource.add", "id": "charPanelSpells" },
-      "clearLevelHoverActions",
-      { "name": "level.enableHover", "enable": false },
-      {
-        "name": "loadJson",
-        "json": {
-          "button": {
-            "id": "spellBackground",
-            "texture": "empty",
-            "anchor": "all",
-            "textureRect": [640, 480],
-            "captureInputEvents": true,
-            "resizable": true,
-            "onClick": [
-              { "name": "resource.popAll", "id": "charPanelSpells" },
-              "setLevelHoverActions",
-              { "name": "level.enableHover", "enable": true }
-            ]
+    "action": {
+      "name": "if.equal",
+      "param1": "%game.hasResource.charPanelSpells%",
+      "param2": false,
+      "then": [
+        "clearPanelText",
+        { "name": "resource.add", "id": "charPanelSpells" },
+        "clearLevelHoverActions",
+        { "name": "level.enableHover", "enable": false },
+        {
+          "name": "loadJson",
+          "json": {
+            "button": {
+              "id": "spellBackground",
+              "texture": "empty",
+              "anchor": "all",
+              "textureRect": [640, 480],
+              "captureInputEvents": true,
+              "resizable": true,
+              "onClick": [
+                { "name": "resource.popAll", "id": "charPanelSpells" },
+                "setLevelHoverActions",
+                { "name": "level.enableHover", "enable": true }
+              ]
+            }
+          }
+        },
+        { "name": "variable.set", "key": "spellIndex", "value": 0 },
+        { "name": "variable.set", "key": "spellPosX", "value": 572 },
+        { "name": "variable.set", "key": "spellPosY", "value": 280 },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.itemRepair%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "itemRepair" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.trapDisarm%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "trapDisarm" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.staffRecharge%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "staffRecharge" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.search%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "search" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.identify%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "identify" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.rage%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "rage" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        "updateSpellDrawPos",
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.firebolt%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "firebolt" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.healing%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "healing" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.lightning%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "lightning" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.flash%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "flash" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.firewall%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "firewall" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.townPortal%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "townPortal" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.stoneCurse%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "stoneCurse" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.phasing%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "phasing" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.manaShield%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "manaShield" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.fireball%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "fireball" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.guardian%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "guardian" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.chainLightning%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "chainLightning" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.flameWave%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "flameWave" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.inferno%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "inferno" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.golem%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "golem" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.teleport%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "teleport" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.elemental%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "elemental" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.chargedBolt%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "chargedBolt" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.holyBolt%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "holyBolt" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.telekinesis%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "telekinesis" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.healOther%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "healOther" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.bloodStar%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "bloodStar" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "if.equal",
+          "param1": "%currentLevel.currentPlayer.hasSpell.boneSpirit%",
+          "param2": true,
+          "then": [
+            { "name": "variable.set", "key": "spellName", "value": "boneSpirit" },
+            "drawSpell",
+            "updateSpellDrawPos"
+          ]
+        },
+        {
+          "name": "loadJson",
+          "json": {
+            "image": {
+              "id": "spellHover",
+              "anchor": "bottom",
+              "texture": "empty",
+              "visible": false
+            }
           }
         }
-      },
-      { "name": "variable.set", "key": "spellIndex", "value": 0 },
-      { "name": "variable.set", "key": "spellPosX", "value": 572 },
-      { "name": "variable.set", "key": "spellPosY", "value": 280 },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.itemRepair%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "itemRepair" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.trapDisarm%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "trapDisarm" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.staffRecharge%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "staffRecharge" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.search%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "search" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.identify%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "identify" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.rage%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "rage" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      "updateSpellDrawPos",
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.firebolt%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "firebolt" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.healing%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "healing" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.lightning%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "lightning" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.flash%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "flash" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.firewall%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "firewall" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.townPortal%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "townPortal" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.stoneCurse%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "stoneCurse" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.phasing%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "phasing" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.manaShield%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "manaShield" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.fireball%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "fireball" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.guardian%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "guardian" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.chainLightning%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "chainLightning" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.flameWave%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "flameWave" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.inferno%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "inferno" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.golem%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "golem" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.teleport%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "teleport" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.elemental%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "elemental" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.chargedBolt%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "chargedBolt" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.holyBolt%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "holyBolt" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.telekinesis%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "telekinesis" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.healOther%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "healOther" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.bloodStar%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "bloodStar" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "if.equal",
-        "param1": "%currentLevel.currentPlayer.hasSpell.boneSpirit%",
-        "param2": true,
-        "then": [
-          { "name": "variable.set", "key": "spellName", "value": "boneSpirit" },
-          "drawSpell",
-          "updateSpellDrawPos"
-        ]
-      },
-      {
-        "name": "loadJson",
-        "json": {
-          "image": {
-            "id": "spellHover",
-            "anchor": "bottom",
-            "texture": "empty",
-            "visible": false
-          }
-        }
-      }
-    ]
+      ],
+      "else": [
+        "clearPanelText",
+        { "name": "resource.popAll", "id": "charPanelSpells" },
+        "setLevelHoverActions",
+        { "name": "level.enableHover", "enable": true }
+      ]
+    }
   }
 }

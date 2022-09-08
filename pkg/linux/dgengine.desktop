@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=DGEngine
+GenericName=DGEngine
+Exec=DGEngine
+Icon=icon
+Terminal=false
+Type=Application
+X-DCOP-ServiceType=Multi
+X-KDE-StartupNotify=true
+Categories=Game;

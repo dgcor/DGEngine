@@ -6,11 +6,11 @@
   "load": "ui/level/char/disableKeys.json",
   "inputEvent": [
     {
-      "key": "enter",
+      "gameInputEvent": "enter",
       "action": { "name": "inputText.click", "id": "goldQuantity" }
     },
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": "closeRemoveGold"
     }
   ],

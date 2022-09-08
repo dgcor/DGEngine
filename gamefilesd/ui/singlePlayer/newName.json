@@ -4,6 +4,10 @@
     { "name": "resource.add", "id": "singlePlayerNewName" },
     { "name": "text.setText", "id": "label2", "text": "|str_enterName|" }
   ],
+  "inputEvent": {
+    "gameInputEvent": "space",
+    "action": null
+  },
   "texturePack": {
     "id": "caret",
     "texture": "font24g",

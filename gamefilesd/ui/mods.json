@@ -7,7 +7,7 @@
     "loadLogoImg"
   ],
   "inputEvent": {
-    "key": "esc",
+    "gameInputEvent": "esc",
     "action": { "name": "button.click", "id": "back" }
   },
   "animation": [
@@ -93,7 +93,7 @@
       "onClick": {
         "name": "game.fadeOut",
         "action": [
-          { "name": "load", "file": "ui/saveSettings.json" },
+          "saveSettings",
           { "name": "resource.pop" },
           { "name": "game.fadeIn" }
         ]

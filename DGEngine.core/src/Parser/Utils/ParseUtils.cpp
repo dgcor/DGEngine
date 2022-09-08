@@ -1,7 +1,8 @@
 #include "ParseUtils.h"
 #include <cctype>
-#include "FileUtils.h"
+#include "Game/Utils/FileUtils.h"
 #include "Json/JsonUtils.h"
+#include "Utils/StringHash.h"
 #include "Utils/Utils.h"
 
 namespace Parser

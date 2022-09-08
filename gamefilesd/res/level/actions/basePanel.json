@@ -2,8 +2,13 @@
   "action": [
     {
       "name": "action.set",
-      "id": "saveSettings",
-      "action": { "name": "load", "file": "ui/level/saveSettings.json" }
+      "id": "saveGameSettings",
+      "action": {
+        "name": "file.copy",
+        "file": "ui/level/settingsFile.json",
+        "writeFile": "gameSettings.json",
+        "replace": "value"
+      }
     },
     {
       "name": "action.set",

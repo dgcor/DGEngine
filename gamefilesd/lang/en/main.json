@@ -35,7 +35,7 @@
     { "str_shaderXbrz4x":         "xbrz4x" },
 
     { "str_colorCycling":         "Color Cycling" },
-    { "str_framerateLimit":       "Framerate Limit" },
+    { "str_frameRateLimit":       "Framerate Limit" },
     { "str_gamma":                "Gamma" },
     { "str_keepAR":               "Keep Ratio" },
     { "str_maxHeight":            "Max Height" },
@@ -45,6 +45,7 @@
     { "str_smoothScreen":         "Smooth Screen" },
     { "str_sound":                "Sound" },
     { "str_stretchToFit":         "Stretch to Fit" },
+    { "str_windowSize":           "Window Size" },
 
     { "str_rogue":                "Rogue" },
     { "str_sorcerer":             "Sorcerer" },
@@ -56,12 +57,12 @@
     { "str_vitality":             "Vitality" },
 
     { "str_automapDescr":         "Automap\nHotkey : Tab" },
-    { "str_charDescr":            "Character Information\nHotkey : 'C'" },
-    { "str_inventoryDescr":       "Inventory\nHotkey : 'I'" },
+    { "str_charDescr":            "Character Information\nHotkey : '[1]'" },
+    { "str_inventoryDescr":       "Inventory\nHotkey : '[1]'" },
     { "str_menuDescr":            "Main Menu\nHotkey : Esc" },
-    { "str_questDescr":           "Quests Log\nHotkey : 'Q'" },
-    { "str_spellBookDescr":       "Spell Book\nHotkey : 'B'" },
-    { "str_spellDescr":           "Select Current Spell Button\nHotkey : 'S'" },
+    { "str_questDescr":           "Quests Log\nHotkey : '[1]'" },
+    { "str_spellBookDescr":       "Spell Book\nHotkey : '[1]'" },
+    { "str_spellDescr":           "Select Current Spell Button\nHotkey : '[1]'" },
 
     { "str_chooseClass":          "Choose Class" },
     { "str_confirmDeleteChar":    "Are you sure you want to\ndelete the character \"[1]\"?" },

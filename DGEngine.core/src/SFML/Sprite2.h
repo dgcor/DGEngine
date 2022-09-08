@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Game/TextureInfo.h"
+#include "Resources/Shader.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include "Shader.h"
-#include "TextureInfo.h"
 
 struct SpriteShaderCache
 {
@@ -34,22 +34,22 @@ public:
 		const std::shared_ptr<Palette>& palette_ = nullptr)
 		: sf::Sprite(texture), palette(palette_) {}
 
-	const sf::Vector2f& getDrawPosition() const { return sf::Sprite::getPosition(); }
-	const sf::Vector2f& getPosition() const { return position; }
+	auto& getDrawPosition() const { return sf::Sprite::getPosition(); }
+	auto& getPosition() const { return position; }
 	void setPosition(const sf::Vector2f& position_);
 	void setPosition(const sf::Vector2f& position_, const sf::Vector2f& offset_);
-	const sf::Vector2f& getOffset() const { return offset; }
+	auto& getOffset() const { return offset; }
 	void setOffset(const sf::Vector2f& offset_);
 
 	using sf::Sprite::getColor;
 	void setColor(const sf::Color& color);
 
-	const std::shared_ptr<Palette>& getPalette() const noexcept { return palette; }
+	auto& getPalette() const noexcept { return palette; }
 	void setPalette(const std::shared_ptr<Palette>& pal) noexcept { palette = pal; }
 	bool hasPalette() const noexcept { return palette != nullptr; }
 
-	const sf::Color& getOutline() const noexcept { return outline; }
-	const sf::Color& getOutlineIgnore() const noexcept { return ignore; }
+	auto& getOutline() const noexcept { return outline; }
+	auto& getOutlineIgnore() const noexcept { return ignore; }
 	void setOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept;
 	bool hasOutline() const noexcept { return outline.a > 0; }
 	void setOutlineEnabled(bool enable) noexcept;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Actions/Action.h"
+#include "Game/Action.h"
 #include "Json/JsonParser.h"
 #include <memory>
 

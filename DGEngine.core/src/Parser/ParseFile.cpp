@@ -1,47 +1,48 @@
 #include "ParseFile.h"
 #include <cstdarg>
-#include "FileUtils.h"
-#include "Game.h"
-#include "GameUtils.h"
+#include "Game/Game.h"
+#include "Game/Utils/FileUtils.h"
+#include "Game/Utils/GameUtils.h"
 #include "Hooks.h"
 #include "Json/JsonUtils.h"
 #include "ParseAction.h"
-#include "ParseAnimation.h"
-#include "ParseAudio.h"
-#include "ParseButton.h"
-#include "ParseCircle.h"
 #include "ParseCursor.h"
 #include "ParseEvent.h"
-#include "ParseFileBytes.h"
-#include "ParseFont.h"
-#include "ParseIcon.h"
-#include "ParseImage.h"
-#include "ParseImageContainer.h"
+#include "ParseGameInputEvent.h"
 #include "ParseInputEvent.h"
-#include "ParseInputText.h"
-#include "ParseLoadingScreen.h"
-#include "ParseMenu.h"
 #include "ParseMountFile.h"
-#include "ParseMovie.h"
-#include "ParsePalette.h"
-#include "ParsePanel.h"
-#include "ParseRectangle.h"
-#include "ParseScrollable.h"
-#include "ParseShader.h"
-#include "ParseShape.h"
-#include "ParseSound.h"
-#include "ParseText.h"
-#include "ParseTexture.h"
-#include "ParseTexturePack.h"
+#include "Parser/Drawables/ParseAnimation.h"
+#include "Parser/Drawables/ParseButton.h"
+#include "Parser/Drawables/ParseCircle.h"
+#include "Parser/Drawables/ParseImage.h"
+#include "Parser/Drawables/ParseInputText.h"
+#include "Parser/Drawables/ParseLoadingScreen.h"
+#include "Parser/Drawables/ParseMenu.h"
+#include "Parser/Drawables/ParseMovie.h"
+#include "Parser/Drawables/ParsePanel.h"
+#include "Parser/Drawables/ParseRectangle.h"
+#include "Parser/Drawables/ParseScrollable.h"
+#include "Parser/Drawables/ParseShape.h"
+#include "Parser/Drawables/ParseText.h"
+#include "Parser/Game/ParseGame.h"
+#include "Parser/Resources/ParseAudio.h"
+#include "Parser/Resources/ParseFileBytes.h"
+#include "Parser/Resources/ParseFont.h"
+#include "Parser/Resources/ParseImageContainer.h"
+#include "Parser/Resources/ParsePalette.h"
+#include "Parser/Resources/ParseShader.h"
+#include "Parser/Resources/ParseSound.h"
+#include "Parser/Resources/ParseTexture.h"
+#include "Parser/Resources/ParseTexturePack.h"
 #include "ParseVariable.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/StringHash.h"
 #include "Utils/Utils.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 
-	void parseFile(Game& game, const rapidjson::Value& params);
 	void parseDocumentElem(Game& game, uint16_t nameHash16, const Value& elem,
 		ReplaceVars& replaceVars, MemoryPoolAllocator<CrtAllocator>& allocator);
 
@@ -130,14 +131,25 @@ namespace Parser
 		parseDocument(game, doc);
 	}
 
-	void parseDocument(Game& game, const Document& doc, ReplaceVars replaceVars_)
+	void parseDocument(Game& game, Document& doc, ReplaceVars replaceVars_)
 	{
 		ReplaceVars replaceVars = replaceVars_;
-		MemoryPoolAllocator<CrtAllocator> allocator;
 		for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it)
 		{
-			parseDocumentElemHelper(game, str2int16(getStringViewVal(it->name)),
-				it->value, replaceVars, allocator);
+			parseDocumentElemHelper(game, str2int16(it->name.GetStringView()),
+				it->value, replaceVars, doc.GetAllocator());
+		}
+	}
+
+	void parseLoad(Game& game, const rapidjson::Value& elem)
+	{
+		if (elem.IsString())
+		{
+			parseFile(game, elem.GetStringView());
+		}
+		else
+		{
+			parseFile(game, elem);
 		}
 	}
 
@@ -155,13 +167,29 @@ namespace Parser
 		{
 			Value elemCopy(elem, allocator);
 			// if replaceVars is enabled, replace strings between | instead of %
-			JsonUtils::replaceValueWithGameVar(
-				elemCopy, allocator, game, changeValueType, '|');
+			JsonUtils::replaceValuesWithGameVar(elemCopy, allocator, game, changeValueType, '|');
 			parseDocumentElem(game, nameHash16, elemCopy, replaceVars, allocator);
 		}
 		else
 		{
 			parseDocumentElem(game, nameHash16, elem, replaceVars, allocator);
+		}
+	}
+
+	void parseDocumentElemArray(const parseDocumentElemFuncPtr parseFunc, Game& game,
+		uint16_t nameHash16, const Value& elem, ReplaceVars& replaceVars,
+		MemoryPoolAllocator<CrtAllocator>& allocator)
+	{
+		if (elem.IsArray() == false)
+		{
+			parseFunc(game, elem);
+		}
+		else
+		{
+			for (const auto& val : elem)
+			{
+				parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
+			}
 		}
 	}
 
@@ -177,229 +205,82 @@ namespace Parser
 		{
 		case str2int16("action"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseActionAndExecute(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseActionAndExecute, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("animation"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseAnimation(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseAnimation, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("audio"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseAudio(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseAudio, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("button"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseButton(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseButton, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("circle"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseCircle(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseCircle, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("cursor"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseCursor(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseCursor, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("event"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseEvent(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseEvent, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("file"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseFileBytes(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseFileBytes, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("font"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseFont(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseFont, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
-		case str2int16("framerate"):
+		case str2int16("game"):
 		{
-			game.Framerate(getUIntVal(elem));
+			parseGame(game, elem);
 			break;
 		}
-		case str2int16("icon"):
+		case str2int16("gameInputEvent"):
 		{
-			parseIcon(game, elem);
+			parseDocumentElemArray(parseGameInputEvent, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("image"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseImage(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseImage, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("imageContainer"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseImageContainer(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("init"):
-		{
-			game.init();
+			parseDocumentElemArray(parseImageContainer, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("inputEvent"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseInputEvent(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseInputEvent, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("inputText"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseInputText(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("keepAR"):
-		{
-			game.KeepAR(getBoolVal(elem, true));
+			parseDocumentElemArray(parseInputText, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("load"):
 		{
-			if (elem.IsString())
-			{
-				parseFile(game, elem.GetStringView());
-			}
-			else
-			{
-				parseFile(game, elem);
-			}
+			parseLoad(game, elem);
 			break;
 		}
 		case str2int16("loadingScreen"):
@@ -407,111 +288,34 @@ namespace Parser
 			parseLoadingScreen(game, elem);
 			break;
 		}
-		case str2int16("maxWindowHeight"):
-		{
-			game.MaxHeight(getUIntVal(elem));
-			break;
-		}
 		case str2int16("menu"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseMenu(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("minWindowSize"):
-		{
-			sf::Vector2u minSize(Game::MinSizeX, Game::MinSizeY);
-			game.MinSize(getVector2uVal<sf::Vector2u>(elem, minSize));
+			parseDocumentElemArray(parseMenu, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("mountFile"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseMountFile(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseMountFile, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("movie"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseMovie(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseMovie, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("palette"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parsePalette(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parsePalette, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("panel"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parsePanel(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parsePanel, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("rectangle"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseRectangle(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("refWindowSize"):
-		{
-			sf::Vector2u refSize(Game::RefSizeX, Game::RefSizeY);
-			game.RefSize(getVector2uVal<sf::Vector2u>(elem, refSize));
+			parseDocumentElemArray(parseRectangle, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("replaceVars"):
@@ -519,159 +323,44 @@ namespace Parser
 			replaceVars = getReplaceVarsVal(elem);
 			break;
 		}
-		case str2int16("saveDir"):
-		{
-			auto saveDir = getStringViewVal(elem);
-			if (saveDir.size() > 0 && FileUtils::setSaveDir(saveDir.data()) == true)
-			{
-				PHYSFS_mount(PHYSFS_getWriteDir(), nullptr, 0);
-			}
-			break;
-		}
 		case str2int16("scrollable"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseScrollable(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseScrollable, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("shader"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseShader(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseShader, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("shape"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseShape(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("smoothScreen"):
-		{
-			game.SmoothScreen(getBoolVal(elem));
+			parseDocumentElemArray(parseShape, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("sound"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseSound(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("stretchToFit"):
-		{
-			game.StretchToFit(getBoolVal(elem));
+			parseDocumentElemArray(parseSound, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("text"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseText(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseText, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("texture"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseTexture(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
+			parseDocumentElemArray(parseTexture, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("texturePack"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseTexturePack(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("title"):
-		{
-			game.setTitle(getStringVal(elem, game.getTitle()));
+			parseDocumentElemArray(parseTexturePack, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		case str2int16("variable"):
 		{
-			if (elem.IsArray() == false)
-			{
-				parseVariable(game, elem);
-			}
-			else
-			{
-				for (const auto& val : elem)
-				{
-					parseDocumentElemHelper(game, nameHash16, val, replaceVars, allocator);
-				}
-			}
-			break;
-		}
-		case str2int16("version"):
-		{
-			game.setVersion(getStringVal(elem, game.getVersion()));
-			break;
-		}
-		case str2int16("windowSize"):
-		{
-			sf::Vector2u defSize(Game::DefaultSizeX, Game::DefaultSizeY);
-			game.WindowSize(getVector2uVal<sf::Vector2u>(elem, defSize));
+			parseDocumentElemArray(parseVariable, game, nameHash16, elem, replaceVars, allocator);
 			break;
 		}
 		default:

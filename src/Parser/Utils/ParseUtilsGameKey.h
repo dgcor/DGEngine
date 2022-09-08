@@ -1,11 +1,14 @@
 #pragma once
 
+#include "Game/Properties/PlayerAnimation.h"
+#include "Game/Properties/PlayerDirection.h"
+#include "Game/Properties/PlayerItemMount.h"
+#include "Game/Properties/PlayerStatus.h"
 #include "ParseUtilsGameVal.h"
 
 namespace Parser
 {
-	size_t getInventoryItemIndexKey(const rapidjson::Value& elem,
-		const std::string_view key, PlayerInventory inv);
+	size_t getInventoryItemIndexKey(const rapidjson::Value& elem, const std::string_view key, PlayerInventory inv);
 
 	InventoryPosition getInventoryPositionKey(const rapidjson::Value& elem,
 		const std::string_view key, InventoryPosition val = InventoryPosition::TopLeft);
@@ -16,8 +19,7 @@ namespace Parser
 
 	PairUInt8 getItemXYKey(const rapidjson::Value& elem, const std::string_view key, const PairUInt8& val = {});
 
-	LightSource getLightSourceKey(const rapidjson::Value& elem,
-		const std::string_view key, LightSource val = {});
+	LightSource getLightSourceKey(const rapidjson::Value& elem, const std::string_view key, LightSource val = {});
 
 	PlayerAnimation getPlayerAnimationKey(const rapidjson::Value& elem,
 		const std::string_view key, PlayerAnimation val = PlayerAnimation::Stand1);

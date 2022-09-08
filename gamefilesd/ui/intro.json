@@ -6,7 +6,7 @@
     "then": [
       { "name": "load", "file": ["ui/playIntro.json", "ui/splashScreen.json"] },
       { "name": "variable.set", "key": "skipIntro", "value": true },
-      { "name": "load", "file": "ui/saveSettings.json" }
+      "saveSettings"
     ],
     "else": { "name": "load", "file": "ui/splashScreen.json" }
   }

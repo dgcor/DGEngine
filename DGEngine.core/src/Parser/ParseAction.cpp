@@ -1,137 +1,42 @@
 #include "ParseAction.h"
-#include "Actions/ActAction.h"
-#include "Actions/ActAnimation.h"
-#include "Actions/ActAudio.h"
-#include "Actions/ActButton.h"
-#include "Actions/ActCondition.h"
-#include "Actions/ActCursor.h"
-#include "Actions/ActDrawable.h"
-#include "Actions/ActEvent.h"
-#include "Actions/ActFade.h"
-#include "Actions/ActFocus.h"
-#include "Actions/ActFont.h"
-#include "Actions/ActGame.h"
-#include "Actions/ActImage.h"
-#include "Actions/ActInputText.h"
-#include "Actions/ActIO.h"
-#include "Actions/ActiontList.h"
-#include "Actions/ActLoad.h"
-#include "Actions/ActLoadingScreen.h"
-#include "Actions/ActMenu.h"
-#include "Actions/ActMount.h"
-#include "Actions/ActMovie.h"
-#include "Actions/ActPalette.h"
-#include "Actions/ActRandom.h"
-#include "Actions/ActResource.h"
-#include "Actions/ActScrollable.h"
-#include "Actions/ActShader.h"
-#include "Actions/ActSound.h"
-#include "Actions/ActText.h"
-#include "Actions/ActVariable.h"
-#include "Actions/ActVisibility.h"
+#include "Game/Actions/ActionList.h"
 #include "Hooks.h"
-#include "Json/JsonUtils.h"
-#include "ParseCondition.h"
+#include "Parser/Actions/ParseActionActions.h"
+#include "Parser/Actions/ParseAnimationActions.h"
+#include "Parser/Actions/ParseAudioActions.h"
+#include "Parser/Actions/ParseButtonActions.h"
+#include "Parser/Actions/ParseConditionActions.h"
+#include "Parser/Actions/ParseCursorActions.h"
+#include "Parser/Actions/ParseDrawableActions.h"
+#include "Parser/Actions/ParseEventActions.h"
+#include "Parser/Actions/ParseFadeActions.h"
+#include "Parser/Actions/ParseFocusActions.h"
+#include "Parser/Actions/ParseFontActions.h"
+#include "Parser/Actions/ParseGameActions.h"
+#include "Parser/Actions/ParseImageActions.h"
+#include "Parser/Actions/ParseInputTextActions.h"
+#include "Parser/Actions/ParseIOActions.h"
+#include "Parser/Actions/ParseLoadActions.h"
+#include "Parser/Actions/ParseLoadingScreenActions.h"
+#include "Parser/Actions/ParseMenuActions.h"
+#include "Parser/Actions/ParseMountActions.h"
+#include "Parser/Actions/ParseMovieActions.h"
+#include "Parser/Actions/ParsePaletteActions.h"
+#include "Parser/Actions/ParseRandomActions.h"
+#include "Parser/Actions/ParseResourceActions.h"
+#include "Parser/Actions/ParseScrollableActions.h"
+#include "Parser/Actions/ParseShaderActions.h"
+#include "Parser/Actions/ParseSoundActions.h"
+#include "Parser/Actions/ParseTextActions.h"
+#include "Parser/Actions/ParseVariableActions.h"
+#include "Parser/Actions/ParseVisibilityActions.h"
 #include "Utils/ParseUtils.h"
+#include "Utils/StringHash.h"
 
 namespace Parser
 {
 	using namespace rapidjson;
 	using namespace std::literals;
-
-	template <class T>
-	std::shared_ptr<Action> parseSetTextHelper(Game& game, const Value& elem)
-	{
-		std::shared_ptr<T> action;
-		if (elem.HasMember("binding"sv) == true)
-		{
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "format"),
-				getStringVectorKey(elem, "binding"));
-		}
-		else if (elem.HasMember("query"sv) == true)
-		{
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "text"),
-				getStringViewKey(elem, "query"));
-		}
-		else
-		{
-			auto textOp = TextUtils::TextOp::Replace;
-			if (getBoolKey(elem, "set") == true)
-			{
-				textOp = TextUtils::TextOp::Set;
-			}
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "text"),
-				textOp);
-		}
-		if (getBoolKey(elem, "replaceAll") == true)
-		{
-			action->ReplaceAll();
-		}
-		if (getBoolKey(elem, "removeEmptyLines") == true)
-		{
-			action->RemoveEmptyLines();
-		}
-		if (getBoolKey(elem, "trim") == true)
-		{
-			action->Trim();
-		}
-		return action;
-	}
-
-	template <class T>
-	std::shared_ptr<Action> parseSetMenuTextHelper(Game& game, const Value& elem)
-	{
-		auto index = getUIntKey(elem, "index");
-		std::shared_ptr<T> action;
-		if (elem.HasMember("binding"sv) == true)
-		{
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				index,
-				getStringViewKey(elem, "format"),
-				getStringVectorKey(elem, "binding"));
-		}
-		else if (elem.HasMember("query"sv) == true)
-		{
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				index,
-				getStringViewKey(elem, "text"),
-				getStringViewKey(elem, "query"));
-		}
-		else
-		{
-			auto textOp = TextUtils::TextOp::Replace;
-			if (getBoolKey(elem, "set") == true)
-			{
-				textOp = TextUtils::TextOp::Set;
-			}
-			else if (getBoolKey(elem, "replaceAll") == true)
-			{
-				textOp = TextUtils::TextOp::ReplaceAll;
-			}
-			action = std::make_shared<T>(
-				getStringViewKey(elem, "id"),
-				index,
-				getStringViewKey(elem, "text"),
-				textOp);
-		}
-		if (getBoolKey(elem, "removeEmptyLines") == true)
-		{
-			action->RemoveEmptyLines();
-		}
-		if (getBoolKey(elem, "trim") == true)
-		{
-			action->Trim();
-		}
-		return action;
-	}
 
 	std::shared_ptr<Action> parseActionElem(Game& game, const Value& elem)
 	{
@@ -144,1086 +49,649 @@ namespace Parser
 		{
 		case str2int16("=="):
 		{
-			return getIfCondition(str2int16("=="), game, elem);
+			return Actions::parseIfCondition(str2int16("=="), game, elem);
 		}
 		case str2int16("!="):
 		{
-			return getIfCondition(str2int16("!="), game, elem);
+			return Actions::parseIfCondition(str2int16("!="), game, elem);
 		}
 		case str2int16(">"):
 		{
-			return getIfCondition(str2int16(">"), game, elem);
+			return Actions::parseIfCondition(str2int16(">"), game, elem);
 		}
 		case str2int16(">="):
 		{
-			return getIfCondition(str2int16(">="), game, elem);
+			return Actions::parseIfCondition(str2int16(">="), game, elem);
 		}
 		case str2int16("<"):
 		{
-			return getIfCondition(str2int16("<"), game, elem);
+			return Actions::parseIfCondition(str2int16("<"), game, elem);
 		}
 		case str2int16("<="):
 		{
-			return getIfCondition(str2int16("<="), game, elem);
+			return Actions::parseIfCondition(str2int16("<="), game, elem);
 		}
 		case str2int16("action.set"):
 		{
-			return std::make_shared<ActActionSet>(
-				getStringViewKey(elem, "id"),
-				getActionKey(game, elem, "action"));
+			return Actions::parseActionSet(game, elem);
 		}
 		case str2int16("animation.pause"):
 		{
-			return std::make_shared<ActAnimationPause>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "pause", true),
-				getBoolKey(elem, "reset"));
+			return Actions::parseAnimationPause(elem);
 		}
 		case str2int16("animation.set"):
 		{
-			return std::make_shared<ActAnimationSetAnimation>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "texturePack"),
-				getIntKey(elem, "group", -1),
-				getIntKey(elem, "direction", -1),
-				getTimeKey(elem, "refresh"),
-				getBoolKey(elem, "reset", true),
-				getBoolKey(elem, "updateAnimationType"));
+			return Actions::parseAnimationSetAnimation(elem);
 		}
 		case str2int16("animation.setRefresh"):
 		{
-			return std::make_shared<ActAnimationSetRefresh>(
-				getStringViewKey(elem, "id"),
-				getTimeKey(elem, "refresh"));
+			return Actions::parseAnimationSetRefresh(elem);
 		}
 		case str2int16("audio.delete"):
 		{
-			return std::make_shared<ActAudioDelete>(getStringViewKey(elem, "id"));
+			return Actions::parseAudioDelete(elem);
 		}
 		case str2int16("audio.pause"):
 		{
-			return std::make_shared<ActAudioPause>(getStringViewKey(elem, "id"));
+			return Actions::parseAudioPause(elem);
 		}
 		case str2int16("audio.pauseAll"):
 		{
-			return std::make_shared<ActAudioPauseAll>();
+			return Actions::parseAudioPauseAll();
 		}
 		case str2int16("audio.play"):
 		{
-			auto action = std::make_shared<ActAudioPlay>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "volume"),
-				getBoolKey(elem, "clear"));
-
-			if (elem.HasMember("loop"sv) == true)
-			{
-				action->setLoop(getBoolVal(elem["loop"sv]));
-			}
-			return action;
+			return Actions::parseAudioPlay(elem);
 		}
 		case str2int16("audio.resumeAll"):
 		{
-			return std::make_shared<ActAudioResumeAll>(getBoolKey(elem, "restart"));
+			return Actions::parseAudioResumeAll(elem);
 		}
 		case str2int16("audio.seek"):
 		{
-			return std::make_shared<ActAudioSeek>(
-				getStringViewKey(elem, "id"),
-				getTimeKey(elem, "time"));
+			return Actions::parseAudioSeek(elem);
 		}
 		case str2int16("audio.setVolume"):
 		{
-			return std::make_shared<ActAudioSetVolume>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "volume"));
+			return Actions::parseAudioSetVolume(elem);
 		}
 		case str2int16("audio.stop"):
 		{
-			return std::make_shared<ActAudioStop>(getStringViewKey(elem, "id"));
+			return Actions::parseAudioStop(elem);
 		}
 		case str2int16("audio.stopAll"):
 		{
-			return std::make_shared<ActAudioStopAll>();
+			return Actions::parseAudioStopAll();
 		}
 		case str2int16("button.click"):
 		{
-			return std::make_shared<ActButtonClick>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseButtonClick(elem);
 		}
 		case str2int16("button.enable"):
 		{
-			return std::make_shared<ActButtonEnable>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "enable", true));
+			return Actions::parseButtonEnable(elem);
 		}
 		case str2int16("button.rightClick"):
 		{
-			return std::make_shared<ActButtonRightClick>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseButtonRightClick(elem);
 		}
 		case str2int16("button.setColor"):
 		{
-			return std::make_shared<ActButtonSetColor>(
-				getStringViewKey(elem, "id"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseButtonSetColor(elem);
 		}
 		case str2int16("condition"):
 		{
-			return getIfCondition(
-				str2int16(getStringViewKey(elem, "condition")),
-				game, elem);
+			return Actions::parseIfCondition(str2int16(getStringViewKey(elem, "condition")), game, elem);
 		}
 		case str2int16("cursor.centerOnDrawable"):
 		{
-			return std::make_shared<ActCursorCenterOnDrawable>(
-				getStringViewKey(elem, "id"));
+			return Actions::parseCursorCenterOnDrawable(elem);
 		}
 		case str2int16("cursor.enableOutline"):
 		{
-			return std::make_shared<ActCursorEnableOutline>(
-				getBoolKey(elem, "enable", true));
+			return Actions::parseCursorEnableOutline(elem);
 		}
 		case str2int16("cursor.pop"):
 		{
-			return std::make_shared<ActCursorPop>(getBoolKey(elem, "popAll"));
+			return Actions::parseCursorPop(elem);
 		}
 		case str2int16("cursor.setColor"):
 		{
-			return std::make_shared<ActCursorSetColor>(
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseCursorSetColor(elem);
 		}
 		case str2int16("cursor.setOutline"):
 		{
-			return std::make_shared<ActCursorSetOutline>(
-				getColorKey(elem, "outline", sf::Color::Transparent),
-				getColorKey(elem, "ignore", sf::Color::Transparent));
+			return Actions::parseCursorSetOutline(elem);
 		}
 		case str2int16("cursor.setPalette"):
 		{
-			return std::make_shared<ActCursorSetPalette>(
-				getStringViewKey(elem, "palette"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseCursorSetPalette(elem);
 		}
 		case str2int16("cursor.setPosition"):
 		{
-			return std::make_shared<ActCursorSetPosition>(
-				getVector2iKey<sf::Vector2i>(elem, "position"));
+			return Actions::parseCursorSetPosition(elem);
 		}
 		case str2int16("cursor.show"):
 		{
-			return std::make_shared<ActCursorShow>(getBoolKey(elem, "show"));
+			return Actions::parseCursorShow(elem);
 		}
 		case str2int16("dir.copy"):
 		{
-			return std::make_shared<ActDirCopy>(
-				getStringViewKey(elem, "source"),
-				getStringViewKey(elem, "destination"));
+			return Actions::parseDirCopy(elem);
 		}
 		case str2int16("dir.create"):
 		{
-			return std::make_shared<ActDirCreate>(getStringViewKey(elem, "file"));
+			return Actions::parseDirCreate(elem);
 		}
 		case str2int16("drawable.addToPosition"):
 		case str2int16("drawable.move"):
 		{
-			return std::make_shared<ActDrawableAddToPosition>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseDrawableAddToPosition(elem);
 		}
 		case str2int16("drawable.addToSize"):
 		{
-			return std::make_shared<ActDrawableAddToSize>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseDrawableAddToSize(elem);
 		}
 		case str2int16("drawable.anchor"):
 		{
-			return std::make_shared<ActDrawableAnchor>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchor"),
-				getAnchorKey(elem, "anchor"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseDrawableAnchor(elem);
 		}
 		case str2int16("drawable.anchorSizeX"):
 		{
-			return std::make_shared<ActDrawableAnchorSizeXY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				(float)getIntKey(elem, "offset"),
-				false);
+			return Actions::parseDrawableAnchorSizeX(elem);
 		}
 		case str2int16("drawable.anchorSizeY"):
 		{
-			return std::make_shared<ActDrawableAnchorSizeXY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				(float)getIntKey(elem, "offset"),
-				true);
+			return Actions::parseDrawableAnchorSizeY(elem);
 		}
 		case str2int16("drawable.anchorToFocused"):
 		{
-			return std::make_shared<ActDrawableAnchorToFocused>(
-				getStringViewKey(elem, "id"),
-				getAnchorKey(elem, "anchor"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseDrawableAnchorToFocused(elem);
 		}
 		case str2int16("drawable.bringToFront"):
 		{
-			return std::make_shared<ActDrawableBringToFront>(getStringViewKey(elem, "id"));
+			return Actions::parseDrawableBringToFront(elem);
 		}
 		case str2int16("drawable.center"):
 		{
-			return std::make_shared<ActDrawableCenter>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idCenterOn"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseDrawableCenter(elem);
 		}
 		case str2int16("drawable.centerOnMouseX"):
 		{
-			return std::make_shared<ActDrawableCenterOnMouseX>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "steps"));
+			return Actions::parseDrawableCenterOnMouseX(elem);
 		}
 		case str2int16("drawable.centerOnMouseY"):
 		{
-			return std::make_shared<ActDrawableCenterOnMouseY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "steps"));
+			return Actions::parseDrawableCenterOnMouseY(elem);
 		}
 		case str2int16("drawable.delete"):
 		{
-			return std::make_shared<ActDrawableDelete>(getStringViewKey(elem, "id"));
+			return Actions::parseDrawableDelete(elem);
 		}
 		case str2int16("drawable.executeAction"):
 		{
-			return std::make_shared<ActDrawableExecuteAction>(
-				getStringViewKey(elem, "id"),
-				str2int16(getStringViewKey(elem, "action")));
+			return Actions::parseDrawableExecuteAction(elem);
 		}
 		case str2int16("drawable.horizontalAnchorToFocused"):
 		{
-			return std::make_shared<ActDrawableHorizontalAnchorToFocused>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "offset"));
+			return Actions::parseDrawableHorizontalAnchorToFocused(elem);
 		}
 		case str2int16("drawable.moveX"):
 		{
-			return std::make_shared<ActDrawableMoveX>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "position"),
-				getUIntKey(elem, "min"),
-				getUIntKey(elem, "max"),
-				getVariableKey(elem, "steps"));
+			return Actions::parseDrawableMoveX(elem);
 		}
 		case str2int16("drawable.moveY"):
 		{
-			return std::make_shared<ActDrawableMoveY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "position"),
-				getUIntKey(elem, "min"),
-				getUIntKey(elem, "max"),
-				getVariableKey(elem, "steps"));
+			return Actions::parseDrawableMoveY(elem);
 		}
 		case str2int16("drawable.moveStepX"):
 		{
-			return std::make_shared<ActDrawableMoveStepX>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "steps"),
-				getIntKey(elem, "stepOffset"));
+			return Actions::parseDrawableMoveStepX(elem);
 		}
 		case str2int16("drawable.moveStepY"):
 		{
-			return std::make_shared<ActDrawableMoveStepY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getVariableKey(elem, "steps"),
-				getIntKey(elem, "stepOffset"));
+			return Actions::parseDrawableMoveStepY(elem);
 		}
 		case str2int16("drawable.resizeX"):
 		{
-			return std::make_shared<ActDrawableResizeXY>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "size"),
-				getVariableKey(elem, "inputRangeMin"),
-				getVariableKey(elem, "inputRangeMax"),
-				getVector2iKey<sf::Vector2i>(elem, "range"),
-				false);
+			return Actions::parseDrawableResizeX(elem);
 		}
 		case str2int16("drawable.resizeY"):
 		{
-			return std::make_shared<ActDrawableResizeXY>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "size"),
-				getVariableKey(elem, "inputRangeMin"),
-				getVariableKey(elem, "inputRangeMax"),
-				getVector2iKey<sf::Vector2i>(elem, "range"),
-				true);
+			return Actions::parseDrawableResizeY(elem);
 		}
 		case str2int16("drawable.resizeOnMouseX"):
 		{
-			return std::make_shared<ActDrawableResizeOnMouseX>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "range"));
+			return Actions::parseDrawableResizeOnMouseX(elem);
 		}
 		case str2int16("drawable.resizeOnMouseY"):
 		{
-			return std::make_shared<ActDrawableResizeOnMouseY>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "range"));
+			return Actions::parseDrawableResizeOnMouseY(elem);
 		}
 		case str2int16("drawable.resizeToPositionX"):
 		{
-			return std::make_shared<ActDrawableResizeToPositionX>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idToPosition"),
-				(float)getIntKey(elem, "offset"));
+			return Actions::parseDrawableResizeToPositionX(elem);
 		}
 		case str2int16("drawable.resizeToPositionY"):
 		{
-			return std::make_shared<ActDrawableResizeToPositionY>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idToPosition"),
-				(float)getIntKey(elem, "offset"));
-		}
-		case str2int16("drawable.setAction"):
-		{
-			return std::make_shared<ActDrawableSetAction>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "event"),
-				getActionKey(game, elem, "action"));
+			return Actions::parseDrawableResizeToPositionY(elem);
 		}
 		case str2int16("drawable.sendToBack"):
 		{
-			return std::make_shared<ActDrawableSendToBack>(getStringViewKey(elem, "id"));
+			return Actions::parseDrawableSendToBack(elem);
+		}
+		case str2int16("drawable.setAction"):
+		{
+			return Actions::parseDrawableSetAction(game, elem);
 		}
 		case str2int16("drawable.setPosition"):
 		{
-			return std::make_shared<ActDrawableSetPosition>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "position"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"),
-				getBoolKey(elem, "relativeCoords", true));
+			return Actions::parseDrawableSetPosition(elem);
 		}
 		case str2int16("drawable.setPositionX"):
 		{
-			return std::make_shared<ActDrawableSetPositionXY>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "position"),
-				false);
+			return Actions::parseDrawableSetPositionX(elem);
 		}
 		case str2int16("drawable.setPositionY"):
 		{
-			return std::make_shared<ActDrawableSetPositionXY>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "position"),
-				true);
+			return Actions::parseDrawableSetPositionY(elem);
 		}
 		case str2int16("drawable.setSize"):
 		{
-			return std::make_shared<ActDrawableSetSize>(
-				getStringViewKey(elem, "id"),
-				getVector2fKey<sf::Vector2f>(elem, "size"));
+			return Actions::parseDrawableSetSize(elem);
 		}
 		case str2int16("drawable.setSizeX"):
 		{
-			return std::make_shared<ActDrawableSetSizeXY>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "size"),
-				false);
+			return Actions::parseDrawableSetSizeX(elem);
 		}
 		case str2int16("drawable.setSizeY"):
 		{
-			return std::make_shared<ActDrawableSetSizeXY>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "size"),
-				true);
+			return Actions::parseDrawableSetSizeY(elem);
 		}
 		case str2int16("drawable.toggleVisible"):
 		{
-			return std::make_shared<ActToggleVisible>(getStringViewKey(elem, "id"));
+			return Actions::parseToggleVisible(elem);
 		}
 		case str2int16("drawable.verticalAnchorToFocused"):
 		{
-			return std::make_shared<ActDrawableVerticalAnchorToFocused>(
-				getStringViewKey(elem, "id"),
-				(float)getIntKey(elem, "offset"));
+			return Actions::parseDrawableVerticalAnchorToFocused(elem);
 		}
 		case str2int16("drawable.visible"):
 		{
-			return std::make_shared<ActSetVisible>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "visible", true));
+			return Actions::parseSetVisible(elem);
 		}
 		case str2int16("event.add"):
 		{
-			return std::make_shared<ActEventAdd>(
-				getStringViewKey(elem, "id"),
-				getActionKey(game, elem, "action"),
-				getTimeKey(elem, "time"),
-				getBoolKey(elem, "addToFront"));
+			return Actions::parseEventAdd(game, elem);
 		}
 		case str2int16("event.delete"):
 		{
-			return std::make_shared<ActEventDelete>(getStringViewKey(elem, "id"));
+			return Actions::parseEventDelete(elem);
 		}
 		case str2int16("event.deleteAll"):
 		{
-			return std::make_shared<ActEventDeleteAll>();
+			return Actions::parseEventDeleteAll();
 		}
 		case str2int16("event.resetTime"):
 		{
-			return std::make_shared<ActEventResetTime>(getStringViewKey(elem, "id"));
+			return Actions::parseEventResetTime(elem);
 		}
 		case str2int16("file.copy"):
 		{
-			return std::make_shared<ActFileCopy>(
-				getStringViewKey(elem, "dir"),
-				getStringVectorKey(elem, "file"),
-				getStringViewKey(elem, "writeFile"),
-				getStringViewKey(elem, "nullText"),
-				getReplaceVarsKey(elem, "replace"));
+			return Actions::parseFileCopy(elem);
 		}
 		case str2int16("focus.add"):
 		{
-			return std::make_shared<ActFocusAdd>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "resource"),
-				getBoolKey(elem, "focus", true));
+			return Actions::parseFocusAdd(elem);
 		}
 		case str2int16("focus.click"):
 		{
-			return std::make_shared<ActFocusClick>(getBoolKey(elem, "playSound", true));
+			return Actions::parseFocusClick(elem);
 		}
 		case str2int16("focus.moveDown"):
 		{
-			return std::make_shared<ActFocusMoveDown>();
+			return Actions::parseFocusMoveDown();
 		}
 		case str2int16("focus.moveUp"):
 		{
-			return std::make_shared<ActFocusMoveUp>();
+			return Actions::parseFocusMoveUp();
 		}
 		case str2int16("focus.rightClick"):
 		{
-			return std::make_shared<ActFocusRightClick>(getBoolKey(elem, "playSound", true));
+			return Actions::parseFocusRightClick(elem);
 		}
 		case str2int16("focus.set"):
 		{
-			return std::make_shared<ActFocusSet>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "focus", true));
+			return Actions::parseFocusSet(elem);
 		}
 		case str2int16("focus.update"):
 		{
-			return std::make_shared<ActFocusUpdate>();
+			return Actions::parseFocusUpdate(elem);
 		}
 		case str2int16("font.setColor"):
 		case str2int16("font.setPalette"):
 		{
-			return std::make_shared<ActFontSetPaletteOrColor>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "palette"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseFontSetPaletteOrColor(elem);
 		}
 		case str2int16("game.addToProperty"):
 		{
-			return std::make_shared<ActGameAddToProperty>(
-				getStringViewKey(elem, "property"),
-				getVariableKey(elem, "value"));
+			return Actions::parseGameAddToProperty(elem);
 		}
 		case str2int16("game.clearPlayingSounds"):
 		{
-			return std::make_shared<ActGameClearPlayingSounds>();
+			return Actions::parseGameClearPlayingSounds();
 		}
 		case str2int16("game.close"):
 		{
-			return std::make_shared<ActGameClose>();
+			return Actions::parseGameClose();
 		}
 		case str2int16("game.draw"):
 		{
-			return std::make_shared<ActGameDraw>();
+			return Actions::parseGameDraw();
 		}
 		case str2int16("game.enableInput"):
 		{
-			return std::make_shared<ActGameEnableInput>(getBoolKey(elem, "enable", true));
+			return Actions::parseGameEnableInput(elem);
 		}
 		case str2int16("game.fadeIn"):
 		{
-			auto action = std::make_shared<ActGameFade>(
-				getColorKey(elem, "color"),
-				false,
-				getBoolKey(elem, "enableInput", true),
-				(uint8_t)getUIntKey(elem, "fade", 25),
-				getTimeKey(elem, "refresh", sf::milliseconds(15)));
-
-			if (elem.HasMember("action"sv))
-			{
-				action->setAction(getActionVal(game, elem["action"sv]));
-			}
-			return action;
+			return Actions::parseGameFadeIn(game, elem);
 		}
 		case str2int16("game.fadeOut"):
 		{
-			auto action = std::make_shared<ActGameFade>(
-				getColorKey(elem, "color", sf::Color::Transparent),
-				true,
-				getBoolKey(elem, "enableInput"),
-				(uint8_t)getUIntKey(elem, "fade", 25),
-				getTimeKey(elem, "refresh", sf::milliseconds(15)));
-
-			if (elem.HasMember("action"sv))
-			{
-				action->setAction(getActionVal(game, elem["action"sv]));
-			}
-			return action;
+			return Actions::parseGameFadeOut(game, elem);
 		}
 		case str2int16("game.load"):
 		{
-			return std::make_shared<ActGameLoad>(
-				getStringViewKey(elem, "file"),
-				getStringViewKey(elem, "mainFile", "main.json"));
-		}
-		case str2int16("game.pauseOnFocusLoss"):
-		{
-			return std::make_shared<ActGamePauseOnFocusLoss>(getBoolKey(elem, "pause", true));
+			return Actions::parseGameLoad(elem);
 		}
 		case str2int16("game.setGamma"):
 		{
-			return std::make_shared<ActGameSetGamma>(getVariableKey(elem, "gamma"));
+			return Actions::parseGameSetGamma(elem);
 		}
 		case str2int16("game.setMusicVolume"):
 		{
-			return std::make_shared<ActGameSetMusicVolume>(getVariableKey(elem, "volume"));
+			return Actions::parseGameSetMusicVolume(elem);
 		}
 		case str2int16("game.setProperty"):
 		{
-			auto action = std::make_shared<ActGameSetProperty>(
-				getStringViewKey(elem, "property"),
-				getVariableKey(elem, "value"));
-
-			if (elem.HasMember("propRange"sv) == true)
-			{
-				action->setPropRange(getVector2iKey<sf::Vector2i>(elem, "propRange"));
-			}
-			if (elem.HasMember("valueRange"sv) == true)
-			{
-				action->setValueRange(getVector2iKey<sf::Vector2i>(elem, "valueRange"));
-			}
-			return action;
+			return Actions::parseGameSetProperty(elem);
 		}
 		case str2int16("game.setShader"):
 		{
-			return std::make_shared<ActShaderSetGameShader>(
-				getStringViewKey(elem, "shader"),
-				getStringViewKey(elem, "gameShader"));
+			return Actions::parseShaderSetGameShader(elem);
 		}
 		case str2int16("game.setSoundVolume"):
 		{
-			return std::make_shared<ActGameSetSoundVolume>(getVariableKey(elem, "volume"));
+			return Actions::parseGameSetSoundVolume(elem);
 		}
 		case str2int16("if"):
 		{
-			return getMultiIfCondition(game, elem);
+			return Actions::parseMultiIfCondition(game, elem);
 		}
 		case str2int16("if.equal"):
 		{
-			return getIfCondition(str2int16("=="), game, elem);
+			return Actions::parseIfCondition(str2int16("=="), game, elem);
 		}
 		case str2int16("if.greater"):
 		{
-			return getIfCondition(str2int16(">"), game, elem);
+			return Actions::parseIfCondition(str2int16(">"), game, elem);
 		}
 		case str2int16("if.inList"):
 		{
-			return getInListCondition(game, elem);
+			return Actions::parseInListCondition(game, elem);
 		}
 		case str2int16("if.lower"):
 		{
-			return getIfCondition(str2int16("<"), game, elem);
+			return Actions::parseIfCondition(str2int16("<"), game, elem);
 		}
 		case str2int16("if.notEqual"):
 		{
-			return getIfCondition(str2int16("!="), game, elem);
+			return Actions::parseIfCondition(str2int16("!="), game, elem);
 		}
 		case str2int16("if.regex"):
 		{
-			return getIfCondition(str2int16("regex"), game, elem);
+			return Actions::parseIfCondition(str2int16("regex"), game, elem);
 		}
 		case str2int16("image.enableOutline"):
 		{
-			return std::make_shared<ActImageEnableOutline>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "enable", true));
+			return Actions::parseImageEnableOutline(elem);
 		}
 		case str2int16("image.inverseResizeX"):
 		{
-			return std::make_shared<ActImageInverseResizeXY>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "size"),
-				getVariableKey(elem, "inputRangeMin"),
-				getVariableKey(elem, "inputRangeMax"),
-				getVector2iKey<sf::Vector2i>(elem, "range"),
-				false);
+			return Actions::parseImageInverseResizeX(elem);
 		}
 		case str2int16("image.inverseResizeY"):
 		{
-			return std::make_shared<ActImageInverseResizeXY>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "size"),
-				getVariableKey(elem, "inputRangeMin"),
-				getVariableKey(elem, "inputRangeMax"),
-				getVector2iKey<sf::Vector2i>(elem, "range"),
-				true);
+			return Actions::parseImageInverseResizeY(elem);
 		}
 		case str2int16("image.setOutline"):
 		{
-			return std::make_shared<ActImageSetOutline>(
-				getStringViewKey(elem, "id"),
-				getColorKey(elem, "outline", sf::Color::Transparent),
-				getColorKey(elem, "ignore", sf::Color::Transparent));
+			return Actions::parseImageSetOutline(elem);
 		}
 		case str2int16("image.setPalette"):
 		{
-			return std::make_shared<ActImageSetPalette>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "palette"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseImageSetPalette(elem);
 		}
 		case str2int16("image.setTexture"):
 		{
-			if (elem.HasMember("texture"sv) == true)
-			{
-				return std::make_shared<ActImageSetTexture>(
-					getStringViewKey(elem, "id"),
-					getStringViewKey(elem, "texture"),
-					getBoolKey(elem, "resetRect"));
-			}
-			else if (elem.HasMember("texturePack"sv) == true)
-			{
-				return std::make_shared<ActImageSetTextureFromPack>(
-					getStringViewKey(elem, "id"),
-					getStringViewKey(elem, "texturePack"),
-					getUIntKey(elem, "index"));
-			}
-			else
-			{
-				return std::make_shared<ActImageSetTextureFromQueryable>(
-					getStringViewKey(elem, "id"),
-					getStringViewKey(elem, "query"),
-					getUIntKey(elem, "index"));
-			}
+			return Actions::parseImageSetTexture(elem);
 		}
 		case str2int16("image.setTextureRect"):
 		{
-			return std::make_shared<ActImageSetTextureRect>(
-				getStringViewKey(elem, "id"),
-				getIntRectKey(elem, "rect"));
+			return Actions::parseImageSetTextureRect(elem);
 		}
 		case str2int16("inputText.click"):
 		{
-			return std::make_shared<ActInputTextClick>(getStringViewKey(elem, "id"));
+			return Actions::parseInputTextClick(elem);
 		}
 		case str2int16("io.delete"):
 		{
-			return std::make_shared<ActIODelete>(getStringViewKey(elem, "file"));
+			return Actions::parseIODelete(elem);
 		}
 		case str2int16("io.deleteAll"):
 		{
-			return std::make_shared<ActIODeleteAll>(
-				getStringViewKey(elem, "file"),
-				getBoolKey(elem, "deleteRoot", true));
+			return Actions::parseIODeleteAll(elem);
 		}
 		case str2int16("load"):
 		{
-			return std::make_shared<ActLoad>(getStringVectorKey(elem, "file"));
-		}
-		case str2int16("loadRandom"):
-		{
-			return std::make_shared<ActLoadRandom>(
-				getStringVectorKey(elem, "file"),
-				getStringViewKey(elem, "endsWith", ".json"));
+			return Actions::parseLoad(elem);
 		}
 		case str2int16("loadingScreen.clear"):
 		{
-			return std::make_shared<ActLoadingScreenClear>();
+			return Actions::parseLoadingScreenClear();
 		}
 		case str2int16("loadingScreen.setProgress"):
 		{
-			return std::make_shared<ActLoadingScreenSetProgress>(getIntKey(elem, "progress"));
+			return Actions::parseLoadingScreenSetProgress(elem);
 		}
 		case str2int16("loadJson"):
 		{
-			std::string json;
-			if (elem.HasMember("json"sv) == true)
-			{
-				if (elem["json"sv].IsString())
-				{
-					json = getStringVal(elem["json"sv]);
-				}
-				else
-				{
-					json = JsonUtils::jsonToString(elem["json"sv]);
-				}
-			}
-			else if (isValidString(elem, "file") == true)
-			{
-				json = FileUtils::readText(elem["file"sv].GetString());
-			}
-			if (isValidArray(elem, "args") == true)
-			{
-				return std::make_shared<ActLoadJson>(
-					json,
-					getStringVectorKey(elem, "args"));
-			}
-			else
-			{
-				return std::make_shared<ActLoadJson>(json);
-			}
+			return Actions::parseLoadJson(elem);
+		}
+		case str2int16("loadRandom"):
+		{
+			return Actions::parseLoadRandom(elem);
 		}
 		case str2int16("menu.appendText"):
 		{
-			return parseSetMenuTextHelper<ActMenuAppendText>(game, elem);
+			return Actions::parseMenuAppendText(elem);
 		}
 		case str2int16("menu.click"):
 		{
-			return std::make_shared<ActMenuClick>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseMenuClick(elem);
 		}
 		case str2int16("menu.clickVisible"):
 		{
-			return std::make_shared<ActMenuClickVisible>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseMenuClickVisible(elem);
 		}
 		case str2int16("menu.moveScrollbar"):
 		{
-			return std::make_shared<ActMenuMoveScrollbar>(
-				getStringViewKey(elem, "idMenu"),
-				getStringViewKey(elem, "idScrollbar"),
-				getStringViewKey(elem, "idAnchorTo"),
-				getUIntKey(elem, "range"),
-				getBoolKey(elem, "focus"));
+			return Actions::parseMenuMoveScrollbar(elem);
 		}
 		case str2int16("menu.rightClick"):
 		{
-			return std::make_shared<ActMenuRightClick>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseMenuRightClick(elem);
 		}
 		case str2int16("menu.rightClickVisible"):
 		{
-			return std::make_shared<ActMenuRightClickVisible>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getBoolKey(elem, "playSound", true));
+			return Actions::parseMenuRightClickVisible(elem);
 		}
 		case str2int16("menu.setColor"):
 		{
-			return std::make_shared<ActMenuSetColor>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseMenuSetColor(elem);
 		}
 		case str2int16("menu.setFont"):
 		{
-			return std::make_shared<ActMenuSetFont>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "index"),
-				getStringViewKey(elem, "font"));
+			return Actions::parseMenuSetFont(elem);
 		}
 		case str2int16("menu.setIndex"):
 		{
-			return std::make_shared<ActMenuSetIndex>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "index"),
-				getBoolKey(elem, "focus"));
+			return Actions::parseMenuSetIndex(elem);
 		}
 		case str2int16("menu.setText"):
 		{
-			return parseSetMenuTextHelper<ActMenuSetText>(game, elem);
+			return Actions::parseMenuSetText(elem);
 		}
 		case str2int16("mount"):
 		{
-			return std::make_shared<ActMount>(
-				getStringViewKey(elem, "file"),
-				getStringViewKey(elem, "mount"),
-				getBoolKey(elem, "append", true),
-				getBoolKey(elem, "useSaveDir"));
+			return Actions::parseMount(elem);
 		}
 		case str2int16("movie.pause"):
 		{
-			return std::make_shared<ActMoviePause>(getStringViewKey(elem, "id"));
+			return Actions::parseMoviePause(elem);
 		}
 		case str2int16("movie.play"):
 		{
-			return std::make_shared<ActMoviePlay>(getStringViewKey(elem, "id"));
+			return Actions::parseMoviePlay(elem);
 		}
 		case str2int16("palette.replace"):
 		{
-			return std::make_shared<ActPaletteReplace>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "idSource"),
-				getUIntKey(elem, "srcStart", 0),
-				getUIntKey(elem, "size", 256),
-				getUIntKey(elem, "dstStart", 0),
-				getBoolKey(elem, "stepReplace"));
+			return Actions::parsePaletteReplace(elem);
 		}
 		case str2int16("palette.shiftLeft"):
 		{
-			return std::make_shared<ActPaletteShiftLeft>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "shift", 1),
-				getVector2uKey<std::pair<size_t, size_t>>(elem, "range", { 0, 256 }));
+			return Actions::parsePaletteShiftLeft(elem);
 		}
 		case str2int16("palette.shiftRight"):
 		{
-			return std::make_shared<ActPaletteShiftRight>(
-				getStringViewKey(elem, "id"),
-				getUIntKey(elem, "shift", 1),
-				getVector2uKey<std::pair<size_t, size_t>>(elem, "range", { 0, 256 }));
-		}
-		case str2int16("randomList"):
-		{
-			auto actionList = std::make_shared<ActRandomList>();
-			bool hasActions = false;
-			if (elem.HasMember("actions"sv) == true &&
-				elem["actions"sv].IsArray() == true)
-			{
-				for (const auto& val : elem["actions"sv])
-				{
-					auto action = getActionVal(game, val);
-					if (action != nullptr)
-					{
-						actionList->add(action);
-						hasActions = true;
-					}
-				}
-			}
-			if (hasActions == false)
-			{
-				return nullptr;
-			}
-			return actionList;
+			return Actions::parsePaletteShiftRight(elem);
 		}
 		case str2int16("random"):
 		{
-			return std::make_shared<ActRandom>(
-				getFloatKey(elem, "percentage", 0.5),
-				getActionKey(game, elem, "action1"),
-				getActionKey(game, elem, "action2"));
+			return Actions::parseRandom(game, elem);
+		}
+		case str2int16("randomList"):
+		{
+			return Actions::parseRandomList(game, elem);
 		}
 		case str2int16("resource.add"):
 		{
-			auto id = getStringViewKey(elem, "id");
-			if (isValidId(id) == false)
-			{
-				return nullptr;
-			}
-			auto action = std::make_shared<ActResourceAdd>(id);
-			if (elem.HasMember("ignorePrevious"sv) == true)
-			{
-				action->setIgnorePrevious(
-					getIgnoreResourceVal(elem["ignorePrevious"sv]));
-			}
-			return action;
-		}
-		case str2int16("resource.ignore"):
-		{
-			return std::make_shared<ActResourceIgnore>(
-				getStringViewKey(elem, "id"),
-				getIgnoreResourceKey(elem, "ignore", IgnoreResource::Draw | IgnoreResource::Update));
+			return Actions::parseResourceAdd(elem);
 		}
 		case str2int16("resource.bringToFront"):
 		{
-			return std::make_shared<ActResourceBringToFront>(getStringViewKey(elem, "id"));
+			return Actions::parseResourceBringToFront(elem);
+		}
+		case str2int16("resource.ignore"):
+		{
+			return Actions::parseResourceIgnore(elem);
 		}
 		case str2int16("resource.pop"):
 		{
-			return std::make_shared<ActResourcePop>(
-				getStringViewKey(elem, "id"),
-				getIgnoreResourceKey(elem, "ignorePrevious"));
+			return Actions::parseResourcePop(elem);
 		}
 		case str2int16("resource.popAll"):
 		{
-			return std::make_shared<ActResourcePopAll>(
-				getStringViewKey(elem, "id"),
-				getBoolKey(elem, "popBase"),
-				getIgnoreResourceKey(elem, "ignorePrevious"));
+			return Actions::parseResourcePopAll(elem);
 		}
 		case str2int16("scrollable.setSpeed"):
 		{
-			return std::make_shared<ActScrollableSetSpeed>(
-				getStringViewKey(elem, "id"),
-				getTimeKey(elem, "speed"));
+			return Actions::parseScrollableSetSpeed(elem);
 		}
 		case str2int16("shader.setBool"):
 		{
-			return std::make_shared<ActShaderSetUniform<bool>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				getBoolKey(elem, "value"));
+			return Actions::parseShaderSetBool(elem);
 		}
 		case str2int16("shader.setColor"):
 		{
-			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec4>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				sf::Glsl::Vec4(getColorKey(elem, "value")));
+			return Actions::parseShaderSetColor(elem);
 		}
 		case str2int16("shader.setFloat"):
 		{
-			return std::make_shared<ActShaderSetUniform<float>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				getFloatKey(elem, "value"));
+			return Actions::parseShaderSetFloat(elem);
 		}
 		case str2int16("shader.setVec2"):
 		{
-			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec2>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				getVector2fKey<sf::Glsl::Vec2>(elem, "value"));
+			return Actions::parseShaderSetVec2(elem);
 		}
 		case str2int16("shader.setVec3"):
 		{
-			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec3>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				getVector3fKey<sf::Glsl::Vec3>(elem, "value"));
+			return Actions::parseShaderSetVec3(elem);
 		}
 		case str2int16("shader.setVec4"):
 		{
-			return std::make_shared<ActShaderSetUniform<sf::Glsl::Vec4>>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "key"),
-				getVector4fKey<sf::Glsl::Vec4>(elem, "value"));
+			return Actions::parseShadersetVec4(elem);
 		}
 		case str2int16("sound.loadPlay"):
 		{
-			return std::make_shared<ActSoundLoadPlay>(
-				getStringViewKey(elem, "file"),
-				getVariableKey(elem, "volume"),
-				getTimeKey(elem, "seek"),
-				getBoolKey(elem, "unique"));
+			return Actions::parseSoundLoadPlay(elem);
 		}
 		case str2int16("sound.play"):
 		{
-			return std::make_shared<ActSoundPlay>(
-				getStringViewKey(elem, "id"),
-				getVariableKey(elem, "volume"),
-				getTimeKey(elem, "seek"),
-				getBoolKey(elem, "unique"));
+			return Actions::parseSoundPlay(elem);
 		}
 		case str2int16("switch"):
 		{
-			return getSwitchCondition(game, elem);
+			return Actions::parseSwitchCondition(game, elem);
 		}
 		case str2int16("text.appendText"):
 		{
-			return parseSetTextHelper<ActTextAppendText>(game, elem);
+			return Actions::parseTextAppendText(elem);
 		}
 		case str2int16("text.setColor"):
 		{
-			return std::make_shared<ActTextSetColor>(
-				getStringViewKey(elem, "id"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseTextSetColor(elem);
 		}
 		case str2int16("text.setFont"):
 		{
-			return std::make_shared<ActTextSetFont>(
-				getStringViewKey(elem, "id"),
-				getStringViewKey(elem, "font"));
+			return Actions::parseTextSetFont(elem);
 		}
 		case str2int16("text.setSpacing"):
 		{
-			auto action = std::make_shared<ActTextSetSpacing>(
-				getStringViewKey(elem, "id"));
-			if (elem.HasMember("horizontal"sv) == true)
-			{
-				action->setHorizontalSpaceOffset(getIntVal(elem["horizontal"sv]));
-			}
-			if (elem.HasMember("vertical"sv) == true)
-			{
-				action->setVerticalSpaceOffset(getIntVal(elem["vertical"sv]));
-			}
-			return action;
+			return Actions::parseTextSetSpacing(elem);
 		}
 		case str2int16("text.setText"):
 		{
-			return parseSetTextHelper<ActTextSetText>(game, elem);
+			return Actions::parseTextSetText(elem);
 		}
 		case str2int16("unmount"):
 		{
-			return std::make_shared<ActUnmount>(
-				getStringViewKey(elem, "file"),
-				getBoolKey(elem, "useSaveDir"));
+			return Actions::parseUnmount(elem);
 		}
 		case str2int16("unmountAll"):
 		{
-			return std::make_shared<ActUnmountAll>();
+			return Actions::parseUnmountAll();
 		}
 		case str2int16("variable.add"):
 		{
-			return std::make_shared<ActVariableAdd>(
-				getStringViewKey(elem, "key"),
-				getVariableKey(elem, "value"));
+			return Actions::parseVariableAdd(elem);
 		}
 		case str2int16("variable.clear"):
 		{
-			return std::make_shared<ActVariableClear>(getStringViewKey(elem, "key"));
+			return Actions::parseVariableClear(elem);
 		}
 		case str2int16("variable.save"):
 		{
-			return std::make_shared<ActVariableSave>(
-				getStringViewKey(elem, "file"),
-				getStringVectorKey(elem, "vars"));
+			return Actions::parseVariableSave(elem);
 		}
 		case str2int16("variable.set"):
 		{
-			if (elem.HasMember("values"sv) == true &&
-				elem["values"sv].IsObject() == true)
-			{
-				return std::make_shared<ActVariablesSet>(
-					getVariables(elem["values"sv]),
-					getBoolKey(elem, "resolveValue", true));
-			}
-			auto key = getStringViewKey(elem, "key");
-			if (isValidId(key) == false)
-			{
-				return nullptr;
-			}
-			return std::make_shared<ActVariableSet>(
-				key,
-				getVariableKey(elem, "value"),
-				getBoolKey(elem, "resolveValue", true));
+			return Actions::parseVariableSet(elem);
 		}
 		case str2int16("variable.setIfNull"):
 		{
-			auto key = getStringViewKey(elem, "key");
-			if (isValidId(key) == false)
-			{
-				return nullptr;
-			}
-			return std::make_shared<ActVariableSetIfNull>(
-				key,
-				getVariableKey(elem, "value"),
-				getBoolKey(elem, "resolveValue", true));
+			return Actions::parseVariableSetIfNull(elem);
 		}
 		default:
 		{
@@ -1281,7 +749,7 @@ namespace Parser
 		return nullptr;
 	}
 
-	std::shared_ptr<Action> getActionKey(Game& game, const Value& elem, const char* key)
+	std::shared_ptr<Action> getActionKey(Game& game, const Value& elem, const std::string_view key)
 	{
 		if (elem.HasMember(key) == true)
 		{

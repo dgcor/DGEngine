@@ -5,15 +5,15 @@
   ],
   "inputEvent": [
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": { "name": "button.click", "id": "cancel" }
     },
     {
-      "key": "enter",
+      "gameInputEvent": "enter",
       "action": { "name": "button.click", "id": "ok" }
     },
     {
-      "key": " ",
+      "gameInputEvent": "space",
       "action": null
     }
   ],

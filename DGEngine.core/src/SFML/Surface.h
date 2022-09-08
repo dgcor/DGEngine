@@ -19,6 +19,7 @@ protected:
 	mutable sf::RenderTexture texture;
 	View2 mapView{ true };
 	View2 drawView{ true };
+	bool isometricZoom{ false };
 	bool supportsBigTextures{ false };
 
 	void recreateRenderTexture(bool smoothTexture);
@@ -34,7 +35,12 @@ public:
 	sf::FloatRect visibleRect;
 	bool visible{ true };
 
+	Surface() = default;
+	Surface(float isometricZoom_) : isometricZoom(isometricZoom_) {}
 	virtual ~Surface() = default;
+
+	float getIsometricZoom() const noexcept { return isometricZoom; }
+	void setIsometricZoom(float isometricZoom_) noexcept { isometricZoom = isometricZoom_; }
 
 	Anchor getAnchor() const noexcept;
 	void setAnchor(const Anchor anchor_) noexcept;
@@ -59,8 +65,7 @@ public:
 	void draw(const Game& game, const UIObject& obj) const;
 	void draw(const sf::Drawable& obj, sf::RenderStates states = sf::RenderStates::Default) const;
 	void draw(const Sprite2& obj, GameShader* spriteShader, SpriteShaderCache& cache) const;
-	void draw(const VertexArray2& obj, const sf::Texture* vertexTexture,
-		const Palette* palette, GameShader* spriteShader) const;
+	void draw(const VertexArray2& obj, const sf::Texture* vertexTexture, const Palette* palette, GameShader* spriteShader) const;
 
 	void init(const Game& game);
 

@@ -1,20 +1,15 @@
 cmake_minimum_required(VERSION 3.12.4 FATAL_ERROR)
 
-project(DGEngine.core VERSION 1.0.0)
-
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
-    add_definitions(-Wall -stdlib=libc++)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.0)
-        message(FATAL_ERROR "GCC version must be at least 11!")
-    endif()
-    if(NOT BEOS)
-        add_definitions(-Wall)
-    endif()
+# use ccache if available
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    message(STATUS "Found ccache in ${CCACHE_PROGRAM}")
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
+project(DGEngine.core VERSION 1.1.0)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake_modules")
 
 option(MOVIE_SUPPORT "Enable Movie support" TRUE)
 option(FALLBACK_TO_LOWERCASE "Enable falling back to all lowercase names if file is not found" TRUE)
@@ -23,217 +18,298 @@ if(MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
 find_package(PhysFS REQUIRED)
-find_package(SFML 2.5 REQUIRED system window graphics network audio)
+find_package(SFML 2.6 COMPONENTS audio graphics REQUIRED)
 
 include_directories(src)
 
 set(SOURCE_FILES
-    src/Alignment.h
-    src/Anchor.h
-    src/Animation.cpp
-    src/Animation.h
-    src/AnimationInfo.h
-    src/AnimationType.h
-    src/AudioSource.h
-    src/BaseAnimation.cpp
-    src/BaseAnimation.h
-    src/BindableText.cpp
-    src/BindableText.h
-    src/BindingFlags.h
-    src/BitmapButton.cpp
-    src/BitmapButton.h
-    src/BitmapFont.cpp
-    src/BitmapFont.h
-    src/BitmapText.cpp
-    src/BitmapText.h
-    src/BlendMode.h
-    src/Button.cpp
-    src/Button.h
-    src/CachedImagePack.cpp
-    src/CachedImagePack.h
-    src/Circle.cpp
-    src/Circle.h
-    src/CmdLineUtils.cpp
-    src/CmdLineUtils.h
-    src/DrawableText.h
-    src/Event.cpp
-    src/Event.h
-    src/EventManager.h
-    src/FadeInOut.cpp
-    src/FadeInOut.h
-    src/FileBytes.h
-    src/FileUtils.cpp
-    src/FileUtils.h
-    src/Font.h
-    src/Formula.cpp
-    src/Formula.h
-    src/Formulas.h
-    src/FreeTypeFont.h
-    src/Game.cpp
-    src/Game.h
-    src/GameUtils.cpp
-    src/GameUtils.h
     src/Hooks.cpp
     src/Hooks.h
-    src/IfCondition.cpp
-    src/IfCondition.h
-    src/IgnoreResource.h
-    src/Image.cpp
-    src/Image.h
-    src/ImageUtils.cpp
-    src/ImageUtils.h
-    src/InputEvent.cpp
-    src/InputEvent.h
-    src/InputText.cpp
-    src/InputText.h
-    src/LoadingScreen.cpp
-    src/LoadingScreen.h
-    src/Menu.cpp
-    src/Menu.h
-    src/Movie2.cpp
-    src/Movie2.h
-    src/Palette.cpp
-    src/Palette.h
-    src/Panel.cpp
-    src/Panel.h
-    src/Queryable.h
-    src/Rectangle.cpp
-    src/Rectangle.h
-    src/ResourceManager.cpp
-    src/ResourceManager.h
-    src/Scrollable.cpp
-    src/Scrollable.h
-    src/Shader.h
-    src/ShaderManager.cpp
-    src/ShaderManager.h
-    src/Shape.cpp
-    src/Shape.h
-    src/StreamReader.h
-    src/StringButton.cpp
-    src/StringButton.h
-    src/StringText.cpp
-    src/StringText.h
-    src/Text.cpp
-    src/Text.h
-    src/TextureInfo.h
-    src/TextUtils.cpp
-    src/TextUtils.h
-    src/UIObject.cpp
-    src/UIObject.h
-    src/Variable.cpp
-    src/Variable.h
-    src/VarOrPredicate.h
-    src/Actions/ActAction.h
-    src/Actions/ActAnimation.h
-    src/Actions/ActAudio.h
-    src/Actions/ActButton.h
-    src/Actions/ActCondition.h
-    src/Actions/ActCursor.h
-    src/Actions/ActDrawable.h
-    src/Actions/ActEvent.h
-    src/Actions/ActFade.h
-    src/Actions/ActFocus.h
-    src/Actions/ActFont.h
-    src/Actions/ActGame.h
-    src/Actions/ActImage.h
-    src/Actions/ActInputText.h
-    src/Actions/ActIO.h
-    src/Actions/Action.h
-    src/Actions/ActiontList.h
-    src/Actions/ActLoad.h
-    src/Actions/ActLoadingScreen.h
-    src/Actions/ActMenu.h
-    src/Actions/ActMount.h
-    src/Actions/ActMovie.h
-    src/Actions/ActPalette.h
-    src/Actions/ActRandom.h
-    src/Actions/ActResource.h
-    src/Actions/ActScrollable.h
-    src/Actions/ActShader.h
-    src/Actions/ActSound.h
-    src/Actions/ActText.h
-    src/Actions/ActVariable.h
-    src/Actions/ActVisibility.h
-    src/Game/Save/SaveProperties.h
-    src/Game/Save/SaveUtils.cpp
-    src/Game/Save/SaveUtils.h
-    src/ImageContainers/ImageContainer.h
-    src/ImageContainers/SimpleImageContainer.cpp
-    src/ImageContainers/SimpleImageContainer.h
+    src/Game/Action.h
+    src/Game/ActionQueryable.h
+    src/Game/Alignment.h
+    src/Game/Anchor.h
+    src/Game/AnimationInfo.h
+    src/Game/AnimationType.h
+    src/Game/BaseAnimation.cpp
+    src/Game/BaseAnimation.h
+    src/Game/BindingFlags.h
+    src/Game/BlendMode.h
+    src/Game/Event.cpp
+    src/Game/Event.h
+    src/Game/EventManager.cpp
+    src/Game/EventManager.h
+    src/Game/FadeInOut.cpp
+    src/Game/FadeInOut.h
+    src/Game/Formula.cpp
+    src/Game/Formula.h
+    src/Game/Formulas.h
+    src/Game/Game.cpp
+    src/Game/Game.h
+    src/Game/GameInputEventManager.cpp
+    src/Game/GameInputEventManager.h
+    src/Game/GameQueryable.cpp
+    src/Game/GameQueryable.h
+    src/Game/IfCondition.cpp
+    src/Game/IfCondition.h
+    src/Game/IgnoreResource.h
+    src/Game/InputEvent.cpp
+    src/Game/InputEvent.h
+    src/Game/Predicate.h
+    src/Game/Queryable.cpp
+    src/Game/Queryable.h
+    src/Game/QueryObject.h
+    src/Game/ResourceBundle.h
+    src/Game/ResourceManager.cpp
+    src/Game/ResourceManager.h
+    src/Game/ShaderManager.cpp
+    src/Game/ShaderManager.h
+    src/Game/TextureInfo.h
+    src/Game/TextureQueryable.h
+    src/Game/UIObject.cpp
+    src/Game/UIObject.h
+    src/Game/Variable.h
+    src/Game/VariableManager.cpp
+    src/Game/VariableManager.h
+    src/Game/VarOrPredicate.h
+    src/Game/VarOrQueryObject.h
+    src/Game/Actions/ActAction.h
+    src/Game/Actions/ActAnimation.h
+    src/Game/Actions/ActAudio.h
+    src/Game/Actions/ActButton.h
+    src/Game/Actions/ActCondition.h
+    src/Game/Actions/ActCursor.h
+    src/Game/Actions/ActDrawable.h
+    src/Game/Actions/ActEvent.h
+    src/Game/Actions/ActFade.h
+    src/Game/Actions/ActFocus.h
+    src/Game/Actions/ActFont.h
+    src/Game/Actions/ActGame.h
+    src/Game/Actions/ActImage.h
+    src/Game/Actions/ActInputText.h
+    src/Game/Actions/ActIO.h
+    src/Game/Actions/ActionList.h
+    src/Game/Actions/ActLoad.h
+    src/Game/Actions/ActLoadingScreen.h
+    src/Game/Actions/ActMenu.h
+    src/Game/Actions/ActMount.h
+    src/Game/Actions/ActMovie.h
+    src/Game/Actions/ActPalette.h
+    src/Game/Actions/ActRandom.h
+    src/Game/Actions/ActResource.h
+    src/Game/Actions/ActScrollable.h
+    src/Game/Actions/ActShader.h
+    src/Game/Actions/ActSound.h
+    src/Game/Actions/ActText.h
+    src/Game/Actions/ActVariable.h
+    src/Game/Actions/ActVisibility.h
+    src/Game/Drawables/Animation.cpp
+    src/Game/Drawables/Animation.h
+    src/Game/Drawables/BindableText.cpp
+    src/Game/Drawables/BindableText.h
+    src/Game/Drawables/BitmapButton.cpp
+    src/Game/Drawables/BitmapButton.h
+    src/Game/Drawables/BitmapText.cpp
+    src/Game/Drawables/BitmapText.h
+    src/Game/Drawables/Button.cpp
+    src/Game/Drawables/Button.h
+    src/Game/Drawables/Circle.cpp
+    src/Game/Drawables/Circle.h
+    src/Game/Drawables/DrawableText.h
+    src/Game/Drawables/Image.cpp
+    src/Game/Drawables/Image.h
+    src/Game/Drawables/InputText.cpp
+    src/Game/Drawables/InputText.h
+    src/Game/Drawables/LoadingScreen.cpp
+    src/Game/Drawables/LoadingScreen.h
+    src/Game/Drawables/Menu.cpp
+    src/Game/Drawables/Menu.h
+    src/Game/Drawables/Movie2.cpp
+    src/Game/Drawables/Movie2.h
+    src/Game/Drawables/Panel.cpp
+    src/Game/Drawables/Panel.h
+    src/Game/Drawables/Rectangle.cpp
+    src/Game/Drawables/Rectangle.h
+    src/Game/Drawables/Scrollable.cpp
+    src/Game/Drawables/Scrollable.h
+    src/Game/Drawables/Shape.cpp
+    src/Game/Drawables/Shape.h
+    src/Game/Drawables/StringButton.cpp
+    src/Game/Drawables/StringButton.h
+    src/Game/Drawables/StringText.cpp
+    src/Game/Drawables/StringText.h
+    src/Game/Drawables/Text.cpp
+    src/Game/Drawables/Text.h
+    src/Game/Predicates/PredIO.h
+    src/Game/Utils/CmdLineUtils.cpp
+    src/Game/Utils/CmdLineUtils.h
+    src/Game/Utils/FileUtils.cpp
+    src/Game/Utils/FileUtils.h
+    src/Game/Utils/GameUtils.cpp
+    src/Game/Utils/GameUtils.h
+    src/Game/Utils/ImageUtils.cpp
+    src/Game/Utils/ImageUtils.h
+    src/Game/Utils/TextUtils.cpp
+    src/Game/Utils/TextUtils.h
+    src/Game/Utils/UIObjectUtils.h
+    src/Game/Utils/VarUtils.cpp
+    src/Game/Utils/VarUtils.h
     src/Json/JsonParser.h
     src/Json/JsonUtils.cpp
     src/Json/JsonUtils.h
+    src/Json/SaveUtils.cpp
+    src/Json/SaveUtils.h
     src/Parser/ParseAction.cpp
     src/Parser/ParseAction.h
-    src/Parser/ParseAnimation.cpp
-    src/Parser/ParseAnimation.h
-    src/Parser/ParseAudio.cpp
-    src/Parser/ParseAudio.h
-    src/Parser/ParseAudioCommon.cpp
-    src/Parser/ParseAudioCommon.h
-    src/Parser/ParseButton.cpp
-    src/Parser/ParseButton.h
-    src/Parser/ParseCircle.cpp
-    src/Parser/ParseCircle.h
-    src/Parser/ParseCondition.cpp
-    src/Parser/ParseCondition.h
+    src/Parser/ParseCommon.cpp
+    src/Parser/ParseCommon.h
     src/Parser/ParseCursor.cpp
     src/Parser/ParseCursor.h
     src/Parser/ParseEvent.cpp
     src/Parser/ParseEvent.h
     src/Parser/ParseFile.cpp
     src/Parser/ParseFile.h
-    src/Parser/ParseFileBytes.cpp
-    src/Parser/ParseFileBytes.h
-    src/Parser/ParseFont.cpp
-    src/Parser/ParseFont.h
-    src/Parser/ParseIcon.cpp
-    src/Parser/ParseIcon.h
-    src/Parser/ParseImage.cpp
-    src/Parser/ParseImage.h
-    src/Parser/ParseImageContainer.cpp
-    src/Parser/ParseImageContainer.h
+    src/Parser/ParseGameInputEvent.cpp
+    src/Parser/ParseGameInputEvent.h
     src/Parser/ParseInputEvent.cpp
     src/Parser/ParseInputEvent.h
-    src/Parser/ParseInputText.cpp
-    src/Parser/ParseInputText.h
-    src/Parser/ParseLoadingScreen.cpp
-    src/Parser/ParseLoadingScreen.h
-    src/Parser/ParseMenu.cpp
-    src/Parser/ParseMenu.h
-    src/Parser/ParseMenuButton.cpp
-    src/Parser/ParseMenuButton.h
     src/Parser/ParseMountFile.cpp
     src/Parser/ParseMountFile.h
-    src/Parser/ParseMovie.cpp
-    src/Parser/ParseMovie.h
-    src/Parser/ParsePalette.cpp
-    src/Parser/ParsePalette.h
-    src/Parser/ParsePanel.cpp
-    src/Parser/ParsePanel.h
     src/Parser/ParsePredicate.cpp
     src/Parser/ParsePredicate.h
     src/Parser/Parser.cpp
     src/Parser/Parser.h
-    src/Parser/ParseRectangle.cpp
-    src/Parser/ParseRectangle.h
     src/Parser/ParserProperties.h
-    src/Parser/ParseScrollable.cpp
-    src/Parser/ParseScrollable.h
-    src/Parser/ParseShader.cpp
-    src/Parser/ParseShader.h
-    src/Parser/ParseShape.cpp
-    src/Parser/ParseShape.h
-    src/Parser/ParseSound.cpp
-    src/Parser/ParseSound.h
-    src/Parser/ParseText.cpp
-    src/Parser/ParseText.h
-    src/Parser/ParseTexture.cpp
-    src/Parser/ParseTexture.h
-    src/Parser/ParseTexturePack.cpp
-    src/Parser/ParseTexturePack.h
     src/Parser/ParseVariable.cpp
     src/Parser/ParseVariable.h
+    src/Parser/Actions/ParseActionActions.cpp
+    src/Parser/Actions/ParseActionActions.h
+    src/Parser/Actions/ParseAnimationActions.cpp
+    src/Parser/Actions/ParseAnimationActions.h
+    src/Parser/Actions/ParseAudioActions.cpp
+    src/Parser/Actions/ParseAudioActions.h
+    src/Parser/Actions/ParseButtonActions.cpp
+    src/Parser/Actions/ParseButtonActions.h
+    src/Parser/Actions/ParseConditionActions.cpp
+    src/Parser/Actions/ParseConditionActions.h
+    src/Parser/Actions/ParseCursorActions.cpp
+    src/Parser/Actions/ParseCursorActions.h
+    src/Parser/Actions/ParseDrawableActions.cpp
+    src/Parser/Actions/ParseDrawableActions.h
+    src/Parser/Actions/ParseEventActions.cpp
+    src/Parser/Actions/ParseEventActions.h
+    src/Parser/Actions/ParseFadeActions.cpp
+    src/Parser/Actions/ParseFadeActions.h
+    src/Parser/Actions/ParseFocusActions.cpp
+    src/Parser/Actions/ParseFocusActions.h
+    src/Parser/Actions/ParseFontActions.cpp
+    src/Parser/Actions/ParseFontActions.h
+    src/Parser/Actions/ParseGameActions.cpp
+    src/Parser/Actions/ParseGameActions.h
+    src/Parser/Actions/ParseImageActions.cpp
+    src/Parser/Actions/ParseImageActions.h
+    src/Parser/Actions/ParseInputTextActions.cpp
+    src/Parser/Actions/ParseInputTextActions.h
+    src/Parser/Actions/ParseIOActions.cpp
+    src/Parser/Actions/ParseIOActions.h
+    src/Parser/Actions/ParseLoadActions.cpp
+    src/Parser/Actions/ParseLoadActions.h
+    src/Parser/Actions/ParseLoadingScreenActions.cpp
+    src/Parser/Actions/ParseLoadingScreenActions.h
+    src/Parser/Actions/ParseMenuActions.cpp
+    src/Parser/Actions/ParseMenuActions.h
+    src/Parser/Actions/ParseMountActions.cpp
+    src/Parser/Actions/ParseMountActions.h
+    src/Parser/Actions/ParseMovieActions.cpp
+    src/Parser/Actions/ParseMovieActions.h
+    src/Parser/Actions/ParsePaletteActions.cpp
+    src/Parser/Actions/ParsePaletteActions.h
+    src/Parser/Actions/ParseRandomActions.cpp
+    src/Parser/Actions/ParseRandomActions.h
+    src/Parser/Actions/ParseResourceActions.cpp
+    src/Parser/Actions/ParseResourceActions.h
+    src/Parser/Actions/ParseScrollableActions.cpp
+    src/Parser/Actions/ParseScrollableActions.h
+    src/Parser/Actions/ParseShaderActions.cpp
+    src/Parser/Actions/ParseShaderActions.h
+    src/Parser/Actions/ParseSoundActions.cpp
+    src/Parser/Actions/ParseSoundActions.h
+    src/Parser/Actions/ParseTextActions.cpp
+    src/Parser/Actions/ParseTextActions.h
+    src/Parser/Actions/ParseVariableActions.cpp
+    src/Parser/Actions/ParseVariableActions.h
+    src/Parser/Actions/ParseVisibilityActions.cpp
+    src/Parser/Actions/ParseVisibilityActions.h
+    src/Parser/Drawables/ParseAnimation.cpp
+    src/Parser/Drawables/ParseAnimation.h
+    src/Parser/Drawables/ParseButton.cpp
+    src/Parser/Drawables/ParseButton.h
+    src/Parser/Drawables/ParseCircle.cpp
+    src/Parser/Drawables/ParseCircle.h
+    src/Parser/Drawables/ParseDrawable.cpp
+    src/Parser/Drawables/ParseDrawable.h
+    src/Parser/Drawables/ParseImage.cpp
+    src/Parser/Drawables/ParseImage.h
+    src/Parser/Drawables/ParseInputText.cpp
+    src/Parser/Drawables/ParseInputText.h
+    src/Parser/Drawables/ParseLoadingScreen.cpp
+    src/Parser/Drawables/ParseLoadingScreen.h
+    src/Parser/Drawables/ParseMenu.cpp
+    src/Parser/Drawables/ParseMenu.h
+    src/Parser/Drawables/ParseMenuItem.cpp
+    src/Parser/Drawables/ParseMenuItem.h
+    src/Parser/Drawables/ParseMovie.cpp
+    src/Parser/Drawables/ParseMovie.h
+    src/Parser/Drawables/ParsePanel.cpp
+    src/Parser/Drawables/ParsePanel.h
+    src/Parser/Drawables/ParseRectangle.cpp
+    src/Parser/Drawables/ParseRectangle.h
+    src/Parser/Drawables/ParseScrollable.cpp
+    src/Parser/Drawables/ParseScrollable.h
+    src/Parser/Drawables/ParseShape.cpp
+    src/Parser/Drawables/ParseShape.h
+    src/Parser/Drawables/ParseText.cpp
+    src/Parser/Drawables/ParseText.h
+    src/Parser/Game/ParseGame.cpp
+    src/Parser/Game/ParseGame.h
+    src/Parser/Game/ParseIcon.cpp
+    src/Parser/Game/ParseIcon.h
+    src/Parser/Game/ParseSaveDir.cpp
+    src/Parser/Game/ParseSaveDir.h
+    src/Parser/Resources/ParseAudio.cpp
+    src/Parser/Resources/ParseAudio.h
+    src/Parser/Resources/ParseAudioCommon.cpp
+    src/Parser/Resources/ParseAudioCommon.h
+    src/Parser/Resources/ParseFileBytes.cpp
+    src/Parser/Resources/ParseFileBytes.h
+    src/Parser/Resources/ParseFont.cpp
+    src/Parser/Resources/ParseFont.h
+    src/Parser/Resources/ParseImageContainer.cpp
+    src/Parser/Resources/ParseImageContainer.h
+    src/Parser/Resources/ParsePalette.cpp
+    src/Parser/Resources/ParsePalette.h
+    src/Parser/Resources/ParseResource.h
+    src/Parser/Resources/ParseShader.cpp
+    src/Parser/Resources/ParseShader.h
+    src/Parser/Resources/ParseSound.cpp
+    src/Parser/Resources/ParseSound.h
+    src/Parser/Resources/ParseTexture.cpp
+    src/Parser/Resources/ParseTexture.h
+    src/Parser/Resources/ParseTexturePack.cpp
+    src/Parser/Resources/ParseTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseBitmapFontTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseCompositeTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseImageContainerTexturePack.cpp
+    src/Parser/Resources/TexturePacks/ParseImageContainerTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseMultiTextureTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseSingleTextureTexturePack.cpp
+    src/Parser/Resources/TexturePacks/ParseSingleTextureTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseStackedTexturePack.h
+    src/Parser/Resources/TexturePacks/ParseTexturePackAnimatedTextures.h
+    src/Parser/Resources/TexturePacks/ParseTexturePackIndexes.h
+    src/Parser/Resources/TexturePacks/ParseTexturePackRects.h
+    src/Parser/Resources/TexturePacks/ParseTexturePacks.cpp
+    src/Parser/Resources/TexturePacks/ParseTexturePacks.h
     src/Parser/Utils/ParseUtils.cpp
     src/Parser/Utils/ParseUtils.h
     src/Parser/Utils/ParseUtilsIdx.cpp
@@ -242,8 +318,45 @@ set(SOURCE_FILES
     src/Parser/Utils/ParseUtilsKey.h
     src/Parser/Utils/ParseUtilsVal.cpp
     src/Parser/Utils/ParseUtilsVal.h
-    src/Predicates/Predicate.h
-    src/Predicates/PredIO.h
+    src/Resources/AudioSource.h
+    src/Resources/BitmapFont.cpp
+    src/Resources/BitmapFont.h
+    src/Resources/CachedImagePack.cpp
+    src/Resources/CachedImagePack.h
+    src/Resources/FileBytes.h
+    src/Resources/Font.h
+    src/Resources/FreeTypeFont.h
+    src/Resources/ImageContainer.h
+    src/Resources/Palette.cpp
+    src/Resources/Palette.h
+    src/Resources/Shader.cpp
+    src/Resources/Shader.h
+    src/Resources/TexturePack.cpp
+    src/Resources/TexturePack.h
+    src/Resources/ImageContainers/SimpleImageContainer.cpp
+    src/Resources/ImageContainers/SimpleImageContainer.h
+    src/Resources/TexturePacks/BitmapFontTexturePack.cpp
+    src/Resources/TexturePacks/BitmapFontTexturePack.h
+    src/Resources/TexturePacks/CompositeTexturePack.cpp
+    src/Resources/TexturePacks/CompositeTexturePack.h
+    src/Resources/TexturePacks/ImageContainerTexturePack.cpp
+    src/Resources/TexturePacks/ImageContainerTexturePack.h
+    src/Resources/TexturePacks/IndexedTexturePack.cpp
+    src/Resources/TexturePacks/IndexedTexturePack.h
+    src/Resources/TexturePacks/MultiImageContainerTexturePack.cpp
+    src/Resources/TexturePacks/MultiImageContainerTexturePack.h
+    src/Resources/TexturePacks/MultiTexturePack.cpp
+    src/Resources/TexturePacks/MultiTexturePack.h
+    src/Resources/TexturePacks/RectTexturePack.cpp
+    src/Resources/TexturePacks/RectTexturePack.h
+    src/Resources/TexturePacks/SimpleTexturePack.cpp
+    src/Resources/TexturePacks/SimpleTexturePack.h
+    src/Resources/TexturePacks/SingleTexturePack.cpp
+    src/Resources/TexturePacks/SingleTexturePack.h
+    src/Resources/TexturePacks/StackedTexturePack.cpp
+    src/Resources/TexturePacks/StackedTexturePack.h
+    src/Resources/TexturePacks/TexturePackGroup.cpp
+    src/Resources/TexturePacks/TexturePackGroup.h
     src/SFML/CompositeSprite.cpp
     src/SFML/CompositeSprite.h
     src/SFML/dr_wav.h
@@ -270,37 +383,27 @@ set(SOURCE_FILES
     src/SFML/View2.h
     src/SFML/Wave2.cpp
     src/SFML/Wave2.h
-    src/TexturePacks/BitmapFontTexturePack.cpp
-    src/TexturePacks/BitmapFontTexturePack.h
-    src/TexturePacks/CachedTexturePack.cpp
-    src/TexturePacks/CachedTexturePack.h
-    src/TexturePacks/CompositeTexturePack.cpp
-    src/TexturePacks/CompositeTexturePack.h
-    src/TexturePacks/IndexedTexturePack.cpp
-    src/TexturePacks/IndexedTexturePack.h
-    src/TexturePacks/RectTexturePack.cpp
-    src/TexturePacks/RectTexturePack.h
-    src/TexturePacks/SimpleTexturePack.cpp
-    src/TexturePacks/SimpleTexturePack.h
-    src/TexturePacks/StackedTexturePack.cpp
-    src/TexturePacks/StackedTexturePack.h
-    src/TexturePacks/TexturePack.cpp
-    src/TexturePacks/TexturePack.h
     src/Utils/EasedValue.h
     src/Utils/EasingFunctions.h
     src/Utils/ElapsedTime.h
     src/Utils/FixedArray.h
     src/Utils/FixedMap.h
     src/Utils/Helper2D.h
-    src/Utils/iterator_tpl.h
+    src/Utils/LoadLibrary.cpp
+    src/Utils/LoadLibrary.h
     src/Utils/LRUCache.h
     src/Utils/Number.h
     src/Utils/NumberVector.h
     src/Utils/PairXY.h
     src/Utils/re.c
     src/Utils/re.h
+    src/Utils/Random.cpp
+    src/Utils/Random.h
     src/Utils/Regex.h
     src/Utils/ReverseIterable.h
+    src/Utils/StreamReader.h
+    src/Utils/StringHash.cpp
+    src/Utils/StringHash.h
     src/Utils/UnorderedStringMap.h
     src/Utils/Utils.cpp
     src/Utils/Utils.h
@@ -309,22 +412,24 @@ set(SOURCE_FILES
 
 if(FFmpeg_FOUND)
     SET(SOURCE_FILES ${SOURCE_FILES}
-        src/sfeMovie/AudioStream.cpp
-        src/sfeMovie/AudioStream.hpp
-        src/sfeMovie/Demuxer.cpp
-        src/sfeMovie/Demuxer.hpp
-        src/sfeMovie/Movie.cpp
-        src/sfeMovie/Movie.hpp
-        src/sfeMovie/MovieImpl.cpp
-        src/sfeMovie/MovieImpl.hpp
-        src/sfeMovie/Stream.cpp
-        src/sfeMovie/Stream.hpp
-        src/sfeMovie/StreamSelection.hpp
-        src/sfeMovie/Timer.cpp
-        src/sfeMovie/Timer.hpp
-        src/sfeMovie/TimerPriorities.hpp
-        src/sfeMovie/VideoStream.cpp
-        src/sfeMovie/VideoStream.hpp
+        src/SFML/sfeMovie/AudioStream.cpp
+        src/SFML/sfeMovie/AudioStream.hpp
+        src/SFML/sfeMovie/AVFunc.cpp
+        src/SFML/sfeMovie/AVFunc.hpp
+        src/SFML/sfeMovie/Demuxer.cpp
+        src/SFML/sfeMovie/Demuxer.hpp
+        src/SFML/sfeMovie/Movie.cpp
+        src/SFML/sfeMovie/Movie.hpp
+        src/SFML/sfeMovie/MovieImpl.cpp
+        src/SFML/sfeMovie/MovieImpl.hpp
+        src/SFML/sfeMovie/Stream.cpp
+        src/SFML/sfeMovie/Stream.hpp
+        src/SFML/sfeMovie/StreamSelection.hpp
+        src/SFML/sfeMovie/Timer.cpp
+        src/SFML/sfeMovie/Timer.hpp
+        src/SFML/sfeMovie/TimerPriorities.hpp
+        src/SFML/sfeMovie/VideoStream.cpp
+        src/SFML/sfeMovie/VideoStream.hpp
     )
 else()
     add_definitions(-DDGENGINE_MOVIE_STUB)
@@ -336,6 +441,19 @@ endif()
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -stdlib=libc++)
+    target_link_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.1)
+        message(FATAL_ERROR "GCC version must be at least 11.1!")
+    endif()
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wpedantic)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE /GF /EHsc /W3 /wd4250 /wd4996)
+    target_link_options(${PROJECT_NAME} PRIVATE /OPT:ICF /OPT:REF)
+endif()
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if(FFmpeg_FOUND)
@@ -343,8 +461,8 @@ if(FFmpeg_FOUND)
     target_link_libraries(${PROJECT_NAME} ${FFmpeg_LIBRARIES})
 endif()
 
-include_directories(${PHYSFS_INCLUDE_DIRS} ${SFML_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY} ${SFML_LIBRARIES})
+include_directories(${PHYSFS_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY} sfml-audio sfml-graphics)
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)

@@ -1,8 +1,8 @@
 #include "ParsePredicate.h"
+#include "Game/Predicates/PredIO.h"
 #include "Hooks.h"
-#include "Predicates/PredIO.h"
 #include "Utils/ParseUtils.h"
-#include "Utils/Utils.h"
+#include "Utils/StringHash.h"
 
 namespace Parser
 {

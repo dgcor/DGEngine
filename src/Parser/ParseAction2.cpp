@@ -1,446 +1,238 @@
 #include "ParseAction2.h"
-#include "Actions/ActItem.h"
-#include "Actions/ActLevel.h"
-#include "Actions/ActLevelObject.h"
-#include "Actions/ActPlayer.h"
-#include "Actions/ActQuest.h"
-#include "GameUtils2.h"
-#include <memory>
-#include "Parser/ParseAction.h"
-#include "Parser/ParseQuest.h"
-#include "Parser/Utils/ParseUtils.h"
-#include "Parser/Utils/ParseUtilsGameKey.h"
-#include "Utils/Utils.h"
+#include "Parser/Actions/ParseItemActions.h"
+#include "Parser/Actions/ParseLevelActions.h"
+#include "Parser/Actions/ParseLevelObjectActions.h"
+#include "Parser/Actions/ParsePlayerActions.h"
+#include "Parser/Actions/ParseQuestActions.h"
+#include "Utils/StringHash.h"
 
 namespace Parser2
 {
-	using namespace Parser;
 	using namespace rapidjson;
-	using namespace std::literals;
 
-	std::shared_ptr<Action> parseActionElem(Game& game,
-		uint16_t nameHash16, const Value& elem)
+	std::shared_ptr<Action> parseActionElem(Game& game, uint16_t nameHash16, const Value& elem)
 	{
 		switch (nameHash16)
 		{
 		case str2int16("item.addCursor"):
 		{
-			return std::make_shared<ActItemAddCursor>(
-				getStringViewKey(elem, "level"),
-				getItemLocationVal(elem));
+			return Actions::parseItemAddCursor(elem);
 		}
 		case str2int16("item.addQuantity"):
 		{
-			return std::make_shared<ActItemAddQuantity>(
-				getStringViewKey(elem, "level"),
-				getItemLocationVal(elem),
-				getVariableKey(elem, "value"),
-				getBoolKey(elem, "remove"));
+			return Actions::parseItemAddQuantity(elem);
 		}
 		case str2int16("item.delete"):
 		{
-			return std::make_shared<ActItemDelete>(
-				getStringViewKey(elem, "level"),
-				getItemLocationVal(elem));
+			return Actions::parseItemDelete(elem);
 		}
 		case str2int16("item.drop"):
 		{
-			return std::make_shared<ActItemDrop>(
-				getStringViewKey(elem, "level"),
-				getItemCoordInventoryVal(elem));
+			return Actions::parseItemDrop(elem);
 		}
 		case str2int16("item.executeAction"):
 		{
-			return std::make_shared<ActItemExecuteAction>(
-				getStringViewKey(elem, "level"),
-				getItemLocationVal(elem),
-				str2int16(getStringViewKey(elem, "action")));
+			return Actions::parseItemExecuteAction(elem);
 		}
 		case str2int16("item.loadFromLevel"):
 		{
-			auto action = std::make_shared<ActItemLoadFromLevel>(
-				getStringViewKey(elem, "level"),
-				getItemCoordInventoryVal(elem),
-				getBoolKey(elem, "splitIntoMultiple"));
-
-			if (elem.HasMember("position"sv) == true)
-			{
-				action->setInventoryPosition(getInventoryPositionVal(elem["position"sv]));
-			}
-			if (elem.HasMember("onInventoryFull"sv) == true)
-			{
-				action->setInventoryFullAction(getActionVal(game, elem["onInventoryFull"sv]));
-			}
-			return action;
+			return Actions::parseItemLoadFromLevel(game, elem);
 		}
 		case str2int16("item.move"):
 		{
-			return std::make_shared<ActItemMove>(
-				getStringViewKey(elem, "level"),
-				getItemLocationKey(elem, "from"),
-				getItemLocationKey(elem, "to"));
+			return Actions::parseItemMove(elem);
 		}
 		case str2int16("item.setProperty"):
 		{
-			return std::make_shared<ActItemSetProperty>(
-				getItemLocationVal(elem),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "property"),
-				getVariableKey(elem, "value"));
+			return Actions::parseItemSetProperty(elem);
 		}
 		case str2int16("item.trade"):
 		{
-			auto action = std::make_shared<ActItemTrade>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "player"),
-				getItemCoordInventoryKey(elem, "item"),
-				getInventoryPositionKey(elem, "position"));
-
-			if (elem.HasMember("onInventoryFull"sv) == true)
-			{
-				action->setInventoryFullAction(getActionVal(game, elem["onInventoryFull"sv]));
-			}
-			return action;
+			return Actions::parseItemTrade(game, elem);
 		}
 		case str2int16("item.update"):
 		{
-			return std::make_shared<ActItemUpdate>(
-				getStringViewKey(elem, "level"),
-				getItemCoordInventoryVal(elem));
+			return Actions::parseItemUpdate(elem);
 		}
 		case str2int16("item.use"):
 		{
-			return std::make_shared<ActItemUse>(
-				getStringViewKey(elem, "level"),
-				getItemCoordInventoryVal(elem));
+			return Actions::parseItemUse(elem);
 		}
 		case str2int16("level.addLayer"):
 		{
-			if (elem.HasMember("color"sv) == true)
-			{
-				return std::make_shared<ActLevelAddColorLayer>(
-					getStringViewKey(elem, "level"),
-					getColorKey(elem, "color"),
-					getFloatRectKey(elem, "offset"),
-					getBoolKey(elem, "automap"));
-			}
-			else
-			{
-				return std::make_shared<ActLevelAddTextureLayer>(
-					getStringViewKey(elem, "level"),
-					getStringViewKey(elem, "texture"),
-					getIntRectKey(elem, "textureRect"),
-					getFloatRectKey(elem, "offset"),
-					getBoolKey(elem, "automap"));
-			}
+			return Actions::parseLevelAddLayer(elem);
 		}
 		case str2int16("level.anchorDrawable"):
 		{
-			return std::make_shared<ActLevelAnchorDrawable>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "drawable"),
-				getStringViewKey(elem, "anchorTo"),
-				getVector2fKey<sf::Vector2f>(elem, "offset"));
+			return Actions::parseLevelAnchorDrawable(elem);
 		}
 		case str2int16("level.clearAllObjects"):
 		{
-			return std::make_shared<ActLevelClearAllObjects>(
-				getStringViewKey(elem, "level"),
-				getStringVectorKey(elem, "exclude"));
+			return Actions::parseLevelClearAllObjects(elem);
 		}
 		case str2int16("level.clearItems"):
 		{
-			return std::make_shared<ActLevelClearItems>(
-				getStringViewKey(elem, "level"),
-				getStringVectorKey(elem, "exclude"));
+			return Actions::parseLevelClearItems(elem);
 		}
 		case str2int16("level.clearLevelObjects"):
 		{
-			return std::make_shared<ActLevelClearLevelObjects>(
-				getStringViewKey(elem, "level"),
-				getStringVectorKey(elem, "exclude"));
+			return Actions::parseLevelClearLevelObjects(elem);
 		}
 		case str2int16("level.clearPlayerClasses"):
 		{
-			return std::make_shared<ActLevelClearPlayerClasses>(
-				getStringViewKey(elem, "level"));
+			return Actions::parseLevelClearPlayerClasses(elem);
 		}
 		case str2int16("level.clearPlayers"):
 		{
-			return std::make_shared<ActLevelClearPlayers>(
-				getStringViewKey(elem, "level"),
-				getStringVectorKey(elem, "exclude"));
+			return Actions::parseLevelClearPlayers(elem);
 		}
 		case str2int16("level.clearPlayerTextures"):
 		{
-			return std::make_shared<ActLevelClearPlayerTextures>(
-				getStringViewKey(elem, "level"));
+			return Actions::parseLevelClearPlayerTextures(elem);
 		}
 		case str2int16("level.clearQuests"):
 		{
-			return std::make_shared<ActLevelClearQuests>(
-				getStringViewKey(elem, "level"));
+			return Actions::parseLevelClearQuests(elem);
 		}
 		case str2int16("level.enableHover"):
 		{
-			return std::make_shared<ActLevelEnableHover>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "enable", true));
+			return Actions::parseLevelEnableHover(elem);
 		}
 		case str2int16("level.move"):
 		{
-			return std::make_shared<ActLevelMove>(
-				getStringViewKey(elem, "level"),
-				getVector2UnsignedNumberKey<PairFloat, float>(elem, "position"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parseLevelMove(elem);
 		}
 		case str2int16("level.moveToClick"):
 		{
-			return std::make_shared<ActLevelMoveToClick>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parseLevelMoveToClick(elem);
 		}
 		case str2int16("level.moveToPlayer"):
 		{
-			return std::make_shared<ActLevelMoveToPlayer>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "player"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parseLevelMoveToPlayer(elem);
 		}
 		case str2int16("level.pause"):
 		{
-			return std::make_shared<ActLevelPause>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "pause", true));
+			return Actions::parseLevelPause(elem);
 		}
 		case str2int16("level.save"):
 		{
-			return std::make_shared<ActLevelSave>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "file"),
-				getVariablesMapKey(elem, "properties"));
+			return Actions::parseLevelSave(elem);
 		}
 		case str2int16("level.setAutomap"):
 		{
-			return std::make_shared<ActLevelSetAutomap>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "automap"),
-				getVector2uKey<std::pair<uint32_t, uint32_t>>(elem, "tileSize", { 64u, 32u }),
-				(uint16_t)getUIntKey(elem, "index"),
-				getFloatRectKey(elem, "offset"));
+			return Actions::parseLevelSetAutomap(elem);
 		}
 		case str2int16("level.setAutomapPosition"):
 		{
-			return std::make_shared<ActLevelSetAutomapPosition>(
-				getStringViewKey(elem, "level"),
-				getVector2fKey<sf::Vector2f>(elem, "position"));
+			return Actions::parseLevelSetAutomapPosition(elem);
 		}
 		case str2int16("level.setAutomapSize"):
 		{
-			return std::make_shared<ActLevelSetAutomapSize>(
-				getStringViewKey(elem, "level"),
-				getVector2fKey<sf::Vector2f>(elem, "size", { 100, 100 }));
+			return Actions::parseLevelSetAutomapSize(elem);
 		}
 		case str2int16("level.setShader"):
 		{
-			return std::make_shared<ActLevelSetShader>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "shader"));
+			return Actions::parseLevelSetShader(elem);
 		}
 		case str2int16("level.setSmoothMovement"):
 		{
-			return std::make_shared<ActLevelSetSmoothMovement>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parseLevelSetSmoothMovement(elem);
 		}
 		case str2int16("level.showAutomap"):
 		{
-			return std::make_shared<ActLevelShowAutomap>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "show", true));
+			return Actions::parseLevelShowAutomap(elem);
 		}
 		case str2int16("level.updateDrawables"):
 		{
-			return std::make_shared<ActLevelUpdateDrawables>(getStringViewKey(elem, "level"));
+			return Actions::parseLevelUpdateDrawables(elem);
 		}
 		case str2int16("level.zoom"):
 		{
-			return std::make_shared<ActLevelZoom>(
-				getStringViewKey(elem, "level"),
-				getIntKey(elem, "zoom", 100),
-				getBoolKey(elem, "relative"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parseLevelZoom(elem);
 		}
 		case str2int16("level.zoomDrawables"):
 		{
-			return std::make_shared<ActLevelZoomDrawables>(
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "zoomDrawables", true));
+			return Actions::parseLevelZoomDrawables(elem);
 		}
 		case str2int16("levelObject.delete"):
 		{
-			return std::make_shared<ActLevelObjDelete>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "object"));
+			return Actions::parseLevelObjDelete(elem);
 		}
 		case str2int16("levelObject.deleteByClass"):
 		{
-			return std::make_shared<ActLevelObjDeleteByClass>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "class"));
+			return Actions::parseLevelObjDeleteByClass(elem);
 		}
 		case str2int16("levelObject.executeAction"):
 		{
-			return std::make_shared<ActLevelObjExecuteAction>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "object"));
+			return Actions::parseLevelObjExecuteAction(elem);
 		}
 		case str2int16("levelObject.setOutline"):
 		{
-			return std::make_shared<ActLevelObjSetOutline>(
-				getStringViewKey(elem, "level"),
-				getColorKey(elem, "outline", sf::Color::Transparent),
-				getColorKey(elem, "ignore", sf::Color::Transparent));
+			return Actions::parseLevelObjSetOutline(elem);
 		}
 		case str2int16("levelObject.setPalette"):
 		{
-			return std::make_shared<ActLevelObjSetPalette>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "palette"),
-				getColorKey(elem, "color", sf::Color::White));
+			return Actions::parseLevelObjSetPalette(elem);
 		}
 		case str2int16("player.addItemQuantity"):
 		{
-			return std::make_shared<ActPlayerAddItemQuantity>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "itemClass"),
-				getInventoryPositionKey(elem, "position"),
-				getVariableKey(elem, "value"),
-				getBoolKey(elem, "remove"));
+			return Actions::parsePlayerAddItemQuantity(elem);
 		}
 		case str2int16("player.addToProperty"):
 		{
-			return std::make_shared<ActPlayerAddToProperty>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "property"),
-				getVariableKey(elem, "value"),
-				getBoolKey(elem, "remove"));
+			return Actions::parsePlayerAddToProperty(elem);
 		}
 		case str2int16("player.move"):
 		{
-			return std::make_shared<ActPlayerMove>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getVector2UnsignedNumberKey<PairFloat, float>(elem, "position"),
-				getBoolKey(elem, "resetDirection"),
-				getBoolKey(elem, "smooth"));
+			return Actions::parsePlayerMove(elem);
 		}
 		case str2int16("player.removeItemQuantity"):
 		{
-			return std::make_shared<ActPlayerAddItemQuantity>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "itemClass"),
-				getInventoryPositionKey(elem, "position"),
-				getVariableKey(elem, "value"),
-				true);
+			return Actions::parsePlayerRemoveItemQuantity(elem);
 		}
 		case str2int16("player.selectSpell"):
 		{
-			return std::make_shared<ActPlayerSelectSpell>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "spell"));
+			return Actions::parsePlayerSelectSpell(elem);
 		}
 		case str2int16("player.setDefaultSpeed"):
 		{
-			auto speed = getPlayerAnimationSpeedVal(elem);
-			if (elem.HasMember("animation"sv) == false)
-			{
-				speed.animation = sf::Time::Zero;
-			}
-			if (elem.HasMember("walk"sv) == false)
-			{
-				speed.walk = sf::Time::Zero;
-			}
-			return std::make_shared<ActPlayerSetDefaultSpeed>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				speed);
+			return Actions::parsePlayerSetDefaultSpeed(elem);
 		}
 		case str2int16("player.setDirection"):
 		{
-			return std::make_shared<ActPlayerSetDirection>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getPlayerDirectionKey(elem, "direction"));
+			return Actions::parsePlayerSetDirection(elem);
 		}
 		case str2int16("player.setProperty"):
 		{
-			return std::make_shared<ActPlayerSetProperty>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "property"),
-				getVariableKey(elem, "value"));
+			return Actions::parsePlayerSetProperty(elem);
 		}
 		case str2int16("player.setRestStatus"):
 		{
-			return std::make_shared<ActPlayerSetRestStatus>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				(uint8_t)getUIntKey(elem, "status"));
+			return Actions::parsePlayerSetRestStatus(elem);
 		}
 		case str2int16("player.setTextureIndex"):
 		{
-			return std::make_shared<ActPlayerSetTextureIndex>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getUIntKey(elem, "index"));
+			return Actions::parsePlayerSetTextureIndex(elem);
 		}
 		case str2int16("player.walk"):
 		{
-			return std::make_shared<ActPlayerWalk>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getPlayerDirectionKey(elem, "direction"),
-				getBoolKey(elem, "executeAction"));
+			return Actions::parsePlayerWalk(elem);
 		}
 		case str2int16("player.walkToClick"):
 		{
-			return std::make_shared<ActPlayerWalkToClick>(
-				getStringViewKey(elem, "player"),
-				getStringViewKey(elem, "level"),
-				getBoolKey(elem, "executeAction", true));
+			return Actions::parsePlayerWalkToClick(elem);
 		}
 		case str2int16("quest.add"):
 		{
-			if (elem.HasMember("quest"sv) == true)
-			{
-				auto quest = parseQuestObj(game, elem["quest"sv]);
-				if (isValidId(quest.Id()) == false)
-				{
-					return nullptr;
-				}
-				return std::make_shared<ActQuestAdd>(
-					getStringViewKey(elem, "level"),
-					std::move(quest));
-			}
-			return nullptr;
+			return Actions::parseQuestAdd(game, elem);
 		}
 		case str2int16("quest.delete"):
 		{
-			return std::make_shared<ActQuestDelete>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "quest"));
+			return Actions::parseQuestDelete(elem);
 		}
 		case str2int16("quest.setState"):
 		{
-			return std::make_shared<ActQuestSetState>(
-				getStringViewKey(elem, "level"),
-				getStringViewKey(elem, "quest"),
-				getIntKey(elem, "state"));
+			return Actions::parseQuestSetState(elem);
 		}
 		default:
 			return nullptr;

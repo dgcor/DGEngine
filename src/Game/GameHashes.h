@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utils/Utils.h"
+#include "Utils/StringHash.h"
 
 namespace ItemClasses
 {

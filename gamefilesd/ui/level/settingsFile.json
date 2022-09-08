@@ -1,0 +1,8 @@
+{
+  "action": [
+    { "name": "game.setMusicVolume", "volume": "|game.musicVolume|" },
+    { "name": "game.setSoundVolume", "volume": "|game.soundVolume|" },
+    { "name": "game.setGamma", "gamma": "|game.gamma|" },
+    { "name": "variable.set", "key": "colorCycling", "value": "|colorCycling|" }
+  ]
+}

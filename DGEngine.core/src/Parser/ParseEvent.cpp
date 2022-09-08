@@ -1,5 +1,6 @@
 #include "ParseEvent.h"
-#include "Game.h"
+#include "Game/Event.h"
+#include "Game/Game.h"
 #include "ParseAction.h"
 #include "Utils/ParseUtils.h"
 

@@ -122,7 +122,14 @@ Run the game like this:
 
 ### Portable mode
 
-To run in portable mode, create a folder `portable` next to the DGEngine binary.
+To run in portable mode, create a folder `portable` next to the DGEngine binary (current working directory).  
+
+On Linux, if using an `AppImage`, create a folder with the same name as the AppImage ending with `.home`.
+
+```
+DGEngine.AppImage         (file)
+DGEngine.AppImage.home    (folder)
+```
 
 ## Build
 

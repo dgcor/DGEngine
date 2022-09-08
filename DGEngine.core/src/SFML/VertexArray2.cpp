@@ -1,6 +1,6 @@
 #include "VertexArray2.h"
 #include <SFML/Graphics/VertexArray.hpp>
-#include "Utils/Utils.h"
+#include "Utils/StringHash.h"
 
 void VertexArray2::draw(const sf::Texture* texture, const Palette* palette,
 	GameShader* spriteShader, sf::RenderTarget& target,

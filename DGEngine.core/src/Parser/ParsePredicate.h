@@ -1,8 +1,8 @@
 #pragma once
 
+#include "Game/Predicate.h"
 #include "Json/JsonParser.h"
 #include <memory>
-#include "Predicates/Predicate.h"
 
 class Game;
 

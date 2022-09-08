@@ -42,6 +42,38 @@
         { "name": "drawable.verticalAnchorToFocused", "id": "pent1" },
         { "name": "drawable.verticalAnchorToFocused", "id": "pent2" }
       ]
+    },
+    {
+      "name": "action.set",
+      "id": "saveSettings",
+      "action": {
+        "name": "file.copy",
+        "file": "ui/settingsFile.json",
+        "writeFile": "settings.json",
+        "replace": "value"
+      }
+    },
+    {
+      "name": "action.set",
+      "id": "saveSettingsAndClose",
+      "action": [
+        "saveSettings",
+        { "name": "game.close" }
+      ]
+    },
+    {
+      "name": "action.set",
+      "id": "fullScreen",
+      "action": [
+        {
+          "name": "if.equal",
+          "param1": "%game.fullScreen%",
+          "param2": false,
+          "then": { "name": "game.setProperty", "property": "fullScreen", "value": true },
+          "else": { "name": "game.setProperty", "property": "fullScreen", "value": false }
+        },
+        "saveSettings"
+      ]
     }
   ]
 }

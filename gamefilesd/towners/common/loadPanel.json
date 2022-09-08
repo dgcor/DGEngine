@@ -1,0 +1,27 @@
+{
+  "load": "ui/level/char/closePanels.json",
+  "action": [
+    { "name": "resource.add", "id": "userPanel" },
+    { "name": "game.clearPlayingSounds" }
+  ],
+  "load": "ui/level/char/disableKeys.json",
+  "inputEvent": [
+    {
+      "gameInputEvent": "esc",
+      "action": { "name": "button.click", "id": "back", "playSound": false }
+    },
+    {
+      "gameInputEvent": "enter",
+      "action": "focus.click"
+    },
+    {
+      "gameInputEvent": "up",
+      "action": "focus.moveUp"
+    },
+    {
+      "gameInputEvent": "down",
+      "action": "focus.moveDown"
+    }
+  ],
+  "load": "ui/level/panel/small.json"
+}

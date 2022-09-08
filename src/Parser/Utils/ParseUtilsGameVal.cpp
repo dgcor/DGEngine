@@ -1,6 +1,6 @@
 #include "ParseUtilsGameVal.h"
-#include "GameUtils.h"
-#include "GameUtils2.h"
+#include "Game/Utils/GameUtils.h"
+#include "Game/Utils/GameUtils2.h"
 #include "Parser/Utils/ParseUtils.h"
 #include "ParseUtilsGameKey.h"
 
@@ -128,7 +128,7 @@ namespace Parser
 		return val;
 	}
 
-	AnimationSpeed getPlayerAnimationSpeedVal(const rapidjson::Value& elem)
+	AnimationSpeed getPlayerAnimationSpeedVal(const Value& elem)
 	{
 		AnimationSpeed speed;
 		speed.animation = GameUtils::getTime(getIntKey(elem, "animation", 5));

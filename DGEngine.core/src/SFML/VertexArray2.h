@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Palette.h"
+#include "Resources/Palette.h"
+#include "Resources/Shader.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Vertex.hpp>
-#include "Shader.h"
 #include <vector>
 
 class VertexArray2

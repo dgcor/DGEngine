@@ -1,5 +1,5 @@
 #include "ParseVariable.h"
-#include "Game.h"
+#include "Game/Game.h"
 #include "Utils/ParseUtils.h"
 
 namespace Parser
@@ -16,7 +16,7 @@ namespace Parser
 				Variable var;
 				if (getVariableVal(it->value, var) == true)
 				{
-					game.setVariable(key, var);
+					game.Variables().setVariable(key, var);
 				}
 			}
 		}

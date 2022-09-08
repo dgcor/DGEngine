@@ -1,0 +1,66 @@
+{
+  "player": {
+    "id": "hero",
+    "class": "Warrior",
+    "name": "{1}",
+    "currentPlayer": true,
+    "direction": "Front",
+    "mapPosition": [64, 73],
+    "enableHover": false,
+    "inventory": [
+      {
+        "index": "Body",
+        "bodyInventory": true,
+        "allowedClassTypes": ["Amulet", "Armor", "Axe", "Bow", "Club", "Helmet", "Ring", "Shield", "Staff", "Sword"],
+        "item": [
+          {
+            "index": "LeftHand",
+            "class": "shortSword"
+          },
+          {
+            "index": "RightHand",
+            "class": "buckler",
+            "properties": {
+              "armor": 3,
+              "durability": 10,
+              "durabilityMax": 10
+            }
+          }
+        ]
+      },
+      {
+        "index": "Belt",
+        "size": 8,
+        "allowedClassTypes": ["Potion", "Scroll"],
+        "item": {
+          "index": 0,
+          "class": "potionOfHealing",
+          "properties": {
+            "quantity": 2
+          }
+        }
+      },
+      {
+        "index": "Stash",
+        "enforceItemSize": true,
+        "size": [10, 4],
+        "item": [
+          {
+            "index": [0, 0],
+            "class": "club"
+          },
+          {
+            "index": [0, 3],
+            "class": "gold",
+            "properties": {
+              "quantity": 100
+            }
+          }
+        ]
+      }
+    ],
+    "spell": [
+      { "class": "itemRepair" }
+    ]
+  }
+}

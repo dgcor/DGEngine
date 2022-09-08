@@ -1,7 +1,7 @@
 #pragma once
 
 #include "endian/little_endian.hpp"
-#include "FileUtils.h"
+#include "Game/Utils/FileUtils.h"
 #include "SFML/PhysFSStream.h"
 #include <string_view>
 #include "Utils.h"
@@ -117,7 +117,7 @@ public:
 
 	T& operator[] (size_t index) { return data[index]; }
 
-	const std::vector<T>& getContainer() const noexcept { return data; }
+	auto& getContainer() const noexcept { return data; }
 	bool empty() const noexcept { return data.empty(); }
 	size_t size() const noexcept { return data.size(); }
 };

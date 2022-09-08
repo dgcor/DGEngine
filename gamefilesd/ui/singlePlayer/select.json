@@ -16,7 +16,7 @@
     }
   ],
   "inputEvent": {
-    "key": "delete",
+    "gameInputEvent": "delete",
     "action": { "name": "button.click", "id": "delete" }
   },
   "animation": [
@@ -80,6 +80,8 @@
     "focusSound": "titlemov",
     "visibleItems": 6,
     "size": [270, 164],
+    "onDoubleClick": { "name": "button.click", "id": "ok" },
+    "onFocus": "focus.clickNoSound",
     "onScrollDown": "focus.moveDown",
     "onScrollUp": "focus.moveUp",
     "items": [
@@ -93,9 +95,7 @@
           { "name": "button.enable", "id": "delete" },
           { "name": "text.setFont", "id": "delete", "font": "font30g" },
           "saveMenu.moveScrollbar"
-        ],
-        "onDoubleClick": { "name": "button.click", "id": "ok" },
-        "onFocus": "focus.clickNoSound"
+        ]
       },
       {
         "text": "|str_newHero|",
@@ -106,9 +106,7 @@
           { "name": "button.enable", "id": "delete", "enable": false },
           { "name": "text.setFont", "id": "delete", "font": "font30s" },
           "saveMenu.moveScrollbar"
-        ],
-        "onDoubleClick": { "name": "button.click", "id": "ok" },
-        "onFocus": "focus.clickNoSound"
+        ]
       }
     ]
   },
@@ -231,22 +229,14 @@
           "json": {
             "inputEvent": [
               {
-                "key": ["up", "w"],
+                "gameInputEvent": ["up", "tabUp"],
                 "action": [
                   "focus.moveUp",
                   "saveMenu.moveScrollbar"
                 ]
               },
               {
-                "key": "tab",
-                "shift": true,
-                "action": [
-                  "focus.moveUp",
-                  "saveMenu.moveScrollbar"
-                ]
-              },
-              {
-                "key": ["down", "s", "tab"],
+                "gameInputEvent": ["down", "tabDown"],
                 "action": [
                   "focus.moveDown",
                   "saveMenu.moveScrollbar"

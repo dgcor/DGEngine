@@ -1,6 +1,6 @@
 {
-  "icon": {
-    "file": "res/icon.png"
+  "game": {
+    "icon": "res/icon.png"
   },
   "cursor": {
     "show": false
@@ -13,10 +13,15 @@
   },
   "load": "level/setupTempFolder.json",
   "load": "res/actions.json",
+  "game": {
+    "onClose": "saveSettingsAndClose"
+  },
   "load": "res/palettes.json",
   "load": "res/fonts.json",
   "load": "res/music.json",
   "load": "res/sounds.json",
   "load": "res/textures.json",
+  "load": "ui/gameInputEvents.json",
+  "load": "ui/inputEvents.json",
   "load": "ui/splashScreenVideo.json"
 }

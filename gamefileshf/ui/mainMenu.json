@@ -44,28 +44,23 @@
   },
   "inputEvent": [
     {
-      "key": ["enter", " "],
+      "gameInputEvent": "enter",
       "action": "focus.click"
     },
     {
-      "key": ["up", "w"],
+      "gameInputEvent": ["up", "tabUp"],
       "action": "focus.moveUp"
     },
     {
-      "key": "tab",
-      "shift": true,
-      "action": "focus.moveUp"
-    },
-    {
-      "key": ["down", "s", "tab"],
+      "gameInputEvent": ["down", "tabDown"],
       "action": "focus.moveDown"
     },
     {
-      "key": "esc",
+      "gameInputEvent": "esc",
       "action": { "name": "menu.click", "id": "menu", "index": 5 }
     },
     {
-      "key": "f1",
+      "gameInputEvent": "info",
       "action": {
         "name": "game.fadeOut",
         "action": {
@@ -189,9 +184,7 @@
         "position": [176, 406],
         "onClick": {
           "name": "game.fadeOut",
-          "action": {
-            "name": "game.close"
-          }
+          "action": "saveSettingsAndClose"
         },
         "onFocus": "anchorPentagrams"
       }

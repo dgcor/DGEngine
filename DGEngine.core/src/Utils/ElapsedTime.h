@@ -84,5 +84,5 @@ public:
 	}
 };
 
-#define ElapsedTime ElapsedTimeT<sf::Time>
-#define ElapsedTimef ElapsedTimeT<float>
+using ElapsedTime = ElapsedTimeT<sf::Time>;
+using ElapsedTimef = ElapsedTimeT<float>;

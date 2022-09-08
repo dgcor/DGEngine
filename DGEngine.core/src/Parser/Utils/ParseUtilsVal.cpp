@@ -1,5 +1,5 @@
 #include "ParseUtilsVal.h"
-#include "GameUtils.h"
+#include "Game/Utils/GameUtils.h"
 #include "Json/JsonUtils.h"
 #include "Parser/ParsePredicate.h"
 #include "ParseUtils.h"
@@ -153,14 +153,12 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<uint32_t, uint32_t> getFramesVal(const Value& elem,
-		const std::pair<uint32_t, uint32_t>& val)
+	std::pair<uint32_t, uint32_t> getFramesVal(const Value& elem, const std::pair<uint32_t, uint32_t>& val)
 	{
 		return getRange1Val<std::pair<uint32_t, uint32_t>, uint32_t>(elem, val);
 	}
 
-	sf::Vector2f getPositionVal(const Value& elem,
-		const sf::Vector2f& size, const sf::Vector2u& refSize)
+	sf::Vector2f getPositionVal(const Value& elem, const sf::Vector2f& size, const sf::Vector2u& refSize)
 	{
 		float x = 0.f;
 		float y = 0.f;
@@ -278,6 +276,19 @@ namespace Parser
 		else if (elem.IsString() == true)
 		{
 			return GameUtils::getKeyCode(elem.GetStringView(), val);
+		}
+		return val;
+	}
+
+	sf::Keyboard::Scancode getScanCodeVal(const Value& elem, sf::Keyboard::Scancode val)
+	{
+		if (elem.IsInt() == true)
+		{
+			return GameUtils::getScanCode(elem.GetInt(), val);
+		}
+		else if (elem.IsString() == true)
+		{
+			return GameUtils::getScanCode(elem.GetStringView(), val);
 		}
 		return val;
 	}
@@ -459,6 +470,82 @@ namespace Parser
 		else if (elem.IsBool() == true)
 		{
 			var.emplace<bool>(elem.GetBool());
+		}
+		else if (elem.IsArray() == true)
+		{
+			if (elem.Size() == 2)
+			{
+				if (elem[0].IsInt64() == true &&
+					elem[1].IsInt64() == true)
+				{
+					var.emplace<Int64Tuple2>(std::make_tuple(
+						elem[0].GetInt64(),
+						elem[1].GetInt64()
+					));
+				}
+				else if (elem[0].IsDouble() == true &&
+					elem[1].IsDouble() == true)
+				{
+					var.emplace<DoubleTuple2>(std::make_tuple(
+						elem[0].GetDouble(),
+						elem[1].GetDouble()
+					));
+				}
+			}
+			else if (elem.Size() == 3)
+			{
+				if (elem[0].IsInt64() == true &&
+					elem[1].IsInt64() == true &&
+					elem[2].IsInt64() == true)
+				{
+					var.emplace<Int64Tuple3>(std::make_tuple(
+						elem[0].GetInt64(),
+						elem[1].GetInt64(),
+						elem[2].GetInt64()
+					));
+				}
+				else if (elem[0].IsDouble() == true &&
+					elem[1].IsDouble() == true &&
+					elem[2].IsDouble() == true)
+				{
+					var.emplace<DoubleTuple3>(std::make_tuple(
+						elem[0].GetDouble(),
+						elem[1].GetDouble(),
+						elem[2].GetDouble()
+					));
+				}
+			}
+			else if (elem.Size() > 3)
+			{
+				if (elem[0].IsInt64() == true &&
+					elem[1].IsInt64() == true &&
+					elem[2].IsInt64() == true &&
+					elem[3].IsInt64() == true)
+				{
+					var.emplace<Int64Tuple4>(std::make_tuple(
+						elem[0].GetInt64(),
+						elem[1].GetInt64(),
+						elem[2].GetInt64(),
+						elem[3].GetInt64()
+					));
+				}
+				else if (elem[0].IsDouble() == true &&
+					elem[1].IsDouble() == true &&
+					elem[2].IsDouble() == true &&
+					elem[3].IsDouble() == true)
+				{
+					var.emplace<DoubleTuple4>(std::make_tuple(
+						elem[0].GetDouble(),
+						elem[1].GetDouble(),
+						elem[2].GetDouble(),
+						elem[3].GetDouble()
+					));
+				}
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{

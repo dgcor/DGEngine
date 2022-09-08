@@ -8,9 +8,6 @@
 
 namespace Utils
 {
-	std::random_device RandomGenerator::rd;
-	std::mt19937 RandomGenerator::generator(rd());
-
 	bool endsWith(const std::string_view value, const std::string_view ending)
 	{
 		if (ending.size() > value.size()) return false;
@@ -97,8 +94,7 @@ namespace Utils
 		return std::make_pair(str, "");
 	}
 
-	std::pair<std::string_view, std::string_view> splitStringIn2(
-		const std::string_view str, char delimiter)
+	std::pair<std::string_view, std::string_view> splitStringIn2(const std::string_view str, char delimiter)
 	{
 		auto pos = str.find(delimiter, 0);
 		if (pos != std::string::npos)

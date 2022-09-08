@@ -1,0 +1,97 @@
+name: Deploy_Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy_windows_x86:
+    name: windows deploy x86
+    runs-on: windows-2022
+    steps:
+    - name: Checkout DGEngine
+      uses: actions/checkout@v3
+
+    - name: Restore cached dependencies
+      id: cache-windows-x86
+      uses: actions/cache@v3
+      with:
+        path: C:/vcpkg/installed
+        key: cache-windows-x86
+
+    - name: Install dependencies
+      if: steps.cache-windows-x86.outputs.cache-hit != 'true'
+      run: vcpkg install physfs sfml `
+             --overlay-ports=DGEngine.core/vcpkg/ports `
+             --overlay-triplets=DGEngine.core/vcpkg/triplets `
+             --triplet=x86-windows
+
+    - name: Setup MSVC
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+      with:
+        arch: x86
+
+    - name: Setup Ninja Build
+      uses: turtlesec-no/get-ninja@main
+
+    - name: CMake build DGEngine
+      run: |
+        cmake --preset windows-x86-release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+        cmake --build --preset windows-x86-release
+
+    - name: Create DGEngine zip
+      run: 7z a DGEngine-windows-x86.zip `
+             ./out/build/windows-x86-release/*.exe `
+             ./out/build/windows-x86-release/*.dll `
+             LICENSE.* README.* main.json gamefiles*
+
+    - name: Create DGEngine zip artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-DGEngine-windows-x86
+        path: DGEngine-windows-x86.zip
+
+  deploy_windows_x64:
+    name: windows deploy x64
+    runs-on: windows-2022
+    steps:
+    - name: Checkout DGEngine
+      uses: actions/checkout@v3
+
+    - name: Restore cached dependencies
+      id: cache-windows-x64
+      uses: actions/cache@v3
+      with:
+        path: C:/vcpkg/installed
+        key: cache-windows-x64
+
+    - name: Install dependencies
+      if: steps.cache-windows-x64.outputs.cache-hit != 'true'
+      run: vcpkg install physfs sfml `
+             --overlay-ports=DGEngine.core/vcpkg/ports `
+             --overlay-triplets=DGEngine.core/vcpkg/triplets `
+             --triplet=x64-windows
+
+    - name: Setup MSVC
+      uses: TheMrMilchmann/setup-msvc-dev@v2
+      with:
+        arch: x64
+
+    - name: Setup Ninja Build
+      uses: turtlesec-no/get-ninja@main
+
+    - name: CMake build DGEngine
+      run: |
+        cmake --preset windows-x64-release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+        cmake --build --preset windows-x64-release
+
+    - name: Create DGEngine zip
+      run: 7z a DGEngine-windows-x64.zip `
+             ./out/build/windows-x64-release/*.exe `
+             ./out/build/windows-x64-release/*.dll `
+             LICENSE.* README.* main.json gamefiles*
+
+    - name: Create DGEngine zip artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: artifact-DGEngine-windows-x64
+        path: DGEngine-windows-x64.zip

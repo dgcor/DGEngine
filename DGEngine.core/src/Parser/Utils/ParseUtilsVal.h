@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Anchor.h"
-#include "BindingFlags.h"
-#include "BlendMode.h"
-#include "IgnoreResource.h"
-#include "InputEvent.h"
+#include "Game/Anchor.h"
+#include "Game/BindingFlags.h"
+#include "Game/BlendMode.h"
+#include "Game/IgnoreResource.h"
+#include "Game/InputEvent.h"
+#include "Game/Variable.h"
+#include "Game/VarOrPredicate.h"
 #include "Json/JsonParser.h"
 #include "Parser/ParserProperties.h"
 #include <SFML/Graphics/Color.hpp>
@@ -15,8 +17,7 @@
 #include "Utils/Number.h"
 #include "Utils/PairXY.h"
 #include "Utils/UnorderedStringMap.h"
-#include "Variable.h"
-#include "VarOrPredicate.h"
+#include <vector>
 
 namespace Parser
 {
@@ -393,32 +394,25 @@ namespace Parser
 		return getRangeNVal<T, NumType, 1>(elem, val);
 	}
 
-	std::pair<uint32_t, uint32_t> getFramesVal(const rapidjson::Value& elem,
-		const std::pair<uint32_t, uint32_t>& val = {});
+	std::pair<uint32_t, uint32_t> getFramesVal(const rapidjson::Value& elem, const std::pair<uint32_t, uint32_t>& val = {});
 
-	sf::Vector2f getPositionVal(const rapidjson::Value& elem,
-		const sf::Vector2f& size, const sf::Vector2u& refSize);
+	sf::Vector2f getPositionVal(const rapidjson::Value& elem, const sf::Vector2f& size, const sf::Vector2u& refSize);
 
-	sf::IntRect getIntRectVal(const rapidjson::Value& elem,
-		const sf::IntRect& val = {});
+	sf::IntRect getIntRectVal(const rapidjson::Value& elem, const sf::IntRect& val = {});
 
-	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem,
-		const sf::FloatRect& val = {});
+	sf::FloatRect getFloatRectVal(const rapidjson::Value& elem, const sf::FloatRect& val = {});
 
-	sf::Color getColorVal(const rapidjson::Value& elem,
-		const sf::Color& val = {});
+	sf::Color getColorVal(const rapidjson::Value& elem, const sf::Color& val = {});
 
-	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem,
-		sf::Keyboard::Key val = sf::Keyboard::Unknown);
+	sf::Keyboard::Key getKeyCodeVal(const rapidjson::Value& elem, sf::Keyboard::Key val = sf::Keyboard::Unknown);
 
-	sf::Time getTimeVal(const rapidjson::Value& elem,
-		const sf::Time& val = {});
+	sf::Keyboard::Scancode getScanCodeVal(const rapidjson::Value& elem, sf::Keyboard::Scancode val = sf::Keyboard::Scancode::Unknown);
 
-	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem,
-		IgnoreResource val = IgnoreResource::None);
+	sf::Time getTimeVal(const rapidjson::Value& elem, const sf::Time& val = {});
 
-	InputEventType getInputEventTypeVal(const rapidjson::Value& elem,
-		InputEventType val = InputEventType::None);
+	IgnoreResource getIgnoreResourceVal(const rapidjson::Value& elem, IgnoreResource val = IgnoreResource::None);
+
+	InputEventType getInputEventTypeVal(const rapidjson::Value& elem, InputEventType val = InputEventType::None);
 
 	template <class T>
 	T getMinMaxIntVal(const rapidjson::Value& elem, T val = {})
@@ -437,11 +431,11 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			if (elem.GetString() == std::string_view("min"))
+			if (elem.GetStringView() == "min")
 			{
 				return std::numeric_limits<T>::min();
 			}
-			else if (elem.GetString() == std::string_view("max"))
+			else if (elem.GetStringView() == "max")
 			{
 				return std::numeric_limits<T>::max();
 			}
@@ -451,14 +445,11 @@ namespace Parser
 
 	Number32 getMinMaxNumber32Val(const rapidjson::Value& elem);
 
-	const rapidjson::Value& getQueryVal(const rapidjson::Value* elem,
-		const rapidjson::Value& query);
+	const rapidjson::Value& getQueryVal(const rapidjson::Value* elem, const rapidjson::Value& query);
 
-	const rapidjson::Value& getQueryVal(const rapidjson::Value& elem,
-		const rapidjson::Value& query);
+	const rapidjson::Value& getQueryVal(const rapidjson::Value& elem, const rapidjson::Value& query);
 
-	ReplaceVars getReplaceVarsVal(const rapidjson::Value& elem,
-		ReplaceVars val = ReplaceVars::None);
+	ReplaceVars getReplaceVarsVal(const rapidjson::Value& elem, ReplaceVars val = ReplaceVars::None);
 
 	bool getVariableVal(const rapidjson::Value& elem, Variable& var);
 

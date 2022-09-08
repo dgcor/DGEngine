@@ -1,8 +1,47 @@
 {
   "inputEvent": [
-    { "key": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"], "action": null },
-    { "key": ["enter", " ", "up", "w", "down", "s", "tab", "left", "a", "right", "d"], "action": null },
-    { "key": ["b", "c", "f", "g", "i", "q", "z"], "action": null },
-    { "key": ["up", "down", "left", "right", "rshift"], "event": null }
+    {
+      "gameInputEvent": [
+        "enter",
+        "enterKeyUp",
+        "space",
+        "esc",
+        "delete",
+        "help",
+        "info",
+        "tabUp",
+        "tabDown",
+        "automap",
+        "automapZoomIn",
+        "automapZoomOut",
+        "charInfo",
+        "quests",
+        "inventory",
+        "spellBook",
+        "spells",
+        "gammaDown",
+        "gammaUp",
+        "levelZoom",
+        "useItem1",
+        "useItem2",
+        "useItem3",
+        "useItem4",
+        "useItem5",
+        "useItem6",
+        "useItem7",
+        "useItem8"
+      ],
+      "action": null
+    },
+    {
+      "gameInputEvent": [
+        "up",
+        "down",
+        "left",
+        "right",
+        "action"
+      ],
+      "event": null
+    }
   ]
 }

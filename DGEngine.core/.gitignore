@@ -1,3 +1,5 @@
+.vscode/*
+/*.AppImage
 /*.cbp
 /*.db
 /*.depend
@@ -22,6 +24,7 @@
 /DGEngine.core.dir
 /Makefile
 /obj
+/out
 /portable
 /Release
 /Release NoMovie
