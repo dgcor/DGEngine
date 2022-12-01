@@ -2,7 +2,17 @@ name: CI
 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'CMakeLists.txt'
+      - 'DGEngine.core/src/**'
+      - 'DGEngine.core/CMakeLists.txt'
   pull_request:
+    paths:
+      - 'src/**'
+      - 'CMakeLists.txt'
+      - 'DGEngine.core/src/**'
+      - 'DGEngine.core/CMakeLists.txt'
 
 jobs:
   build_linux:

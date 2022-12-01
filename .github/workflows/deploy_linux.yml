@@ -6,10 +6,15 @@ on:
 jobs:
   deploy_linux:
     name: linux deploy
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout DGEngine
       uses: actions/checkout@v3
+
+    - name: Install GCC 11
+      uses: egor-tensin/setup-gcc@v1
+      with:
+        version: 11
 
     - name: Restore cached dependencies
       id: cache-linux-x64
