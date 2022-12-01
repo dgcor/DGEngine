@@ -27,7 +27,7 @@ if(MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
 find_package(PhysFS REQUIRED)
-find_package(SFML 2.5 COMPONENTS audio graphics REQUIRED)
+find_package(SFML 2.6 COMPONENTS audio graphics REQUIRED)
 
 include_directories(src)
 
