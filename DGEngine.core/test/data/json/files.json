@@ -1,0 +1,13 @@
+{
+  "file": [
+    { "file": "res/palette/invalid-id.bin" },
+    { "file": "res/palette/pal.bin" },
+    { "id": "key01", "file": "res/palette/pal.bin" },
+    { "id": "key02", "file": "res/palette/pal.txt" },
+    { "id": "key03", "file": "res/palette/pal.txt", "startPosition": 1, "bytesToRead": 3 },
+    { "id": "key04", "file": "res/palette/pal.txt", "startPosition": 3, "bytesToRead": 9000000 },
+    { "id": "key05", "file": "res/palette/pal.txt", "startPosition": 9000, "bytesToRead": 90 },
+    { "id": "key06", "clone": "pal" },
+    { "id": "key07", "fromId": "pal" }
+  ]
+}

@@ -22,6 +22,7 @@
 #include "Parser/Actions/ParseMountActions.h"
 #include "Parser/Actions/ParseMovieActions.h"
 #include "Parser/Actions/ParsePaletteActions.h"
+#include "Parser/Actions/ParsePanelActions.h"
 #include "Parser/Actions/ParseRandomActions.h"
 #include "Parser/Actions/ParseResourceActions.h"
 #include "Parser/Actions/ParseScrollableActions.h"
@@ -336,6 +337,10 @@ namespace Parser
 		{
 			return Actions::parseEventResetTime(elem);
 		}
+		case str2int16("event.timeout"):
+		{
+			return Actions::parseEventTimeout(elem);
+		}
 		case str2int16("file.copy"):
 		{
 			return Actions::parseFileCopy(elem);
@@ -372,6 +377,10 @@ namespace Parser
 		case str2int16("font.setPalette"):
 		{
 			return Actions::parseFontSetPaletteOrColor(elem);
+		}
+		case str2int16("font.setSmooth"):
+		{
+			return Actions::parseFontSetSmooth(elem);
 		}
 		case str2int16("game.addToProperty"):
 		{
@@ -576,6 +585,10 @@ namespace Parser
 		case str2int16("palette.shiftRight"):
 		{
 			return Actions::parsePaletteShiftRight(elem);
+		}
+		case str2int16("panel.addDrawable"):
+		{
+			return Actions::parsePanelAddDrawable(elem);
 		}
 		case str2int16("random"):
 		{

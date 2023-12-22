@@ -1,9 +1,9 @@
 #include "SimpleImageContainer.h"
 #include "Game/Utils/ImageUtils.h"
 
-SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, uint32_t xFrames_,
-	uint32_t yFrames_, uint32_t directions_, bool horizontalDirection_,
-	const sf::Color& transparencyMask) : horizontalDirection(horizontalDirection_)
+SimpleImageContainer::SimpleImageContainer(sf::InputStream& file, uint32_t xFrames_,
+	uint32_t yFrames_, uint32_t directions_, bool verticalDirection_,
+	const sf::Color& transparencyMask) : verticalDirection(verticalDirection_)
 {
 	numFrames = xFrames_ * yFrames_;
 	if (numFrames == 0)
@@ -11,7 +11,7 @@ SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, uint
 		return;
 	}
 
-	image = ImageUtils::loadImage(fileName, transparencyMask);
+	image = ImageUtils::loadImage(file, transparencyMask);
 
 	auto imgSize = image.getSize();
 
@@ -26,18 +26,11 @@ SimpleImageContainer::SimpleImageContainer(const std::string_view fileName, uint
 		return;
 	}
 
-	maxFrames = (horizontalDirection_ == true ? xFrames_ : yFrames_);
+	maxFrames = (verticalDirection_ == false ? xFrames_ : yFrames_);
 	subImageSizeX = imgSize.x / xFrames_;
 	subImageSizeY = imgSize.y / yFrames_;
 
-	if (directions_ > 0 && (numFrames % directions_) == 0)
-	{
-		directions = directions_;
-	}
-	else
-	{
-		directions = 1;
-	}
+	directions = directions_ > 0 ? directions_ : 1;
 }
 
 sf::Image2 SimpleImageContainer::get(uint32_t index,
@@ -60,7 +53,7 @@ sf::Image2 SimpleImageContainer::get(uint32_t index,
 	int left = 0;
 	int top = 0;
 
-	if (horizontalDirection == true)
+	if (verticalDirection == false)
 	{
 		left = (int)((index % maxFrames) * subImageSizeX);
 		top = (int)((index / maxFrames) * subImageSizeY);
@@ -70,6 +63,28 @@ sf::Image2 SimpleImageContainer::get(uint32_t index,
 		left = (int)((index / maxFrames) * subImageSizeX);
 		top = (int)((index % maxFrames) * subImageSizeY);
 	}
+
 	img.copy(image, 0, 0, sf::IntRect(left, top, (int)subImageSizeX, (int)subImageSizeY), true);
+
+	if (palette != nullptr)
+	{
+		for (unsigned j = 0; j < subImageSizeY; j++)
+		{
+			for (unsigned i = 0; i < subImageSizeX; i++)
+			{
+				img.setPixel(i, j, (*palette)[img.getPixel(i, j).r]);
+			}
+		}
+	}
 	return img;
+}
+
+sf::Vector2u SimpleImageContainer::getImageSize(uint32_t index) const
+{
+	if (numFrames == 0 ||
+		index >= numFrames)
+	{
+		return {};
+	}
+	return { subImageSizeX , subImageSizeY };
 }

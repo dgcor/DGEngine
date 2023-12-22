@@ -41,7 +41,9 @@ Name               | Type    | Default     | Description
 Properties in **bold** are required.  
 
 When you `anchor` shapes, keep in mind the shape's `position` and `size` are used
-to position the shape, not the position of the vertices.
+to position the shape, not the position of the vertices.  
+
+The drawing position of points is off by 1, so you need to add 1 to fix it (OpenGL related).
 
 ### Examples
 

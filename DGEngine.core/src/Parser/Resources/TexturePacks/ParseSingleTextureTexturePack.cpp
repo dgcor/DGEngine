@@ -6,24 +6,29 @@ namespace Parser
 	using namespace rapidjson;
 	using namespace std::literals;
 
-	void parseTexturePackDirectionVector(const Value& elem, uint32_t& directions,
-		std::vector<std::pair<uint32_t, uint32_t>>& directionsVec)
+	std::optional<TextureGroup> parseTextureGroup(const Game& game,
+		const Value& elem, const std::string_view textureKey)
 	{
-		if (isValidArray(elem, "directions") == true)
+		TextureGroup textureGroup;
+		textureGroup.texture = game.Resources().getTexture(getStringViewVal(elem[textureKey]));
+		if (textureGroup.texture == nullptr)
 		{
-			for (const auto& dirVal : elem["directions"sv])
-			{
-				auto directionRange = getVector2uVal<std::pair<uint32_t, uint32_t>>(dirVal);
-				if (directionRange.second < directionRange.first)
-				{
-					continue;
-				}
-				directionsVec.push_back(directionRange);
-			}
+			return {};
 		}
-		else
+
+		auto frames = getRange1Key(elem, "frames");
+		if (frames.first == 0 || frames.second == 0)
 		{
-			directions = getUIntKey(elem, "directions");
+			frames.first = frames.second = 1;
 		}
+		textureGroup.offset = getVector2fKey<sf::Vector2f>(elem, "offset");
+		textureGroup.startIndex = getUIntKey(elem, "startIndex");
+		textureGroup.verticalDirection = getStringViewKey(elem, "direction") == "vertical";
+
+		if (textureGroup.makeTexturePack(frames) == true)
+		{
+			return textureGroup;
+		}
+		return {};
 	}
 }

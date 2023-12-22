@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <limits>
 
 struct Number32
 {
@@ -12,6 +13,75 @@ private:
 		uint32_t uintNum;
 		float floatNum;
 	};
+
+	constexpr Number32& addInt(const int64_t& right) noexcept
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum + right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum + right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum + (double)right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& addDouble(const double& right) noexcept
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum + (int64_t)right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum + (int64_t)right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum + right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& subtractInt(const int64_t& right) noexcept
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum - right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum - right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum - (double)right));
+			break;
+		}
+		return *this;
+	}
+	constexpr Number32& subtractDouble(const double& right) noexcept
+	{
+		switch (type)
+		{
+		default:
+		case 0:
+			intNum = ((int32_t)((int64_t)intNum - (int64_t)right));
+			break;
+		case 1:
+			uintNum = ((uint32_t)((int64_t)uintNum - (int64_t)right));
+			break;
+		case 2:
+			floatNum = ((float)((double)floatNum - right));
+			break;
+		}
+		return *this;
+	}
 
 public:
 	constexpr Number32() noexcept : type(0), intNum(0) {}
@@ -114,73 +184,45 @@ public:
 		}
 	}
 
+	constexpr Number32& operator+=(const int32_t& right) noexcept
+	{
+		return addInt(right);
+	}
+	constexpr Number32& operator+=(const uint32_t& right) noexcept
+	{
+		return addInt(right);
+	}
 	constexpr Number32& operator+=(const int64_t& right) noexcept
 	{
-		switch (type)
-		{
-		default:
-		case 0:
-			intNum = ((int32_t)((int64_t)intNum + right));
-			break;
-		case 1:
-			uintNum = ((uint32_t)((int64_t)uintNum + right));
-			break;
-		case 2:
-			floatNum = ((float)((double)floatNum + (double)right));
-			break;
-		}
-		return *this;
+		return addInt(right);
+	}
+	constexpr Number32& operator+=(const float& right) noexcept
+	{
+		return addDouble(right);
 	}
 	constexpr Number32& operator+=(const double& right) noexcept
 	{
-		switch (type)
-		{
-		default:
-		case 0:
-			intNum = ((int32_t)((int64_t)intNum + (int64_t)right));
-			break;
-		case 1:
-			uintNum = ((uint32_t)((int64_t)uintNum + (int64_t)right));
-			break;
-		case 2:
-			floatNum = ((float)((double)floatNum + right));
-			break;
-		}
-		return *this;
+		return addDouble(right);
+	}
+	constexpr Number32& operator-=(const int32_t& right) noexcept
+	{
+		return subtractInt(right);
+	}
+	constexpr Number32& operator-=(const uint32_t& right) noexcept
+	{
+		return subtractInt(right);
 	}
 	constexpr Number32& operator-=(const int64_t& right) noexcept
 	{
-		switch (type)
-		{
-		default:
-		case 0:
-			intNum = ((int32_t)((int64_t)intNum - right));
-			break;
-		case 1:
-			uintNum = ((uint32_t)((int64_t)uintNum - right));
-			break;
-		case 2:
-			floatNum = ((float)((double)floatNum - (double)right));
-			break;
-		}
-		return *this;
+		return subtractInt(right);
+	}
+	constexpr Number32& operator-=(const float& right) noexcept
+	{
+		return subtractDouble(right);
 	}
 	constexpr Number32& operator-=(const double& right) noexcept
 	{
-		switch (type)
-		{
-		default:
-		case 0:
-			intNum = ((int32_t)((int64_t)intNum - (int64_t)right));
-			break;
-		case 1:
-			uintNum = ((uint32_t)((int64_t)uintNum - (int64_t)right));
-			break;
-		case 2:
-			floatNum = ((float)((double)floatNum - right));
-			break;
-		}
-		return *this;
+		return subtractDouble(right);
 	}
 
 	constexpr bool operator==(const Number32& right) const noexcept
@@ -202,8 +244,31 @@ constexpr bool operator==(const Number32& left, const uint32_t& right) noexcept
 		left.getUInt32() == right);
 }
 
+constexpr bool operator==(const Number32& left, const int64_t& right) noexcept
+{
+	return (left.isInt32() == true &&
+		left.getInt64() == right);
+}
+
 constexpr bool operator==(const Number32& left, const float& right) noexcept
 {
 	return (left.isFloat() == true &&
 		left.getFloat() == right);
+}
+
+constexpr bool operator==(const Number32& left, const double& right) noexcept
+{
+	return (left.isFloat() == true &&
+		left.getDouble() == right);
+}
+
+namespace std
+{
+	template <>
+	class numeric_limits<Number32>
+	{
+	public:
+		static constexpr int32_t min() { return numeric_limits<int32_t>::min(); };
+		static constexpr int32_t max() { return numeric_limits<int32_t>::max(); };
+	};
 }

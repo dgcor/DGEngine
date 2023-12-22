@@ -3,61 +3,42 @@
 #include "Game/Game.h"
 #include "Json/JsonParser.h"
 #include <memory>
+#include <optional>
 #include "Parser/Utils/ParseUtils.h"
-#include "Resources/TexturePacks/SimpleTexturePack.h"
-#include "Resources/TexturePacks/SingleTexturePack.h"
+#include "Resources/TexturePacks/MultiTexturePack.h"
+#include <type_traits>
 #include <vector>
 
 namespace Parser
 {
-	void parseTexturePackDirectionVector(const rapidjson::Value& elem, uint32_t& directions,
-		std::vector<std::pair<uint32_t, uint32_t>>& directionsVec);
+	std::optional<TextureGroup> parseTextureGroup(const Game& game,
+		const rapidjson::Value& elem, const std::string_view textureKey);
 
-	template<class SingleTP = SingleTexturePack, class SimpleTP = SimpleTexturePack>
+	template<class MultiTP = MultiTexturePack>
 	std::unique_ptr<TexturePack> parseSingleTextureTexturePack(Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<MultiTexturePack, MultiTP>);
+
 		using namespace std::literals;
 
 		if (isValidString(elem, "texture") == false)
 		{
 			return nullptr;
 		}
-		TexturePackGroup t;
-		t.texture = game.Resources().getTexture(elem["texture"sv].GetStringView());
-		if (t.texture == nullptr)
+
+		auto textureGroup = parseTextureGroup(game, elem, "texture");
+		if (textureGroup.has_value() == false)
 		{
 			return nullptr;
 		}
+
 		std::shared_ptr<Palette> palette;
 		if (isValidString(elem, "palette") == true)
 		{
 			palette = game.Resources().getPalette(elem["palette"sv].GetStringView());
 		}
 
-		auto frames = getFramesKey(elem, "frames");
-		if (frames.first == 0 || frames.second == 0)
-		{
-			frames.first = frames.second = 1;
-		}
-		t.offset = getVector2fKey<sf::Vector2f>(elem, "offset");
-		t.startIndex = getUIntKey(elem, "startIndex");
-		parseTexturePackDirectionVector(elem, t.directions, t.directionsVec);
-		t.horizontalDirection = getStringViewKey(elem, "direction") == "horizontal";
-		t.animType = getAnimationTypeKey(elem, "animationType");
-		t.refresh = getTimeKey(elem, "refresh");
-
-		std::unique_ptr<TexturePack> texturePack;
-
-		if (frames.first == 1 &&
-			frames.second == 1 &&
-			t.startIndex == 0)
-		{
-			texturePack = std::make_unique<SimpleTP>(std::move(t), palette);
-		}
-		else
-		{
-			texturePack = std::make_unique<SingleTP>(std::move(t), frames, palette);
-		}
+		auto texturePack = std::make_unique<MultiTP>(std::move(*textureGroup), palette);
 
 		if (texturePack->size() == 0)
 		{

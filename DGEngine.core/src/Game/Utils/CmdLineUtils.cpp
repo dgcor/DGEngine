@@ -14,7 +14,7 @@ namespace CmdLineUtils
 			return false;
 		}
 
-		auto mountFiles = Utils::splitString({ argv[2] }, '|');
+		auto mountFiles = Utils::splitString(argv[2], "|");
 		size_t numMountedFiles = 0;
 
 		for (const auto& mountFile : mountFiles)

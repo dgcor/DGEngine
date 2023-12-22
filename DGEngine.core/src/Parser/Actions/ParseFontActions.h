@@ -7,4 +7,6 @@
 namespace Parser::Actions
 {
 	std::shared_ptr<Action> parseFontSetPaletteOrColor(const rapidjson::Value& elem);
+
+	std::shared_ptr<Action> parseFontSetSmooth(const rapidjson::Value& elem);
 }

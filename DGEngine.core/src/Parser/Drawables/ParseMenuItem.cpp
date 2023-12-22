@@ -133,7 +133,7 @@ namespace Parser
 
 		button->enable(getBoolKey(elem, "enable", referenceButton.isEnabled()));
 
-		parseDrawableTextDisplayText(elem, *button->getDrawableText());
+		parseTextDisplayText(elem, *button);
 		parseBindableTextObj(game, elem, *button);
 
 		bool recalculatePosition = elem.HasMember("position"sv) == false;

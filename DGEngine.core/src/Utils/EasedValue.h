@@ -2,7 +2,10 @@
 
 #include "EasingFunctions.h"
 
-template <class T>
+template<typename T>
+using EasingFunctionPtr = T (*)(T, T, T, T);
+
+template <class T, EasingFunctionPtr<T> EasingFunc = EasingFunctions::easeOutQuart>
 class EasedValue
 {
 private:
@@ -18,7 +21,7 @@ private:
 
 	T getEased() const noexcept
 	{
-		return EasingFunctions::easeOutQuart(
+		return EasingFunc(
 			currentTime,
 			startValue,
 			diffValue,
@@ -27,7 +30,7 @@ private:
 
 	T getEasedFinal() const noexcept
 	{
-		return EasingFunctions::easeOutQuart(
+		return EasingFunc(
 			stopTime,
 			startValue,
 			diffValue,
@@ -105,5 +108,5 @@ public:
 	}
 };
 
-using EasedValuef = EasedValue<float>;
-using EasedValued = EasedValue<double>;
+using EasedValuef = EasedValue<float, EasingFunctions::easeOutQuart>;
+using EasedValued = EasedValue<double, EasingFunctions::easeOutQuart>;

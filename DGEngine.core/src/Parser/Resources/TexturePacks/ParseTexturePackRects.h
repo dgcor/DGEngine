@@ -5,76 +5,61 @@
 #include <memory>
 #include "Parser/Utils/ParseUtils.h"
 #include "Resources/TexturePacks/RectTexturePack.h"
-#include "Resources/TexturePacks/SimpleTexturePack.h"
+#include <type_traits>
 
 namespace Parser
 {
-	template<class RectTP = RectTexturePack, class SimpleTP = SimpleTexturePack>
+	template<class RectTP = RectTexturePack>
 	void parseTexturePackRects(std::unique_ptr<TexturePack>& texturePack, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<RectTexturePack, RectTP>);
+
 		using namespace std::literals;
 
-		if (isValidArray(elem, "rects") == true)
+		if (isValidArray(elem, "rects") == false)
 		{
-			auto simpleTexturePack = dynamic_cast<SimpleTP*>(texturePack.get());
+			return;
+		}
 
-			auto globalOffset = getVector2fKey<sf::Vector2f>(elem, "offset");
-			bool invertOffsets = getBoolKey(elem, "invertOffsets");
+		auto texturePack2 = dynamic_cast<RectTP*>(texturePack.get());
+		if (texturePack2 == nullptr)
+		{
 			bool absoluteOffsets = getBoolKey(elem, "absoluteOffsets");
 
-			auto texturePack2 = std::make_unique<RectTP>(
+			texturePack = std::make_unique<RectTP>(
 				std::move(texturePack), absoluteOffsets
 			);
+			texturePack2 = dynamic_cast<RectTP*>(texturePack.get());
+		}
 
-			for (const auto& val : elem["rects"sv])
+		auto globalOffset = getVector2fKey<sf::Vector2f>(elem, "offset");
+		bool invertOffsets = getBoolKey(elem, "invertOffsets");
+
+		for (const auto& val : elem["rects"sv])
+		{
+			if (val.IsArray() == true)
 			{
-				if (val.IsArray() == true)
+				auto rect = getIntRectVal(val);
+				if (rect.width > 0 && rect.height > 0)
 				{
-					auto rect = getIntRectVal(val);
-					if (rect.width > 0 && rect.height > 0)
+					texturePack2->addRect(0, rect, {});
+				}
+			}
+			else if (val.IsObject() == true)
+			{
+				auto rect = getIntRectKey(val, "rect");
+				if (rect.width > 0 && rect.height > 0)
+				{
+					auto index = getUIntKey(val, "index");
+					auto offset = globalOffset + getVector2fKey<sf::Vector2f>(val, "offset");
+					if (invertOffsets == true)
 					{
-						texturePack2->addRect(0, rect, {});
+						offset.x = -offset.x;
+						offset.y = -offset.y;
 					}
-				}
-				else if (val.IsObject() == true)
-				{
-					auto rect = getIntRectKey(val, "rect");
-					if (rect.width > 0 && rect.height > 0)
-					{
-						auto index = getUIntKey(val, "index");
-						auto offset = globalOffset + getVector2fKey<sf::Vector2f>(val, "offset");
-						if (invertOffsets == true)
-						{
-							offset.x = -offset.x;
-							offset.y = -offset.y;
-						}
-						texturePack2->addRect(index, rect, offset);
-					}
+					texturePack2->addRect(index, rect, offset);
 				}
 			}
-
-			if (simpleTexturePack != nullptr)
-			{
-				simpleTexturePack->setSize(texturePack2->size());
-			}
-
-			if (isValidArray(elem, "groups") == true)
-			{
-				auto animInfo = ((TexturePack*)texturePack2.get())->getAnimation(-1, -1);
-				for (const auto& val : elem["groups"sv])
-				{
-					animInfo.indexRange = getFramesKey(val, "range", animInfo.indexRange);
-					animInfo.animType = getAnimationTypeKey(val, "animationType", animInfo.animType);
-					auto directions = getUIntKey(val, "directions");
-
-					texturePack2->addGroup(
-						animInfo.indexRange.first, animInfo.indexRange.second,
-						directions, animInfo.animType
-					);
-				}
-			}
-
-			texturePack = std::move(texturePack2);
 		}
 	}
 }

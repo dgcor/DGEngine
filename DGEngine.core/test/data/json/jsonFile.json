@@ -1,0 +1,10 @@
+{
+  "key01": "text",
+  "key02": -1,
+  "key03": 5.89,
+  "key04": true,
+  "key05": false,
+  "key06": null,
+  "key07": ["value", "string"],
+  "key08": { "name": "object", "range": [1, 10], "unique": true }
+}

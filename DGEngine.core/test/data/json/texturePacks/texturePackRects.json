@@ -1,0 +1,268 @@
+{
+  "file": { "file": "res/texture/imageContainer.png" },
+  "palette": { "file": "res/palette/pal.bin" },
+  "imageContainer": [
+    {
+      "id": "imageContainer",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2]
+    },
+    {
+      "id": "imageContainer2",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2]
+    }
+  ],
+  "texture": [
+    {
+      "file": "res/texture/fontGrid256.png",
+      "mask": "0x000000"
+    },
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "texture": "texture",
+      "frames": [2, 2],
+      "rects": "invalid"
+    },
+    {
+      "id": "key02",
+      "texture": "texture",
+      "frames": [2, 2],
+      "rects": [
+        [8, 4, 8, 4],
+        [8, 0, 8, 4],
+        [0, 0, 8, 4],
+        { "rect": [0, 4, 8, 4], "index": 99 },
+        { "rect": [0, 0, 16, 8], "index": 0 }
+      ]
+    },
+    {
+      "id": "key03",
+      "texture": "texture",
+      "rects": [
+        [0, 0, 8, 4],
+        [8, 0, 8, 4],
+        [0, 4, 8, 4],
+        [8, 4, 8, 4]
+      ],
+      "groups": {
+        "directions": 4
+      },
+      "offset": [1, 1]
+    },
+    {
+      "id": "key04",
+      "texture": "texture",
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [8, 0, 8, 4], "index": 0 },
+        { "rect": [0, 4, 8, 4], "index": 0 },
+        { "rect": [8, 4, 8, 4], "index": 0, "offset": [1, 1] }
+      ],
+      "groups": {
+        "directions": 3
+      },
+      "offset": [1, 1]
+    },
+    {
+      "id": "key05",
+      "texture": "texture",
+      "rects": [
+        [0, 0, 8, 4],
+        [8, 0, 8, 4],
+        [0, 4, 8, 4],
+        { "rect": [8, 4, 8, 4], "offset": [-1, 2] }
+      ],
+      "groups": {
+        "directions": 5
+      },
+      "absoluteOffsets": true,
+      "invertOffsets": true
+    },
+    {
+      "id": "key06",
+      "texture": "texture",
+      "rects": [
+        [0, 0, 8, 4],
+        [8, 0, 8, 4],
+        [0, 4, 8, 4],
+        [8, 4, 8, 4],
+        [0, 0, 8, 4],
+        [8, 0, 8, 4],
+        [0, 4, 8, 4],
+        [8, 4, 8, 4],
+        [0, 0, 16, 8],
+        [0, 0, 16, 8]
+      ],
+      "groups": {
+        "directions": [[0, 6], [7, 7], [8, 8], [9, 9]]
+      }
+    },
+    {
+      "id": "key07",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": [4, 2],
+          "direction": "vertical"
+        },
+        {
+          "id": "texture",
+          "frames": [4, 2]
+        },
+        {
+          "id": "texture",
+          "frames": [4, 2]
+        }
+      ],
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [8, 0, 8, 4], "index": 1 },
+        { "rect": [0, 4, 8, 4], "index": 2 },
+        { "rect": [8, 4, 8, 4], "index": 0 },
+        { "rect": [0, 0, 8, 4], "index": 1 },
+        { "rect": [8, 0, 8, 4], "index": 2 },
+        { "rect": [0, 4, 8, 4], "index": 0 },
+        { "rect": [8, 4, 8, 4], "index": 1 },
+        { "rect": [0, 0, 8, 4], "index": 2 },
+        { "rect": [8, 0, 8, 4], "index": 0 },
+        { "rect": [0, 4, 8, 4], "index": 1 },
+        { "rect": [8, 4, 8, 4], "index": 2 }
+      ],
+      "groups": [
+        {
+          "range": [0, 7],
+          "directions": [[0, 5], [6, 6], [7, 7]]
+        },
+        {
+          "range": [8, 15],
+          "directions": 3
+        },
+        {
+          "range": [16, 23],
+          "animationType": "backAndforth",
+          "directions": 9
+        }
+      ]
+    },
+    {
+      "id": "key08",
+      "texture": "texture",
+      "startIndex": 11,
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 11 },
+        { "rect": [8, 0, 8, 4], "index": 11 },
+        { "rect": [0, 4, 8, 4], "index": 11 },
+        { "rect": [8, 4, 8, 4], "index": 11 }
+      ],
+      "groups": [
+        { "range": [11, 12], "animationType": "playOnce" },
+        { "range": [11, 14], "directions": 3 }
+      ]
+    },
+    {
+      "id": "key09",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": [4, 2],
+          "direction": "vertical"
+        },
+        {
+          "id": "texture",
+          "frames": [4, 2]
+        },
+        {
+          "id": "texture",
+          "frames": [4, 2]
+        }
+      ],
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [8, 0, 8, 4], "index": 1 },
+        { "rect": [0, 4, 8, 4], "index": 2 },
+        { "rect": [8, 4, 8, 4], "index": 0 },
+        { "rect": [0, 0, 8, 4], "index": 1 },
+        { "rect": [8, 0, 8, 4], "index": 2 },
+        { "rect": [0, 4, 8, 4], "index": 0 },
+        { "rect": [8, 4, 8, 4], "index": 1 },
+        { "rect": [0, 0, 8, 4], "index": 2 },
+        { "rect": [8, 0, 8, 4], "index": 0 },
+        { "rect": [0, 4, 8, 4], "index": 1 },
+        { "rect": [8, 4, 8, 4], "index": 2 }
+      ],
+      "groups": [
+        { "range": 5, "animationType": "playOnce" },
+        { "range": [6, 9], "directions": 3 },
+        { "range": [10, 11], "directions": 3, "animationType": "backAndForth" }
+      ]
+    },
+    {
+      "id": "key10",
+      "imageContainer": "imageContainer",
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [0, 0, 8, 4], "index": 1 },
+        { "rect": [0, 0, 8, 4], "index": 2 },
+        { "rect": [0, 0, 8, 4], "index": 3 }
+      ],
+      "groups": [
+        { "range": 1, "animationType": "playOnce" },
+        { "range": [2, 3], "directions": 2 }
+      ]
+    },
+    {
+      "id": "key11",
+      "imageContainer": [
+        "imageContainer",
+        "imageContainer2"
+      ],
+      "offset": [2, -2],
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [0, 0, 8, 4], "index": 2 },
+        { "rect": [0, 0, 8, 4], "index": 4 },
+        { "rect": [0, 0, 8, 4], "index": 6 }
+      ],
+      "groups": [
+        { "range": 1, "animationType": "playOnce" },
+        { "range": [2, 3], "directions": 2 }
+      ]
+    },
+    {
+      "id": "key12",
+      "type": "font",
+      "texture": "fontGrid256",
+      "rects": [
+        { "rect": [0, 0, 8, 4], "index": 0 },
+        { "rect": [0, 0, 8, 4], "index": 1 },
+        { "rect": [0, 0, 8, 4], "index": 2 },
+        { "rect": [0, 0, 8, 4], "index": 3 }
+      ],
+      "groups": [
+        { "range": 1, "animationType": "playOnce" },
+        { "range": [2, 3], "directions": 2 }
+      ]
+    },
+    {
+      "id": "key13",
+      "type": "font",
+      "texture": "fontGrid256",
+      "groups": [
+        { "range": [0, 0], "animationType": "playOnce" },
+        { "range": [1, 4], "directions": 2 },
+        { "range": [5, 8] }
+      ]
+    }
+  ]
+}

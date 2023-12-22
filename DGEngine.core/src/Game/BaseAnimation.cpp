@@ -66,7 +66,7 @@ void BaseAnimation::setAnimation(int32_t groupIdx, int32_t directionIdx,
 	}
 	if (texturePack == nullptr)
 	{
-		textureIndexRange = std::make_pair(0, 0);
+		textureIndexRange = {};
 		at = AnimationType::PlayOnce;
 	}
 	else

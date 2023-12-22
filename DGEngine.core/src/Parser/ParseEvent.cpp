@@ -17,7 +17,7 @@ namespace Parser
 			return;
 		}
 
-		auto timeout = getTimeKey(elem, "time", sf::milliseconds(10));
+		auto timeout = getTimeUKey(elem, "time", sf::milliseconds(10));
 		auto evt = std::make_shared<Event>(action, timeout);
 
 		if (isValidString(elem, "id") == true)

@@ -5,12 +5,15 @@
 #include <memory>
 #include "Parser/Utils/ParseUtils.h"
 #include "Resources/TexturePacks/CompositeTexturePack.h"
+#include <type_traits>
 
 namespace Parser
 {
 	template<class CompositeTP = CompositeTexturePack>
 	bool parseCompositeTexturePack(CompositeTP& compTexture, Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<CompositeTexturePack, CompositeTP>);
+
 		if (elem.IsString() == false)
 		{
 			return false;
@@ -27,6 +30,8 @@ namespace Parser
 	template<class CompositeTP = CompositeTexturePack>
 	void parseCompositeTexturePacks(CompositeTP& compTexture, Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<CompositeTexturePack, CompositeTP>);
+
 		using namespace std::literals;
 
 		if (elem.HasMember("texturePacks"sv) == true)
@@ -47,14 +52,15 @@ namespace Parser
 	}
 
 	template<class CompositeTP = CompositeTexturePack>
-	void parseCompositeTexturePackDirectionLayerOrders(CompositeTP & compTexture, const rapidjson::Value & elem)
+	void parseCompositeTexturePackDirectionLayerOrders(CompositeTP& compTexture, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<CompositeTexturePack, CompositeTP>);
+
 		using namespace std::literals;
 
-		auto texturePackCount = compTexture.getTexturePackCount();
 		auto groupIdx = compTexture.getCompositeTextureGroupSize();
 
-		if (compTexture.addGroup(texturePackCount) == true &&
+		if (compTexture.addGroup() == true &&
 			isValidArray(elem, "directionLayerOrders") == true)
 		{
 			std::vector<int8_t> layerOrder;
@@ -94,6 +100,8 @@ namespace Parser
 	template<class CompositeTP = CompositeTexturePack>
 	void parseCompositeTexturePackGroup(CompositeTP& compTexture, Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<CompositeTexturePack, CompositeTP>);
+
 		parseCompositeTexturePacks(compTexture, game, elem);
 
 		if (compTexture.getTexturePackCount() == 0)
@@ -107,6 +115,8 @@ namespace Parser
 	template<class CompositeTP = CompositeTexturePack>
 	std::shared_ptr<CompositeTP> getCompositeTexturePackObj(Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<CompositeTexturePack, CompositeTP>);
+
 		using namespace std::literals;
 
 		auto compTexture = std::make_shared<CompositeTP>();

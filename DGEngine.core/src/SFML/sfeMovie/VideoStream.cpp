@@ -35,14 +35,14 @@ namespace sfe
 			return;
 		}
 
-		m_rawVideoFrame = AVFunc::av_frame_alloc();
+		m_rawVideoFrame = AV_FRAME_ALLOC();
 		if (m_rawVideoFrame == nullptr)
 		{
 			return;
 		}
 
 		// RGBA video buffer
-		auto avErr = AVFunc::av_image_alloc(m_rgbaVideoBuffer, m_rgbaVideoLinesize,
+		auto avErr = AV_IMAGE_ALLOC(m_rgbaVideoBuffer, m_rgbaVideoLinesize,
 			m_stream->codecpar->width, m_stream->codecpar->height,
 			AV_PIX_FMT_RGBA, 1);
 		if (avErr < 0)
@@ -64,15 +64,15 @@ namespace sfe
 	{
 		if (m_rawVideoFrame != nullptr)
 		{
-			AVFunc::av_frame_free(&m_rawVideoFrame);
+			AV_FRAME_FREE(&m_rawVideoFrame);
 		}
 		if (m_rgbaVideoBuffer[0] != nullptr)
 		{
-			AVFunc::av_freep(&m_rgbaVideoBuffer[0]);
+			AV_FREEP(&m_rgbaVideoBuffer[0]);
 		}
 		if (m_swsCtx != nullptr)
 		{
-			AVFunc::sws_freeContext(m_swsCtx);
+			SWS_FREECONTEXT(m_swsCtx);
 		}
 	}
 
@@ -101,7 +101,7 @@ namespace sfe
 
 	float VideoStream::getFrameRate() const
 	{
-		return static_cast<float>(av_q2d(AVFunc::av_guess_frame_rate(m_formatCtx, m_stream, nullptr)));
+		return static_cast<float>(av_q2d(AV_GUESS_FRAME_RATE(m_formatCtx, m_stream, nullptr)));
 	}
 
 	sf::Texture& VideoStream::getVideoTexture()
@@ -207,8 +207,8 @@ namespace sfe
 				}
 				else
 				{
-					AVFunc::av_packet_unref(packet);
-					AVFunc::av_free(packet);
+					AV_PACKET_UNREF(packet);
+					AV_FREE(packet);
 				}
 
 				if (!gotFrame && goOn)
@@ -240,13 +240,13 @@ namespace sfe
 		gotFrame = false;
 		needsMoreDecoding = false;
 
-		ret = AVFunc::avcodec_send_packet(m_codecCtx, packet);
+		ret = AVCODEC_SEND_PACKET(m_codecCtx, packet);
 		if (ret < 0)
 		{
 			return false;
 		}
 
-		ret = AVFunc::avcodec_receive_frame(m_codecCtx, outputFrame);
+		ret = AVCODEC_RECEIVE_FRAME(m_codecCtx, outputFrame);
 		if (ret < 0)
 		{
 			needsMoreDecoding = (ret == AVERROR(EAGAIN));
@@ -262,7 +262,7 @@ namespace sfe
 
 	void VideoStream::initRescaler()
 	{
-		/* create scaling context */
+		// create scaling context
 		int algorithm = SWS_FAST_BILINEAR;
 
 		if (getFrameSize().x % 8 != 0 && getFrameSize().x * getFrameSize().y < 500000)
@@ -270,7 +270,7 @@ namespace sfe
 			algorithm |= SWS_ACCURATE_RND;
 		}
 
-		m_swsCtx = AVFunc::sws_getCachedContext(nullptr, m_stream->codecpar->width, m_stream->codecpar->height, (AVPixelFormat)m_stream->codecpar->format,
+		m_swsCtx = SWS_GETCACHEDCONTEXT(nullptr, m_stream->codecpar->width, m_stream->codecpar->height, (AVPixelFormat)m_stream->codecpar->format,
 			m_stream->codecpar->width, m_stream->codecpar->height, AV_PIX_FMT_RGBA,
 			algorithm, nullptr, nullptr, nullptr);
 	}
@@ -279,7 +279,7 @@ namespace sfe
 	{
 		if (frame != nullptr)
 		{
-			AVFunc::sws_scale(m_swsCtx, frame->data, frame->linesize, 0, frame->height, outVideoBuffer, outVideoLinesize);
+			SWS_SCALE(m_swsCtx, frame->data, frame->linesize, 0, frame->height, outVideoBuffer, outVideoLinesize);
 		}
 	}
 

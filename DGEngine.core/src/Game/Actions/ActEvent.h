@@ -77,3 +77,18 @@ public:
 		return true;
 	}
 };
+
+class ActEventTimeout : public Action
+{
+private:
+	std::string id;
+
+public:
+	ActEventTimeout(const std::string_view id_) : id(id_) {}
+
+	bool execute(Game& game) override
+	{
+		game.Events().timeout(id);
+		return true;
+	}
+};

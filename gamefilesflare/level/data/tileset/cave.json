@@ -188,9 +188,6 @@
       { "rect": [0, 128, 128, 64], "offset": [32, 32] },
       { "rect": [128, 64, 128, 64], "offset": [32, 32] }
     ],
-    "animatedTextures": [
-      { "indexes": [265, 270, 271, 272], "refresh": 60 }
-    ],
     "textureIndexes": [
       16,
       17,
@@ -369,6 +366,9 @@
       270,
       271,
       272
+    ],
+    "animatedTextures": [
+      { "indexes": [265, 270, 271, 272], "refresh": 60 }
     ]
   }
 }

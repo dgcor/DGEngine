@@ -10,6 +10,6 @@ namespace Parser::Actions
 	{
 		return std::make_shared<ActScrollableSetSpeed>(
 			getStringViewKey(elem, "id"),
-			getTimeKey(elem, "speed"));
+			getTimeUKey(elem, "speed"));
 	}
 }

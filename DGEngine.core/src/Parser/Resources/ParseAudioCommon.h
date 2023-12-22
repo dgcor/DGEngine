@@ -4,7 +4,7 @@
 #include "SFML/MusicLoops.h"
 #include <string>
 #include <string_view>
-#include <unordered_map>
+#include "Utils/UnorderedStringMap.h"
 #include <vector>
 
 namespace Parser
@@ -12,10 +12,10 @@ namespace Parser
 	sf::Music::TimeSpan parseAudioTimeSpan(const rapidjson::Value& elem);
 
 	void parseAudioLoopName(const rapidjson::Value& elem,
-		std::unordered_map<std::string, sf::Music::TimeSpan>& loopNames);
+		UnorderedStringMap<sf::Music::TimeSpan>& loopNames);
 
 	void parseAudioLoopNamesVal(const rapidjson::Value& elem, const char* key,
-		std::unordered_map<std::string, sf::Music::TimeSpan>& loopNames);
+		UnorderedStringMap<sf::Music::TimeSpan>& loopNames);
 
 	void parseAudioLoopPoint(const rapidjson::Value& elem,
 		std::vector<sf::Music::TimeSpan>& loopPoints);
@@ -24,6 +24,6 @@ namespace Parser
 		const char* key, sf::MusicLoops& music);
 
 	void updateAudioLoopString(const std::string_view str,
-		const std::unordered_map<std::string, sf::Music::TimeSpan>& loopNames,
+		const UnorderedStringMap<sf::Music::TimeSpan>& loopNames,
 		sf::MusicLoops& music);
 }

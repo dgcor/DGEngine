@@ -25,5 +25,7 @@ public:
 
 	void resetTime(const std::string& id);
 
+	void timeout(const std::string& id);
+
 	void update(Game& game);
 };

@@ -1,13 +1,15 @@
 #include "Palette.h"
 #include <algorithm>
-#include "SFML/PhysFSStream.h"
+#include "Utils/Log.h"
+#include "Utils/NumberVector.h"
 
 Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 {
-	sf::PhysFSStream stream(file.data());
+	NumberVector<uint8_t> bytes(file, 0, 1024);
 
-	if (stream.hasError() == true || stream.getSize() < 768)
+	if (bytes.size() < 768)
 	{
+		SPDLOG_WARN("Invalid palette. using grayscale palette.");
 		uint8_t c = 0;
 		for (auto& color : palette)
 		{
@@ -19,14 +21,16 @@ Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 	}
 	else
 	{
+		bool has4ByteColor = bytes.size() == 1024;
+		size_t i = 0;
 		for (auto& color : palette)
 		{
-			stream.read(&color.r, 1);
-			stream.read(&color.g, 1);
-			stream.read(&color.b, 1);
-			if (colorFormat >= ColorFormat::RGBA)
+			color.r = bytes[i++];
+			color.g = bytes[i++];
+			color.b = bytes[i++];
+			if (colorFormat >= ColorFormat::RGBA && has4ByteColor == true)
 			{
-				stream.read(&color.a, 1);
+				color.a = bytes[i++];
 			}
 			switch (colorFormat)
 			{
@@ -35,12 +39,22 @@ Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 				std::swap(color.r, color.b);
 				break;
 			case ColorFormat::ARGB:
-				color = sf::Color(color.toInteger() << 8);
+			{
+				if (has4ByteColor == true)
+				{
+					std::swap(color.b, color.a);
+					std::swap(color.a, color.r);
+					std::swap(color.r, color.g);
+				}
 				break;
+			}
 			case ColorFormat::ABGR:
 			{
-				color = sf::Color(color.toInteger() << 8);
-				std::swap(color.r, color.b);
+				if (has4ByteColor == true)
+				{
+					std::swap(color.a, color.r);
+					std::swap(color.b, color.g);
+				}
 				break;
 			}
 			default:
@@ -51,13 +65,13 @@ Palette::Palette(const std::string_view file, ColorFormat colorFormat)
 	loadTexture();
 }
 
-Palette::Palette(const Palette& pal, const std::vector<sf::Uint8> trn, size_t start, size_t length)
+Palette::Palette(const Palette& pal, const FileBytes& trn, size_t start, size_t length)
 {
 	if (start + length <= trn.size())
 	{
 		for (size_t i = 0; i < length; i++)
 		{
-			palette[i] = pal[trn[start + i]];
+			palette[i] = pal[(size_t)trn[start + i]];
 		}
 	}
 	loadTexture();

@@ -1,0 +1,71 @@
+{
+  "file": { "file": "res/texture/imageContainer.png" },
+  "palette": { "file": "res/palette/pal.bin" },
+  "imageContainer": [
+    { "file": "res/texture/invalid-id.png" },
+    { "file": "res/texture/imageContainer.png", "frames": 1 },
+    { "file": "res/texture/imageContainer.png", "frames": [2, 2] },
+    {
+      "id": "key01",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "key02",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2],
+      "blendMode": "add"
+    },
+    {
+      "id": "key03",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2],
+      "direction": "vertical",
+      "directions": 4
+    },
+    {
+      "id": "key04",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2],
+      "direction": "VERTICAL",
+      "directions": 3
+    },
+    {
+      "id": "key05",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2],
+      "directions": 8
+    },
+    {
+      "id": "key06",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2],
+      "directions": 2
+    },
+    {
+      "id": "key07",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2]
+    },
+    {
+      "id": "key08",
+      "fileBytes": "imageContainer",
+      "direction": "vertical",
+      "frames": [2, 4]
+    },
+    {
+      "id": "key09",
+      "fileBytes": "imageContainer",
+      "frames": [5, 2]
+    },
+    {
+      "id": "key10",
+      "file": "res/texture/imageContainerPalette.png",
+      "direction": "vertical",
+      "frames": [2, 2]
+    },
+    {
+      "id": "key11",
+      "fromId": "imageContainer"
+    }
+  ]
+}

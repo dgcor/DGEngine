@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game/BlendMode.h"
+#include <optional>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/View.hpp>
 #include <SFML/Window/Keyboard.hpp>
@@ -8,13 +9,13 @@
 
 namespace SFMLUtils
 {
+	sf::BlendMode getBlendMode(BlendMode blendMode);
+
 	sf::Color rgbToColor(unsigned val);
 	sf::Color rgbaToColor(unsigned val);
-	sf::Color stringToColor(const std::string_view str);
+	std::optional<sf::Color> stringToColor(std::string_view str);
 
 	void spriteCenterTexture(sf::Sprite& sprite);
-
-	sf::BlendMode getBlendMode(BlendMode blendMode);
 
 	float getScaleToStretchAndKeepAR(const sf::Vector2u& size,
 		const sf::Vector2u& windowSize);

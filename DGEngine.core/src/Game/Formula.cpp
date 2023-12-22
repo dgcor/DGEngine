@@ -1,5 +1,4 @@
 #include "Formula.h"
-#include <charconv>
 #include <cmath>
 #include "Utils/Random.h"
 #include "Utils/StringHash.h"
@@ -222,12 +221,10 @@ Formula::FormulaElement Formula::parseToken(const std::string_view token, bool g
 		}
 	}
 
-	double val = 0.0;
-	auto err = std::from_chars(token.data(), token.data() + token.size(), val);
-	if (err.ec == std::errc() ||
-		err.ec == std::errc::result_out_of_range)
+	auto val = Utils::strToNumberOpt<double>(token);
+	if (val)
 	{
-		return val;
+		return *val;
 	}
 	else
 	{
@@ -607,7 +604,7 @@ double Formula::evalMinMax(const Queryable* queryA,
 	}
 	else
 	{
-		randomNum = Utils::strtonumber<int32_t>(minMaxNum);
+		randomNum = Utils::strToNumber<int32_t>(minMaxNum);
 	}
 	return eval(it, queryA, queryB, randomNum);
 }

@@ -15,7 +15,7 @@ namespace DT1
 
 	Header::Header(LittleEndianStreamReader& fileStream)
 	{
-		static const int HEADER_SIZE = 276;
+		constexpr int HEADER_SIZE = 276;
 		uint8_t zeros[260];
 		fileStream.read(version1);
 		fileStream.read(version2);
@@ -306,7 +306,7 @@ namespace DT1
 
 DT1ImageContainer::DT1ImageContainer(const std::shared_ptr<FileBytes>& fileBytes)
 {
-	LittleEndianStreamReader fileStream(fileBytes->data(), fileBytes->size());
+	LittleEndianStreamReader fileStream((const uint8_t*)fileBytes->data(), fileBytes->size());
 
 	header = DT1::Header(fileStream);
 	assert(header.version1 == 0x7);

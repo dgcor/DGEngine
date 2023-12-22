@@ -6,7 +6,16 @@
 
 bool Panel::addDrawable(const std::shared_ptr<UIObject>& obj)
 {
-	if (obj.get() == this)
+	if (obj == nullptr || obj.get() == this)
+	{
+		return false;
+	}
+
+	auto itObj = std::find_if(drawables.cbegin(), drawables.cend(), [&obj](const auto& ptr) {
+		return ptr.lock() == obj;
+	});
+
+	if (itObj != drawables.cend())
 	{
 		return false;
 	}

@@ -1,0 +1,260 @@
+{
+  "palette": { "file": "res/palette/pal.bin" },
+  "texture": [
+    {
+      "id": "fontHoriz26",
+      "file": "res/texture/fontHoriz26.png"
+    },
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "texture": "texture",
+      "frames": [2, 2],
+      "textureIndexes": [
+        [1, 1],
+        [2, 0],
+        [1024, 2],
+        [1025, 2],
+        [1026, 2],
+        [1027, 2]
+      ]
+    },
+    {
+      "id": "key02",
+      "texture": "texture",
+      "frames": [2, 2],
+      "reverseMapIndex": true,
+      "onlyUseIndexed": false,
+      "textureIndexes": [
+        [1, 1],
+        [2, 0],
+        [1024, 2],
+        [1025, 2],
+        [1026, 2],
+        [1027, 2]
+      ]
+    },
+    {
+      "id": "key03",
+      "texture": "texture",
+      "frames": [2, 2],
+      "textureIndexes": [
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "id": "key04",
+      "texture": "texture",
+      "frames": [2, 2],
+      "onlyUseIndexed": false,
+      "textureIndexes": [
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "id": "key05",
+      "texture": "texture",
+      "frames": [2, 2],
+      "reverseMapIndex": true,
+      "textureIndexes": [
+        3, 2, 1, 0,
+        1, 2, 3, 4
+      ]
+    },
+    {
+      "id": "key06",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 13],
+          "animationType": "playOnce",
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [14, 17],
+          "animationType": "backAndforth"
+        },
+        {
+          "range": [18, 21],
+          "directions": 4
+        }
+      ],
+      "palette": "pal",
+      "offset": [1, 0],
+      "textureIndexes": [
+        [1, 10],
+        [2, 11],
+        [3, 12],
+        [4, 13],
+        [20, 14],
+        [21, 15],
+        [22, 16],
+        [23, 17],
+        [30, 18],
+        [31, 19],
+        [32, 20],
+        [33, 21],
+        [40, 22],
+        [41, 23],
+        [42, 24],
+        [43, 25],
+        [50, 22]
+      ]
+    },
+    {
+      "id": "key07",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 13],
+          "animationType": "playOnce",
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [14, 17],
+          "animationType": "backAndforth"
+        },
+        {
+          "range": [18, 21],
+          "directions": 4
+        }
+      ],
+      "onlyUseIndexed": false,
+      "palette": "pal",
+      "offset": [1, 0],
+      "textureIndexes": [
+        [1, 10],
+        [2, 11],
+        [3, 12],
+        [4, 13],
+        [20, 14],
+        [21, 15],
+        [22, 16],
+        [23, 17],
+        [30, 18],
+        [31, 19],
+        [32, 20],
+        [33, 21],
+        [40, 22],
+        [41, 23],
+        [42, 24],
+        [43, 25],
+        [50, 22]
+      ]
+    },
+    {
+      "id": "key08",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "utf8Indexes": "abcdefghijklmnopqrstuvwxyz"
+    },
+    {
+      "id": "key09",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "utf8IndexFile": "res/font/font26Indexes.txt"
+    },
+    {
+      "id": "key10",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "textureIndexRange": [65, 90]
+    },
+    {
+      "id": "key11",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "textureIndexRange": [90, 65]
+    },
+    {
+      "id": "key12",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "textureIndexRange": [10, 35],
+      "reverseMapIndex": true
+    },
+    {
+      "id": "key13",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "textureIndexRange": [10, 10]
+    },
+    {
+      "id": "key14",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "utf8IndexFile": "res/font/font26Indexes.txt",
+      "textureIndexRange": [97, 122],
+      "textureIndexRangeStart": 0
+    },
+    {
+      "id": "key15",
+      "type": "font",
+      "texture": "fontHoriz26",
+      "rows": 1,
+      "cols": 26,
+      "utf8IndexFile": "res/font/font26Indexes.txt",
+      "textureIndexRange": [122, 97],
+      "textureIndexRangeStart": 0
+    }
+  ]
+}

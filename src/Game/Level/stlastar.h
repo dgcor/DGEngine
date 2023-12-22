@@ -33,7 +33,7 @@ given where due.
 
 // stl includes
 #include <algorithm>
-#include <set>
+#include <unordered_set>
 #include <vector>
 #include <cfloat>
 
@@ -81,7 +81,7 @@ public: // data
 			Node *parent; // used during the search to record the parent of successor nodes
 			Node *child; // used after the search for the application to view the search in reverse
 			
-			float g; // cost of this node + it's predecessors
+			float g; // cost of this node + its predecessors
 			float h; // heuristic estimate of distance to goal
 			float f; // sum of cumulative cost of predecessors and self and heuristic
 
@@ -94,9 +94,13 @@ public: // data
 			{			
 			}
 
+			bool operator==(const Node& otherNode) const
+			{
+				return this->m_UserState.IsSameState(otherNode->m_UserState);
+			}
+
 			UserState m_UserState;
 	};
-
 
 	// For sorting the heap the STL needs compare function that lets us compare
 	// the f value of two nodes
@@ -285,7 +289,6 @@ public: // methods
 			// Now handle each successor to the current node ...
 			for( typename std::vector< Node * >::iterator successor = m_Successors.begin(); successor != m_Successors.end(); successor ++ )
 			{
-
 				// 	The g value for this successor ...
 				float newg = n->g + n->m_UserState.GetCost( (*successor)->m_UserState );
 
@@ -318,16 +321,9 @@ public: // methods
 						continue;
 					}
 				}
+				typename std::unordered_set<Node*, NodeHash, NodeEqual>::iterator closedlist_result;
 
-				typename std::vector< Node * >::iterator closedlist_result;
-
-				for( closedlist_result = m_ClosedList.begin(); closedlist_result != m_ClosedList.end(); closedlist_result ++ )
-				{
-					if( (*closedlist_result)->m_UserState.IsSameState( (*successor)->m_UserState ) )
-					{
-						break;					
-					}
-				}
+				closedlist_result = m_ClosedList.find(*successor);
 
 				if( closedlist_result != m_ClosedList.end() )
 				{
@@ -424,7 +420,7 @@ public: // methods
 
 			// push n onto Closed, as we have expanded it now
 
-			m_ClosedList.push_back( n );
+			m_ClosedList.insert( n );
 
 		} // end else (not goal so expand)
 
@@ -681,7 +677,7 @@ private: // methods
 		m_OpenList.clear();
 
 		// iterate closed list and delete unused nodes
-		typename std::vector< Node * >::iterator iterClosed;
+		typename std::unordered_set<Node*, NodeHash, NodeEqual>::iterator iterClosed;
 
 		for( iterClosed = m_ClosedList.begin(); iterClosed != m_ClosedList.end(); iterClosed ++ )
 		{
@@ -722,7 +718,7 @@ private: // methods
 		m_OpenList.clear();
 
 		// iterate closed list and delete unused nodes
-		typename std::vector< Node * >::iterator iterClosed;
+		typename std::unordered_set<Node*, NodeHash, NodeEqual>::iterator iterClosed;
 
 		for( iterClosed = m_ClosedList.begin(); iterClosed != m_ClosedList.end(); iterClosed ++ )
 		{
@@ -779,8 +775,19 @@ private: // data
 	// Heap (simple vector but used as a heap, cf. Steve Rabin's game gems article)
 	std::vector< Node *> m_OpenList;
 
-	// Closed list is a vector.
-	std::vector< Node * > m_ClosedList;
+	// Closed is an unordered_set
+	struct NodeHash {
+		size_t operator() (Node* const& n) const {
+			return n->m_UserState.Hash();
+		}
+	};
+	struct NodeEqual {
+		bool operator()(Node* a, Node* b) const {
+			return a->m_UserState.IsSameState(b->m_UserState);
+  	}
+	};
+	std::unordered_set<Node*, NodeHash, NodeEqual> m_ClosedList;
+
 
 	// Successors is a vector filled out by the user each type successors to a node
 	// are generated
@@ -824,6 +831,7 @@ public:
 	virtual bool GetSuccessors( AStarSearch<T> *astarsearch, T *parent_node ) = 0; // Retrieves all successors to this node and adds them via astarsearch.addSuccessor()
 	virtual float GetCost( T &successor ) = 0; // Computes the cost of travelling from this node to the successor node
 	virtual bool IsSameState( T &rhs ) = 0; // Returns true if this node is the same as the rhs node
+	virtual size_t Hash() = 0; // Returns a hash for the state
 };
 
 #endif

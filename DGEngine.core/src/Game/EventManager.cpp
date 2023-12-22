@@ -85,6 +85,25 @@ void EventManager::resetTime(const std::string& id)
 	}
 }
 
+void EventManager::timeout(const std::string& id)
+{
+	if (id.empty() == true)
+	{
+		return;
+	}
+	for (auto& evt : events)
+	{
+		auto actionEvt = dynamic_cast<Event*>(evt.get());
+		if (actionEvt != nullptr)
+		{
+			if (actionEvt->getId() == id)
+			{
+				actionEvt->timeout();
+			}
+		}
+	}
+}
+
 void EventManager::update(Game& game)
 {
 	for (auto it = events.begin(); it != events.end();)

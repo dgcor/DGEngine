@@ -1,5 +1,4 @@
 #include "ParseButton.h"
-#include <cassert>
 #include "Game/Drawables/BitmapButton.h"
 #include "Game/Drawables/BitmapText.h"
 #include "Game/Drawables/Panel.h"

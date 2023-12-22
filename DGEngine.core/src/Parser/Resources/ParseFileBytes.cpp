@@ -30,7 +30,10 @@ namespace Parser
 			return;
 		}
 
-		auto bytes = FileUtils::readChar(file);
+		auto startPosition = getUIntKey(elem, "startPosition");
+		auto maxNumBytes = getNumberKey<size_t>(elem, "bytesToRead", -1);
+
+		auto bytes = FileUtils::readBytes(file, startPosition, maxNumBytes);
 		if (bytes.empty() == true)
 		{
 			return;

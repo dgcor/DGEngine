@@ -2,6 +2,7 @@
 
 #include "DrawableText.h"
 #include "Game/ActionQueryable.h"
+#include "Resources/Font.h"
 
 class Text : public virtual ActionQueryable, public virtual UIObject
 {
@@ -11,7 +12,7 @@ protected:
 	bool triggerOnChange{ false };
 
 public:
-	Text(std::unique_ptr<DrawableText> text_) : text(std::move(text_)) {}
+	Text(const Font& font, unsigned int characterSize = 0);
 	~Text() = default;
 
 	// allow copy, but not move
@@ -34,6 +35,8 @@ public:
 
 	auto getLineCount() const { return text->getLineCount(); }
 	void setColor(const sf::Color& color) { text->setColor(color); }
+
+	void setFont(const Font& font);
 
 	void setHorizontalAlign(const HorizontalAlign align) { text->setHorizontalAlign(align); }
 	void setVerticalAlign(const VerticalAlign align) { text->setVerticalAlign(align); }

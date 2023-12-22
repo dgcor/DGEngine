@@ -1,31 +1,49 @@
 #include "ImageContainerTexturePack2.h"
-#include "Game/AnimationInfo.h"
+#include "Resources/TexturePacks/TexturePackUtils.h"
 
-uint32_t ImageContainerTexturePack2::getNormalizedDirection(uint32_t direction, uint32_t numberOfDirections)
+ImageContainerTexturePack2::ImageContainerTexturePack2(
+	const std::vector<std::shared_ptr<ImageContainer>>& imgVec_, const sf::Vector2f& offset_,
+	const std::shared_ptr<Palette>& palette_, bool isIndexed_, bool normalizeDirections_) :
+	ImageContainerTexturePack(imgVec_, offset_, palette_, isIndexed_),
+	normalizeDirections(normalizeDirections_) {}
+
+uint32_t ImageContainerTexturePack2::normalizedDirection(uint32_t direction, uint32_t numberOfDirections)
 {
 	if (numberOfDirections == 8 ||
 		numberOfDirections == 16)
 	{
 		switch (direction)
 		{
-		case 0:
-			return 4;
-		case 1:
-			return 0;
-		case 2:
-			return 5;
-		case 3:
-			return 1;
-		case 4:
-			return 6;
-		case 5:
-			return 2;
-		case 6:
-			return 7;
-		case 7:
-			return 3;
-		default:
-			return direction;
+		case 0: return 4;
+		case 1: return 0;
+		case 2: return 5;
+		case 3: return 1;
+		case 4: return 6;
+		case 5: return 2;
+		case 6: return 7;
+		case 7: return 3;
+		default: return direction;
+		}
+	}
+	return direction;
+}
+
+uint32_t ImageContainerTexturePack2::denormalizedDirection(uint32_t direction, uint32_t numberOfDirections)
+{
+	if (numberOfDirections == 8 ||
+		numberOfDirections == 16)
+	{
+		switch (direction)
+		{
+		case 4: return 0;
+		case 0: return 1;
+		case 5: return 2;
+		case 1: return 3;
+		case 6: return 4;
+		case 2: return 5;
+		case 7: return 6;
+		case 3: return 7;
+		default: return direction;
 		}
 	}
 	return direction;
@@ -36,55 +54,49 @@ ImageContainerTexturePack2::ImageContainerTexturePack2(const std::shared_ptr<Ima
 	bool normalizeDirections_) : ImageContainerTexturePack(imgPack_, offset_, palette_, isIndexed_),
 	normalizeDirections(normalizeDirections_) {}
 
-uint32_t ImageContainerTexturePack2::getDirection(uint32_t frameIdx) const noexcept
+std::pair<uint32_t, uint32_t> ImageContainerTexturePack2::getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept
 {
-	auto numFrames = imgPack->size();
-	if (frameIdx < numFrames)
+	auto groupDirection = ImageContainerTexturePack::getDirection(frameIdx, flags);
+
+	if ((int)(flags & AnimationFlags::Valid) != 0)
 	{
-		auto directions = imgPack->getDirections();
-		if (directions <= 1)
+		if (normalizeDirections == true)
 		{
-			return 0;
-		}
-		auto framesPerDirection = numFrames / directions;
-		if (normalizeDirections == false)
-		{
-			return frameIdx / framesPerDirection;
-		}
-		else
-		{
-			return getNormalizedDirection(
-				frameIdx / framesPerDirection,
-				directions
+			groupDirection.second = denormalizedDirection(
+				groupDirection.second,
+				ImageContainerTexturePack::getDirectionCount(groupDirection.first)
 			);
 		}
 	}
-	return 0;
+	return groupDirection;
 }
 
 AnimationInfo ImageContainerTexturePack2::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
-	auto directions = imgPack->getDirections();
-	if (normalizeDirections == true && directions > 1)
+	if (normalizeDirections == true &&
+		groupIdx >= 0 &&
+		(uint32_t)groupIdx < ImageContainerTexturePack::getGroupCount())
 	{
-		directionIdx = (int32_t)getNormalizedDirection(directionIdx, directions);
+		auto directions = ImageContainerTexturePack::getDirectionCount(groupIdx);
+		if (directions > 1)
+		{
+			directionIdx = (int32_t)ImageContainerTexturePack2::normalizedDirection(
+				directionIdx, directions
+			);
+		}
 	}
-	AnimationInfo animInfo;
-	animInfo.indexRange = TexturePack::getRange(
-		0,
-		(uint32_t)cache.size(),
-		directionIdx,
-		directions
-	);
-	return animInfo;
+	return ImageContainerTexturePack::getAnimation(groupIdx, directionIdx);
 }
 
 int32_t ImageContainerTexturePack2::getFlags(uint32_t index, uint32_t subIndex) const
 {
-	auto levelFlags = dynamic_cast<const LevelFlags*>(imgPack.get());
-	if (levelFlags != nullptr)
+	if (getImageContainers().empty() == false)
 	{
-		return levelFlags->getFlags(index, subIndex);
+		auto levelFlags = dynamic_cast<const LevelFlags*>(getImageContainers().front().get());
+		if (levelFlags != nullptr)
+		{
+			return levelFlags->getFlags(index, subIndex);
+		}
 	}
 	return 0;
 }

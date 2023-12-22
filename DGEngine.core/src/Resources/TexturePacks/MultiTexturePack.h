@@ -1,13 +1,15 @@
 #pragma once
 
-#include "TexturePackGroup.h"
+#include "TextureGroup.h"
+#include "Utils/small_vector.hpp"
 
 class MultiTexturePack : public TexturePack
 {
 protected:
-	std::vector<TexturePackGroup> texVec;
+	gch::small_vector<TextureGroup, 1> textureGroups;
 	uint32_t textureCount{ 0 };
 	uint32_t numFrames{ 0 };
+	std::pair<uint32_t, uint32_t> frameRange;
 	std::shared_ptr<Palette> palette;
 	bool texturesHaveSameSize{ false };
 	bool indexesHaveGaps{ false };
@@ -17,12 +19,13 @@ protected:
 
 public:
 	MultiTexturePack(const std::shared_ptr<Palette>& palette_) : palette(palette_) {}
+	MultiTexturePack(TextureGroup&& textureGroup_, const std::shared_ptr<Palette>& palette_);
 
 	bool get(uint32_t index, TextureInfo& ti) const override;
 
 	sf::Vector2i getTextureSize(uint32_t index) const override;
 
-	void addTexturePack(TexturePackGroup&& t, const std::pair<uint32_t, uint32_t>& frames);
+	void addTextureGroup(TextureGroup&& textureGroup);
 
 	const sf::Texture* getTexture() const noexcept override;
 
@@ -30,11 +33,9 @@ public:
 
 	uint32_t size() const noexcept override { return textureCount; }
 
-	uint32_t getGroupCount() const noexcept override { return (uint32_t)texVec.size(); }
+	uint32_t getGroupCount() const noexcept override;
 
-	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
-
-	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
+	std::pair<uint32_t, uint32_t> getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept override;
 
 	AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const override;
 };

@@ -63,7 +63,7 @@ namespace TextUtils
 	void appendText(const Game& game, TextOp textOp, std::string& str,
 		const std::string_view textOrformat, const std::vector<std::string>& bindings)
 	{
-		switch (TextOp(((uint32_t)textOp) & 0x3u))
+		switch (TextOp(((uint32_t)textOp) & 0x7u))
 		{
 		default:
 		case TextOp::Set:

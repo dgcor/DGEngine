@@ -12,7 +12,7 @@ namespace Parser::Actions
 		return std::make_shared<ActEventAdd>(
 			getStringViewKey(elem, "id"),
 			getActionKey(game, elem, "action"),
-			getTimeKey(elem, "time"),
+			getTimeUKey(elem, "time"),
 			getBoolKey(elem, "addToFront"));
 	}
 
@@ -29,5 +29,10 @@ namespace Parser::Actions
 	std::shared_ptr<Action> parseEventResetTime(const Value& elem)
 	{
 		return std::make_shared<ActEventResetTime>(getStringViewKey(elem, "id"));
+	}
+
+	std::shared_ptr<Action> parseEventTimeout(const Value& elem)
+	{
+		return std::make_shared<ActEventTimeout>(getStringViewKey(elem, "id"));
 	}
 }

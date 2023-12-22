@@ -19,10 +19,13 @@ namespace VarUtils
 	template<typename ...Args>
 	struct is_variant<std::variant<Args...>> : std::true_type {};
 
+	template<typename ...Args>
+	inline constexpr bool is_variant_v = is_variant<Args...>::value;
+
 	template <class T, class NumType>
 	T getVector2NumberVal(const Variable& var, const T& val = {})
 	{
-		static_assert(std::is_arithmetic<NumType>::value == true);
+		static_assert(std::is_arithmetic_v<NumType> == true);
 
 		if (std::holds_alternative<Int64Tuple2>(var))
 		{
@@ -62,7 +65,7 @@ namespace VarUtils
 	template <class T, class NumType>
 	T getVector3NumberVal(const Variable& var, const T& val = {})
 	{
-		static_assert(std::is_arithmetic<NumType>::value == true);
+		static_assert(std::is_arithmetic_v<NumType> == true);
 
 		if (std::holds_alternative<Int64Tuple3>(var))
 		{
@@ -104,7 +107,7 @@ namespace VarUtils
 	template <class T, class NumType>
 	T getVector4NumberVal(const Variable& var, const T& val = {})
 	{
-		static_assert(std::is_arithmetic<NumType>::value == true);
+		static_assert(std::is_arithmetic_v<NumType> == true);
 
 		if (std::holds_alternative<Int64Tuple4>(var))
 		{

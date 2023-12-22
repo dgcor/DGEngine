@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 # use ccache if available
 find_program(CCACHE_PROGRAM ccache)
@@ -7,20 +7,34 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
-project(DGEngine.core VERSION 1.1.0)
+project(DGEngine.core VERSION 1.2.0)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake_modules")
 
-option(MOVIE_SUPPORT "Enable Movie support" TRUE)
-option(FALLBACK_TO_LOWERCASE "Enable falling back to all lowercase names if file is not found" TRUE)
+option(DGENGINE_BUILD_TEST_SUITE "Build Tests" FALSE)
+option(DGENGINE_ENABLE_LOGGING "Enable Logging in release builds" FALSE)
+option(DGENGINE_MOVIE_SUPPORT "Enable Movie support" TRUE)
+option(DGENGINE_FALLBACK_TO_LOWERCASE "Enable falling back to all lowercase names if file is not found" TRUE)
+option(DGENGINE_STATIC_CRT "Use static CRT library (Windows)" FALSE)
 
-if(MOVIE_SUPPORT)
+if(DGENGINE_MOVIE_SUPPORT)
     find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
 endif()
-find_package(PhysFS REQUIRED)
-find_package(SFML 2.6 COMPONENTS audio graphics REQUIRED)
 
-include_directories(src)
+find_package(PhysFS CONFIG QUIET)
+if(NOT PhysFS_FOUND)
+    find_package(PhysFS MODULE REQUIRED)
+    set(PHYSFS_MODULE_MODE TRUE)
+endif()
+
+find_package(SFML 2.6 COMPONENTS audio graphics CONFIG REQUIRED)
+
+if (EXISTS "${CMAKE_CURRENT_LIST_DIR}/spdlog" AND EXISTS "${CMAKE_CURRENT_LIST_DIR}/spdlog/CMakeLists.txt")
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/spdlog)
+    set(spdlog_FOUND TRUE)
+else()
+    find_package(spdlog QUIET)
+endif()
 
 set(SOURCE_FILES
     src/Hooks.cpp
@@ -29,6 +43,7 @@ set(SOURCE_FILES
     src/Game/ActionQueryable.h
     src/Game/Alignment.h
     src/Game/Anchor.h
+    src/Game/AnimationFlags.h
     src/Game/AnimationInfo.h
     src/Game/AnimationType.h
     src/Game/BaseAnimation.cpp
@@ -95,6 +110,7 @@ set(SOURCE_FILES
     src/Game/Actions/ActMount.h
     src/Game/Actions/ActMovie.h
     src/Game/Actions/ActPalette.h
+    src/Game/Actions/ActPanel.h
     src/Game/Actions/ActRandom.h
     src/Game/Actions/ActResource.h
     src/Game/Actions/ActScrollable.h
@@ -224,6 +240,8 @@ set(SOURCE_FILES
     src/Parser/Actions/ParseMovieActions.h
     src/Parser/Actions/ParsePaletteActions.cpp
     src/Parser/Actions/ParsePaletteActions.h
+    src/Parser/Actions/ParsePanelActions.cpp
+    src/Parser/Actions/ParsePanelActions.h
     src/Parser/Actions/ParseRandomActions.cpp
     src/Parser/Actions/ParseRandomActions.h
     src/Parser/Actions/ParseResourceActions.cpp
@@ -306,14 +324,14 @@ set(SOURCE_FILES
     src/Parser/Resources/TexturePacks/ParseSingleTextureTexturePack.h
     src/Parser/Resources/TexturePacks/ParseStackedTexturePack.h
     src/Parser/Resources/TexturePacks/ParseTexturePackAnimatedTextures.h
+    src/Parser/Resources/TexturePacks/ParseTexturePackGroups.cpp
+    src/Parser/Resources/TexturePacks/ParseTexturePackGroups.h
     src/Parser/Resources/TexturePacks/ParseTexturePackIndexes.h
     src/Parser/Resources/TexturePacks/ParseTexturePackRects.h
     src/Parser/Resources/TexturePacks/ParseTexturePacks.cpp
     src/Parser/Resources/TexturePacks/ParseTexturePacks.h
     src/Parser/Utils/ParseUtils.cpp
     src/Parser/Utils/ParseUtils.h
-    src/Parser/Utils/ParseUtilsIdx.cpp
-    src/Parser/Utils/ParseUtilsIdx.h
     src/Parser/Utils/ParseUtilsKey.cpp
     src/Parser/Utils/ParseUtilsKey.h
     src/Parser/Utils/ParseUtilsVal.cpp
@@ -333,30 +351,37 @@ set(SOURCE_FILES
     src/Resources/Shader.h
     src/Resources/TexturePack.cpp
     src/Resources/TexturePack.h
+    src/Resources/ImageContainers/LazyImageContainer.cpp
+    src/Resources/ImageContainers/LazyImageContainer.h
     src/Resources/ImageContainers/SimpleImageContainer.cpp
     src/Resources/ImageContainers/SimpleImageContainer.h
+    src/Resources/TexturePacks/AnimatedTexturePack.cpp
+    src/Resources/TexturePacks/AnimatedTexturePack.h
+    src/Resources/TexturePacks/AnimationGroup.cpp
+    src/Resources/TexturePacks/AnimationGroup.h
     src/Resources/TexturePacks/BitmapFontTexturePack.cpp
     src/Resources/TexturePacks/BitmapFontTexturePack.h
     src/Resources/TexturePacks/CompositeTexturePack.cpp
     src/Resources/TexturePacks/CompositeTexturePack.h
+    src/Resources/TexturePacks/GroupTexturePack.cpp
+    src/Resources/TexturePacks/GroupTexturePack.h
     src/Resources/TexturePacks/ImageContainerTexturePack.cpp
     src/Resources/TexturePacks/ImageContainerTexturePack.h
     src/Resources/TexturePacks/IndexedTexturePack.cpp
     src/Resources/TexturePacks/IndexedTexturePack.h
-    src/Resources/TexturePacks/MultiImageContainerTexturePack.cpp
-    src/Resources/TexturePacks/MultiImageContainerTexturePack.h
     src/Resources/TexturePacks/MultiTexturePack.cpp
     src/Resources/TexturePacks/MultiTexturePack.h
     src/Resources/TexturePacks/RectTexturePack.cpp
     src/Resources/TexturePacks/RectTexturePack.h
-    src/Resources/TexturePacks/SimpleTexturePack.cpp
-    src/Resources/TexturePacks/SimpleTexturePack.h
-    src/Resources/TexturePacks/SingleTexturePack.cpp
-    src/Resources/TexturePacks/SingleTexturePack.h
     src/Resources/TexturePacks/StackedTexturePack.cpp
     src/Resources/TexturePacks/StackedTexturePack.h
-    src/Resources/TexturePacks/TexturePackGroup.cpp
-    src/Resources/TexturePacks/TexturePackGroup.h
+    src/Resources/TexturePacks/TextureGroup.cpp
+    src/Resources/TexturePacks/TextureGroup.h
+    src/Resources/TexturePacks/TexturePackIndexWrapper.cpp
+    src/Resources/TexturePacks/TexturePackIndexWrapper.h
+    src/Resources/TexturePacks/TexturePackUtils.cpp
+    src/Resources/TexturePacks/TexturePackUtils.h
+    src/Resources/TexturePacks/TexturePackWrapper.h
     src/SFML/CompositeSprite.cpp
     src/SFML/CompositeSprite.h
     src/SFML/dr_wav.h
@@ -383,6 +408,7 @@ set(SOURCE_FILES
     src/SFML/View2.h
     src/SFML/Wave2.cpp
     src/SFML/Wave2.h
+    src/Utils/BinarySearch.h
     src/Utils/EasedValue.h
     src/Utils/EasingFunctions.h
     src/Utils/ElapsedTime.h
@@ -391,6 +417,7 @@ set(SOURCE_FILES
     src/Utils/Helper2D.h
     src/Utils/LoadLibrary.cpp
     src/Utils/LoadLibrary.h
+    src/Utils/Log.h
     src/Utils/LRUCache.h
     src/Utils/Number.h
     src/Utils/NumberVector.h
@@ -400,7 +427,6 @@ set(SOURCE_FILES
     src/Utils/Random.cpp
     src/Utils/Random.h
     src/Utils/Regex.h
-    src/Utils/ReverseIterable.h
     src/Utils/StreamReader.h
     src/Utils/StringHash.cpp
     src/Utils/StringHash.h
@@ -431,12 +457,14 @@ if(FFmpeg_FOUND)
         src/SFML/sfeMovie/VideoStream.cpp
         src/SFML/sfeMovie/VideoStream.hpp
     )
-else()
-    add_definitions(-DDGENGINE_MOVIE_STUB)
 endif()
 
-if(FALLBACK_TO_LOWERCASE)
-    add_definitions(-DDGENGINE_FALLBACK_TO_LOWERCASE)
+if(DGENGINE_STATIC_CRT AND WIN32)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
 endif()
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
@@ -449,21 +477,42 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
         message(FATAL_ERROR "GCC version must be at least 11.1!")
     endif()
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wpedantic)
-    target_link_libraries(${PROJECT_NAME} -lm -ldl)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE /GF /EHsc /W3 /wd4250 /wd4996)
-    target_link_options(${PROJECT_NAME} PRIVATE /OPT:ICF /OPT:REF)
+    target_compile_options(${PROJECT_NAME} PRIVATE /W3 /wd4250 /wd4996)
 endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 if(FFmpeg_FOUND)
-    include_directories(${FFmpeg_INCLUDES})
-    target_link_libraries(${PROJECT_NAME} ${FFmpeg_LIBRARIES})
+    target_include_directories(${PROJECT_NAME} PRIVATE ${FFmpeg_INCLUDES})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${FFmpeg_LIBRARIES})
+else()
+    target_compile_definitions(${PROJECT_NAME} PUBLIC DGENGINE_MOVIE_STUB=1)
 endif()
 
-include_directories(${PHYSFS_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY} sfml-audio sfml-graphics)
+if(PHYSFS_MODULE_MODE)
+    target_include_directories(${PROJECT_NAME} PUBLIC ${PHYSFS_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${PHYSFS_LIBRARY})
+else()
+    target_link_libraries(${PROJECT_NAME} PUBLIC $<IF:$<TARGET_EXISTS:PhysFS::PhysFS>,PhysFS::PhysFS,PhysFS::PhysFS-static>)
+endif()
+target_link_libraries(${PROJECT_NAME} PUBLIC sfml-audio sfml-graphics)
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+if(DGENGINE_FALLBACK_TO_LOWERCASE)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC DGENGINE_FALLBACK_TO_LOWERCASE=1)
+endif()
+
+if(DGENGINE_ENABLE_LOGGING)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC DGENGINE_ENABLE_LOGGING=1)
+endif()
+
+if(spdlog_FOUND)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC DGENGINE_HAS_LOGGING=1)
+    target_link_libraries(${PROJECT_NAME} PUBLIC spdlog::spdlog)
+endif()
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+
+if(DGENGINE_BUILD_TEST_SUITE)
+    add_subdirectory(test)
+endif()

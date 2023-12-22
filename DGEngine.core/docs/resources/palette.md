@@ -33,9 +33,18 @@ If all of these properties are set, they are processed in this order.
 a palette file is a binary file where each byte is a color channel.
 The default format is a binary file of 256 RGB colors (768 bytes).  
 
+a palette file can also be a text file (.txt) with commas, tabs or spaces
+separating the RGB values. The file should have 256 lines. Example:  
+
+```
+0, 0, 0
+10, 20, 30
+...
+```
+
 a `TRN` file is a 256 byte file with the index to use from an existing palette
 as the new color for the new palette and the index in the new palette is the
-`TRN` file position in bytes.
+`TRN` file position in bytes. If `trnStart` is > 0, colors outside the file are black.
 
 ### Examples
 

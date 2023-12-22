@@ -35,6 +35,7 @@
 #include "Parser/Resources/ParseTexture.h"
 #include "Parser/Resources/ParseTexturePack.h"
 #include "ParseVariable.h"
+#include "Utils/Log.h"
 #include "Utils/ParseUtils.h"
 #include "Utils/StringHash.h"
 #include "Utils/Utils.h"
@@ -51,22 +52,32 @@ namespace Parser
 		auto fileName2 = GameUtils::replaceStringWithVarOrProp(fileName, game);
 		if (fileName2 == "null")
 		{
+			SPDLOG_WARN("parseFile name null");
 			return;
 		}
 
-		parseJson(game, FileUtils::readText(fileName2));
+		if (parseJson(game, FileUtils::readText(fileName2)) == true)
+		{
+			SPDLOG_INFO("parseFile: {}", fileName2);
+		}
+		else
+		{
+			SPDLOG_WARN("parseFile failed: {}", fileName2);
+		}
 	}
 
 	void parseFile(Game& game, const std::vector<std::string>& params)
 	{
 		if (params.empty() == true)
 		{
+			SPDLOG_WARN("parseFile invalid params");
 			return;
 		}
 
 		auto fileName = GameUtils::replaceStringWithVarOrProp(params[0], game);
 		if (fileName == "null")
 		{
+			SPDLOG_WARN("parseFile name null");
 			return;
 		}
 
@@ -76,25 +87,31 @@ namespace Parser
 			auto param = GameUtils::replaceStringWithVarOrProp(params[i], game);
 			Utils::replaceStringInPlace(json, "{" + Utils::toString(i) + "}", param);
 		}
-		parseJson(game, json);
+		if (parseJson(game, json) == true)
+		{
+			SPDLOG_INFO("parseFile: {}", fileName);
+		}
+		else
+		{
+			SPDLOG_WARN("parseFile failed: {}", fileName);
+		}
 	}
 
 	void parseFile(Game& game, const Value& params)
 	{
-		if (params.IsArray() == false)
+		if (params.IsArray() == false ||
+			params.Empty() == true)
 		{
-			return;
-		}
-		if (params.Empty() == true)
-		{
+			SPDLOG_WARN("parseFile invalid params");
 			return;
 		}
 
 		auto fileName = GameUtils::replaceStringWithVarOrProp(
-			getStringViewIdx(params, 0), game
+			getStringViewVal(params[0]), game
 		);
 		if (fileName == "null")
 		{
+			SPDLOG_WARN("parseFile name null");
 			return;
 		}
 
@@ -104,10 +121,17 @@ namespace Parser
 			auto param = GameUtils::replaceStringWithVarOrProp(getStringVal(params[i]), game);
 			Utils::replaceStringInPlace(json, "{" + Utils::toString(i) + "}", param);
 		}
-		parseJson(game, json);
+		if (parseJson(game, json) == true)
+		{
+			SPDLOG_INFO("parseFile: {}", fileName);
+		}
+		else
+		{
+			SPDLOG_WARN("parseFile failed: {}", fileName);
+		}
 	}
 
-	void parseJson(Game& game, const std::string_view json,
+	bool parseJson(Game& game, const std::string_view json,
 		const std::vector<std::string>& params)
 	{
 		std::string json2(json);
@@ -116,32 +140,39 @@ namespace Parser
 			auto param = GameUtils::replaceStringWithVarOrProp(params[i], game);
 			Utils::replaceStringInPlace(json2, "{" + Utils::toString(i + 1) + "}", param);
 		}
-		parseJson(game, json2);
+		return parseJson(game, json2);
 	}
 
-	void parseJson(Game& game, const std::string_view json)
+	bool parseJson(Game& game, const std::string_view json)
 	{
-		Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
+		if (json.empty() == true)
+		{
+			return false;
+		}
+
+		Document doc; // Default template parameter uses UTF8 and MemoryPoolAllocator.
 
 		if (JsonUtils::loadJson(json, doc) == false)
 		{
-			return;
+			SPDLOG_WARN("parseJson failed");
+			return false;
 		}
 
 		parseDocument(game, doc);
+		return true;
 	}
 
 	void parseDocument(Game& game, Document& doc, ReplaceVars replaceVars_)
 	{
 		ReplaceVars replaceVars = replaceVars_;
-		for (auto it = doc.MemberBegin(); it != doc.MemberEnd(); ++it)
+		for (auto& it : std::ranges::subrange(doc.MemberBegin(), doc.MemberEnd()))
 		{
-			parseDocumentElemHelper(game, str2int16(it->name.GetStringView()),
-				it->value, replaceVars, doc.GetAllocator());
+			parseDocumentElemHelper(game, str2int16(it.name.GetStringView()),
+				it.value, replaceVars, doc.GetAllocator());
 		}
 	}
 
-	void parseLoad(Game& game, const rapidjson::Value& elem)
+	void parseLoad(Game& game, const Value& elem)
 	{
 		if (elem.IsString())
 		{

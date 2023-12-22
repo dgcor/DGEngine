@@ -1,28 +1,54 @@
 #include "ImageContainerTexturePack.h"
-#include "Game/AnimationInfo.h"
+#include "TexturePackUtils.h"
 
-ImageContainerTexturePack::ImageContainerTexturePack(const std::shared_ptr<ImageContainer>& imgPack_,
-	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_)
-	: imgPack(imgPack_), offset(offset_), palette(palette_), indexed(isIndexed_)
+ImageContainerTexturePack::ImageContainerTexturePack(
+	const std::shared_ptr<ImageContainer>& imgPack_, const sf::Vector2f& offset_,
+	const std::shared_ptr<Palette>& palette_, bool isIndexed_) : imgVec(1, imgPack_),
+	offset(offset_), palette(palette_), indexed(isIndexed_)
 {
-	cache.resize(imgPack_->size());
+	textureCount = imgPack_->size();
+	cache.resize(textureCount);
+}
+
+ImageContainerTexturePack::ImageContainerTexturePack(
+	const std::vector<std::shared_ptr<ImageContainer>>& imgVec_,
+	const sf::Vector2f& offset_, const std::shared_ptr<Palette>& palette_, bool isIndexed_)
+	: imgVec(imgVec_.begin(), imgVec_.end()), offset(offset_), palette(palette_), indexed(isIndexed_)
+{
+	for (const auto& imgPack : imgVec_)
+	{
+		textureCount += imgPack->size();
+	}
+	cache.resize(textureCount);
 }
 
 bool ImageContainerTexturePack::fetchTexture(uint32_t index) const
 {
-	if (index >= imgPack->size())
+	if (imgVec.empty() == true ||
+		index >= textureCount)
 	{
 		return false;
 	}
 	if (cache[index].first.getNativeHandle() == 0)
 	{
+		uint32_t indexX = index;
+		uint32_t indexY = 0;
+		while (indexX >= imgVec[indexY]->size())
+		{
+			indexX -= imgVec[indexY]->size();
+			indexY++;
+			if (indexY >= imgVec.size())
+			{
+				return false;
+			}
+		}
 		PaletteArray* palArray = nullptr;
 		if (indexed == false && palette != nullptr)
 		{
 			palArray = &palette->palette;
 		}
-		cache[index].first = imgPack->get(
-			index,
+		cache[index].first = imgVec[indexY]->get(
+			indexX,
 			palArray,
 			cache[index].second
 		);
@@ -58,33 +84,62 @@ sf::Vector2i ImageContainerTexturePack::getTextureSize(uint32_t index) const
 
 uint32_t ImageContainerTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
 {
-	return imgPack->getDirections();
+	if (groupIdx < imgVec.size())
+	{
+		return imgVec[groupIdx]->getDirections();
+	}
+	return 1;
 }
 
-uint32_t ImageContainerTexturePack::getDirection(uint32_t frameIdx) const noexcept
+std::pair<uint32_t, uint32_t> ImageContainerTexturePack::getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept
 {
-	auto numFrames = imgPack->size();
-	if (frameIdx < numFrames)
+	for (uint32_t groupIdx = 0, startIdx = 0; const auto& imgPack : imgVec)
 	{
-		auto directions = imgPack->getDirections();
-		if (directions <= 1)
+		auto numFrames = imgPack->size();
+		if (frameIdx < startIdx + numFrames)
 		{
-			return 0;
+			auto directions = imgPack->getDirections();
+			return { groupIdx, TexturePackUtils::calculateDirection(
+				frameIdx,
+				startIdx,
+				numFrames,
+				directions,
+				flags
+			) };
 		}
-		auto framesPerDirection = numFrames / directions;
-		return frameIdx / framesPerDirection;
+		groupIdx++;
+		startIdx += numFrames;
 	}
-	return 0;
+	flags = AnimationFlags::Overflow;
+	return {};
 }
 
 AnimationInfo ImageContainerTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
 	AnimationInfo animInfo;
-	animInfo.indexRange = TexturePack::getRange(
-		0,
-		(uint32_t)cache.size(),
-		directionIdx,
-		imgPack->getDirections()
-	);
+	if (groupIdx >= 0 && (uint32_t)groupIdx < imgVec.size())
+	{
+		uint32_t startIdx = 0;
+		uint32_t stopIdx = 0;
+		for (size_t i = 0; i < imgVec.size(); i++)
+		{
+			stopIdx += imgVec[i]->size();
+			if (i == (size_t)groupIdx)
+			{
+				auto directions = imgVec[i]->getDirections();
+				TexturePackUtils::calculateRange(
+					startIdx,
+					stopIdx > 0 ? stopIdx - 1 : 0,
+					directionIdx,
+					directions,
+					animInfo
+				);
+				return animInfo;
+			}
+			startIdx = stopIdx;
+		}
+	}
+	animInfo.indexRange = { (uint32_t)0, textureCount - 1 };
+	animInfo.flags = AnimationFlags::Overflow;
 	return animInfo;
 }

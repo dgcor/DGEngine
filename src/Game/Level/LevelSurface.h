@@ -13,7 +13,7 @@ public:
 	int32_t blockHeight{ 0 };
 	uint32_t subTiles{ 0 };
 
-	LevelSurface() : Surface(true) {}
+	LevelSurface() : Surface(false, true) {}
 
 	using Surface::draw;
 

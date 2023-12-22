@@ -1,13 +1,10 @@
 #pragma once
 
-#include <cstdint>
-#include "Resources/FileBytes.h"
-#include "Resources/ImageContainer.h"
-#include <memory>
+#include "Resources/ImageContainers/LazyImageContainer.h"
 
 // CEL decoding code based on Diablo 1 Graphics Tool by savagesteel
 // https://github.com/savagesteel/d1-graphics-tool
-class CELImageContainer : public ImageContainer
+class CELImageContainer : public LazyImageContainer
 {
 private:
 	enum class CelType
@@ -19,20 +16,12 @@ private:
 	};
 
 	CelType type{ CelType::None };
-	std::shared_ptr<FileBytes> fileData;
-	std::vector<std::pair<uint32_t, uint32_t>> frameOffsets;
 	uint32_t directions{ 0 };
-	BlendMode blendMode{ BlendMode::Alpha };
+
+	sf::Image2 decode(const std::span<const uint8_t> frameData, const PaletteArray* palette) const override;
 
 public:
-	CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes);
-
-	BlendMode getBlendMode() const noexcept override { return blendMode; }
-	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
-
-	sf::Image2 get(uint32_t index, const PaletteArray * palette, ImageInfo& imgInfo) const override;
-
-	uint32_t size() const noexcept override { return (uint32_t)frameOffsets.size(); }
+	CELImageContainer(const std::shared_ptr<FileBytes>& fileData_);
 
 	uint32_t getDirections() const noexcept override { return directions; }
 };

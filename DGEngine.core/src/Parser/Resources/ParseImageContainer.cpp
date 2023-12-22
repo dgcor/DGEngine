@@ -25,7 +25,7 @@ namespace Parser
 		else if (isValidString(elem, "file") == true)
 		{
 			fileName = getStringViewVal(elem["file"sv]);
-			fileBytes = std::make_shared<FileBytes>(FileUtils::readChar(fileName));
+			fileBytes = std::make_shared<FileBytes>(FileUtils::readBytes(fileName));
 		}
 		if (fileBytes == nullptr || fileBytes->empty() == true)
 		{
@@ -37,10 +37,12 @@ namespace Parser
 		if (Hooks::GetImageContainerObj == nullptr ||
 			Hooks::GetImageContainerObj(fileBytes, fileName, elem, imgContainer) == false)
 		{
-			auto frames = getFramesKey(elem, "frames");
+			sf::MemoryInputStream inputStream = *fileBytes;
+			auto frames = getRange1Key(elem, "frames");
 			auto directions = getUIntKey(elem, "directions");
+			bool isVertical = getStringViewKey(elem, "direction") == "vertical";
 			imgContainer = std::make_shared<SimpleImageContainer>(
-				fileName, frames.first, frames.second, directions, false);
+				inputStream, frames.first, frames.second, directions, isVertical);
 		}
 
 		if (imgContainer->size() == 0)

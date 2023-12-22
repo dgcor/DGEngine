@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cassert>
 #include "FixedMap.h"
 
 template <class Key_, class Val_, size_t Size_>
@@ -52,6 +53,8 @@ public:
 	// Updates a value and brings it to the top. Removes last accessed value if full.
 	void updateValue(const Key_& key, const Val_& value) noexcept
 	{
+		assert(this->elements.size() != 0);
+
 		bool updated = false;
 		size_t i = 0;
 		for (; i < this->numElements; i++)
@@ -69,14 +72,14 @@ public:
 			// insert element
 			if (i < this->elements.size())
 			{
-				this->elements[i] = std::make_pair(key, value);
+				this->elements[i] = { key, value };
 				this->numElements++;
 			}
 			// override last element
 			else
 			{
 				i--;
-				this->elements[i] = std::make_pair(key, value);
+				this->elements[i] = { key, value };
 			}
 		}
 		// update LRU

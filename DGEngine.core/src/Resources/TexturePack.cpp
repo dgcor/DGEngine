@@ -10,23 +10,6 @@ void TexturePack::updateTextureRect(TextureInfo& ti)
 	ti.textureRect.height = (int)size.y;
 }
 
-std::pair<uint32_t, uint32_t> TexturePack::getRange(uint32_t startIdx, uint32_t stopIdx, int32_t directionIdx, uint32_t directions)
-{
-	if (directions > 1 && directionIdx >= 0 && (uint32_t)directionIdx < directions)
-	{
-		auto animSize = stopIdx - startIdx;
-		if (animSize % directions == 0)
-		{
-			auto frameSize = animSize / directions;
-			return std::make_pair(
-				startIdx + (frameSize * directionIdx),
-				startIdx + (frameSize * (directionIdx + 1)) - 1
-			);
-		}
-	}
-	return std::make_pair(startIdx, stopIdx - 1);
-}
-
 bool TexturePack::get(uint32_t index, TextureInfoVar& tiVar) const
 {
 	TextureInfo ti;
@@ -38,9 +21,22 @@ bool TexturePack::get(uint32_t index, TextureInfoVar& tiVar) const
 	return false;
 }
 
+std::pair<uint32_t, uint32_t> TexturePack::getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept
+{
+	flags = AnimationFlags::Invalid;
+	return {};
+}
+
+uint32_t TexturePack::getDirection(uint32_t frameIdx) const noexcept
+{
+	AnimationFlags flags;
+	return getDirection(frameIdx, flags).second;
+}
+
 AnimationInfo TexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
 	AnimationInfo animInfo;
-	animInfo.indexRange = std::make_pair((uint32_t)0, size() - 1);
+	auto size_ = size();
+	animInfo.indexRange = { 0, size_ > 0 ? size_ - 1 : 0 };
 	return animInfo;
 }

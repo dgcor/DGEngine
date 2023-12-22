@@ -63,7 +63,7 @@ namespace Parser
 			layer.textureRect = getIntRectKey(elem, "textureRect");
 			layer.parallaxSpeed = getFloatKey(elem, "parallaxSpeed");
 			layer.parallaxFixedSpeed = getVector2fKey<sf::Vector2f>(elem, "parallaxFixedSpeed");
-			layer.parallaxElapsedTime = getTimeKey(elem, "parallaxUpdate");
+			layer.parallaxElapsedTime = getTimeUKey(elem, "parallaxUpdate");
 			levelLayers.push_back(LevelLayer(layer, viewportOffset, automap));
 		}
 	}
@@ -85,7 +85,7 @@ namespace Parser
 		}
 		for (SizeType i = 0; i < elemData.Size(); i++)
 		{
-			dun.set(i, (getIntIdx(elemData, i) + indexOffset));
+			dun.set(i, (getIntVal(elemData[i]) + indexOffset));
 		}
 		return dun;
 	}

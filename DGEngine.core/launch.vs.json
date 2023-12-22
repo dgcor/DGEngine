@@ -1,0 +1,13 @@
+{
+  "version": "0.2.1",
+  "defaults": {},
+  "configurations": [
+    {
+      "name": "DGEngine.core-test",
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "",
+      "currentDir": "./test"
+    }
+  ]
+}

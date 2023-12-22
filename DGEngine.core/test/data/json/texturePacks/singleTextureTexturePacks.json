@@ -1,0 +1,139 @@
+{
+  "palette": { "file": "res/palette/pal.bin" },
+  "texture": [
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "texture": "texture",
+      "groups": {
+        "refresh": 50
+      }
+    },
+    {
+      "id": "key02",
+      "texture": "texture",
+      "palette": "invalid",
+      "startIndex": 1,
+      "groups": {
+        "animationType": "playOnce",
+        "refresh": 50
+      }
+    },
+    {
+      "id": "key03",
+      "texture": "texture",
+      "frames": [2, 2],
+      "offset": [2, -2]
+    },
+    {
+      "id": "key04",
+      "texture": "texturePalette",
+      "palette": "pal",
+      "frames": [2, 2],
+      "offset": [2, -2],
+      "direction": "vertical",
+      "startIndex": 10
+    },
+    {
+      "id": "key05",
+      "texture": "texture",
+      "frames": [4, 2],
+      "groups": {
+        "directions": 6
+      }
+    },
+    {
+      "id": "key06",
+      "texture": "texture",
+      "frames": [4, 2],
+      "groups": {
+        "directions": 7
+      }
+    },
+    {
+      "id": "key07",
+      "texture": "texture",
+      "frames": [4, 2],
+      "groups": {
+        "directions": 9
+      }
+    },
+    {
+      "id": "key08",
+      "texture": "texture",
+      "frames": [4, 2],
+      "groups": {
+        "directions": 16
+      }
+    },
+    {
+      "id": "key09",
+      "texture": "texture",
+      "palette": "invalid",
+      "frames": [2, 4],
+      "direction": "vertical",
+      "groups": {
+        "directions": 2
+      }
+    },
+    {
+      "id": "key10",
+      "texture": "texture",
+      "frames": 2,
+      "groups": {
+        "animationType": "backAndforth",
+        "refresh": 50
+      }
+    },
+    {
+      "id": "key11",
+      "texture": "texture",
+      "frames": [3, 2]
+    },
+    {
+      "id": "key12",
+      "texture": "texture",
+      "frames": [2, 4],
+      "direction": "vertical",
+      "groups": {
+        "directions": [[0, 2], [3, 6], [7, 7]]
+      }
+    },
+    {
+      "id": "key13",
+      "texture": "texture",
+      "frames": [2, 4],
+      "direction": "vertical",
+      "groups": {
+        "directions": ["invalid", [2, 6], [7, 7]]
+      }
+    },
+    {
+      "id": "key14",
+      "texture": "texture",
+      "frames": [2, 4],
+      "direction": "vertical",
+      "groups": {
+        "directions": [[0, 3], [1, 6], [8, 7]],
+        "refresh": 50
+      }
+    },
+    {
+      "id": "key15",
+      "texture": "texture",
+      "frames": [2, 2],
+      "groups": {
+        "directions": [[0, 1], [2, 12]]
+      }
+    }
+  ]
+}

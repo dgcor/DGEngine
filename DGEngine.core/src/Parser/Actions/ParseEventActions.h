@@ -13,4 +13,6 @@ namespace Parser::Actions
 	std::shared_ptr<Action> parseEventDeleteAll();
 
 	std::shared_ptr<Action> parseEventResetTime(const rapidjson::Value& elem);
+
+	std::shared_ptr<Action> parseEventTimeout(const rapidjson::Value& elem);
 }

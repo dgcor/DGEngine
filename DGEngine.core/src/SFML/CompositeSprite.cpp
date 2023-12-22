@@ -1,4 +1,5 @@
 #include "CompositeSprite.h"
+#include <ranges>
 
 CompositeSprite::CompositeSprite(const TextureInfo& ti)
 {
@@ -12,87 +13,86 @@ CompositeSprite::CompositeSprite(const std::vector<TextureInfo>& ti, bool drawAf
 
 void CompositeSprite::setPosition(const sf::Vector2f& position_)
 {
-	sprite.setPosition(position_);
-	for (auto& s : extraSprites)
+	for (auto& sprite : sprites)
 	{
-		s.setPosition(position_);
+		sprite.setPosition(position_);
 	}
 }
 
 void CompositeSprite::setOffset(const sf::Vector2f& offset_)
 {
-	if (extraSprites.empty() == true)
+	if (sprites.size() == 1)
 	{
-		sprite.setOffset(offset_);
+		sprites.front().setOffset(offset_);
 	}
 	else
 	{
-		auto diff = offset_ - sprite.getOffset();
-		sprite.setOffset(offset_);
-		for (auto& s : extraSprites)
+		auto diff = offset_ - sprites.front().getOffset();
+		for (auto& sprite : sprites)
 		{
-			s.setOffset(s.getOffset() + diff);
+			sprite.setOffset(sprite.getOffset() + diff);
 		}
 	}
 }
 
 void CompositeSprite::setColor(const sf::Color& color)
 {
-	sprite.setColor(color);
-	for (auto& s : extraSprites)
+	for (auto& sprite : sprites)
 	{
-		s.setColor(color);
+		sprite.setColor(color);
 	}
 }
 
 void CompositeSprite::setOutline(const sf::Color& outline_, const sf::Color& ignore_) noexcept
 {
-	sprite.setOutline(outline_, ignore_);
-	for (auto& s : extraSprites)
+	sprites.front().setOutline(outline_, ignore_);
+	for (auto& sprite : sprites)
 	{
-		s.setOutline(outline_, ignore_);
+		sprite.setOutline(outline_, ignore_);
 	}
 }
 
 void CompositeSprite::setOutlineEnabled(bool enable) noexcept
 {
-	sprite.setOutlineEnabled(enable);
-	for (auto& s : extraSprites)
+	sprites.front().setOutlineEnabled(enable);
+	for (auto& sprite : sprites)
 	{
-		s.setOutlineEnabled(enable);
+		sprite.setOutlineEnabled(enable);
 	}
 }
 
 void CompositeSprite::setTexture(const sf::Texture& texture, bool resetRect)
 {
-	sprite.setOffset({});
-	sprite.setTexture(texture, resetRect);
-	extraSprites.clear();
+	sprites.resize(1);
+	sprites.front().setOffset({});
+	sprites.front().setTexture(texture, resetRect);
 }
 
 void CompositeSprite::setTexture(const TextureInfo& ti)
 {
-	sprite.setOffset(ti.offset);
-	sprite.setTexture(ti, true);
-	extraSprites.clear();
+	sprites.resize(1);
+	sprites.front().setOffset(ti.offset);
+	sprites.front().setTexture(ti, true);
 }
 
 void CompositeSprite::setTexture(const std::vector<TextureInfo>& ti, bool drawAfter)
 {
-	if (ti.empty() == false)
+	if (ti.empty() == true)
 	{
-		drawAfterExtraSprites = drawAfter;
-		sprite.setOffset(ti.front().offset);
-		sprite.setTexture(ti.front(), true);
-		extraSprites.resize(ti.size() - 1);
-		for (size_t i = 0; i < extraSprites.size(); i++)
-		{
-			extraSprites[i].setPosition(sprite.getPosition(), ti[i + 1].offset);
-			extraSprites[i].setTexture(ti[i + 1], true);
-			extraSprites[i].setColor(sprite.getColor());
-			extraSprites[i].setOutline(sprite.getOutline(), sprite.getOutlineIgnore());
-			extraSprites[i].setOutlineEnabled(sprite.isOutlineEnabled());
-		}
+		return;
+	}
+	drawAfterExtraSprites = drawAfter;
+	sprites.resize(ti.size());
+	sprites.front().setOffset(ti.front().offset);
+	sprites.front().setTexture(ti.front(), true);
+	for (size_t i = 1; auto& sprite : sprites | std::views::drop(1))
+	{
+		sprite.setPosition(sprites.front().getPosition(), ti[i].offset);
+		sprite.setTexture(ti[i], true);
+		sprite.setColor(sprites.front().getColor());
+		sprite.setOutline(sprites.front().getOutline(), sprites.front().getOutlineIgnore());
+		sprite.setOutlineEnabled(sprites.front().isOutlineEnabled());
+		i++;
 	}
 }
 
@@ -119,14 +119,15 @@ void CompositeSprite::draw(sf::RenderTarget& target, GameShader* spriteShader,
 {
 	if (drawAfterExtraSprites == false)
 	{
+		for (const auto& sprite : sprites)
+		{
+			sprite.draw(target, spriteShader, &cache);
+		}
+		return;
+	}
+	for (const auto& sprite : sprites | std::views::drop(1))
+	{
 		sprite.draw(target, spriteShader, &cache);
 	}
-	for (const auto& s : extraSprites)
-	{
-		s.draw(target, spriteShader, &cache);
-	}
-	if (drawAfterExtraSprites == true)
-	{
-		sprite.draw(target, spriteShader, &cache);
-	}
+	sprites.front().draw(target, spriteShader, &cache);
 }

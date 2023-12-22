@@ -1,0 +1,29 @@
+{
+  "font": [
+    { "file": "res/font/LiberationSerif-Regular.ttf" },
+    { "file": "res/font/font.ttf" },
+    {
+      "id": "font",
+      "file": "res/font/font.ttf",
+      "fontColor": "0xFF0000",
+      "fontSize": 14,
+      "smooth": false
+    },
+    {
+      "id": "key01",
+      "file": "res/font/font.ttf",
+      "fontColor": "0xFF0000",
+      "fontSize": 14,
+      "smooth": false
+    },
+    { "id": "key02", "clone": "font" },
+    {
+      "id": "key03",
+      "clone": "font",
+      "fontColor": "0x0000FF",
+      "fontSize": 16,
+      "smooth": false
+    },
+    { "id": "key04", "fromId": "font" }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "palette": [
+    { "file": "res/palette/invalid-id.bin" },
+    { "file": "res/palette/pal.bin" },
+    { "id": "key01", "file": "res/palette/pal.bin" },
+    { "id": "key01", "file": "res/palette/pal2.bin" },
+    { "id": "key02", "file": "res/palette/pal.txt" },
+    { "id": "key03", "file": "res/palette/pal.bin", "colorFormat": "RGB" },
+    { "id": "key04", "file": "res/palette/pal.bin", "colorFormat": "BGR" },
+    { "id": "key05", "file": "res/palette/pal2.bin", "colorFormat": "RGBA" },
+    { "id": "key06", "file": "res/palette/pal2.bin", "colorFormat": "BGRA" },
+    { "id": "key07", "file": "res/palette/pal2.bin", "colorFormat": "ARGB" },
+    { "id": "key08", "file": "res/palette/pal2.bin", "colorFormat": "ABGR" },
+    { "id": "key09", "file": "res/palette/pal3.bin" },
+    { "id": "key10", "palette": "pal", "trnFile": "res/palette/trn.trn" },
+    { "palette": "pal", "trnFile": "res/palette/invalid-id.trn", "colorFormat": "BGR" },
+    { "palette": "pal", "trnFile": "res/palette/trn.trn", "colorFormat": "BGR" },
+    { "id": "key11", "palette": "pal", "trnFile": "res/palette/trn.trn", "trnStart": 255, "trnLength": 1 },
+    { "id": "key12", "palette": "pal", "trnFile": "res/palette/trn.trn", "trnStart": 10, "trnLength": 300 },
+    { "id": "key13", "clone": "pal" },
+    { "id": "key14", "fromId": "pal" }
+  ]
+}

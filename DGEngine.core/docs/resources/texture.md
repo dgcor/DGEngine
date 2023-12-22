@@ -28,7 +28,8 @@ Name       | Type    | Default     | Description
 
 Properties in **bold** are required.  
 
-Textures created with `color` can't be trimmed.
+Only file textures can be split into pieces and apply mask.
+Both textures (file and color) can be trimmed.
 
 ### Examples
 

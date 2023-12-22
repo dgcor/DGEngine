@@ -1,6 +1,7 @@
 #include "PathFinder.h"
 #include <cmath>
 #include "LevelMap.h"
+#include "Utils/StringHash.h"
 
 MapSearchNode::MapSearchNode(const LevelMap& map, int16_t x_, int16_t y_,
 	const PlayerDirection& direction_) noexcept : x(x_), y(y_), direction(direction_)
@@ -28,6 +29,16 @@ bool MapSearchNode::IsPassable() const
 bool MapSearchNode::IsSameState(MapSearchNode& rhs) noexcept
 {
 	return ((x == rhs.x) && (y == rhs.y));
+}
+
+size_t MapSearchNode::Hash() noexcept
+{
+	std::size_t hash = 0;
+	hashCombine(hash, x);
+	hashCombine(hash, y);
+	hashCombine(hash, cost);
+	hashCombine(hash, direction);
+	return hash;
 }
 
 float MapSearchNode::GoalDistanceEstimateC(const MapSearchNode& nodeGoal) const noexcept

@@ -12,18 +12,20 @@ protected:
 	uint32_t subImageSizeX{ 0 };
 	uint32_t subImageSizeY{ 0 };
 	uint32_t directions{ 0 };
-	bool horizontalDirection{ false };
+	bool verticalDirection{ false };
 	BlendMode blendMode{ BlendMode::Alpha };
 
 public:
-	SimpleImageContainer(const std::string_view fileName, uint32_t xFrames_,
-		uint32_t yFrames_, uint32_t directions_, bool horizontalDirection_,
+	SimpleImageContainer(sf::InputStream& file, uint32_t xFrames_,
+		uint32_t yFrames_, uint32_t directions_, bool verticalDirection_,
 		const sf::Color& transparencyMask = sf::Color::Transparent);
 
 	BlendMode getBlendMode() const noexcept override { return blendMode; }
 	void setBlendMode(BlendMode blendMode_) noexcept override { blendMode = blendMode_; }
 
 	sf::Image2 get(uint32_t index, const PaletteArray* palette, ImageInfo& imgInfo) const override;
+
+	sf::Vector2u getImageSize(uint32_t index) const override;
 
 	uint32_t size() const noexcept override { return numFrames; }
 

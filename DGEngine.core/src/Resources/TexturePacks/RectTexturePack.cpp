@@ -1,5 +1,4 @@
 #include "RectTexturePack.h"
-#include "Game/AnimationInfo.h"
 
 void RectTexturePack::addRect(uint32_t index, const sf::IntRect& rect, const sf::Vector2f& offset)
 {
@@ -11,88 +10,60 @@ void RectTexturePack::addRect(const sf::IntRect& rect, const sf::Vector2f& offse
 	rects.push_back({ (uint32_t)rects.size(), rect, offset });
 }
 
-void RectTexturePack::addGroup(uint32_t startIdx, uint32_t stopIdx, uint32_t directions, AnimationType animType)
-{
-	auto numFrames = stopIdx - startIdx;
-	if (directions == 0 ||
-		(directions > 0 && (numFrames % directions) != 0))
-	{
-		directions = 1;
-	}
-	groups.push_back({ startIdx, stopIdx, directions, animType });
-}
-
 bool RectTexturePack::get(uint32_t index, TextureInfo& ti) const
 {
-	if (index < rects.size() &&
-		texturePack->get(rects[index].index, ti) == true)
+	if (rects.empty() == false)
 	{
-		ti.textureRect = rects[index].rect;
-		ti.offset = rects[index].offset;
-		ti.absoluteOffset = absoluteOffsets;
-		return true;
+		if (index < rects.size() &&
+			texturePack->get(rects[index].index, ti) == true)
+		{
+			ti.textureRect = rects[index].rect;
+			ti.offset = rects[index].offset;
+			ti.absoluteOffset = absoluteOffsets;
+			return true;
+		}
+		return false;
 	}
-	return false;
+	return texturePack->get(index, ti);
 }
 
 sf::Vector2i RectTexturePack::getTextureSize(uint32_t index) const
 {
-	return index < rects.size() ? rects[index].rect.getSize() : sf::Vector2i();
+	if (rects.empty() == false)
+	{
+		return index < rects.size() ? rects[index].rect.getSize() : sf::Vector2i();
+	}
+	return texturePack->getTextureSize(index);
 }
 
-uint32_t RectTexturePack::getGroupCount() const noexcept
+uint32_t RectTexturePack::size() const noexcept
 {
-	if (groups.size() > 0)
+	if (rects.empty() == false)
 	{
-		return (uint32_t)groups.size();
+		return (uint32_t)rects.size();
 	}
-	return texturePack->getGroupCount();
+	return texturePack->size();
 }
 
-uint32_t RectTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
+std::pair<uint32_t, uint32_t> RectTexturePack::getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept
 {
-	if (groupIdx >= 0 && (size_t)groupIdx < groups.size())
+	if (rects.empty() == true)
 	{
-		return groups[groupIdx].directions;
+		return texturePack->getDirection(frameIdx, flags);
 	}
-	return texturePack->getDirectionCount(groupIdx);
-}
-
-uint32_t RectTexturePack::getDirection(uint32_t frameIdx) const noexcept
-{
-	if (groups.empty() == false)
-	{
-		for (const auto& group : groups)
-		{
-			if (frameIdx >= group.startIdx && frameIdx < group.stopIdx)
-			{
-				if (group.directions <= 1)
-				{
-					return 0;
-				}
-				auto numFrames = group.stopIdx - group.startIdx;
-				auto framesPerDirection = numFrames / group.directions;
-				return (frameIdx - group.startIdx) / framesPerDirection;
-			}
-		}
-		return 0;
-	}
-	return texturePack->getDirection(frameIdx);
+	flags = frameIdx < rects.size() ? AnimationFlags::Valid : AnimationFlags::Overflow;
+	return {};
 }
 
 AnimationInfo RectTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
-	if (groupIdx >= 0 && (size_t)groupIdx < groups.size())
+	if (rects.empty() == true)
 	{
-		AnimationInfo animInfo;
-		animInfo.indexRange = TexturePack::getRange(
-			groups[groupIdx].startIdx,
-			groups[groupIdx].stopIdx,
-			directionIdx,
-			groups[groupIdx].directions
-		);
-		animInfo.animType = groups[groupIdx].animType;
-		return animInfo;
+		return texturePack->getAnimation(groupIdx, directionIdx);
 	}
-	return texturePack->getAnimation(groupIdx, directionIdx);
+	AnimationInfo animInfo;
+	animInfo.indexRange.first = 0;
+	animInfo.indexRange.second = (uint32_t)rects.size() - 1;
+	animInfo.flags = (groupIdx == 0 && directionIdx == 0) ? AnimationFlags::Valid : AnimationFlags::Overflow;
+	return animInfo;
 }

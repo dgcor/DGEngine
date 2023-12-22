@@ -24,5 +24,5 @@ std::vector<sf::Event> GameInputEventManager::get(const std::string_view key) co
 
 void GameInputEventManager::set(const std::string& key, const sf::Event& value)
 {
-	gameInputEvents.insert(std::make_pair(key, value));
+	gameInputEvents.insert({ key, value });
 }

@@ -1,6 +1,21 @@
 #pragma once
 
-#include <cstdint>
+#include <cstddef>
+#include <SFML/System/MemoryInputStream.hpp>
 #include <vector>
 
-using FileBytes = std::vector<uint8_t>;
+class FileBytes : public std::vector<std::byte>
+{
+private:
+	using BaseClass = std::vector<std::byte>;
+
+public:
+	using BaseClass::BaseClass;
+
+	operator sf::MemoryInputStream() const
+	{
+		sf::MemoryInputStream inputStream;
+		inputStream.open(data(), size());
+		return inputStream;
+	}
+};

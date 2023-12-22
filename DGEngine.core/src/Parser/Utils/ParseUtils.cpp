@@ -2,6 +2,7 @@
 #include <cctype>
 #include "Game/Utils/FileUtils.h"
 #include "Json/JsonUtils.h"
+#include "Utils/Log.h"
 #include "Utils/StringHash.h"
 #include "Utils/Utils.h"
 
@@ -27,16 +28,14 @@ namespace Parser
 	bool getIdFromFile(const std::string_view file, std::string& id)
 	{
 		id = FileUtils::getFileNameWithoutExt(file);
-		if (id.empty() == false && id[0] == '.')
-		{
-			id.clear();
-		}
+		Utils::replaceStringInPlace(id, ".", "");
 		return (id.empty() == false);
 	}
 
 	bool isValidArray(const Value& elem, const std::string_view key)
 	{
-		return (elem.HasMember(key) == true
+		return (elem.IsObject() == true
+			&& elem.HasMember(key) == true
 			&& elem[key].IsArray() == true
 			&& elem[key].Size() > 0);
 	}
@@ -45,6 +44,7 @@ namespace Parser
 	{
 		if (id.empty() == true)
 		{
+			SPDLOG_WARN("Invalid id: (empty)");
 			return false;
 		}
 		for (auto ch : id)
@@ -53,9 +53,18 @@ namespace Parser
 			{
 				continue;
 			}
+			SPDLOG_WARN("Invalid id: {}", id);
 			return false;
 		}
 		return true;
+	}
+
+	bool isValidObject(const Value& elem, const std::string_view key)
+	{
+		return (elem.IsObject() == true
+			&& elem.HasMember(key) == true
+			&& elem[key].IsObject() == true
+			&& elem[key].MemberCount() > 0);
 	}
 
 	bool isValidString(const Value& elem)
@@ -66,7 +75,8 @@ namespace Parser
 
 	bool isValidString(const Value& elem, const std::string_view key)
 	{
-		return (elem.HasMember(key) == true
+		return (elem.IsObject() == true
+			&& elem.HasMember(key) == true
 			&& elem[key].IsString() == true
 			&& elem[key].GetStringLength() > 0);
 	}

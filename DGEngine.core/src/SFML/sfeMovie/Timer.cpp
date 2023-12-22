@@ -38,11 +38,11 @@ namespace sfe
 		{
 			if (priority < it->second)
 			{
-				m_observers.insert(it, std::make_pair(&anObserver, priority));
+				m_observers.insert(it, { &anObserver, priority });
 				return;
 			}
 		}
-		m_observers.push_back(std::make_pair(&anObserver, priority));
+		m_observers.push_back({ &anObserver, priority });
 	}
 
 	void Timer::removeObserver(Observer& anObserver)

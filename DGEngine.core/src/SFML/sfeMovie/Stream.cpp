@@ -46,22 +46,22 @@ namespace sfe
 		}
 
 		// Get the decoder
-		m_codec = AVFunc::avcodec_find_decoder(m_stream->codecpar->codec_id);
+		m_codec = AVCODEC_FIND_DECODER(m_stream->codecpar->codec_id);
 		if (m_codec == nullptr)
 		{
 			return;
 		}
 
 		// Load the codec
-		m_codecCtx = AVFunc::avcodec_alloc_context3(m_codec);
-		AVFunc::avcodec_parameters_to_context(m_codecCtx, stream->codecpar);
-		auto err = AVFunc::avcodec_open2(m_codecCtx, m_codec, nullptr);
+		m_codecCtx = AVCODEC_ALLOC_CONTEXT3(m_codec);
+		AVCODEC_PARAMETERS_TO_CONTEXT(m_codecCtx, stream->codecpar);
+		auto err = AVCODEC_OPEN2(m_codecCtx, m_codec, nullptr);
 		if (err < 0)
 		{
 			return;
 		}
 
-		AVDictionaryEntry* entry = AVFunc::av_dict_get(m_stream->metadata, "language", nullptr, 0);
+		AVDictionaryEntry* entry = AV_DICT_GET(m_stream->metadata, "language", nullptr, 0);
 		if (entry)
 		{
 			m_language = entry->value;
@@ -75,7 +75,7 @@ namespace sfe
 
 		if (m_formatCtx && m_stream && m_codecCtx)
 		{
-			AVFunc::avcodec_free_context(&m_codecCtx);
+			AVCODEC_FREE_CONTEXT(&m_codecCtx);
 		}
 	}
 
@@ -139,7 +139,7 @@ namespace sfe
 		{
 			if (m_codecCtx->codec->capabilities & AV_CODEC_CAP_DELAY)
 			{
-				result = AVFunc::av_packet_alloc();
+				result = AV_PACKET_ALLOC();
 			}
 		}
 
@@ -152,7 +152,7 @@ namespace sfe
 
 		if (m_formatCtx != nullptr && m_codecCtx != nullptr)
 		{
-			AVFunc::avcodec_flush_buffers(m_codecCtx);
+			AVCODEC_FLUSH_BUFFERS(m_codecCtx);
 		}
 
 		while (m_packetList.empty() == false)
@@ -160,8 +160,8 @@ namespace sfe
 			auto pkt = m_packetList.front();
 			m_packetList.pop_front();
 
-			AVFunc::av_packet_unref(pkt);
-			AVFunc::av_free(pkt);
+			AV_PACKET_UNREF(pkt);
+			AV_FREE(pkt);
 		}
 	}
 
@@ -208,7 +208,7 @@ namespace sfe
 				timestamp = packet->pts - startTime;
 			}
 
-			AVRational seconds = AVFunc::av_mul_q(av_make_q((int)timestamp, 1), m_stream->time_base);
+			AVRational seconds = AV_MUL_Q(av_make_q((int)timestamp, 1), m_stream->time_base);
 			position = sf::milliseconds((int)(1000 * av_q2d(seconds)));
 			return true;
 		}
@@ -219,12 +219,12 @@ namespace sfe
 	{
 		if (packet->duration != 0)
 		{
-			AVRational seconds = AVFunc::av_mul_q(av_make_q((int)packet->duration, 1), m_stream->time_base);
+			AVRational seconds = AV_MUL_Q(av_make_q((int)packet->duration, 1), m_stream->time_base);
 			return sf::seconds((float)av_q2d(seconds));
 		}
 		else
 		{
-			return sf::seconds((float)(1. / av_q2d(AVFunc::av_guess_frame_rate(m_formatCtx, m_stream, nullptr))));
+			return sf::seconds((float)(1. / av_q2d(AV_GUESS_FRAME_RATE(m_formatCtx, m_stream, nullptr))));
 		}
 	}
 

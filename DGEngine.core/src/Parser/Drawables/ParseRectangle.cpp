@@ -11,7 +11,7 @@ namespace Parser
 
 	std::shared_ptr<Rectangle> getRectangleObj(Game& game, const Value& elem)
 	{
-		auto rectangle = std::make_shared<Rectangle>(getVector2fKey<sf::Vector2f>(elem, "size"));
+		auto rectangle = std::make_shared<Rectangle>(getSizeKey(elem, "size"));
 
 		if (isValidString(elem, "texture"))
 		{

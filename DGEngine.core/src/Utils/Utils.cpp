@@ -1,64 +1,27 @@
 #include "Utils.h"
 #include <algorithm>
 #include <array>
-#include <charconv>
 #include <iostream>
 #include <iterator>
 #include <sstream>
 
 namespace Utils
 {
-	bool endsWith(const std::string_view value, const std::string_view ending)
+	std::string removeEmptyLines(const std::string_view str)
 	{
-		if (ending.size() > value.size()) return false;
-		return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
-	}
-
-	std::string splitInLines(std::string source, std::size_t width, std::string whitespace)
-	{
-		std::size_t  currIndex = width - 1;
-		while (currIndex < source.length())
-		{
-			currIndex = source.find_last_of(whitespace, currIndex + 1);
-			if (currIndex == std::string::npos)
-			{
-				break;
-			}
-			currIndex = source.find_last_not_of(whitespace, currIndex);
-			if (currIndex == std::string::npos)
-			{
-				break;
-			}
-			auto sizeToElim = source.find_first_not_of(whitespace, currIndex + 1) - currIndex - 1;
-			source.replace(currIndex + 1, sizeToElim, "\n");
-			currIndex += (width + 1); //due to the recently inserted "\n"
-		}
-		return source;
-	}
-
-	std::vector<std::string> splitString(const std::string& str, const std::string& delim)
-	{
-		std::vector<std::string> tokens;
-		size_t prev = 0, pos = 0;
-		do
-		{
-			pos = str.find(delim, prev);
-			if (pos == std::string::npos)
-			{
-				pos = str.length();
-			}
-			std::string token = str.substr(prev, pos - prev);
-			if (token.empty() == false)
-			{
-				tokens.push_back(token);
-			}
-			prev = pos + delim.length();
-		} while (pos < str.length() && prev < str.length());
-		return tokens;
+		auto ret = trim(str, "\n");
+		ret.erase(std::unique(ret.begin(), ret.end(),
+			[](char a, char b) { return a == '\n' && b == '\n'; }),
+			ret.end());
+		return ret;
 	}
 
 	void replaceStringInPlace(std::string& subject, const std::string_view search, const std::string_view replace)
 	{
+		if (search.empty() == true)
+		{
+			return;
+		}
 		size_t pos = 0;
 		while ((pos = subject.find(search, pos)) != std::string::npos)
 		{
@@ -67,21 +30,19 @@ namespace Utils
 		}
 	}
 
-	std::vector<std::string> splitString(const std::string_view str, char delimiter)
+	std::vector<std::string_view> splitString(const std::string_view str, const std::string_view delimiters)
 	{
-		std::vector<std::string> strings;
+		std::vector<std::string_view> tokens;
+		auto start = str.find_first_not_of(delimiters, 0);
+		auto stop = str.find_first_of(delimiters, start);
 
-		std::string_view::size_type pos = 0;
-		std::string_view::size_type prev = 0;
-		while ((pos = str.find(delimiter, prev)) != std::string::npos)
+		while (stop != std::string_view::npos || start != std::string_view::npos)
 		{
-			strings.push_back(std::string(str.substr(prev, pos - prev)));
-			prev = pos + 1;
+			tokens.push_back(str.substr(start, stop - start));
+			start = str.find_first_not_of(delimiters, stop);
+			stop = str.find_first_of(delimiters, start);
 		}
-
-		strings.push_back(std::string(str.substr(prev)));
-
-		return strings;
+		return tokens;
 	}
 
 	std::pair<std::string, std::string> splitStringIn2(const std::string& str, char delimiter)
@@ -89,95 +50,70 @@ namespace Utils
 		auto pos = str.find(delimiter, 0);
 		if (pos != std::string::npos)
 		{
-			return std::make_pair(str.substr(0, pos), str.substr(pos + 1, str.size() - pos));
+			return { str.substr(0, pos), str.substr(pos + 1, str.size() - pos) };
 		}
-		return std::make_pair(str, "");
+		return { str, "" };
 	}
 
 	std::pair<std::string_view, std::string_view> splitStringIn2(const std::string_view str, char delimiter)
 	{
 		auto pos = str.find(delimiter, 0);
-		if (pos != std::string::npos)
+		if (pos != std::string_view::npos)
 		{
-			return std::make_pair(str.substr(0, pos), str.substr(pos + 1, str.size() - pos));
+			return { str.substr(0, pos), str.substr(pos + 1, str.size() - pos) };
 		}
-		return std::make_pair(str, "");
+		return { str, "" };
 	}
 
-	float strtof(std::string_view str) noexcept
+	float strtof(std::string_view str, float defaultVal) noexcept
 	{
-		float val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<float>(str, defaultVal);
 	}
 
-	double strtod(std::string_view str) noexcept
+	double strtod(std::string_view str, double defaultVal) noexcept
 	{
-		double val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<double>(str, defaultVal);
 	}
 
-	long double strtold(std::string_view str) noexcept
+	long double strtold(std::string_view str, long double defaultVal) noexcept
 	{
-		long double val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<long double>(str, defaultVal);
 	}
 
-	int strtoi(std::string_view str) noexcept
+	int strtoi(std::string_view str, int defaultVal) noexcept
 	{
-		int val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<int>(str, defaultVal);
 	}
 
-	long strtol(std::string_view str) noexcept
+	long strtol(std::string_view str, long defaultVal) noexcept
 	{
-		long val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<long>(str, defaultVal);
 	}
 
-	long long strtoll(std::string_view str) noexcept
+	long long strtoll(std::string_view str, long long defaultVal) noexcept
 	{
-		long long val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<long long>(str, defaultVal);
 	}
 
-	unsigned strtou(std::string_view str) noexcept
+	unsigned strtou(std::string_view str, unsigned defaultVal) noexcept
 	{
-		unsigned val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<unsigned>(str, defaultVal);
 	}
 
-	unsigned long strtoul(std::string_view str) noexcept
+	unsigned long strtoul(std::string_view str, unsigned long defaultVal) noexcept
 	{
-		unsigned long val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<unsigned long>(str, defaultVal);
 	}
 
-	unsigned long long strtoull(std::string_view str) noexcept
+	unsigned long long strtoull(std::string_view str, unsigned long long defaultVal) noexcept
 	{
-		unsigned long long val = 0;
-		std::from_chars(str.data(), str.data() + str.size(), val);
-		return val;
+		return strToNumber<unsigned long long>(str, defaultVal);
 	}
 
 	std::string toLower(const std::string_view str)
 	{
 		std::string ret(str);
-		std::transform(ret.begin(), ret.end(), ret.begin(), ::tolower);
-		return ret;
-	}
-
-	std::string toUpper(const std::string_view str)
-	{
-		std::string ret(str);
-		std::transform(ret.begin(), ret.end(), ret.begin(), ::toupper);
+		std::transform(ret.begin(), ret.end(), ret.begin(), static_cast<int(*)(int)>(std::tolower));
 		return ret;
 	}
 
@@ -282,11 +218,24 @@ namespace Utils
 		return { "0" };
 	}
 
-	std::string trimStart(const std::string_view str, const std::string_view chars)
+	std::string toUpper(const std::string_view str)
 	{
 		std::string ret(str);
-		ret.erase(0, ret.find_first_not_of(chars));
+		std::transform(ret.begin(), ret.end(), ret.begin(), static_cast<int(*)(int)>(std::toupper));
 		return ret;
+	}
+
+	std::string trim(const std::string_view str, const std::string_view chars)
+	{
+		auto begin = str.find_first_not_of(chars);
+		if (begin == std::string::npos)
+		{
+			return {};
+		}
+
+		auto end = str.find_last_not_of(chars);
+		auto range = end - begin + 1;
+		return std::string(str.substr(begin, range));
 	}
 
 	std::string trimEnd(const std::string_view str, const std::string_view chars)
@@ -296,17 +245,72 @@ namespace Utils
 		return ret;
 	}
 
-	std::string trim(const std::string_view str, const std::string_view chars)
+	std::string trimStart(const std::string_view str, const std::string_view chars)
 	{
-		return trimStart(trimEnd(str, chars), chars);
+		std::string ret(str);
+		ret.erase(0, ret.find_first_not_of(chars));
+		return ret;
 	}
 
-	std::string removeEmptyLines(const std::string_view str)
+	std::string wordWrap(std::string str, int length)
 	{
-		auto ret = trim(str, "\n");
-		ret.erase(std::unique(ret.begin(), ret.end(),
-			[](char a, char b) { return a == '\n' && b == '\n'; }),
-			ret.end());
-		return ret;
+		if (length < 0)
+		{
+			return str;
+		}
+
+		auto it = str.begin();
+		auto itEnd = str.end();
+		auto lastSpaceIdx = str.find_last_not_of(' ');
+		if (lastSpaceIdx != std::string::npos)
+		{
+			itEnd = it + lastSpaceIdx + 1;
+		}
+
+		auto strLength = itEnd - it;
+
+		if (strLength <= length)
+		{
+			return str;
+		}
+
+		auto itLastSpace = str.begin();
+		int distanceToWidth = 0;
+
+		while (it != itEnd)
+		{
+			while (it != itEnd && distanceToWidth <= length)
+			{
+				distanceToWidth++;
+
+				if (*it == ' ')
+				{
+					itLastSpace = it;
+
+					if (distanceToWidth == length)
+					{
+						if (it + 1 != itEnd)
+						{
+							*itLastSpace = '\n';
+							distanceToWidth = 0;
+						}
+					}
+				}
+				++it;
+			}
+
+			if (itLastSpace != str.begin())
+			{
+				if (distanceToWidth != length || it != itEnd)
+				{
+					*itLastSpace = '\n';
+				}
+			}
+
+			distanceToWidth = std::clamp((int)(it - itLastSpace) - 2, 0, length);
+			itLastSpace = str.begin();
+		}
+
+		return str;
 	}
 }

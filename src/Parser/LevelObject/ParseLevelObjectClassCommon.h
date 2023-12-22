@@ -32,7 +32,7 @@ namespace Parser
 				auto nameHash = str2int16(name);
 				level.setPropertyName(nameHash, name);
 
-				if constexpr (std::is_integral<T>::value == true)
+				if constexpr (std::is_integral_v<T> == true)
 				{
 					levelObjClass.setDefaultByHash(nameHash, getMinMaxIntVal<T>(it->value));
 				}

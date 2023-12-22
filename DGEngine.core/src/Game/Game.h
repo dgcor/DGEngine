@@ -155,7 +155,7 @@ protected:
 	void reset();
 
 public:
-	Game();
+	Game(bool reset_ = false);
 	virtual ~Game();
 
 	Game(Game const&) = delete;

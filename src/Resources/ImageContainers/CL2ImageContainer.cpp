@@ -1,5 +1,4 @@
 #include "CL2ImageContainer.h"
-#include <span>
 #include "Utils/StreamReader.h"
 
 namespace
@@ -66,96 +65,96 @@ namespace
 		}
 		return celFrameWidth[0];
 	}
-
-	sf::Image2 decode(const std::span<const uint8_t> frameData, const PaletteArray* palette)
-	{
-		unsigned width;
-		int32_t frameDataStartOffset = 0;
-
-		if (frameData.size() == 0)
-		{
-			return {};
-		}
-
-		// Checking the presence of the {CL2 FRAME HEADER}
-		if (frameData[0] == 0x0A && frameData[1] == 0x00)
-		{
-			frameDataStartOffset += 0x0A;
-			// If header is present, try to compute frame width from frame header
-			width = computeWidthFromHeader(frameData);
-		}
-		else
-		{
-			return {};
-		}
-		if (width == 0)
-		{
-			return {};
-		}
-
-		std::vector<sf::Color> pixels;
-		pixels.reserve(width * width);
-
-		// READ {CL2 FRAME DATA}
-
-		for (size_t i = frameDataStartOffset; i < frameData.size(); i++)
-		{
-			auto readByte = frameData[i];
-
-			// Transparent pixels
-			if (readByte > 0x00 && readByte < 0x80)
-			{
-				for (size_t j = 0; j < readByte; j++)
-				{
-					// Add transparent pixel
-					pixels.push_back(sf::Color::Transparent);
-				}
-			}
-			// Repeat palette index
-			else if (readByte >= 0x80 && readByte < 0xBF)
-			{
-				// Go to the palette index offset
-				i++;
-
-				for (size_t j = 0; j < (0xBFu - readByte); j++)
-				{
-					// Add opaque pixel
-					pixels.push_back(ImageContainer::getColor(frameData[i], palette));
-				}
-			}
-			// Palette indices
-			else if (readByte >= 0xBF)
-			{
-				for (size_t j = 0; j < (256u - readByte); j++)
-				{
-					// Go to the next palette index offset
-					i++;
-					// Add opaque pixel
-					pixels.push_back(ImageContainer::getColor(frameData[i], palette));
-				}
-			}
-			else if (readByte == 0x00)
-			{
-				// 0x00 found
-			}
-		}
-		unsigned height = (unsigned)pixels.size() / width;
-
-		sf::Image2 img;
-		img.create(width, height, (const sf::Uint8*)pixels.data());
-		img.flipVertically();
-
-		return img;
-	}
 }
 
-CL2ImageContainer::CL2ImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
+sf::Image2 CL2ImageContainer::decode(const std::span<const uint8_t> frameData, const PaletteArray* palette) const
+{
+	unsigned width;
+	int32_t frameDataStartOffset = 0;
+
+	if (frameData.size() == 0)
+	{
+		return {};
+	}
+
+	// Checking the presence of the {CL2 FRAME HEADER}
+	if (frameData[0] == 0x0A && frameData[1] == 0x00)
+	{
+		frameDataStartOffset += 0x0A;
+		// If header is present, try to compute frame width from frame header
+		width = computeWidthFromHeader(frameData);
+	}
+	else
+	{
+		return {};
+	}
+	if (width == 0)
+	{
+		return {};
+	}
+
+	std::vector<sf::Color> pixels;
+	pixels.reserve(width * width);
+
+	// READ {CL2 FRAME DATA}
+
+	for (size_t i = frameDataStartOffset; i < frameData.size(); i++)
+	{
+		auto readByte = frameData[i];
+
+		// Transparent pixels
+		if (readByte > 0x00 && readByte < 0x80)
+		{
+			for (size_t j = 0; j < readByte; j++)
+			{
+				// Add transparent pixel
+				pixels.push_back(sf::Color::Transparent);
+			}
+		}
+		// Repeat palette index
+		else if (readByte >= 0x80 && readByte < 0xBF)
+		{
+			// Go to the palette index offset
+			i++;
+
+			for (size_t j = 0; j < (0xBFu - readByte); j++)
+			{
+				// Add opaque pixel
+				pixels.push_back(ImageContainer::getColor(frameData[i], palette));
+			}
+		}
+		// Palette indices
+		else if (readByte >= 0xBF)
+		{
+			for (size_t j = 0; j < (256u - readByte); j++)
+			{
+				// Go to the next palette index offset
+				i++;
+				// Add opaque pixel
+				pixels.push_back(ImageContainer::getColor(frameData[i], palette));
+			}
+		}
+		else if (readByte == 0x00)
+		{
+			// 0x00 found
+		}
+	}
+	unsigned height = (unsigned)pixels.size() / width;
+
+	sf::Image2 img;
+	img.create(width, height, (const sf::Uint8*)pixels.data());
+	img.flipVertically();
+
+	return img;
+}
+
+CL2ImageContainer::CL2ImageContainer(const std::shared_ptr<FileBytes>& fileData_) : LazyImageContainer(fileData_)
 {
 	CelType type = CelType::V2MultipleGroups;
 	uint32_t firstDword = 0;
 	uint32_t fileSizeDword = 0;
 
-	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
+	LittleEndianStreamReader fileStream((const uint8_t*)fileData->data(), fileData->size());
 
 	// CL2 HEADER CHECKS
 
@@ -246,9 +245,7 @@ CL2ImageContainer::CL2ImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 				fileStream.read(frameStartOffset);
 				fileStream.read(frameEndOffset);
 
-				frameOffsets.push_back(
-					std::make_pair(groupOffset + frameStartOffset,
-						groupOffset + frameEndOffset));
+				frameOffsets.push_back({ groupOffset + frameStartOffset, groupOffset + frameEndOffset });
 			}
 		}
 	}
@@ -264,25 +261,7 @@ CL2ImageContainer::CL2ImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 			fileStream.read(frameStartOffset);
 			fileStream.read(frameEndOffset);
 
-			frameOffsets.push_back(std::make_pair(frameStartOffset, frameEndOffset));
+			frameOffsets.push_back({ frameStartOffset, frameEndOffset });
 		}
 	}
-}
-
-sf::Image2 CL2ImageContainer::get(uint32_t index,
-	const PaletteArray* palette, ImageInfo& imgInfo) const
-{
-	if (index >= frameOffsets.size())
-	{
-		return {};
-	}
-
-	imgInfo.offset = {};
-	imgInfo.absoluteOffset = false;
-	imgInfo.blendMode = blendMode;
-	imgInfo.nextIndex = -1;
-
-	uint32_t frameSize = frameOffsets[index].second - frameOffsets[index].first;
-	std::span<const uint8_t> frameData(&(*fileData)[frameOffsets[index].first], frameSize);
-	return decode(frameData, palette);
 }

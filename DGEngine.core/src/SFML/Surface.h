@@ -36,7 +36,9 @@ public:
 	bool visible{ true };
 
 	Surface() = default;
-	Surface(float isometricZoom_) : isometricZoom(isometricZoom_) {}
+	Surface(bool forceEvenSize_, float isometricZoom_) :
+		mapView(forceEvenSize_), drawView(forceEvenSize_), isometricZoom(isometricZoom_) {}
+
 	virtual ~Surface() = default;
 
 	float getIsometricZoom() const noexcept { return isometricZoom; }

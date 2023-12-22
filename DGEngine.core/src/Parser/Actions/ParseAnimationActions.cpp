@@ -21,7 +21,7 @@ namespace Parser::Actions
 			getStringViewKey(elem, "texturePack"),
 			getIntKey(elem, "group", -1),
 			getIntKey(elem, "direction", -1),
-			getTimeKey(elem, "refresh"),
+			getTimeUKey(elem, "refresh"),
 			getBoolKey(elem, "reset", true),
 			getBoolKey(elem, "updateAnimationType"));
 	}
@@ -30,6 +30,6 @@ namespace Parser::Actions
 	{
 		return std::make_shared<ActAnimationSetRefresh>(
 			getStringViewKey(elem, "id"),
-			getTimeKey(elem, "refresh"));
+			getTimeUKey(elem, "refresh"));
 	}
 }

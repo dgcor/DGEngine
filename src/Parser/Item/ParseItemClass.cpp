@@ -129,7 +129,7 @@ namespace Parser
 		}
 		if (elem.HasMember("animationSpeed"sv) == true)
 		{
-			itemClass->AnimationSpeed(getTimeVal(elem["animationSpeed"sv], sf::milliseconds(40)));
+			itemClass->AnimationSpeed(getTimeUVal(elem["animationSpeed"sv], sf::milliseconds(40)));
 		}
 		if (elem.HasMember("outline"sv) == true)
 		{

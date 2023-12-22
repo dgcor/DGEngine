@@ -49,6 +49,7 @@ public:
 	bool GetSuccessors(AStarSearch<MapSearchNode>* astarsearch, MapSearchNode* parent_node);
 	float GetCost(MapSearchNode& successor);
 	bool IsSameState(MapSearchNode& rhs) noexcept;
+	size_t Hash() noexcept;
 };
 
 bool getNearestPassableEndNode(const LevelMap& map, const MapSearchNode& start, MapSearchNode& end);

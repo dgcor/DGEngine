@@ -29,13 +29,34 @@ public:
 	void load(const std::string_view fileName, T defaultVal = {},
 		size_t maxNumElements = std::numeric_limits<size_t>::max())
 	{
-		if (Utils::endsWith(fileName, ".txt"))
+		if (fileName.ends_with(".txt"))
 		{
 			loadText(fileName, defaultVal, maxNumElements);
 		}
 		else
 		{
 			loadBinary(fileName, maxNumElements);
+		}
+	}
+
+	// loads a list of numbers from a little endian binary fileStream.
+	void loadBinary(sf::InputStream& file,
+		size_t maxNumElements = std::numeric_limits<size_t>::max())
+	{
+		auto size = file.getSize();
+		if (size < 0 || size < (sf::Int64)sizeof(T))
+		{
+			return;
+		}
+		auto numElements = std::min(((size_t)size) / sizeof(T), maxNumElements);
+		data.resize(numElements);
+		file.read(data.data(), numElements * sizeof(T));
+		if constexpr (sizeof(T) > 1)
+		{
+			for (auto& val : data)
+			{
+				val = endian::little_endian::get<T>((const uint8_t*)&val);
+			}
 		}
 	}
 
@@ -48,29 +69,16 @@ public:
 		{
 			return;
 		}
-		auto size = (size_t)file.getSize();
-		if (size < sizeof(T))
-		{
-			return;
-		}
-		auto numElements = std::min(size / sizeof(T), maxNumElements);
-		data.resize(numElements);
-		file.read(data.data(), numElements * sizeof(T));
-		if constexpr (sizeof(T) > 1)
-		{
-			for (auto& val : data)
-			{
-				val = endian::little_endian::get<T>((const uint8_t*)&val);
-			}
-		}
+		loadBinary(file, maxNumElements);
 	}
 
 	// loads a list of numbers from a new line (\n) separated text file.
+	// number separtor characters: whitespace, tab and comma
 	void loadText(const std::string_view fileName, T defaultVal = {},
 		size_t maxNumElements = std::numeric_limits<size_t>::max())
 	{
 		data.clear();
-		auto text = FileUtils::readText(fileName.data());
+		auto text = FileUtils::readText(fileName);
 		bool loop = true;
 		size_t start = 0;
 		size_t pos = 0;
@@ -86,18 +94,32 @@ public:
 				}
 				loop = false;
 			}
-			std::string_view numberStr(text.data() + start, pos - start);
-			if (numberStr.empty() == true)
+			std::string_view line(text.data() + start, pos - start);
+			if (line.empty() == true)
 			{
 				data.push_back(defaultVal);
+				if (data.size() >= maxNumElements)
+				{
+					return;
+				}
 			}
 			else
 			{
-				data.push_back(Utils::strtonumber<T>(numberStr));
-			}
-			if (data.size() >= maxNumElements)
-			{
-				return;
+				auto numbersStr = Utils::splitString(line, "\t ,");
+				for (const auto& numberStr : numbersStr)
+				{
+					if (numberStr.empty() == true)
+					{
+						continue;
+					}
+
+					data.push_back(Utils::strToNumber<T>(numberStr));
+
+					if (data.size() >= maxNumElements)
+					{
+						return;
+					}
+				}
 			}
 			start = pos + 1;
 		} while (loop == true);

@@ -14,6 +14,7 @@
 #if defined(PHYSFS_DYNAMIC_STORMLIB)
 #include "Utils/LoadLibrary.h"
 #endif
+#include "Utils/Log.h"
 
 typedef bool (WINAPI* StormFileOpenArchive)(const TCHAR*, DWORD, DWORD, HANDLE*);
 typedef bool (WINAPI* StormFileCloseArchive)(HANDLE);
@@ -163,6 +164,7 @@ static void MPQ_LoadExternalStormLib()
 	}
 	else
 	{
+		SPDLOG_INFO("Loading external StormLib");
 		tryLoadOnce = true;
 	}
 
@@ -173,6 +175,7 @@ static void MPQ_LoadExternalStormLib()
 #endif
 	if (hStormLib == nullptr)
 	{
+		SPDLOG_INFO("External StormLib not found");
 		return;
 	}
 
@@ -195,6 +198,7 @@ static void MPQ_LoadExternalStormLib()
 		PHYSFS_SFileCloseFile == nullptr ||
 		PHYSFS_SFileGetFileInfo == nullptr)
 	{
+		SPDLOG_INFO("Using internal StormLib");
 		PHYSFS_SFileOpenArchive = SFileOpenArchive;
 		PHYSFS_SFileCloseArchive = SFileCloseArchive;
 		PHYSFS_SFileOpenFileEx = SFileOpenFileEx;
@@ -203,6 +207,10 @@ static void MPQ_LoadExternalStormLib()
 		PHYSFS_SFileReadFile = SFileReadFile;
 		PHYSFS_SFileCloseFile = SFileCloseFile;
 		PHYSFS_SFileGetFileInfo = SFileGetFileInfo;
+	}
+	else
+	{
+		SPDLOG_INFO("Using external StormLib");
 	}
 #endif
 }

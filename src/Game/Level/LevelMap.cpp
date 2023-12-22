@@ -327,7 +327,7 @@ void LevelMap::setD2Area(int32_t x, int32_t y, DS1::Decoder& dun)
 	auto flags = getFlags();
 
 	auto addLevelLayer = [&](std::unordered_map<int, DS1::Cell> dunCells, int increment,
-		int offset, const std::set<int>& orientations) {
+		int offset, const std::unordered_set<int>& orientations) {
 
 			if (currLayer >= LevelCell::NumberOfLayers)
 			{

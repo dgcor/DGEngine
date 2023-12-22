@@ -1,5 +1,11 @@
 #include "GameUtils.h"
+#include <cmath>
+#include <version>
+#ifdef __cpp_lib_format
+#include <format>
+#else
 #include <cstdio>
+#endif
 #include "Game/Game.h"
 #include "Utils/StringHash.h"
 #include "Utils/Utils.h"
@@ -7,6 +13,12 @@
 
 namespace GameUtils
 {
+	sf::Time FPSToTime(int fps)
+	{
+		fps = std::clamp(fps, 1, 1000);
+		return sf::seconds(1.f / (float)fps);
+	}
+
 	AnimationType getAnimationType(const std::string_view str, AnimationType val)
 	{
 		switch (str2int16(Utils::toLower(str)))
@@ -35,7 +47,7 @@ namespace GameUtils
 			break;
 		case HorizontalAlign::Center:
 		{
-			drawPos.x -= std::round(size.x / 2);
+			drawPos.x -= std::round(size.x / 2.f);
 		}
 		break;
 		case HorizontalAlign::Right:
@@ -51,7 +63,7 @@ namespace GameUtils
 			break;
 		case VerticalAlign::Center:
 		{
-			drawPos.y -= std::round(size.y / 2);
+			drawPos.y -= std::round(size.y / 2.f);
 		}
 		break;
 		case VerticalAlign::Top:
@@ -75,7 +87,7 @@ namespace GameUtils
 		}
 		else if (srcAnchor == (Anchor::Bottom))
 		{
-			pos.x += std::round((anchorToSize.x / 2) - (srcSize.x / 2));
+			pos.x += std::round((anchorToSize.x / 2.f) - (srcSize.x / 2.f));
 			pos.y += anchorToSize.y;
 			return pos;
 		}
@@ -88,19 +100,19 @@ namespace GameUtils
 		else if (srcAnchor == (Anchor::Left))
 		{
 			pos.x -= srcSize.x;
-			pos.y += std::round((anchorToSize.y / 2) - (srcSize.y / 2));
+			pos.y += std::round((anchorToSize.y / 2.f) - (srcSize.y / 2.f));
 			return pos;
 		}
 		else if (srcAnchor == (Anchor::None))
 		{
-			pos.x += std::round((anchorToSize.x / 2) - (srcSize.x / 2));
-			pos.y += std::round((anchorToSize.y / 2) - (srcSize.y / 2));
+			pos.x += std::round((anchorToSize.x / 2.f) - (srcSize.x / 2.f));
+			pos.y += std::round((anchorToSize.y / 2.f) - (srcSize.y / 2.f));
 			return pos;
 		}
 		else if (srcAnchor == (Anchor::Right))
 		{
 			pos.x += anchorToSize.x;
-			pos.y += std::round((anchorToSize.y / 2) - (srcSize.y / 2));
+			pos.y += std::round((anchorToSize.y / 2.f) - (srcSize.y / 2.f));
 			return pos;
 		}
 		else if (srcAnchor == (Anchor::Top | Anchor::Left))
@@ -111,7 +123,7 @@ namespace GameUtils
 		}
 		else if (srcAnchor == (Anchor::Top))
 		{
-			pos.x += std::round((anchorToSize.x / 2) - (srcSize.x / 2));
+			pos.x += std::round((anchorToSize.x / 2.f) - (srcSize.x / 2.f));
 			pos.y -= srcSize.y;
 			return pos;
 		}
@@ -224,6 +236,10 @@ namespace GameUtils
 			return BlendMode::Add;
 		case str2int16("multiply"):
 			return BlendMode::Multiply;
+		case str2int16("min"):
+			return BlendMode::Min;
+		case str2int16("max"):
+			return BlendMode::Max;
 		case str2int16("none"):
 			return BlendMode::None;
 		default:
@@ -252,6 +268,23 @@ namespace GameUtils
 			break;
 		default:
 			return Palette::ColorFormat::RGB;
+		}
+	}
+
+	Direction getDirection(const std::string_view str, Direction val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("up"):
+			return Direction::Up;
+		case str2int16("down"):
+			return Direction::Down;
+		case str2int16("left"):
+			return Direction::Left;
+		case str2int16("right"):
+			return Direction::Right;
+		default:
+			return val;
 		}
 	}
 
@@ -285,11 +318,96 @@ namespace GameUtils
 		}
 	}
 
+	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("none"):
+			return IgnoreResource::None;
+		case str2int16("alldraws"):
+			return IgnoreResource::Draw | IgnoreResource::All;
+		case str2int16("alldrawsandupdates"):
+			return IgnoreResource::Draw | IgnoreResource::Update | IgnoreResource::All;
+		case str2int16("allupdates"):
+			return IgnoreResource::Update | IgnoreResource::All;
+		case str2int16("draw"):
+			return IgnoreResource::Draw;
+		case str2int16("drawandupdate"):
+			return IgnoreResource::Draw | IgnoreResource::Update;
+		case str2int16("update"):
+			return IgnoreResource::Update;
+		}
+		return val;
+	}
+
+	InputEventType getInputEventType(const std::string_view str, InputEventType val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("none"):
+			return InputEventType::None;
+		case str2int16("leftclick"):
+			return InputEventType::LeftClick;
+		case str2int16("middleclick"):
+			return InputEventType::MiddleClick;
+		case str2int16("rightclick"):
+			return InputEventType::RightClick;
+		case str2int16("mousepress"):
+			return InputEventType::MousePress;
+		case str2int16("mousemove"):
+			return InputEventType::MouseMove;
+		case str2int16("mouserelease"):
+			return InputEventType::MouseRelease;
+		case str2int16("mousescroll"):
+			return InputEventType::MouseScroll;
+		case str2int16("keypress"):
+			return InputEventType::KeyPress;
+		case str2int16("textenter"):
+			return InputEventType::TextEnter;
+		case str2int16("touchbegin"):
+			return InputEventType::TouchBegin;
+		case str2int16("touchmove"):
+			return InputEventType::TouchMove;
+		case str2int16("touchend"):
+			return InputEventType::TouchEnd;
+		case str2int16("allleftclick"):
+			return InputEventType::All ^ (InputEventType::MiddleClick | InputEventType::RightClick);
+		case str2int16("allmiddleclick"):
+			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::RightClick);
+		case str2int16("allrightclick"):
+			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::MiddleClick);
+		case str2int16("all"):
+			return InputEventType::All;
+		}
+		return val;
+	}
+
+	sf::PrimitiveType getPrimitiveType(const std::string_view str, sf::PrimitiveType val)
+	{
+		switch (str2int16(Utils::toLower(str)))
+		{
+		case str2int16("points"):
+			return sf::PrimitiveType::Points;
+		case str2int16("lines"):
+			return sf::PrimitiveType::Lines;
+		case str2int16("linestrip"):
+			return sf::PrimitiveType::LineStrip;
+		case str2int16("triangles"):
+			return sf::PrimitiveType::Triangles;
+		case str2int16("trianglestrip"):
+			return sf::PrimitiveType::TriangleStrip;
+		case str2int16("trianglefan"):
+			return sf::PrimitiveType::TriangleFan;
+		default:
+			return val;
+		}
+	}
+
 	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept
 	{
 		if (num >= 0 && num <= 9)
 		{
-			return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + num);
+			return static_cast<sf::Keyboard::Key>(sf::Keyboard::Key::Num0 + num);
 		}
 		return val;
 	}
@@ -303,46 +421,46 @@ namespace GameUtils
 				char ch = str[0];
 				if (ch >= 'A' && ch <= 'Z')
 				{
-					return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'A');
+					return static_cast<sf::Keyboard::Key>(sf::Keyboard::Key::A + ch - 'A');
 				}
 				else if (ch >= 'a' && ch <= 'z')
 				{
-					return static_cast<sf::Keyboard::Key>(sf::Keyboard::A + ch - 'a');
+					return static_cast<sf::Keyboard::Key>(sf::Keyboard::Key::A + ch - 'a');
 				}
 				else if (ch >= '0' && ch <= '9')
 				{
-					return static_cast<sf::Keyboard::Key>(sf::Keyboard::Num0 + ch - '0');
+					return static_cast<sf::Keyboard::Key>(sf::Keyboard::Key::Num0 + ch - '0');
 				}
 				switch (ch)
 				{
 				case '[':
-					return sf::Keyboard::LBracket;
+					return sf::Keyboard::Key::LBracket;
 				case ']':
-					return sf::Keyboard::RBracket;
+					return sf::Keyboard::Key::RBracket;
 				case ';':
-					return sf::Keyboard::Semicolon;
+					return sf::Keyboard::Key::Semicolon;
 				case ',':
-					return sf::Keyboard::Comma;
+					return sf::Keyboard::Key::Comma;
 				case '.':
-					return sf::Keyboard::Period;
+					return sf::Keyboard::Key::Period;
 				case '\'':
-					return sf::Keyboard::Apostrophe;
+					return sf::Keyboard::Key::Apostrophe;
 				case '\\':
-					return sf::Keyboard::Backslash;
+					return sf::Keyboard::Key::Backslash;
 				case '~':
-					return sf::Keyboard::Tilde;
+					return sf::Keyboard::Key::Tilde;
 				case '=':
-					return sf::Keyboard::Equal;
+					return sf::Keyboard::Key::Equal;
 				case ' ':
-					return sf::Keyboard::Space;
+					return sf::Keyboard::Key::Space;
 				case '+':
-					return sf::Keyboard::Add;
+					return sf::Keyboard::Key::Add;
 				case '-':
-					return sf::Keyboard::Subtract;
+					return sf::Keyboard::Key::Subtract;
 				case '*':
-					return sf::Keyboard::Multiply;
+					return sf::Keyboard::Key::Multiply;
 				case '/':
-					return sf::Keyboard::Divide;
+					return sf::Keyboard::Key::Divide;
 				default:
 					return val;
 				}
@@ -356,137 +474,137 @@ namespace GameUtils
 					return sf::Keyboard::KeyCount;
 				case str2int16("esc"):
 				case str2int16("escape"):
-					return sf::Keyboard::Escape;
+					return sf::Keyboard::Key::Escape;
 				case str2int16("lcontrol"):
-					return sf::Keyboard::LControl;
+					return sf::Keyboard::Key::LControl;
 				case str2int16("lshift"):
-					return sf::Keyboard::LShift;
+					return sf::Keyboard::Key::LShift;
 				case str2int16("lalt"):
-					return sf::Keyboard::LAlt;
+					return sf::Keyboard::Key::LAlt;
 				case str2int16("lsystem"):
-					return sf::Keyboard::LSystem;
+					return sf::Keyboard::Key::LSystem;
 				case str2int16("rcontrol"):
-					return sf::Keyboard::RControl;
+					return sf::Keyboard::Key::RControl;
 				case str2int16("rshift"):
-					return sf::Keyboard::RShift;
+					return sf::Keyboard::Key::RShift;
 				case str2int16("ralt"):
-					return sf::Keyboard::RAlt;
+					return sf::Keyboard::Key::RAlt;
 				case str2int16("rsystem"):
-					return sf::Keyboard::RSystem;
+					return sf::Keyboard::Key::RSystem;
 				case str2int16("menu"):
-					return sf::Keyboard::Menu;
+					return sf::Keyboard::Key::Menu;
 				case str2int16("leftbracket"):
-					return sf::Keyboard::LBracket;
+					return sf::Keyboard::Key::LBracket;
 				case str2int16("rightbracket"):
-					return sf::Keyboard::RBracket;
+					return sf::Keyboard::Key::RBracket;
 				case str2int16("semicolon"):
-					return sf::Keyboard::Semicolon;
+					return sf::Keyboard::Key::Semicolon;
 				case str2int16("comma"):
-					return sf::Keyboard::Comma;
+					return sf::Keyboard::Key::Comma;
 				case str2int16("period"):
-					return sf::Keyboard::Period;
+					return sf::Keyboard::Key::Period;
 				case str2int16("apostrophe"):
 				case str2int16("quote"):
-					return sf::Keyboard::Apostrophe;
+					return sf::Keyboard::Key::Apostrophe;
 				case str2int16("slash"):
-					return sf::Keyboard::Slash;
+					return sf::Keyboard::Key::Slash;
 				case str2int16("backslash"):
-					return sf::Keyboard::Backslash;
+					return sf::Keyboard::Key::Backslash;
 				case str2int16("tilde"):
-					return sf::Keyboard::Tilde;
+					return sf::Keyboard::Key::Tilde;
 				case str2int16("equal"):
-					return sf::Keyboard::Equal;
+					return sf::Keyboard::Key::Equal;
 				case str2int16("hyphen"):
-					return sf::Keyboard::Hyphen;
+					return sf::Keyboard::Key::Hyphen;
 				case str2int16("space"):
-					return sf::Keyboard::Space;
+					return sf::Keyboard::Key::Space;
 				case str2int16("enter"):
 				case str2int16("return"):
-					return sf::Keyboard::Return;
+					return sf::Keyboard::Key::Return;
 				case str2int16("backspace"):
-					return sf::Keyboard::BackSpace;
+					return sf::Keyboard::Key::BackSpace;
 				case str2int16("tab"):
-					return sf::Keyboard::Tab;
+					return sf::Keyboard::Key::Tab;
 				case str2int16("pageup"):
-					return sf::Keyboard::PageUp;
+					return sf::Keyboard::Key::PageUp;
 				case str2int16("pagedown"):
-					return sf::Keyboard::PageDown;
+					return sf::Keyboard::Key::PageDown;
 				case str2int16("end"):
-					return sf::Keyboard::End;
+					return sf::Keyboard::Key::End;
 				case str2int16("home"):
-					return sf::Keyboard::Home;
+					return sf::Keyboard::Key::Home;
 				case str2int16("insert"):
-					return sf::Keyboard::Insert;
+					return sf::Keyboard::Key::Insert;
 				case str2int16("delete"):
-					return sf::Keyboard::Delete;
+					return sf::Keyboard::Key::Delete;
 				case str2int16("add"):
-					return sf::Keyboard::Add;
+					return sf::Keyboard::Key::Add;
 				case str2int16("subtract"):
-					return sf::Keyboard::Subtract;
+					return sf::Keyboard::Key::Subtract;
 				case str2int16("multiply"):
-					return sf::Keyboard::Multiply;
+					return sf::Keyboard::Key::Multiply;
 				case str2int16("divide"):
-					return sf::Keyboard::Divide;
+					return sf::Keyboard::Key::Divide;
 				case str2int16("left"):
-					return sf::Keyboard::Left;
+					return sf::Keyboard::Key::Left;
 				case str2int16("right"):
-					return sf::Keyboard::Right;
+					return sf::Keyboard::Key::Right;
 				case str2int16("up"):
-					return sf::Keyboard::Up;
+					return sf::Keyboard::Key::Up;
 				case str2int16("down"):
-					return sf::Keyboard::Down;
+					return sf::Keyboard::Key::Down;
 				case str2int16("numpad0"):
-					return sf::Keyboard::Numpad0;
+					return sf::Keyboard::Key::Numpad0;
 				case str2int16("numpad1"):
-					return sf::Keyboard::Numpad1;
+					return sf::Keyboard::Key::Numpad1;
 				case str2int16("numpad2"):
-					return sf::Keyboard::Numpad2;
+					return sf::Keyboard::Key::Numpad2;
 				case str2int16("numpad3"):
-					return sf::Keyboard::Numpad3;
+					return sf::Keyboard::Key::Numpad3;
 				case str2int16("numpad4"):
-					return sf::Keyboard::Numpad4;
+					return sf::Keyboard::Key::Numpad4;
 				case str2int16("numpad5"):
-					return sf::Keyboard::Numpad5;
+					return sf::Keyboard::Key::Numpad5;
 				case str2int16("numpad6"):
-					return sf::Keyboard::Numpad6;
+					return sf::Keyboard::Key::Numpad6;
 				case str2int16("numpad7"):
-					return sf::Keyboard::Numpad7;
+					return sf::Keyboard::Key::Numpad7;
 				case str2int16("numpad8"):
-					return sf::Keyboard::Numpad8;
+					return sf::Keyboard::Key::Numpad8;
 				case str2int16("numpad9"):
-					return sf::Keyboard::Numpad9;
+					return sf::Keyboard::Key::Numpad9;
 				case str2int16("f1"):
-					return sf::Keyboard::F1;
+					return sf::Keyboard::Key::F1;
 				case str2int16("f2"):
-					return sf::Keyboard::F2;
+					return sf::Keyboard::Key::F2;
 				case str2int16("f3"):
-					return sf::Keyboard::F3;
+					return sf::Keyboard::Key::F3;
 				case str2int16("f4"):
-					return sf::Keyboard::F4;
+					return sf::Keyboard::Key::F4;
 				case str2int16("f5"):
-					return sf::Keyboard::F5;
+					return sf::Keyboard::Key::F5;
 				case str2int16("f6"):
-					return sf::Keyboard::F6;
+					return sf::Keyboard::Key::F6;
 				case str2int16("f7"):
-					return sf::Keyboard::F7;
+					return sf::Keyboard::Key::F7;
 				case str2int16("f8"):
-					return sf::Keyboard::F8;
+					return sf::Keyboard::Key::F8;
 				case str2int16("f9"):
-					return sf::Keyboard::F9;
+					return sf::Keyboard::Key::F9;
 				case str2int16("f10"):
-					return sf::Keyboard::F10;
+					return sf::Keyboard::Key::F10;
 				case str2int16("f11"):
-					return sf::Keyboard::F11;
+					return sf::Keyboard::Key::F11;
 				case str2int16("f12"):
-					return sf::Keyboard::F12;
+					return sf::Keyboard::Key::F12;
 				case str2int16("f13"):
-					return sf::Keyboard::F13;
+					return sf::Keyboard::Key::F13;
 				case str2int16("f14"):
-					return sf::Keyboard::F14;
+					return sf::Keyboard::Key::F14;
 				case str2int16("f15"):
-					return sf::Keyboard::F15;
+					return sf::Keyboard::Key::F15;
 				case str2int16("pause"):
-					return sf::Keyboard::Pause;
+					return sf::Keyboard::Key::Pause;
 				default:
 					return val;
 				}
@@ -715,271 +833,431 @@ namespace GameUtils
 		return std::string((const char*)scancodeStr.data(), scancodeStr.size());
 	}
 
-	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val)
+	// total time to seconds
+	float getTimeS(sf::Time time, bool roundUp)
 	{
-		switch (str2int16(Utils::toLower(str)))
+		if (roundUp == true)
 		{
-		case str2int16("none"):
-			return IgnoreResource::None;
-		case str2int16("alldraws"):
-			return IgnoreResource::Draw | IgnoreResource::All;
-		case str2int16("alldrawsandupdates"):
-			return IgnoreResource::Draw | IgnoreResource::Update | IgnoreResource::All;
-		case str2int16("allupdates"):
-			return IgnoreResource::Update | IgnoreResource::All;
-		case str2int16("draw"):
-			return IgnoreResource::Draw;
-		case str2int16("drawandupdate"):
-			return IgnoreResource::Draw | IgnoreResource::Update;
-		case str2int16("update"):
-			return IgnoreResource::Update;
+			return std::ceil(time.asSeconds());
 		}
-		return val;
-	}
-
-	InputEventType getInputEventType(const std::string_view str, InputEventType val)
-	{
-		switch (str2int16(Utils::toLower(str)))
+		else
 		{
-		case str2int16("none"):
-			return InputEventType::None;
-		case str2int16("leftclick"):
-			return InputEventType::LeftClick;
-		case str2int16("middleclick"):
-			return InputEventType::MiddleClick;
-		case str2int16("rightclick"):
-			return InputEventType::RightClick;
-		case str2int16("mousepress"):
-			return InputEventType::MousePress;
-		case str2int16("mousemove"):
-			return InputEventType::MouseMove;
-		case str2int16("mouserelease"):
-			return InputEventType::MouseRelease;
-		case str2int16("mousescroll"):
-			return InputEventType::MouseScroll;
-		case str2int16("keypress"):
-			return InputEventType::KeyPress;
-		case str2int16("textenter"):
-			return InputEventType::TextEnter;
-		case str2int16("touchbegin"):
-			return InputEventType::TouchBegin;
-		case str2int16("touchmove"):
-			return InputEventType::TouchMove;
-		case str2int16("touchend"):
-			return InputEventType::TouchEnd;
-		case str2int16("allleftclick"):
-			return InputEventType::All ^ (InputEventType::MiddleClick | InputEventType::RightClick);
-		case str2int16("allmiddleclick"):
-			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::RightClick);
-		case str2int16("allrightclick"):
-			return InputEventType::All ^ (InputEventType::LeftClick | InputEventType::MiddleClick);
-		case str2int16("all"):
-			return InputEventType::All;
-		}
-		return val;
-	}
-
-	sf::PrimitiveType getPrimitiveType(const std::string_view str, sf::PrimitiveType val)
-	{
-		switch (str2int16(Utils::toLower(str)))
-		{
-		case str2int16("points"):
-			return sf::PrimitiveType::Points;
-		case str2int16("lines"):
-			return sf::PrimitiveType::Lines;
-		case str2int16("linestrip"):
-			return sf::PrimitiveType::LineStrip;
-		case str2int16("triangles"):
-			return sf::PrimitiveType::Triangles;
-		case str2int16("trianglestrip"):
-			return sf::PrimitiveType::TriangleStrip;
-		case str2int16("trianglefan"):
-			return sf::PrimitiveType::TriangleFan;
-		default:
-			return val;
+			return std::floor(time.asSeconds());
 		}
 	}
 
-	sf::Time getTime(int fps)
+	// total time to seconds and milliseconds
+	float getTimeSf(sf::Time time, float& f)
 	{
-		fps = std::clamp(fps, 1, 1000);
-		return sf::seconds(1.f / (float)fps);
+		float seconds;
+		f = std::abs(std::modf(time.asSeconds(), &seconds));
+		return seconds;
+	}
+
+	// total time to minutes and seconds
+	void getTimeMS(int32_t seconds, float& m, float& s)
+	{
+		auto pSeconds = std::abs(seconds);
+		bool negative = seconds != pSeconds;
+		seconds = pSeconds;
+		if (seconds < 60)
+		{
+			s = (float)seconds;
+		}
+		else if (seconds < 3600)
+		{
+			seconds = seconds % 3600;
+			m = (float)(seconds / 60);
+			s = (float)(seconds % 60);
+		}
+		else
+		{
+			int32_t h = seconds / 3600;
+			seconds = seconds % 3600;
+			m = (float)((seconds / 60) + (h * 60));
+			s = (float)(seconds % 60);
+		}
+		if (negative == true)
+		{
+			m = -m;
+		}
+	}
+
+	// total time to minutes and seconds
+	void getTimeMS(sf::Time time, bool roundUp, float& m, float& s)
+	{
+		auto seconds = getTimeS(time, roundUp);
+		getTimeMS((int32_t)seconds, m, s);
+	}
+
+	// total time to minutes, seconds and milliseconds
+	void getTimeMSf(sf::Time time, float& m, float& s, float& f)
+	{
+		auto seconds = getTimeSf(time, f);
+		getTimeMS((int32_t)seconds, m, s);
+	}
+
+	// total time to hours, minutes and seconds
+	void getTimeHMS(int32_t seconds, float& h, float& m, float& s)
+	{
+		auto pSeconds = std::abs(seconds);
+		bool negative = seconds != pSeconds;
+		seconds = pSeconds;
+		if (seconds < 60)
+		{
+			s = (float)seconds;
+		}
+		else if (seconds < 3600)
+		{
+			seconds = seconds % 3600;
+			m = (float)(seconds / 60);
+			s = (float)(seconds % 60);
+		}
+		else
+		{
+			h = (float)(seconds / 3600);
+			seconds = seconds % 3600;
+			m = (float)(seconds / 60);
+			s = (float)(seconds % 60);
+		}
+		if (negative == true)
+		{
+			h = -h;
+		}
+	}
+
+	// total time to hours, minutes and seconds
+	void getTimeHMS(sf::Time time, bool roundUp, float& h, float& m, float& s)
+	{
+		auto seconds = getTimeS(time, roundUp);
+		getTimeHMS((int32_t)seconds, h, m, s);
+	}
+
+	// total time to hours, minutes, seconds and milliseconds
+	void getTimeHMSf(sf::Time time, float& h, float& m, float& s, float& f)
+	{
+		auto seconds = getTimeSf(time, f);
+		getTimeHMS((int32_t)seconds, h, m, s);
+	}
+
+#ifndef false
+	template<typename... Args>
+	std::string stringFormat(const char* fmt, Args... args)
+	{
+		static constexpr size_t buffSize = 24;
+		char buffer[buffSize];
+		snprintf(buffer, buffSize, fmt, args...);
+		return Utils::trimStart(buffer);
+	}
+#endif
+
+	std::string getTimeString(std::optional<float> hours, std::optional<float> minutes,
+		std::optional<float> seconds, std::optional<float> milliseconds,
+		std::optional<int16_t> leadingZeroes, std::optional<int16_t> millisecondDecimals)
+	{
+		float h = hours ? *hours : 0.f;
+		float m = minutes ? *minutes : 0.f;
+		float s = seconds ? *seconds : 0.f;
+		float ms = 0.f;
+		int zeroes = 0;
+		int decimals = 0;
+
+		if (milliseconds)
+		{
+			decimals = std::clamp(millisecondDecimals ? *millisecondDecimals : 0, 0, 3);
+			ms = *milliseconds;
+			ms = std::round(ms * std::pow(10.f, (float)decimals));
+		}
+		if (leadingZeroes)
+		{
+			zeroes = std::clamp(leadingZeroes ? *leadingZeroes : 0, 0, 2);
+
+			// add extra space for minus sign
+			if (std::signbit(h) || std::signbit(m) || std::signbit(s) || std::signbit(ms))
+			{
+				zeroes++;
+			}
+		}
+
+		if (hours)
+		{
+#ifdef __cpp_lib_format
+			if (decimals)
+			{
+				return std::format("{:0{}g}:{:02g}:{:02g}.{:0{}g}", h, zeroes, m, s, ms, decimals);
+			}
+			else
+			{
+				return std::format("{:0{}g}:{:02g}:{:02g}", h, zeroes, m, s);
+			}
+#else
+			if (decimals)
+			{
+				return stringFormat("%0*g:%02g:%02g.%0*g", zeroes, h, m, s, decimals, ms);
+			}
+			else
+			{
+				return stringFormat("%0*g:%02g:%02g", zeroes, h, m, s);
+			}
+#endif
+		}
+		else if (minutes)
+		{
+#ifdef __cpp_lib_format
+			if (decimals)
+			{
+				return std::format("{:0{}g}:{:02g}.{:0{}g}", m, zeroes, s, ms, decimals);
+			}
+			else
+			{
+				return std::format("{:0{}g}:{:02g}", m, zeroes, s);
+			}
+#else
+			if (decimals)
+			{
+				return stringFormat("%0*g:%02g.%0*g", zeroes, m, s, decimals, ms);
+			}
+			else
+			{
+				return stringFormat("%0*g:%02g", zeroes, m, s);
+			}
+#endif
+		}
+		else if (seconds)
+		{
+#ifdef __cpp_lib_format
+			if (decimals)
+			{
+				return std::format("{:0{}g}.{:0{}g}", s, zeroes, ms, decimals);
+			}
+			else
+			{
+				return std::format("{:0{}g}", s, zeroes);
+			}
+#else
+			if (decimals)
+			{
+				return stringFormat("%0*g.%0*g", zeroes, s, decimals, ms);
+			}
+			else
+			{
+				return stringFormat("%0*g", zeroes, s);
+			}
+#endif
+		}
+		return {};
 	}
 
 	Variable getTime(sf::Time time, std::string_view format, bool roundUp)
 	{
-		auto formatHash = str2int16(format);
-		if (formatHash == str2int16("ms"))
+		switch (str2int16(format))
 		{
-			return Variable(time.asMicroseconds() / 1000);
-		}
-
-		static constexpr size_t buffSize = 12;
-		char buffer[buffSize];
-		buffer[0] = 0;
-		bool showHours = false;
-		bool showMinutes = false;
-		bool trailingZero = false;
-		int32_t sec = 0, h = 0, m = 0, s = 0;
-
-		if (roundUp == false)
-		{
-			sec = (int32_t)std::ceil(time.asSeconds());
-		}
-		else
-		{
-			sec = (int32_t)std::floor(time.asSeconds());
-		}
-
-		switch (formatHash)
-		{
+		case str2int16("ms"):
+			return (int64_t)(time.asMicroseconds() / 1000);
 		case str2int16("s"):
 		default:
-			return Variable((int64_t)sec);
-		case str2int16("SS"):
-		{
-			trailingZero = true;
-			[[fallthrough]];
-		}
+			return (int64_t)getTimeS(time, roundUp);
 		case str2int16("S"):
+			return getTimeString({}, {}, getTimeS(time, roundUp), {}, {}, {});
+		case str2int16("Sf"):
 		{
-			s = sec;
-			break;
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, {}, 1);
 		}
-		case str2int16("MMSS"):
+		case str2int16("Sff"):
 		{
-			trailingZero = true;
-			[[fallthrough]];
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, {}, 2);
+		}
+		case str2int16("Sfff"):
+		{
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, {}, 3);
+		}
+		case str2int16("SS"):
+			return getTimeString({}, {}, getTimeS(time, roundUp), {}, 2, {});
+		case str2int16("SSf"):
+		{
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, 2, 1);
+		}
+		case str2int16("SSff"):
+		{
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, 2, 2);
+		}
+		case str2int16("SSfff"):
+		{
+			float s = {}, f = {};
+			s = getTimeSf(time, f);
+			return getTimeString({}, {}, s, f, 2, 3);
 		}
 		case str2int16("MSS"):
 		{
-			showMinutes = true;
-			if (sec < 60)
-			{
-				s = sec;
-			}
-			else if (sec < 3600)
-			{
-				sec = sec % 3600;
-				m = sec / 60;
-				s = sec % 60;
-			}
-			else
-			{
-				h = sec / 3600;
-				sec = sec % 3600;
-				m = (sec / 60) + (h * 60);
-				s = sec % 60;
-			}
-			break;
+			float m = {}, s = {};
+			getTimeMS(time, roundUp, m, s);
+			return getTimeString({}, m, s, {}, {}, {});
 		}
-		case str2int16("HHMMSS"):
+		case str2int16("MSSf"):
 		{
-			trailingZero = true;
-			[[fallthrough]];
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, {}, 1);
+		}
+		case str2int16("MSSff"):
+		{
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, {}, 2);
+		}
+		case str2int16("MSSfff"):
+		{
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, {}, 3);
+		}
+		case str2int16("MMSS"):
+		{
+			float m = {}, s = {};
+			getTimeMS(time, roundUp, m, s);
+			return getTimeString({}, m, s, {}, 2, {});
+		}
+		case str2int16("MMSSf"):
+		{
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, 2, 1);
+		}
+		case str2int16("MMSSff"):
+		{
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, 2, 2);
+		}
+		case str2int16("MMSSfff"):
+		{
+			float m = {}, s = {}, f = {};
+			getTimeMSf(time, m, s, f);
+			return getTimeString({}, m, s, f, 2, 3);
 		}
 		case str2int16("HMMSS"):
 		{
-			showHours = true;
-			if (sec < 60)
-			{
-				s = sec;
-			}
-			else if (sec < 3600)
-			{
-				sec = sec % 3600;
-				m = sec / 60;
-				s = sec % 60;
-			}
-			else
-			{
-				h = sec / 3600;
-				sec = sec % 3600;
-				m = sec / 60;
-				s = sec % 60;
-			}
-			break;
+			float h = {}, m = {}, s = {};
+			getTimeHMS(time, roundUp, h, m, s);
+			return getTimeString(h, m, s, {}, {}, {});
 		}
-		}
-		if (showHours == true)
+		case str2int16("HMMSSf"):
 		{
-			auto fmt = trailingZero == true ? "%02i:%02i:%02i" : "%2i:%02i:%02i";
-			snprintf(buffer, buffSize, fmt, h, m, s);
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, {}, 1);
 		}
-		else if (showMinutes == true)
+		case str2int16("HMMSSff"):
 		{
-			auto fmt = trailingZero == true ? "%02i:%02i" : "%2i:%02i";
-			snprintf(buffer, buffSize, fmt, m, s);
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, {}, 2);
 		}
-		else
+		case str2int16("HMMSSfff"):
 		{
-			auto fmt = trailingZero == true ? "%02i" : "%2i";
-			snprintf(buffer, buffSize, fmt, s);
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, {}, 3);
 		}
-		return Variable(std::string(buffer));
+		case str2int16("HHMMSS"):
+		{
+			float h = {}, m = {}, s = {};
+			getTimeHMS(time, roundUp, h, m, s);
+			return getTimeString(h, m, s, {}, 2, {});
+		}
+		case str2int16("HHMMSSf"):
+		{
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, 2, 1);
+		}
+		case str2int16("HHMMSSff"):
+		{
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, 2, 2);
+		}
+		case str2int16("HHMMSSfff"):
+		{
+			float h = {}, m = {}, s = {}, f = {};
+			getTimeHMSf(time, h, m, s, f);
+			return getTimeString(h, m, s, f, 2, 3);
+		}
+		}
+	}
+
+	std::string replaceStringWithFunction(const std::string_view str, char token,
+		const std::function<void(const std::string_view&, std::string&)> stringReplaceFunc)
+	{
+		std::string str2(str);
+		size_t firstTokenStart = 0;
+		while (true)
+		{
+			firstTokenStart = str.find(token, firstTokenStart);
+			if (firstTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t firstTokenStop = firstTokenStart + 1;
+			size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
+			if (secondTokenStart == std::string_view::npos)
+			{
+				break;
+			}
+			size_t secondTokenStop = secondTokenStart + 1;
+
+			// %str%
+			std::string_view strProp(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
+			stringReplaceFunc(strProp, str2);
+
+			firstTokenStart = secondTokenStart;
+		}
+		return str2;
 	}
 
 	std::string replaceStringWithQueryable(const std::string_view str,
 		const Queryable& obj, char token)
 	{
-		std::string str2(str);
-		size_t firstTokenStart = 0;
-		while (true)
-		{
-			firstTokenStart = str.find(token, firstTokenStart);
-			if (firstTokenStart == std::string_view::npos)
+		return replaceStringWithFunction(str, token,
+			[&str, &obj](const std::string_view& strProp, std::string& str2)
 			{
-				break;
-			}
-			size_t firstTokenStop = firstTokenStart + 1;
-			size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
-			if (secondTokenStart == std::string_view::npos)
-			{
-				break;
-			}
-			size_t secondTokenStop = secondTokenStart + 1;
-
-			std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
-			Variable var;
-			if (obj.getProperty(strProp, var) == true)
-			{
-				std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
-				Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
-			}
-			firstTokenStart = secondTokenStart;
-		}
-		return str2;
+				if (strProp.size() <= 2)
+				{
+					return;
+				}
+				Variable var;
+				if (obj.getProperty(strProp.substr(1, strProp.size() - 2), var) == true)
+				{
+					Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+				}
+			});
 	}
 
 	std::string replaceStringWithVarOrProp(const std::string_view str,
 		const Game& obj, char token)
 	{
-		std::string str2(str);
-		size_t firstTokenStart = 0;
-		while (true)
-		{
-			firstTokenStart = str.find(token, firstTokenStart);
-			if (firstTokenStart == std::string_view::npos)
+		return replaceStringWithFunction(str, token,
+			[&str, &obj](const std::string_view& strProp, std::string& str2)
 			{
-				break;
-			}
-			size_t firstTokenStop = firstTokenStart + 1;
-			size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
-			if (secondTokenStart == std::string_view::npos)
-			{
-				break;
-			}
-			size_t secondTokenStop = secondTokenStart + 1;
-
-			std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
-			Variable var;
-			if (obj.getVarOrPropNoToken(strProp, var) == true)
-			{
-				std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
-				Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
-			}
-			firstTokenStart = secondTokenStart;
-		}
-		return str2;
+				if (strProp.size() <= 2)
+				{
+					return;
+				}
+				Variable var;
+				if (obj.getVarOrPropNoToken(strProp.substr(1, strProp.size() - 2), var) == true)
+				{
+					Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+				}
+			});
 	}
 }

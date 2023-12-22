@@ -1,5 +1,4 @@
 #include "CELImageContainer.h"
-#include <span>
 #include "Utils/StreamReader.h"
 
 namespace
@@ -659,7 +658,7 @@ namespace
 	}
 }
 
-CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
+CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileData_) : LazyImageContainer(fileData_)
 {
 	type = CelType::V1Regular;
 
@@ -675,7 +674,7 @@ CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 	uint32_t celFrameEndOffset = 0;
 	uint32_t celFrameSize = 0;
 
-	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
+	LittleEndianStreamReader fileStream((const uint8_t*)fileData->data(), fileData->size());
 
 	// CEL HEADER CHECKS
 
@@ -760,9 +759,7 @@ CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 				fileStream.read(celFrameStartOffset);
 				fileStream.read(celFrameEndOffset);
 
-				frameOffsets.push_back(
-					std::make_pair(celOffset + celFrameStartOffset,
-						celOffset + celFrameEndOffset));
+				frameOffsets.push_back({ celOffset + celFrameStartOffset, celOffset + celFrameEndOffset });
 			}
 		}
 	}
@@ -782,7 +779,7 @@ CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 			fileStream.read(celFrameStartOffset);
 			fileStream.read(celFrameEndOffset);
 
-			frameOffsets.push_back(std::make_pair(celFrameStartOffset, celFrameEndOffset));
+			frameOffsets.push_back({ celFrameStartOffset, celFrameEndOffset });
 
 			// Level CEL Check
 			celFrameSize = celFrameEndOffset - celFrameStartOffset;
@@ -808,32 +805,18 @@ CELImageContainer::CELImageContainer(const std::shared_ptr<FileBytes>& fileBytes
 	}
 }
 
-sf::Image2 CELImageContainer::get(uint32_t index,
-	const PaletteArray* palette, ImageInfo& imgInfo) const
+sf::Image2 CELImageContainer::decode(const std::span<const uint8_t> frameData, const PaletteArray* palette) const
 {
-	if (index >= frameOffsets.size())
-	{
-		return {};
-	}
-
-	imgInfo.offset = {};
-	imgInfo.absoluteOffset = false;
-	imgInfo.blendMode = blendMode;
-	imgInfo.nextIndex = -1;
-
-	auto frameSize = frameOffsets[index].second - frameOffsets[index].first;
-	std::span<const uint8_t> frameData(&(*fileData)[frameOffsets[index].first], frameSize);
-
 	// If it's not a level CEL
 	if (type != CelType::V1Level)
 	{
-		return decode(frameData, 0, 0, CelFrameType::Regular, palette);
+		return ::decode(frameData, 0, 0, CelFrameType::Regular, palette);
 	}
 	// If it's a level CEL
 	else
 	{
 		auto frameType = CelFrameType::Regular;
-		switch (frameSize)
+		switch (frameData.size())
 		{
 		case 0x400:
 			frameType = getLevelFrame400Type(frameData);
@@ -847,6 +830,6 @@ sf::Image2 CELImageContainer::get(uint32_t index,
 		default:
 			break;
 		}
-		return decode(frameData, 32, 32, frameType, palette);
+		return ::decode(frameData, 32, 32, frameType, palette);
 	}
 }

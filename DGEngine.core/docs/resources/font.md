@@ -23,6 +23,7 @@ Name                    | Type  | Default | Description
 `fromId`                | text  |         | create an alias from an existing id
 `horizontalSpaceOffset` | int   | 0       | horizontal space offset (Bitmap)
 `newLine`               | int   |         | new line size (Bitmap)
+`smooth`                | bool  | true    | smooth font textures (FreeType)
 `space`                 | int   |         | space size (Bitmap)
 `tab`                   | int   |         | tab size (Bitmap)
 **`texturePack`**       | text  |         | texturePack to use for glyphs (Bitmap)

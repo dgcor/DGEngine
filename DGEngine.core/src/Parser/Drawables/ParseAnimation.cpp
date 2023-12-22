@@ -4,7 +4,7 @@
 #include "ParseDrawable.h"
 #include "ParseImage.h"
 #include "Parser/Utils/ParseUtils.h"
-#include "Resources/TexturePacks/SingleTexturePack.h"
+#include "Resources/TexturePacks/MultiTexturePack.h"
 
 namespace Parser
 {
@@ -22,7 +22,7 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			auto frames = getFramesKey(elem, "frames");
+			auto frames = getRange1Key(elem, "frames");
 			if ((frames.first == 0 || frames.second == 0) ||
 				(frames.first <= 1 && frames.second <= 1))
 			{
@@ -30,14 +30,18 @@ namespace Parser
 			}
 			else
 			{
-				TexturePackGroup t;
-				t.texture = texture;
-				t.animType = getAnimationTypeKey(elem, "animationType");
-				auto texPack = std::make_shared<SingleTexturePack>(std::move(t), frames, nullptr);
+				TextureGroup textureGroup;
+				textureGroup.texture = texture;
+				textureGroup.makeTexturePack(frames);
+				auto texPack = std::make_shared<MultiTexturePack>(std::move(textureGroup), nullptr);
 
 				if (texPack->size() > 0)
 				{
-					animation = std::make_shared<Animation>(texPack);
+					AnimationInfo animInfo;
+					animInfo.indexRange = frames;
+					animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
+
+					animation = std::make_shared<Animation>(texPack, animInfo);
 				}
 				else
 				{
@@ -52,8 +56,10 @@ namespace Parser
 			{
 				return nullptr;
 			}
-			auto animInfo = texPack->getAnimation(-1, -1);
-			animInfo.indexRange = getFramesKey(elem, "frames", animInfo.indexRange);
+			auto groupIdx = getIntKey(elem, "groupIndex", -1);
+			auto directionIdx = getIntKey(elem, "directionIndex", -1);
+			auto animInfo = texPack->getAnimation(groupIdx, directionIdx);
+			animInfo.indexRange = getRange1Key(elem, "frames", animInfo.indexRange);
 			animInfo.animType = getAnimationTypeKey(elem, "animationType", animInfo.animType);
 			animation = std::make_shared<Animation>(texPack, animInfo);
 		}
@@ -71,7 +77,7 @@ namespace Parser
 		{
 			refresh = sf::milliseconds(50);
 		}
-		animation->setFrameTime(getTimeKey(elem, "refresh", refresh));
+		animation->setFrameTime(getTimeUKey(elem, "refresh", refresh));
 
 		return animation;
 	}

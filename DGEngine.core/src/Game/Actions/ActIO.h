@@ -104,7 +104,7 @@ public:
 			}
 
 			auto writePath = GameUtils::replaceStringWithVarOrProp(dir, game);
-			if (writePath.size() > 0 && Utils::endsWith(writePath, "/") == false)
+			if (writePath.size() > 0 && writePath.ends_with('/') == false)
 			{
 				writePath += '/';
 			}

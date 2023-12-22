@@ -18,8 +18,10 @@ Name              | Type    | Default               | Description
 ----------------- | ------- | --------------------- | ----------------------------
 `animationType`   | text    | looped                | animation type (looped, backAndForth, playOnce)
 `color`           | color   | white                 | fill color
+`directionIndex`  | int     | -1                    | texturePack direction index
 `enableOutline`   | bool    | false                 | enable outline (sprite shader)
 `frames`          | int     | 1 or texturePack size | number of frames
+`groupIndex`      | int     | -1                    | texturePack group index
 `outline`         | color   | transparent           | outline color (sprite shader)
 `outlineIgnore`   | color   | transparent           | outline ignore color (sprite shader)
 `pause`           | bool    | false                 | pause state

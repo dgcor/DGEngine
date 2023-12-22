@@ -1,4 +1,6 @@
+!.vscode/launch.json
 .vscode/*
+/*.a
 /*.AppImage
 /*.cbp
 /*.db
@@ -7,15 +9,13 @@
 /*.exe
 /*.layout
 /*.opendb
+/*.tcl
 /*.vcxproj.filters
 /*.vcxproj.user
 /*.zip
 /.svn
 /.vs
 /bin
-/CMakeCache.txt
-/CMakeFiles
-/cmake_install.cmake
 /Debug
 /Debug Clang
 /Debug Code Analysis
@@ -30,4 +30,12 @@
 /Release NoMovie
 /Release Static
 /Release Static NoMovie
+/spdlog
+/test/*.cmake
+/test/Catch2
+/test/DGEngine.core-test
 /x64
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+Testing

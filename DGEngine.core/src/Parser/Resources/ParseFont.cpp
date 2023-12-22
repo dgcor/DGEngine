@@ -91,6 +91,10 @@ namespace Parser
 		{
 			font->setColor(getColorVal(elem["fontColor"sv], sf::Color::White));
 		}
+		if (elem.HasMember("drawWhitespace"sv) == true)
+		{
+			font->setDrawWhitespace(getBoolVal(elem["drawWhitespace"sv]));
+		}
 
 		font->setHorizontalSpaceOffset(getIntKey(elem, "horizontalSpaceOffset"));
 		font->setVerticalSpaceOffset(getIntKey(elem, "verticalSpaceOffset"));
@@ -126,6 +130,10 @@ namespace Parser
 		if (elem.HasMember("fontSize"sv) == true)
 		{
 			font->setCharacterSize(getUIntVal(elem["fontSize"sv]));
+		}
+		if (elem.HasMember("smooth"sv) == true)
+		{
+			font->setSmooth(getBoolVal(elem["smooth"sv], true));
 		}
 
 		game.Resources().addFont(id, font, getStringViewKey(elem, "resource"));

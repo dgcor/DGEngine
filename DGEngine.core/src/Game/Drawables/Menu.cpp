@@ -107,6 +107,50 @@ void Menu::setCurrentIdx(size_t idx) noexcept
 	}
 }
 
+void Menu::setColor(const sf::Color& color)
+{
+	for (auto& item : items)
+	{
+		item->setColor(color);
+	}
+}
+
+void Menu::setColor(const sf::Color& color, int idx)
+{
+	if (idx >= 0 && (size_t)idx < items.size())
+	{
+		items[idx]->setColor(color);
+	}
+	else
+	{
+		setColor(color);
+	}
+}
+
+void Menu::setFont(const Font& font)
+{
+	if (holdsNullFont(font) == true)
+	{
+		return;
+	}
+	for (auto& item : items)
+	{
+		item->setFont(font);
+	}
+}
+
+void Menu::setFont(const Font& font, int idx)
+{
+	if (idx >= 0 && (size_t)idx < items.size())
+	{
+		items[idx]->setFont(font);
+	}
+	else
+	{
+		setFont(font);
+	}
+}
+
 void Menu::Position(const sf::Vector2f& position_) noexcept
 {
 	pos = position_;

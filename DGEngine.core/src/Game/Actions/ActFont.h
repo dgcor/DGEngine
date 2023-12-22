@@ -43,3 +43,25 @@ public:
 		return true;
 	}
 };
+
+class ActFontSetSmooth : public Action
+{
+private:
+	std::string id;
+	bool smooth;
+
+public:
+	ActFontSetSmooth(const std::string_view id_, bool smooth_)
+		: id(id_), smooth(smooth_) {}
+
+	bool execute(Game& game) override
+	{
+		auto font = game.Resources().getFont(id);
+		if (holdsFreeTypeFont(font) == true)
+		{
+			auto freeTypeFont = std::get<std::shared_ptr<FreeTypeFont>>(font);
+			freeTypeFont->setSmooth(smooth);
+		}
+		return true;
+	}
+};

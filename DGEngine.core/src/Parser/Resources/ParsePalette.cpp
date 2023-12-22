@@ -65,7 +65,7 @@ namespace Parser
 			{
 				return;
 			}
-			auto trnFile = FileUtils::readChar(file.data());
+			auto trnFile = FileUtils::readBytes(file.data());
 			auto trnStart = std::min(getUIntKey(elem, "trnStart"), 0x7FFFFFFFu);
 			auto trnLength = std::min(getUIntKey(elem, "trnLength", 256), 256u);
 			palette = std::make_shared<Palette>(

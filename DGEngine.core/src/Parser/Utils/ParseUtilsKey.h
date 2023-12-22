@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Game/AnimationType.h"
-#include "Json/JsonParser.h"
 #include "ParseUtilsVal.h"
-#include <SFML/Graphics/PrimitiveType.hpp>
 
 namespace Parser
 {
@@ -18,6 +15,9 @@ namespace Parser
 
 	BlendMode getBlendModeKey(const rapidjson::Value& elem,
 		const std::string_view key, BlendMode val = BlendMode::Alpha);
+
+	Direction getDirectionKey(const rapidjson::Value& elem,
+		const std::string_view key, Direction val = Direction::Up);
 
 	bool getBoolKey(const rapidjson::Value& elem, const std::string_view key, bool val = {});
 
@@ -119,15 +119,15 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector3iKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	T getVector3fKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
 		return getVector3NumberKey<T, float>(elem, key, val);
 	}
 
 	template <class T>
-	T getVector3fKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	T getVector3iKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		return getVector3NumberKey<T, float>(elem, key, val);
+		return getVector3NumberKey<T, int32_t>(elem, key, val);
 	}
 
 	template <class T, class NumType>
@@ -142,15 +142,15 @@ namespace Parser
 	}
 
 	template <class T>
-	T getVector4iKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	T getVector4fKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
 		return getVector4NumberKey<T, float>(elem, key, val);
 	}
 
 	template <class T>
-	T getVector4fKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
+	T getVector4iKey(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
-		return getVector4NumberKey<T, float>(elem, key, val);
+		return getVector4NumberKey<T, int32_t>(elem, key, val);
 	}
 
 	template <class T, class NumType>
@@ -175,7 +175,7 @@ namespace Parser
 		return val;
 	}
 
-	template <class T, class NumType>
+	template <class T = std::pair<uint32_t, uint32_t>, class NumType = uint32_t>
 	T getRange0Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
 		if (elem.IsObject() == true &&
@@ -186,7 +186,7 @@ namespace Parser
 		return val;
 	}
 
-	template <class T, class NumType>
+	template <class T = std::pair<uint32_t, uint32_t>, class NumType = uint32_t>
 	T getRange1Key(const rapidjson::Value& elem, const std::string_view key, const T& val = {})
 	{
 		if (elem.IsObject() == true &&
@@ -197,11 +197,11 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<uint32_t, uint32_t> getFramesKey(const rapidjson::Value& elem,
-		const std::string_view key, const std::pair<uint32_t, uint32_t>& val = {});
-
 	sf::Vector2f getPositionKey(const rapidjson::Value& elem,
 		const std::string_view key, const sf::Vector2f& size, const sf::Vector2u& refSize);
+
+	sf::Vector2f getSizeKey(const rapidjson::Value& elem,
+		const std::string_view key, const sf::Vector2f& val = {});
 
 	sf::IntRect getIntRectKey(const rapidjson::Value& elem,
 		const std::string_view key, const sf::IntRect& val = {});
@@ -213,6 +213,9 @@ namespace Parser
 		const sf::Color& val = {});
 
 	sf::Time getTimeKey(const rapidjson::Value& elem, const std::string_view key,
+		const sf::Time& val = {});
+
+	sf::Time getTimeUKey(const rapidjson::Value& elem, const std::string_view key,
 		const sf::Time& val = {});
 
 	std::vector<std::string> getStringVectorKey(const rapidjson::Value& elem, const std::string_view key);
@@ -237,9 +240,13 @@ namespace Parser
 	sf::PrimitiveType getPrimitiveTypeKey(const rapidjson::Value& elem,
 		const std::string_view key, sf::PrimitiveType val = sf::PrimitiveType::TrianglesStrip);
 
+	// returns null JSON value if key doesn't exist.
+	// returns query[key] JSON value if query fails.
 	const rapidjson::Value& getQueryKey(const rapidjson::Value* elem,
 		const rapidjson::Value& query, const std::string_view key);
 
+	// returns null JSON value if key doesn't exist.
+	// returns query[key] JSON value if query fails.
 	const rapidjson::Value& getQueryKey(const rapidjson::Value& elem,
 		const rapidjson::Value& query, const std::string_view key);
 

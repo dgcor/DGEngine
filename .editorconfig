@@ -1,5 +1,10 @@
 root = true
 
+[{.github/**.yml,*.md}]
+charset                  = utf-8
+end_of_line              = lf
+insert_final_newline     = true
+
 [CMakeLists.txt]
 charset                  = utf-8
 end_of_line              = lf
@@ -7,7 +12,7 @@ indent_size              = 4
 indent_style             = space
 insert_final_newline     = true
 
-[{*.json,.vscode/**.json,gamefiles**.json}]
+[{*,.vscode/**,gamefiles**}.json]
 charset                  = utf-8
 end_of_line              = lf
 indent_size              = 2
@@ -30,7 +35,7 @@ indent_style             = tab
 insert_final_newline     = true
 trim_trailing_whitespace = true
 
-[src/Game/{fsa,stlastar}.h]
+[src/Game/Level/{fsa,stlastar}.h]
 indent_size              = unset
 indent_style             = unset
 insert_final_newline     = unset

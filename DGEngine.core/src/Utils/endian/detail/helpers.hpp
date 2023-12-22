@@ -28,7 +28,9 @@ struct check<uint8_t, Bytes>
 {
     static bool value(uint8_t value)
     {
-        return value <= 0xFF;
+        (void)value;
+        // 8 bit values can always fit in 8 bits
+        return true;
     }
 };
 

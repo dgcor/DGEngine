@@ -21,7 +21,7 @@ namespace Parser
 				auto index = getLayerIndex(elem);
 				auto defaultTile = level.Map().getTileBlock((int16_t)getIntKey(elem, "outOfBoundsTile", -1));
 				auto automapTileSize = getVector2uKey<std::pair<uint32_t, uint32_t>>(
-					elem, "automapTileSize", std::make_pair(64u, 32u));
+					elem, "automapTileSize", { 64, 32 });
 
 				level.setAutomap(
 					{ automap, index, defaultTile },

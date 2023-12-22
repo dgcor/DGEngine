@@ -14,10 +14,10 @@ namespace Parser
 
 	void parseFile(Game& game, const std::vector<std::string>& params);
 
-	void parseJson(Game& game, const std::string_view json,
+	bool parseJson(Game& game, const std::string_view json,
 		const std::vector<std::string>& params);
 
-	void parseJson(Game& game, const std::string_view json);
+	bool parseJson(Game& game, const std::string_view json);
 
 	void parseDocument(Game& game, rapidjson::Document& doc,
 		ReplaceVars replaceVars_ = ReplaceVars::None);

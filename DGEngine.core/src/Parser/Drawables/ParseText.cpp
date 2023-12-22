@@ -1,13 +1,8 @@
 #include "ParseText.h"
-#include "Game/Drawables/BitmapText.h"
-#include "Game/Drawables/DrawableText.h"
-#include "Game/Drawables/StringText.h"
-#include "Game/Game.h"
 #include "Game/Utils/FileUtils.h"
 #include "Game/Utils/GameUtils.h"
 #include "ParseDrawable.h"
 #include "Parser/ParseAction.h"
-#include "Parser/Utils/ParseUtils.h"
 #include "Utils/StringHash.h"
 #include "Utils/Utils.h"
 
@@ -16,7 +11,7 @@ namespace Parser
 	using namespace rapidjson;
 	using namespace std::literals;
 
-	void parseDrawableTextObj(Game& game, const Value& elem, DrawableText& text)
+	void parseTextObj(Game& game, const Value& elem, Text& text)
 	{
 		text.setHorizontalSpaceOffset(getIntKey(elem, "horizontalSpaceOffset"));
 		text.setVerticalSpaceOffset(getIntKey(elem, "verticalSpaceOffset"));
@@ -25,12 +20,12 @@ namespace Parser
 
 		text.setColor(getColorKey(elem, "color", sf::Color::White));
 
-		parseDrawableTextDisplayText(elem, text);
+		parseTextDisplayText(elem, text);
 
 		parseDrawableProperties(game, elem, text);
 	}
 
-	void parseDrawableTextDisplayText(const Value& elem, DrawableText& text)
+	void parseTextDisplayText(const Value& elem, Text& text)
 	{
 		std::string displayText;
 
@@ -43,41 +38,16 @@ namespace Parser
 			displayText = FileUtils::readText(getStringCharVal(elem["file"sv]));
 		}
 
-		if (elem.HasMember("splitText"sv) == true)
+		if (elem.HasMember("wordWrap"sv) == true)
 		{
-			auto split = getUIntVal(elem["splitText"sv]);
-			if (split > 0)
+			auto maxLength = getUIntVal(elem["wordWrap"sv]);
+			if (maxLength > 0)
 			{
-				displayText = Utils::splitInLines(displayText, split);
+				displayText = Utils::wordWrap(displayText, maxLength);
 			}
 		}
 
 		text.setText(displayText);
-	}
-
-	std::unique_ptr<DrawableText> getDrawableTextObj(Game& game, const Value& elem)
-	{
-		auto font = game.Resources().getFont(getStringKey(elem, "font"));
-		if (holdsNullFont(font) == true)
-		{
-			return nullptr;
-		}
-
-		std::unique_ptr<DrawableText> text;
-
-		if (holdsFreeTypeFont(font) == true)
-		{
-			auto fontSize = getUIntKey(elem, "fontSize");
-			text = std::make_unique<StringText>(std::get<std::shared_ptr<FreeTypeFont>>(font), fontSize);
-		}
-		else
-		{
-			text = std::make_unique<BitmapText>(std::get<std::shared_ptr<BitmapFont>>(font));
-		}
-
-		parseDrawableTextObj(game, elem, *text);
-
-		return text;
 	}
 
 	void parseBindableTextObj(Game& game, const Value& elem, BindableText& text)

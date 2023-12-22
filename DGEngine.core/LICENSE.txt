@@ -21,6 +21,10 @@ RapidJSON uses the MIT license.
 
 https://github.com/Tencent/rapidjson
 
+rectpack2D uses the MIT license.
+
+https://github.com/TeamHypersomnia/rectpack2D
+
 SFML Animation class based on an implementation by Maximilian Wagenbach.
 It uses the zlib/png license.
 
@@ -36,6 +40,10 @@ https://github.com/Yalir/sfeMovie
 SFML uses the zlib/png license.
 
 https://github.com/SFML/SFML
+
+small_vector uses the MIT license.
+
+https://github.com/gharveymn/small_vector
 
 tiny-regex-c is public domain.
 

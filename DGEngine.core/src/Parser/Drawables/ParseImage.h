@@ -4,6 +4,7 @@
 #include "Json/JsonParser.h"
 #include <memory>
 #include "Parser/Utils/ParseUtils.h"
+#include <type_traits>
 
 class Game;
 class Image;
@@ -19,6 +20,8 @@ namespace Parser
 	template<class Img = Image>
 	std::shared_ptr<Img> getImageObj(Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<Image, Img>);
+
 		using namespace std::literals;
 
 		std::shared_ptr<Img> image;

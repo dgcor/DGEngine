@@ -30,6 +30,7 @@ public:
 	void Background(auto background_) noexcept { background = background_; }
 
 	//void scale(const sf::Vector2f& factor) { sprite.scale(factor); }
+	const sf::Color getColor() { return sprite.getColor(); }
 	void setColor(const auto& color) { sprite.setColor(color); }
 	void setOrigin(const auto& origin) { sprite.setOrigin(origin); }
 	void setOrigin();

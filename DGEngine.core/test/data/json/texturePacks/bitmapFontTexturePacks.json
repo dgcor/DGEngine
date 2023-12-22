@@ -1,0 +1,157 @@
+{
+  "palette": { "file": "res/palette/pal.bin" },
+  "imageContainer": [
+    {
+      "file": "res/texture/fontGrid256.png",
+      "frames": [16, 16]
+    },
+    {
+      "id": "trimmedFont",
+      "file": "res/texture/imageContainerPalette.png",
+      "frames": [2, 2]
+    }
+  ],
+  "texture": [
+    {
+      "file": "res/texture/fontGrid128.png",
+      "mask": "0x000000"
+    },
+    {
+      "file": "res/texture/fontGrid256.png",
+      "mask": "0x000000"
+    },
+    {
+      "file": "res/texture/fontHoriz256.png",
+      "mask": "0x000000"
+    },
+    {
+      "file": "res/texture/fontVert256.png",
+      "mask": "0x000000"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "type": "font",
+      "texture": "fontGrid256"
+    },
+    {
+      "id": "key02",
+      "type": "font",
+      "texture": "fontGrid256",
+      "rows": 16,
+      "cols": 16,
+      "direction": "horizontal",
+      "newLine": 20,
+      "space": 10,
+      "tab": 32
+    },
+    {
+      "id": "key03",
+      "type": "font",
+      "texture": "fontGrid256",
+      "imageContainer": "fontGrid256",
+      "direction": "vertical"
+    },
+    {
+      "id": "key04",
+      "type": "font",
+      "texture": "fontHoriz256",
+      "rows": 1,
+      "cols": 256,
+      "palette": "pal",
+      "newLine": -1,
+      "space": -1,
+      "tab": -1
+    },
+    {
+      "id": "key05",
+      "type": "font",
+      "texture": "fontVert256",
+      "rows": 256,
+      "cols": 1
+    },
+    {
+      "id": "key06",
+      "type": "font",
+      "texture": "fontVert256",
+      "rows": 1,
+      "cols": 256
+    },
+    {
+      "id": "key07",
+      "type": "font",
+      "texture": "invalid"
+    },
+    {
+      "id": "key08",
+      "type": "font",
+      "imageContainer": "invalid"
+    },
+    {
+      "id": "key09",
+      "type": "font",
+      "imageContainer": "fontGrid256"
+    },
+    {
+      "id": "key10",
+      "type": "font",
+      "imageContainer": "trimmedFont",
+      "palette": "pal"
+    },
+    {
+      "id": "key11",
+      "type": "font",
+      "texture": "fontGrid256",
+      "charSizeFile": "res/font/font256.txt"
+    },
+    {
+      "id": "key12",
+      "type": "font",
+      "texture": "fontGrid128",
+      "rows": 8,
+      "charSizeFile": "res/font/font128.txt"
+    },
+    {
+      "id": "key13",
+      "type": "font",
+      "texture": "fontGrid256",
+      "charSizeFile": "res/font/font258.txt"
+    },
+    {
+      "id": "key14",
+      "type": "font",
+      "texture": "fontGrid128",
+      "rows": 8,
+      "charSizeFile": "res/font/font130.txt"
+    },
+    {
+      "id": "key15",
+      "type": "font",
+      "texture": "fontGrid256",
+      "charSizeFile": "res/font/font256Padding.txt",
+      "charSizeFileStep": 3
+    },
+    {
+      "id": "key16",
+      "type": "font",
+      "texture": "fontGrid256",
+      "charSizeFile": "res/font/font256Padding2.txt",
+      "charSizeFileStart": 2,
+      "charSizeFileStep": 3
+    },
+    {
+      "id": "key17",
+      "type": "font",
+      "texture": "fontGrid256",
+      "charSizeFile": "res/font/font255.txt"
+    },
+    {
+      "id": "key18",
+      "type": "font",
+      "texture": "fontGrid128",
+      "rows": 8,
+      "charSizeFile": "res/font/font127.txt"
+    }
+  ]
+}

@@ -28,6 +28,15 @@ namespace Parser
 		return val;
 	}
 
+	AnimationType getAnimationTypeVal(const Value& elem, AnimationType val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getAnimationType(elem.GetStringView(), val);
+		}
+		return val;
+	}
+
 	BindingFlags getBindingFlagsVal(const Value& elem, BindingFlags val)
 	{
 		if (elem.IsString() == true)
@@ -55,6 +64,15 @@ namespace Parser
 		return val;
 	}
 
+	Direction getDirectionVal(const Value& elem, Direction val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getDirection(elem.GetStringView(), val);
+		}
+		return val;
+	}
+
 	bool getBoolVal(const Value& elem, bool val)
 	{
 		if (elem.IsBool() == true)
@@ -75,9 +93,14 @@ namespace Parser
 
 	float getFloatVal(const Value& elem, float val)
 	{
-		if (elem.IsFloat() == true)
+		if (elem.IsDouble() == true)
 		{
-			return elem.GetFloat();
+			auto d = elem.GetDouble();
+			auto f = (float)d;
+			if ((int64_t)d == (int64_t)f)
+			{
+				return f;
+			}
 		}
 		return val;
 	}
@@ -153,11 +176,6 @@ namespace Parser
 		return val;
 	}
 
-	std::pair<uint32_t, uint32_t> getFramesVal(const Value& elem, const std::pair<uint32_t, uint32_t>& val)
-	{
-		return getRange1Val<std::pair<uint32_t, uint32_t>, uint32_t>(elem, val);
-	}
-
 	sf::Vector2f getPositionVal(const Value& elem, const sf::Vector2f& size, const sf::Vector2u& refSize)
 	{
 		float x = 0.f;
@@ -168,7 +186,7 @@ namespace Parser
 		{
 			if (elem[0].IsNumber() == true)
 			{
-				x = elem[0].GetFloat();
+				x = std::round(elem[0].GetFloat());
 			}
 			else if (elem[0].IsString() == true)
 			{
@@ -187,7 +205,7 @@ namespace Parser
 			}
 			if (elem[1].IsNumber() == true)
 			{
-				y = elem[1].GetFloat();
+				y = std::round(elem[1].GetFloat());
 			}
 			else if (elem[1].IsString() == true)
 			{
@@ -206,6 +224,14 @@ namespace Parser
 			}
 		}
 		return { x, y };
+	}
+
+	sf::Vector2f getSizeVal(const Value& elem, const sf::Vector2f& val)
+	{
+		auto size = getVector2fVal(elem, val);
+		size.x = std::round(size.x);
+		size.y = std::round(size.y);
+		return size;
 	}
 
 	sf::IntRect getIntRectVal(const Value& elem, const sf::IntRect& val)
@@ -258,11 +284,35 @@ namespace Parser
 	{
 		if (elem.IsString() == true)
 		{
-			return SFMLUtils::stringToColor(elem.GetStringView());
+			auto color = SFMLUtils::stringToColor(elem.GetStringView());
+			if (color)
+			{
+				return *color;
+			}
 		}
 		else if (elem.IsUint() == true)
 		{
 			return SFMLUtils::rgbaToColor(elem.GetUint());
+		}
+		else if (elem.IsArray() == true)
+		{
+			if (elem.Size() == 3)
+			{
+				return sf::Color(
+					getNumberVal<uint8_t>(elem[0]),
+					getNumberVal<uint8_t>(elem[1]),
+					getNumberVal<uint8_t>(elem[2])
+				);
+			}
+			else if (elem.Size() > 3)
+			{
+				return sf::Color(
+					getNumberVal<uint8_t>(elem[0]),
+					getNumberVal<uint8_t>(elem[1]),
+					getNumberVal<uint8_t>(elem[2]),
+					getNumberVal<uint8_t>(elem[3])
+				);
+			}
 		}
 		return val;
 	}
@@ -295,9 +345,9 @@ namespace Parser
 
 	sf::Time getTimeVal(const Value& elem, const sf::Time& val)
 	{
-		if (elem.IsUint() == true)
+		if (elem.IsInt() == true)
 		{
-			return sf::milliseconds(elem.GetUint());
+			return sf::milliseconds(elem.GetInt());
 		}
 		else if (elem.IsFloat() == true)
 		{
@@ -305,11 +355,12 @@ namespace Parser
 		}
 		else if (elem.IsString() == true)
 		{
-			int h = 0, m = 0, s = 0, ms = 0;
+			int32_t h = 0, m = 0, s = 0, ms = 0;
 			auto sv = Utils::splitStringIn2(elem.GetStringView(), '.');
+			bool negativeTime = sv.first.starts_with('-');
 			if (sv.second.empty() == false)
 			{
-				ms = Utils::strtoi(sv.second);
+				ms = std::abs(Utils::strtoi(sv.second));
 			}
 			sv = Utils::splitStringIn2(sv.first, ':');
 			if (sv.second.empty() == false)
@@ -317,24 +368,60 @@ namespace Parser
 				auto sv2 = Utils::splitStringIn2(sv.second, ':');
 				if (sv2.second.empty() == false)
 				{
-					h = Utils::strtoi(sv.first);
-					m = Utils::strtoi(sv2.first);
-					s = Utils::strtoi(sv2.second);
+					h = std::abs(Utils::strtoi(sv.first));
+					m = std::abs(Utils::strtoi(sv2.first));
+					s = std::abs(Utils::strtoi(sv2.second));
 				}
 				else
 				{
-					m = Utils::strtoi(sv.first);
-					s = Utils::strtoi(sv2.first);
+					m = std::abs(Utils::strtoi(sv.first));
+					s = std::abs(Utils::strtoi(sv2.first));
 				}
 			}
 			else
 			{
-				s = Utils::strtoi(sv.first);
+				auto seconds = Utils::strToNumberOpt<int32_t>(sv.first);
+				if (seconds.has_value() == false)
+				{
+					return val;
+				}
+				s = std::abs(*seconds);
 			}
-			auto totalms = (((h * 3600) + (m * 60) + s) * 1000) + (ms * 100);
+			int32_t totalms = (((h * 3600) + (m * 60) + s) * 1000) + (ms * 100);
+			if (negativeTime == true)
+			{
+				totalms = -totalms;
+			}
 			return sf::milliseconds(totalms);
 		}
 		return val;
+	}
+
+	sf::Time getTimeUVal(const Value& elem, const sf::Time& val)
+	{
+		auto time = getTimeVal(elem, val);
+		if (time.asMicroseconds() < 0)
+		{
+			return val;
+		}
+		return time;
+	}
+
+	std::vector<std::string> getStringVectorVal(const Value& elem)
+	{
+		std::vector<std::string> vec;
+		if (elem.IsArray() == true)
+		{
+			for (const auto& val : elem)
+			{
+				vec.push_back(JsonUtils::toString(val));
+			}
+		}
+		else if (elem.IsString() == true)
+		{
+			vec.push_back(elem.GetStringStr());
+		}
+		return vec;
 	}
 
 	IgnoreResource getIgnoreResourceVal(const Value& elem, IgnoreResource val)
@@ -353,6 +440,15 @@ namespace Parser
 		else if (elem.IsString() == true)
 		{
 			return GameUtils::getIgnoreResource(elem.GetStringView(), val);
+		}
+		else if (elem.IsArray() == true)
+		{
+			IgnoreResource ret = IgnoreResource::None;
+			for (const auto& arrElem : elem)
+			{
+				ret |= GameUtils::getIgnoreResource(arrElem.GetStringView(), val);
+			}
+			return ret;
 		}
 		return val;
 	}
@@ -386,37 +482,18 @@ namespace Parser
 		return val;
 	}
 
+	sf::PrimitiveType getPrimitiveTypeVal(const Value& elem, sf::PrimitiveType val)
+	{
+		if (elem.IsString() == true)
+		{
+			return GameUtils::getPrimitiveType(elem.GetStringView(), val);
+		}
+		return val;
+	}
+
 	Number32 getMinMaxNumber32Val(const Value& elem)
 	{
-		Number32 num;
-		if (elem.IsInt() == true)
-		{
-			num.setInt32(elem.GetInt());
-		}
-		if (elem.IsUint() == true)
-		{
-			num.setUInt32(elem.GetUint());
-		}
-		if (elem.IsFloat() == true)
-		{
-			num.setFloat(elem.GetFloat());
-		}
-		else if (elem.IsBool() == true)
-		{
-			num.setInt32((int32_t)elem.GetBool());
-		}
-		else if (elem.IsString() == true)
-		{
-			if (elem.GetStringView() == "min")
-			{
-				num.setInt32(std::numeric_limits<int32_t>::min());
-			}
-			else if (elem.GetStringView() == "max")
-			{
-				num.setInt32(std::numeric_limits<int32_t>::max());
-			}
-		}
-		return num;
+		return getMinMaxIntVal<Number32>(elem);
 	}
 
 	const Value& getQueryVal(const Value* elem, const Value& query)
@@ -491,6 +568,10 @@ namespace Parser
 						elem[1].GetDouble()
 					));
 				}
+				else
+				{
+					return false;
+				}
 			}
 			else if (elem.Size() == 3)
 			{
@@ -513,6 +594,10 @@ namespace Parser
 						elem[1].GetDouble(),
 						elem[2].GetDouble()
 					));
+				}
+				else
+				{
+					return false;
 				}
 			}
 			else if (elem.Size() > 3)
@@ -541,6 +626,10 @@ namespace Parser
 						elem[3].GetDouble()
 					));
 				}
+				else
+				{
+					return false;
+				}
 			}
 			else
 			{
@@ -564,15 +653,18 @@ namespace Parser
 	std::vector<std::pair<std::string, Variable>> getVariables(const Value& elem)
 	{
 		std::vector<std::pair<std::string, Variable>> vars;
-		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
+		if (elem.IsObject() == true)
 		{
-			auto key = it->name.GetStringView();
-			if (key.empty() == false)
+			for (const auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
 			{
-				Variable var;
-				if (getVariableVal(it->value, var) == true)
+				auto key = it.name.GetStringView();
+				if (key.empty() == false)
 				{
-					vars.push_back(std::make_pair(std::string(key), var));
+					Variable var;
+					if (getVariableVal(it.value, var) == true)
+					{
+						vars.push_back({ std::string(key), var });
+					}
 				}
 			}
 		}
@@ -582,22 +674,25 @@ namespace Parser
 	UnorderedStringMap<Variable> getVariablesMap(const Value& elem)
 	{
 		UnorderedStringMap<Variable> vars;
-		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
+		if (elem.IsObject() == true)
 		{
-			auto key = it->name.GetStringView();
-			if (key.empty() == false)
+			for (const auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
 			{
-				Variable var;
-				if (getVariableVal(it->value, var) == true)
+				auto key = it.name.GetStringView();
+				if (key.empty() == false)
 				{
-					vars.insert(std::make_pair(key, var));
+					Variable var;
+					if (getVariableVal(it.value, var) == true)
+					{
+						vars.insert(std::make_pair(key, var));
+					}
 				}
 			}
 		}
 		return vars;
 	}
 
-	VarOrPredicate getVarOrPredicateVal(Game& game, const rapidjson::Value& elem)
+	VarOrPredicate getVarOrPredicateVal(Game& game, const Value& elem)
 	{
 		if (elem.IsObject() == true)
 		{

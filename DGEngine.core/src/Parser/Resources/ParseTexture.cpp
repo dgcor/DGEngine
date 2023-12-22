@@ -31,7 +31,7 @@ namespace Parser
 				{
 					for (unsigned i = 0; i < size.x; i++)
 					{
-						img.setPixel(i, j, getColorVal(colorElem[i + j * size.y]));
+						img.setPixel(i, j, getColorVal(colorElem[i + j * size.x]));
 					}
 				}
 			}
@@ -39,15 +39,10 @@ namespace Parser
 			{
 				img.create(size.x, size.y, getColorVal(colorElem));
 			}
-			return img;
 		}
-		else if (elem.HasMember("file"sv) == false)
-		{
-			return img;
-		}
-
-		if (Hooks::ParseTextureImg == nullptr ||
-			Hooks::ParseTextureImg(game, elem, img) == false)
+		else if (elem.HasMember("file"sv) == true &&
+			(Hooks::ParseTextureImg == nullptr ||
+			Hooks::ParseTextureImg(game, elem, img) == false))
 		{
 			auto path = getStringViewVal(elem["file"sv]);
 			auto mask = getColorKey(elem, "mask", sf::Color::Transparent);

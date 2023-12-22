@@ -70,6 +70,6 @@ public:
 		{
 			return;
 		}
-		classifiers[idx] = std::make_pair(classifier, skipFirst);
+		classifiers[idx] = { classifier, skipFirst };
 	}
 };

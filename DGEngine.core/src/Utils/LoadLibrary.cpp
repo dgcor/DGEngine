@@ -23,7 +23,7 @@ namespace Utils
 	void* GetFunctionAddress(void* libraryHandle, const char* functionName)
 	{
 #if defined(_WIN32)
-	return GetProcAddress((HMODULE)libraryHandle, functionName);
+	return (void*)GetProcAddress((HMODULE)libraryHandle, functionName);
 #elif defined(__unix__)
 	return dlsym(libraryHandle, functionName);
 #else

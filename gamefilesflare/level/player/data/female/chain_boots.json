@@ -107,8 +107,8 @@
       { "rect": [145, 167, 20, 21], "offset": [11, 18] }
     ],
     "groups": [
-      { "range": [0, 32], "directions": 8, "animationType": "backAndForth" },
-      { "range": [32, 96], "directions": 8, "animationType": "looped" }
+      { "range": [0, 31], "directions": 8, "animationType": "backAndForth" },
+      { "range": [32, 95], "directions": 8, "animationType": "looped" }
     ]
   }
 }

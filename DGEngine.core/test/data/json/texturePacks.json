@@ -1,0 +1,27 @@
+{
+  "imageContainer": [
+    {
+      "file": "res/texture/imageContainer.png",
+      "frames": [2, 2]
+    },
+    {
+      "id": "imageContainer2",
+      "file": "res/texture/imageContainer.png",
+      "frames": [4, 2]
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "imageContainer": "imageContainer"
+    },
+    {
+      "id": "key01",
+      "imageContainer": "imageContainer2"
+    },
+    {
+      "id": "key02",
+      "fromId": "key01"
+    }
+  ]
+}

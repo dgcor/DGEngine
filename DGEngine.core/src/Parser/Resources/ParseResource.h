@@ -22,7 +22,7 @@ namespace Parser
 				{
 					auto obj = resources.getResource<T>(fromId);
 
-					if constexpr (VarUtils::is_variant<T>::value == true)
+					if constexpr (VarUtils::is_variant_v<T>)
 					{
 						if (std::holds_alternative<std::nullptr_t>(obj) == false)
 						{

@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Game/Game.h"
-#include "Json/JsonParser.h"
-#include <memory>
-#include "Parser/Utils/ParseUtils.h"
+#include "Parser/Resources/TexturePacks/ParseSingleTextureTexturePack.h"
 #include "Resources/TexturePacks/MultiTexturePack.h"
 
 namespace Parser
@@ -11,6 +8,8 @@ namespace Parser
 	template<class MultiTP = MultiTexturePack>
 	std::unique_ptr<TexturePack> parseMultiTextureTexturePack(Game& game, const rapidjson::Value& elem)
 	{
+		static_assert(std::is_base_of_v<MultiTexturePack, MultiTP>);
+
 		using namespace std::literals;
 
 		std::shared_ptr<Palette> palette;
@@ -28,26 +27,16 @@ namespace Parser
 			{
 				continue;
 			}
-			TexturePackGroup t;
-			t.texture = game.Resources().getTexture(val["id"sv].GetStringView());
-			if (t.texture == nullptr)
+
+			auto textureGroup = parseTextureGroup(game, val, "id");
+			if (textureGroup.has_value() == false)
 			{
 				continue;
 			}
-			if (val.HasMember("frames"sv) == true)
-			{
-				auto frames = getFramesKey(val, "frames");
-				if (frames.first == 0 || frames.second == 0)
-				{
-					frames.first = frames.second = 1;
-				}
-				t.offset = globalOffset + getVector2fKey<sf::Vector2f>(val, "offset");
-				t.startIndex = getUIntKey(val, "startIndex");
-				t.directions = getUIntKey(elem, "directions");
-				t.horizontalDirection = getStringViewKey(val, "direction") == "horizontal";
-				t.animType = getAnimationTypeKey(val, "animationType");
-				texturePack->addTexturePack(std::move(t), frames);
-			}
+
+			textureGroup->offset += globalOffset;
+
+			texturePack->addTextureGroup(std::move(*textureGroup));
 		}
 		if (texturePack->size() == 0)
 		{

@@ -15,7 +15,7 @@ namespace Parser::Actions
 			isFadeOut,
 			getBoolKey(elem, "enableInput", !isFadeOut),
 			(uint8_t)getUIntKey(elem, "fade", 25),
-			getTimeKey(elem, "refresh", sf::milliseconds(15)));
+			getTimeUKey(elem, "refresh", sf::milliseconds(15)));
 
 		if (elem.HasMember("action"sv))
 		{

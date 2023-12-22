@@ -1,0 +1,93 @@
+{
+  "texture": [
+    {
+      "file": "res/texture/invalid-id.png"
+    },
+    {
+      "file": "res/texture/texture.png",
+      "split": "horizontal"
+    },
+    {
+      "file": "res/texture/texture.png",
+      "split": "horizontal",
+      "pieces": 2
+    },
+    {
+      "id": "key01",
+      "file": "res/texture/texture.png",
+      "split": "horizontal",
+      "pieces": 2
+    },
+    {
+      "id": "key02",
+      "file": "res/texture/texture.png",
+      "split": "vertical",
+      "pieces": 2
+    },
+    {
+      "id": "key03",
+      "file": "res/texture/texture.png",
+      "split": "VERTICAL",
+      "pieces": 2
+    },
+    {
+      "id": "key04",
+      "file": "res/texture/texture.png",
+      "split": "invalid",
+      "pieces": 2
+    },
+    {
+      "id": "key05",
+      "file": "res/texture/texture.png",
+      "mask": "0xFF0000",
+      "trim": [0, 0, 2, 2]
+    },
+    {
+      "id": "key06",
+      "color": "0x000000",
+      "size": [2, 2]
+    },
+    {
+      "id": "key07",
+      "color": [
+        "0xFF0000", "0x00FF00",
+        "0x0000FF", "0xFFFFFFFF"
+      ],
+      "size": [2, 2]
+    },
+    {
+      "id": "key08",
+      "color": "0x000000"
+    },
+    {
+      "id": "key09",
+      "color": [
+        "0xFF0000", "0x00FF00",
+        "0x0000FF", "0xFFFFFFFF"
+      ],
+      "size": [1, 1]
+    },
+    {
+      "id": "key10",
+      "color": [
+        "0xFF0000", "0xFF0000", "0xFF0000", "0xFF0000",
+        "0xFF0000", "0xFF0000", "0x0000FF", "0x0000FF",
+        "0xFF0000", "0xFF0000", "0x0000FF", "0x0000FF"
+      ],
+      "size": [4, 3],
+      "trim": [2, 1, 2, 2]
+    },
+    {
+      "id": "key11",
+      "color": [
+        [255, 0, 0], [0, 255, 0],
+        [0, 0, 255], [0, 0, 0]
+      ],
+      "size": [2, 2]
+    },
+    {
+      "id": "key12",
+      "fromId": "texture"
+    }
+  ]
+}

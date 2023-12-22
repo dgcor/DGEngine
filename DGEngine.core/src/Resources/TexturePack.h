@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Game/AnimationFlags.h"
 #include "Game/TextureInfo.h"
 #include <memory>
 #include <SFML/Graphics/Texture.hpp>
@@ -13,8 +14,6 @@ class TexturePack
 {
 protected:
 	static void updateTextureRect(TextureInfo& ti);
-
-	static std::pair<uint32_t, uint32_t> getRange(uint32_t startIdx, uint32_t stopIdx, int32_t directionIdx, uint32_t directions);
 
 public:
 	TexturePack() = default;
@@ -44,7 +43,10 @@ public:
 
 	virtual uint32_t getDirectionCount(uint32_t groupIdx) const noexcept { return 1; }
 
-	virtual uint32_t getDirection(uint32_t frameIdx) const noexcept { return 0; }
+	// returns a pair with group and direction
+	virtual std::pair<uint32_t, uint32_t> getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept;
+
+	uint32_t getDirection(uint32_t frameIdx) const noexcept;
 
 	virtual AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const;
 };

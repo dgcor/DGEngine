@@ -10,13 +10,17 @@
 #include "PhysFSArchiverMPQ.h"
 #endif
 #include "Resources/Pcx.h"
+#include "Utils/Log.h"
 
 namespace Hooks
 {
 #ifdef PHYSFS_MPQ_SUPPORT
 	static void RegisterMPQArchiver()
 	{
-		PHYSFS_registerArchiver(&PHYSFS_Archiver_MPQ);
+		if (PHYSFS_registerArchiver(&PHYSFS_Archiver_MPQ) == 0)
+		{
+			SPDLOG_ERROR("RegisterMPQArchiver");
+		}
 	}
 #endif
 

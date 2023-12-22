@@ -2,6 +2,7 @@
 #include "Game/Game.h"
 #include "Game/Utils/FileUtils.h"
 #include "ParseFile.h"
+#include "Utils/Log.h"
 
 namespace Parser
 {
@@ -14,13 +15,16 @@ namespace Parser
 			throw std::runtime_error(PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
 		}
 
-		rapidjson::Document doc;  // Default template parameter uses UTF8 and MemoryPoolAllocator.
+		Document doc; // Default template parameter uses UTF8 and MemoryPoolAllocator.
 		auto jsonText = FileUtils::readText(fileName.data());
 		if (doc.Parse(jsonText.data(), jsonText.size()).HasParseError())
 		{
+			SPDLOG_WARN(R"(parseGame parse error: "{}" -> "{}")", filePath, fileName);
 			FileUtils::unmount(filePath);
 			return;
 		}
+
+		SPDLOG_INFO(R"(parseGame: "{}" -> "{}")", filePath, fileName);
 
 		auto filePath2 = FileUtils::getFilePath(filePath);
 		if (filePath2.empty() == false)

@@ -96,9 +96,9 @@ namespace Parser
 		{
 			return;
 		}
-		for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
+		for (const auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
 		{
-			parseGameElem(game, str2int16(it->name.GetStringView()), it->value);
+			parseGameElem(game, str2int16(it.name.GetStringView()), it.value);
 		}
 	}
 }

@@ -35,7 +35,7 @@ void LevelObjectClass::setAction(uint16_t nameHash16, const std::shared_ptr<Acti
 			return;
 		}
 	}
-	actions.push_back(std::make_pair(nameHash16, action_));
+	actions.push_back({ nameHash16, action_ });
 }
 
 void LevelObjectClass::executeAction(Game& game, uint16_t nameHash16, bool executeNow) const

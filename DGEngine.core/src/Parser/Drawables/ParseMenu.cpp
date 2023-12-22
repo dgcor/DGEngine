@@ -52,7 +52,7 @@ namespace Parser
 			menu->focusEnabled();
 		}
 
-		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
+		auto size = getSizeKey(elem, "size");
 		parseDrawableProperties(game, elem, *menu, size);
 
 		auto pos = menu->Position();

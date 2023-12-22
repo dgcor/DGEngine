@@ -1,10 +1,12 @@
 #pragma once
 
+#include <functional>
 #include "Game/Alignment.h"
 #include "Game/Anchor.h"
 #include "Game/AnimationType.h"
 #include "Game/BindingFlags.h"
 #include "Game/BlendMode.h"
+#include "Game/Direction.h"
 #include "Game/IgnoreResource.h"
 #include "Game/InputEvent.h"
 #include "Game/UIObject.h"
@@ -21,6 +23,9 @@ class Game;
 namespace GameUtils
 {
 	const int DoubleClickDelay = 500;
+
+	// converts fps (1-1000) to time
+	sf::Time FPSToTime(int fps);
 
 	AnimationType getAnimationType(const std::string_view str,
 		AnimationType val = AnimationType::Looped);
@@ -42,21 +47,13 @@ namespace GameUtils
 
 	Palette::ColorFormat getColorFormat(const std::string_view str);
 
+	Direction getDirection(const std::string_view str, Direction val);
+
 	HorizontalAlign getHorizontalAlignment(const std::string_view str,
 		HorizontalAlign val = HorizontalAlign::Left);
 
 	VerticalAlign getVerticalAlignment(const std::string_view str,
 		VerticalAlign val = VerticalAlign::Top);
-
-	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val) noexcept;
-
-	sf::Keyboard::Key getKeyCode(const std::string_view str, sf::Keyboard::Key val);
-
-	sf::Keyboard::Scancode getScanCode(int num, sf::Keyboard::Scancode val) noexcept;
-
-	sf::Keyboard::Scancode getScanCode(const std::string_view str, sf::Keyboard::Scancode val);
-
-	std::string getScanCodeDescription(const std::string_view str);
 
 	IgnoreResource getIgnoreResource(const std::string_view str, IgnoreResource val);
 
@@ -65,9 +62,52 @@ namespace GameUtils
 	sf::PrimitiveType getPrimitiveType(const std::string_view str,
 		sf::PrimitiveType val = sf::PrimitiveType::TriangleFan);
 
-	sf::Time getTime(int fps);
+	sf::Keyboard::Key getKeyCode(int num, sf::Keyboard::Key val = sf::Keyboard::Unknown) noexcept;
 
+	sf::Keyboard::Key getKeyCode(const std::string_view str,
+		sf::Keyboard::Key val = sf::Keyboard::Unknown);
+
+	sf::Keyboard::Scancode getScanCode(int num, sf::Keyboard::Scancode val = sf::Keyboard::Scancode::Unknown) noexcept;
+
+	sf::Keyboard::Scancode getScanCode(const std::string_view str,
+		sf::Keyboard::Scancode val = sf::Keyboard::Scancode::Unknown);
+
+	std::string getScanCodeDescription(const std::string_view str);
+
+	// converts time to seconds or string
+	// roundUp doesn't apply when milliseconds are used
+	// (empty) - 0 (int) - seconds
+	// ms - 0 (int) - milliseconds
+	// s - 0 (int) - seconds
+	// S - 0
+	// Sf - 0.0
+	// Sff - 0.00
+	// Sfff - 0.000
+	// SS - 00
+	// SSf - 00.0
+	// SSff - 00.00
+	// SSfff - 00.000
+	// MSS - 0:00
+	// MSSf - 0:00.0
+	// MSSff - 0:00.00
+	// MSSfff - 0:00.000
+	// MMSS - 00:00
+	// MMSSf - 00:00.0
+	// MMSSff - 00:00.00
+	// MMSSfff - 00:00.000
+	// HMMSS - 0:00:00
+	// HMMSSf - 0:00:00.0
+	// HMMSSff - 0:00:00.00
+	// HMMSSfff - 0:00:00.000
+	// HHMMSS - 00:00:00
+	// HHMMSSf - 00:00:00.0
+	// HHMMSSff - 00:00:00.00
+	// HHMMSSfff - 00:00:00.000
 	Variable getTime(sf::Time time, std::string_view format, bool roundUp = false);
+
+	// replaces "%str%" with with function
+	std::string replaceStringWithFunction(const std::string_view str, char token,
+		const std::function<void(const std::string_view&, std::string&)> stringReplaceFunc);
 
 	// replaces "%str%" with obj.getProperty("str")
 	std::string replaceStringWithQueryable(const std::string_view str,

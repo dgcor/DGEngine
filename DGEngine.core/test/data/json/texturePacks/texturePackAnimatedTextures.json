@@ -1,0 +1,89 @@
+{
+  "texture": {
+    "id": "texture",
+    "file": "res/texture/imageContainer.png"
+  },
+  "texturePack": [
+    {
+      "id": "key01",
+      "texture": "texture",
+      "frames": [4, 2],
+      "animatedTextures": [
+        { "indexes": [2, 4, 6, 0], "refresh": 60 }
+      ]
+    },
+    {
+      "id": "key02",
+      "texture": "texture",
+      "frames": [4, 2],
+      "animatedTextures": [
+        { "indexes": [2, 4, 6, 0], "refresh": 60 },
+        { "indexes": [3, 5, 7, 1], "refresh": 20 }
+      ]
+    },
+    {
+      "id": "key03",
+      "texture": "texture",
+      "frames": [4, 2],
+      "animatedTextures": [
+        { "indexes": [2, 4, 6, 0] },
+        { "indexes": [2, 7], "index": 1 }
+      ]
+    },
+    {
+      "id": "key04",
+      "texture": "texture",
+      "frames": [4, 2],
+      "animatedTextures": [
+        { "indexes": [3, 7], "index": 50 }
+      ]
+    },
+    {
+      "id": "key05",
+      "texture": "texture",
+      "frames": [4, 2],
+      "textureIndexes": [
+        [10, 0],
+        [11, 1],
+        [12, 2],
+        [13, 3]
+      ],
+      "animatedTextures": [
+        { "indexes": [3, 10], "index": 10 },
+        { "indexes": [7, 12], "index": 12 }
+      ]
+    },
+    {
+      "id": "key06",
+      "texture": "texture",
+      "frames": [4, 2],
+      "textureIndexes": [
+        [10, 0],
+        [11, 1],
+        [12, 2],
+        [13, 3]
+      ],
+      "animatedTextures": [
+        { "indexes": [3, 10], "index": 10 },
+        { "indexes": [7, 12], "index": 12 }
+      ],
+      "onlyUseIndexed": false
+    },
+    {
+      "id": "key07",
+      "texture": "texture",
+      "frames": [4, 2],
+      "animatedTextures": [
+        { "indexes": [3, 10], "index": 10 },
+        { "indexes": [7, 12], "index": 12 }
+      ],
+      "textureIndexes": [
+        [10, 0],
+        [11, 1],
+        [12, 2],
+        [13, 3]
+      ],
+      "onlyUseIndexed": false
+    }
+  ]
+}

@@ -6,7 +6,7 @@ namespace Parser::Actions
 {
 	using namespace rapidjson;
 
-	std::shared_ptr<Action> parseFocusAdd(const rapidjson::Value& elem)
+	std::shared_ptr<Action> parseFocusAdd(const Value& elem)
 	{
 		return std::make_shared<ActFocusAdd>(
 			getStringViewKey(elem, "id"),
@@ -14,7 +14,7 @@ namespace Parser::Actions
 			getBoolKey(elem, "focus", true));
 	}
 
-	std::shared_ptr<Action> parseFocusClick(const rapidjson::Value& elem)
+	std::shared_ptr<Action> parseFocusClick(const Value& elem)
 	{
 		return std::make_shared<ActFocusClick>(getBoolKey(elem, "playSound", true));
 	}
@@ -29,19 +29,19 @@ namespace Parser::Actions
 		return std::make_shared<ActFocusMoveUp>();
 	}
 
-	std::shared_ptr<Action> parseFocusRightClick(const rapidjson::Value& elem)
+	std::shared_ptr<Action> parseFocusRightClick(const Value& elem)
 	{
 		return std::make_shared<ActFocusRightClick>(getBoolKey(elem, "playSound", true));
 	}
 
-	std::shared_ptr<Action> parseFocusSet(const rapidjson::Value& elem)
+	std::shared_ptr<Action> parseFocusSet(const Value& elem)
 	{
 		return std::make_shared<ActFocusSet>(
 			getStringViewKey(elem, "id"),
 			getBoolKey(elem, "focus", true));
 	}
 
-	std::shared_ptr<Action> parseFocusUpdate(const rapidjson::Value& elem)
+	std::shared_ptr<Action> parseFocusUpdate(const Value& elem)
 	{
 		return std::make_shared<ActFocusUpdate>();
 	}

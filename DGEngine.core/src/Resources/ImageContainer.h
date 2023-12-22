@@ -29,8 +29,15 @@ public:
 		return get(index, palette, imgInfo);
 	}
 
+	virtual sf::Vector2u getImageSize(uint32_t index) const
+	{
+		auto img = get(index, nullptr);
+		return img.getSize();
+	}
+
 	virtual uint32_t size() const noexcept = 0;
 
+	// Returns number of directions. default should be 1
 	virtual uint32_t getDirections() const noexcept = 0;
 
 	static auto getColor(uint8_t palIdx, const PaletteArray* palette)

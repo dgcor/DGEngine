@@ -16,6 +16,7 @@ public:
 	constexpr void reset() noexcept { currentTime = {}; }
 
 	// reset time, and keep the remainder
+	// if T is float, this function is the same as updateAndReset
 	constexpr bool update(T elapsedTime) noexcept
 	{
 		if constexpr (std::is_floating_point_v<T> == true)
@@ -24,6 +25,10 @@ public:
 		}
 		else
 		{
+			if (timeout == T{})
+			{
+				return true;
+			}
 			currentTime += elapsedTime;
 			if (currentTime >= timeout)
 			{
@@ -68,8 +73,7 @@ public:
 		while (currentTime >= timeout)
 		{
 			currentTime -= timeout;
-			using FunctorReturnType = std::invoke_result<Functor, void>;
-			if constexpr (std::is_same<FunctorReturnType, bool>::value == true)
+			if constexpr (std::is_same_v<std::invoke_result_t<Functor>, bool> == true)
 			{
 				if (func() == false)
 				{

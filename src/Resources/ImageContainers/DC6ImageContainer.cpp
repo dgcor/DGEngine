@@ -19,7 +19,7 @@ namespace
 		uint32_t length;	// Length of the frame in chunks
 	};
 
-	bool decodeFrameHeader(uint32_t index, const std::vector<uint8_t>& fileData,
+	bool decodeFrameHeader(uint32_t index, const std::span<uint8_t> fileData,
 		DC6FrameHeader& frameHeader, std::span<const uint8_t>& frameData)
 	{
 		// get frame position
@@ -112,7 +112,7 @@ namespace
 DC6ImageContainer::DC6ImageContainer(const std::shared_ptr<FileBytes>& fileBytes, bool stitchFrames, bool useOffsets_)
 	: fileData(fileBytes), useOffsets(useOffsets_)
 {
-	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
+	LittleEndianStreamReader fileStream((const uint8_t*)fileData->data(), fileData->size());
 
 	// DC6 HEADER CHECKS
 
@@ -169,8 +169,9 @@ void DC6ImageContainer::calculateStitchData()
 	for (uint32_t i = 0; i < numberOfFrames; i++)
 	{
 		DC6FrameHeader frameHeader;
+		std::span<uint8_t> fileDataSpan((uint8_t*)fileData->data(), fileData->size());
 		std::span<const uint8_t> frameData;
-		if (decodeFrameHeader(i, *fileData, frameHeader, frameData) == false)
+		if (decodeFrameHeader(i, fileDataSpan, frameHeader, frameData) == false)
 		{
 			return;
 		}
@@ -202,7 +203,7 @@ void DC6ImageContainer::calculateStitchData()
 					i += stitchedFrame.stitch.x;
 					stitchedFrame.stitch.y++;
 					stitchedFrame.size.y += frameHeader.height;
-					if (decodeFrameHeader(i, *fileData, frameHeader, frameData) == false)
+					if (decodeFrameHeader(i, fileDataSpan, frameHeader, frameData) == false)
 					{
 						return;
 					}
@@ -238,9 +239,10 @@ sf::Image2 DC6ImageContainer::get(uint32_t startIndex, const sf::Vector2u& stitc
 			for (uint32_t i = 0; i < stitch_.x; i++)
 			{
 				DC6FrameHeader frameHeader;
+				std::span<uint8_t> fileDataSpan((uint8_t*)fileData->data(), fileData->size());
 				std::span<const uint8_t> frameData;
 				auto frameIdx = startIndex + i + (j * stitch_.x);
-				if (decodeFrameHeader(frameIdx, *fileData, frameHeader, frameData) == false)
+				if (decodeFrameHeader(frameIdx, fileDataSpan, frameHeader, frameData) == false)
 				{
 					return img;
 				}
@@ -284,8 +286,9 @@ sf::Image2 DC6ImageContainer::get(uint32_t index,
 	}
 
 	DC6FrameHeader frameHeader;
+	std::span<uint8_t> fileDataSpan((uint8_t*)fileData->data(), fileData->size());
 	std::span<const uint8_t> frameData;
-	if (decodeFrameHeader(index, *fileData, frameHeader, frameData) == false)
+	if (decodeFrameHeader(index, fileDataSpan, frameHeader, frameData) == false)
 	{
 		return {};
 	}

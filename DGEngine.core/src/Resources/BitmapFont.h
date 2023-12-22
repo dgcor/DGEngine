@@ -22,6 +22,9 @@ protected:
 	int defaultHorizSpaceOffset{ 0 };
 	int defaultVertSpaceOffset{ 0 };
 
+	// draws whitespace using the whitespace image size
+	bool drawWhitespace{ false };
+
 	float calculateLineLength(std::string_view::const_iterator it,
 		std::string_view::const_iterator itEnd, int horizSpaceOffset) const;
 
@@ -41,6 +44,7 @@ public:
 	void setColor(const sf::Color& color_) { defaultColor = color_; }
 	void setHorizontalSpaceOffset(int horizSpaceOffset) noexcept { defaultHorizSpaceOffset = horizSpaceOffset; }
 	void setVerticalSpaceOffset(int vertSpaceOffset) noexcept { defaultVertSpaceOffset = vertSpaceOffset; }
+	void setDrawWhitespace(bool drawWhitespace_) noexcept { drawWhitespace = drawWhitespace_; }
 
 	sf::Vector2f calculateSize(const std::string_view text) const;
 

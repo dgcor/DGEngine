@@ -4,51 +4,46 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'src/**'
+      - '.github/workflows/**'
       - 'CMakeLists.txt'
+      - 'src/**'
+      - 'test/**'
   pull_request:
     branches: [ master ]
     paths:
-      - 'src/**'
+      - '.github/workflows/**'
       - 'CMakeLists.txt'
+      - 'src/**'
+      - 'test/**'
+
+env:
+    VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
 
 jobs:
   build_linux:
     name: linux build
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout DGEngine.core
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Restore cached dependencies
-      id: cache-linux-x64
-      uses: actions/cache@v3
+    - name: Export GitHub Actions cache environment variables
+      uses: actions/github-script@v6
       with:
-        path: /home/runner/work/sfml
-        key: cache-linux-x64
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+    - name: Install Ubuntu dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
+      with:
+        packages: libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev nasm
+        version: 1.0
+        execute_install_scripts: true
 
     - name: Install dependencies
       run: |
-        sudo apt install -yq --no-install-suggests --no-install-recommends libphysfs-dev > /dev/null
-        sudo apt install -yq --no-install-suggests --no-install-recommends libalut-dev libflac-dev libgl1-mesa-dev libudev-dev libvorbis-dev libxcursor-dev libxrandr-dev > /dev/null
-        sudo apt install -yq --no-install-suggests --no-install-recommends libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswscale-dev > /dev/null
-
-    - name: CMake + make SFML
-      if: steps.cache-linux-x64.outputs.cache-hit != 'true'
-      run: |
-        git clone -q --depth=1 --branch=feature/scancode https://github.com/dgcor/SFML.git /home/runner/work/sfml > /dev/null
-        git -C /home/runner/work/sfml pull > /dev/null
-        cd /home/runner/work/sfml
-        export CC=/usr/bin/gcc-11
-        export CXX=/usr/bin/g++-11
-        cmake /home/runner/work/sfml/CMakeLists.txt
-        sudo make install
-
-    - name: Install SFML
-      if: steps.cache-linux-x64.outputs.cache-hit == 'true'
-      run: |
-        cd /home/runner/work/sfml
-        sudo make install
+        vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale] physfs sfml --triplet=x64-linux
 
     - name: Setup Ninja Build
       uses: turtlesec-no/get-ninja@main
@@ -57,26 +52,25 @@ jobs:
       run: |
         export CC=/usr/bin/gcc-11
         export CXX=/usr/bin/g++-11
-        cmake CMakeLists.txt -G "Ninja"
-        cmake --build .
+        cmake --preset linux-x64-debug-vcpkg -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake --build --preset linux-x64-debug-vcpkg
 
   build_windows:
     name: windows build
-    runs-on: windows-2022
+    runs-on: windows-latest
     steps:
     - name: Checkout DGEngine.core
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    - name: Restore cached dependencies
-      id: cache-windows-x64
-      uses: actions/cache@v3
+    - name: Export GitHub Actions cache environment variables
+      uses: actions/github-script@v6
       with:
-        path: C:/vcpkg/installed
-        key: cache-windows-x64
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
 
     - name: Install dependencies
-      if: steps.cache-windows-x64.outputs.cache-hit != 'true'
-      run: vcpkg install physfs sfml --overlay-ports=vcpkg/ports --overlay-triplets=vcpkg/triplets --triplet=x64-windows
+      run: vcpkg install catch2 physfs sfml --triplet=x64-windows
 
     - name: Setup MSVC
       uses: TheMrMilchmann/setup-msvc-dev@v2
@@ -88,5 +82,9 @@ jobs:
 
     - name: CMake build DGEngine.core
       run: |
-        cmake --preset windows-x64-release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
-        cmake --build --preset windows-x64-release
+        cmake --preset windows-x64-debug -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
+        cmake --build --preset windows-x64-debug
+
+    - name: Run tests
+      shell: cmd
+      run: cd test && ..\out\build\windows-x64-debug\test\DGEngine.core-test.exe

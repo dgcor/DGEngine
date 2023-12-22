@@ -49,7 +49,7 @@ namespace sfe
 		}
 
 		m_streamContext = std::make_unique<InputStreamIOContext>(&inputStream);
-		m_formatCtx = AVFunc::avformat_alloc_context();
+		m_formatCtx = AVFORMAT_ALLOC_CONTEXT();
 		if (m_formatCtx == nullptr)
 		{
 			return;
@@ -63,7 +63,7 @@ namespace sfe
 		int err = 0;
 
 		// Open the movie file
-		err = AVFunc::avformat_open_input(&m_formatCtx, fileName, nullptr, nullptr);
+		err = AVFORMAT_OPEN_INPUT(&m_formatCtx, fileName, nullptr, nullptr);
 		if (err != 0 ||
 			m_formatCtx == nullptr)
 		{
@@ -71,7 +71,7 @@ namespace sfe
 		}
 
 		// Read the general movie informations
-		err = AVFunc::avformat_find_stream_info(m_formatCtx, nullptr);
+		err = AVFORMAT_FIND_STREAM_INFO(m_formatCtx, nullptr);
 		if (err < 0)
 		{
 			return;
@@ -91,6 +91,11 @@ namespace sfe
 		{
 			AVStream* & ffstream = m_formatCtx->streams[i];
 
+			if (ffstream->codecpar == nullptr)
+			{
+				continue;
+			}
+
 			switch (ffstream->codecpar->codec_type)
 			{
 			case AVMEDIA_TYPE_VIDEO:
@@ -106,7 +111,7 @@ namespace sfe
 				}
 				if (stream != nullptr)
 				{
-					m_videoStreams.push_back(std::make_pair(std::move(stream), ffstream->index));
+					m_videoStreams.push_back({ std::move(stream), ffstream->index });
 				}
 				break;
 			}
@@ -123,7 +128,7 @@ namespace sfe
 				}
 				if (stream != nullptr)
 				{
-					m_audioStreams.push_back(std::make_pair(std::move(stream), ffstream->index));
+					m_audioStreams.push_back({ std::move(stream), ffstream->index });
 				}
 				break;
 			}
@@ -153,7 +158,7 @@ namespace sfe
 		if (m_formatCtx != nullptr)
 		{
 			// Be very careful with this call: it'll also destroy its codec contexts and streams
-			AVFunc::avformat_close_input(&m_formatCtx);
+			AVFORMAT_CLOSE_INPUT(&m_formatCtx);
 		}
 		flushBuffers();
 	}
@@ -312,8 +317,8 @@ namespace sfe
 			{
 				if (distributePacket(pkt, stream) == false)
 				{
-					AVFunc::av_packet_unref(pkt);
-					AVFunc::av_free(pkt);
+					AV_PACKET_UNREF(pkt);
+					AV_FREE(pkt);
 				}
 			}
 		}
@@ -345,16 +350,16 @@ namespace sfe
 	{
 		sf::Lock l(m_synchronized);
 
-		AVPacket* pkt = AVFunc::av_packet_alloc();
+		AVPacket* pkt = AV_PACKET_ALLOC();
 		if (pkt == nullptr)
 		{
 			return nullptr;
 		}
 
-		if (AVFunc::av_read_frame(m_formatCtx, pkt) < 0)
+		if (AV_READ_FRAME(m_formatCtx, pkt) < 0)
 		{
-			AVFunc::av_packet_unref(pkt);
-			AVFunc::av_free(pkt);
+			AV_PACKET_UNREF(pkt);
+			AV_FREE(pkt);
 			pkt = nullptr;
 		}
 
@@ -376,8 +381,8 @@ namespace sfe
 	{
 		for (auto packet : buffer)
 		{
-			AVFunc::av_packet_unref(packet);
-			AVFunc::av_free(packet);
+			AV_PACKET_UNREF(packet);
+			AV_FREE(packet);
 		}
 		buffer.clear();
 	}
@@ -401,8 +406,8 @@ namespace sfe
 			}
 		}
 
-		AVFunc::av_packet_unref(packet);
-		AVFunc::av_free(packet);
+		AV_PACKET_UNREF(packet);
+		AV_FREE(packet);
 	}
 
 	bool Demuxer::hasPendingDataForStream(const Stream& stream) const
@@ -557,7 +562,7 @@ namespace sfe
 			flushBuffers();
 
 			// Seek to beginning
-			int err = AVFunc::avformat_seek_file(m_formatCtx, -1, INT64_MIN, timestamp, INT64_MAX, AVSEEK_FLAG_BACKWARD);
+			int err = AVFORMAT_SEEK_FILE(m_formatCtx, -1, INT64_MIN, timestamp, INT64_MAX, AVSEEK_FLAG_BACKWARD);
 			if (err < 0)
 			{
 				return false;
@@ -597,7 +602,7 @@ namespace sfe
 					timestamp += m_formatCtx->start_time;
 				}
 
-				int err = AVFunc::avformat_seek_file(m_formatCtx, -1, timestamp - 10 * AV_TIME_BASE,
+				int err = AVFORMAT_SEEK_FILE(m_formatCtx, -1, timestamp - 10 * AV_TIME_BASE,
 					timestamp, timestamp, ffmpegSeekFlags);
 				if (err < 0)
 				{

@@ -52,7 +52,7 @@ void ResourceManager::popAllResources(bool popBaseResources)
 
 void ResourceManager::ignoreResources(const std::string& id, IgnoreResource ignore) noexcept
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.id == id)
 		{
@@ -190,7 +190,7 @@ bool ResourceManager::addSong(const std::string_view key,
 	{
 		return addSong(resources.back(), key, obj);
 	}
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.id == resourceId)
 		{
@@ -245,7 +245,7 @@ void ResourceManager::addDrawable(const std::string_view key,
 		addDrawable(resources.back(), key, obj, manageObjDrawing);
 		return;
 	}
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.id == resourceId)
 		{
@@ -289,7 +289,7 @@ void ResourceManager::clearFinishedSounds()
 
 std::shared_ptr<Action> ResourceManager::getInputAction(const sf::Event& key) const
 {
-	for (const auto& res : reverse(resources))
+	for (const auto& res : resources | std::views::reverse)
 	{
 		if (key.type == sf::Event::KeyPressed &&
 			res.anyKeyAction != nullptr)
@@ -329,7 +329,7 @@ std::shared_ptr<Action> ResourceManager::getInputAction(const sf::Event& key) co
 
 std::shared_ptr<Action> ResourceManager::getAction(const std::string_view key) const
 {
-	for (const auto& res : reverse(resources))
+	for (const auto& res : resources | std::views::reverse)
 	{
 		const auto elem = res.actions.find(key);
 		if (elem != res.actions.cend())
@@ -376,7 +376,7 @@ sf::SoundBuffer* ResourceManager::getSoundBuffer(const std::string_view key) con
 
 std::shared_ptr<sf::Music2> ResourceManager::getSong(const std::string_view key) const
 {
-	for (const auto& res : reverse(resources))
+	for (const auto& res : resources | std::views::reverse)
 	{
 		const auto elem = res.songs.find(key);
 		if (elem != res.songs.cend())
@@ -467,7 +467,7 @@ bool ResourceManager::hasDrawable(const std::string_view key) const
 
 void ResourceManager::bringDrawableToFront(const std::string& id)
 {
-	for (auto& resource : reverse(resources))
+	for (auto& resource : resources | std::views::reverse)
 	{
 		auto itDraw = resource.drawableIds.find(id);
 		if (itDraw == resource.drawableIds.cend())
@@ -487,7 +487,7 @@ void ResourceManager::bringDrawableToFront(const std::string& id)
 
 void ResourceManager::sendDrawableToBack(const std::string& id)
 {
-	for (auto& resource : reverse(resources))
+	for (auto& resource : resources | std::views::reverse)
 	{
 		auto itDraw = resource.drawableIds.find(id);
 		if (itDraw == resource.drawableIds.cend())
@@ -507,7 +507,7 @@ void ResourceManager::sendDrawableToBack(const std::string& id)
 
 void ResourceManager::deleteDrawable(const std::string& id)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		auto it1 = res.drawableIds.find(id);
 		if (it1 != res.drawableIds.end())
@@ -529,7 +529,7 @@ void ResourceManager::deleteDrawable(const std::string& id)
 
 void ResourceManager::deleteDrawable(UIObject* obj)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		auto& drawables = res.drawables;
 		for (auto it2 = drawables.begin(); it2 != drawables.end(); ++it2)
@@ -597,7 +597,7 @@ void ResourceManager::stopSongs()
 
 void ResourceManager::deleteSong(const std::string_view key)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		auto it = res.songs.find(key);
 		if (it != res.songs.end())
@@ -637,7 +637,7 @@ void ResourceManager::addFocused(const std::shared_ptr<Button>& obj, const std::
 		addFocused(resources.back(), obj);
 		return;
 	}
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.id == resourceId)
 		{
@@ -687,7 +687,7 @@ void ResourceManager::rightClickFocused(Game& game, bool playSound)
 
 std::shared_ptr<Button> ResourceManager::getFocused() const
 {
-	for (const auto& res : reverse(resources))
+	for (const auto& res : resources | std::views::reverse)
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
@@ -706,7 +706,7 @@ std::shared_ptr<Button> ResourceManager::getFocused() const
 
 void ResourceManager::setFocused(const Button* obj)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
@@ -729,7 +729,7 @@ void ResourceManager::setFocused(const Button* obj)
 
 void ResourceManager::moveFocusDown(Game& game)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
@@ -768,7 +768,7 @@ void ResourceManager::moveFocusDown(Game& game)
 
 void ResourceManager::moveFocusUp(Game& game)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
@@ -807,7 +807,7 @@ void ResourceManager::moveFocusUp(Game& game)
 
 void ResourceManager::updateFocus(Game& game)
 {
-	for (auto& res : reverse(resources))
+	for (auto& res : resources | std::views::reverse)
 	{
 		if (res.ignore != IgnoreResource::None)
 		{
@@ -865,7 +865,7 @@ void ResourceManager::updateActiveInputEvents()
 	activeInputEvents.clear();
 
 	std::vector<InputEvent> used;
-	for (const auto& res : reverse(resources))
+	for (const auto& res : resources | std::views::reverse)
 	{
 		if (res.anyKeyAction != nullptr)
 		{

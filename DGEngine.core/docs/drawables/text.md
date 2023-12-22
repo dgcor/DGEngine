@@ -26,8 +26,8 @@ Name                    | Type    | Default            | Description
 `horizontalAlign`       | int     | left               | horizontal align text. `left`, `center` or `right`
 `horizontalSpaceOffset` | int     | 0                  | horizontal space offset between lines
 `onChange`              | text    |                    | on text change action
-`splitText`             | int     |                    | split text when lines have more than n chars
 `text`                  | text    |                    | text to display
+`wordWrap`              | int     |                    | split text when lines have more than n chars
 `verticalAlign`         | color   | bottom             | vertical align text. `top`, `center` or `bottom`
 `verticalSpaceOffset`   | int     | 0                  | vertical space offset between chars
 

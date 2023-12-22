@@ -28,7 +28,7 @@ public:
 				return;
 			}
 		}
-		defaults.push_back(std::make_pair(propHash, val));
+		defaults.push_back({ propHash, val });
 	}
 
 	void setDefault(const std::string_view prop, T val)

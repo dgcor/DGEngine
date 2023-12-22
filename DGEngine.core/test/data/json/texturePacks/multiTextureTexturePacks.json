@@ -1,0 +1,305 @@
+{
+  "palette": { "file": "res/palette/pal.bin" },
+  "texture": [
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texture2",
+      "fromId": "texture"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    },
+    {
+      "id": "texturePalette2",
+      "fromId": "texturePalette"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "texture": ["texture"]
+    },
+    {
+      "id": "key02",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": 1
+        }
+      ],
+      "groups": {
+        "refresh": 50
+      }
+    },
+    {
+      "id": "key03",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [0, 1]
+        }
+      ],
+      "groups": [
+        {
+          "range": [0, 7],
+          "animationType": "backAndforth",
+          "directions": [[0, 2], [3, 6], [7, 7]],
+          "refresh": 50
+        }
+      ],
+      "palette": "pal",
+      "offset": [1, 0]
+    },
+    {
+      "id": "key04",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [0, 1]
+        },
+        {
+          "id": "texture",
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [1, 1]
+        }
+      ],
+      "groups": [
+        {
+          "range": [0, 7],
+          "animationType": "backAndforth",
+          "directions": [[0, 2], [3, 6], [7, 7]]
+        },
+        {
+          "range": [8, 15],
+          "animationType": "playOnce",
+          "directions": 4,
+          "refresh": 50
+        }
+      ],
+      "offset": [1, 0]
+    },
+    {
+      "id": "key05",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [1, 1]
+        },
+        {
+          "id": "texturePalette2",
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [0, 1]
+        }
+      ],
+      "groups": [
+        {
+          "range": [0, 7],
+          "animationType": "playOnce",
+          "directions": 4,
+          "refresh": 50
+        },
+        {
+          "range": [8, 15],
+          "animationType": "backAndforth",
+          "directions": [[0, 2], [3, 6], [7, 7]]
+        }
+      ],
+      "palette": "pal",
+      "offset": [1, 0]
+    },
+    {
+      "id": "key06",
+      "texture": [
+        {
+          "id": "texture",
+          "startIndex": 10,
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [0, 1]
+        },
+        {
+          "id": "texture",
+          "startIndex": 20,
+          "frames": [2, 4],
+          "direction": "vertical",
+          "offset": [1, 1]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 17],
+          "animationType": "backAndforth",
+          "directions": [[0, 2], [3, 6], [7, 7]]
+        },
+        {
+          "range": [20, 27],
+          "animationType": "playOnce",
+          "directions": 4,
+          "refresh": 50
+        }
+      ],
+      "offset": [1, 0]
+    },
+    {
+      "id": "key07",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 4],
+          "animationType": "playOnce",
+          "direction": "vertical",
+          "directions": 4,
+          "refresh": 50,
+          "offset": [1, 1]
+        },
+        {
+          "id": "texturePalette2",
+          "startIndex": 20,
+          "frames": [2, 4],
+          "animationType": "backAndforth",
+          "direction": "vertical",
+          "directions": [[0, 2], [3, 6], [7, 7]],
+          "offset": [0, 1]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 17],
+          "animationType": "playOnce",
+          "directions": 4,
+          "refresh": 50
+        },
+        {
+          "range": [20, 27],
+          "animationType": "backAndforth",
+          "directions": [[0, 2], [3, 6], [7, 7]]
+        }
+      ],
+      "palette": "pal",
+      "offset": [1, 0]
+    },
+    {
+      "id": "key08",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": [2, 1],
+          "direction": "vertical"
+        },
+        {
+          "id": "texture",
+          "frames": [2, 1],
+          "direction": "vertical"
+        },
+        {
+          "id": "texture",
+          "frames": [2, 1],
+          "direction": "vertical"
+        }
+      ],
+      "groups": [
+        {
+          "range": [0, 1],
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [2, 3]
+        },
+        {
+          "range": [4, 5],
+          "directions": [[1, 1], [2, 2]]
+        }
+      ]
+    },
+    {
+      "id": "key09",
+      "texture": [
+        {
+          "id": "texture",
+          "frames": [4, 2]
+        },
+        {
+          "id": "texture",
+          "startIndex": 10,
+          "frames": [4, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [0, 7],
+          "directions": 3
+        },
+        {
+          "range": [10, 17],
+          "directions": 9
+        }
+      ]
+    },
+    {
+      "id": "key10",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 13],
+          "animationType": "playOnce",
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [14, 17],
+          "animationType": "backAndforth"
+        },
+        {
+          "range": [18, 21],
+          "directions": [[1, 1], [2, 2]]
+        }
+      ],
+      "palette": "pal"
+    },
+    {
+      "id": "key11",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "palette": "pal"
+    }
+  ]
+}

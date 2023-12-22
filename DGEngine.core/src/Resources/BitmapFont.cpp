@@ -6,7 +6,7 @@
 BitmapFont::BitmapFont(const std::shared_ptr<TexturePack>& texturePack_,
 	int16_t newLine_, int16_t space_, int16_t tab_) : texturePack(texturePack_)
 {
-	newLine = newLine_ < 0 ? texturePack_->getTextureSize('\n').x : newLine_;
+	newLine = newLine_ < 0 ? texturePack_->getTextureSize('\n').y : newLine_;
 	space = space_ < 0 ? texturePack_->getTextureSize(' ').x : space_;
 	tab = tab_ < 0 ? texturePack_->getTextureSize('\t').x : tab_;
 }
@@ -53,13 +53,13 @@ float BitmapFont::calculateLineLength(std::string_view::const_iterator itBegin,
 			return curX;
 		}
 		//If the current character is a space
-		if (ch == ' ')
+		if (ch == ' ' && drawWhitespace == false)
 		{
 			//Move over
 			curX += (float)space;
 		}
 		//If the current character is a tab
-		else if (ch == '\t')
+		else if (ch == '\t' && drawWhitespace == false)
 		{
 			//Move over
 			curX += (float)tab;
@@ -121,13 +121,13 @@ sf::Vector2f BitmapFont::calculateSize(const std::string_view text,
 		else
 		{
 			//If the current character is a space
-			if (ch == ' ')
+			if (ch == ' ' && drawWhitespace == false)
 			{
 				//Move over
 				curX += (float)space;
 			}
 			//If the current character is a tab
-			else if (ch == '\t')
+			else if (ch == '\t' && drawWhitespace == false)
 			{
 				//Move over
 				curX += (float)tab;
@@ -212,13 +212,13 @@ void BitmapFont::updateVertexString(std::vector<sf::Vertex>& vertexText,
 		else
 		{
 			//If the current character is a space
-			if (ch == ' ')
+			if (ch == ' ' && drawWhitespace == false)
 			{
 				//Move over
 				curX += (float)space;
 			}
 			//If the current character is a tab
-			else if (ch == '\t')
+			else if (ch == '\t' && drawWhitespace == false)
 			{
 				//Move over
 				curX += (float)tab;

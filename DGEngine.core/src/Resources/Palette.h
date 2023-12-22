@@ -1,9 +1,9 @@
 #pragma once
 
 #include <array>
+#include "FileBytes.h"
 #include <SFML/Graphics/Texture.hpp>
 #include <string_view>
-#include <vector>
 
 using PaletteArray = std::array<sf::Color, 256>;
 
@@ -28,8 +28,8 @@ public:
 	};
 
 	Palette() noexcept {}
-	Palette(const std::string_view  file, ColorFormat colorFormat);
-	Palette(const Palette& pal, const std::vector<sf::Uint8> trn, size_t start, size_t length);
+	Palette(const std::string_view file, ColorFormat colorFormat);
+	Palette(const Palette& pal, const FileBytes& trn, size_t start, size_t length);
 
 	auto& operator[](size_t index) const noexcept { return palette[index]; }
 

@@ -53,7 +53,7 @@ Uniform         | Type      | Shaders       | Description
 `outline`       | vec4      | sprite        | color to outline/highlight
 `palette`       | sampler2D | sprite        | 256 color palette to apply
 `pixelSize`     | vec2      | sprite        | pixel size of the input texture
-`textureSize`   | vec2      | sprite        | current texture size
+`textureSize`   | vec2      | game, sprite  | current texture size
 
 Images that use palettes should have the palette index to use in the `red` channel and no alpha.
 Only apply the palette to images with alpha equal to 1.

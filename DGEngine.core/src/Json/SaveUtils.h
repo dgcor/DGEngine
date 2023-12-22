@@ -47,7 +47,7 @@ namespace SaveUtils
 	{
 		writer.StartArray();
 		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
-		if constexpr (std::is_integral<NumType>::value == true)
+		if constexpr (std::is_integral_v<NumType> == true)
 		{
 			if constexpr (sizeof(T) <= 4)
 			{
@@ -60,7 +60,7 @@ namespace SaveUtils
 				writer.Int64(val.y);
 			}
 		}
-		else if constexpr (std::is_floating_point<NumType>::value == true)
+		else if constexpr (std::is_floating_point_v<NumType> == true)
 		{
 			writer.Double(val.x);
 			writer.Double(val.y);
@@ -115,7 +115,7 @@ namespace SaveUtils
 	{
 		writer.StartArray();
 		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
-		if constexpr (std::is_integral<decltype(val.x)>::value == true)
+		if constexpr (std::is_integral_v<decltype(val.x)> == true)
 		{
 			if constexpr (sizeof(T) <= 4)
 			{
@@ -128,7 +128,7 @@ namespace SaveUtils
 				writer.Int64(val.y);
 			}
 		}
-		else if constexpr (std::is_floating_point<decltype(val.x)>::value == true)
+		else if constexpr (std::is_floating_point_v<decltype(val.x)> == true)
 		{
 			if constexpr (sizeof(T) <= 4)
 			{
@@ -196,16 +196,19 @@ namespace SaveUtils
 	void writeString(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view key, const std::string& val);
 
-	void writeStringView(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
-		const std::string_view key, const std::string_view val);
-
 	// write just the value (no key)
 	void writeString(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string& val);
 
+	void writeStringView(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const std::string_view val);
+
 	// write just the value (no key)
 	void writeStringView(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
 		const std::string_view val);
+
+	void writeVariable(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const Variable& val);
 
 	// write just the value (no key)
 	void writeVariable(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,

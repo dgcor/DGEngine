@@ -22,12 +22,13 @@ namespace Parser
 		// scrollable will manage drawing of the UIObject to scroll
 		game.Resources().deleteDrawable(uiObj.get());
 
-		auto speed = getTimeKey(elem, "refresh", sf::milliseconds(50));
+		auto speed = getTimeUKey(elem, "refresh", sf::milliseconds(50));
 		auto scrollable = std::make_shared<Scrollable>(uiObj, speed);
 
-		auto size = getVector2fKey<sf::Vector2f>(elem, "size");
+		auto size = getSizeKey(elem, "size");
 		parseDrawableProperties(game, elem, *scrollable, size);
 
+		scrollable->setDirection(getDirectionKey(elem, "direction", Direction::Down));
 		scrollable->setOffset((float)getIntKey(elem, "offset"));
 		scrollable->setLoop(getBoolKey(elem, "loop"));
 		scrollable->setPause(getBoolKey(elem, "pause"));

@@ -1,0 +1,35 @@
+{
+  "imageContainer": [
+    { "file": "res/TR/S7TRLITA1HTH.dcc", "blendMode": "add" },
+    { "file": "res/TR/S7TRLITDDHTH.dcc", "blendMode": "add" },
+    { "file": "res/TR/S7TRLITDTHTH.dcc", "blendMode": "add" },
+    { "file": "res/TR/S7TRLITGHHTH.dcc", "blendMode": "add" },
+    { "file": "res/TR/S7TRLITNUHTH.dcc", "blendMode": "add" },
+    { "file": "res/TR/S7TRLITWLHTH.dcc", "blendMode": "add" }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "imageContainer": [
+        "S7TRLITA1HTH",
+        "S7TRLITDDHTH",
+        "S7TRLITDTHTH",
+        "S7TRLITNUHTH",
+        "S7TRLITGHHTH",
+        "S7TRLITWLHTH"
+      ]
+    },
+    {
+      "id": "key02",
+      "imageContainer": [
+        "S7TRLITA1HTH",
+        "S7TRLITDDHTH",
+        "S7TRLITDTHTH",
+        "S7TRLITNUHTH",
+        "S7TRLITGHHTH",
+        "S7TRLITWLHTH"
+      ],
+      "normalizeDirections": true
+    }
+  ]
+}

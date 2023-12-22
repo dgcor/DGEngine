@@ -1,10 +1,9 @@
 #pragma once
 
-#include <string_view>
-#include "Resources/TexturePack.h"
-#include <vector>
+#include <functional>
+#include "Resources/TexturePacks/StackedTexturePack.h"
 
-class CompositeTexturePack : public TexturePack
+class CompositeTexturePack : public StackedTexturePack
 {
 protected:
 	struct CompositeTextureGroup
@@ -16,24 +15,24 @@ protected:
 		uint32_t texturePackGroups{ 0 };
 		uint32_t directions{ 0 };
 		uint32_t rangeStartIdx{ 0 };
-		bool hasAllLayersOrdersDirections{ false };
 		std::pair<uint32_t, uint32_t> range;
 	};
 
 	std::vector<CompositeTextureGroup> compositeTextureGroups;
-	std::vector<std::shared_ptr<TexturePack>> texturePacks;
 	std::vector<int8_t> layersOrders;
-	std::shared_ptr<Palette> palette;
 	uint32_t numberOfFrames{ 0 };
 	uint32_t totalTexturePackGroups{ 0 };
-	bool hasMultipleGroupsPerTexturePack{ false };
+
+	using processTexturePacksInOrderFunc = std::function<bool(uint32_t index, const std::shared_ptr<TexturePack>& texturePack)>;
+
+	// processes texturePacks in the correct drawing order
+	// processFunc: return true to continue or false to stop iterating texturePacks
+	void processTexturePacksInOrder(uint32_t index, const processTexturePacksInOrderFunc processFunc) const;
 
 public:
 	CompositeTexturePack() = default;
 
-	bool addGroup(uint32_t texturePackCount);
-
-	void addTexturePack(const std::shared_ptr<TexturePack>& texture);
+	bool addGroup();
 
 	void setLayersOrders(const std::vector<int8_t>& groupLayersOrders);
 
@@ -51,11 +50,8 @@ public:
 	// gets the textures in the correct drawing order
 	bool get(uint32_t index, std::vector<TextureInfo>& tiVec) const;
 
-	// uses first texturePack
+	// gets the first texture size in the correct drawing order
 	sf::Vector2i getTextureSize(uint32_t index) const override;
-
-	// uses first texturePack
-	const std::shared_ptr<Palette>& getPalette() const noexcept override;
 
 	// uses first texturePack of each group
 	uint32_t size() const noexcept override;
@@ -65,9 +61,6 @@ public:
 
 	// uses first texturePack of each group
 	uint32_t getDirectionCount(uint32_t groupIdx) const noexcept override;
-
-	// uses first texturePack
-	uint32_t getDirection(uint32_t frameIdx) const noexcept override;
 
 	// uses first texturePack of each group
 	AnimationInfo getAnimation(int32_t groupIdx, int32_t directionIdx) const override;

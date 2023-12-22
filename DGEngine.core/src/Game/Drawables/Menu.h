@@ -44,6 +44,12 @@ public:
 	void setVisibleItems(size_t visibleItems_) noexcept;
 	void setCurrentIdx(size_t idx) noexcept;
 
+	void setColor(const sf::Color& color);
+	void setColor(const sf::Color& color, int idx);
+
+	void setFont(const Font& font);
+	void setFont(const Font& font, int idx);
+
 	const sf::Vector2f& DrawPosition() const noexcept override { return pos; }
 	const sf::Vector2f& Position() const noexcept override { return pos; }
 	void Position(const sf::Vector2f& position_) noexcept override;

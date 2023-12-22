@@ -3,6 +3,9 @@ name: Deploy_Linux
 on:
   workflow_dispatch:
 
+env:
+    VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+
 jobs:
   deploy_linux:
     name: linux deploy
@@ -11,41 +14,28 @@ jobs:
     - name: Checkout DGEngine
       uses: actions/checkout@v3
 
+    - name: Export GitHub Actions cache environment variables
+      uses: actions/github-script@v6
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
     - name: Install GCC 11
       uses: egor-tensin/setup-gcc@v1
       with:
         version: 11
 
-    - name: Restore cached dependencies
-      id: cache-linux-x64
-      uses: actions/cache@v3
+    - name: Install Ubuntu dependencies
+      uses: awalsh128/cache-apt-pkgs-action@latest
       with:
-        path: /home/runner/work/sfml
-        key: cache-linux-x64
+        packages: fuse libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswscale-dev
+        version: 1.0
+        execute_install_scripts: true
 
     - name: Install dependencies
       run: |
-        sudo apt install -yq --no-install-suggests --no-install-recommends fuse > /dev/null
-        sudo apt install -yq --no-install-suggests --no-install-recommends libphysfs-dev > /dev/null
-        sudo apt install -yq --no-install-suggests --no-install-recommends libalut-dev libflac-dev libgl1-mesa-dev libudev-dev libvorbis-dev libxcursor-dev libxrandr-dev > /dev/null
-        sudo apt install -yq --no-install-suggests --no-install-recommends libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavutil-dev libswscale-dev > /dev/null
-
-    - name: CMake build and install SFML
-      if: steps.cache-linux-x64.outputs.cache-hit != 'true'
-      run: |
-        git clone -q --depth=1 --branch=feature/scancode https://github.com/dgcor/SFML.git /home/runner/work/sfml > /dev/null
-        git -C /home/runner/work/sfml pull > /dev/null
-        cd /home/runner/work/sfml
-        export CC=/usr/bin/gcc-11
-        export CXX=/usr/bin/g++-11
-        cmake /home/runner/work/sfml/CMakeLists.txt
-        sudo cmake --build . --config Release --target install
-
-    - name: Install SFML
-      if: steps.cache-linux-x64.outputs.cache-hit == 'true'
-      run: |
-        cd /home/runner/work/sfml
-        sudo make install
+        vcpkg install physfs sfml --triplet=x64-linux
 
     - name: Setup Ninja Build
       uses: turtlesec-no/get-ninja@main
@@ -54,8 +44,8 @@ jobs:
       run: |
         export CC=/usr/bin/gcc-11
         export CXX=/usr/bin/g++-11
-        cmake CMakeLists.txt -G "Ninja"
-        cmake --build . --config Release
+        cmake --preset linux-x64-release-publish -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
+        cmake --build --preset linux-x64-release-publish
 
     - name: Install LinuxDeploy
       run: |
@@ -65,12 +55,11 @@ jobs:
     - name: Create AppImage
       run: |
         ./linuxdeploy-x86_64.AppImage \
-          --executable=DGEngine \
+          --executable=out/build/linux-x64-release-publish/DGEngine \
           --appdir out/appdir \
           --desktop-file=pkg/linux/dgengine.desktop \
           --icon-file=pkg/linux/icon.png \
           --output=appimage
-        mv DGEngine-*-x86_64.AppImage DGEngine-x86_64.AppImage
 
     - name: Create DGEngine zip
       run: 7z a DGEngine-linux-x86_64.AppImage.zip DGEngine-x86_64.AppImage LICENSE.* README.* main.json gamefiles*
@@ -78,7 +67,7 @@ jobs:
     - name: Create AppImage with movie support
       run: |
         ./linuxdeploy-x86_64.AppImage \
-          --executable=DGEngine \
+          --executable=out/build/linux-x64-release-publish/DGEngine \
           --library=/lib/x86_64-linux-gnu/libavcodec.so.58 \
           --library=/lib/x86_64-linux-gnu/libavformat.so.58 \
           --library=/lib/x86_64-linux-gnu/libavutil.so.56 \
@@ -88,7 +77,6 @@ jobs:
           --desktop-file=pkg/linux/dgengine.desktop \
           --icon-file=pkg/linux/icon.png \
           --output=appimage
-        mv -f DGEngine-*-x86_64.AppImage DGEngine-x86_64.AppImage
 
     - name: Create DGEngine zip with movie support
       run: 7z a DGEngine-linux-ffmpeg-x86_64.AppImage.zip DGEngine-x86_64.AppImage LICENSE.* README.* main.json gamefiles*
@@ -96,11 +84,11 @@ jobs:
     - name: Create DGEngine zip artifact
       uses: actions/upload-artifact@v3
       with:
-        name: artifact-DGEngine-linux-x86_64
+        name: artifact-DGEngine-linux-x86_64.AppImage
         path: DGEngine-linux-x86_64.AppImage.zip
 
     - name: Create DGEngine zip artifact with movie support
       uses: actions/upload-artifact@v3
       with:
-        name: artifact-DGEngine-linux-ffmpeg-x86_64
+        name: artifact-DGEngine-linux-ffmpeg-x86_64.AppImage
         path: DGEngine-linux-ffmpeg-x86_64.AppImage.zip

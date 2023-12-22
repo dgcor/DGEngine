@@ -139,11 +139,11 @@ namespace
 		template<typename SignedResult, unsigned NbBits, typename InputType>
 		inline SignedResult signExtend(const InputType value)
 		{
-			static_assert(std::is_integral<SignedResult>::value && std::is_integral<InputType>::value, "");
+			static_assert(std::is_integral_v<SignedResult> && std::is_integral_v<InputType>, "");
 			static_assert(NbBits > 0, "Can not represent a signed value on 0 bit.");
 			static_assert(NbBits <= sizeof(SignedResult) * 8,
 				"Result type is not big enough to hold the values.");
-			static_assert(std::is_signed<SignedResult>::value, "Result type must be signed");
+			static_assert(std::is_signed_v<SignedResult>, "Result type must be signed");
 			struct
 			{
 				SignedResult x : NbBits;
@@ -217,7 +217,7 @@ namespace
 		template<typename RetType = uint32_t>
 		RetType readUnsigned(unsigned nbBits)
 		{
-			static_assert(std::is_unsigned<RetType>::value, "You must return an unsigned type !");
+			static_assert(std::is_unsigned_v<RetType>, "You must return an unsigned type !");
 			RetType value = 0;
 			size_t curBytesPos = currentBitPosition / 8;
 			size_t bitPosInCurByte = currentBitPosition % 8;
@@ -714,7 +714,7 @@ namespace
 					PixelCodesStack pixelCodesStack = {};
 					int nbPixelsDecoded = decodePixelCodesStack(data, pixelMask, pixelCodesStack);
 
-					PixelBufferEntry previousEntryForCell;
+					PixelBufferEntry previousEntryForCell{};
 					if (lastPixelEntryIndexForCell < pbEntries.size()) {
 						previousEntryForCell = pbEntries[lastPixelEntryIndexForCell];
 					}
@@ -883,7 +883,7 @@ namespace
 		}
 	}
 
-	bool readDirection(const std::vector<uint8_t>& fileData,
+	bool readDirection(const FileBytes& fileData,
 		const std::vector<uint32_t>& directionsOffsets,
 		uint32_t directions, uint32_t framesPerDir,
 		DCCDirection& outDir, uint32_t dirIndex, SimpleImageProvider& imgProvider)
@@ -935,7 +935,7 @@ namespace
 
 DCCImageContainer::DCCImageContainer(const std::shared_ptr<FileBytes>& fileBytes) : fileData(fileBytes)
 {
-	LittleEndianStreamReader fileStream(fileData->data(), fileData->size());
+	LittleEndianStreamReader fileStream((const uint8_t*)fileData->data(), fileData->size());
 
 	// DCC header decode
 

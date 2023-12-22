@@ -1,0 +1,146 @@
+{
+  "palette": { "file": "res/palette/pal.bin" },
+  "texture": [
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "texturePack1",
+      "texture": "texture",
+      "frames": [2, 2],
+      "textureIndexes": [
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [4, 0],
+        [5, 1],
+        [6, 2]
+      ]
+    },
+    {
+      "id": "texturePack2",
+      "texture": "texture",
+      "frames": [4, 2],
+      "textureIndexes": [
+        [5, 0],
+        [6, 1],
+        [7, 2],
+        [8, 3],
+        [9, 4],
+        [10, 5]
+      ]
+    },
+    {
+      "id": "texturePack3",
+      "texture": "texturePalette",
+      "frames": [2, 2],
+      "textureIndexes": [
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [4, 0],
+        [5, 1],
+        [6, 2]
+      ],
+      "palette": "pal",
+      "offset": [1, 1]
+    },
+    {
+      "id": "texturePack4",
+      "texture": "texture",
+      "frames": [4, 2],
+      "textureIndexes": [
+        [10, 0],
+        [11, 1],
+        [12, 2],
+        [15, 3],
+        [16, 4],
+        [17, 5]
+      ]
+    },
+    {
+      "id": "texturePack5",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 13],
+          "animationType": "playOnce",
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [14, 17],
+          "animationType": "backAndforth"
+        },
+        {
+          "range": [18, 21],
+          "directions": [[1, 1], [2, 2]]
+        }
+      ],
+      "palette": "pal"
+    },
+    {
+      "id": "key01",
+      "type": "stacked"
+    },
+    {
+      "id": "key01",
+      "type": "stacked",
+      "texturePacks": [
+        "texturePack1",
+        "texturePack2"
+      ]
+    },
+    {
+      "id": "key02",
+      "type": "stacked",
+      "texturePacks": [
+        "texturePack3",
+        "texturePack4"
+      ]
+    },
+    {
+      "id": "key03",
+      "type": "stacked",
+      "texturePacks": [
+        "texturePack3"
+      ]
+    },
+    {
+      "id": "key04",
+      "type": "stacked",
+      "texturePacks": [
+        "texturePack5",
+        "texturePack4"
+      ]
+    },
+    {
+      "id": "key05",
+      "type": "stacked",
+      "texturePacks": [
+        "texturePack4",
+        "texturePack5"
+      ]
+    }
+  ]
+}

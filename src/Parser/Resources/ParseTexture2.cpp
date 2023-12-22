@@ -21,9 +21,9 @@ namespace Parser2
 		auto path = getStringViewVal(elem["file"sv]);
 		auto pathLower = Utils::toLower(path);
 
-		if (Utils::endsWith(pathLower, ".cel") == true ||
-			Utils::endsWith(pathLower, ".cl2") == true ||
-			Utils::endsWith(pathLower, ".dc6") == true)
+		if (pathLower.ends_with(".cel") == true ||
+			pathLower.ends_with(".cl2") == true ||
+			pathLower.ends_with(".dc6") == true)
 		{
 			auto pal = game.Resources().getPalette(getStringKey(elem, "palette"));
 			PaletteArray* palArray = nullptr;

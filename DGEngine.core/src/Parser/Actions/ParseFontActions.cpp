@@ -13,4 +13,11 @@ namespace Parser::Actions
 			getStringViewKey(elem, "palette"),
 			getColorKey(elem, "color", sf::Color::White));
 	}
+
+	std::shared_ptr<Action> parseFontSetSmooth(const Value& elem)
+	{
+		return std::make_shared<ActFontSetSmooth>(
+			getStringViewKey(elem, "id"),
+			getBoolKey(elem, "smooth", true));
+	}
 }

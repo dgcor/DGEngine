@@ -2,8 +2,6 @@
 
 #include "Game/Action.h"
 #include "Game/Drawables/BindableText.h"
-#include "Game/Drawables/BitmapText.h"
-#include "Game/Drawables/StringText.h"
 #include "Game/Game.h"
 #include "Game/Utils/TextUtils.h"
 
@@ -80,28 +78,11 @@ public:
 
 	bool execute(Game& game) override
 	{
-		auto text2 = game.Resources().getDrawable<Text>(id);
-		if (text2 != nullptr)
+		auto text = game.Resources().getDrawable<Text>(id);
+		if (text != nullptr)
 		{
-			auto newFont = game.Resources().getFont(idFont);
-			auto text = text2->getDrawableText();
-			if (holdsNullFont(newFont) == false &&
-				text != nullptr)
-			{
-				auto bitmapText = dynamic_cast<BitmapText*>(text);
-				if (bitmapText != nullptr &&
-					holdsBitmapFont(newFont) == true)
-				{
-					bitmapText->setFont(std::get<std::shared_ptr<BitmapFont>>(newFont));
-					return true;
-				}
-				auto stringText = dynamic_cast<StringText*>(text);
-				if (stringText != nullptr &&
-					holdsFreeTypeFont(newFont) == true)
-				{
-					stringText->setFont(std::get<std::shared_ptr<FreeTypeFont>>(newFont));
-				}
-			}
+			auto font = game.Resources().getFont(idFont);
+			text->setFont(font);
 		}
 		return true;
 	}

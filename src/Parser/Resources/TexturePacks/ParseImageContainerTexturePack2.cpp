@@ -7,9 +7,9 @@
 #endif
 #include "Parser/Resources/TexturePacks/ParseImageContainerTexturePack.h"
 #include "Parser/Utils/ParseUtils.h"
+#include "Resources/TexturePacks/AnimatedTexturePack.h"
 #include "Resources/TexturePacks/ImageContainerTexturePack2.h"
 #include "Resources/TexturePacks/IndexedTexturePack2.h"
-#include "Resources/TexturePacks/MultiImageContainerTexturePack2.h"
 
 namespace Parser2
 {
@@ -19,7 +19,8 @@ namespace Parser2
 
 #ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
 	void parseDT1ImageContainerTexturePack(Game& game, const Value& elem,
-		const DT1ImageContainer& imgCont, IndexedTexturePack& texturePack)
+		const DT1ImageContainer& imgCont, AnimatedTexturePack& animatedTexturePack,
+		IndexedTexturePack2& indexedTexturePack)
 	{
 		const auto& tileIndexes = imgCont.getTileIndexes();
 
@@ -31,11 +32,11 @@ namespace Parser2
 			}
 			else if (ti.second.size() > 1)
 			{
-				texturePack.addAnimatedTexture(ti.first, sf::milliseconds(100), ti.second);
+				animatedTexturePack.addAnimatedTexture(ti.first, sf::milliseconds(100), ti.second);
 			}
 			else
 			{
-				texturePack.mapTextureIndex(ti.first, ti.second.front());
+				indexedTexturePack.mapTextureIndex(ti.first, ti.second.front());
 			}
 		}
 	}
@@ -101,19 +102,24 @@ namespace Parser2
 				return texturePack;
 			}
 
-			auto texturePack2 = std::make_unique<IndexedTexturePack2>(
-				std::move(texturePack), true, false);
+			auto animatedTexturePack = std::make_unique<AnimatedTexturePack>(
+				std::move(texturePack));
 
-			parseDT1ImageContainerTexturePack(game, elem, *dt1ImgCont, *texturePack2);
+			auto animatedTexturePackPtr = animatedTexturePack.get();
 
-			return texturePack2;
+			auto indexedTexturePack = std::make_unique<IndexedTexturePack2>(
+				std::move(animatedTexturePack), true);
+
+			parseDT1ImageContainerTexturePack(game, elem, *dt1ImgCont, *animatedTexturePackPtr, *indexedTexturePack);
+
+			return indexedTexturePack;
 #else
 			return texturePack;
 #endif
 		}
 		else
 		{
-			return std::make_unique<MultiImageContainerTexturePack2>(
+			return std::make_unique<ImageContainerTexturePack2>(
 				imgContainers, offset, pal, useIndexedImages, normalizeDirections
 			);
 		}

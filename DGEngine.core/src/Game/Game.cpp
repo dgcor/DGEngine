@@ -5,10 +5,10 @@
 #include "Hooks.h"
 #include <mutex>
 #include "Parser/Parser.h"
+#include <ranges>
 #include <SFML/Audio/SoundFileFactory.hpp>
 #include "SFML/SFMLUtils.h"
 #include "SFML/Wave2.h"
-#include "Utils/ReverseIterable.h"
 #include "Utils/StringHash.h"
 
 uint32_t Game::DefaultSizeX{ 640 };
@@ -20,10 +20,15 @@ uint32_t Game::MinSizeY{ 480 };
 uint32_t Game::RefSizeX{ 640 };
 uint32_t Game::RefSizeY{ 480 };
 
-Game::Game()
+Game::Game(bool reset_)
 {
 	static std::once_flag initWave2;
 	std::call_once(initWave2, []() { sf::SoundFileFactory::registerReader<Wave2FileReader>(); });
+
+	if (reset_ == true)
+	{
+		reset();
+	}
 }
 
 Game::~Game()
@@ -701,6 +706,9 @@ bool Game::drawLoadingScreen()
 	{
 		return false;
 	}
+	window.clear();
+	gameTexture.clear();
+
 	loadingScreen->draw(*this, gameTexture);
 	drawWindow();
 	return true;
@@ -708,11 +716,11 @@ bool Game::drawLoadingScreen()
 
 void Game::update()
 {
-	for (auto& res : reverse(resourceManager))
+	for (auto& res : resourceManager | std::views::reverse)
 	{
 		if ((int)(res.ignore & IgnoreResource::Update) == 0)
 		{
-			for (auto obj : reverse(res.drawables))
+			for (auto obj : res.drawables | std::views::reverse)
 			{
 				if (paused == false && res.ignore != IgnoreResource::Update)
 				{

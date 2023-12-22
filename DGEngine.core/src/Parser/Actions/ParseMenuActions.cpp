@@ -107,7 +107,7 @@ namespace Parser::Actions
 	{
 		return std::make_shared<ActMenuSetColor>(
 			getStringViewKey(elem, "id"),
-			getUIntKey(elem, "index"),
+			getIntKey(elem, "index", -1),
 			getColorKey(elem, "color", sf::Color::White));
 	}
 
@@ -115,7 +115,7 @@ namespace Parser::Actions
 	{
 		return std::make_shared<ActMenuSetFont>(
 			getStringViewKey(elem, "id"),
-			getUIntKey(elem, "index"),
+			getIntKey(elem, "index", -1),
 			getStringViewKey(elem, "font"));
 	}
 

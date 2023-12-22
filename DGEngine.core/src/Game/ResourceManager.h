@@ -2,9 +2,9 @@
 
 #include <initializer_list>
 #include <list>
+#include <ranges>
 #include "ResourceBundle.h"
 #include "ShaderManager.h"
-#include "Utils/ReverseIterable.h"
 
 class Image;
 
@@ -127,7 +127,7 @@ public:
 		{
 			return addResource(resources.back(), key, obj);
 		}
-		for (auto& res : reverse(resources))
+		for (auto& res : resources | std::views::reverse)
 		{
 			if (res.id == resourceId)
 			{
@@ -157,7 +157,7 @@ public:
 	template <class T>
 	T getResource(const std::string_view key) const
 	{
-		for (const auto& res : reverse(resources))
+		for (const auto& res : resources | std::views::reverse)
 		{
 			auto range = res.resources.equal_range(key);
 			for (; range.first != range.second; ++range.first)
@@ -205,7 +205,7 @@ public:
 	template <class T>
 	T* getDrawable(const std::string_view key) const
 	{
-		for (const auto& res : reverse(resources))
+		for (const auto& res : resources | std::views::reverse)
 		{
 			auto it = res.drawableIds.find(key);
 			if (it != res.drawableIds.cend())
@@ -219,7 +219,7 @@ public:
 	template <class T>
 	std::shared_ptr<T> getDrawableSharedPtr(const std::string_view key) const
 	{
-		for (const auto& res : reverse(resources))
+		for (const auto& res : resources | std::views::reverse)
 		{
 			auto it = res.drawableIds.find(key);
 			if (it != res.drawableIds.cend())

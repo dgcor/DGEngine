@@ -5,18 +5,28 @@
 #include "Hooks.h"
 #include <memory>
 #include "SFML/PhysFSStream.h"
+#include "Utils/Log.h"
 #include "Utils/Utils.h"
 
 namespace FileUtils
 {
+	static const char* mainArgv0{ nullptr };
+
 	void initPhysFS(const char* argv0)
 	{
-		static const char* mainArgv0 = argv0;
+		mainArgv0 = argv0;
+		initPhysFS();
+	}
+
+	void initPhysFS()
+	{
 		deinitPhysFS();
+		SPDLOG_DEBUG("initPhysFS");
 		if (PHYSFS_init(mainArgv0) != 0)
 		{
 			if (Hooks::RegisterArchivers != nullptr)
 			{
+				SPDLOG_DEBUG("RegisterArchivers");
 				Hooks::RegisterArchivers();
 			}
 			PHYSFS_permitSymbolicLinks(1);
@@ -27,6 +37,7 @@ namespace FileUtils
 	{
 		if (PHYSFS_isInit() != 0)
 		{
+			SPDLOG_DEBUG("deinitPhysFS");
 			PHYSFS_deinit();
 		}
 	}
@@ -59,8 +70,37 @@ namespace FileUtils
 				}
 			}
 		}
-		catch (std::exception&) {}
+		catch (std::exception&)
+		{
+			SPDLOG_DEBUG("gamefileExists error: {}", filePath);
+		}
+		SPDLOG_DEBUG("gamefile doesn't exist: {}", filePath);
 		return false;
+	}
+
+	std::string makePhysfsPath(const std::string_view path, const std::string_view file)
+	{
+		std::string filePath(path);
+		if (filePath.empty() == false &&
+			filePath.ends_with('/') == false)
+		{
+			filePath += '/';
+		}
+		filePath += file;
+		return filePath;
+	}
+
+	std::string makeSystemPath(const std::string_view path, const std::string_view file)
+	{
+		std::string filePath(path);
+		if (filePath.empty() == false &&
+			filePath.ends_with('\\') == false &&
+			filePath.ends_with('/') == false)
+		{
+			filePath += PHYSFS_getDirSeparator();
+		}
+		filePath += file;
+		return filePath;
 	}
 
 	bool mount(const std::string_view file, const std::string_view mountPoint,
@@ -71,29 +111,39 @@ namespace FileUtils
 		{
 			std::u8string_view utf8File((const char8_t*)file.data(), file.size());
 			std::filesystem::path path(utf8File);
+			auto utf8Path = path.u8string();
 
-			if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
+			if (PHYSFS_mount((const char*)utf8Path.c_str(), mountPoint.data(), append) != 0)
 			{
+				SPDLOG_INFO(R"(mount: "{}" -> "{}")", (const char*)utf8Path.c_str(), mountPoint);
 				return true;
 			}
 			if (path.has_extension() == true)
 			{
 				path = path.replace_extension();
-				if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
+				utf8Path = path.u8string();
+				if (PHYSFS_mount((const char*)utf8Path.c_str(), mountPoint.data(), append) != 0)
 				{
+					SPDLOG_INFO(R"(mount: "{}" -> "{}")", (const char*)utf8Path.c_str(), mountPoint);
 					return true;
 				}
 			}
 			for (const auto& ext : Hooks::ArchiveExtensions)
 			{
 				path = path.replace_extension(ext);
-				if (PHYSFS_mount((const char*)path.u8string().c_str(), mountPoint.data(), append) != 0)
+				utf8Path = path.u8string();
+				if (PHYSFS_mount((const char*)utf8Path.c_str(), mountPoint.data(), append) != 0)
 				{
+					SPDLOG_INFO(R"(mount: "{}" -> "{}")", (const char*)utf8Path.c_str(), mountPoint);
 					return true;
 				}
 			}
 		}
-		catch (std::exception&) {}
+		catch (std::exception&)
+		{
+			SPDLOG_DEBUG(R"(mount error: "{}" -> "{}")", file, mountPoint);
+		}
+		SPDLOG_ERROR(R"(mount: "{}" -> "{}")", file, mountPoint);
 		return false;
 	}
 
@@ -101,36 +151,47 @@ namespace FileUtils
 	{
 		if (PHYSFS_unmount(file.data()) != 0)
 		{
+			SPDLOG_INFO("unmount: {}", file);
 			return true;
 		}
 		try
 		{
 			std::u8string_view utf8File((const char8_t*)file.data(), file.size());
 			std::filesystem::path path(utf8File);
+			std::u8string utf8Path;
 
 			if (path.has_extension() == true)
 			{
 				path = path.replace_extension();
-				if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
+				utf8Path = path.u8string();
+				if (PHYSFS_unmount((const char*)utf8Path.c_str()) != 0)
 				{
+					SPDLOG_INFO("unmount: {}", (const char*)utf8Path.c_str());
 					return true;
 				}
 			}
 			for (const auto& ext : Hooks::ArchiveExtensions)
 			{
 				path = path.replace_extension(ext);
-				if (PHYSFS_unmount((const char*)path.u8string().c_str()) != 0)
+				utf8Path = path.u8string();
+				if (PHYSFS_unmount((const char*)utf8Path.c_str()) != 0)
 				{
+					SPDLOG_INFO("unmount: {}", (const char*)utf8Path.c_str());
 					return true;
 				}
 			}
 		}
-		catch (std::exception&) {}
+		catch (std::exception&)
+		{
+			SPDLOG_DEBUG("unmount error: {}", file);
+		}
+		SPDLOG_ERROR("unmount: {}", file);
 		return false;
 	}
 
 	void unmountAll()
 	{
+		SPDLOG_DEBUG("unmountAll");
 		initPhysFS(nullptr);
 	}
 
@@ -154,8 +215,8 @@ namespace FileUtils
 		{
 			for (char** path = paths; *path != nullptr; path++)
 			{
-				auto fullSrcPath = std::string(dirSrcName) + '/' + *path;
-				auto fullDstPath = std::string(dirDstName) + '/' + *path;
+				auto fullSrcPath = makePhysfsPath(dirSrcName, *path);
+				auto fullDstPath = makePhysfsPath(dirDstName, *path);
 
 				if (PHYSFS_stat(fullSrcPath.c_str(), &stat) == 0)
 				{
@@ -173,7 +234,7 @@ namespace FileUtils
 					if (fileRead.hasError() == false &&
 						fileWrite != nullptr)
 					{
-						std::vector<uint8_t> data((size_t)fileRead.getSize());
+						FileBytes data((size_t)fileRead.getSize());
 						fileRead.read(data.data(), fileRead.getSize());
 						PHYSFS_writeBytes(fileWrite, data.data(), data.size());
 						PHYSFS_close(fileWrite);
@@ -188,7 +249,9 @@ namespace FileUtils
 
 	bool createDir(const char* dirName) noexcept
 	{
-		return PHYSFS_mkdir(dirName) != 0;
+		auto success = PHYSFS_mkdir(dirName) != 0;
+		SPDLOG_DEBUG("createDir ({}): {}", success, dirName);
+		return success;
 	}
 
 	bool deleteAll(const char* filePath, bool deleteRoot)
@@ -209,7 +272,7 @@ namespace FileUtils
 				{
 					for (char** path = paths; *path != nullptr; path++)
 					{
-						auto fullPath = std::string(filePath) + '/' + *path;
+						auto fullPath = makePhysfsPath(filePath, *path);
 						if (PHYSFS_stat(fullPath.c_str(), &fileStat) == 0)
 						{
 							continue;
@@ -269,26 +332,74 @@ namespace FileUtils
 			fileExists = PHYSFS_exists(lowerCasefilePath.c_str()) != 0;
 		}
 #endif
+		SPDLOG_DEBUG("fileExists ({}): {}", fileExists, filePath);
 		return fileExists;
 	}
 
-	std::vector<std::string> getFileList(const std::string_view filePath,
+	std::vector<std::string> geDirList(const std::string_view path, bool onlyWritableDirs)
+	{
+		std::string_view saveDir;
+		if (onlyWritableDirs == true)
+		{
+			auto writeDir = PHYSFS_getWriteDir();
+			if (writeDir != nullptr)
+			{
+				saveDir = writeDir;
+			}
+		}
+		std::vector<std::string> vecDirs;
+		auto dirs = PHYSFS_enumerateFiles(path.data());
+		if (dirs != nullptr)
+		{
+			PHYSFS_Stat fileStat;
+			for (char** dir = dirs; *dir != nullptr; dir++)
+			{
+				auto dirPath = makePhysfsPath(path, *dir);
+				if (PHYSFS_stat(dirPath.c_str(), &fileStat) == 0)
+				{
+					continue;
+				}
+				if (fileStat.filetype != PHYSFS_FILETYPE_DIRECTORY)
+				{
+					continue;
+				}
+				if (**dir == '.')
+				{
+					continue;
+				}
+				if (onlyWritableDirs == true)
+				{
+					auto realDir = PHYSFS_getRealDir(*dir);
+					if (realDir != nullptr &&
+						saveDir != realDir)
+					{
+						continue;
+					}
+				}
+				vecDirs.push_back(*dir);
+			}
+			PHYSFS_freeList(dirs);
+		}
+		return vecDirs;
+	}
+
+	std::vector<std::string> getFileList(const std::string_view path,
 		const std::string_view fileExt, bool getFullPath)
 	{
 		std::vector<std::string> vec;
-		auto files = PHYSFS_enumerateFiles(filePath.data());
+		auto files = PHYSFS_enumerateFiles(path.data());
 		if (files != nullptr)
 		{
 			PHYSFS_Stat fileStat;
 			for (char** file = files; *file != nullptr; file++)
 			{
-				auto file2 = std::string(filePath) + '/' + std::string(*file);
+				auto fullPath = makePhysfsPath(path, *file);
 
-				if (Utils::endsWith(file2, fileExt) == false)
+				if (fullPath.ends_with(fileExt) == false)
 				{
 					continue;
 				}
-				if (PHYSFS_stat(file2.c_str(), &fileStat) == 0)
+				if (PHYSFS_stat(fullPath.c_str(), &fileStat) == 0)
 				{
 					continue;
 				}
@@ -296,7 +407,7 @@ namespace FileUtils
 				{
 					if (getFullPath == true)
 					{
-						vec.push_back(file2);
+						vec.push_back(fullPath);
 					}
 					else
 					{
@@ -357,54 +468,44 @@ namespace FileUtils
 		return {};
 	}
 
-	std::vector<std::string> geDirList(const std::string_view path,
-		const std::string_view rootPath)
+	FileBytes readBytes(const std::string_view fileName)
 	{
-		std::vector<std::string> vecDirs;
-		auto dirs = PHYSFS_enumerateFiles(path.data());
-		if (dirs != nullptr)
-		{
-			PHYSFS_Stat fileStat;
-			for (char** dir = dirs; *dir != nullptr; dir++)
-			{
-				if (PHYSFS_stat(*dir, &fileStat) == 0)
-				{
-					continue;
-				}
-				if (fileStat.filetype != PHYSFS_FILETYPE_DIRECTORY)
-				{
-					continue;
-				}
-				if (**dir == '.')
-				{
-					continue;
-				}
-				if (rootPath.empty() == false)
-				{
-					auto realDir = PHYSFS_getRealDir(*dir);
-					if (realDir != nullptr)
-					{
-						if (rootPath != realDir)
-						{
-							continue;
-						}
-					}
-				}
-				vecDirs.push_back(*dir);
-			}
-			PHYSFS_freeList(dirs);
-		}
-		return vecDirs;
+		return readBytes(fileName, std::numeric_limits<size_t>::max());
 	}
 
-	std::vector<std::string> getSaveDirList()
+	FileBytes readBytes(const std::string_view fileName, size_t maxNumBytes)
 	{
-		auto writeDir = PHYSFS_getWriteDir();
-		if (writeDir != nullptr)
+		return readBytes(fileName, 0, maxNumBytes);
+	}
+
+	FileBytes readBytes(const std::string_view fileName, size_t startPosition, size_t maxNumBytes)
+	{
+		sf::PhysFSStream ifs(fileName);
+		if (ifs.hasError() == true)
 		{
-			return geDirList("", writeDir);
+			SPDLOG_DEBUG("readBytes error: {}", fileName);
+			return {};
 		}
-		return {};
+		auto fileSize = (size_t)ifs.getSize();
+
+		startPosition = std::min(startPosition, fileSize);
+		maxNumBytes = std::min(maxNumBytes, fileSize);
+		size_t endPosition = std::min(startPosition + maxNumBytes, fileSize);
+
+		auto size = endPosition - startPosition;
+		if (size == 0)
+		{
+			SPDLOG_DEBUG("readBytes empty range: {}", fileName);
+			return {};
+		}
+
+		FileBytes data(size);
+		if (startPosition > 0)
+		{
+			ifs.seek(startPosition);
+		}
+		ifs.read(data.data(), size);
+		return data;
 	}
 
 	std::string readText(const std::string_view fileName)
@@ -412,6 +513,7 @@ namespace FileUtils
 		sf::PhysFSStream ifs(fileName);
 		if (ifs.hasError() == true)
 		{
+			SPDLOG_DEBUG("readText error: {}", fileName);
 			return {};
 		}
 		std::string data((size_t)ifs.getSize(), '\0');
@@ -419,33 +521,14 @@ namespace FileUtils
 		return data;
 	}
 
-	std::vector<uint8_t> readChar(const std::string_view fileName)
-	{
-		return readChar(fileName, std::numeric_limits<size_t>::max());
-	}
-
-	std::vector<uint8_t> readChar(const std::string_view fileName, size_t maxNumBytes)
-	{
-		sf::PhysFSStream ifs(fileName);
-		if (ifs.hasError() == true)
-		{
-			return {};
-		}
-		auto size = std::min((size_t)ifs.getSize(), maxNumBytes);
-		std::vector<uint8_t> data(size);
-		ifs.read(data.data(), size);
-		return data;
-	}
-
 	std::string getSaveDir()
 	{
-		std::string saveDir = PHYSFS_getWriteDir();
-		if (Utils::endsWith(saveDir, "\\") == false &&
-			Utils::endsWith(saveDir, "/") == false)
+		auto writeDir = PHYSFS_getWriteDir();
+		if (writeDir != nullptr)
 		{
-			saveDir += PHYSFS_getDirSeparator();
+			return makeSystemPath(writeDir, {});
 		}
-		return saveDir;
+		return {};
 	}
 
 	bool setSaveDir(const char* dirName) noexcept
@@ -477,7 +560,7 @@ namespace FileUtils
 		return PHYSFS_setWriteDir(userDir) != 0;
 	}
 
-	bool saveText(const std::string_view filePath, const std::string_view str) noexcept
+	bool saveBytes(const std::string_view filePath, const std::span<std::byte> bytes) noexcept
 	{
 		try
 		{
@@ -490,12 +573,21 @@ namespace FileUtils
 			auto file = PHYSFS_openWrite(filePath.data());
 			if (file != nullptr)
 			{
-				PHYSFS_writeBytes(file, str.data(), str.size());
+				PHYSFS_writeBytes(file, bytes.data(), bytes.size());
 				return PHYSFS_close(file) != 0;
 			}
 		}
-		catch (std::exception&) {}
+		catch (std::exception&)
+		{
+			SPDLOG_DEBUG("saveBytes error: {}", filePath);
+		}
+		SPDLOG_WARN("saveBytes failed: {}", filePath);
 		return false;
+	}
+
+	bool saveText(const std::string_view filePath, const std::string_view str) noexcept
+	{
+		return saveBytes(filePath, std::span<std::byte>((std::byte*)str.data(), str.size()));
 	}
 
 	bool exportFile(const std::string_view inFile, const std::string_view outFile)
@@ -513,12 +605,14 @@ namespace FileUtils
 				outPath /= inPath.filename();
 			}
 
-			auto data = readChar(inFile);
+			auto data = readBytes(inFile);
 			auto newFile = std::fstream(outPath, std::ios::out | std::ios::binary);
-			newFile.write((char*)&data[0], data.size());
+			newFile.write((const char*)data.data(), data.size());
 			newFile.close();
+			return true;
 		}
 		catch (std::exception&) {}
+		SPDLOG_WARN(R"(exportFile failed: "{}" -> "{}")", inFile, outFile);
 		return false;
 	}
 }

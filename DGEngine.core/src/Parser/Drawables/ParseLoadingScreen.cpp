@@ -26,7 +26,7 @@ namespace Parser
 			if (texPack != nullptr)
 			{
 				auto animInfo = texPack->getAnimation(-1, -1);
-				animInfo.indexRange = getFramesKey(elem, "frames", animInfo.indexRange);
+				animInfo.indexRange = getRange1Key(elem, "frames", animInfo.indexRange);
 				loadingScreen = std::make_unique<LoadingScreen>(texPack, animInfo);
 			}
 		}

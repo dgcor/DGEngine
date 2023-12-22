@@ -1,4 +1,5 @@
 #include "BitmapFontTexturePack.h"
+#include "Game/Utils/ImageUtils.h"
 
 // This piece of code was originally from Lazy Foo' Productions (http://lazyfoo.net/)
 void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, int columns,
@@ -7,6 +8,11 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, i
 	//Set the cell dimensions
 	int cellW = img.getSize().x / columns;
 	int cellH = img.getSize().y / rows;
+
+	if (cellW <= 0 || cellH <= 0)
+	{
+		return;
+	}
 
 	charRects.resize(rows * columns);
 
@@ -150,11 +156,11 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, i
 				}
 			}
 		}
-		charRects['\n'].width = baseA - top;
+		charRects['\n'].height = baseA - top;
 	}
 	else if (newLine > 0)
 	{
-		charRects['\n'].width = newLine;
+		charRects['\n'].height = newLine;
 	}
 
 	//Calculate space
@@ -225,7 +231,7 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 	int cellH = tex->getSize().y / rows;
 	int iRow = 0;
 	int iCol = 0;
-	for (size_t i = 0; i < 256; i++)
+	for (size_t i = 0; i < charRects.size(); i++)
 	{
 		charRects[i].left = cellW * iCol;
 		charRects[i].top = cellH * iRow;
@@ -260,15 +266,14 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 		}
 	}
 
-
 	if (newLine > 0)
 	{
-		charRects['\n'].width = newLine;
+		charRects['\n'].height = newLine;
 	}
 	else if (charStartIdx == 2 &&
 		(charSizes.size() == 130 || charSizes.size() == 258))
 	{
-		charRects['\n'].width = charSizes[1];
+		charRects['\n'].height = charSizes[1];
 	}
 
 	if (space > 0)
@@ -285,6 +290,14 @@ BitmapFontTexturePack::BitmapFontTexturePack(const std::shared_ptr<sf::Texture>&
 	{
 		charRects['\t'].width = tab;
 	}
+}
+
+BitmapFontTexturePack::BitmapFontTexturePack(const ImageContainer& imgContainer,
+	const std::shared_ptr<Palette>& palette_) : palette(palette_)
+{
+	auto img = ImageUtils::packImages(imgContainer, nullptr, &charRects);
+	texture = std::make_shared<sf::Texture>();
+	texture->loadFromImage(img);
 }
 
 bool BitmapFontTexturePack::get(uint32_t index, TextureInfo& ti) const

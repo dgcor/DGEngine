@@ -94,7 +94,7 @@ public:
 		}
 		if (i < elements.size())
 		{
-			elements[i] = std::make_pair(key, value);
+			elements[i] = { key, value };
 			numElements++;
 			return true;
 		}

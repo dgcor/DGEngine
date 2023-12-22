@@ -32,7 +32,7 @@ namespace Parser
 			}
 		}
 
-		auto size = getVector2fKey<sf::Vector2f>(elem, "size", movie->Size());
+		auto size = getSizeKey(elem, "size", movie->Size());
 		parseDrawableProperties(game, elem, *movie, size);
 
 		auto volume = getVariableKey(elem, "volume");

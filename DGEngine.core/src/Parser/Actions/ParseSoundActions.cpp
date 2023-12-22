@@ -11,7 +11,7 @@ namespace Parser::Actions
 		return std::make_shared<ActSoundLoadPlay>(
 			getStringViewKey(elem, "file"),
 			getVariableKey(elem, "volume"),
-			getTimeKey(elem, "seek"),
+			getTimeUKey(elem, "seek"),
 			getBoolKey(elem, "unique"));
 	}
 
@@ -20,7 +20,7 @@ namespace Parser::Actions
 		return std::make_shared<ActSoundPlay>(
 			getStringViewKey(elem, "id"),
 			getVariableKey(elem, "volume"),
-			getTimeKey(elem, "seek"),
+			getTimeUKey(elem, "seek"),
 			getBoolKey(elem, "unique"));
 	}
 }

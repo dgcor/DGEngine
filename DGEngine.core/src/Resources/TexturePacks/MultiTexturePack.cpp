@@ -2,9 +2,15 @@
 #include "Game/AnimationInfo.h"
 #include <limits>
 
+MultiTexturePack::MultiTexturePack(TextureGroup&& textureGroup_,
+	const std::shared_ptr<Palette>& palette_) : palette(palette_)
+{
+	addTextureGroup(std::move(textureGroup_));
+}
+
 bool MultiTexturePack::fetchIndex(uint32_t index, uint32_t& indexX, uint32_t& indexY) const
 {
-	if (texVec.empty() == true)
+	if (textureGroups.empty() == true)
 	{
 		return false;
 	}
@@ -12,7 +18,7 @@ bool MultiTexturePack::fetchIndex(uint32_t index, uint32_t& indexX, uint32_t& in
 	{
 		indexX = index % numFrames;
 		indexY = index / numFrames;
-		if (indexY >= texVec.size() || indexX >= texVec[indexY].numFrames)
+		if (indexY >= textureGroups.size() || indexX >= textureGroups[indexY].numFrames)
 		{
 			return false;
 		}
@@ -22,13 +28,13 @@ bool MultiTexturePack::fetchIndex(uint32_t index, uint32_t& indexX, uint32_t& in
 	do
 	{
 		indexY++;
-		if (indexY >= texVec.size() || index < texVec[indexY].startIndex)
+		if (indexY >= textureGroups.size() || index < textureGroups[indexY].startIndex)
 		{
 			return false;
 		}
-		indexX = index - texVec[indexY].startIndex;
+		indexX = index - textureGroups[indexY].startIndex;
 
-	} while (indexX >= texVec[indexY].numFrames);
+	} while (indexX >= textureGroups[indexY].numFrames);
 	return true;
 }
 
@@ -39,7 +45,7 @@ bool MultiTexturePack::get(uint32_t index, TextureInfo& ti) const
 	{
 		return false;
 	}
-	texVec[indexY].getTexture(indexX, ti);
+	textureGroups[indexY].getTexture(indexX, ti);
 	ti.palette = palette;
 	return true;
 }
@@ -51,98 +57,98 @@ sf::Vector2i MultiTexturePack::getTextureSize(uint32_t index) const
 	{
 		return {};
 	}
-	return { (int32_t)texVec[indexY].subImageSizeX, (int32_t)texVec[indexY].subImageSizeY };
+	return { (int32_t)textureGroups[indexY].subImageSizeX, (int32_t)textureGroups[indexY].subImageSizeY };
 }
 
-void MultiTexturePack::addTexturePack(TexturePackGroup&& t, const std::pair<uint32_t, uint32_t>& frames)
+void MultiTexturePack::addTextureGroup(TextureGroup&& textureGroup)
 {
-	if (t.startIndex < textureCount)
+	if (textureGroup.startIndex < textureCount)
 	{
-		t.startIndex = textureCount;
+		textureGroup.startIndex = textureCount;
 	}
-	if (t.makeTexturePack(frames) == true)
+	if (textureGroup.isValid() == true)
 	{
-		if (texVec.empty() == true)
+		if (textureGroups.empty() == true)
 		{
 			texturesHaveSameSize = true;
-			numFrames = t.numFrames;
-			if (t.startIndex > 0)
+			numFrames = textureGroup.numFrames;
+			if (textureGroup.startIndex > 0)
 			{
 				indexesHaveGaps = true;
 			}
+			frameRange.first = textureGroup.startIndex;
+			frameRange.second = textureGroup.startIndex + numFrames - 1;
 		}
 		else
 		{
 			if (texturesHaveSameSize == true && (
-				t.subImageSizeX != texVec.back().subImageSizeX ||
-				t.subImageSizeY != texVec.back().subImageSizeY))
+				textureGroup.subImageSizeX != textureGroups.back().subImageSizeX ||
+				textureGroup.subImageSizeY != textureGroups.back().subImageSizeY))
 			{
 				texturesHaveSameSize = false;
 			}
 			if (texturesHaveSameNumFrames() == true &&
-				numFrames != t.numFrames)
+				numFrames != textureGroup.numFrames)
 			{
 				numFrames = 0;
 			}
-			if (indexesHaveGaps == false &&
-				(t.startIndex > (texVec.back().startIndex + texVec.back().numFrames)))
+			auto frameRangeEnd = textureGroups.back().startIndex + textureGroups.back().numFrames;
+			if (textureGroup.startIndex < frameRangeEnd)
+			{
+				textureGroup.startIndex = frameRangeEnd;
+			}
+			auto indexGap = textureGroup.startIndex > frameRangeEnd ? textureGroup.startIndex - frameRangeEnd : 0u;
+			if (indexesHaveGaps == false && indexGap > 0)
 			{
 				indexesHaveGaps = true;
 			}
+			frameRange.second += textureGroups.back().numFrames + indexGap;
 		}
-		textureCount += t.numFrames;
-		texVec.push_back(std::move(t));
+		textureCount += textureGroup.numFrames;
+		textureGroups.push_back(std::move(textureGroup));
 	}
 }
 
 const sf::Texture* MultiTexturePack::getTexture() const noexcept
 {
-	if (texVec.size() == 1)
+	if (textureGroups.size() == 1)
 	{
-		return texVec.front().texture.get();
+		return textureGroups.front().texture.get();
 	}
 	return nullptr;
 }
 
-uint32_t MultiTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
+uint32_t MultiTexturePack::getGroupCount() const noexcept
 {
-	if (groupIdx < texVec.size())
-	{
-		return texVec[groupIdx].directions;
-	}
-	return 1;
+	return textureGroups.empty() == false ? (uint32_t)textureGroups.size() : 1;
 }
 
-uint32_t MultiTexturePack::getDirection(uint32_t frameIdx) const noexcept
+std::pair<uint32_t, uint32_t> MultiTexturePack::getDirection(uint32_t frameIdx, AnimationFlags& flags) const noexcept
 {
-	for (const auto& t : texVec)
+	for (uint32_t groupIdx = 0; const auto& textureGroup : textureGroups)
 	{
-		auto direction = t.getDirection(frameIdx);
-		if (direction != std::numeric_limits<uint32_t>::max())
+		auto direction = textureGroup.getDirection(frameIdx, flags);
+		if ((int)(flags & AnimationFlags::Valid) != 0)
 		{
-			return direction;
+			return { groupIdx, direction };
 		}
+		groupIdx++;
 	}
-	return 0;
+	flags = AnimationFlags::Overflow;
+	return {};
 }
 
 AnimationInfo MultiTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
+	if (textureGroups.size() == 1)
+	{
+		return textureGroups.front().getAnimation(groupIdx, directionIdx);
+	}
+	if (groupIdx >= 0 && (uint32_t)groupIdx < textureGroups.size())
+	{
+		return textureGroups[groupIdx].getAnimation(0, directionIdx);
+	}
 	AnimationInfo animInfo;
-	if (groupIdx >= 0 && (uint32_t)groupIdx < texVec.size())
-	{
-		animInfo.indexRange = TexturePack::getRange(
-			texVec[groupIdx].startIndex,
-			texVec[groupIdx].startIndex + texVec[groupIdx].numFrames,
-			directionIdx,
-			texVec[groupIdx].directions
-		);
-		animInfo.animType = texVec[groupIdx].animType;
-		animInfo.refresh = texVec[groupIdx].refresh;
-	}
-	else
-	{
-		animInfo.indexRange = std::make_pair((uint32_t)0, textureCount - 1);
-	}
+	animInfo.indexRange = frameRange;
 	return animInfo;
 }

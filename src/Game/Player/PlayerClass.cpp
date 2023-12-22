@@ -40,7 +40,7 @@ void PlayerClass::setAnimation(size_t textureIdx, PlayerAnimation animation,
 	}
 	else
 	{
-		baseAnim.textureIndexRange = std::make_pair(0, 0);
+		baseAnim.textureIndexRange = {};
 		baseAnim.animType = AnimationType::PlayOnce;
 		baseAnim.backDirection = false;
 	}
@@ -68,7 +68,7 @@ void PlayerClass::setSpeed(PlayerAnimation animation, const AnimationSpeed& spee
 			return;
 		}
 	}
-	animationSpeeds.push_back(std::make_pair(animation, speed));
+	animationSpeeds.push_back({ animation, speed });
 }
 
 const sf::SoundBuffer* PlayerClass::getSound(const std::string_view key, size_t soundNum) const

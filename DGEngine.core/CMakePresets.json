@@ -8,6 +8,9 @@
       "generator": "Ninja",
       "binaryDir": "${sourceDir}/out/build/${presetName}",
       "installDir": "${sourceDir}/out/install/${presetName}",
+      "cacheVariables": {
+        "DGENGINE_BUILD_TEST_SUITE": true
+      },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
@@ -62,6 +65,17 @@
       }
     },
     {
+      "name": "linux-base-x64-vcpkg",
+      "hidden": true,
+      "inherits": "linux-base-x64-gcc",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+          "type": "FILEPATH"
+        }
+      }
+    },
+    {
       "name": "linux-x64-debug",
       "displayName": "x64 Debug",
       "description": "Target Linux (64-bit). (Debug)",
@@ -93,7 +107,15 @@
       "displayName": "x64 Debug NoMovie",
       "inherits": "linux-x64-debug",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "linux-x64-debug-vcpkg",
+      "displayName": "x64 Debug (vcpkg)",
+      "inherits": "linux-base-x64-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
@@ -128,7 +150,15 @@
       "displayName": "x64 Release NoMovie",
       "inherits": "linux-x64-release",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "linux-x64-release-vcpkg",
+      "displayName": "x64 Release (vcpkg)",
+      "inherits": "linux-x64-debug-vcpkg",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
@@ -144,12 +174,22 @@
         "CMAKE_TOOLCHAIN_FILE": {
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
           "type": "FILEPATH"
-        }
+        },
+        "DGENGINE_BUILD_TEST_SUITE": true
       },
       "condition": {
         "type": "equals",
         "lhs": "${hostSystemName}",
         "rhs": "Windows"
+      }
+    },
+    {
+      "name": "windows-base-mingw",
+      "hidden": true,
+      "inherits": "windows-base",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
       }
     },
     {
@@ -171,7 +211,20 @@
       "displayName": "x64 Debug NoMovie",
       "inherits": "windows-x64-debug",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
+      }
+    },
+    {
+      "name": "windows-x64-mingw-debug",
+      "displayName": "x64 Debug (MinGW)",
+      "inherits": "windows-base-mingw",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "VCPKG_TARGET_TRIPLET": "x64-mingw-dynamic"
       }
     },
     {
@@ -188,7 +241,7 @@
       "displayName": "x64 Release NoMovie",
       "inherits": "windows-x64-release",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
       }
     },
     {
@@ -196,7 +249,7 @@
       "displayName": "x64 Release NoMovie Static",
       "inherits": "windows-x64-release-static",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
       }
     },
     {
@@ -204,7 +257,25 @@
       "displayName": "x64 Release Static",
       "inherits": "windows-x64-release",
       "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x64-windows-static"
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "DGENGINE_STATIC_CRT": true
+      }
+    },
+    {
+      "name": "windows-x64-mingw-release",
+      "displayName": "x64 Release (MinGW)",
+      "inherits": "windows-x64-mingw-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x64-mingw-release-static",
+      "displayName": "x64 Release Static (MinGW)",
+      "inherits": "windows-x64-mingw-release",
+      "cacheVariables": {
+        "DGENGINE_STATIC_CRT": true,
+        "VCPKG_TARGET_TRIPLET": "x64-mingw-static"
       }
     },
     {
@@ -226,7 +297,7 @@
       "displayName": "x86 Debug NoMovie",
       "inherits": "windows-x86-debug",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
       }
     },
     {
@@ -243,7 +314,7 @@
       "displayName": "x86 Release NoMovie",
       "inherits": "windows-x86-release",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
       }
     },
     {
@@ -251,7 +322,7 @@
       "displayName": "x86 Release NoMovie Static",
       "inherits": "windows-x86-release-static",
       "cacheVariables": {
-        "MOVIE_SUPPORT": false
+        "DGENGINE_MOVIE_SUPPORT": false
       }
     },
     {
@@ -259,7 +330,8 @@
       "displayName": "x86 Release Static",
       "inherits": "windows-x86-release",
       "cacheVariables": {
-        "VCPKG_TARGET_TRIPLET": "x86-windows-static"
+        "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+        "DGENGINE_STATIC_CRT": true
       }
     }
   ],
@@ -285,6 +357,11 @@
       "displayName": "x64 Debug NoMovie"
     },
     {
+      "name": "linux-x64-debug-vcpkg",
+      "configurePreset": "linux-x64-debug-vcpkg",
+      "displayName": "x64 Debug (vcpkg)"
+    },
+    {
       "name": "linux-x64-release",
       "configurePreset": "linux-x64-release",
       "displayName": "x64 Release"
@@ -303,6 +380,11 @@
       "name": "linux-x64-release-nomovie",
       "configurePreset": "linux-x64-release-nomovie",
       "displayName": "x64 Release NoMovie"
+    },
+    {
+      "name": "linux-x64-release-vcpkg",
+      "configurePreset": "linux-x64-release-vcpkg",
+      "displayName": "x64 Release (vcpkg)"
     },
     {
       "name": "windows-x64-debug",
@@ -363,6 +445,53 @@
       "name": "windows-x86-release-static",
       "configurePreset": "windows-x86-release-static",
       "displayName": "x86 Release Static"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "linux-x64-debug",
+      "configurePreset": "linux-x64-debug",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-clang",
+      "configurePreset": "linux-x64-debug-clang",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-gcc",
+      "configurePreset": "linux-x64-debug-gcc",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-vcpkg",
+      "configurePreset": "linux-x64-debug-vcpkg",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "linux-x64-debug-nomovie",
+      "configurePreset": "linux-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie"
+    },
+    {
+      "name": "windows-x64-debug",
+      "configurePreset": "windows-x64-debug",
+      "displayName": "x64 Debug"
+    },
+    {
+      "name": "windows-x64-debug-nomovie",
+      "configurePreset": "windows-x64-debug-nomovie",
+      "displayName": "x64 Debug NoMovie"
+    },
+    {
+      "name": "windows-x86-debug",
+      "configurePreset": "windows-x86-debug",
+      "displayName": "x86 Debug"
+    },
+    {
+      "name": "windows-x86-debug-nomovie",
+      "configurePreset": "windows-x86-debug-nomovie",
+      "displayName": "x86 Debug NoMovie"
     }
   ]
 }

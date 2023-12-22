@@ -313,7 +313,7 @@ void LevelBase::updateLights()
 
 bool LevelBase::hasAutomap() const noexcept
 {
-	for (const auto& layer : reverse(levelLayers))
+	for (const auto& layer : levelLayers | std::views::reverse)
 	{
 		if (layer.automap == true)
 		{

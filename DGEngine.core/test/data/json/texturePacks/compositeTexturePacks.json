@@ -1,0 +1,231 @@
+{
+  "file": { "file": "res/texture/imageContainer.png" },
+  "palette": { "file": "res/palette/pal.bin" },
+  "imageContainer": [
+    {
+      "id": "imageContainer",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2]
+    },
+    {
+      "id": "imageContainer2",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2]
+    }
+  ],
+  "texture": [
+    {
+      "id": "texture",
+      "file": "res/texture/imageContainer.png"
+    },
+    {
+      "id": "texturePalette",
+      "file": "res/texture/imageContainerPalette.png"
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "texturePack1",
+      "imageContainer": "imageContainer"
+    },
+    {
+      "id": "texturePack2",
+      "imageContainer": "imageContainer2"
+    },
+    {
+      "id": "texturePack3",
+      "texture": "texture",
+      "frames": [4, 2],
+      "textureIndexes": [
+        [10, 0],
+        [11, 1],
+        [12, 2],
+        [15, 3],
+        [16, 4],
+        [17, 5]
+      ]
+    },
+    {
+      "id": "texturePack4",
+      "texture": [
+        {
+          "id": "texturePalette",
+          "startIndex": 10,
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        },
+        {
+          "id": "texturePalette",
+          "frames": [2, 2]
+        }
+      ],
+      "groups": [
+        {
+          "range": [10, 13],
+          "animationType": "playOnce",
+          "directions": [[0, 1], [2, 3], [4, 5], [6, 7]]
+        },
+        {
+          "range": [14, 17],
+          "animationType": "backAndforth"
+        },
+        {
+          "range": [18, 21],
+          "directions": [[1, 1], [2, 2]]
+        }
+      ],
+      "palette": "pal"
+    },
+    {
+      "id": "texturePack5",
+      "texture": "texture",
+      "frames": [2, 2]
+    },
+    {
+      "id": "texturePack6",
+      "texture": "texture",
+      "frames": [4, 2]
+    },
+    {
+      "id": "key01",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack1",
+        "texturePack2"
+      ]
+    },
+    {
+      "id": "key02",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack3",
+        "texturePack4"
+      ]
+    },
+    {
+      "id": "key03",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack4",
+        "texturePack3"
+      ]
+    },
+    {
+      "id": "key04",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack3",
+        "texturePack4"
+      ],
+      "directionLayerOrders": [
+        [0, 1],
+        [0, 1]
+      ]
+    },
+    {
+      "id": "key05",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack3",
+        "texturePack4"
+      ],
+      "directionLayerOrders": [
+        [1, 0],
+        [0, 1]
+      ]
+    },
+    {
+      "id": "key06",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack3",
+        "texturePack4"
+      ],
+      "directionLayerOrders": [
+        [3, 1, 0, 0],
+        [3, 0, 1, 0]
+      ]
+    },
+    {
+      "id": "key07",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack4",
+        "texturePack3"
+      ],
+      "directionLayerOrders": [
+        [3, 1, 0],
+        [1]
+      ]
+    },
+    {
+      "id": "key08",
+      "type": "composite",
+      "texturePacks": [
+        "texturePack6",
+        "texturePack5"
+      ],
+      "directionLayerOrders": [
+        [0, 1], [0, 1], [0, 1], [0, 1],
+        [1, 0], [1, 0], [1, 0], [1, 0]
+      ]
+    },
+    {
+      "id": "key09",
+      "type": "composite",
+      "groups": [
+        {
+          "texturePacks": [
+            "texturePack4",
+            "texturePack3"
+          ],
+          "directionLayerOrders": [
+            [1, 0],
+            [1, 0],
+            [1, 0],
+            [1, 0]
+          ]
+        },
+        {
+          "texturePacks": [
+            "texturePack3",
+            "texturePack4"
+          ],
+          "directionLayerOrders": [
+            [0, 1],
+            [0, 1]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "key10",
+      "type": "composite",
+      "groups": [
+        {
+          "texturePacks": [
+            "texturePack5",
+            "texturePack6"
+          ],
+          "directionLayerOrders": [
+            [0, 1], [0, 1],
+            [1, 0], [1, 0]
+          ]
+        },
+        {
+          "texturePacks": [
+            "texturePack6",
+            "texturePack5"
+          ],
+          "directionLayerOrders": [
+            [0, 1], [1, 0], [0, 1], [1, 0],
+            [0, 1], [1, 0], [0, 1], [1, 0]
+          ]
+        }
+      ]
+    }
+  ]
+}

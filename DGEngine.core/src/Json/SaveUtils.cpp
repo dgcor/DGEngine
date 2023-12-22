@@ -144,8 +144,17 @@ namespace SaveUtils
 		writer.String(val.data(), (SizeType)val.size());
 	}
 
+	void writeVariable(rapidjson::PrettyWriter<rapidjson::StringBuffer>& writer,
+		const std::string_view key, const Variable& val)
+	{
+		writer.Key(key.data(), (SizeType)key.size());
+		writeVariable(writer, val);
+	}
+
 	void writeVariable(PrettyWriter<StringBuffer>& writer, const Variable& val)
 	{
+		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatSingleLineArray);
+
 		if (std::holds_alternative<std::string>(val))
 		{
 			writer.String(std::get<std::string>(val));
@@ -214,5 +223,6 @@ namespace SaveUtils
 		{
 			writer.Null();
 		}
+		writer.SetFormatOptions(rapidjson::PrettyFormatOptions::kFormatDefault);
 	}
 }

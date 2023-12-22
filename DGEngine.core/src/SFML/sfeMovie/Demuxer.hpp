@@ -178,8 +178,8 @@ namespace sfe
 
 			InputStreamIOContext(sf::InputStream* inputStream) : m_inputStream(inputStream)
 			{
-				unsigned char* buffer = static_cast<unsigned char*>(AVFunc::av_malloc(kBufferSize));
-				m_ctx = AVFunc::avio_alloc_context(buffer, kBufferSize, 0, this,
+				unsigned char* buffer = static_cast<unsigned char*>(AV_MALLOC(kBufferSize));
+				m_ctx = AVIO_ALLOC_CONTEXT(buffer, kBufferSize, 0, this,
 					&InputStreamIOContext::read, nullptr, &InputStreamIOContext::seek);
 			}
 
@@ -188,8 +188,8 @@ namespace sfe
 				if (m_ctx != nullptr)
 				{
 					auto buf = m_ctx->buffer;
-					AVFunc::av_freep(&m_ctx);
-					AVFunc::av_free(buf);
+					AV_FREEP(&m_ctx);
+					AV_FREE(buf);
 				}
 			}
 

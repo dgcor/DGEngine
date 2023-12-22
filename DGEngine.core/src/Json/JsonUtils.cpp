@@ -1,6 +1,7 @@
 #include "JsonUtils.h"
 #include "Game/Game.h"
 #include "Game/Utils/FileUtils.h"
+#include "Game/Utils/GameUtils.h"
 #include "Game/Utils/VarUtils.h"
 #include "SaveUtils.h"
 #include "Utils/Utils.h"
@@ -79,7 +80,7 @@ namespace JsonUtils
 					break;
 				}
 				auto obj2 = pointer.Get(*elemPtr);
-				if (obj2 != nullptr)
+				if (obj2 != nullptr && obj2 != elemPtr)
 				{
 					return *obj2;
 				}
@@ -246,16 +247,16 @@ namespace JsonUtils
 		}
 		else if (elem.IsObject() == true)
 		{
-			for (auto it = elem.MemberBegin(); it != elem.MemberEnd(); ++it)
+			for (auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
 			{
-				replaceValuesWithFunction(it->value, allocator, stringValueReplaceFunc);
+				replaceValuesWithFunction(it.value, allocator, stringValueReplaceFunc);
 			}
 		}
 		else if (elem.IsArray() == true)
 		{
-			for (auto it = elem.Begin(); it != elem.End(); ++it)
+			for (auto& it : std::ranges::subrange(elem.Begin(), elem.End()))
 			{
-				replaceValuesWithFunction(*it, allocator, stringValueReplaceFunc);
+				replaceValuesWithFunction(it, allocator, stringValueReplaceFunc);
 			}
 		}
 	}
@@ -288,45 +289,29 @@ namespace JsonUtils
 					return;
 				}
 
+				bool replacedValue = false;
 				auto str = val.GetStringView();
-				std::string str2;
-				size_t firstTokenStart = 0;
-				bool hadMatch = false;
-				while (true)
-				{
-					firstTokenStart = str.find(token, firstTokenStart);
-					if (firstTokenStart == std::string_view::npos)
+				auto str2 = GameUtils::replaceStringWithFunction(str, token,
+					[&](const std::string_view& strProp, std::string& str2)
 					{
-						break;
-					}
-					size_t firstTokenStop = firstTokenStart + 1;
-					size_t secondTokenStart = str.find_first_of(token, firstTokenStop);
-					if (secondTokenStart == std::string_view::npos)
-					{
-						break;
-					}
-					size_t secondTokenStop = secondTokenStart + 1;
-					if (hadMatch == false)
-					{
-						hadMatch = true;
-						str2 = str;
-					}
-					std::string_view strProp(str.data() + firstTokenStop, secondTokenStart - firstTokenStop);
-					Variable var;
-					if (game.getVarOrPropNoToken(strProp, var) == true)
-					{
-						std::string_view strProp2(str.data() + firstTokenStart, secondTokenStop - firstTokenStart);
-						if (changeValueType == true &&
-							strProp2 == str2)
+						if (strProp.size() <= 2)
 						{
-							replaceValueWithVariable(val, allocator, var);
 							return;
 						}
-						Utils::replaceStringInPlace(str2, strProp2, VarUtils::toString(var));
-					}
-					firstTokenStart = secondTokenStop;
-				}
-				if (hadMatch == true &&
+						Variable var;
+						if (game.getVarOrPropNoToken(strProp.substr(1, strProp.size() - 2), var) == true)
+						{
+							if (changeValueType == true && strProp == str2)
+							{
+								replaceValueWithVariable(val, allocator, var);
+								replacedValue = true;
+								return;
+							}
+							Utils::replaceStringInPlace(str2, strProp, VarUtils::toString(var));
+						}
+					});
+
+				if (replacedValue == false &&
 					str != str2)
 				{
 					val.SetString(str2, allocator);

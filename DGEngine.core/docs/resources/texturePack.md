@@ -32,21 +32,22 @@ There are a number of different types of texturePacks:
 
 #### BitmapFontTexturePack
 
-Name                | Type | Default    | Description
-------------------- | ---- | ---------- | ----------------------------
-`charSizeFile`      | text |            | binary file with char widths as bytes
-`charSizeFileStep`  | int  | 1          | number of bytes to advance when reading char widths in a loop
-`charSizeFileStart` | int  | 0          | start position to start reading char withds
-`direction`         | text | horizontal | char direction. value can be `horizontal` or `vertical`
-`fromId`            | text |            | create an alias from an existing id
-`palette`           | text |            | texture palette
-`newLine`           | int  | 0          | new line size. 0 to use value from texture index. -1 to calculate based on letter size
-`space`             | int  | 0          | space size. 0 to use value from texture index. -1 to calculate based on letter size
-`tab`               | int  | 0          | tab size. 0 to use value from texture index. -1 to calculate based on letter size
-`cols`              | int  | 16         | number of char rows in texture
-`rows`              | int  | 16         | number of char columns in texture
-**`texture`**       | text |            | texture
-**`type`**          | text |            | texturePack type `font`
+Name                 | Type | Default    | Description
+-------------------- | ---- | ---------- | ----------------------------
+`charSizeFile`       | text |            | binary or text file with char widths as bytes or numbers
+`charSizeFileStep`   | int  | 1          | number of bytes to advance when reading char widths in a loop
+`charSizeFileStart`  | int  | 0          | start position to start reading char withds
+`direction`          | text | horizontal | texture char direction. value can be `horizontal` or `vertical`
+`fromId`             | text |            | create an alias from an existing id
+**`imageContainer`** | text |            | imageContainer
+`palette`            | text |            | texture palette
+`newLine`            | int  | 0          | new line size. 0 to use value from texture index. -1 to calculate based on letter size
+`space`              | int  | 0          | space size. 0 to use value from texture index. -1 to calculate based on letter size
+`tab`                | int  | 0          | tab size. 0 to use value from texture index. -1 to calculate based on letter size
+`cols`               | int  | 16         | number of char rows in texture
+`rows`               | int  | 16         | number of char columns in texture
+**`texture`**        | text |            | texture
+**`type`**           | text |            | texturePack type `font`
 
 Properties in **bold** are required.  
 
@@ -57,6 +58,10 @@ If a `charSizeFile` is provided, the widths are only calculated if the size of t
 is not 128 bytes or 256 bytes and is smaller than 256 bytes. If the size of the file is
 130 bytes or 258 bytes, then it is assumed the first 2 bytes are for `space` and `newLine`.
 Otherwise, the space and newLine, if not overridden, will come from the `charSizeFile`.  
+
+A `charSizeFile` can be a text file with 128/130/256/258 numbers separated by a newLine.  
+
+If an `imageContainer` is used, all other properties are ignored except `palette` .  
 
 Font `texturePack`s have 1 group, 1 direction and 1 texture.
 
@@ -117,16 +122,13 @@ Name          | Type          | Default | Description
 
 #### texture properties
 
-Name            | Type   | Default  | Description
---------------- | ------ | -------- | ----------------------------
-**`id`**        | text   |          | texture id
-`offset`        | intVec |          | texture offset
-`frames`        | intVec | [1,1]    | frame range
-`startIndex`    | int    | 0        | start index for the first texture
-`direction`     | text   | vertical | texture direction. value can be `horizontal` or `vertical`
-`directions`    | int    | 1        | number of directions
-`animationType` | text   | looped   | animation type (looped, backAndForth, playOnce)
-`refresh`       | time   | 0        | texturePack animation refresh rate
+Name            | Type   | Default   | Description
+--------------- | ------ | --------- | ----------------------------
+`direction`     | text   | horiontal | texture direction. value can be `horizontal` or `vertical`
+`frames`        | intVec | [1,1]     | frame range
+**`id`**        | text   |           | texture id
+`offset`        | intVec |           | texture offset
+`startIndex`    | int    | 0         | start index for the first texture
 
 Properties in **bold** are required.  
 
@@ -135,22 +137,19 @@ object is treated as a texture group and has the same properties as a `SingleTex
 
 #### SingleTexturePack
 
-Name            | Type                   | Default  | Description
---------------- | ---------------------- | -------- | ----------------------------
-`fromId`        | text                   |          | create an alias from an existing id
-**`texture`**   | text                   |          | texture
-`offset`        | intVec                 |          | global offset
-`palette`       | text                   |          | textures palette
-`frames`        | intVec                 | [1,1]    | frame range
-`startIndex`    | int                    | 0        | start index for the first texture
-`direction`     | text                   | vertical | texture direction. value can be `horizontal` or `vertical`
-`directions`    | int or array of intArr |          | number of directions or array with direction ranges (size is number of directions)
-`animationType` | text                   | looped   | animation type (looped, backAndForth, playOnce)
-`refresh`       | time                   | 0        | texturePack animation refresh rate
+Name            | Type                   | Default   | Description
+--------------- | ---------------------- | --------- | ----------------------------
+`direction`     | text                   | horiontal | texture direction. value can be `horizontal` or `vertical`
+`frames`        | intVec                 | [1,1]     | frame range
+`fromId`        | text                   |           | create an alias from an existing id
+`offset`        | intVec                 |           | global offset
+`palette`       | text                   |           | textures palette
+`startIndex`    | int                    | 0         | start index for the first texture
+**`texture`**   | text                   |           | texture
 
 Properties in **bold** are required.  
 
-A `SingleTexturePack` is a texturePack that uses 1 `texture`.
+A `SingleTexturePack` is a `MultiTexturePack` with only 1 `texture`.
 
 #### StackedTexturePack
 
@@ -170,7 +169,27 @@ Usually, the texturePacks don't have overlapping indexes.
 ### Common properties
 
 All `texturePack`s with the exception of `CompositeTexturePack`s and `StackedTexturePack`s
-can have these properties defined.
+can have these properties defined.  
+
+The order in which these are defined affects the output. if `groups` come after `rects`,
+then the frame range defined in the groups will go from [0, rectSize].
+
+#### Groups
+
+Name         | Type          | Default | Description
+------------ | ------------- | ------- | ----------------------------
+**`groups`** | array of json |         | group objects
+
+Properties in **bold** are required.  
+
+The `groups` array/object can define json objects with the following properties for each group:
+
+Name            | Type                   | Default   | Description
+--------------- | ---------------------- | --------- | ----------------------------
+`animationType` | text                   | looped    | animation type (looped, backAndForth, playOnce)
+`directions`    | int or array of intArr | 0         | number of directions or array with direction ranges (size is number of directions)
+`range`         | intVec                 | [min,max] | frame range
+`refresh`       | time                   | 0         | texturePack animation refresh rate
 
 #### Rects
 
@@ -190,28 +209,21 @@ Name      | Type    | Default | Description
 `offset`  | intVec  |         | offset to apply to the texture
 `rect`    | intRect |         | texture rect to use
 
-The global `offset`, if defined, gets added to each offset.  
-
-If the `rects` array exists, the `groups` array is parsed. Each group object
-can define these properties:
-
-Name            | Type   | Default   | Description
---------------- | ------ | --------- | ----------------------------
-`directions`    | int    | 0         | 
-`animationType` | text   | looped    | animation type (looped, backAndForth, playOnce)
-`range`         | intVec | [min,max] | frame range
+The global `offset`, if defined, gets added to each offset.
 
 #### Indexes
 
 Name                       | Type                      | Default | Description
 -------------------------- | ------------------------- | ------- | ----------------------------
 `onlyUseIndexed`           | bool                      | true    | only use indexed texture. false to use both new and old indexes
-`translateAnimatedIndexes` | bool                      | true    | translate animated indexes
-`textureIndexes`           | intArr or array of intVec |         | array of indexes
-`utf8Indexes`              | text                      |         | text with indexes (usually a section of the ASCII table)
-`utf8IndexFile`            | text                      |         | file to load text with indexes
+`reverseMapIndex`          | bool                      | false   | reverse index mapping
+**`textureIndexes`**       | intArr or array of intVec |         | array of indexes
+**`textureIndexRange`**    | intVec                    |         | index range
+`textureIndexRangeStart`   | intVec                    | -1      | index range to start mapping to (if >= 0)
+**`utf8Indexes`**          | text                      |         | text with indexes (usually a section of the ASCII table)
+**`utf8IndexFile`**        | text                      |         | file to load text with indexes
 
-Properties in **bold** are required.  
+One of the properties in **bold** is required.  
 
 You can define indexes from utf8 text and `textureIndexes` at the same time.
 They are applied in that order.  
@@ -221,17 +233,30 @@ to the current number of indexes. Ex: ` textureIndexes: [10,11,12] ` will map te
 to texture 0, texture index 11 to texture 1 and texture index 12 to texture 2.  
 
 If you pass an array of `intVec` to `textureIndexes`, ex: ` textureIndexes: [[5,0],[6,1],[7,2]] `,
-you will map texture index 5 to texture 0, texture index 6 to texture 1 and texture index 7 to texture 2.
+you will map texture index 5 to texture 0, texture index 6 to texture 1 and texture index 7 to texture 2.  
+
+If you set `textureIndexRange` and `textureIndexes` is not set, the range defined is mapped
+to the current number of indexes. Ex: ` textureIndexRange: [10, 11] ` will map texture index 10
+to texture 0 and texture index 11 to texture 1. The end index is inclusive.  
+
+You can also specify the `textureIndexRange` with a start index lower than the stop index.
+Ex: ` textureIndexRange: [11, 10] ` will map texture index 11 to texture 0 and texture index 10
+to texture 1. If the texturePack already has indexes mapped, it will start at the next free index.  
+
+If `reverseMapIndex` is `true` then `textureIndexes` are mapped in reverse order.
+Ex: ` textureIndexRange: [11, 10] ` will map texture index 0 to texture 11 and texture index 1
+to texture 10. Only valid for `utf8Indexes`, `textureIndexes` (intArr) and `textureIndexRange`.  
+
+To specify a different index for `textureIndexRange`, set `textureIndexRangeStart` to a number
+above 0.
 
 #### Animated textures
 
 Name                       | Type                      | Default     | Description
 -------------------------- | ------------------------- | ----------- | ----------------------------
 **`animatedTextures`**     | array                     |             | animated texture json object
-`onlyUseIndexed`           | bool                      | true        | only use indexed texture. false to use both new and old indexes
-`translateAnimatedIndexes` | bool                      | true        | translate animated indexes
-`indexes`                  | intArr or array of intVec |             | array of indexes. first index is used as the animated texture index
 `index`                    | int                       | first index | animated texture index
+`indexes`                  | intArr or array of intVec |             | array of indexes. first index is used as the animated texture index
 `refresh`                  | time                      | 50          | animation refresh rate
 
 Properties in **bold** are required.  

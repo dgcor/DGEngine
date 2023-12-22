@@ -45,7 +45,7 @@ namespace Parser::Actions
 	{
 		return std::make_shared<ActAudioSeek>(
 			getStringViewKey(elem, "id"),
-			getTimeKey(elem, "time"));
+			getTimeUKey(elem, "time"));
 	}
 
 	std::shared_ptr<Action> parseAudioSetVolume(const Value& elem)

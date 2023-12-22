@@ -8,6 +8,7 @@
 #include "Parser/Resources/TexturePacks/ParseSingleTextureTexturePack.h"
 #include "Parser/Resources/TexturePacks/ParseStackedTexturePack.h"
 #include "Parser/Resources/TexturePacks/ParseTexturePackAnimatedTextures.h"
+#include "Parser/Resources/TexturePacks/ParseTexturePackGroups.h"
 #include "Parser/Resources/TexturePacks/ParseTexturePackIndexes.h"
 #include "Parser/Resources/TexturePacks/ParseTexturePackRects.h"
 #include "Parser/Resources/TexturePacks/ParseTexturePacks.h"
@@ -89,9 +90,58 @@ namespace Parser2
 			return nullptr;
 		}
 
-		parseTexturePackRects(texturePack, elem);
-		parseTexturePackIndexes<IndexedTexturePack2>(texturePack, elem);
-		parseTexturePackAnimatedTextures<IndexedTexturePack2>(texturePack, elem);
+		bool parsedAnimated = false;
+		bool parsedGroups = false;
+		bool parsedIndexes = false;
+		bool parsedRects = false;
+
+		for (const auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
+		{
+			switch (str2int16(it.name.GetStringView()))
+			{
+			case str2int16("animatedTextures"):
+			{
+				if (parsedAnimated == false)
+				{
+					parsedAnimated = true;
+					parseTexturePackAnimatedTextures(texturePack, elem);
+				}
+				break;
+			}
+			case str2int16("groups"):
+			{
+				if (parsedGroups == false)
+				{
+					parsedGroups = true;
+					parseTexturePackGroups(texturePack, elem);
+				}
+				break;
+			}
+			case str2int16("textureIndexes"):
+			case str2int16("textureIndexRange"):
+			case str2int16("utf8Indexes"):
+			case str2int16("utf8IndexFile"):
+			{
+				if (parsedIndexes == false)
+				{
+					parsedIndexes = true;
+					parseTexturePackIndexes<IndexedTexturePack2>(texturePack, elem);
+				}
+				break;
+			}
+			case str2int16("rects"):
+			{
+				if (parsedRects == false)
+				{
+					parsedRects = true;
+					parseTexturePackRects(texturePack, elem);
+				}
+				break;
+			}
+			default:
+				break;
+			}
+		}
 
 		return texturePack;
 	}

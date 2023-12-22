@@ -54,6 +54,8 @@ namespace sfe
 		constexpr int BytesPerSample = sizeof(sf::Int16); // Signed 16 bits audio sample
 	}
 
+	constexpr auto NumChannels = 2;
+
 	AudioStream::AudioStream(AVFormatContext*& formatCtx, AVStream*& stream,
 		DataSource& dataSource, Timer* timer) :
 		Stream(formatCtx, stream, dataSource, timer)
@@ -63,7 +65,7 @@ namespace sfe
 			return;
 		}
 
-		m_audioFrame = AVFunc::av_frame_alloc();
+		m_audioFrame = AV_FRAME_ALLOC();
 		if (m_audioFrame == nullptr)
 		{
 			return;
@@ -73,8 +75,7 @@ namespace sfe
 		m_sampleRatePerChannel = m_stream->codecpar->sample_rate;
 
 		// Alloc a two seconds buffer
-		m_samplesBuffer = (sf::Int16*)AVFunc::av_malloc(sizeof(sf::Int16) * AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO)
-			* m_sampleRatePerChannel * 2); // * 2 is for 2 seconds
+		m_samplesBuffer = (sf::Int16*)AV_MALLOC(sizeof(sf::Int16) * NumChannels * m_sampleRatePerChannel * 2); // * 2 is for 2 seconds
 		if (m_samplesBuffer == nullptr)
 		{
 			return;
@@ -82,30 +83,29 @@ namespace sfe
 
 		// Initialize the sf::SoundStream
 		// Whatever the channel count is, it'll we resampled to stereo
-		sf::SoundStream::initialize(AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO), m_sampleRatePerChannel);
+		sf::SoundStream::initialize(NumChannels, m_sampleRatePerChannel);
 
 		// Initialize resampler to be able to give signed 16 bits samples to SFML
 		initResampler();
 	}
 
-	/** Default destructor
-	 */
+	// Default destructor
 	AudioStream::~AudioStream()
 	{
 		if (m_audioFrame != nullptr)
 		{
-			AVFunc::av_frame_free(&m_audioFrame);
+			AV_FRAME_FREE(&m_audioFrame);
 		}
 		if (m_samplesBuffer != nullptr)
 		{
-			AVFunc::av_free(m_samplesBuffer);
+			AV_FREE(m_samplesBuffer);
 		}
 		if (m_dstData != nullptr)
 		{
-			AVFunc::av_freep(&m_dstData[0]);
+			AV_FREEP(&m_dstData[0]);
 		}
-		AVFunc::av_freep(&m_dstData);
-		AVFunc::swr_free(&m_swrCtx);
+		AV_FREEP(&m_dstData);
+		SWR_FREE(&m_swrCtx);
 	}
 
 	bool AudioStream::hasError() const noexcept
@@ -199,8 +199,8 @@ namespace sfe
 			}
 			else
 			{
-				AVFunc::av_packet_unref(packet);
-				AVFunc::av_free(packet);
+				AV_PACKET_UNREF(packet);
+				AV_FREE(packet);
 			}
 		} while (currentPosition + pktDuration <= targetPosition);
 
@@ -212,7 +212,7 @@ namespace sfe
 		AVPacket* packet = nullptr;
 		data.samples = m_samplesBuffer;
 
-		const int stereoChannelCount = AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO);
+		const int stereoChannelCount = NumChannels;
 
 		while (data.sampleCount < stereoChannelCount * m_sampleRatePerChannel &&
 			(nullptr != (packet = popEncodedData())))
@@ -270,8 +270,8 @@ namespace sfe
 				leaveLoop = true;
 			}
 
-			AVFunc::av_packet_unref(packet);
-			AVFunc::av_free(packet);
+			AV_PACKET_UNREF(packet);
+			AV_FREE(packet);
 
 			if (leaveLoop == true)
 			{
@@ -291,13 +291,13 @@ namespace sfe
 		int ret;
 		gotFrame = false;
 
-		ret = AVFunc::avcodec_send_packet(m_codecCtx, packet);
+		ret = AVCODEC_SEND_PACKET(m_codecCtx, packet);
 		if (ret < 0)
 		{
 			return false;
 		}
 
-		ret = AVFunc::avcodec_receive_frame(m_codecCtx, outputFrame);
+		ret = AVCODEC_RECEIVE_FRAME(m_codecCtx, outputFrame);
 		if (ret < 0)
 		{
 			if (ret == AVERROR(EAGAIN))
@@ -317,8 +317,8 @@ namespace sfe
 			return;
 		}
 
-		/* create resampler context */
-		m_swrCtx = AVFunc::swr_alloc();
+		// create resampler context
+		m_swrCtx = SWR_ALLOC();
 		if (m_swrCtx == nullptr)
 		{
 			return;
@@ -328,32 +328,32 @@ namespace sfe
 		// according to the channels' count
 		if (m_stream->codecpar->channel_layout == 0)
 		{
-			m_stream->codecpar->channel_layout = AVFunc::av_get_default_channel_layout(m_stream->codecpar->channels);
+			m_stream->codecpar->channel_layout = AV_GET_DEFAULT_CHANNEL_LAYOUT(m_stream->codecpar->channels);
 		}
 
-		/* set options */
-		AVFunc::av_opt_set_int(m_swrCtx, "in_channel_layout", m_stream->codecpar->channel_layout, 0);
-		AVFunc::av_opt_set_int(m_swrCtx, "in_sample_rate", m_stream->codecpar->sample_rate, 0);
-		AVFunc::av_opt_set_sample_fmt(m_swrCtx, "in_sample_fmt", (AVSampleFormat)m_stream->codecpar->format, 0);
-		AVFunc::av_opt_set_int(m_swrCtx, "out_channel_layout", AV_CH_LAYOUT_STEREO, 0);
-		AVFunc::av_opt_set_int(m_swrCtx, "out_sample_rate", m_stream->codecpar->sample_rate, 0);
-		AVFunc::av_opt_set_sample_fmt(m_swrCtx, "out_sample_fmt", AV_SAMPLE_FMT_S16, 0);
+		// set options
+		AV_OPT_SET_INT(m_swrCtx, "in_channel_layout", m_stream->codecpar->channel_layout, 0);
+		AV_OPT_SET_INT(m_swrCtx, "in_sample_rate", m_stream->codecpar->sample_rate, 0);
+		AV_OPT_SET_SAMPLE_FMT(m_swrCtx, "in_sample_fmt", (AVSampleFormat)m_stream->codecpar->format, 0);
+		AV_OPT_SET_INT(m_swrCtx, "out_channel_layout", AV_CH_LAYOUT_STEREO, 0);
+		AV_OPT_SET_INT(m_swrCtx, "out_sample_rate", m_stream->codecpar->sample_rate, 0);
+		AV_OPT_SET_SAMPLE_FMT(m_swrCtx, "out_sample_fmt", AV_SAMPLE_FMT_S16, 0);
 
-		/* initialize the resampling context */
-		auto err = AVFunc::swr_init(m_swrCtx);
+		// initialize the resampling context
+		auto err = SWR_INIT(m_swrCtx);
 		if (err < 0)
 		{
 			return;
 		}
 
-		/* compute the number of converted samples: buffering is avoided
-		 * ensuring that the output buffer will contain at least all the
-		 * converted input samples */
+		// compute the number of converted samples: buffering is avoided
+		// ensuring that the output buffer will contain at least all the
+		// converted input samples
 		m_maxDstNbSamples = m_dstNbSamples = 1024;
 
-		/* Create the resampling output buffer */
-		m_dstNbChannels = AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO);
-		err = AVFunc::av_samples_alloc_array_and_samples(&m_dstData, &m_dstLinesize, m_dstNbChannels,
+		// Create the resampling output buffer
+		m_dstNbChannels = NumChannels;
+		err = AV_SAMPLES_ALLOC_ARRAY_AND_SAMPLES(&m_dstData, &m_dstLinesize, m_dstNbChannels,
 			m_dstNbSamples, AV_SAMPLE_FMT_S16, 0);
 		if (err < 0)
 		{
@@ -372,13 +372,13 @@ namespace sfe
 		int src_rate, dst_rate, err, dst_bufsize;
 		src_rate = dst_rate = frame->sample_rate;
 
-		/* compute destination number of samples */
-		m_dstNbSamples = (int)AVFunc::av_rescale_rnd(AVFunc::swr_get_delay(m_swrCtx, src_rate) +
+		// compute destination number of samples
+		m_dstNbSamples = (int)AV_RESCALE_RND(SWR_GET_DELAY(m_swrCtx, src_rate) +
 			frame->nb_samples, dst_rate, src_rate, AV_ROUND_UP);
 		if (m_dstNbSamples > m_maxDstNbSamples)
 		{
-			AVFunc::av_free(m_dstData[0]);
-			err = AVFunc::av_samples_alloc(m_dstData, &m_dstLinesize, m_dstNbChannels,
+			AV_FREE(m_dstData[0]);
+			err = AV_SAMPLES_ALLOC(m_dstData, &m_dstLinesize, m_dstNbChannels,
 				m_dstNbSamples, AV_SAMPLE_FMT_S16, 1);
 			if (err < 0)
 			{
@@ -387,27 +387,27 @@ namespace sfe
 			m_maxDstNbSamples = m_dstNbSamples;
 		}
 
-		/* convert to destination format */
-		err = AVFunc::swr_convert(m_swrCtx, m_dstData, m_dstNbSamples, (const uint8_t**)frame->extended_data, frame->nb_samples);
+		// convert to destination format
+		err = SWR_CONVERT(m_swrCtx, m_dstData, m_dstNbSamples, (const uint8_t**)frame->extended_data, frame->nb_samples);
 		if (err < 0)
 		{
 			return;
 		}
 
-		dst_bufsize = AVFunc::av_samples_get_buffer_size(&m_dstLinesize, m_dstNbChannels,
+		dst_bufsize = AV_SAMPLES_GET_BUFFER_SIZE(&m_dstLinesize, m_dstNbChannels,
 			err, AV_SAMPLE_FMT_S16, 1);
 		if (dst_bufsize < 0)
 		{
 			return;
 		}
 
-		outNbSamples = dst_bufsize / AVFunc::av_get_bytes_per_sample(AV_SAMPLE_FMT_S16);
+		outNbSamples = dst_bufsize / AV_GET_BYTES_PER_SAMPLE(AV_SAMPLE_FMT_S16);
 		outSamples = m_dstData[0];
 	}
 
 	int AudioStream::timeToSamples(const sf::Time& time) const
 	{
-		const int channelCount = AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO);
+		const int channelCount = NumChannels;
 		int64_t samplesPerSecond = (int64_t)m_sampleRatePerChannel * channelCount;
 		int64_t samples = (samplesPerSecond * time.asMicroseconds()) / 1000000;
 		// We don't want SFML to be confused by interverting left and right speaker sound in case
@@ -421,7 +421,7 @@ namespace sfe
 
 	sf::Time AudioStream::samplesToTime(int nbSamples) const
 	{
-		int64_t samplesPerChannel = nbSamples / AVFunc::av_get_channel_layout_nb_channels(AV_CH_LAYOUT_STEREO);
+		int64_t samplesPerChannel = nbSamples / NumChannels;
 		int64_t microseconds = 1000000 * samplesPerChannel / (int)m_sampleRatePerChannel;
 		return sf::microseconds(microseconds);
 	}

@@ -144,7 +144,7 @@ namespace LevelHelper
 		{
 			auto texturePack2 = std::make_unique<MultiTexturePack>(palette);
 			multiTexturePack = texturePack2.get();
-			texturePack = std::make_unique<IndexedTexturePack>(std::move(texturePack2), true, false);
+			texturePack = std::make_unique<IndexedTexturePack>(std::move(texturePack2), true);
 			indexedTexturePack = (IndexedTexturePack*)texturePack.get();
 			numTexturesToFit = (uint32_t)(min.size() - min.blankTopPillars());
 		}
@@ -212,11 +212,12 @@ namespace LevelHelper
 					mainLoop = false;
 				}
 			}
-			TexturePackGroup t;
-			t.texture = std::make_shared<sf::Texture>(newPillar);
-			t.offset = offset;
-			t.horizontalDirection = true;
-			multiTexturePack->addTexturePack(std::move(t), std::make_pair(xMax, yMax));
+			TextureGroup textureGroup;
+			textureGroup.texture = std::make_shared<sf::Texture>(newPillar);
+			textureGroup.offset = offset;
+			textureGroup.verticalDirection = false;
+			textureGroup.makeTexturePack({ xMax, yMax });
+			multiTexturePack->addTextureGroup(std::move(textureGroup));
 
 			// calculate new sheet size for the remaining tiles.
 			if (mainLoop == true)
@@ -385,7 +386,7 @@ namespace LevelHelper
 			}
 
 			auto pal = std::make_shared<Palette>(palPath.string(), colorFormat);
-			auto fileBytes = std::make_shared<FileBytes>(FileUtils::readChar(celPath.string()));
+			auto fileBytes = std::make_shared<FileBytes>(FileUtils::readBytes(celPath.string()));
 			CELImageContainer celImgContainer(fileBytes);
 			CachedImagePack imgPack(&celImgContainer, pal, false);
 			Min min(minPath.string(), minBlock);

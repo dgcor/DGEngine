@@ -3,6 +3,7 @@
 #define DR_WAV_IMPLEMENTATION
 #include "dr_wav.h"
 #include <SFML/System/InputStream.hpp>
+#include "Utils/Log.h"
 
 static size_t readWave2(void* pUserData, void* pBufferOut, size_t bytesToRead)
 {
@@ -57,6 +58,7 @@ bool Wave2FileReader::open(sf::InputStream& stream_, Info& info)
 {
 	if (!drwav_init(&wave, readWave2, seekWave2, &stream_, nullptr))
 	{
+		SPDLOG_ERROR("drwav_init error.");
 		return false;
 	}
 	isInitialized = true;

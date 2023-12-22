@@ -1,63 +1,48 @@
 #include "CompositeTexturePack.h"
 #include "Game/AnimationInfo.h"
 
-bool CompositeTexturePack::addGroup(uint32_t texturePackCount)
+bool CompositeTexturePack::addGroup()
 {
 	if (compositeTextureGroups.empty() == true)
 	{
-		if (texturePackCount > 0 && texturePackCount <= texturePacks.size())
+		if (texturePacks.empty() == false)
 		{
 			CompositeTextureGroup group;
 			group.texturePackStartIdx = 0;
-			group.texturePackStopIdx = texturePackCount - 1;
+			group.texturePackStopIdx = (uint32_t)texturePacks.size() - 1;
 			group.texturePackGroups = texturePacks.front()->getGroupCount();
-			if (group.texturePackGroups > 1)
-			{
-				hasMultipleGroupsPerTexturePack = true;
-			}
 			totalTexturePackGroups += group.texturePackGroups;
 			group.directions = texturePacks.front()->getDirectionCount(0);
 			group.range = texturePacks.front()->getAnimation(-1, -1).indexRange;
 			compositeTextureGroups.push_back(group);
-			numberOfFrames += texturePacks.front()->size();
+			numberOfFrames += group.range.second + 1 - group.range.first;
 			return true;
 		}
 	}
 	else
 	{
-		if (texturePackCount > 0)
+		auto texturePackStartIdx = compositeTextureGroups.back().texturePackStopIdx + 1;
+		auto texturePackCount = (uint32_t)texturePacks.size() - texturePackStartIdx;
+		auto texturePackStopIdx = texturePackStartIdx + texturePackCount - 1;
+		if (texturePackStopIdx >= texturePackStartIdx &&
+			texturePackStopIdx < texturePacks.size())
 		{
-			auto texturePackStartIdx = compositeTextureGroups.back().texturePackStopIdx + 1;
-			auto texturePackStopIdx = texturePackStartIdx + texturePackCount - 1;
-			if (texturePackStopIdx >= texturePackStartIdx &&
-				texturePackStopIdx < texturePacks.size())
-			{
-				CompositeTextureGroup group;
-				group.texturePackStartIdx = texturePackStartIdx;
-				group.texturePackStopIdx = texturePackStopIdx;
-				group.texturePackGroups = texturePacks[texturePackStartIdx]->getGroupCount();
-				if (group.texturePackGroups > 1)
-				{
-					hasMultipleGroupsPerTexturePack = true;
-				}
-				totalTexturePackGroups += group.texturePackGroups;
-				group.directions = texturePacks.front()->getDirectionCount(0);
-				group.rangeStartIdx = compositeTextureGroups.back().range.second + 1;
-				group.range = texturePacks[texturePackStartIdx]->getAnimation(-1, -1).indexRange;
-				group.range.first += group.rangeStartIdx;
-				group.range.second += group.rangeStartIdx;
-				compositeTextureGroups.push_back(group);
-				numberOfFrames += texturePacks[texturePackStartIdx]->size();
-				return true;
-			}
+			CompositeTextureGroup group;
+			group.texturePackStartIdx = texturePackStartIdx;
+			group.texturePackStopIdx = texturePackStopIdx;
+			group.texturePackGroups = texturePacks[texturePackStartIdx]->getGroupCount();
+			totalTexturePackGroups += group.texturePackGroups;
+			group.directions = texturePacks.front()->getDirectionCount(0);
+			group.rangeStartIdx = compositeTextureGroups.back().range.second + 1;
+			group.range = texturePacks[texturePackStartIdx]->getAnimation(-1, -1).indexRange;
+			group.range.first += group.rangeStartIdx;
+			group.range.second += group.rangeStartIdx;
+			compositeTextureGroups.push_back(group);
+			numberOfFrames += group.range.second + 1 - group.range.first;
+			return true;
 		}
 	}
 	return false;
-}
-
-void CompositeTexturePack::addTexturePack(const std::shared_ptr<TexturePack>& texture)
-{
-	texturePacks.push_back(texture);
 }
 
 void CompositeTexturePack::setLayersOrders(const std::vector<int8_t>& groupLayersOrders)
@@ -68,15 +53,13 @@ void CompositeTexturePack::setLayersOrders(const std::vector<int8_t>& groupLayer
 		return;
 	}
 
-	auto layersOrdersStartIdx = layersOrders.empty() == true ? 0 : (uint32_t)layersOrders.size() - 1;
+	auto layersOrdersStartIdx = layersOrders.empty() == true ? 0 : (uint32_t)layersOrders.size();
 	auto layersOrdersStopIdx = layersOrdersStartIdx + (uint32_t)groupLayersOrders.size() - 1;
 
 	layersOrders.insert(layersOrders.end(), groupLayersOrders.begin(), groupLayersOrders.end());
 
 	compositeTextureGroups.back().layersOrdersStartIdx = layersOrdersStartIdx;
 	compositeTextureGroups.back().layersOrdersStopIdx = layersOrdersStopIdx;
-
-	compositeTextureGroups.back().hasAllLayersOrdersDirections = false;
 }
 
 uint32_t CompositeTexturePack::getLayerCount(uint32_t groupIdx) const noexcept
@@ -85,27 +68,91 @@ uint32_t CompositeTexturePack::getLayerCount(uint32_t groupIdx) const noexcept
 	{
 		return (uint32_t)texturePacks.size();
 	}
-	else if (hasMultipleGroupsPerTexturePack == false)
+	for (uint32_t numGroups = 0; const auto & group : compositeTextureGroups)
 	{
-		if (groupIdx < compositeTextureGroups.size())
+		numGroups += group.texturePackGroups;
+		if (groupIdx < numGroups)
 		{
-			const auto& group = compositeTextureGroups[groupIdx];
 			return group.texturePackStopIdx - group.texturePackStartIdx + 1;
+		}
+	}
+	return 0;
+}
+
+void CompositeTexturePack::processTexturePacksInOrder(uint32_t index, const processTexturePacksInOrderFunc processFunc) const
+{
+	size_t texPackStartIdx = 0;
+	size_t texPackStopIdx = 0;
+	size_t numTexturePacks = 0;
+	size_t loStartIdx = 0;
+	size_t loStopIdx = 0;
+
+	if (compositeTextureGroups.empty() == false)
+	{
+		for (const auto& group : compositeTextureGroups)
+		{
+			if (index >= group.range.first &&
+				index <= group.range.second)
+			{
+				texPackStartIdx = group.texturePackStartIdx;
+				texPackStopIdx = group.texturePackStopIdx;
+				index -= group.rangeStartIdx;
+
+				if (layersOrders.empty() == true)
+				{
+					break;
+				}
+
+				numTexturePacks = texPackStopIdx - texPackStartIdx + 1;
+				if (numberOfFrames * numTexturePacks != layersOrders.size())
+				{
+					// use same layer order for all texturePacks
+					auto directionIdx = texturePacks[texPackStartIdx]->getDirection(index);
+					if (directionIdx < group.directions)
+					{
+						loStartIdx = directionIdx * numTexturePacks;
+						loStopIdx = std::min(loStartIdx + numTexturePacks, layersOrders.size());
+					}
+				}
+				else
+				{
+					// use different layer order for each texturePack
+					loStartIdx = group.layersOrdersStartIdx + (index * numTexturePacks);
+					loStopIdx = std::min(loStartIdx + numTexturePacks, layersOrders.size());
+				}
+				break;
+			}
+		}
+	}
+
+	if (loStartIdx < loStopIdx)
+	{
+		for (size_t i = loStartIdx; i < loStopIdx; i++)
+		{
+			auto idx = layersOrders[i];
+			if (idx >= 0 && (size_t)idx < numTexturePacks)
+			{
+				auto texPackIdx = texPackStartIdx + idx;
+				if (texPackIdx < texturePacks.size())
+				{
+					if (processFunc(index, texturePacks[texPackIdx]) == false)
+					{
+						break;
+					}
+				}
+			}
 		}
 	}
 	else
 	{
-		uint32_t numGroups = 0;
-		for (const auto& group : compositeTextureGroups)
+		for (size_t i = texPackStartIdx; i <= texPackStopIdx; i++)
 		{
-			numGroups += group.texturePackGroups;
-			if (groupIdx < numGroups)
+			if (processFunc(index, texturePacks[i]) == false)
 			{
-				return group.texturePackStopIdx - group.texturePackStartIdx + 1;
+				break;
 			}
 		}
 	}
-	return 0;
 }
 
 bool CompositeTexturePack::get(uint32_t index, TextureInfo& ti) const
@@ -134,97 +181,32 @@ bool CompositeTexturePack::get(uint32_t index, std::vector<TextureInfo>& tiVec) 
 {
 	tiVec.clear();
 
-	size_t texPackStartIdx = 0;
-	size_t texPackStopIdx = 0;
-	size_t numTexturePacks = 0;
-	size_t loStartIdx = 0;
-	size_t loStopIdx = 0;
-
-	if (compositeTextureGroups.empty() == false)
-	{
-		for (const auto& group : compositeTextureGroups)
-		{
-			if (index >= group.range.first &&
-				index <= group.range.second)
-			{
-				texPackStartIdx = group.texturePackStartIdx;
-				texPackStopIdx = group.texturePackStopIdx;
-				index -= group.range.first;
-
-				if (layersOrders.empty() == true)
-				{
-					break;
-				}
-
-				numTexturePacks = texPackStopIdx - texPackStartIdx + 1;
-				if (group.hasAllLayersOrdersDirections == false)
-				{
-					auto directionIdx = texturePacks[texPackStartIdx]->getDirection(index);
-					if (directionIdx < group.directions)
-					{
-						loStartIdx = directionIdx * numTexturePacks;
-						loStopIdx = std::min(loStartIdx + numTexturePacks, layersOrders.size());
-					}
-				}
-				else
-				{
-					loStartIdx = group.layersOrdersStartIdx + (index * numTexturePacks);
-					loStopIdx = std::min(loStartIdx + numTexturePacks, layersOrders.size());
-				}
-				break;
-			}
-		}
-	}
-
-	if (loStartIdx < loStopIdx)
-	{
-		for (size_t i = loStartIdx; i < loStopIdx; i++)
-		{
-			auto idx = layersOrders[i];
-			if (idx >= 0 && (size_t)idx < numTexturePacks)
-			{
-				auto texPackIdx = texPackStartIdx + idx;
-				if (texPackIdx < texturePacks.size())
-				{
-					TextureInfo ti;
-					if (texturePacks[texPackIdx]->get(index, ti) == true)
-					{
-						tiVec.push_back(ti);
-					}
-				}
-			}
-		}
-	}
-	else
-	{
-		for (size_t i = texPackStartIdx; i <= texPackStopIdx; i++)
+	processTexturePacksInOrder(index,
+		[&tiVec](uint32_t index, const std::shared_ptr<TexturePack>& texturePack) -> bool
 		{
 			TextureInfo ti;
-			if (texturePacks[i]->get(index, ti) == true)
+			if (texturePack->get(index, ti) == true)
 			{
 				tiVec.push_back(ti);
 			}
-		}
-	}
+			return true;
+		});
+
 	return tiVec.empty() == false;
 }
 
 sf::Vector2i CompositeTexturePack::getTextureSize(uint32_t index) const
 {
-	if (texturePacks.empty() == false)
-	{
-		return texturePacks.front()->getTextureSize(index);
-	}
-	return {};
-}
+	sf::Vector2i textureSize;
 
-const std::shared_ptr<Palette>& CompositeTexturePack::getPalette() const noexcept
-{
-	if (texturePacks.empty() == false)
-	{
-		return texturePacks.front()->getPalette();
-	}
-	return palette;
+	processTexturePacksInOrder(index,
+		[&textureSize](uint32_t index, const std::shared_ptr<TexturePack>& texturePack) -> bool
+		{
+			textureSize = texturePack->getTextureSize(index);
+			return textureSize.x == 0 || textureSize.y == 0;
+		});
+
+	return textureSize;
 }
 
 uint32_t CompositeTexturePack::size() const noexcept
@@ -239,39 +221,25 @@ uint32_t CompositeTexturePack::getGroupCount() const noexcept
 
 uint32_t CompositeTexturePack::getDirectionCount(uint32_t groupIdx) const noexcept
 {
-	if (hasMultipleGroupsPerTexturePack == false)
+	for (uint32_t numGroups = 0; const auto& group : compositeTextureGroups)
 	{
-		if (groupIdx < compositeTextureGroups.size())
+		numGroups += group.texturePackGroups;
+		if (groupIdx < numGroups)
 		{
-			return compositeTextureGroups[groupIdx].directions;
-		}
-	}
-	else
-	{
-		uint32_t numGroups = 0;
-		for (const auto& group : compositeTextureGroups)
-		{
-			numGroups += group.texturePackGroups;
-			if (groupIdx < numGroups)
-			{
-				return group.directions;
-			}
+			return group.directions;
 		}
 	}
 	return 1;
 }
 
-uint32_t CompositeTexturePack::getDirection(uint32_t frameIdx) const noexcept
-{
-	// not implemented
-	return 0;
-}
-
 AnimationInfo CompositeTexturePack::getAnimation(int32_t groupIdx, int32_t directionIdx) const
 {
+	AnimationInfo animInfo;
+
 	if (compositeTextureGroups.empty() == true)
 	{
-		return {};
+		animInfo.flags = AnimationFlags::Overflow;
+		return animInfo;
 	}
 	else if (groupIdx >= 0)
 	{
@@ -279,27 +247,13 @@ AnimationInfo CompositeTexturePack::getAnimation(int32_t groupIdx, int32_t direc
 		{
 			return texturePacks.front()->getAnimation(groupIdx, directionIdx);
 		}
-		else if (hasMultipleGroupsPerTexturePack == false)
-		{
-			if ((size_t)groupIdx < compositeTextureGroups.size())
-			{
-				const auto& group = compositeTextureGroups[groupIdx];
-				auto animInfo = texturePacks[group.texturePackStartIdx]->getAnimation(
-					0, directionIdx
-				);
-				animInfo.indexRange.first += group.rangeStartIdx;
-				animInfo.indexRange.second += group.rangeStartIdx;
-				return animInfo;
-			}
-		}
 		else
 		{
-			int32_t normalizedGroupIdx = groupIdx;
-			for (const auto& group : compositeTextureGroups)
+			for (int32_t normalizedGroupIdx = groupIdx; const auto& group : compositeTextureGroups)
 			{
 				if ((uint32_t)normalizedGroupIdx < group.texturePackGroups)
 				{
-					auto animInfo = texturePacks[group.texturePackStartIdx]->getAnimation(
+					animInfo = texturePacks[group.texturePackStartIdx]->getAnimation(
 						normalizedGroupIdx, directionIdx
 					);
 					animInfo.indexRange.first += group.rangeStartIdx;
@@ -313,10 +267,10 @@ AnimationInfo CompositeTexturePack::getAnimation(int32_t groupIdx, int32_t direc
 			}
 		}
 	}
-	AnimationInfo animInfo;
-	animInfo.indexRange = std::make_pair(
+	animInfo.indexRange = {
 		compositeTextureGroups.front().range.first,
 		compositeTextureGroups.back().range.second
-	);
+	};
+	animInfo.flags = AnimationFlags::Overflow;
 	return animInfo;
 }

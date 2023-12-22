@@ -91,7 +91,7 @@ void CompositeTexturePack2::addGroup(const std::string_view fileName, bool fixLa
 		return;
 	}
 
-	if (addGroup(header.layers) == false)
+	if (addGroup() == false)
 	{
 		return;
 	}
@@ -164,8 +164,7 @@ void CompositeTexturePack2::addGroup(const std::string_view fileName, bool fixLa
 	}
 
 	// normalize indexes from 0-16 to 0-<number of layers>
-	uint8_t newIdx = 0;
-	for (auto cofIdx : layerIndexes)
+	for (uint8_t newIdx = 0; auto cofIdx : layerIndexes)
 	{
 		for (size_t i = layersOrdersStartIdx; i < layersOrders.size(); i++)
 		{
@@ -179,7 +178,5 @@ void CompositeTexturePack2::addGroup(const std::string_view fileName, bool fixLa
 
 	compositeTextureGroups.back().layersOrdersStartIdx = layersOrdersStartIdx;
 	compositeTextureGroups.back().layersOrdersStopIdx = layersOrdersStartIdx + layersOrdersSize - 1;
-
-	compositeTextureGroups.back().hasAllLayersOrdersDirections = true;
 }
 #endif

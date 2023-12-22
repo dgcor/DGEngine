@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
 # use ccache if available
 find_program(CCACHE_PROGRAM ccache)
@@ -7,7 +7,7 @@ if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
 
-project(DGEngine)
+project(DGEngine VERSION 1.2.0)
 
 if(IS_DIRECTORY "${PROJECT_SOURCE_DIR}/../DGEngine.core")
     add_subdirectory(${PROJECT_SOURCE_DIR}/../DGEngine.core DGEngine.core)
@@ -15,24 +15,15 @@ else()
     add_subdirectory(DGEngine.core)
 endif()
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake_modules")
-
-option(DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
-option(MPQ_SUPPORT "Enable physfs MPQ support" TRUE)
-option(INTERNAL_STORMLIB "Use internal StormLib for MPQ support" TRUE)
-option(EXTERNAL_STORMLIB "Use external StormLib for MPQ support" FALSE)
-option(DYNAMIC_STORMLIB "Use external StormLib dll for MPQ support" TRUE)
-
-if(MOVIE_SUPPORT)
-    find_package(FFmpeg COMPONENTS avcodec avformat avutil swscale)
-endif()
-find_package(PhysFS REQUIRED)
-find_package(SFML 2.6 COMPONENTS audio graphics REQUIRED)
-
-include_directories(src)
+option(DGENGINE_COMPRESS_BINARY "Compress binary" FALSE)
+option(DGENGINE_OPTIMISE "Optimize build" FALSE)
+option(DGENGINE_DIABLO_FORMAT_SUPPORT "Enable Diablo 1-2 file format support" TRUE)
+option(DGENGINE_MPQ_SUPPORT "Enable physfs MPQ support" TRUE)
+option(DGENGINE_INTERNAL_STORMLIB "Use internal StormLib for MPQ support" TRUE)
+option(DGENGINE_EXTERNAL_STORMLIB "Use external StormLib for MPQ support" FALSE)
+option(DGENGINE_DYNAMIC_STORMLIB "Use external StormLib dll for MPQ support" TRUE)
 
 set(SOURCE_FILES
-    src/Main.cpp
     src/RegisterHooks.cpp
     src/RegisterHooks.h
     src/Game/Classifier.cpp
@@ -230,8 +221,6 @@ set(SOURCE_FILES
     src/Resources/TexturePacks/ImageContainerTexturePack2.h
     src/Resources/TexturePacks/IndexedTexturePack2.cpp
     src/Resources/TexturePacks/IndexedTexturePack2.h
-    src/Resources/TexturePacks/MultiImageContainerTexturePack2.cpp
-    src/Resources/TexturePacks/MultiImageContainerTexturePack2.h
     src/Resources/TexturePacks/StackedTexturePack2.cpp
     src/Resources/TexturePacks/StackedTexturePack2.h
     src/Resources/TileBlock.h
@@ -242,7 +231,7 @@ set(SOURCE_FILES
     src/Utils/iterator_tpl.h
 )
 
-if(DIABLO_FORMAT_SUPPORT)
+if(DGENGINE_DIABLO_FORMAT_SUPPORT)
     add_definitions(-DDGENGINE_DIABLO_FORMAT_SUPPORT)
 
     SET(SOURCE_FILES ${SOURCE_FILES}
@@ -266,7 +255,7 @@ if(DIABLO_FORMAT_SUPPORT)
         src/Resources/Min.h
     )
 
-    if(MPQ_SUPPORT)
+    if(DGENGINE_MPQ_SUPPORT)
         add_definitions(-DPHYSFS_MPQ_SUPPORT)
 
         SET(SOURCE_FILES ${SOURCE_FILES}
@@ -274,9 +263,9 @@ if(DIABLO_FORMAT_SUPPORT)
             src/PhysFSArchiverMPQ.h
         )
 
-        if(EXTERNAL_STORMLIB)
+        if(DGENGINE_EXTERNAL_STORMLIB)
             add_definitions(-DPHYSFS_EXTERNAL_STORMLIB)
-        elseif(INTERNAL_STORMLIB)
+        elseif(DGENGINE_INTERNAL_STORMLIB)
             add_definitions(-DPHYSFS_INTERNAL_STORMLIB)
 
             SET(SOURCE_FILES ${SOURCE_FILES}
@@ -297,45 +286,70 @@ if(DIABLO_FORMAT_SUPPORT)
             )
         endif()
 
-        if(DYNAMIC_STORMLIB)
+        if(DGENGINE_DYNAMIC_STORMLIB)
             add_definitions(-DPHYSFS_DYNAMIC_STORMLIB)
         endif()
     endif()
 endif()
 
-add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+if(DGENGINE_STATIC_CRT AND WIN32)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    endif()
+endif()
+
+add_library(${PROJECT_NAME}Lib ${SOURCE_FILES})
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -stdlib=libc++)
-    target_link_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
+    target_compile_options(${PROJECT_NAME}Lib PUBLIC -Wall -stdlib=libc++)
+    target_link_options(${PROJECT_NAME}Lib PUBLIC -stdlib=libc++)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11.1)
         message(FATAL_ERROR "GCC version must be at least 11.1!")
     endif()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wpedantic)
+    target_compile_options(${PROJECT_NAME}Lib PUBLIC -Wall -Wpedantic)
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE /GF /EHsc /W3 /wd4250 /wd4996)
-    target_link_options(${PROJECT_NAME} PRIVATE /OPT:ICF /OPT:REF)
+    target_compile_options(${PROJECT_NAME}Lib PUBLIC /W3 /wd4250 /wd4996)
 endif()
 
-if(FFmpeg_FOUND)
-    include_directories(${FFmpeg_INCLUDES})
-    target_link_libraries(${PROJECT_NAME} ${FFmpeg_LIBRARIES})
-endif()
+target_include_directories(${PROJECT_NAME}Lib PUBLIC src)
+target_link_libraries(${PROJECT_NAME}Lib PUBLIC DGEngine.core)
 
-include_directories(${PHYSFS_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${PHYSFS_LIBRARY} sfml-audio sfml-graphics)
-
-target_link_libraries(${PROJECT_NAME} DGEngine.core)
-
-if(DIABLO_FORMAT_SUPPORT AND MPQ_SUPPORT)
-    if(EXTERNAL_STORMLIB)
-        target_link_libraries(${PROJECT_NAME} storm)
+if(DGENGINE_DIABLO_FORMAT_SUPPORT AND DGENGINE_MPQ_SUPPORT)
+    if(DGENGINE_EXTERNAL_STORMLIB)
+        target_link_libraries(${PROJECT_NAME}Lib PRIVATE storm)
     endif()
-    if(DYNAMIC_STORMLIB AND UNIX)
-        target_link_libraries(${PROJECT_NAME} dl)
+    if(DGENGINE_DYNAMIC_STORMLIB AND UNIX)
+        target_link_libraries(${PROJECT_NAME}Lib PRIVATE dl)
     endif()
 endif()
 
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+add_executable(${PROJECT_NAME} src/Main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}Lib)
+
+if(DGENGINE_OPTIMISE)
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        target_compile_options(${PROJECT_NAME} PRIVATE -O3)
+        set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE -s)
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+        target_compile_options(${PROJECT_NAME} PRIVATE /GF /EHsc)
+        target_link_options(${PROJECT_NAME} PRIVATE /OPT:ICF /OPT:REF)
+    endif()
+    if(DGENGINE_COMPRESS_BINARY)
+        include(FindSelfPackers)
+        if(SELF_PACKER_FOR_EXECUTABLE)
+            ADD_CUSTOM_COMMAND(
+                COMMAND ${SELF_PACKER_FOR_EXECUTABLE} $<TARGET_FILE:${PROJECT_NAME}>
+                ARGS ${SELF_PACKER_FOR_EXECUTABLE_FLAGS} -9q
+                TARGET ${PROJECT_NAME}
+            )
+        endif()
+    endif()
+endif()
+
+if(DGENGINE_BUILD_TEST_SUITE)
+    add_subdirectory(test)
+endif()

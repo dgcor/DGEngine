@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Game/ActionQueryable.h"
+#include "Game/Direction.h"
 #include "Game/UIObject.h"
 #include <memory>
 #include "SFML/View2.h"
@@ -13,8 +14,9 @@ private:
 	View2 view;
 	std::shared_ptr<Action> completeAction;
 
+	Direction direction{ Direction::Down };
 	ElapsedTime elapsedTime;
-	float height{ 0.f };
+	float scrollSize{ 0.f };
 	float offset{ 0.f };
 	bool loop{ false };
 	bool pause{ false };
@@ -26,6 +28,7 @@ public:
 
 	void reset();
 
+	void setDirection(Direction direction_) noexcept { direction = direction_; }
 	void setSpeed(const sf::Time& speed) noexcept { elapsedTime.timeout = speed; }
 	void setOffset(float offset_) noexcept { offset = offset_; }
 	void setLoop(bool loop_) noexcept { loop = loop_; }

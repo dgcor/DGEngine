@@ -1,10 +1,32 @@
 #include "SFMLUtils.h"
+#include <charconv>
 #include <cmath>
+#include <cstdint>
 #include <cstdlib>
 #include <SFML/Graphics/Texture.hpp>
 
 namespace SFMLUtils
 {
+	sf::BlendMode getBlendMode(BlendMode blendMode)
+	{
+		switch (blendMode)
+		{
+		default:
+		case BlendMode::Alpha:
+			return sf::BlendAlpha;
+		case BlendMode::Add:
+			return sf::BlendAdd;
+		case BlendMode::Multiply:
+			return sf::BlendMultiply;
+		case BlendMode::Min:
+			return sf::BlendMin;
+		case BlendMode::Max:
+			return sf::BlendMax;
+		case BlendMode::None:
+			return sf::BlendNone;
+		}
+	}
+
 	sf::Color rgbToColor(unsigned val)
 	{
 		sf::Uint8 r = (val & 0x00FF0000) >> 16;
@@ -22,10 +44,19 @@ namespace SFMLUtils
 		return sf::Color(r, g, b, a);
 	}
 
-	sf::Color stringToColor(const std::string_view str)
+	std::optional<sf::Color> stringToColor(std::string_view str)
 	{
-		auto num = (unsigned)std::strtoul(str.data(), nullptr, 16);
-		if (str.length() >= 10)
+		if (str.starts_with("0x") || str.starts_with("0X"))
+		{
+			str = str.substr(2);
+		}
+		uint32_t num = 0;
+		auto err = std::from_chars(str.data(), str.data() + str.size(), num, 16);
+		if (err.ec != std::errc())
+		{
+			return {};
+		}
+		if (str.length() >= 8)
 		{
 			return rgbaToColor(num);
 		}
@@ -66,22 +97,6 @@ namespace SFMLUtils
 		if (updateTexRect == true)
 		{
 			sprite.setTextureRect(texRect);
-		}
-	}
-
-	sf::BlendMode getBlendMode(BlendMode blendMode)
-	{
-		switch (blendMode)
-		{
-		default:
-		case BlendMode::Alpha:
-			return sf::BlendAlpha;
-		case BlendMode::Add:
-			return sf::BlendAdd;
-		case BlendMode::Multiply:
-			return sf::BlendMultiply;
-		case BlendMode::None:
-			return sf::BlendNone;
 		}
 	}
 

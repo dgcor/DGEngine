@@ -68,8 +68,8 @@ namespace Parser
 				return nullptr;
 			}
 			auto frames = std::make_pair(0u, texPack->size() - 1);
-			frames = getFramesKey(elem, "frames", frames);
-			auto refresh = getTimeKey(elem, "refresh", sf::milliseconds(50));
+			frames = getRange1Key(elem, "frames", frames);
+			auto refresh = getTimeUKey(elem, "refresh", sf::milliseconds(50));
 			levelObjClass = std::make_unique<SimpleLevelObjectClass>(
 				texPack, frames, refresh, AnimationType::Looped);
 		}

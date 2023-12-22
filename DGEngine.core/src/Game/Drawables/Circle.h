@@ -10,7 +10,7 @@ private:
 	bool visible{ true };
 
 public:
-	Circle(float radius = 0, std::size_t pointCount = 30) : sf::CircleShape(radius, pointCount) {}
+	Circle(float radius = 0, std::size_t pointCount = 30);
 
 	Anchor getAnchor() const noexcept override { return anchor; }
 	void setAnchor(const Anchor anchor_) noexcept override { anchor = anchor_; }
@@ -19,7 +19,7 @@ public:
 	const sf::Vector2f& DrawPosition() const override { return getPosition(); }
 	const sf::Vector2f& Position() const override { return getPosition(); }
 	void Position(const sf::Vector2f& position) override { setPosition(position); }
-	sf::Vector2f Size() const override { return sf::Vector2f(getLocalBounds().width, getLocalBounds().height); }
+	sf::Vector2f Size() const override;
 	void Size(const sf::Vector2f& size) noexcept override {}
 
 	bool Visible() const noexcept override { return visible; }

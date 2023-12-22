@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Resources/ImageContainer.h"
 #include "Resources/TexturePack.h"
 #include <SFML/Graphics/Rect.hpp>
 #include <vector>
@@ -23,6 +24,8 @@ public:
 		const std::shared_ptr<Palette>& palette_, int rows, int columns,
 		int16_t newLine, int16_t space, int16_t tab, bool verticalDirection,
 		const std::vector<uint8_t>& charSizes, size_t startPos, size_t stepNBytes);
+
+	BitmapFontTexturePack(const ImageContainer& imgContainer, const std::shared_ptr<Palette>& palette_);
 
 	sf::Vector2i getTextureSize(uint32_t index) const noexcept override;
 

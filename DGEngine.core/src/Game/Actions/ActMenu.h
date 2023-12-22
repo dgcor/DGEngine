@@ -2,9 +2,7 @@
 
 #include <cmath>
 #include "Game/Action.h"
-#include "Game/Drawables/BitmapText.h"
 #include "Game/Drawables/Menu.h"
-#include "Game/Drawables/StringText.h"
 #include "Game/Game.h"
 #include "Game/Utils/TextUtils.h"
 #include "Game/Variable.h"
@@ -216,11 +214,11 @@ class ActMenuSetColor : public Action
 {
 private:
 	std::string id;
-	size_t idx;
+	int idx;
 	sf::Color color;
 
 public:
-	ActMenuSetColor(const std::string_view id_, size_t idx_, const sf::Color& color_)
+	ActMenuSetColor(const std::string_view id_, int idx_, const sf::Color& color_)
 		: id(id_), idx(idx_), color(color_) {}
 
 	bool execute(Game& game) override
@@ -228,11 +226,7 @@ public:
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
-			auto button = menu->getItem(idx);
-			if (button != nullptr)
-			{
-				button->setColor(color);
-			}
+			menu->setColor(color, idx);
 		}
 		return true;
 	}
@@ -242,11 +236,11 @@ class ActMenuSetFont : public Action
 {
 private:
 	std::string id;
-	size_t idx;
+	int idx;
 	std::string idFont;
 
 public:
-	ActMenuSetFont(const std::string_view id_, size_t idx_, const std::string_view idFont_)
+	ActMenuSetFont(const std::string_view id_, int idx_, const std::string_view idFont_)
 		: id(id_), idx(idx_), idFont(idFont_) {}
 
 	bool execute(Game& game) override
@@ -254,29 +248,8 @@ public:
 		auto menu = game.Resources().getDrawable<Menu>(id);
 		if (menu != nullptr)
 		{
-			auto button = menu->getItem(idx);
-			if (button != nullptr)
-			{
-				auto newFont = game.Resources().getFont(idFont);
-				auto text = button->getDrawableText();
-				if (holdsNullFont(newFont) == false &&
-					text != nullptr)
-				{
-					auto bitmapText = dynamic_cast<BitmapText*>(text);
-					if (bitmapText != nullptr &&
-						holdsBitmapFont(newFont) == true)
-					{
-						bitmapText->setFont(std::get<std::shared_ptr<BitmapFont>>(newFont));
-						return true;
-					}
-					auto stringText = dynamic_cast<StringText*>(text);
-					if (stringText != nullptr &&
-						holdsFreeTypeFont(newFont) == true)
-					{
-						stringText->setFont(std::get<std::shared_ptr<FreeTypeFont>>(newFont));
-					}
-				}
-			}
+			auto font = game.Resources().getFont(idFont);
+			menu->setFont(font, idx);
 		}
 		return true;
 	}

@@ -39,7 +39,7 @@ namespace Parser
 		bool hasJsonFile = false;
 		Document mapDoc;
 
-		if (Utils::endsWith(Utils::toLower(file), ".json") == true)
+		if (Utils::toLower(file).ends_with(".json") == true)
 		{
 			if (JsonUtils::loadFile(file, mapDoc) == true)
 			{
@@ -48,7 +48,7 @@ namespace Parser
 			}
 		}
 #ifdef DGENGINE_DIABLO_FORMAT_SUPPORT
-		else if (Utils::endsWith(Utils::toLower(file), ".ds1") == true)
+		else if (Utils::toLower(file).ends_with(".ds1") == true)
 		{
 			auto ds1 = DS1::Decoder(file);
 			map.setD2Area(0, 0, ds1);
@@ -199,7 +199,7 @@ namespace Parser
 		auto tileSize = std::make_pair(level.TileWidth(), level.TileHeight());
 		if (tileSize.first == 0 && tileSize.second == 0)
 		{
-			tileSize = std::make_pair(64, 32);
+			tileSize = { 64, 32 };
 		}
 		tileSize = getVector2uKey(elem, "tileSize", tileSize);
 		auto subTiles = getUIntKey(elem, "subTiles", level.SubTiles());

@@ -1,28 +1,25 @@
 root = true
 
-[CMakeLists.txt]
+[{.github/**.yml,*.md,docs/**.md,test/*.md}]
+charset                  = utf-8
+end_of_line              = lf
+insert_final_newline     = true
+
+[{CMakeLists.txt,test/CMakeLists.txt}]
 charset                  = utf-8
 end_of_line              = lf
 indent_size              = 4
 indent_style             = space
 insert_final_newline     = true
 
-[{*.json,.vscode/**.json,gamefiles**.json}]
+[{*,.vscode/**,test/data/**}.json]
 charset                  = utf-8
 end_of_line              = lf
 indent_size              = 2
 indent_style             = space
 insert_final_newline     = false
 
-[gamefiles**.{frag,vert}]
-charset                  = utf-8
-end_of_line              = lf
-indent_size              = 4
-indent_style             = tab
-insert_final_newline     = false
-trim_trailing_whitespace = true
-
-[src/**]
+[{src/**,test/src/**}]
 charset                  = utf-8
 end_of_line              = lf
 indent_size              = 4
@@ -30,7 +27,7 @@ indent_style             = tab
 insert_final_newline     = true
 trim_trailing_whitespace = true
 
-[src/{endian,rapidjson}/**]
+[src/{rapidjson,Utils/endian}/**]
 indent_size              = unset
 indent_style             = unset
 insert_final_newline     = unset

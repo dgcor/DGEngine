@@ -3,9 +3,13 @@
 #include "Game/Utils/FileUtils.h"
 #include <iostream>
 #include "RegisterHooks.h"
+#include "Utils/Log.h"
 
 int main(int argc, char* argv[])
 {
+	DGENGINE_INIT_LOGGING();
+	SPDLOG_INFO("Welcome to DGEngine!");
+
 	Hooks::registerHooks();
 
 	FileUtils::initPhysFS(argv[0]);
@@ -33,9 +37,16 @@ int main(int argc, char* argv[])
 	}
 	catch (std::exception& ex)
 	{
+#if DGENGINE_HAS_LOGGING
+		SPDLOG_ERROR(ex.what());
+#else
 		std::cerr << ex.what();
+#endif
 	}
 
 	FileUtils::deinitPhysFS();
+
+	SPDLOG_INFO("Goodbye!");
+
 	return 0;
 }

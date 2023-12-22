@@ -25,5 +25,7 @@ public:
 
 	void resetTime() noexcept { elapsedTime.reset(); }
 
+	void timeout() noexcept { elapsedTime.currentTime = elapsedTime.timeout; }
+
 	bool execute(Game& game) override;
 };

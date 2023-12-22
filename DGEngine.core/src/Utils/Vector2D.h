@@ -21,11 +21,11 @@ protected:
 	size_t width{ 0 };
 	size_t height{ 0 };
 
-	void resize(size_t width_, size_t height_, T defaultTile)
+	void resize(size_t width_, size_t height_, T defaultVal)
 	{
 		width = width_;
 		height = height_;
-		elements.resize(width * height, defaultTile);
+		elements.resize(width * height, defaultVal);
 	}
 
 	friend T& get<>(size_t x, size_t y, Vector2D<T>& vec);
@@ -33,9 +33,9 @@ protected:
 
 public:
 	Vector2D() noexcept {}
-	Vector2D(size_t width_, size_t height_, T defaultTile)
+	Vector2D(size_t width_, size_t height_, T defaultVal)
 	{
-		resize(width_, height_, defaultTile);
+		resize(width_, height_, defaultVal);
 	}
 
 	auto operator[] (size_t x) noexcept { return Misc::Helper2D<Vector2D, T&, size_t>(*this, x, get); }

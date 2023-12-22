@@ -131,8 +131,8 @@ namespace Parser
 	AnimationSpeed getPlayerAnimationSpeedVal(const Value& elem)
 	{
 		AnimationSpeed speed;
-		speed.animation = GameUtils::getTime(getIntKey(elem, "animation", 5));
-		speed.walk = GameUtils::getTime(getIntKey(elem, "walk", 25));
+		speed.animation = GameUtils::FPSToTime(getIntKey(elem, "animation", 5));
+		speed.walk = GameUtils::FPSToTime(getIntKey(elem, "walk", 25));
 		return speed;
 	}
 

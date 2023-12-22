@@ -1,0 +1,75 @@
+{
+  "file": { "file": "res/texture/imageContainer.png" },
+  "palette": { "file": "res/palette/pal.bin" },
+  "imageContainer": [
+    {
+      "id": "imageContainer",
+      "fileBytes": "imageContainer",
+      "frames": [2, 2]
+    },
+    {
+      "id": "imageContainer2",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2]
+    },
+    {
+      "id": "imageContainer3",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2],
+      "directions": 4
+    },
+    {
+      "id": "imageContainer4",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2],
+      "directions": 3
+    },
+    {
+      "id": "imageContainer5",
+      "fileBytes": "imageContainer",
+      "frames": [4, 2],
+      "directions": 9
+    },
+    {
+      "file": "res/texture/imageContainerPalette.png",
+      "direction": "vertical",
+      "directions": 2,
+      "frames": [2, 2]
+    },
+    {
+      "id": "imageContainerPalette2",
+      "file": "res/texture/imageContainerPalette.png",
+      "direction": "vertical",
+      "directions": 4,
+      "frames": [4, 2]
+    }
+  ],
+  "texturePack": [
+    {
+      "id": "key01",
+      "imageContainer": [
+        "imageContainer",
+        "imageContainer2"
+      ],
+      "offset": [2, -2],
+      "animationType": "backAndForth",
+      "refresh": 50
+    },
+    {
+      "id": "key02",
+      "imageContainer": [
+        "imageContainerPalette",
+        "imageContainerPalette2"
+      ],
+      "palette": "pal"
+    },
+    {
+      "id": "key03",
+      "imageContainer": [
+        "imageContainer3",
+        "imageContainer4",
+        "imageContainer5"
+      ]
+    }
+  ]
+}

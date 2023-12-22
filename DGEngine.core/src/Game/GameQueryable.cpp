@@ -475,35 +475,32 @@ std::vector<VarOrQueryObject> GameQueryable::getQueryableList(const Game& game, 
 bool GameQueryable::getQueryableList(const std::string_view prop1,
 	const std::string_view prop2, std::vector<VarOrQueryObject>& queryableList)
 {
-	if (prop1.empty() == false)
+	if (prop1 == "game")
 	{
-		if (prop1 == "game")
+		auto props = Utils::splitStringIn2(prop2, '.');
+		if (props.first == "saveDirs")
 		{
-			auto props = Utils::splitStringIn2(prop2, '.');
-			if (props.first == "saveDirs")
+			for (const auto& dir : FileUtils::geDirList(props.second, true))
 			{
-				for (const auto& dir : FileUtils::getSaveDirList())
-				{
-					queryableList.push_back({ dir });
-				}
-				return true;
+				queryableList.push_back({ dir });
 			}
-			else if (props.first == "dirs")
+			return true;
+		}
+		else if (props.first == "dirs")
+		{
+			for (const auto& dir : FileUtils::geDirList(props.second, false))
 			{
-				for (const auto& dir : FileUtils::geDirList(props.second, ""))
-				{
-					queryableList.push_back({ dir });
-				}
-				return true;
+				queryableList.push_back({ dir });
 			}
-			else if (props.first == "files")
+			return true;
+		}
+		else if (props.first == "files")
+		{
+			for (const auto& dir : FileUtils::getFileList(props.second, "", false))
 			{
-				for (const auto& dir : FileUtils::getFileList(props.second, "", false))
-				{
-					queryableList.push_back({ dir });
-				}
-				return true;
+				queryableList.push_back({ dir });
 			}
+			return true;
 		}
 	}
 	return false;

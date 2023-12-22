@@ -31,6 +31,7 @@
 
 extern "C"
 {
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 }
 
@@ -180,7 +181,7 @@ namespace sfe
 
 		DataSource& m_dataSource;
 		Timer* m_timer{ nullptr };
-		AVCodec* m_codec{ nullptr };
+		const AVCodec* m_codec{ nullptr };
 		AVCodecContext* m_codecCtx{ nullptr };
 
 		int m_streamID{ -1 };

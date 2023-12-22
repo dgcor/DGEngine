@@ -13,6 +13,7 @@ protected:
 class Random : public RandomGenerator
 {
 public:
+	// Returns number between [0, max]
 	template <class T>
 	static T get(T max)
 	{
@@ -20,6 +21,7 @@ public:
 		return dist(generator);
 	}
 
+	// Returns number between [min, max]
 	template <class T>
 	static T get(T min, T max)
 	{
@@ -27,6 +29,7 @@ public:
 		return dist(generator);
 	}
 
+	// Returns number between [min, max]
 	template <class T>
 	static T getf()
 	{
@@ -34,6 +37,7 @@ public:
 		return dist(generator);
 	}
 
+	// Returns number between [0, max)
 	template <class T>
 	static T getf(T max)
 	{
@@ -41,6 +45,7 @@ public:
 		return dist(generator);
 	}
 
+	// Returns number between [0, max)
 	template <class T>
 	static T getf(T min, T max)
 	{
@@ -53,10 +58,11 @@ public:
 class RandomNormal : public RandomGenerator
 {
 public:
+	// returns a normal distributed number with stdDev = 1
 	template <class T>
 	static T get(T mean)
 	{
-		std::normal_distribution<T> dist(mean, 1);
+		std::normal_distribution<T> dist(mean, (T)1);
 		return dist(generator);
 	}
 
@@ -67,11 +73,12 @@ public:
 		return dist(generator);
 	}
 
+	// returns a normal distributed number between min and max tending towards the mean
 	template <class T>
 	static T getRange(T min, T mean, T max)
 	{
-		T averageBoundWidth = ((mean - min) + (max - mean)) / 2.0;
-		T standardDeviation = averageBoundWidth / 3.0;
+		T averageBoundWidth = ((mean - min) + (max - mean)) / (T)2.0;
+		T standardDeviation = averageBoundWidth / (T)3.0;
 		std::normal_distribution<T> distribution(mean, standardDeviation);
 
 		T value;
@@ -82,7 +89,7 @@ public:
 		return value;
 	}
 
-	// returns a normal distributed number between 0 and num.
+	// returns a normal distributed number between 0 and num
 	// num must be > 0
 	// example: 5000 x std::round(getRange(4.0))
 	// 0 - 50
@@ -93,15 +100,15 @@ public:
 	template <class T>
 	static T getRange(T num)
 	{
-		T mean = num * 0.5;
-		T standardDeviation = mean / 3.0;
+		T mean = num * (T)0.5;
+		T standardDeviation = mean / (T)3.0;
 		std::normal_distribution<T> distribution(mean, standardDeviation);
 
 		T value;
 		do
 		{
 			value = distribution(generator);
-		} while (value < 0.0 || num < value);
+		} while (value < T{} || num < value);
 		return value;
 	}
 };
