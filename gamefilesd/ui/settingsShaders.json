@@ -226,7 +226,7 @@
       "onFocus": "anchorPentagrams"
     }
   ],
-  "action": [
+  "action.update": [
     { "name": "game.setShader", "shader": "game", "gameShader": "game" },
     { "name": "game.setShader", "shader": "sprite", "gameShader": "sprite" },
     { "name": "game.setProperty", "property": "maxLights", "value": 128 },

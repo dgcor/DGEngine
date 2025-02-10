@@ -26,7 +26,7 @@
     "horizontalSpaceOffset": 1,
     "text": "|str_notEnoughRoom|"
   },
-  "action": [
+  "action.update": [
     {
       "name": "drawable.anchor",
       "id": "pent1",

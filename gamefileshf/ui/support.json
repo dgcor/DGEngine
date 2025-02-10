@@ -73,7 +73,7 @@
       ]
     }
   },
-  "action": {
+  "action.fade": {
     "name": "game.fadeIn"
   }
 }

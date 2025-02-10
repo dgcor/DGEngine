@@ -167,7 +167,8 @@ namespace Parser
 		ReplaceVars replaceVars = replaceVars_;
 		for (auto& it : std::ranges::subrange(doc.MemberBegin(), doc.MemberEnd()))
 		{
-			parseDocumentElemHelper(game, str2int16(it.name.GetStringView()),
+			auto [name, _] = Utils::splitStringIn2(it.name.GetStringView(), '.');
+			parseDocumentElemHelper(game, str2int16(name),
 				it.value, replaceVars, doc.GetAllocator());
 		}
 	}

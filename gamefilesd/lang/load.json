@@ -8,6 +8,6 @@
       "then": { "name": "variable.set", "key": "lang", "value": "en" }
     }
   ],
-  "load": "lang/%lang%/main.json",
-  "load": "lang/%lang%/main2.json"
+  "load.main": "lang/%lang%/main.json",
+  "load.main2": "lang/%lang%/main2.json"
 }

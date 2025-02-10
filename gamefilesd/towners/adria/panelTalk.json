@@ -104,7 +104,7 @@
       "anchorRightPentagram"
     ]
   },
-  "action": [
+  "action.update": [
     "anchorLeftPentagram",
     "anchorRightPentagram",
     { "name": "menu.setFont", "id": "panelQuests", "index": 0, "font": "smaltextBlue" }

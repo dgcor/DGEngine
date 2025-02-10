@@ -79,7 +79,7 @@
       "textureRect": [0, 228, 180, 76]
     }
   ],
-  "action": "loadLogoImg",
+  "action.loadLogo": "loadLogoImg",
   "replaceVars": true,
   "text": [
     {

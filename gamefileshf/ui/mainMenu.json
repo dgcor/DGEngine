@@ -101,7 +101,7 @@
   "cursor": {
     "texture": "cursor"
   },
-  "action": [
+  "action.loadImages": [
     "loadMainMenuImg",
     "loadLogoImg"
   ],
@@ -213,7 +213,7 @@
     }
   },
   "load": "ui/showMods.json",
-  "action": [
+  "action.update": [
     { "name": "menu.setFont", "id": "menu", "index": 1, "font": "font42y" },
     {
       "name": "text.setText",

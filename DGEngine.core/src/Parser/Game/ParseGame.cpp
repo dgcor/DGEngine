@@ -6,6 +6,7 @@
 #include "Parser/Utils/ParseUtils.h"
 #include "ParseSaveDir.h"
 #include "Utils/StringHash.h"
+#include "Utils/Utils.h"
 
 namespace Parser
 {
@@ -98,7 +99,8 @@ namespace Parser
 		}
 		for (const auto& it : std::ranges::subrange(elem.MemberBegin(), elem.MemberEnd()))
 		{
-			parseGameElem(game, str2int16(it.name.GetStringView()), it.value);
+			auto [name, _] = Utils::splitStringIn2(it.name.GetStringView(), '.');
+			parseGameElem(game, str2int16(name), it.value);
 		}
 	}
 }

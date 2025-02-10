@@ -1,6 +1,6 @@
 {
-  "load": "ui/level/panel/big/upperSeparator.json",
-  "load": "ui/level/panel/big/lowerSeparator.json",
+  "load.upperSeparator": "ui/level/panel/big/upperSeparator.json",
+  "load.lowerSeparator": "ui/level/panel/big/lowerSeparator.json",
   "load": "ui/level/panel/big/loadTabKeys.json",
   "button": {
     "id": "btnItem1",

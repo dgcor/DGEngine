@@ -223,6 +223,6 @@ bool BaseAnimation::updateTexture(CompositeSprite& sprite, bool& absoluteOffset)
 
 bool BaseAnimation::updateTexture(CompositeSprite& sprite) const
 {
-	bool absoluteoffet;
-	return updateTexture(sprite, absoluteoffet);
+	bool absoluteOffset;
+	return updateTexture(sprite, absoluteOffset);
 }

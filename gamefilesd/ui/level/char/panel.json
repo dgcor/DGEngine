@@ -12,7 +12,7 @@
     },
     { "name": "resource.add", "id": "levelOverlay" }
   ],
-  "text": {
+  "text.levelUp": {
     "replaceVars": true,
     "id": "txtLevelUp",
     "font": "smaltext",
@@ -24,7 +24,7 @@
     "visible": false,
     "text": "|str_levelUp|"
   },
-  "button": {
+  "button.levelUp": {
     "id": "btnLevelUp",
     "texture": "charbut",
     "textureRect": [0, 22, 41, 22],
@@ -37,7 +37,7 @@
     "onClickIn": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 44, 41, 22] },
     "onClickOut": { "name": "image.setTextureRect", "id": "btnLevelUp", "rect": [0, 22, 41, 22] }
   },
-  "image": [
+  "image.itemInfo": [
     {
       "id": "itemInfoBk",
       "position": [27, 28],
@@ -55,7 +55,7 @@
       "visible": false
     }
   ],
-  "button": {
+  "button.itemInfo": {
     "id": "itemInfoBr",
     "position": [24, 25],
     "anchor": "right",
@@ -64,7 +64,7 @@
     "onHoverEnter": "hideItemInfo",
     "onHoverLeave": "hideItemInfo"
   },
-  "text": [
+  "text.itemInfo": [
     {
       "id": "itemInfoTitle",
       "font": "smaltextGold",
@@ -108,7 +108,7 @@
       "visible": false
     }
   ],
-  "button": {
+  "button.questPanel": {
     "id": "questPanel",
     "texture": "quest",
     "anchor": "left",
@@ -118,10 +118,10 @@
     "onHoverLeave": "setLevelHoverActions",
     "onRightClick": "rightClickLevel"
   },
-  "load": "ui/level/char/panelCharacter.json",
-  "load": "ui/level/char/panelInventory.json",
-  "load": "ui/level/char/panelSpellBook.json",
-  "load": "ui/level/msgBox.json",
+  "load.panelCharacter": "ui/level/char/panelCharacter.json",
+  "load.panelInventory": "ui/level/char/panelInventory.json",
+  "load.panelSpellBook": "ui/level/char/panelSpellBook.json",
+  "load.msgBox": "ui/level/msgBox.json",
   "image": [
     {
       "id": "mapImage",
@@ -166,8 +166,8 @@
       "anchor": "bottom"
     }
   ],
-  "load": "ui/level/char/beltInventory.json",
-  "replaceVars": true,
+  "load.beltInventory": "ui/level/char/beltInventory.json",
+  "replaceVars.enable": true,
   "button": [
     {
       "id": "char",
@@ -404,8 +404,8 @@
       "onHoverLeave": "clearPanelText"
     }
   ],
-  "replaceVars": false,
-  "text": {
+  "replaceVars.disable": false,
+  "text.panel": {
     "id": "txtPanel",
     "font": "smaltext",
     "anchor": "bottom",

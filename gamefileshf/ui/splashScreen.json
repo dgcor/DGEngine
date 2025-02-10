@@ -51,7 +51,7 @@
     },
     "time": 7.0
   },
-  "action": {
+  "action.fade": {
     "name": "game.fadeIn"
   }
 }

@@ -7,7 +7,7 @@
     "gameInputEvent": "esc",
     "action": { "name": "button.click", "id": "ok" }
   },
-  "button": {
+  "button.background": {
     "id": "captureInputEvents",
     "texture": "hollowBackground",
     "anchor": "all",

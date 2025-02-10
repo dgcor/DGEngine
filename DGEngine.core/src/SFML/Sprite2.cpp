@@ -138,7 +138,7 @@ void Sprite2::draw(sf::RenderTarget& target, GameShader* spriteShader,
 				}
 
 				if (updateAll == true ||
-					ignore2 != cache->outline)
+					ignore2 != cache->ignore)
 				{
 					if (cache != nullptr)
 					{

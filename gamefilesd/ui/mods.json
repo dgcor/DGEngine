@@ -101,7 +101,7 @@
       "onFocus": "anchorPentagrams"
     }
   ],
-  "action": [
+  "action.update": [
     {
       "name": "if",
       "params": [

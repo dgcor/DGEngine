@@ -68,7 +68,7 @@
       "anchorRightPentagram"
     ]
   },
-  "action": [
+  "action.update": [
     "setItemInfo",
     "anchorLeftPentagram",
     "anchorRightPentagram"

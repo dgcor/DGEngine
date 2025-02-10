@@ -1694,8 +1694,8 @@ TEST_CASE("Parser::getPrimitiveTypeVal", "Parser")
 
 	CHECK(Parser::getPrimitiveTypeVal(doc["key01"]) == sf::PrimitiveType::Points);
 	CHECK(Parser::getPrimitiveTypeVal(doc["key02"], sf::PrimitiveType::Points) == sf::PrimitiveType::Points);
-	CHECK(Parser::getPrimitiveTypeVal(doc["key03"]) == sf::PrimitiveType::TrianglesStrip);
-	CHECK(Parser::getPrimitiveTypeVal(doc["key04"]) == sf::PrimitiveType::TrianglesStrip);
+	CHECK(Parser::getPrimitiveTypeVal(doc["key03"]) == sf::PrimitiveType::TriangleStrip);
+	CHECK(Parser::getPrimitiveTypeVal(doc["key04"]) == sf::PrimitiveType::TriangleStrip);
 }
 
 // Parser::getQueryVal == JsonUtils::query

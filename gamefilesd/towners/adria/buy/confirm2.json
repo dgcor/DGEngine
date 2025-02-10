@@ -108,7 +108,7 @@
       ]
     }
   ],
-  "action": [
+  "action.update": [
     {
       "name": "variable.set",
       "values": {

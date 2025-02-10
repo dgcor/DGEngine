@@ -428,7 +428,7 @@
       ]
     }
   ],
-  "action": [
+  "action.update": [
     "anchorLeftPentagram",
     "updateJog",
     { "name": "drawable.anchor", "id": "pent2", "idAnchor": "optbar1", "anchor": "right" },

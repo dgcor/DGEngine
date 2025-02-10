@@ -136,7 +136,7 @@
       ]
     }
   ],
-  "text": {
+  "text.back": {
     "id": "txtBack",
     "font": "fontexocet10",
     "position": [16, 492],

@@ -1,10 +1,10 @@
 {
-  "load": ["res/level/actions/beltUse.json", "Belt1", 0],
-  "load": ["res/level/actions/beltUse.json", "Belt2", 1],
-  "load": ["res/level/actions/beltUse.json", "Belt3", 2],
-  "load": ["res/level/actions/beltUse.json", "Belt4", 3],
-  "load": ["res/level/actions/beltUse.json", "Belt5", 4],
-  "load": ["res/level/actions/beltUse.json", "Belt6", 5],
-  "load": ["res/level/actions/beltUse.json", "Belt7", 6],
-  "load": ["res/level/actions/beltUse.json", "Belt8", 7]
+  "load.beltUse1": ["res/level/actions/beltUse.json", "Belt1", 0],
+  "load.beltUse2": ["res/level/actions/beltUse.json", "Belt2", 1],
+  "load.beltUse3": ["res/level/actions/beltUse.json", "Belt3", 2],
+  "load.beltUse4": ["res/level/actions/beltUse.json", "Belt4", 3],
+  "load.beltUse5": ["res/level/actions/beltUse.json", "Belt5", 4],
+  "load.beltUse6": ["res/level/actions/beltUse.json", "Belt6", 5],
+  "load.beltUse7": ["res/level/actions/beltUse.json", "Belt7", 6],
+  "load.beltUse8": ["res/level/actions/beltUse.json", "Belt8", 7]
 }

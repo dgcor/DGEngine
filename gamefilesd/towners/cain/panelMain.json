@@ -100,7 +100,7 @@
       ]
     }
   ],
-  "action": [
+  "action.update": [
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]

@@ -189,7 +189,7 @@
       "anchorRightPentagram"
     ]
   },
-  "action": {
+  "action.update": {
     "name": "if.notEqual",
     "param1": "%mainMenu.itemCount%",
     "param2": 0,

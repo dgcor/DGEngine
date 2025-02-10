@@ -13,7 +13,7 @@
       "action": "focus.click"
     }
   ],
-  "button": {
+  "button.background": {
     "id": "captureInputEvents",
     "texture": "hollowBackground",
     "anchor": "all",

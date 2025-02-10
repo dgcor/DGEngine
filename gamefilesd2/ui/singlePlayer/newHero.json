@@ -722,7 +722,7 @@
     "anchor": "none",
     "visible": false
   },
-  "image": {
+  "image.textBox": {
     "id": "textbox",
     "panel": "newName",
     "texture": "textbox",

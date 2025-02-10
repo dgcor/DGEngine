@@ -233,7 +233,7 @@ The Ring of One Thousand
 		Boyersmith, Michael Boyko, Eric Bradberry, John Brandstetter,
 		Ryan Breding, Paul Brinkmann, Patrick Briscoe, Scott Brisko,
 		Jeremy Britton, Adrian Broadhead, Glenn Brouwer, Joe Brown,
-		Sébastien Brulotte, Darrell Brunsch, William Bryan, Jason
+		SÃ©bastien Brulotte, Darrell Brunsch, William Bryan, Jason
 		Bucher, Chris Buchinger, Clayton Buckingham, John Buckles,
 		David Bugay, Ed Bujone, Erik Burgess, Gabriel Burkett, Chris
 		Burnes, Richard Butler, Jeffrey Bye, Dougall Campbell, Donnie
@@ -262,7 +262,7 @@ The Ring of One Thousand
 		Dicks, Brad Dietz, Josh Dietz, Colleen Diggins, Mike Ditchburn,
 		Eric Dittman, Allen Do, Huy Doan, Matthew Dolman, Antoine
 		Dongois, Eamonn Donohoe, Bill Dorell, Mark Dorison, Dan
-		Dorsett, Chris Dorsey, Jim Dosé, Willis Doss, Chin Du, William
+		Dorsett, Chris Dorsey, Jim DosÃ©, Willis Doss, Chin Du, William
 		Dubis, Timothy Duewell, Brandon Dunn, Andrew Durham, Don
 		Duvall, Kevin Dvojack, Daniel Eaton, Paul Eberting, Eric
 		Echelbarger, Lance Eddleman, Ben Eggers, David Eggum, John
@@ -301,7 +301,7 @@ The Ring of One Thousand
 		Homolya, Wade Hone, Joe Horvath, Jeff Howe, Eric Hudson,
 		Glen Huey, Chris Hufnagel, Joshua Hughes, Melissa Hughes,
 		Arief Hujaya, Thomas Hulen, Ryan Hupp, Justin Hurst, Rick
-		Hutchins, Steve Iams, Mike Iarossi, Bjorn Idren, Johan Idrén,
+		Hutchins, Steve Iams, Mike Iarossi, Bjorn Idren, Johan IdrÃ©n,
 		Micah Imparato, Joe Ingersoll, David Ingram, Greg Ipp, Rodney
 		Irvin, Darin Isola, Justin Itoh, Mario Ivan, Fredrik Ivarsson,
 		Dax Jacobson, Michael Jacques, Stevens Jacques, Duane Jahnke,
@@ -315,7 +315,7 @@ The Ring of One Thousand
 		Kanemura, Daniel Kao, Eric Karabin, Ben Katz, Christopher
 		Kawamura, Erick Kayser, Craig Keddie, Kevin Kelley, Bryan
 		Kemp, Michael Kendrigan, Dan Kerber, Timothy Kerber, Tomi
-		Keski-Heikkilä, Greg Kettering, Nathan Kilber, Howard Kim,
+		Keski-HeikkilÃ¤, Greg Kettering, Nathan Kilber, Howard Kim,
 		Orrin Kinion, Jon Kirst, David Kitch, John Klingbeil, Neil
 		Klopfenstein, Kerry Knouse, David Knox, Said Kobeissi, Jeff
 		Koches, Hades Kong, Jeff Kong, Kevin Konkle, Steve Koon,
@@ -401,7 +401,7 @@ The Ring of One Thousand
 		Robert Slifka, Brent Smith, C. Eric Smith, Jared Smith, Jeffrey
 		Smith, Owen Smith, Shannon Smith, Steven Smith, Edward Smola,
 		Matthew Sneep, Eric Snow, Brad Sobel, Jean-Pierre Solignac, Rasmus
-		Sørensen, Andrew Sorg, Poppy Southcott, Ross Specter, Erik Spencer,
+		SÃ¸rensen, Andrew Sorg, Poppy Southcott, Ross Specter, Erik Spencer,
 		Keith Spencer, Chris Springer, Erikson Squier, Dean St. Onge, Stewart
 		Stanfield, John Stanley, Terrence Staton, Benjamin Stein, James
 		Steiner, David Steyer, William Stickney, Chris Stiff, James Stofer,

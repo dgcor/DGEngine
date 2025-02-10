@@ -1,5 +1,5 @@
 {
-  "load": "towners/common/loadPanel.json",
-  "load": "towners/gillian/panelMain.json",
+  "load.panel": "towners/common/loadPanel.json",
+  "load.panelMain": "towners/gillian/panelMain.json",
   "action": { "name": "sound.play", "id": "bmaidWelcome" }
 }

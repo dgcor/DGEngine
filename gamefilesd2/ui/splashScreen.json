@@ -19,7 +19,7 @@
     "position": [-80, -60],
     "anchor": "none"
   },
-  "action": "loadLogoImg",
+  "action.loadImage": "loadLogoImg",
   "button": {
     "id": "skip",
     "texture": "empty",

@@ -238,7 +238,7 @@ namespace Parser
 	}
 
 	sf::PrimitiveType getPrimitiveTypeKey(const rapidjson::Value& elem,
-		const std::string_view key, sf::PrimitiveType val = sf::PrimitiveType::TrianglesStrip);
+		const std::string_view key, sf::PrimitiveType val = sf::PrimitiveType::TriangleStrip);
 
 	// returns null JSON value if key doesn't exist.
 	// returns query[key] JSON value if query fails.

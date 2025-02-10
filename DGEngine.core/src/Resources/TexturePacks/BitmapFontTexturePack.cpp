@@ -178,7 +178,7 @@ void BitmapFontTexturePack::calculateCharSizes(const sf::Image& img, int rows, i
 	{
 		charRects['\t'].width = cellW * 2;
 	}
-	else if (space > 0)
+	else if (tab > 0)
 	{
 		charRects['\t'].width = tab;
 	}

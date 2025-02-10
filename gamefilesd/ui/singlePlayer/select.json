@@ -211,7 +211,7 @@
       "enable": false
     }
   ],
-  "action": [
+  "action.update": [
     "focus.clickNoSound",
     {
       "name": "if.greater",

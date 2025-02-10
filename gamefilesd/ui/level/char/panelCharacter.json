@@ -3,7 +3,7 @@
     "id": "charPanel",
     "visible": false
   },
-  "button": {
+  "button.panel": {
     "id": "charPanelBk",
     "panel": "charPanel",
     "texture": "char",

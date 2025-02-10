@@ -258,5 +258,5 @@
       "action": { "name": "menu.click", "id": "settings", "index": "|$.settings.itemCount - 1|" }
     }
   ],
-  "action": "anchorPentagrams"
+  "action.update": "anchorPentagrams"
 }

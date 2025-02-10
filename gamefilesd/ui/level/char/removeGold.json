@@ -100,7 +100,7 @@
     "anchor": "right",
     "refresh": 50
   },
-  "action": {
+  "action.update": {
     "name": "if.equal",
     "param1": "{2}",
     "param2": "1",

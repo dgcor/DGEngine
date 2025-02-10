@@ -1,10 +1,10 @@
 {
-  "load": ["level/default/d2/loadDs1.json", "town", "Town", "data/global/tiles/ACT1/TOWN/TownN1.ds1"],
-  "load": ["level/player/%charClass%/defaults.json", "%charName%"],
-  "load": "level/map/town/levelObjects2.json",
-  "load": "level/map/town/items.json",
-  "load": "level/map/town/players2.json",
-  "load": "level/map/town/quests.json",
+  "load.map": ["level/default/d2/loadDs1.json", "town", "Town", "data/global/tiles/ACT1/TOWN/TownN1.ds1"],
+  "load.playerClass": ["level/player/%charClass%/defaults.json", "%charName%"],
+  "load.objects2": "level/map/town/levelObjects2.json",
+  "load.items": "level/map/town/items.json",
+  "load.players2": "level/map/town/players2.json",
+  "load.quests": "level/map/town/quests.json",
   "action": {
     "name": "if.equal",
     "param1": "%beta%",

@@ -1,7 +1,7 @@
 {
-  "load": "ui/level/panel/big/upperSeparator.json",
-  "load": "ui/level/panel/big/lowerSeparator.json",
-  "load": "ui/level/panel/big/scrollbar.json",
-  "load": "towners/common/loadMenuButtons.json",
-  "load": "towners/common/loadTabKeys.json"
+  "load.upperSeparator": "ui/level/panel/big/upperSeparator.json",
+  "load.lowerSeparator": "ui/level/panel/big/lowerSeparator.json",
+  "load.scrollbar": "ui/level/panel/big/scrollbar.json",
+  "load.menuButtons": "towners/common/loadMenuButtons.json",
+  "load.tabKeys": "towners/common/loadTabKeys.json"
 }

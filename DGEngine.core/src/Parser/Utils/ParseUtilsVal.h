@@ -412,7 +412,7 @@ namespace Parser
 	}
 
 	sf::PrimitiveType getPrimitiveTypeVal(const rapidjson::Value& elem,
-		sf::PrimitiveType val = sf::PrimitiveType::TrianglesStrip);
+		sf::PrimitiveType val = sf::PrimitiveType::TriangleStrip);
 
 	Number32 getMinMaxNumber32Val(const rapidjson::Value& elem);
 

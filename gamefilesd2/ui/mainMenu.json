@@ -172,7 +172,7 @@
   "cursor": {
     "texture": "cursor"
   },
-  "action": [
+  "action.loadImages": [
     "loadMainMenuImg",
     "loadLogoImg"
   ],

@@ -11,17 +11,17 @@
     "param2": true,
     "else": { "name": "variable.set", "key": "beta", "value": true }
   },
-  "load": "level/setupTempFolder.json",
-  "load": "res/actions.json",
-  "game": {
+  "load.setupTempFolder": "level/setupTempFolder.json",
+  "load.actions": "res/actions.json",
+  "game.actions": {
     "onClose": "saveSettingsAndClose"
   },
-  "load": "res/palettes.json",
-  "load": "res/fonts.json",
-  "load": "res/music.json",
-  "load": "res/sounds.json",
-  "load": "res/textures.json",
-  "load": "ui/gameInputEvents.json",
-  "load": "ui/inputEvents.json",
-  "load": "ui/splashScreenVideo.json"
+  "load.palettes": "res/palettes.json",
+  "load.fonts": "res/fonts.json",
+  "load.music": "res/music.json",
+  "load.sounds": "res/sounds.json",
+  "load.textures": "res/textures.json",
+  "load.gameInputEvents": "ui/gameInputEvents.json",
+  "load.inputEvents": "ui/inputEvents.json",
+  "load.splashScreen": "ui/splashScreenVideo.json"
 }

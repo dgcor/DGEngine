@@ -186,5 +186,5 @@
       "text": "|str_cancel|"
     }
   ],
-  "action": "anchorPentagrams"
+  "action.update": "anchorPentagrams"
 }

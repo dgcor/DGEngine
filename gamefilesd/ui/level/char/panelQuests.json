@@ -98,7 +98,7 @@
       "anchorRightPentagram"
     ]
   },
-  "action": [
+  "action.update": [
     "anchorLeftPentagram",
     "anchorRightPentagram"
   ]
