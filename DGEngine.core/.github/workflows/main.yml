@@ -16,75 +16,64 @@ on:
       - 'src/**'
       - 'test/**'
 
-env:
-    VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
-
 jobs:
-  build_linux:
-    name: linux build
-    runs-on: ubuntu-latest
+  build:
+    name: ${{ matrix.name }} build
+    runs-on: ${{ matrix.os }}
+    env:
+      APP_NAME: DGEngine.core
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            preset: linux-x64-debug-vcpkg
+            triplet: x64-linux
+          - name: Windows x64
+            arch: x64
+            os: windows-latest
+            preset: windows-x64-debug
+            triplet: x64-windows
+
     steps:
-    - name: Checkout DGEngine.core
-      uses: actions/checkout@v4
+      - name: Checkout ${{ env.APP_NAME }}
+        uses: actions/checkout@v4
 
-    - name: Export GitHub Actions cache environment variables
-      uses: actions/github-script@v6
-      with:
-        script: |
-          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+      - name: Install Ubuntu dependencies (Linux)
+        if: runner.os == 'Linux'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+          version: 1.0
+          execute_install_scripts: true
 
-    - name: Install Ubuntu dependencies
-      uses: awalsh128/cache-apt-pkgs-action@latest
-      with:
-        packages: libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev nasm
-        version: 1.0
-        execute_install_scripts: true
+      - name: Install dependencies
+        uses: johnwason/vcpkg-action@v7
+        id: vcpkg
+        with:
+          pkgs: physfs sfml[audio,graphics,window]
+          triplet: ${{ matrix.triplet }}
+          extra-args: --overlay-ports=../vcpkg/ports
+          cache-key: vcpkg-${{ matrix.triplet }}-main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          vcpkg-subdir: 'vcpkg-bin'
+          revision: 'b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c'  # 2024.11.16
 
-    - name: Install dependencies
-      run: |
-        vcpkg install ffmpeg[core,avcodec,avdevice,avfilter,avformat,swresample,swscale] physfs sfml --triplet=x64-linux
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: ${{ matrix.arch }}
 
-    - name: Setup Ninja Build
-      uses: turtlesec-no/get-ninja@main
+      - name: Setup Ninja Build
+        uses: turtlesec-no/get-ninja@main
 
-    - name: CMake build DGEngine.core
-      run: |
-        export CC=/usr/bin/gcc-11
-        export CXX=/usr/bin/g++-11
-        cmake --preset linux-x64-debug-vcpkg -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
-        cmake --build --preset linux-x64-debug-vcpkg
+      - name: CMake build ${{ env.APP_NAME }}
+        run: |
+          cmake --preset ${{ matrix.preset }} -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg-bin/scripts/buildsystems/vcpkg.cmake
+          cmake --build --preset ${{ matrix.preset }}
 
-  build_windows:
-    name: windows build
-    runs-on: windows-latest
-    steps:
-    - name: Checkout DGEngine.core
-      uses: actions/checkout@v4
-
-    - name: Export GitHub Actions cache environment variables
-      uses: actions/github-script@v6
-      with:
-        script: |
-          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
-          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
-
-    - name: Install dependencies
-      run: vcpkg install catch2 physfs sfml --triplet=x64-windows
-
-    - name: Setup MSVC
-      uses: TheMrMilchmann/setup-msvc-dev@v2
-      with:
-        arch: x64
-
-    - name: Setup Ninja Build
-      uses: turtlesec-no/get-ninja@main
-
-    - name: CMake build DGEngine.core
-      run: |
-        cmake --preset windows-x64-debug -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
-        cmake --build --preset windows-x64-debug
-
-    - name: Run tests
-      shell: cmd
-      run: cd test && ..\out\build\windows-x64-debug\test\DGEngine.core-test.exe
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        run: ctest --preset ${{ matrix.preset }}

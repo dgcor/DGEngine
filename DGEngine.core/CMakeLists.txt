@@ -514,5 +514,6 @@ endif()
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
 if(DGENGINE_BUILD_TEST_SUITE)
+    enable_testing()
     add_subdirectory(test)
 endif()

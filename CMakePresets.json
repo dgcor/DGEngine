@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 6,
   "configurePresets": [
     {
       "name": "linux-base",
@@ -549,6 +549,11 @@
       "displayName": "x64 Debug"
     },
     {
+      "name": "windows-x64-release",
+      "configurePreset": "windows-x64-release",
+      "displayName": "x64 Release"
+    },
+    {
       "name": "windows-x64-debug-nomovie",
       "configurePreset": "windows-x64-debug-nomovie",
       "displayName": "x64 Debug NoMovie"
@@ -559,9 +564,37 @@
       "displayName": "x86 Debug"
     },
     {
+      "name": "windows-x86-release",
+      "configurePreset": "windows-x86-release",
+      "displayName": "x86 Release"
+    },
+    {
       "name": "windows-x86-debug-nomovie",
       "configurePreset": "windows-x86-debug-nomovie",
       "displayName": "x86 Debug NoMovie"
+    }
+  ],
+  "packagePresets": [
+    {
+      "name": "linux-x64-release-publish",
+      "configurePreset": "linux-x64-release-publish",
+      "generators": ["ZIP"],
+      "configurations": ["Release"],
+      "packageDirectory": "${sourceDir}/out/package/${presetName}"
+    },
+    {
+      "name": "windows-x64-release-publish",
+      "configurePreset": "windows-x64-release-publish",
+      "generators": ["ZIP"],
+      "configurations": ["Release"],
+      "packageDirectory": "${sourceDir}/out/package/${presetName}"
+    },
+    {
+      "name": "windows-x86-release-publish",
+      "configurePreset": "windows-x86-release-publish",
+      "generators": ["ZIP"],
+      "configurations": ["Release"],
+      "packageDirectory": "${sourceDir}/out/package/${presetName}"
     }
   ]
 }

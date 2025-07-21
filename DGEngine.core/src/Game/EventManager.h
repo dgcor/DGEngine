@@ -3,6 +3,7 @@
 #include "Action.h"
 #include <list>
 #include <memory>
+#include <string>
 #include <string_view>
 
 class EventManager

@@ -1,0 +1,109 @@
+name: Deploy
+
+on: [workflow_dispatch]
+
+jobs:
+  deploy:
+    name: ${{ matrix.name }} deploy
+    runs-on: ${{ matrix.os }}
+    env:
+      APP_NAME: DGEngine
+      APP_NAME_LOWERCASE: dgengine
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux
+            os: ubuntu-latest
+            preset: linux-x64-release-publish
+            triplet: x64-linux
+            zip-name-suffix: linux-x86_64.AppImage
+          - name: Windows x86
+            arch: x86
+            os: windows-latest
+            preset: windows-x86-release-publish
+            triplet: x86-windows-static
+            zip-name-suffix: windows-x86
+          - name: Windows x64
+            arch: x64
+            os: windows-latest
+            preset: windows-x64-release-publish
+            triplet: x64-windows-static
+            zip-name-suffix: windows-x64
+
+    steps:
+      - name: Checkout ${{ env.APP_NAME }}
+        uses: actions/checkout@v4
+
+      - name: Install Ubuntu dependencies (Linux)
+        if: runner.os == 'Linux'
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: fuse libx11-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libgl1-mesa-dev
+          version: 1.0
+          execute_install_scripts: true
+
+      - name: Install dependencies
+        uses: johnwason/vcpkg-action@v7
+        id: vcpkg
+        with:
+          pkgs: physfs sfml[audio,graphics,window]
+          triplet: ${{ matrix.triplet }}
+          extra-args: --overlay-ports=../vcpkg/ports
+          cache-key: vcpkg-${{ matrix.triplet }}-deploy
+          token: ${{ secrets.GITHUB_TOKEN }}
+          vcpkg-subdir: 'vcpkg-bin'
+          revision: 'b2cb0da531c2f1f740045bfe7c4dac59f0b2b69c'  # 2024.11.16
+
+      - name: Install UPX (Windows)
+        if: runner.os == 'Windows'
+        uses: crazy-max/ghaction-upx@v3
+        with:
+          install-only: true
+
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: TheMrMilchmann/setup-msvc-dev@v3
+        with:
+          arch: ${{ matrix.arch }}
+
+      - name: Setup Ninja Build
+        uses: turtlesec-no/get-ninja@main
+
+      - name: CMake build ${{ env.APP_NAME }}
+        run: |
+          cmake --preset ${{ matrix.preset }} -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg-bin/scripts/buildsystems/vcpkg.cmake
+          cmake --build --preset ${{ matrix.preset }}
+
+      - name: Install LinuxDeploy (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          wget https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -N
+          chmod +x linuxdeploy-x86_64.AppImage
+
+      - name: Create AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          ./linuxdeploy-x86_64.AppImage \
+            --executable=out/build/${{ matrix.preset }}/${{ env.APP_NAME }} \
+            --appdir out/appdir \
+            --desktop-file=pkg/linux/${{ env.APP_NAME_LOWERCASE }}.desktop \
+            --icon-file=pkg/linux/icon.png \
+            --output=appimage
+
+      - name: Create ${{ env.APP_NAME }} zip (Linux)
+        if: runner.os == 'Linux'
+        run: 7z a ${{ env.APP_NAME }}-${{ matrix.zip-name-suffix }}.zip ${{ env.APP_NAME }}*.AppImage LICENSE.* README.* main.json gamefiles*
+
+      - name: Create ${{ env.APP_NAME }} zip (Windows)
+        if: runner.os == 'Windows'
+        run: 7z a ${{ env.APP_NAME }}-${{ matrix.zip-name-suffix }}.zip `
+               ./out/build/${{ matrix.preset }}/*.exe `
+               ./out/build/${{ matrix.preset }}/*.dll `
+               LICENSE.* README.* main.json gamefiles*
+
+      - name: Create ${{ env.APP_NAME }} zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact-${{ env.APP_NAME }}-${{ matrix.zip-name-suffix }}
+          path: ${{ env.APP_NAME }}-${{ matrix.zip-name-suffix }}.zip
